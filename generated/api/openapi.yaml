@@ -1,0 +1,5139 @@
+openapi: 3.0.3
+info:
+  description: HiddenLayer ModelScan API for scanning of models
+  title: HiddenLayer ModelScan V2
+  version: "1"
+servers:
+- description: Production API
+  url: https://api.hiddenlayer.ai
+security:
+- BearerAuth: []
+paths:
+  /api/v2/sensors/create:
+    post:
+      operationId: create_sensor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create_sensor_request'
+        description: Request body for create
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+          description: Successful response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorModel'
+          description: Validation Error
+      summary: Create a Sensor
+      tags:
+      - sensor
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/v2/sensors/query:
+    post:
+      operationId: query_sensor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SensorSORQueryRequest'
+        description: Request body for create
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelQueryResponse'
+          description: Successful response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+      summary: Query a Sensor
+      tags:
+      - sensor
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/v2/sensors/{sensor_id}/upload/begin:
+    post:
+      operationId: begin_multipart_upload
+      parameters:
+      - explode: false
+        in: path
+        name: sensor_id
+        required: true
+        schema:
+          format: uuid
+          title: Sensor ID
+          type: string
+        style: simple
+      - description: The total size of multipart upload.
+        explode: false
+        in: header
+        name: X-Content-Length
+        required: true
+        schema:
+          type: number
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMultipartUploadResponse'
+          description: Successful Response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+      summary: Begin Multipart Upload
+      tags:
+      - sensor
+      x-accepts:
+      - application/json
+  /api/v2/sensors/{sensor_id}/upload/{upload_id}/part/{part}:
+    put:
+      operationId: upload_model_part
+      parameters:
+      - explode: false
+        in: path
+        name: sensor_id
+        required: true
+        schema:
+          format: uuid
+          title: Sensor ID
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: upload_id
+        required: true
+        schema:
+          title: Upload Id
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: part
+        required: true
+        schema:
+          title: Part Number
+          type: number
+        style: simple
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              format: binary
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+      summary: Upload part
+      tags:
+      - sensor
+      x-content-type: application/octet-stream
+      x-accepts:
+      - application/json
+  /api/v2/sensors/{sensor_id}/upload/{upload_id}/complete:
+    post:
+      operationId: complete_multipart_upload
+      parameters:
+      - explode: false
+        in: path
+        name: sensor_id
+        required: true
+        schema:
+          format: uuid
+          title: Sensor ID
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: upload_id
+        required: true
+        schema:
+          title: Upload Id
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Successful Response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+      summary: Complete Multipart Upload
+      tags:
+      - sensor
+      x-accepts:
+      - application/json
+  /api/v2/submit/sensors/{sensor_id}/scan:
+    post:
+      operationId: scan_model
+      parameters:
+      - explode: false
+        in: path
+        name: sensor_id
+        required: true
+        schema:
+          format: uuid
+          title: Sensor ID
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/scan_model_request'
+          application/octet-stream:
+            schema:
+              format: binary
+              type: string
+        description: Request body for create
+        required: false
+      responses:
+        "201":
+          description: The resource was successfully created.
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorModel'
+          description: Validation Error
+      summary: Scan a model
+      tags:
+      - model_scan
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/v2/scan/status/{sensor_id}:
+    get:
+      operationId: scan_status
+      parameters:
+      - explode: false
+        in: path
+        name: sensor_id
+        required: true
+        schema:
+          format: uuid
+          title: Sensor ID
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScanResultsV2'
+          description: Successful response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "404":
+          description: The specified resource was not found.
+      summary: Get Status or Result of a Scan
+      tags:
+      - model_scan
+      x-accepts:
+      - application/json
+  /api/v2/sensors/{sensor_id}:
+    delete:
+      operationId: delete_model
+      parameters:
+      - explode: false
+        in: path
+        name: sensor_id
+        required: true
+        schema:
+          format: uuid
+          title: Sensor ID
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: Successful response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "404":
+          description: The specified resource was not found.
+      summary: Remove an Adhoc Sensor
+      tags:
+      - sensor
+      x-accepts:
+      - application/json
+    get:
+      operationId: get_model
+      parameters:
+      - explode: false
+        in: path
+        name: sensor_id
+        required: true
+        schema:
+          format: uuid
+          title: Sensor ID
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+          description: Successful response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "404":
+          description: The specified resource was not found.
+      summary: Get Model
+      tags:
+      - sensor
+      x-accepts:
+      - application/json
+  /api/v2/submit:
+    post:
+      operationId: submit_vectors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmissionV2'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmissionResponse'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorModel'
+          description: Validation Error
+      summary: Submit vectors
+      tags:
+      - aidr_predictive
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /scan/v3/results:
+    get:
+      operationId: model_scan_api_v3_scan_query
+      parameters:
+      - description: Model Version ID
+        example: "00fb9505-b9ac-4703-91a7-9d4859315a4b,0278fa73-4b08-47ca-bc23-33bc244719be"
+        explode: false
+        in: query
+        name: model_version_ids
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Model ID
+        example: "00fb9505-b9ac-4703-91a7-9d4859315a4b,2df09dc6-a0eb-4f67-9fe9-139ac3b75d11"
+        explode: false
+        in: query
+        name: model_ids
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Start Time
+        example: 2025-05-27T00:00:00Z
+        explode: true
+        in: query
+        name: start_time
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: End Time
+        example: 2025-05-27T23:59:59Z
+        explode: true
+        in: query
+        name: end_time
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Severities
+        example: "low,critical"
+        explode: false
+        in: query
+        name: severity
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Statuses
+        example: "done,failed"
+        explode: false
+        in: query
+        name: status
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 25
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      - description: "allow sorting by status, severity or created at, ascending (+)\
+          \ or the default descending (-)"
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          default: -start_time
+          pattern: (+|-)?(status|severity|start_time)
+          type: string
+        style: form
+      - description: only return latest result per model version
+        explode: true
+        in: query
+        name: latest_per_model_version_only
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/model_scan_api_v3_scan_query_200_response'
+          description: Successful response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "404":
+          description: The specified resource was not found.
+      summary: Get condensed reports for a Model Scan
+      tags:
+      - Model Supply Chain
+      x-accepts:
+      - application/json; charset=utf-8
+  /scan/v3/results/{scan_id}:
+    get:
+      operationId: model_scan_api_v3_scan_model_version_id_get
+      parameters:
+      - example: 00000000-0000-0000-0000-000000000000
+        explode: false
+        in: path
+        name: scan_id
+        required: true
+        schema:
+          format: uuid
+          title: Scan ID
+          type: string
+        style: simple
+      - description: Filter file_results to only those that have detections (and parents)
+        explode: true
+        in: query
+        name: has_detections
+        required: false
+        schema:
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ScanReportV3'
+            application/sarif+json:
+              schema:
+                $ref: '#/components/schemas/sarif-210'
+          description: Successful response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "404":
+          description: The specified resource was not found.
+      summary: Get Result of a Model Scan
+      tags:
+      - Model Supply Chain
+      x-accepts:
+      - application/json; charset=utf-8
+      - application/sarif+json
+    patch:
+      operationId: model_scan_api_v3_scan_model_version_id_patch
+      parameters:
+      - example: 00000000-0000-0000-0000-000000000000
+        explode: false
+        in: path
+        name: scan_id
+        required: true
+        schema:
+          format: uuid
+          title: Scan ID
+          type: string
+        style: simple
+      - description: Filter file_results to only those that have detections (and parents)
+        explode: true
+        in: query
+        name: has_detections
+        required: false
+        schema:
+          type: boolean
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScanReportV3'
+        description: Request body for partial update
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model_scan_api_v3_scan_model_version_id_patch_200_response'
+          description: Successful Response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorModel'
+          description: Validation Error
+      summary: Indicate part (file or files) of a model scan has completed
+      tags:
+      - Model Supply Chain
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+    post:
+      operationId: model_scan_api_v3_scan_model_version_id_post
+      parameters:
+      - example: 00000000-0000-0000-0000-000000000000
+        explode: false
+        in: path
+        name: scan_id
+        required: true
+        schema:
+          format: uuid
+          title: Scan ID
+          type: string
+        style: simple
+      - description: Filter file_results to only those that have detections (and parents)
+        explode: true
+        in: query
+        name: has_detections
+        required: false
+        schema:
+          type: boolean
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScanReportV3'
+        description: Request body for create
+        required: true
+      responses:
+        "201":
+          description: The resource was successfully created.
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorModel'
+          description: Validation Error
+      summary: Indicate model scan has started
+      tags:
+      - Model Supply Chain
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /scans/v3/jobs:
+    get:
+      operationId: modelscanner_api_v3_get_jobs
+      responses:
+        "200":
+          content:
+            application/json; charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ScanJob'
+                type: array
+          description: Successful response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "404":
+          description: The specified resource was not found.
+      summary: List all Model Scan Jobs
+      tags:
+      - Model Supply Chain
+      x-accepts:
+      - application/json; charset=utf-8
+    post:
+      operationId: modelscanner_api_v3_post_request
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/ScanJob'
+          application/octet-stream: {}
+        description: Request body for create scan request
+        required: true
+      responses:
+        "201":
+          description: The resource was successfully created.
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorModel'
+          description: Validation Error
+      summary: Request a Model Scan Job
+      tags:
+      - Model Supply Chain
+      x-content-type: application/json; charset=utf-8
+      x-accepts:
+      - application/json
+  /scans/v3/reports/{scan_id}:
+    post:
+      operationId: modelscan_api_v3_post_scan_results
+      parameters:
+      - explode: false
+        in: path
+        name: scan_id
+        required: true
+        schema:
+          format: uuid
+          title: Scan Id to which the report belongs
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScanCreateRequest'
+          application/octet-stream: {}
+        description: Request body for reporting a scan of one or more file results
+        required: true
+      responses:
+        "204":
+          description: Report Successful
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorModel'
+          description: Validation Error
+      summary: Engine Report Endpoint of Model Scan Results
+      tags:
+      - Model Supply Chain
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /scans/v3/results/{scan_id}:
+    get:
+      operationId: modelscan_api_v3_get_scan_results
+      parameters:
+      - explode: false
+        in: path
+        name: scan_id
+        required: false
+        schema:
+          format: uuid
+          title: Scan Id to which the report belongs
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json; charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ScanResultsV2'
+                type: array
+          description: Scan finished. Full results returned.
+        "202":
+          content:
+            application/json; charset=utf-8:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ScanResultsV2'
+                type: array
+          description: Scan still in progress. Partial results returned.
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "404":
+          description: The specified resource was not found.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorModel'
+          description: Validation Error
+      summary: Retrieve Model Scan Results
+      tags:
+      - Model Supply Chain
+      x-accepts:
+      - application/json
+      - application/json; charset=utf-8
+  /scans/v3/health:
+    get:
+      operationId: modelscanner_api_v3_health_check
+      responses:
+        "200":
+          description: Healthy
+        "503":
+          description: Not Ready
+      summary: Health check endpoint for Model Supply Chain Services
+      tags:
+      - Model Supply Chain
+      - Health
+      x-accepts:
+      - application/json
+  /scans/v3/readiness:
+    get:
+      operationId: modelscanner_api_v3_readiness_check
+      responses:
+        "200":
+          description: Ready
+        "503":
+          description: Not Ready
+      summary: Readiness check endpoint for Model Supply Chain Services
+      tags:
+      - Model Supply Chain
+      - Readiness
+      x-accepts:
+      - application/json
+  /models/v3/cards:
+    get:
+      operationId: sensor_sor_api_v3_model_cards_query_get
+      parameters:
+      - description: substring match on model name
+        explode: true
+        in: query
+        name: "model_name[eq]"
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: substring match on model name
+        explode: true
+        in: query
+        name: "model_name[contains]"
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 25
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      - description: "allow sorting by model name or created at timestamp, ascending\
+          \ (+) or the default descending (-)"
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          default: -created_at
+          pattern: (+|-)?(model_name|created_at)
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensorSORModelCardQueryResponse'
+          description: Successful response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+      summary: List Model Cards
+      tags:
+      - sensor
+      x-accepts:
+      - application/json
+components:
+  parameters:
+    SensorIdParameter:
+      explode: false
+      in: path
+      name: sensor_id
+      required: true
+      schema:
+        format: uuid
+        title: Sensor ID
+        type: string
+      style: simple
+    UploadIdParameter:
+      explode: false
+      in: path
+      name: upload_id
+      required: true
+      schema:
+        title: Upload Id
+        type: string
+      style: simple
+  responses:
+    BadRequestResponse:
+      description: |-
+        The request failed due to a client error, with one or more of the following possible causes:
+        1. The request required a tenant_id field, which was missing.
+        2. The request was malformed syntactically or semantically.
+    ValidationErrorResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationErrorModel'
+      description: Validation Error
+    EmptyResponse:
+      description: Successful Response
+    CreatedResponse:
+      description: The resource was successfully created.
+    NotFoundResponse:
+      description: The specified resource was not found.
+    OKResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/model_scan_api_v3_scan_model_version_id_patch_200_response'
+      description: Successful Response
+  schemas:
+    Model:
+      allOf:
+      - title: Model
+      - required:
+        - active
+        - created_at
+        - plaintext_name
+        - sensor_id
+        - tenant_id
+        - version
+      - properties:
+          sensor_id:
+            format: uuid
+            title: Sensor ID
+            type: string
+          created_at:
+            format: date-time
+            title: Created At Time
+            type: string
+          tenant_id:
+            format: uuid
+            title: Tenant ID
+            type: string
+          plaintext_name:
+            title: Plaintext Name
+            type: string
+          active:
+            title: Active
+            type: boolean
+          version:
+            title: Version
+            type: integer
+          tags:
+            additionalProperties: true
+            title: Tags
+            type: object
+      example:
+        sensor_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        tenant_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        created_at: 2000-01-23T04:56:07.000+00:00
+        active: true
+        plaintext_name: plaintext_name
+        version: 0
+        tags:
+          key: ""
+    GetMultipartUploadResponse:
+      example:
+        upload_id: upload_id
+        parts:
+        - part_number: 0.8008281904610115
+          end_offset: 1.4658129805029452
+          upload_url: upload_url
+          start_offset: 6.027456183070403
+        - part_number: 0.8008281904610115
+          end_offset: 1.4658129805029452
+          upload_url: upload_url
+          start_offset: 6.027456183070403
+      properties:
+        upload_id:
+          title: Upload Id
+          type: string
+        parts:
+          items:
+            $ref: '#/components/schemas/MultipartUploadPart'
+          title: Parts
+          type: array
+      required:
+      - parts
+      - upload_id
+      title: GetMultipartUploadResponse
+      type: object
+    MultipartUploadPart:
+      example:
+        part_number: 0.8008281904610115
+        end_offset: 1.4658129805029452
+        upload_url: upload_url
+        start_offset: 6.027456183070403
+      properties:
+        part_number:
+          type: number
+        start_offset:
+          type: number
+        end_offset:
+          type: number
+        upload_url:
+          description: only provided when part is to be directly uploaded to a cloud
+            provider (adhoc)
+          type: string
+      required:
+      - end_offset
+      - part_number
+      - start_offset
+      title: Multipart Upload Part
+      type: object
+    SensorSORQueryRequest:
+      example:
+        filter:
+          created_at_start: 2000-01-23T04:56:07.000+00:00
+          created_at_stop: 2000-01-23T04:56:07.000+00:00
+          active: true
+          source: adhoc
+          plaintext_name: plaintext_name
+          version: 0
+        order_dir: asc
+        page_number: 1
+        order_by: created_at
+        page_size: 6
+      properties:
+        filter:
+          $ref: '#/components/schemas/SensorSORQueryFilter'
+        order_by:
+          default: created_at
+          title: Order By
+          type: string
+        order_dir:
+          enum:
+          - asc
+          - desc
+          - ASC
+          - DESC
+          title: Order direction
+          type: string
+        page_size:
+          default: 25
+          title: Page Size
+          type: integer
+        page_number:
+          default: 0
+          title: Page Number
+          type: integer
+      title: SensorSORQueryRequest
+      type: object
+    SensorSORQueryFilter:
+      example:
+        created_at_start: 2000-01-23T04:56:07.000+00:00
+        created_at_stop: 2000-01-23T04:56:07.000+00:00
+        active: true
+        source: adhoc
+        plaintext_name: plaintext_name
+        version: 0
+      properties:
+        plaintext_name:
+          title: Plaintext Name
+          type: string
+        active:
+          title: Active
+          type: boolean
+        version:
+          title: Version
+          type: integer
+        created_at_start:
+          format: date-time
+          title: Created At Start
+          type: string
+        created_at_stop:
+          format: date-time
+          title: Created At Stop
+          type: string
+        source:
+          enum:
+          - adhoc
+          title: Source
+          type: string
+      title: SensorSORQueryFilter
+      type: object
+    ModelQueryResponse:
+      example:
+        page_number: 1
+        total_count: 0
+        results:
+        - sensor_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          tenant_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          created_at: 2000-01-23T04:56:07.000+00:00
+          active: true
+          plaintext_name: plaintext_name
+          version: 0
+          tags:
+            key: ""
+        - sensor_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          tenant_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          created_at: 2000-01-23T04:56:07.000+00:00
+          active: true
+          plaintext_name: plaintext_name
+          version: 0
+          tags:
+            key: ""
+        page_size: 6
+      properties:
+        total_count:
+          title: Total Count
+          type: integer
+        page_size:
+          title: Page Size
+          type: integer
+        page_number:
+          title: Page Number
+          type: integer
+        results:
+          items:
+            $ref: '#/components/schemas/Model'
+          title: Results
+          type: array
+      required:
+      - page_number
+      - page_size
+      - results
+      - total_count
+      title: ModelQueryResponse
+      type: object
+    SubmissionV2:
+      example:
+        sensor_id: sensor_id
+        metadata: "{}"
+        input_layer_dtype: input_layer_dtype
+        input_layer_shape:
+        - 0.8008281904610115
+        - 0.8008281904610115
+        input_layer: input_layer
+        output_layer_dtype: output_layer_dtype
+        output_layer_shape:
+        - 6.027456183070403
+        - 6.027456183070403
+        predictions:
+        - 1.4658129805029452
+        - 1.4658129805029452
+        event_time: event_time
+        tags:
+        - tags
+        - tags
+        requester_id: UNKNOWN
+        output_layer: output_layer
+      properties:
+        metadata:
+          title: Metadata
+          type: object
+        tags:
+          items:
+            type: string
+          title: Tags
+          type: array
+        sensor_id:
+          title: Sensor Id
+          type: string
+        requester_id:
+          default: UNKNOWN
+          title: Requester Id
+          type: string
+        input_layer:
+          title: Input Layer
+          type: string
+        input_layer_dtype:
+          title: Input Layer Data Type
+          type: string
+        input_layer_shape:
+          items:
+            type: number
+          title: Input Layer Shape
+          type: array
+        output_layer:
+          title: Output Layer
+          type: string
+        output_layer_dtype:
+          title: Output Layer Data Type
+          type: string
+        output_layer_shape:
+          items:
+            type: number
+          title: Output Layer Shape
+          type: array
+        predictions:
+          items:
+            type: number
+          title: Predictions
+          type: array
+        event_time:
+          title: Event Time
+          type: string
+      required:
+      - input_layer
+      - input_layer_dtype
+      - input_layer_shape
+      - output_layer
+      - output_layer_dtype
+      - output_layer_shape
+      - sensor_id
+      title: SubmissionV2
+      type: object
+    SubmissionResponse:
+      example:
+        tenant_id: tenant_id
+        sensor_id: sensor_id
+        group_id: group_id
+        event_time: event_time
+        requester_id: requester_id
+      properties:
+        tenant_id:
+          title: Tenant Id
+          type: string
+        sensor_id:
+          title: Sensor Id
+          type: string
+        requester_id:
+          title: Requester Id
+          type: string
+        group_id:
+          title: Group Id
+          type: string
+        event_time:
+          title: Event Time
+          type: string
+      required:
+      - event_time
+      - group_id
+      - requester_id
+      - sensor_id
+      - tenant_id
+      title: SubmissionResponse
+      type: object
+    SensorSORModelCardQueryResponse:
+      example:
+        page_number: 1
+        total_count: 0
+        results:
+        - model_scan_threat_level: safe
+          created_at: 2000-01-23T04:56:07.000+00:00
+          model_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          source: azure:datascience-workspace
+          plaintext_name: Resnet-50
+          attack_monitoring_threat_level: safe
+          security_posture:
+            attack_monitoring: true
+            model_scan: true
+          active_versions:
+          - ver1
+          - ver1
+          tags:
+            key: ""
+        - model_scan_threat_level: safe
+          created_at: 2000-01-23T04:56:07.000+00:00
+          model_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          source: azure:datascience-workspace
+          plaintext_name: Resnet-50
+          attack_monitoring_threat_level: safe
+          security_posture:
+            attack_monitoring: true
+            model_scan: true
+          active_versions:
+          - ver1
+          - ver1
+          tags:
+            key: ""
+        page_size: 6
+      properties:
+        total_count:
+          title: Total Count
+          type: integer
+        page_size:
+          title: Page Size
+          type: integer
+        page_number:
+          title: Page Number
+          type: integer
+        results:
+          items:
+            $ref: '#/components/schemas/SensorSORModelCardResponse'
+          title: Results
+          type: array
+      required:
+      - page_number
+      - page_size
+      - results
+      - total_count
+      title: SensorSORModelCardQueryResponse
+      type: object
+    SensorSORModelCardResponse:
+      allOf:
+      - title: SensorSORModelCardResponse
+      - required:
+        - active_versions
+        - attack_monitoring_severity
+        - created_at
+        - model_id
+        - model_scan_severity
+        - plaintext_name
+        - source
+      - properties:
+          model_id:
+            format: uuid
+            title: Model ID
+            type: string
+          created_at:
+            format: date-time
+            title: Created At Time
+            type: string
+          plaintext_name:
+            example: Resnet-50
+            title: Plaintext Name
+            type: string
+          active_versions:
+            items:
+              example: ver1
+              type: string
+            type: array
+          source:
+            example: azure:datascience-workspace
+            title: source of model metadata
+            type: string
+          tags:
+            additionalProperties: true
+            type: object
+          model_scan_threat_level:
+            enum:
+            - safe
+            - unsafe
+            - suspicious
+            - not available
+            title: Model Scan Severity
+            type: string
+          attack_monitoring_threat_level:
+            enum:
+            - safe
+            - unsafe
+            - suspicious
+            - not available
+            title: Attack Monitoring Severity
+            type: string
+          security_posture:
+            $ref: '#/components/schemas/SecurityPosture'
+      example:
+        model_scan_threat_level: safe
+        created_at: 2000-01-23T04:56:07.000+00:00
+        model_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        source: azure:datascience-workspace
+        plaintext_name: Resnet-50
+        attack_monitoring_threat_level: safe
+        security_posture:
+          attack_monitoring: true
+          model_scan: true
+        active_versions:
+        - ver1
+        - ver1
+        tags:
+          key: ""
+    SecurityPosture:
+      example:
+        attack_monitoring: true
+        model_scan: true
+      properties:
+        model_scan:
+          title: Model Scan Active
+          type: boolean
+        attack_monitoring:
+          title: Attack Monitoring Active
+          type: boolean
+      title: SecurityPosture
+      type: object
+    ValidationErrorModel:
+      example:
+        msg: msg
+        loc:
+        - Location_inner
+        - Location_inner
+        type: type
+      properties:
+        loc:
+          items:
+            $ref: '#/components/schemas/Location_inner'
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationErrorModel
+      type: object
+    ScanResultsV2:
+      example:
+        severity: UNKNOWN
+        start_time: 0
+        end_time: 6
+        scan_id: scan_id
+        results:
+          rds_version: rds_version
+          rds_writer_version: rds_writer_version
+          pickle_modules:
+          - pickle_modules
+          - pickle_modules
+          rds_encoding: rds_encoding
+          sha256: sha256
+          subtype:
+          - subtype
+          - subtype
+          rds_min_reader_version: rds_min_reader_version
+          tlsh: tlsh
+          type: type
+          md5: md5
+        status: done
+        detections:
+        - severity: MISS
+          description: description
+          message: message
+        - severity: MISS
+          description: description
+          message: message
+      properties:
+        scan_id:
+          title: Scan ID
+          type: string
+        status:
+          enum:
+          - done
+          - accepted
+          - failed
+          - pending
+          - created
+          - retry
+          - unknown
+          title: Status
+          type: string
+        start_time:
+          format: int64
+          title: Scan Start Time
+          type: integer
+        end_time:
+          format: int64
+          title: Scan End Time
+          type: integer
+        results:
+          $ref: '#/components/schemas/Scan_Results'
+        severity:
+          enum:
+          - UNKNOWN
+          - SAFE
+          - SUSPICIOUS
+          - MALICIOUS
+          title: Severity
+          type: string
+        detections:
+          items:
+            $ref: '#/components/schemas/Detections'
+          type: array
+      required:
+      - detections
+      - end_time
+      - scan_id
+      - start_time
+      - status
+      title: ModelScan V2 Response
+      type: object
+    PagedResponseWithTotal:
+      properties:
+        items:
+          description: "List of items. If no matching items are found, then `[]` will\
+            \ be returned."
+          items:
+            description: TODO default missing array inner type to string
+            type: string
+          title: Items
+          type: array
+        total:
+          description: Total number of items available based on the query criteria.
+          minimum: 0
+          title: Total Item Count
+          type: number
+        limit:
+          default: 25
+          description: Maximum number of items to return
+          example: 50
+          maximum: 100
+          minimum: 1
+          title: Item Count Limit
+          type: integer
+        offset:
+          default: 0
+          description: Begin returning the results from this offset
+          example: 250
+          minimum: 0
+          title: Offset
+          type: integer
+      required:
+      - limit
+      - offset
+      - total
+      type: object
+    ScanReportV3:
+      allOf:
+      - $ref: '#/components/schemas/ScanHeaderV3'
+      - $ref: '#/components/schemas/FileScanReportV3'
+      example:
+        file_count: 6
+        files_with_detections_count: 1
+        detection_categories:
+        - detection_categories
+        - detection_categories
+        severity: low
+        start_time: 2000-01-23T04:56:07.000+00:00
+        end_time: 2000-01-23T04:56:07.000+00:00
+        file_results:
+        - file_instance_id: file_instance_id
+          start_time: 2024-10-16T23:38:32.278Z
+          file_location: file_location
+          end_time: 2024-10-16T23:38:32.354Z
+          details:
+            sha256: a54d88e06612d820bc3be72877c74f257b561b19
+            file_type_details:
+              key: ""
+            file_type: safetensors
+            tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+            file_size_bytes: 9663676416
+            file_size: 9 GB
+            estimated_time: estimated_time
+            md5: ce114e4501d2f4e2dcea3e17b546f339
+          seen: 2024-10-22T17:59:12.431Z
+          status: skipped
+          detections:
+          - severity: low
+            owasp:
+            - owasp
+            - owasp
+            cwe_href: cwe_href
+            technical_blog_href: technical_blog_href
+            impact: critical
+            description: Found lambda embedded in keras model allowing custom layers
+              that support  arbitrary expression execution
+            rule_id: PICKLE_0055_202408
+            cwe: cwe
+            mitre_atlas:
+            - technique: technique
+              tactic: tactic
+            - technique: technique
+              tactic: tactic
+            cve:
+            - cve
+            - cve
+            likelihood: medium
+            risk: MALICIOUS
+            rule_details:
+            - description: description
+              status_at: 2000-01-23T04:56:07.000+00:00
+              status: created
+            - description: description
+              status_at: 2000-01-23T04:56:07.000+00:00
+              status: created
+            detection_id: 00000000-0000-0000-0000-000000000000
+            category: Arbitrary Code Execution
+          - severity: low
+            owasp:
+            - owasp
+            - owasp
+            cwe_href: cwe_href
+            technical_blog_href: technical_blog_href
+            impact: critical
+            description: Found lambda embedded in keras model allowing custom layers
+              that support  arbitrary expression execution
+            rule_id: PICKLE_0055_202408
+            cwe: cwe
+            mitre_atlas:
+            - technique: technique
+              tactic: tactic
+            - technique: technique
+              tactic: tactic
+            cve:
+            - cve
+            - cve
+            likelihood: medium
+            risk: MALICIOUS
+            rule_details:
+            - description: description
+              status_at: 2000-01-23T04:56:07.000+00:00
+              status: created
+            - description: description
+              status_at: 2000-01-23T04:56:07.000+00:00
+              status: created
+            detection_id: 00000000-0000-0000-0000-000000000000
+            category: Arbitrary Code Execution
+        - file_instance_id: file_instance_id
+          start_time: 2024-10-16T23:38:32.278Z
+          file_location: file_location
+          end_time: 2024-10-16T23:38:32.354Z
+          details:
+            sha256: a54d88e06612d820bc3be72877c74f257b561b19
+            file_type_details:
+              key: ""
+            file_type: safetensors
+            tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+            file_size_bytes: 9663676416
+            file_size: 9 GB
+            estimated_time: estimated_time
+            md5: ce114e4501d2f4e2dcea3e17b546f339
+          seen: 2024-10-22T17:59:12.431Z
+          status: skipped
+          detections:
+          - severity: low
+            owasp:
+            - owasp
+            - owasp
+            cwe_href: cwe_href
+            technical_blog_href: technical_blog_href
+            impact: critical
+            description: Found lambda embedded in keras model allowing custom layers
+              that support  arbitrary expression execution
+            rule_id: PICKLE_0055_202408
+            cwe: cwe
+            mitre_atlas:
+            - technique: technique
+              tactic: tactic
+            - technique: technique
+              tactic: tactic
+            cve:
+            - cve
+            - cve
+            likelihood: medium
+            risk: MALICIOUS
+            rule_details:
+            - description: description
+              status_at: 2000-01-23T04:56:07.000+00:00
+              status: created
+            - description: description
+              status_at: 2000-01-23T04:56:07.000+00:00
+              status: created
+            detection_id: 00000000-0000-0000-0000-000000000000
+            category: Arbitrary Code Execution
+          - severity: low
+            owasp:
+            - owasp
+            - owasp
+            cwe_href: cwe_href
+            technical_blog_href: technical_blog_href
+            impact: critical
+            description: Found lambda embedded in keras model allowing custom layers
+              that support  arbitrary expression execution
+            rule_id: PICKLE_0055_202408
+            cwe: cwe
+            mitre_atlas:
+            - technique: technique
+              tactic: tactic
+            - technique: technique
+              tactic: tactic
+            cve:
+            - cve
+            - cve
+            likelihood: medium
+            risk: MALICIOUS
+            rule_details:
+            - description: description
+              status_at: 2000-01-23T04:56:07.000+00:00
+              status: created
+            - description: description
+              status_at: 2000-01-23T04:56:07.000+00:00
+              status: created
+            detection_id: 00000000-0000-0000-0000-000000000000
+            category: Arbitrary Code Execution
+        scan_id: scan_id
+        inventory:
+          model_version: 1.0.0
+          requested_scan_location: /files-to-scan
+          model_version_id: 00000000-0000-0000-0000-000000000000
+          model_name: keras-tf-2025-05-27
+          requesting_entity: requesting_entity
+          model_id: 00000000-0000-0000-0000-000000000000
+          model_source: adhoc
+        detection_count: 5
+        version: version
+        status: pending
+      title: ScanReportV3
+      type: object
+    ScanHeaderV3:
+      properties:
+        file_count:
+          description: number of files scanned
+          title: Number of files
+          type: integer
+        files_with_detections_count:
+          description: number of files with detections found
+          title: Number of files with detections
+          type: integer
+        detection_count:
+          description: number of detections found
+          title: Number of detections
+          type: integer
+        detection_categories:
+          description: list of detection categories found
+          items:
+            type: string
+          title: Detection Categories
+          type: array
+        inventory:
+          $ref: '#/components/schemas/Model_Inventory_Info'
+        version:
+          description: scanner version
+          title: Version
+          type: string
+        scan_id:
+          description: unique identifier for the scan
+          title: Scan ID
+          type: string
+        start_time:
+          description: time the scan started
+          format: date-time
+          title: Scan Start Time
+          type: string
+        end_time:
+          description: time the scan ended
+          format: date-time
+          title: Scan End Time
+          type: string
+        status:
+          description: status of the scan
+          enum:
+          - pending
+          - running
+          - done
+          - failed
+          - canceled
+          title: Status
+          type: string
+        severity:
+          description: detection severity
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+          - safe
+          - unknown
+          title: Severity
+          type: string
+      required:
+      - detection_count
+      - file_count
+      - files_with_detections_count
+      - inventory
+      - scan_id
+      - start_time
+      - status
+      - version
+      title: ScanHeaderV3
+      type: object
+    ScanModelDetailsV3:
+      properties:
+        model_name:
+          description: name of the model
+          example: keras-tf-2025-05-27
+          title: Model Name
+          type: string
+        model_version:
+          description: version of the model
+          example: 1.0.0
+          title: Model Version
+          type: string
+        model_source:
+          description: source (provider) info
+          example: adhoc
+          title: Model Source
+          type: string
+        requested_scan_location:
+          description: Location to be scanned
+          example: /files-to-scan
+          title: Requested Scan Location
+          type: string
+        requesting_entity:
+          description: Entity that requested the scan
+          title: Requesting Entity
+          type: string
+      required:
+      - model_name
+      - model_source
+      - model_version
+      - requested_scan_location
+      title: ScanModelDetails
+      type: object
+    ScanModelIdsV3:
+      properties:
+        model_id:
+          description: Unique identifier for the model
+          example: 00000000-0000-0000-0000-000000000000
+          title: Model ID
+          type: string
+        model_version_id:
+          description: unique identifier for the model version
+          example: 00000000-0000-0000-0000-000000000000
+          title: Model Version ID
+          type: string
+      required:
+      - model_id
+      - model_version_id
+      title: ScanModelIds
+      type: object
+    FileScanReportV3:
+      properties:
+        file_results:
+          items:
+            $ref: '#/components/schemas/File_Results_inner'
+          title: File Results
+          type: array
+      title: FileScanReportV3
+      type: object
+    sarif-210:
+      additionalProperties: false
+      description: "Static Analysis Results Format (SARIF) Version 2.1.0 JSON Schema:\
+        \ a standard format for the output of static analysis tools."
+      properties:
+        $schema:
+          description: The URI of the JSON schema corresponding to the version.
+          format: uri
+          type: string
+        version:
+          description: The SARIF format version of this log file.
+          enum:
+          - 2.1.0
+          type: object
+        runs:
+          description: The set of runs contained in this log file.
+          items:
+            $ref: '#/components/schemas/run'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        inlineExternalProperties:
+          description: References to external property files that share data between
+            runs.
+          items:
+            $ref: '#/components/schemas/externalProperties'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - runs
+      - version
+      title: Static Analysis Results Format (SARIF) Version 2.1.0 JSON Schema
+      type: object
+    run:
+      additionalProperties: false
+      description: "Describes a single run of an analysis tool, and contains the reported\
+        \ output of that run."
+      properties:
+        tool:
+          $ref: '#/components/schemas/tool'
+        invocations:
+          default: []
+          description: Describes the invocation of the analysis tool.
+          items:
+            $ref: '#/components/schemas/invocation'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        conversion:
+          $ref: '#/components/schemas/conversion'
+        language:
+          default: en-US
+          description: The language of the messages emitted into the log file during
+            this run (expressed as an ISO 639-1 two-letter lowercase culture code)
+            and an optional region (expressed as an ISO 3166-1 two-letter uppercase
+            subculture code associated with a country or region). The casing is recommended
+            but not required (in order for this data to conform to RFC5646).
+          pattern: "^[a-zA-Z]{2}|^[a-zA-Z]{2}-[a-zA-Z]{2}?$"
+          type: string
+        versionControlProvenance:
+          default: []
+          description: Specifies the revision in version control of the artifacts
+            that were scanned.
+          items:
+            $ref: '#/components/schemas/versionControlDetails'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        originalUriBaseIds:
+          additionalProperties:
+            $ref: '#/components/schemas/artifactLocation'
+          description: The artifact location specified by each uriBaseId symbol on
+            the machine where the tool originally ran.
+          type: object
+        artifacts:
+          description: An array of artifact objects relevant to the run.
+          items:
+            $ref: '#/components/schemas/artifact'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        logicalLocations:
+          default: []
+          description: "An array of logical locations such as namespaces, types or\
+            \ functions."
+          items:
+            $ref: '#/components/schemas/logicalLocation'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        graphs:
+          default: []
+          description: An array of zero or more unique graph objects associated with
+            the run.
+          items:
+            $ref: '#/components/schemas/graph'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        results:
+          description: The set of results contained in an SARIF log. The results array
+            can be omitted when a run is solely exporting rules metadata. It must
+            be present (but may be empty) if a log file represents an actual scan.
+          items:
+            $ref: '#/components/schemas/result'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        automationDetails:
+          $ref: '#/components/schemas/runAutomationDetails'
+        runAggregates:
+          default: []
+          description: Automation details that describe the aggregate of runs to which
+            this run belongs.
+          items:
+            $ref: '#/components/schemas/runAutomationDetails'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        baselineGuid:
+          description: The 'guid' property of a previous SARIF 'run' that comprises
+            the baseline that was used to compute result 'baselineState' properties
+            for the run.
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          type: string
+        redactionTokens:
+          default: []
+          description: An array of strings used to replace sensitive information in
+            a redaction-aware property.
+          items:
+            type: string
+          minItems: 0
+          type: array
+          uniqueItems: true
+        defaultEncoding:
+          description: Specifies the default encoding for any artifact object that
+            refers to a text file.
+          type: string
+        defaultSourceLanguage:
+          description: Specifies the default source language for any artifact object
+            that refers to a text file that contains source code.
+          type: string
+        newlineSequences:
+          default:
+          - "\r\n"
+          - |2+
+
+          description: An ordered list of character sequences that were treated as
+            line breaks when computing region information for the run.
+          items:
+            type: string
+          minItems: 1
+          type: array
+          uniqueItems: true
+        columnKind:
+          description: Specifies the unit in which the tool measures columns.
+          enum:
+          - utf16CodeUnits
+          - unicodeCodePoints
+          type: string
+        externalPropertyFileReferences:
+          $ref: '#/components/schemas/externalPropertyFileReferences'
+        threadFlowLocations:
+          default: []
+          description: An array of threadFlowLocation objects cached at run level.
+          items:
+            $ref: '#/components/schemas/threadFlowLocation'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        taxonomies:
+          default: []
+          description: An array of toolComponent objects relevant to a taxonomy in
+            which results are categorized.
+          items:
+            $ref: '#/components/schemas/toolComponent'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        addresses:
+          default: []
+          description: "Addresses associated with this run instance, if any."
+          items:
+            $ref: '#/components/schemas/address'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        translations:
+          default: []
+          description: The set of available translations of the localized data provided
+            by the tool.
+          items:
+            $ref: '#/components/schemas/toolComponent'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        policies:
+          default: []
+          description: Contains configurations that may potentially override both
+            reportingDescriptor.defaultConfiguration (the tool's default severities)
+            and invocation.configurationOverrides (severities established at run-time
+            from the command line).
+          items:
+            $ref: '#/components/schemas/toolComponent'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        webRequests:
+          default: []
+          description: An array of request objects cached at run level.
+          items:
+            $ref: '#/components/schemas/webRequest'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        webResponses:
+          default: []
+          description: An array of response objects cached at run level.
+          items:
+            $ref: '#/components/schemas/webResponse'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        specialLocations:
+          $ref: '#/components/schemas/specialLocations'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - tool
+      type: object
+    tool:
+      additionalProperties: false
+      description: The analysis tool that was run.
+      properties:
+        driver:
+          $ref: '#/components/schemas/toolComponent'
+        extensions:
+          default: []
+          description: Tool extensions that contributed to or reconfigured the analysis
+            tool that was run.
+          items:
+            $ref: '#/components/schemas/toolComponent'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - driver
+      type: object
+    toolComponent:
+      additionalProperties: false
+      description: "A component, such as a plug-in or the driver, of the analysis\
+        \ tool that was run."
+      properties:
+        guid:
+          description: A unique identifier for the tool component in the form of a
+            GUID.
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          type: string
+        name:
+          description: The name of the tool component.
+          type: string
+        organization:
+          description: The organization or company that produced the tool component.
+          type: string
+        product:
+          description: A product suite to which the tool component belongs.
+          type: string
+        productSuite:
+          description: A localizable string containing the name of the suite of products
+            to which the tool component belongs.
+          type: string
+        shortDescription:
+          $ref: '#/components/schemas/multiformatMessageString'
+        fullDescription:
+          $ref: '#/components/schemas/multiformatMessageString'
+        fullName:
+          description: "The name of the tool component along with its version and\
+            \ any other useful identifying information, such as its locale."
+          type: string
+        version:
+          description: "The tool component version, in whatever format the component\
+            \ natively provides."
+          type: string
+        semanticVersion:
+          description: The tool component version in the format specified by Semantic
+            Versioning 2.0.
+          type: string
+        dottedQuadFileVersion:
+          description: The binary version of the tool component's primary executable
+            file expressed as four non-negative integers separated by a period (for
+            operating systems that express file versions in this way).
+          pattern: "[0-9]+(\\.[0-9]+){3}"
+          type: string
+        releaseDateUtc:
+          description: "A string specifying the UTC date (and optionally, the time)\
+            \ of the component's release."
+          type: string
+        downloadUri:
+          description: The absolute URI from which the tool component can be downloaded.
+          format: uri
+          type: string
+        informationUri:
+          description: The absolute URI at which information about this version of
+            the tool component can be found.
+          format: uri
+          type: string
+        globalMessageStrings:
+          additionalProperties:
+            $ref: '#/components/schemas/multiformatMessageString'
+          description: "A dictionary, each of whose keys is a resource identifier\
+            \ and each of whose values is a multiformatMessageString object, which\
+            \ holds message strings in plain text and (optionally) Markdown format.\
+            \ The strings can include placeholders, which can be used to construct\
+            \ a message in combination with an arbitrary number of additional string\
+            \ arguments."
+          type: object
+        notifications:
+          default: []
+          description: An array of reportingDescriptor objects relevant to the notifications
+            related to the configuration and runtime execution of the tool component.
+          items:
+            $ref: '#/components/schemas/reportingDescriptor'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        rules:
+          default: []
+          description: An array of reportingDescriptor objects relevant to the analysis
+            performed by the tool component.
+          items:
+            $ref: '#/components/schemas/reportingDescriptor'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        taxa:
+          default: []
+          description: An array of reportingDescriptor objects relevant to the definitions
+            of both standalone and tool-defined taxonomies.
+          items:
+            $ref: '#/components/schemas/reportingDescriptor'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        locations:
+          default: []
+          description: An array of the artifactLocation objects associated with the
+            tool component.
+          items:
+            $ref: '#/components/schemas/artifactLocation'
+          minItems: 0
+          type: array
+        language:
+          default: en-US
+          description: The language of the messages emitted into the log file during
+            this run (expressed as an ISO 639-1 two-letter lowercase language code)
+            and an optional region (expressed as an ISO 3166-1 two-letter uppercase
+            subculture code associated with a country or region). The casing is recommended
+            but not required (in order for this data to conform to RFC5646).
+          pattern: "^[a-zA-Z]{2}|^[a-zA-Z]{2}-[a-zA-Z]{2}?$"
+          type: string
+        contents:
+          default:
+          - localizedData
+          - nonLocalizedData
+          description: The kinds of data contained in this object.
+          items:
+            enum:
+            - localizedData
+            - nonLocalizedData
+            type: string
+          type: array
+          uniqueItems: true
+        isComprehensive:
+          default: false
+          description: "Specifies whether this object contains a complete definition\
+            \ of the localizable and/or non-localizable data for this component, as\
+            \ opposed to including only data that is relevant to the results persisted\
+            \ to this log file."
+          type: boolean
+        localizedDataSemanticVersion:
+          description: The semantic version of the localized strings defined in this
+            component; maintained by components that provide translations.
+          type: string
+        minimumRequiredLocalizedDataSemanticVersion:
+          description: The minimum value of localizedDataSemanticVersion required
+            in translations consumed by this component; used by components that consume
+            translations.
+          type: string
+        associatedComponent:
+          $ref: '#/components/schemas/toolComponentReference'
+        translationMetadata:
+          $ref: '#/components/schemas/translationMetadata'
+        supportedTaxonomies:
+          default: []
+          description: An array of toolComponentReference objects to declare the taxonomies
+            supported by the tool component.
+          items:
+            $ref: '#/components/schemas/toolComponentReference'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - name
+      type: object
+    multiformatMessageString:
+      additionalProperties: false
+      description: A message string or message format string rendered in multiple
+        formats.
+      properties:
+        text:
+          description: A plain text message string or format string.
+          type: string
+        markdown:
+          description: A Markdown message string or format string.
+          type: string
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - text
+      type: object
+    propertyBag:
+      additionalProperties: true
+      description: Key/value pairs that provide additional information about the object.
+      properties:
+        tags:
+          default: []
+          description: A set of distinct strings that provide additional information.
+          items:
+            type: string
+          minItems: 0
+          type: array
+          uniqueItems: true
+      type: object
+    reportingDescriptor:
+      additionalProperties: false
+      description: "Metadata that describes a specific report produced by the tool,\
+        \ as part of the analysis it provides or its runtime reporting."
+      properties:
+        id:
+          description: "A stable, opaque identifier for the report."
+          type: string
+        deprecatedIds:
+          description: "An array of stable, opaque identifiers by which this report\
+            \ was known in some previous version of the analysis tool."
+          items:
+            type: string
+          minItems: 0
+          type: array
+          uniqueItems: true
+        guid:
+          description: A unique identifier for the reporting descriptor in the form
+            of a GUID.
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          type: string
+        deprecatedGuids:
+          description: An array of unique identifies in the form of a GUID by which
+            this report was known in some previous version of the analysis tool.
+          items:
+            pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+            type: string
+          minItems: 0
+          type: array
+          uniqueItems: true
+        name:
+          description: A report identifier that is understandable to an end user.
+          type: string
+        deprecatedNames:
+          description: An array of readable identifiers by which this report was known
+            in some previous version of the analysis tool.
+          items:
+            type: string
+          minItems: 0
+          type: array
+          uniqueItems: true
+        shortDescription:
+          $ref: '#/components/schemas/multiformatMessageString'
+        fullDescription:
+          $ref: '#/components/schemas/multiformatMessageString'
+        messageStrings:
+          additionalProperties:
+            $ref: '#/components/schemas/multiformatMessageString'
+          description: "A set of name/value pairs with arbitrary names. Each value\
+            \ is a multiformatMessageString object, which holds message strings in\
+            \ plain text and (optionally) Markdown format. The strings can include\
+            \ placeholders, which can be used to construct a message in combination\
+            \ with an arbitrary number of additional string arguments."
+          type: object
+        defaultConfiguration:
+          $ref: '#/components/schemas/reportingConfiguration'
+        helpUri:
+          description: A URI where the primary documentation for the report can be
+            found.
+          format: uri
+          type: string
+        help:
+          $ref: '#/components/schemas/multiformatMessageString'
+        relationships:
+          default: []
+          description: An array of objects that describe relationships between this
+            reporting descriptor and others.
+          items:
+            $ref: '#/components/schemas/reportingDescriptorRelationship'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - id
+      type: object
+    reportingConfiguration:
+      additionalProperties: false
+      description: Information about a rule or notification that can be configured
+        at runtime.
+      properties:
+        enabled:
+          default: true
+          description: Specifies whether the report may be produced during the scan.
+          type: boolean
+        level:
+          default: warning
+          description: Specifies the failure level for the report.
+          enum:
+          - none
+          - note
+          - warning
+          - error
+          type: string
+        rank:
+          default: -1
+          description: Specifies the relative priority of the report. Used for analysis
+            output only.
+          maximum: 100
+          minimum: -1
+          type: number
+        parameters:
+          $ref: '#/components/schemas/propertyBag'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    reportingDescriptorRelationship:
+      additionalProperties: false
+      description: Information about the relation of one reporting descriptor to another.
+      properties:
+        target:
+          $ref: '#/components/schemas/reportingDescriptorReference'
+        kinds:
+          default:
+          - relevant
+          description: "A set of distinct strings that categorize the relationship.\
+            \ Well-known kinds include 'canPrecede', 'canFollow', 'willPrecede', 'willFollow',\
+            \ 'superset', 'subset', 'equal', 'disjoint', 'relevant', and 'incomparable'."
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        description:
+          $ref: '#/components/schemas/message'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - target
+      type: object
+    reportingDescriptorReference:
+      additionalProperties: false
+      anyOf: []
+      description: Information about how to locate a relevant reporting descriptor.
+      nullable: true
+      properties:
+        id:
+          description: The id of the descriptor.
+          type: string
+        index:
+          default: -1
+          description: "The index into an array of descriptors in toolComponent.ruleDescriptors,\
+            \ toolComponent.notificationDescriptors, or toolComponent.taxonomyDescriptors,\
+            \ depending on context."
+          minimum: -1
+          type: integer
+        guid:
+          description: A guid that uniquely identifies the descriptor.
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          type: string
+        toolComponent:
+          $ref: '#/components/schemas/toolComponentReference'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    toolComponentReference:
+      additionalProperties: false
+      description: "Identifies a particular toolComponent object, either the driver\
+        \ or an extension."
+      properties:
+        name:
+          description: The 'name' property of the referenced toolComponent.
+          type: string
+        index:
+          default: -1
+          description: An index into the referenced toolComponent in tool.extensions.
+          minimum: -1
+          type: integer
+        guid:
+          description: The 'guid' property of the referenced toolComponent.
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          type: string
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    message:
+      additionalProperties: false
+      anyOf: []
+      description: Encapsulates a message intended to be read by the end user.
+      nullable: true
+      properties:
+        text:
+          description: A plain text message string.
+          type: string
+        markdown:
+          description: A Markdown message string.
+          type: string
+        id:
+          description: The identifier for this message.
+          type: string
+        arguments:
+          default: []
+          description: An array of strings to substitute into the message string.
+          items:
+            type: string
+          minItems: 0
+          type: array
+          uniqueItems: false
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    artifactLocation:
+      additionalProperties: false
+      description: Specifies the location of an artifact.
+      properties:
+        uri:
+          description: A string containing a valid relative or absolute URI.
+          format: uri-reference
+          type: string
+        uriBaseId:
+          description: A string which indirectly specifies the absolute URI with respect
+            to which a relative URI in the "uri" property is interpreted.
+          type: string
+        index:
+          default: -1
+          description: The index within the run artifacts array of the artifact object
+            associated with the artifact location.
+          minimum: -1
+          type: integer
+        description:
+          $ref: '#/components/schemas/message'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    translationMetadata:
+      additionalProperties: false
+      description: Provides additional metadata related to translation.
+      properties:
+        name:
+          description: The name associated with the translation metadata.
+          type: string
+        fullName:
+          description: The full name associated with the translation metadata.
+          type: string
+        shortDescription:
+          $ref: '#/components/schemas/multiformatMessageString'
+        fullDescription:
+          $ref: '#/components/schemas/multiformatMessageString'
+        downloadUri:
+          description: The absolute URI from which the translation metadata can be
+            downloaded.
+          format: uri
+          type: string
+        informationUri:
+          description: The absolute URI from which information related to the translation
+            metadata can be downloaded.
+          format: uri
+          type: string
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - name
+      type: object
+    invocation:
+      additionalProperties: false
+      description: The runtime environment of the analysis tool run.
+      properties:
+        commandLine:
+          description: The command line used to invoke the tool.
+          type: string
+        arguments:
+          description: "An array of strings, containing in order the command line\
+            \ arguments passed to the tool from the operating system."
+          items:
+            type: string
+          minItems: 0
+          type: array
+          uniqueItems: false
+        responseFiles:
+          description: The locations of any response files specified on the tool's
+            command line.
+          items:
+            $ref: '#/components/schemas/artifactLocation'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        startTimeUtc:
+          description: The Coordinated Universal Time (UTC) date and time at which
+            the invocation started. See "Date/time properties" in the SARIF spec for
+            the required format.
+          format: date-time
+          type: string
+        endTimeUtc:
+          description: The Coordinated Universal Time (UTC) date and time at which
+            the invocation ended. See "Date/time properties" in the SARIF spec for
+            the required format.
+          format: date-time
+          type: string
+        exitCode:
+          description: The process exit code.
+          type: integer
+        ruleConfigurationOverrides:
+          default: []
+          description: An array of configurationOverride objects that describe rules
+            related runtime overrides.
+          items:
+            $ref: '#/components/schemas/configurationOverride'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        notificationConfigurationOverrides:
+          default: []
+          description: An array of configurationOverride objects that describe notifications
+            related runtime overrides.
+          items:
+            $ref: '#/components/schemas/configurationOverride'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        toolExecutionNotifications:
+          default: []
+          description: A list of runtime conditions detected by the tool during the
+            analysis.
+          items:
+            $ref: '#/components/schemas/notification'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        toolConfigurationNotifications:
+          default: []
+          description: A list of conditions detected by the tool that are relevant
+            to the tool's configuration.
+          items:
+            $ref: '#/components/schemas/notification'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        exitCodeDescription:
+          description: The reason for the process exit.
+          type: string
+        exitSignalName:
+          description: The name of the signal that caused the process to exit.
+          type: string
+        exitSignalNumber:
+          description: The numeric value of the signal that caused the process to
+            exit.
+          type: integer
+        processStartFailureMessage:
+          description: The reason given by the operating system that the process failed
+            to start.
+          type: string
+        executionSuccessful:
+          description: Specifies whether the tool's execution completed successfully.
+          type: boolean
+        machine:
+          description: The machine on which the invocation occurred.
+          type: string
+        account:
+          description: The account under which the invocation occurred.
+          type: string
+        processId:
+          description: The id of the process in which the invocation occurred.
+          type: integer
+        executableLocation:
+          $ref: '#/components/schemas/artifactLocation'
+        workingDirectory:
+          $ref: '#/components/schemas/artifactLocation'
+        environmentVariables:
+          additionalProperties:
+            type: string
+          description: "The environment variables associated with the analysis tool\
+            \ process, expressed as key/value pairs."
+          type: object
+        stdin:
+          $ref: '#/components/schemas/artifactLocation'
+        stdout:
+          $ref: '#/components/schemas/artifactLocation'
+        stderr:
+          $ref: '#/components/schemas/artifactLocation'
+        stdoutStderr:
+          $ref: '#/components/schemas/artifactLocation'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - executionSuccessful
+      type: object
+    configurationOverride:
+      additionalProperties: false
+      description: Information about how a specific rule or notification was reconfigured
+        at runtime.
+      properties:
+        configuration:
+          $ref: '#/components/schemas/reportingConfiguration'
+        descriptor:
+          $ref: '#/components/schemas/reportingDescriptorReference'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - configuration
+      - descriptor
+      type: object
+    notification:
+      additionalProperties: false
+      description: "Describes a condition relevant to the tool itself, as opposed\
+        \ to being relevant to a target being analyzed by the tool."
+      properties:
+        locations:
+          default: []
+          description: The locations relevant to this notification.
+          items:
+            $ref: '#/components/schemas/location'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        message:
+          $ref: '#/components/schemas/message'
+        level:
+          default: warning
+          description: A value specifying the severity level of the notification.
+          enum:
+          - none
+          - note
+          - warning
+          - error
+          type: string
+        threadId:
+          description: The thread identifier of the code that generated the notification.
+          type: integer
+        timeUtc:
+          description: The Coordinated Universal Time (UTC) date and time at which
+            the analysis tool generated the notification.
+          format: date-time
+          type: string
+        exception:
+          $ref: '#/components/schemas/exception'
+        descriptor:
+          $ref: '#/components/schemas/reportingDescriptorReference'
+        associatedRule:
+          $ref: '#/components/schemas/reportingDescriptorReference'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - message
+      type: object
+    location:
+      additionalProperties: false
+      description: A location within a programming artifact.
+      properties:
+        id:
+          default: -1
+          description: Value that distinguishes this location from all other locations
+            within a single result object.
+          minimum: -1
+          type: integer
+        physicalLocation:
+          $ref: '#/components/schemas/physicalLocation'
+        logicalLocations:
+          default: []
+          description: The logical locations associated with the result.
+          items:
+            $ref: '#/components/schemas/logicalLocation'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        message:
+          $ref: '#/components/schemas/message'
+        annotations:
+          default: []
+          description: A set of regions relevant to the location.
+          items:
+            $ref: '#/components/schemas/region'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        relationships:
+          default: []
+          description: An array of objects that describe relationships between this
+            location and others.
+          items:
+            $ref: '#/components/schemas/locationRelationship'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    physicalLocation:
+      additionalProperties: false
+      anyOf: []
+      description: A physical location relevant to a result. Specifies a reference
+        to a programming artifact together with a range of bytes or characters within
+        that artifact.
+      nullable: true
+      properties:
+        address:
+          $ref: '#/components/schemas/address'
+        artifactLocation:
+          $ref: '#/components/schemas/artifactLocation'
+        region:
+          $ref: '#/components/schemas/region'
+        contextRegion:
+          $ref: '#/components/schemas/region'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    address:
+      additionalProperties: false
+      description: "A physical or virtual address, or a range of addresses, in an\
+        \ 'addressable region' (memory or a binary file)."
+      properties:
+        absoluteAddress:
+          default: -1
+          description: The address expressed as a byte offset from the start of the
+            addressable region.
+          minimum: -1
+          type: integer
+        relativeAddress:
+          description: The address expressed as a byte offset from the absolute address
+            of the top-most parent object.
+          type: integer
+        length:
+          description: The number of bytes in this range of addresses.
+          type: integer
+        kind:
+          description: "An open-ended string that identifies the address kind. 'data',\
+            \ 'function', 'header','instruction', 'module', 'page', 'section', 'segment',\
+            \ 'stack', 'stackFrame', 'table' are well-known values."
+          type: string
+        name:
+          description: "A name that is associated with the address, e.g., '.text'."
+          type: string
+        fullyQualifiedName:
+          description: A human-readable fully qualified name that is associated with
+            the address.
+          type: string
+        offsetFromParent:
+          description: The byte offset of this address from the absolute or relative
+            address of the parent object.
+          type: integer
+        index:
+          default: -1
+          description: The index within run.addresses of the cached object for this
+            address.
+          minimum: -1
+          type: integer
+        parentIndex:
+          default: -1
+          description: The index within run.addresses of the parent object.
+          minimum: -1
+          type: integer
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    region:
+      additionalProperties: false
+      description: A region within an artifact where a result was detected.
+      properties:
+        startLine:
+          description: The line number of the first character in the region.
+          minimum: 1
+          type: integer
+        startColumn:
+          description: The column number of the first character in the region.
+          minimum: 1
+          type: integer
+        endLine:
+          description: The line number of the last character in the region.
+          minimum: 1
+          type: integer
+        endColumn:
+          description: The column number of the character following the end of the
+            region.
+          minimum: 1
+          type: integer
+        charOffset:
+          default: -1
+          description: The zero-based offset from the beginning of the artifact of
+            the first character in the region.
+          minimum: -1
+          type: integer
+        charLength:
+          description: The length of the region in characters.
+          minimum: 0
+          type: integer
+        byteOffset:
+          default: -1
+          description: The zero-based offset from the beginning of the artifact of
+            the first byte in the region.
+          minimum: -1
+          type: integer
+        byteLength:
+          description: The length of the region in bytes.
+          minimum: 0
+          type: integer
+        snippet:
+          $ref: '#/components/schemas/artifactContent'
+        message:
+          $ref: '#/components/schemas/message'
+        sourceLanguage:
+          description: "Specifies the source language, if any, of the portion of the\
+            \ artifact specified by the region object."
+          type: string
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    artifactContent:
+      additionalProperties: false
+      description: Represents the contents of an artifact.
+      properties:
+        text:
+          description: UTF-8-encoded content from a text artifact.
+          type: string
+        binary:
+          description: "MIME Base64-encoded content from a binary artifact, or from\
+            \ a text artifact in its original encoding."
+          type: string
+        rendered:
+          $ref: '#/components/schemas/multiformatMessageString'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    logicalLocation:
+      additionalProperties: false
+      description: A logical location of a construct that produced a result.
+      properties:
+        name:
+          description: "Identifies the construct in which the result occurred. For\
+            \ example, this property might contain the name of a class or a method."
+          type: string
+        index:
+          default: -1
+          description: The index within the logical locations array.
+          minimum: -1
+          type: integer
+        fullyQualifiedName:
+          description: The human-readable fully qualified name of the logical location.
+          type: string
+        decoratedName:
+          description: "The machine-readable name for the logical location, such as\
+            \ a mangled function name provided by a C++ compiler that encodes calling\
+            \ convention, return type and other details along with the function name."
+          type: string
+        parentIndex:
+          default: -1
+          description: "Identifies the index of the immediate parent of the construct\
+            \ in which the result was detected. For example, this property might point\
+            \ to a logical location that represents the namespace that holds a type."
+          minimum: -1
+          type: integer
+        kind:
+          description: "The type of construct this logical location component refers\
+            \ to. Should be one of 'function', 'member', 'module', 'namespace', 'parameter',\
+            \ 'resource', 'returnType', 'type', 'variable', 'object', 'array', 'property',\
+            \ 'value', 'element', 'text', 'attribute', 'comment', 'declaration', 'dtd'\
+            \ or 'processingInstruction', if any of those accurately describe the\
+            \ construct."
+          type: string
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    locationRelationship:
+      additionalProperties: false
+      description: Information about the relation of one location to another.
+      properties:
+        target:
+          description: A reference to the related location.
+          minimum: 0
+          type: integer
+        kinds:
+          default:
+          - relevant
+          description: "A set of distinct strings that categorize the relationship.\
+            \ Well-known kinds include 'includes', 'isIncludedBy' and 'relevant'."
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        description:
+          $ref: '#/components/schemas/message'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - target
+      type: object
+    exception:
+      additionalProperties: false
+      description: Describes a runtime exception encountered during the execution
+        of an analysis tool.
+      properties:
+        kind:
+          description: "A string that identifies the kind of exception, for example,\
+            \ the fully qualified type name of an object that was thrown, or the symbolic\
+            \ name of a signal."
+          type: string
+        message:
+          description: A message that describes the exception.
+          type: string
+        stack:
+          $ref: '#/components/schemas/stack'
+        innerExceptions:
+          default: []
+          description: An array of exception objects each of which is considered a
+            cause of this exception.
+          items:
+            $ref: '#/components/schemas/exception'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    stack:
+      additionalProperties: false
+      description: A call stack that is relevant to a result.
+      properties:
+        message:
+          $ref: '#/components/schemas/message'
+        frames:
+          description: "An array of stack frames that represents a sequence of calls,\
+            \ rendered in reverse chronological order, that comprise the call stack."
+          items:
+            $ref: '#/components/schemas/stackFrame'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - frames
+      type: object
+    stackFrame:
+      additionalProperties: false
+      description: A function call within a stack trace.
+      properties:
+        location:
+          $ref: '#/components/schemas/location'
+        module:
+          description: The name of the module that contains the code of this stack
+            frame.
+          type: string
+        threadId:
+          description: The thread identifier of the stack frame.
+          type: integer
+        parameters:
+          default: []
+          description: The parameters of the call that is executing.
+          items:
+            type: string
+          minItems: 0
+          type: array
+          uniqueItems: false
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    conversion:
+      additionalProperties: false
+      description: Describes how a converter transformed the output of a static analysis
+        tool from the analysis tool's native output format into the SARIF format.
+      properties:
+        tool:
+          $ref: '#/components/schemas/tool'
+        invocation:
+          $ref: '#/components/schemas/invocation'
+        analysisToolLogFiles:
+          default: []
+          description: The locations of the analysis tool's per-run log files.
+          items:
+            $ref: '#/components/schemas/artifactLocation'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - tool
+      type: object
+    versionControlDetails:
+      additionalProperties: false
+      description: Specifies the information necessary to retrieve a desired revision
+        from a version control system.
+      properties:
+        repositoryUri:
+          description: The absolute URI of the repository.
+          format: uri
+          type: string
+        revisionId:
+          description: A string that uniquely and permanently identifies the revision
+            within the repository.
+          type: string
+        branch:
+          description: The name of a branch containing the revision.
+          type: string
+        revisionTag:
+          description: A tag that has been applied to the revision.
+          type: string
+        asOfTimeUtc:
+          description: A Coordinated Universal Time (UTC) date and time that can be
+            used to synchronize an enlistment to the state of the repository at that
+            time.
+          format: date-time
+          type: string
+        mappedTo:
+          $ref: '#/components/schemas/artifactLocation'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - repositoryUri
+      type: object
+    artifact:
+      additionalProperties: false
+      description: "A single artifact. In some cases, this artifact might be nested\
+        \ within another artifact."
+      properties:
+        description:
+          $ref: '#/components/schemas/message'
+        location:
+          $ref: '#/components/schemas/artifactLocation'
+        parentIndex:
+          default: -1
+          description: "Identifies the index of the immediate parent of the artifact,\
+            \ if this artifact is nested."
+          minimum: -1
+          type: integer
+        offset:
+          description: The offset in bytes of the artifact within its containing artifact.
+          minimum: 0
+          type: integer
+        length:
+          default: -1
+          description: The length of the artifact in bytes.
+          minimum: -1
+          type: integer
+        roles:
+          default: []
+          description: The role or roles played by the artifact in the analysis.
+          items:
+            enum:
+            - analysisTarget
+            - attachment
+            - responseFile
+            - resultFile
+            - standardStream
+            - tracedFile
+            - unmodified
+            - modified
+            - added
+            - deleted
+            - renamed
+            - uncontrolled
+            - driver
+            - extension
+            - translation
+            - taxonomy
+            - policy
+            - referencedOnCommandLine
+            - memoryContents
+            - directory
+            - userSpecifiedConfiguration
+            - toolSpecifiedConfiguration
+            - debugOutputFile
+            type: string
+          minItems: 0
+          type: array
+          uniqueItems: true
+        mimeType:
+          description: The MIME type (RFC 2045) of the artifact.
+          pattern: "[^/]+/.+"
+          type: string
+        contents:
+          $ref: '#/components/schemas/artifactContent'
+        encoding:
+          description: Specifies the encoding for an artifact object that refers to
+            a text file.
+          type: string
+        sourceLanguage:
+          description: Specifies the source language for any artifact object that
+            refers to a text file that contains source code.
+          type: string
+        hashes:
+          additionalProperties:
+            type: string
+          description: "A dictionary, each of whose keys is the name of a hash function\
+            \ and each of whose values is the hashed value of the artifact produced\
+            \ by the specified hash function."
+          type: object
+        lastModifiedTimeUtc:
+          description: The Coordinated Universal Time (UTC) date and time at which
+            the artifact was most recently modified. See "Date/time properties" in
+            the SARIF spec for the required format.
+          format: date-time
+          type: string
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    graph:
+      additionalProperties: false
+      description: "A network of nodes and directed edges that describes some aspect\
+        \ of the structure of the code (for example, a call graph)."
+      properties:
+        description:
+          $ref: '#/components/schemas/message'
+        nodes:
+          default: []
+          description: An array of node objects representing the nodes of the graph.
+          items:
+            $ref: '#/components/schemas/node'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        edges:
+          default: []
+          description: An array of edge objects representing the edges of the graph.
+          items:
+            $ref: '#/components/schemas/edge'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    node:
+      additionalProperties: false
+      description: Represents a node in a graph.
+      properties:
+        id:
+          description: A string that uniquely identifies the node within its graph.
+          type: string
+        label:
+          $ref: '#/components/schemas/message'
+        location:
+          $ref: '#/components/schemas/location'
+        children:
+          default: []
+          description: Array of child nodes.
+          items:
+            $ref: '#/components/schemas/node'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - id
+      type: object
+    edge:
+      additionalProperties: false
+      description: Represents a directed edge in a graph.
+      properties:
+        id:
+          description: A string that uniquely identifies the edge within its graph.
+          type: string
+        label:
+          $ref: '#/components/schemas/message'
+        sourceNodeId:
+          description: Identifies the source node (the node at which the edge starts).
+          type: string
+        targetNodeId:
+          description: Identifies the target node (the node at which the edge ends).
+          type: string
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - id
+      - sourceNodeId
+      - targetNodeId
+      type: object
+    result:
+      additionalProperties: false
+      description: A result produced by an analysis tool.
+      properties:
+        ruleId:
+          description: "The stable, unique identifier of the rule, if any, to which\
+            \ this result is relevant."
+          type: string
+        ruleIndex:
+          default: -1
+          description: The index within the tool component rules array of the rule
+            object associated with this result.
+          minimum: -1
+          type: integer
+        rule:
+          $ref: '#/components/schemas/reportingDescriptorReference'
+        kind:
+          default: fail
+          description: A value that categorizes results by evaluation state.
+          enum:
+          - notApplicable
+          - pass
+          - fail
+          - review
+          - open
+          - informational
+          type: string
+        level:
+          default: warning
+          description: A value specifying the severity level of the result.
+          enum:
+          - none
+          - note
+          - warning
+          - error
+          type: string
+        message:
+          $ref: '#/components/schemas/message'
+        analysisTarget:
+          $ref: '#/components/schemas/artifactLocation'
+        locations:
+          default: []
+          description: The set of locations where the result was detected. Specify
+            only one location unless the problem indicated by the result can only
+            be corrected by making a change at every specified location.
+          items:
+            $ref: '#/components/schemas/location'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        guid:
+          description: "A stable, unique identifier for the result in the form of\
+            \ a GUID."
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          type: string
+        correlationGuid:
+          description: "A stable, unique identifier for the equivalence class of logically\
+            \ identical results to which this result belongs, in the form of a GUID."
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          type: string
+        occurrenceCount:
+          description: A positive integer specifying the number of times this logically
+            unique result was observed in this run.
+          minimum: 1
+          type: integer
+        partialFingerprints:
+          additionalProperties:
+            type: string
+          description: "A set of strings that contribute to the stable, unique identity\
+            \ of the result."
+          type: object
+        fingerprints:
+          additionalProperties:
+            type: string
+          description: "A set of strings each of which individually defines a stable,\
+            \ unique identity for the result."
+          type: object
+        stacks:
+          default: []
+          description: An array of 'stack' objects relevant to the result.
+          items:
+            $ref: '#/components/schemas/stack'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        codeFlows:
+          default: []
+          description: An array of 'codeFlow' objects relevant to the result.
+          items:
+            $ref: '#/components/schemas/codeFlow'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        graphs:
+          default: []
+          description: An array of zero or more unique graph objects associated with
+            the result.
+          items:
+            $ref: '#/components/schemas/graph'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        graphTraversals:
+          default: []
+          description: An array of one or more unique 'graphTraversal' objects.
+          items:
+            $ref: '#/components/schemas/graphTraversal'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        relatedLocations:
+          default: []
+          description: A set of locations relevant to this result.
+          items:
+            $ref: '#/components/schemas/location'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        suppressions:
+          description: A set of suppressions relevant to this result.
+          items:
+            $ref: '#/components/schemas/suppression'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        baselineState:
+          description: The state of a result relative to a baseline of a previous
+            run.
+          enum:
+          - new
+          - unchanged
+          - updated
+          - absent
+          type: string
+        rank:
+          default: -1
+          description: A number representing the priority or importance of the result.
+          maximum: 100
+          minimum: -1
+          type: number
+        attachments:
+          default: []
+          description: A set of artifacts relevant to the result.
+          items:
+            $ref: '#/components/schemas/attachment'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        hostedViewerUri:
+          description: An absolute URI at which the result can be viewed.
+          format: uri
+          type: string
+        workItemUris:
+          description: The URIs of the work items associated with this result.
+          items:
+            format: uri
+            type: string
+          minItems: 0
+          type: array
+          uniqueItems: true
+        provenance:
+          $ref: '#/components/schemas/resultProvenance'
+        fixes:
+          default: []
+          description: "An array of 'fix' objects, each of which represents a proposed\
+            \ fix to the problem indicated by the result."
+          items:
+            $ref: '#/components/schemas/fix'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        taxa:
+          default: []
+          description: An array of references to taxonomy reporting descriptors that
+            are applicable to the result.
+          items:
+            $ref: '#/components/schemas/reportingDescriptorReference'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        webRequest:
+          $ref: '#/components/schemas/webRequest'
+        webResponse:
+          $ref: '#/components/schemas/webResponse'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - message
+      type: object
+    codeFlow:
+      additionalProperties: false
+      description: A set of threadFlows which together describe a pattern of code
+        execution relevant to detecting a result.
+      properties:
+        message:
+          $ref: '#/components/schemas/message'
+        threadFlows:
+          description: "An array of one or more unique threadFlow objects, each of\
+            \ which describes the progress of a program through a thread of execution."
+          items:
+            $ref: '#/components/schemas/threadFlow'
+          minItems: 1
+          type: array
+          uniqueItems: false
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - threadFlows
+      type: object
+    threadFlow:
+      additionalProperties: false
+      description: Describes a sequence of code locations that specify a path through
+        a single thread of execution such as an operating system or fiber.
+      properties:
+        id:
+          description: An string that uniquely identifies the threadFlow within the
+            codeFlow in which it occurs.
+          type: string
+        message:
+          $ref: '#/components/schemas/message'
+        initialState:
+          additionalProperties:
+            $ref: '#/components/schemas/multiformatMessageString'
+          description: Values of relevant expressions at the start of the thread flow
+            that may change during thread flow execution.
+          type: object
+        immutableState:
+          additionalProperties:
+            $ref: '#/components/schemas/multiformatMessageString'
+          description: Values of relevant expressions at the start of the thread flow
+            that remain constant.
+          type: object
+        locations:
+          description: "A temporally ordered array of 'threadFlowLocation' objects,\
+            \ each of which describes a location visited by the tool while producing\
+            \ the result."
+          items:
+            $ref: '#/components/schemas/threadFlowLocation'
+          minItems: 1
+          type: array
+          uniqueItems: false
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - locations
+      type: object
+    threadFlowLocation:
+      additionalProperties: false
+      description: A location visited by an analysis tool while simulating or monitoring
+        the execution of a program.
+      properties:
+        index:
+          default: -1
+          description: The index within the run threadFlowLocations array.
+          minimum: -1
+          type: integer
+        location:
+          $ref: '#/components/schemas/location'
+        stack:
+          $ref: '#/components/schemas/stack'
+        kinds:
+          default: []
+          description: "A set of distinct strings that categorize the thread flow\
+            \ location. Well-known kinds include 'acquire', 'release', 'enter', 'exit',\
+            \ 'call', 'return', 'branch', 'implicit', 'false', 'true', 'caution',\
+            \ 'danger', 'unknown', 'unreachable', 'taint', 'function', 'handler',\
+            \ 'lock', 'memory', 'resource', 'scope' and 'value'."
+          items:
+            type: string
+          minItems: 0
+          type: array
+          uniqueItems: true
+        taxa:
+          default: []
+          description: An array of references to rule or taxonomy reporting descriptors
+            that are applicable to the thread flow location.
+          items:
+            $ref: '#/components/schemas/reportingDescriptorReference'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        module:
+          description: The name of the module that contains the code that is executing.
+          type: string
+        state:
+          additionalProperties:
+            $ref: '#/components/schemas/multiformatMessageString'
+          description: "A dictionary, each of whose keys specifies a variable or expression,\
+            \ the associated value of which represents the variable or expression\
+            \ value. For an annotation of kind 'continuation', for example, this dictionary\
+            \ might hold the current assumed values of a set of global variables."
+          type: object
+        nestingLevel:
+          description: An integer representing a containment hierarchy within the
+            thread flow.
+          minimum: 0
+          type: integer
+        executionOrder:
+          default: -1
+          description: An integer representing the temporal order in which execution
+            reached this location.
+          minimum: -1
+          type: integer
+        executionTimeUtc:
+          description: The Coordinated Universal Time (UTC) date and time at which
+            this location was executed.
+          format: date-time
+          type: string
+        importance:
+          default: important
+          description: "Specifies the importance of this location in understanding\
+            \ the code flow in which it occurs. The order from most to least important\
+            \ is \"essential\", \"important\", \"unimportant\". Default: \"important\"\
+            ."
+          enum:
+          - important
+          - essential
+          - unimportant
+          type: string
+        webRequest:
+          $ref: '#/components/schemas/webRequest'
+        webResponse:
+          $ref: '#/components/schemas/webResponse'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    webRequest:
+      additionalProperties: false
+      description: Describes an HTTP request.
+      properties:
+        index:
+          default: -1
+          description: The index within the run.webRequests array of the request object
+            associated with this result.
+          minimum: -1
+          type: integer
+        protocol:
+          description: "The request protocol. Example: 'http'."
+          type: string
+        version:
+          description: "The request version. Example: '1.1'."
+          type: string
+        target:
+          description: The target of the request.
+          type: string
+        method:
+          description: "The HTTP method. Well-known values are 'GET', 'PUT', 'POST',\
+            \ 'DELETE', 'PATCH', 'HEAD', 'OPTIONS', 'TRACE', 'CONNECT'."
+          type: string
+        headers:
+          additionalProperties:
+            type: string
+          description: The request headers.
+          type: object
+        parameters:
+          additionalProperties:
+            type: string
+          description: The request parameters.
+          type: object
+        body:
+          $ref: '#/components/schemas/artifactContent'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    webResponse:
+      additionalProperties: false
+      description: Describes the response to an HTTP request.
+      properties:
+        index:
+          default: -1
+          description: The index within the run.webResponses array of the response
+            object associated with this result.
+          minimum: -1
+          type: integer
+        protocol:
+          description: "The response protocol. Example: 'http'."
+          type: string
+        version:
+          description: "The response version. Example: '1.1'."
+          type: string
+        statusCode:
+          description: "The response status code. Example: 451."
+          type: integer
+        reasonPhrase:
+          description: "The response reason. Example: 'Not found'."
+          type: string
+        headers:
+          additionalProperties:
+            type: string
+          description: The response headers.
+          type: object
+        body:
+          $ref: '#/components/schemas/artifactContent'
+        noResponseReceived:
+          default: false
+          description: Specifies whether a response was received from the server.
+          type: boolean
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    graphTraversal:
+      additionalProperties: false
+      description: Represents a path through a graph.
+      nullable: true
+      oneOf: []
+      properties:
+        runGraphIndex:
+          default: -1
+          description: The index within the run.graphs to be associated with the result.
+          minimum: -1
+          type: integer
+        resultGraphIndex:
+          default: -1
+          description: The index within the result.graphs to be associated with the
+            result.
+          minimum: -1
+          type: integer
+        description:
+          $ref: '#/components/schemas/message'
+        initialState:
+          additionalProperties:
+            $ref: '#/components/schemas/multiformatMessageString'
+          description: Values of relevant expressions at the start of the graph traversal
+            that may change during graph traversal.
+          type: object
+        immutableState:
+          additionalProperties:
+            $ref: '#/components/schemas/multiformatMessageString'
+          description: Values of relevant expressions at the start of the graph traversal
+            that remain constant for the graph traversal.
+          type: object
+        edgeTraversals:
+          default: []
+          description: The sequences of edges traversed by this graph traversal.
+          items:
+            $ref: '#/components/schemas/edgeTraversal'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    edgeTraversal:
+      additionalProperties: false
+      description: Represents the traversal of a single edge during a graph traversal.
+      properties:
+        edgeId:
+          description: Identifies the edge being traversed.
+          type: string
+        message:
+          $ref: '#/components/schemas/message'
+        finalState:
+          additionalProperties:
+            $ref: '#/components/schemas/multiformatMessageString'
+          description: The values of relevant expressions after the edge has been
+            traversed.
+          type: object
+        stepOverEdgeCount:
+          description: The number of edge traversals necessary to return from a nested
+            graph.
+          minimum: 0
+          type: integer
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - edgeId
+      type: object
+    suppression:
+      additionalProperties: false
+      description: A suppression that is relevant to a result.
+      properties:
+        guid:
+          description: "A stable, unique identifier for the suppression in the form\
+            \ of a GUID."
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          type: string
+        kind:
+          description: A string that indicates where the suppression is persisted.
+          enum:
+          - inSource
+          - external
+          type: string
+        status:
+          description: A string that indicates the review status of the suppression.
+          enum:
+          - accepted
+          - underReview
+          - rejected
+          type: string
+        justification:
+          description: A string representing the justification for the suppression.
+          type: string
+        location:
+          $ref: '#/components/schemas/location'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - kind
+      type: object
+    attachment:
+      additionalProperties: false
+      description: An artifact relevant to a result.
+      properties:
+        description:
+          $ref: '#/components/schemas/message'
+        artifactLocation:
+          $ref: '#/components/schemas/artifactLocation'
+        regions:
+          default: []
+          description: An array of regions of interest within the attachment.
+          items:
+            $ref: '#/components/schemas/region'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        rectangles:
+          default: []
+          description: An array of rectangles specifying areas of interest within
+            the image.
+          items:
+            $ref: '#/components/schemas/rectangle'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - artifactLocation
+      type: object
+    rectangle:
+      additionalProperties: false
+      description: An area within an image.
+      properties:
+        top:
+          description: "The Y coordinate of the top edge of the rectangle, measured\
+            \ in the image's natural units."
+          type: number
+        left:
+          description: "The X coordinate of the left edge of the rectangle, measured\
+            \ in the image's natural units."
+          type: number
+        bottom:
+          description: "The Y coordinate of the bottom edge of the rectangle, measured\
+            \ in the image's natural units."
+          type: number
+        right:
+          description: "The X coordinate of the right edge of the rectangle, measured\
+            \ in the image's natural units."
+          type: number
+        message:
+          $ref: '#/components/schemas/message'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    resultProvenance:
+      additionalProperties: false
+      description: Contains information about how and when a result was detected.
+      properties:
+        firstDetectionTimeUtc:
+          description: The Coordinated Universal Time (UTC) date and time at which
+            the result was first detected. See "Date/time properties" in the SARIF
+            spec for the required format.
+          format: date-time
+          type: string
+        lastDetectionTimeUtc:
+          description: The Coordinated Universal Time (UTC) date and time at which
+            the result was most recently detected. See "Date/time properties" in the
+            SARIF spec for the required format.
+          format: date-time
+          type: string
+        firstDetectionRunGuid:
+          description: A GUID-valued string equal to the automationDetails.guid property
+            of the run in which the result was first detected.
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          type: string
+        lastDetectionRunGuid:
+          description: A GUID-valued string equal to the automationDetails.guid property
+            of the run in which the result was most recently detected.
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          type: string
+        invocationIndex:
+          default: -1
+          description: The index within the run.invocations array of the invocation
+            object which describes the tool invocation that detected the result.
+          minimum: -1
+          type: integer
+        conversionSources:
+          default: []
+          description: An array of physicalLocation objects which specify the portions
+            of an analysis tool's output that a converter transformed into the result.
+          items:
+            $ref: '#/components/schemas/physicalLocation'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    fix:
+      additionalProperties: false
+      description: "A proposed fix for the problem represented by a result object.\
+        \ A fix specifies a set of artifacts to modify. For each artifact, it specifies\
+        \ a set of bytes to remove, and provides a set of new bytes to replace them."
+      properties:
+        description:
+          $ref: '#/components/schemas/message'
+        artifactChanges:
+          description: One or more artifact changes that comprise a fix for a result.
+          items:
+            $ref: '#/components/schemas/artifactChange'
+          minItems: 1
+          type: array
+          uniqueItems: true
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - artifactChanges
+      type: object
+    artifactChange:
+      additionalProperties: false
+      description: A change to a single artifact.
+      properties:
+        artifactLocation:
+          $ref: '#/components/schemas/artifactLocation'
+        replacements:
+          description: "An array of replacement objects, each of which represents\
+            \ the replacement of a single region in a single artifact specified by\
+            \ 'artifactLocation'."
+          items:
+            $ref: '#/components/schemas/replacement'
+          minItems: 1
+          type: array
+          uniqueItems: false
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - artifactLocation
+      - replacements
+      type: object
+    replacement:
+      additionalProperties: false
+      description: The replacement of a single region of an artifact.
+      properties:
+        deletedRegion:
+          $ref: '#/components/schemas/region'
+        insertedContent:
+          $ref: '#/components/schemas/artifactContent'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      required:
+      - deletedRegion
+      type: object
+    runAutomationDetails:
+      additionalProperties: false
+      description: Information that describes a run's identity and role within an
+        engineering system process.
+      properties:
+        description:
+          $ref: '#/components/schemas/message'
+        id:
+          description: A hierarchical string that uniquely identifies this object's
+            containing run object.
+          type: string
+        guid:
+          description: "A stable, unique identifier for this object's containing run\
+            \ object in the form of a GUID."
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          type: string
+        correlationGuid:
+          description: "A stable, unique identifier for the equivalence class of runs\
+            \ to which this object's containing run object belongs in the form of\
+            \ a GUID."
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          type: string
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    externalPropertyFileReferences:
+      additionalProperties: false
+      description: References to external property files that should be inlined with
+        the content of a root log file.
+      properties:
+        conversion:
+          $ref: '#/components/schemas/externalPropertyFileReference'
+        graphs:
+          default: []
+          description: An array of external property files containing a run.graphs
+            object to be merged with the root log file.
+          items:
+            $ref: '#/components/schemas/externalPropertyFileReference'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        externalizedProperties:
+          $ref: '#/components/schemas/externalPropertyFileReference'
+        artifacts:
+          default: []
+          description: An array of external property files containing run.artifacts
+            arrays to be merged with the root log file.
+          items:
+            $ref: '#/components/schemas/externalPropertyFileReference'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        invocations:
+          default: []
+          description: An array of external property files containing run.invocations
+            arrays to be merged with the root log file.
+          items:
+            $ref: '#/components/schemas/externalPropertyFileReference'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        logicalLocations:
+          default: []
+          description: An array of external property files containing run.logicalLocations
+            arrays to be merged with the root log file.
+          items:
+            $ref: '#/components/schemas/externalPropertyFileReference'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        threadFlowLocations:
+          default: []
+          description: An array of external property files containing run.threadFlowLocations
+            arrays to be merged with the root log file.
+          items:
+            $ref: '#/components/schemas/externalPropertyFileReference'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        results:
+          default: []
+          description: An array of external property files containing run.results
+            arrays to be merged with the root log file.
+          items:
+            $ref: '#/components/schemas/externalPropertyFileReference'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        taxonomies:
+          default: []
+          description: An array of external property files containing run.taxonomies
+            arrays to be merged with the root log file.
+          items:
+            $ref: '#/components/schemas/externalPropertyFileReference'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        addresses:
+          default: []
+          description: An array of external property files containing run.addresses
+            arrays to be merged with the root log file.
+          items:
+            $ref: '#/components/schemas/externalPropertyFileReference'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        driver:
+          $ref: '#/components/schemas/externalPropertyFileReference'
+        extensions:
+          default: []
+          description: An array of external property files containing run.extensions
+            arrays to be merged with the root log file.
+          items:
+            $ref: '#/components/schemas/externalPropertyFileReference'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        policies:
+          default: []
+          description: An array of external property files containing run.policies
+            arrays to be merged with the root log file.
+          items:
+            $ref: '#/components/schemas/externalPropertyFileReference'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        translations:
+          default: []
+          description: An array of external property files containing run.translations
+            arrays to be merged with the root log file.
+          items:
+            $ref: '#/components/schemas/externalPropertyFileReference'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        webRequests:
+          default: []
+          description: An array of external property files containing run.requests
+            arrays to be merged with the root log file.
+          items:
+            $ref: '#/components/schemas/externalPropertyFileReference'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        webResponses:
+          default: []
+          description: An array of external property files containing run.responses
+            arrays to be merged with the root log file.
+          items:
+            $ref: '#/components/schemas/externalPropertyFileReference'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    externalPropertyFileReference:
+      additionalProperties: false
+      anyOf: []
+      description: Contains information that enables a SARIF consumer to locate the
+        external property file that contains the value of an externalized property
+        associated with the run.
+      nullable: true
+      properties:
+        location:
+          $ref: '#/components/schemas/artifactLocation'
+        guid:
+          description: "A stable, unique identifier for the external property file\
+            \ in the form of a GUID."
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          type: string
+        itemCount:
+          default: -1
+          description: A non-negative integer specifying the number of items contained
+            in the external property file.
+          minimum: -1
+          type: integer
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    specialLocations:
+      additionalProperties: false
+      description: Defines locations of special significance to SARIF consumers.
+      properties:
+        displayBase:
+          $ref: '#/components/schemas/artifactLocation'
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    externalProperties:
+      additionalProperties: false
+      description: The top-level element of an external property file.
+      properties:
+        schema:
+          description: The URI of the JSON schema corresponding to the version of
+            the external property file format.
+          format: uri
+          type: string
+        version:
+          description: The SARIF format version of this external properties object.
+          enum:
+          - 2.1.0
+          type: string
+        guid:
+          description: "A stable, unique identifier for this external properties object,\
+            \ in the form of a GUID."
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          type: string
+        runGuid:
+          description: "A stable, unique identifier for the run associated with this\
+            \ external properties object, in the form of a GUID."
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          type: string
+        conversion:
+          $ref: '#/components/schemas/conversion'
+        graphs:
+          default: []
+          description: An array of graph objects that will be merged with a separate
+            run.
+          items:
+            $ref: '#/components/schemas/graph'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        externalizedProperties:
+          $ref: '#/components/schemas/propertyBag'
+        artifacts:
+          description: An array of artifact objects that will be merged with a separate
+            run.
+          items:
+            $ref: '#/components/schemas/artifact'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        invocations:
+          default: []
+          description: Describes the invocation of the analysis tool that will be
+            merged with a separate run.
+          items:
+            $ref: '#/components/schemas/invocation'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        logicalLocations:
+          default: []
+          description: "An array of logical locations such as namespaces, types or\
+            \ functions that will be merged with a separate run."
+          items:
+            $ref: '#/components/schemas/logicalLocation'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        threadFlowLocations:
+          default: []
+          description: An array of threadFlowLocation objects that will be merged
+            with a separate run.
+          items:
+            $ref: '#/components/schemas/threadFlowLocation'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        results:
+          default: []
+          description: An array of result objects that will be merged with a separate
+            run.
+          items:
+            $ref: '#/components/schemas/result'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        taxonomies:
+          default: []
+          description: Tool taxonomies that will be merged with a separate run.
+          items:
+            $ref: '#/components/schemas/toolComponent'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        driver:
+          $ref: '#/components/schemas/toolComponent'
+        extensions:
+          default: []
+          description: Tool extensions that will be merged with a separate run.
+          items:
+            $ref: '#/components/schemas/toolComponent'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        policies:
+          default: []
+          description: Tool policies that will be merged with a separate run.
+          items:
+            $ref: '#/components/schemas/toolComponent'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        translations:
+          default: []
+          description: Tool translations that will be merged with a separate run.
+          items:
+            $ref: '#/components/schemas/toolComponent'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        addresses:
+          default: []
+          description: Addresses that will be merged with a separate run.
+          items:
+            $ref: '#/components/schemas/address'
+          minItems: 0
+          type: array
+          uniqueItems: false
+        webRequests:
+          default: []
+          description: Requests that will be merged with a separate run.
+          items:
+            $ref: '#/components/schemas/webRequest'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        webResponses:
+          default: []
+          description: Responses that will be merged with a separate run.
+          items:
+            $ref: '#/components/schemas/webResponse'
+          minItems: 0
+          type: array
+          uniqueItems: true
+        properties:
+          $ref: '#/components/schemas/propertyBag'
+      type: object
+    ScanJob:
+      example:
+        scan_id: 00000000-0000-0000-0000-000000000000
+        inventory:
+          requested_scan_location: s3://bucket-name/folder-name/file-name.ext
+        status: pending
+      properties:
+        scan_id:
+          description: unique identifier for the scan
+          example: 00000000-0000-0000-0000-000000000000
+          format: uuid
+          readOnly: true
+          title: Scan ID
+          type: string
+        status:
+          description: Status of the scan
+          enum:
+          - pending
+          - running
+          - done
+          - failed
+          - canceled
+          example: pending
+          readOnly: true
+          title: Status
+          type: string
+        inventory:
+          $ref: '#/components/schemas/ScanJob_inventory'
+      title: ScanJob
+      type: object
+    ScanCreateRequest:
+      example:
+        location: location
+      properties:
+        location:
+          title: POSIX Path
+          type: string
+      required:
+      - location
+      title: ScanCreateRequest
+      type: object
+    Detections:
+      example:
+        severity: MISS
+        description: description
+        message: message
+      properties:
+        description:
+          type: string
+        message:
+          type: string
+        severity:
+          enum:
+          - MISS
+          - SAFE
+          - SUSPICIOUS
+          - UNSAFE
+          - MALICIOUS
+          type: string
+      title: Detections
+      type: object
+    Limit:
+      default: 25
+      description: Maximum number of items to return
+      example: 50
+      maximum: 100
+      minimum: 1
+      title: Item Count Limit
+      type: integer
+    Offset:
+      default: 0
+      description: Begin returning the results from this offset
+      example: 250
+      minimum: 0
+      title: Offset
+      type: integer
+    FileDetailsV3:
+      additionalProperties: false
+      example:
+        sha256: a54d88e06612d820bc3be72877c74f257b561b19
+        file_type_details:
+          key: ""
+        file_type: safetensors
+        tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+        file_size_bytes: 9663676416
+        file_size: 9 GB
+        estimated_time: estimated_time
+        md5: ce114e4501d2f4e2dcea3e17b546f339
+      properties:
+        estimated_time:
+          description: estimated time to scan the file
+          title: Estimated Time
+          type: string
+        md5:
+          description: hexadecimal md5 hash of file
+          example: ce114e4501d2f4e2dcea3e17b546f339
+          pattern: "^[a-fA-F0-9]{32}$"
+          title: MD5
+          type: string
+        sha256:
+          description: hexadecimal sha256 hash of file
+          example: a54d88e06612d820bc3be72877c74f257b561b19
+          pattern: "^[a-fA-F0-9]{64}$"
+          title: SHA256
+          type: string
+        tlsh:
+          description: TLSH hash of file
+          example: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+          pattern: "^[a-fA-F0-9]{70}$"
+          title: TLSH
+          type: string
+        file_size:
+          description: size of the file in human readable format
+          example: 9 GB
+          pattern: ^\d+(\.\d+)?\s?(B|KB|MB|GB|TB)$
+          title: File Size
+          type: string
+        file_size_bytes:
+          description: size of the file in bytes
+          example: 9663676416
+          title: File Size Bytes
+          type: integer
+        file_type:
+          description: type of the file
+          enum:
+          - safetensors
+          - RDS
+          - onnx
+          - tensorflow
+          - keras
+          - pytorch
+          - pickle
+          - NEMO
+          - numpy
+          - unknown
+          - ZIP
+          - TAR
+          - gguf
+          example: safetensors
+          title: File Type
+          type: string
+        file_type_details:
+          additionalProperties: true
+          title: File Type Details
+          type: object
+      required:
+      - estimated_time
+      - file_type
+      - md5
+      - sha256
+      - tlsh
+      title: FileDetailsV3
+      type: object
+    ScanDetectionV3:
+      example:
+        severity: low
+        owasp:
+        - owasp
+        - owasp
+        cwe_href: cwe_href
+        technical_blog_href: technical_blog_href
+        impact: critical
+        description: Found lambda embedded in keras model allowing custom layers that
+          support  arbitrary expression execution
+        rule_id: PICKLE_0055_202408
+        cwe: cwe
+        mitre_atlas:
+        - technique: technique
+          tactic: tactic
+        - technique: technique
+          tactic: tactic
+        cve:
+        - cve
+        - cve
+        likelihood: medium
+        risk: MALICIOUS
+        rule_details:
+        - description: description
+          status_at: 2000-01-23T04:56:07.000+00:00
+          status: created
+        - description: description
+          status_at: 2000-01-23T04:56:07.000+00:00
+          status: created
+        detection_id: 00000000-0000-0000-0000-000000000000
+        category: Arbitrary Code Execution
+      properties:
+        description:
+          description: detection description
+          example: Found lambda embedded in keras model allowing custom layers that
+            support  arbitrary expression execution
+          title: Description
+          type: string
+        risk:
+          description: detection risk
+          enum:
+          - MALICIOUS
+          - SUSPICIOUS
+          - BENIGN
+          title: Risk
+          type: string
+        severity:
+          description: detection severity
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+          title: Severity
+          type: string
+        detection_id:
+          description: unique identifier for the detection
+          example: 00000000-0000-0000-0000-000000000000
+          title: Detection ID
+          type: string
+        impact:
+          description: detection impact
+          example: critical
+          title: Impact
+          type: string
+        likelihood:
+          description: detection likelihood
+          example: medium
+          title: Likelihood
+          type: string
+        rule_details:
+          items:
+            $ref: '#/components/schemas/Rule_Details_inner'
+          title: Rule Details
+          type: array
+        rule_id:
+          description: unique identifier for the rule that sourced the detection
+          example: PICKLE_0055_202408
+          title: Rule ID
+          type: string
+        category:
+          description: Vulnerability category for the detection
+          example: Arbitrary Code Execution
+          title: Category
+          type: string
+        mitre_atlas:
+          items:
+            $ref: '#/components/schemas/MITRE_Atlas_inner'
+          title: MITRE Atlas
+          type: array
+        owasp:
+          items:
+            pattern: "^(ML|LLM)(\\d{2,4})$"
+            type: string
+          title: OWASP
+          type: array
+        cve:
+          items:
+            pattern: "^CVE-\\d{4}-\\d{4,9}$"
+            type: string
+          title: CVE
+          type: array
+        cwe:
+          pattern: "^CWE-\\d{1,4}.*$"
+          title: CWE
+          type: string
+        cwe_href:
+          description: CWE URL for the detection
+          title: CWE Href
+          type: string
+        technical_blog_href:
+          description: Hiddenlayer Technical Blog URL for the detection
+          title: Technical Blog Href
+          type: string
+      required:
+      - category
+      - description
+      - detection_id
+      - mitre_atlas
+      - owasp
+      - risk
+      - rule_id
+      - severity
+      title: ScanDetectionV3
+      type: object
+    create_sensor_request:
+      example:
+        plaintext_name: example_model
+        version: 1
+        active: true
+        tags:
+        - example
+      properties:
+        plaintext_name:
+          title: Sensor Name
+          type: string
+        version:
+          title: Sensor Version
+          type: integer
+        active:
+          default: true
+          title: Sensor Active
+          type: boolean
+        tags:
+          additionalProperties: true
+          title: Sensor Tags
+          type: object
+        adhoc:
+          default: false
+          title: Adhoc model
+          type: boolean
+      required:
+      - plaintext_name
+      type: object
+    scan_model_request:
+      properties:
+        location:
+          title: POSIX Path
+          type: string
+      required:
+      - location
+      type: object
+    model_scan_api_v3_scan_query_200_response:
+      allOf:
+      - $ref: '#/components/schemas/PagedResponseWithTotal'
+      - properties:
+          items:
+            items:
+              $ref: '#/components/schemas/ScanReportV3'
+            type: array
+      example:
+        total: 0.08008281904610115
+        offset: 250
+        limit: 50
+        items:
+        - file_count: 6
+          files_with_detections_count: 1
+          detection_categories:
+          - detection_categories
+          - detection_categories
+          severity: low
+          start_time: 2000-01-23T04:56:07.000+00:00
+          end_time: 2000-01-23T04:56:07.000+00:00
+          file_results:
+          - file_instance_id: file_instance_id
+            start_time: 2024-10-16T23:38:32.278Z
+            file_location: file_location
+            end_time: 2024-10-16T23:38:32.354Z
+            details:
+              sha256: a54d88e06612d820bc3be72877c74f257b561b19
+              file_type_details:
+                key: ""
+              file_type: safetensors
+              tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+              file_size_bytes: 9663676416
+              file_size: 9 GB
+              estimated_time: estimated_time
+              md5: ce114e4501d2f4e2dcea3e17b546f339
+            seen: 2024-10-22T17:59:12.431Z
+            status: skipped
+            detections:
+            - severity: low
+              owasp:
+              - owasp
+              - owasp
+              cwe_href: cwe_href
+              technical_blog_href: technical_blog_href
+              impact: critical
+              description: Found lambda embedded in keras model allowing custom layers
+                that support  arbitrary expression execution
+              rule_id: PICKLE_0055_202408
+              cwe: cwe
+              mitre_atlas:
+              - technique: technique
+                tactic: tactic
+              - technique: technique
+                tactic: tactic
+              cve:
+              - cve
+              - cve
+              likelihood: medium
+              risk: MALICIOUS
+              rule_details:
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              detection_id: 00000000-0000-0000-0000-000000000000
+              category: Arbitrary Code Execution
+            - severity: low
+              owasp:
+              - owasp
+              - owasp
+              cwe_href: cwe_href
+              technical_blog_href: technical_blog_href
+              impact: critical
+              description: Found lambda embedded in keras model allowing custom layers
+                that support  arbitrary expression execution
+              rule_id: PICKLE_0055_202408
+              cwe: cwe
+              mitre_atlas:
+              - technique: technique
+                tactic: tactic
+              - technique: technique
+                tactic: tactic
+              cve:
+              - cve
+              - cve
+              likelihood: medium
+              risk: MALICIOUS
+              rule_details:
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              detection_id: 00000000-0000-0000-0000-000000000000
+              category: Arbitrary Code Execution
+          - file_instance_id: file_instance_id
+            start_time: 2024-10-16T23:38:32.278Z
+            file_location: file_location
+            end_time: 2024-10-16T23:38:32.354Z
+            details:
+              sha256: a54d88e06612d820bc3be72877c74f257b561b19
+              file_type_details:
+                key: ""
+              file_type: safetensors
+              tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+              file_size_bytes: 9663676416
+              file_size: 9 GB
+              estimated_time: estimated_time
+              md5: ce114e4501d2f4e2dcea3e17b546f339
+            seen: 2024-10-22T17:59:12.431Z
+            status: skipped
+            detections:
+            - severity: low
+              owasp:
+              - owasp
+              - owasp
+              cwe_href: cwe_href
+              technical_blog_href: technical_blog_href
+              impact: critical
+              description: Found lambda embedded in keras model allowing custom layers
+                that support  arbitrary expression execution
+              rule_id: PICKLE_0055_202408
+              cwe: cwe
+              mitre_atlas:
+              - technique: technique
+                tactic: tactic
+              - technique: technique
+                tactic: tactic
+              cve:
+              - cve
+              - cve
+              likelihood: medium
+              risk: MALICIOUS
+              rule_details:
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              detection_id: 00000000-0000-0000-0000-000000000000
+              category: Arbitrary Code Execution
+            - severity: low
+              owasp:
+              - owasp
+              - owasp
+              cwe_href: cwe_href
+              technical_blog_href: technical_blog_href
+              impact: critical
+              description: Found lambda embedded in keras model allowing custom layers
+                that support  arbitrary expression execution
+              rule_id: PICKLE_0055_202408
+              cwe: cwe
+              mitre_atlas:
+              - technique: technique
+                tactic: tactic
+              - technique: technique
+                tactic: tactic
+              cve:
+              - cve
+              - cve
+              likelihood: medium
+              risk: MALICIOUS
+              rule_details:
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              detection_id: 00000000-0000-0000-0000-000000000000
+              category: Arbitrary Code Execution
+          scan_id: scan_id
+          inventory:
+            model_version: 1.0.0
+            requested_scan_location: /files-to-scan
+            model_version_id: 00000000-0000-0000-0000-000000000000
+            model_name: keras-tf-2025-05-27
+            requesting_entity: requesting_entity
+            model_id: 00000000-0000-0000-0000-000000000000
+            model_source: adhoc
+          detection_count: 5
+          version: version
+          status: pending
+        - file_count: 6
+          files_with_detections_count: 1
+          detection_categories:
+          - detection_categories
+          - detection_categories
+          severity: low
+          start_time: 2000-01-23T04:56:07.000+00:00
+          end_time: 2000-01-23T04:56:07.000+00:00
+          file_results:
+          - file_instance_id: file_instance_id
+            start_time: 2024-10-16T23:38:32.278Z
+            file_location: file_location
+            end_time: 2024-10-16T23:38:32.354Z
+            details:
+              sha256: a54d88e06612d820bc3be72877c74f257b561b19
+              file_type_details:
+                key: ""
+              file_type: safetensors
+              tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+              file_size_bytes: 9663676416
+              file_size: 9 GB
+              estimated_time: estimated_time
+              md5: ce114e4501d2f4e2dcea3e17b546f339
+            seen: 2024-10-22T17:59:12.431Z
+            status: skipped
+            detections:
+            - severity: low
+              owasp:
+              - owasp
+              - owasp
+              cwe_href: cwe_href
+              technical_blog_href: technical_blog_href
+              impact: critical
+              description: Found lambda embedded in keras model allowing custom layers
+                that support  arbitrary expression execution
+              rule_id: PICKLE_0055_202408
+              cwe: cwe
+              mitre_atlas:
+              - technique: technique
+                tactic: tactic
+              - technique: technique
+                tactic: tactic
+              cve:
+              - cve
+              - cve
+              likelihood: medium
+              risk: MALICIOUS
+              rule_details:
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              detection_id: 00000000-0000-0000-0000-000000000000
+              category: Arbitrary Code Execution
+            - severity: low
+              owasp:
+              - owasp
+              - owasp
+              cwe_href: cwe_href
+              technical_blog_href: technical_blog_href
+              impact: critical
+              description: Found lambda embedded in keras model allowing custom layers
+                that support  arbitrary expression execution
+              rule_id: PICKLE_0055_202408
+              cwe: cwe
+              mitre_atlas:
+              - technique: technique
+                tactic: tactic
+              - technique: technique
+                tactic: tactic
+              cve:
+              - cve
+              - cve
+              likelihood: medium
+              risk: MALICIOUS
+              rule_details:
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              detection_id: 00000000-0000-0000-0000-000000000000
+              category: Arbitrary Code Execution
+          - file_instance_id: file_instance_id
+            start_time: 2024-10-16T23:38:32.278Z
+            file_location: file_location
+            end_time: 2024-10-16T23:38:32.354Z
+            details:
+              sha256: a54d88e06612d820bc3be72877c74f257b561b19
+              file_type_details:
+                key: ""
+              file_type: safetensors
+              tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+              file_size_bytes: 9663676416
+              file_size: 9 GB
+              estimated_time: estimated_time
+              md5: ce114e4501d2f4e2dcea3e17b546f339
+            seen: 2024-10-22T17:59:12.431Z
+            status: skipped
+            detections:
+            - severity: low
+              owasp:
+              - owasp
+              - owasp
+              cwe_href: cwe_href
+              technical_blog_href: technical_blog_href
+              impact: critical
+              description: Found lambda embedded in keras model allowing custom layers
+                that support  arbitrary expression execution
+              rule_id: PICKLE_0055_202408
+              cwe: cwe
+              mitre_atlas:
+              - technique: technique
+                tactic: tactic
+              - technique: technique
+                tactic: tactic
+              cve:
+              - cve
+              - cve
+              likelihood: medium
+              risk: MALICIOUS
+              rule_details:
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              detection_id: 00000000-0000-0000-0000-000000000000
+              category: Arbitrary Code Execution
+            - severity: low
+              owasp:
+              - owasp
+              - owasp
+              cwe_href: cwe_href
+              technical_blog_href: technical_blog_href
+              impact: critical
+              description: Found lambda embedded in keras model allowing custom layers
+                that support  arbitrary expression execution
+              rule_id: PICKLE_0055_202408
+              cwe: cwe
+              mitre_atlas:
+              - technique: technique
+                tactic: tactic
+              - technique: technique
+                tactic: tactic
+              cve:
+              - cve
+              - cve
+              likelihood: medium
+              risk: MALICIOUS
+              rule_details:
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              detection_id: 00000000-0000-0000-0000-000000000000
+              category: Arbitrary Code Execution
+          scan_id: scan_id
+          inventory:
+            model_version: 1.0.0
+            requested_scan_location: /files-to-scan
+            model_version_id: 00000000-0000-0000-0000-000000000000
+            model_name: keras-tf-2025-05-27
+            requesting_entity: requesting_entity
+            model_id: 00000000-0000-0000-0000-000000000000
+            model_source: adhoc
+          detection_count: 5
+          version: version
+          status: pending
+    model_scan_api_v3_scan_model_version_id_patch_200_response:
+      example:
+        message: message
+      properties:
+        message:
+          description: Request to resource is successful
+          type: string
+      required:
+      - message
+      type: object
+    Location_inner:
+      anyOf:
+      - type: string
+      - type: integer
+    Scan_Results:
+      additionalProperties: true
+      example:
+        rds_version: rds_version
+        rds_writer_version: rds_writer_version
+        pickle_modules:
+        - pickle_modules
+        - pickle_modules
+        rds_encoding: rds_encoding
+        sha256: sha256
+        subtype:
+        - subtype
+        - subtype
+        rds_min_reader_version: rds_min_reader_version
+        tlsh: tlsh
+        type: type
+        md5: md5
+      properties:
+        md5:
+          type: string
+        rds_encoding:
+          type: string
+        rds_min_reader_version:
+          type: string
+        rds_version:
+          type: string
+        rds_writer_version:
+          type: string
+        sha256:
+          type: string
+        type:
+          type: string
+        subtype:
+          items:
+            type: string
+          type: array
+        tlsh:
+          type: string
+        pickle_modules:
+          items:
+            type: string
+          type: array
+      title: Scan Results
+      type: object
+    Model_Inventory_Info:
+      allOf:
+      - $ref: '#/components/schemas/ScanModelDetailsV3'
+      - $ref: '#/components/schemas/ScanModelIdsV3'
+      description: information about model and version that this scan relates to
+      example:
+        model_version: 1.0.0
+        requested_scan_location: /files-to-scan
+        model_version_id: 00000000-0000-0000-0000-000000000000
+        model_name: keras-tf-2025-05-27
+        requesting_entity: requesting_entity
+        model_id: 00000000-0000-0000-0000-000000000000
+        model_source: adhoc
+      title: Model Inventory Info
+      type: object
+    File_Results_inner:
+      example:
+        file_instance_id: file_instance_id
+        start_time: 2024-10-16T23:38:32.278Z
+        file_location: file_location
+        end_time: 2024-10-16T23:38:32.354Z
+        details:
+          sha256: a54d88e06612d820bc3be72877c74f257b561b19
+          file_type_details:
+            key: ""
+          file_type: safetensors
+          tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+          file_size_bytes: 9663676416
+          file_size: 9 GB
+          estimated_time: estimated_time
+          md5: ce114e4501d2f4e2dcea3e17b546f339
+        seen: 2024-10-22T17:59:12.431Z
+        status: skipped
+        detections:
+        - severity: low
+          owasp:
+          - owasp
+          - owasp
+          cwe_href: cwe_href
+          technical_blog_href: technical_blog_href
+          impact: critical
+          description: Found lambda embedded in keras model allowing custom layers
+            that support  arbitrary expression execution
+          rule_id: PICKLE_0055_202408
+          cwe: cwe
+          mitre_atlas:
+          - technique: technique
+            tactic: tactic
+          - technique: technique
+            tactic: tactic
+          cve:
+          - cve
+          - cve
+          likelihood: medium
+          risk: MALICIOUS
+          rule_details:
+          - description: description
+            status_at: 2000-01-23T04:56:07.000+00:00
+            status: created
+          - description: description
+            status_at: 2000-01-23T04:56:07.000+00:00
+            status: created
+          detection_id: 00000000-0000-0000-0000-000000000000
+          category: Arbitrary Code Execution
+        - severity: low
+          owasp:
+          - owasp
+          - owasp
+          cwe_href: cwe_href
+          technical_blog_href: technical_blog_href
+          impact: critical
+          description: Found lambda embedded in keras model allowing custom layers
+            that support  arbitrary expression execution
+          rule_id: PICKLE_0055_202408
+          cwe: cwe
+          mitre_atlas:
+          - technique: technique
+            tactic: tactic
+          - technique: technique
+            tactic: tactic
+          cve:
+          - cve
+          - cve
+          likelihood: medium
+          risk: MALICIOUS
+          rule_details:
+          - description: description
+            status_at: 2000-01-23T04:56:07.000+00:00
+            status: created
+          - description: description
+            status_at: 2000-01-23T04:56:07.000+00:00
+            status: created
+          detection_id: 00000000-0000-0000-0000-000000000000
+          category: Arbitrary Code Execution
+      properties:
+        file_instance_id:
+          description: unique ID of the file
+          title: File Instance ID
+          type: string
+        file_location:
+          description: full file path
+          title: File Location
+          type: string
+        start_time:
+          description: time the scan started
+          example: 2024-10-16T23:38:32.278Z
+          format: date-time
+          title: Scan Start Time
+          type: string
+        end_time:
+          description: time the scan ended
+          example: 2024-10-16T23:38:32.354Z
+          format: date-time
+          title: Scan End Time
+          type: string
+        details:
+          $ref: '#/components/schemas/FileDetailsV3'
+        status:
+          description: status of the scan
+          enum:
+          - skipped
+          - pending
+          - running
+          - done
+          - failed
+          - canceled
+          title: Status
+          type: string
+        seen:
+          description: time the scan was seen at
+          example: 2024-10-22T17:59:12.431Z
+          format: date-time
+          title: Seen
+          type: string
+        detections:
+          items:
+            $ref: '#/components/schemas/ScanDetectionV3'
+          title: Detections
+          type: array
+      required:
+      - details
+      - end_time
+      - file_instance_id
+      - file_location
+      - seen
+      - start_time
+      - status
+      type: object
+    ScanJob_inventory:
+      example:
+        requested_scan_location: s3://bucket-name/folder-name/file-name.ext
+      oneOf:
+      - $ref: '#/components/schemas/ScanModelDetailsV3'
+      - $ref: '#/components/schemas/ScanModelIdsV3'
+      properties:
+        requested_scan_location:
+          description: Location to be scanned
+          example: s3://bucket-name/folder-name/file-name.ext
+          title: Requested Scan Location
+          type: string
+    Rule_Details_inner:
+      example:
+        description: description
+        status_at: 2000-01-23T04:56:07.000+00:00
+        status: created
+      properties:
+        status:
+          description: status
+          enum:
+          - created
+          - deprecated
+          - updated
+          - superseded
+          title: status
+          type: string
+        status_at:
+          description: date-time when the details entry was created
+          format: date-time
+          title: Status At
+          type: string
+        description:
+          description: description of the deprecation
+          title: Description
+          type: string
+      type: object
+    MITRE_Atlas_inner:
+      example:
+        technique: technique
+        tactic: tactic
+      properties:
+        technique:
+          description: MITRE Atlas Technique
+          pattern: "^AML\\.T\\d{4}(\\.\\d{3})?.*$"
+          title: Technique
+          type: string
+        tactic:
+          description: MITRE Atlas Tactic
+          pattern: "^AML\\.T(A)?\\d{4}(\\.\\d{3})?$"
+          title: Tactic
+          type: string
+      type: object
+  securitySchemes:
+    BearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+
