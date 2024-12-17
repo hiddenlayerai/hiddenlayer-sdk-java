@@ -1,6 +1,8 @@
 package hiddenlayer;
 
+import hiddenlayer.sdk.rest.ModelScanApi;
 import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import hiddenlayer.sdk.rest.SensorApi;
 
 public class ModelScanService {
   private ModelSupplyChainApi modelSupplyChainApi;
