@@ -5,9 +5,9 @@
     <artifactId>hiddenlayer-sdk</artifactId>
     <packaging>pom</packaging>
     <name>hiddenlayer-sdk</name>
-    <version>1</version>
+    <version>0.0.1</version>
     <url>https://github.com/hiddenlayerai/hiddenlayer-sdk-java</url>
-    <description>OpenAPI Java</description>
+    <description>HiddenLayer Java SDK</description>
     <scm>
         <connection>scm:git:git@github.com:hiddenlayerai/hiddenlayer-sdk-java.git</connection>
         <developerConnection>scm:git:git@github.com:hiddenlayerai/hiddenlayer-sdk-java.git</developerConnection>
@@ -29,6 +29,14 @@
             <organizationUrl>https://hiddenlayer.com</organizationUrl>
         </developer>
     </developers>
+
+    <distributionManagement>
+        <repository>
+            <id>ossrh</id>
+            <name>Central Repository OSSRH</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
     <modules>
         <module>generated</module>
