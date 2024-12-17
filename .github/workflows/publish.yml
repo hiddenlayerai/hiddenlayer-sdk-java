@@ -1,7 +1,6 @@
 name: Publish package to the Maven Central Repository and GitHub Packages
 
 on:
-  pull_request: {} # for testing
   release:
     types:
       - published
@@ -21,7 +20,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    # needs: validate
+    needs: validate
     permissions:
       contents: read
       packages: write
