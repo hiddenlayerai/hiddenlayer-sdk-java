@@ -51,7 +51,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   ScanResults.JSON_PROPERTY_TLSH,
   ScanResults.JSON_PROPERTY_PICKLE_MODULES
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-13T21:07:55.255008Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-17T20:22:10.182839Z[GMT]", comments = "Generator version: 7.6.0")
 public class ScanResults extends HashMap<String, Object> {
   public static final String JSON_PROPERTY_MD5 = "md5";
   private String md5;

@@ -35,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   SecurityPosture.JSON_PROPERTY_MODEL_SCAN,
   SecurityPosture.JSON_PROPERTY_ATTACK_MONITORING
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-13T21:07:55.255008Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-17T20:22:10.182839Z[GMT]", comments = "Generator version: 7.6.0")
 public class SecurityPosture {
   public static final String JSON_PROPERTY_MODEL_SCAN = "model_scan";
   private Boolean modelScan;

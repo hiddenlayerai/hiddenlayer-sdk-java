@@ -40,7 +40,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   CreateSensorRequest.JSON_PROPERTY_TAGS,
   CreateSensorRequest.JSON_PROPERTY_ADHOC
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-13T21:07:55.255008Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-17T20:22:10.182839Z[GMT]", comments = "Generator version: 7.6.0")
 public class CreateSensorRequest {
   public static final String JSON_PROPERTY_PLAINTEXT_NAME = "plaintext_name";
   private String plaintextName;
