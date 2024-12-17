@@ -43,7 +43,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import hiddenlayer.sdk.JSON;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-13T21:07:55.255008Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-17T20:22:10.182839Z[GMT]", comments = "Generator version: 7.6.0")
 @JsonDeserialize(using=LocationInner.LocationInnerDeserializer.class)
 @JsonSerialize(using = LocationInner.LocationInnerSerializer.class)
 public class LocationInner extends AbstractOpenApiSchema {

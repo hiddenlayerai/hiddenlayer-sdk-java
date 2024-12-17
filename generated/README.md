@@ -1,10 +1,10 @@
-# openapi-java-client
+# hiddenlayer-java
 
 HiddenLayer ModelScan V2
 
 - API version: 1
 
-- Build date: 2024-12-13T21:07:55.255008Z[GMT]
+- Build date: 2024-12-17T20:22:10.182839Z[GMT]
 
 - Generator version: 7.6.0
 
@@ -42,8 +42,8 @@ Add this dependency to your project's POM:
 
 ```xml
 <dependency>
-  <groupId>org.openapitools</groupId>
-  <artifactId>openapi-java-client</artifactId>
+  <groupId>com.hiddenlayer</groupId>
+  <artifactId>hiddenlayer-java</artifactId>
   <version>1</version>
   <scope>compile</scope>
 </dependency>
@@ -54,7 +54,7 @@ Add this dependency to your project's POM:
 Add this dependency to your project's build file:
 
 ```groovy
-compile "org.openapitools:openapi-java-client:1"
+compile "com.hiddenlayer:hiddenlayer-java:1"
 ```
 
 ### Others
@@ -67,7 +67,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-- `target/openapi-java-client-1.jar`
+- `target/hiddenlayer-java-1.jar`
 - `target/lib/*.jar`
 
 ## Getting Started
