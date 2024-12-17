@@ -3,7 +3,6 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.hiddenlayer</groupId>
     <artifactId>hiddenlayer-sdk</artifactId>
-    <packaging>pom</packaging>
     <name>hiddenlayer-sdk</name>
     <version>0.0.1</version>
     <url>https://github.com/hiddenlayerai/hiddenlayer-sdk-java</url>
@@ -29,10 +28,6 @@
             <organizationUrl>https://hiddenlayer.com</organizationUrl>
         </developer>
     </developers>
-
-    <modules>
-        <module>generated</module>
-    </modules>
 
     <build>
         <plugins>
@@ -100,6 +95,24 @@
                 </executions>
                 <configuration>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>generated/src/main</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
