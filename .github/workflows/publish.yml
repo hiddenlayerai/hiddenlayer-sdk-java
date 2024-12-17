@@ -47,6 +47,6 @@ jobs:
           distribution: 'temurin'
           server-id: 'github'
       - name: Publish to GitHub Packages
-        run: mvn deploy -PgithubDeploy
+        run: mvn deploy -PgithubDeploy -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/hiddenlayerai/hiddenlayer-sdk-java
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
