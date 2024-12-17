@@ -21,6 +21,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
+    # needs: validate
     permissions:
       contents: read
       packages: write
@@ -44,6 +45,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          server-id: 'github'
       - name: Publish to GitHub Packages
         run: mvn --batch-mode deploy
         env:
