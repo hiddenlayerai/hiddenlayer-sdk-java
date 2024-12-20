@@ -37,12 +37,12 @@ Get Result of a Model Scan
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -109,13 +109,13 @@ Get Result of a Model Scan
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.ApiResponse;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.ApiResponse;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -185,12 +185,12 @@ Indicate part (file or files) of a model scan has completed
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -259,13 +259,13 @@ Indicate part (file or files) of a model scan has completed
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.ApiResponse;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.ApiResponse;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -337,12 +337,12 @@ Indicate model scan has started
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -410,13 +410,13 @@ Indicate model scan has started
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.ApiResponse;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.ApiResponse;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -487,12 +487,12 @@ Get condensed reports for a Model Scan
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -575,13 +575,13 @@ Get condensed reports for a Model Scan
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.ApiResponse;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.ApiResponse;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -667,12 +667,12 @@ Retrieve Model Scan Results
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -739,13 +739,13 @@ Retrieve Model Scan Results
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.ApiResponse;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.ApiResponse;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -815,12 +815,12 @@ Engine Report Endpoint of Model Scan Results
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -886,13 +886,13 @@ Engine Report Endpoint of Model Scan Results
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.ApiResponse;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.ApiResponse;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -961,12 +961,12 @@ List all Model Scan Jobs
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -1027,13 +1027,13 @@ List all Model Scan Jobs
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.ApiResponse;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.ApiResponse;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -1097,12 +1097,12 @@ Health check endpoint for Model Supply Chain Services
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -1161,13 +1161,13 @@ Health check endpoint for Model Supply Chain Services
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.ApiResponse;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.ApiResponse;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -1229,12 +1229,12 @@ Request a Model Scan Job
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -1298,13 +1298,13 @@ Request a Model Scan Job
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.ApiResponse;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.ApiResponse;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -1371,12 +1371,12 @@ Readiness check endpoint for Model Supply Chain Services
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -1435,13 +1435,13 @@ Readiness check endpoint for Model Supply Chain Services
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.ApiResponse;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.ApiResponse;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
 
 public class Example {
     public static void main(String[] args) {

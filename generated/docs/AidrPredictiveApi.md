@@ -19,12 +19,12 @@ Submit vectors
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.AidrPredictiveApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.AidrPredictiveApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -88,13 +88,13 @@ Submit vectors
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.ApiResponse;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.AidrPredictiveApi;
+import com.hiddenlayer.sdk.ApiClient;
+import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.ApiResponse;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.auth.*;
+import com.hiddenlayer.sdk.models.*;
+import com.hiddenlayer.sdk.rest.AidrPredictiveApi;
 
 public class Example {
     public static void main(String[] args) {

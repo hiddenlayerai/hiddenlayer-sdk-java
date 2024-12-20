@@ -4,7 +4,7 @@ HiddenLayer ModelScan V2
 
 - API version: 1
 
-- Build date: 2024-12-17T20:22:10.182839Z[GMT]
+- Build date: 2024-12-19T23:42:19.631048Z[GMT]
 
 - Generator version: 7.6.0
 
@@ -76,9 +76,9 @@ Please follow the [installation](#installation) instruction and execute the foll
 
 ```java
 
-import hiddenlayer.sdk.*;
-import org.openapitools.client.model.*;
-import hiddenlayer.sdk.rest.AidrPredictiveApi;
+import com.hiddenlayer.sdk.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.AidrPredictiveApi;
 
 public class AidrPredictiveApiExample {
 
