@@ -4,7 +4,7 @@
     <groupId>com.hiddenlayer</groupId>
     <artifactId>hiddenlayer-sdk</artifactId>
     <name>hiddenlayer-sdk</name>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <url>https://github.com/hiddenlayerai/hiddenlayer-sdk-java</url>
     <description>HiddenLayer Java SDK</description>
     <scm>
@@ -201,6 +201,10 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <configuration>
+                                    <arg>--pinentry-mode</arg>
+                                    <arg>loopback</arg>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
