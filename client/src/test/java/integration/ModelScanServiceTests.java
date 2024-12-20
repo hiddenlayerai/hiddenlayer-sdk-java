@@ -53,6 +53,11 @@ public class ModelScanServiceTests {
         }
     }
 
+    protected InputStream GetResourceAsStream(String resourceName) {
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        return classLoader.getResourceAsStream(resourceName);
+    }
+
     @BeforeAll
     public void setUp() {
         sampleMaliciousReport = GetJsonResource("sample_malicious_modscan_v3_report.json");
@@ -60,7 +65,7 @@ public class ModelScanServiceTests {
     }
 
     @Test
-    public void testScanStream(WireMockRuntimeInfo wmRuntimeInfo) throws Exception {
+    public void testScanStreamMalicious(WireMockRuntimeInfo wmRuntimeInfo) throws Exception {
 
         stubFor(post(urlEqualTo("/oauth2/token?grant_type=client_credentials"))
             .willReturn(aResponse()
