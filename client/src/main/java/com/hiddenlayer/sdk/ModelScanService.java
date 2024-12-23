@@ -155,7 +155,7 @@ public class ModelScanService extends HiddenlayerService {
   /**
    * Scan a folder
    * 
-   * Folder is zipped at sent to Hiddenlayer Model Scanning service
+   * Folder is zipped and sent to Hiddenlayer Model Scanning service
    * 
    * Next version of the model will be created, starting at 1
    * 
@@ -177,7 +177,7 @@ public class ModelScanService extends HiddenlayerService {
   /**
    * Scan a folder
    * 
-   * Folder is zipped at sent to Hiddenlayer Model Scanning service
+   * Folder is zipped and sent to Hiddenlayer Model Scanning service
    * 
    * Optionally specify a version for the model.  If no version is specified, the next version of the model will be created, starting at 1
    * 
