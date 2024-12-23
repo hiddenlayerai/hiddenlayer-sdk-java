@@ -19,12 +19,12 @@ Readiness check endpoint for Model Supply Chain Services
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.ReadinessApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.ReadinessApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -83,13 +83,13 @@ Readiness check endpoint for Model Supply Chain Services
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.ApiResponse;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.ReadinessApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.ApiResponse;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.ReadinessApi;
 
 public class Example {
     public static void main(String[] args) {

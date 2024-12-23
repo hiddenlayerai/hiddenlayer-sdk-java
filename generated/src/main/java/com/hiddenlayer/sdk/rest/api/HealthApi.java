@@ -10,12 +10,12 @@
  * Do not edit the class manually.
  */
 
-package com.hiddenlayer.sdk.rest;
+package com.hiddenlayer.sdk.rest.api;
 
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.ApiResponse;
-import com.hiddenlayer.sdk.Pair;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.ApiResponse;
+import com.hiddenlayer.sdk.rest.Pair;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -43,8 +43,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-19T23:42:19.631048Z[GMT]", comments = "Generator version: 7.6.0")
-public class ReadinessApi {
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-23T18:00:16.695354Z[GMT]", comments = "Generator version: 7.6.0")
+public class HealthApi {
   private final HttpClient memberVarHttpClient;
   private final ObjectMapper memberVarObjectMapper;
   private final String memberVarBaseUri;
@@ -53,11 +53,11 @@ public class ReadinessApi {
   private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
   private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
 
-  public ReadinessApi() {
+  public HealthApi() {
     this(new ApiClient());
   }
 
-  public ReadinessApi(ApiClient apiClient) {
+  public HealthApi(ApiClient apiClient) {
     memberVarHttpClient = apiClient.getHttpClient();
     memberVarObjectMapper = apiClient.getObjectMapper();
     memberVarBaseUri = apiClient.getBaseUri();
@@ -81,22 +81,22 @@ public class ReadinessApi {
   }
 
   /**
-   * Readiness check endpoint for Model Supply Chain Services
+   * Health check endpoint for Model Supply Chain Services
    * 
    * @throws ApiException if fails to make API call
    */
-  public void modelscannerApiV3ReadinessCheck() throws ApiException {
-    modelscannerApiV3ReadinessCheckWithHttpInfo();
+  public void modelscannerApiV3HealthCheck() throws ApiException {
+    modelscannerApiV3HealthCheckWithHttpInfo();
   }
 
   /**
-   * Readiness check endpoint for Model Supply Chain Services
+   * Health check endpoint for Model Supply Chain Services
    * 
    * @return ApiResponse&lt;Void&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> modelscannerApiV3ReadinessCheckWithHttpInfo() throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = modelscannerApiV3ReadinessCheckRequestBuilder();
+  public ApiResponse<Void> modelscannerApiV3HealthCheckWithHttpInfo() throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = modelscannerApiV3HealthCheckRequestBuilder();
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -106,7 +106,7 @@ public class ReadinessApi {
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("modelscannerApiV3ReadinessCheck", localVarResponse);
+          throw getApiException("modelscannerApiV3HealthCheck", localVarResponse);
         }
         return new ApiResponse<Void>(
           localVarResponse.statusCode(),
@@ -129,11 +129,11 @@ public class ReadinessApi {
     }
   }
 
-  private HttpRequest.Builder modelscannerApiV3ReadinessCheckRequestBuilder() throws ApiException {
+  private HttpRequest.Builder modelscannerApiV3HealthCheckRequestBuilder() throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
-    String localVarPath = "/scans/v3/readiness";
+    String localVarPath = "/scans/v3/health";
 
     localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 

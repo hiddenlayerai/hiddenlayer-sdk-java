@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>com.hiddenlayer</groupId>
-            <artifactId>hiddenlayer-java</artifactId>
+            <artifactId>hiddenlayer-rest-java</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

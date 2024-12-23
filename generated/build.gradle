@@ -38,7 +38,7 @@ javadoc {
 publishing {
     publications {
         maven(MavenPublication) {
-            artifactId = 'hiddenlayer-java'
+            artifactId = 'hiddenlayer-rest-java'
             from components.java
         }
     }

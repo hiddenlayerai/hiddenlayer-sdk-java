@@ -10,12 +10,12 @@
  * Do not edit the class manually.
  */
 
-package com.hiddenlayer.sdk.rest;
+package com.hiddenlayer.sdk.rest.api;
 
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.ApiResponse;
-import com.hiddenlayer.sdk.Pair;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.ApiResponse;
+import com.hiddenlayer.sdk.rest.Pair;
 
 import com.hiddenlayer.sdk.rest.models.CreateSensorRequest;
 import com.hiddenlayer.sdk.rest.models.GetMultipartUploadResponse;
@@ -51,7 +51,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-19T23:42:19.631048Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-23T18:00:16.695354Z[GMT]", comments = "Generator version: 7.6.0")
 public class SensorApi {
   private final HttpClient memberVarHttpClient;
   private final ObjectMapper memberVarObjectMapper;

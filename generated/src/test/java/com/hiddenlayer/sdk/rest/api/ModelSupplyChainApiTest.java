@@ -11,9 +11,9 @@
  */
 
 
-package com.hiddenlayer.sdk.rest;
+package com.hiddenlayer.sdk.rest.api;
 
-import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.rest.ApiException;
 import com.hiddenlayer.sdk.rest.models.ModelScanApiV3ScanModelVersionIdPatch200Response;
 import com.hiddenlayer.sdk.rest.models.ModelScanApiV3ScanQuery200Response;
 import java.time.OffsetDateTime;

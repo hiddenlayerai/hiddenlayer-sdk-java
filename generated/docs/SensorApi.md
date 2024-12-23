@@ -33,12 +33,12 @@ Begin Multipart Upload
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -104,13 +104,13 @@ Begin Multipart Upload
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.ApiResponse;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.ApiResponse;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -179,12 +179,12 @@ Complete Multipart Upload
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -249,13 +249,13 @@ Complete Multipart Upload
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.ApiResponse;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.ApiResponse;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -323,12 +323,12 @@ Create a Sensor
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -393,13 +393,13 @@ Create a Sensor
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.ApiResponse;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.ApiResponse;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -467,12 +467,12 @@ Remove an Adhoc Sensor
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -536,13 +536,13 @@ Remove an Adhoc Sensor
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.ApiResponse;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.ApiResponse;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -609,12 +609,12 @@ Get Model
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -679,13 +679,13 @@ Get Model
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.ApiResponse;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.ApiResponse;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -753,12 +753,12 @@ Query a Sensor
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -822,13 +822,13 @@ Query a Sensor
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.ApiResponse;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.ApiResponse;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -895,12 +895,12 @@ List Model Cards
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -972,13 +972,13 @@ List Model Cards
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.ApiResponse;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.ApiResponse;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -1053,12 +1053,12 @@ Upload part
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -1127,13 +1127,13 @@ Upload part
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.ApiResponse;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.ApiResponse;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class Example {
     public static void main(String[] args) {

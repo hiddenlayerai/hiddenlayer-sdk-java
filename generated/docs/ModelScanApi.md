@@ -21,12 +21,12 @@ Scan a model
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.ModelScanApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.ModelScanApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -92,13 +92,13 @@ Scan a model
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.ApiResponse;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.ModelScanApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.ApiResponse;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.ModelScanApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -167,12 +167,12 @@ Get Status or Result of a Scan
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.ModelScanApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.ModelScanApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -237,13 +237,13 @@ Get Status or Result of a Scan
 
 ```java
 // Import classes:
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.ApiResponse;
-import com.hiddenlayer.sdk.Configuration;
-import com.hiddenlayer.sdk.auth.*;
-import com.hiddenlayer.sdk.models.*;
-import com.hiddenlayer.sdk.rest.ModelScanApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.ApiResponse;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.ModelScanApi;
 
 public class Example {
     public static void main(String[] args) {

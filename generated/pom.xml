@@ -6,9 +6,9 @@
         <artifactId>java-client-parent</artifactId>
         <version>0.0.4</version>
     </parent>
-    <artifactId>hiddenlayer-java</artifactId>
+    <artifactId>hiddenlayer-rest-java</artifactId>
     <packaging>jar</packaging>
-    <name>hiddenlayer-java</name>
+    <name>hiddenlayer-rest-java</name>
     <url>https://github.com/openapitools/openapi-generator</url>
     <description>OpenAPI Java</description>
     <scm>

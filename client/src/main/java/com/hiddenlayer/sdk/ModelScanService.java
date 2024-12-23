@@ -1,4 +1,4 @@
-package com.hiddenlayer;
+package com.hiddenlayer.sdk;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -22,12 +22,12 @@ import java.util.zip.ZipOutputStream;
 
 import com.hiddenlayer.sdk.rest.models.*;
 
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.sdk.ApiResponse;
-import com.hiddenlayer.sdk.rest.ModelScanApi;
-import com.hiddenlayer.sdk.rest.ModelSupplyChainApi;
-import com.hiddenlayer.sdk.rest.SensorApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.ApiResponse;
+import com.hiddenlayer.sdk.rest.api.ModelScanApi;
+import com.hiddenlayer.sdk.rest.api.ModelSupplyChainApi;
+import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class ModelScanService extends HiddenlayerService {
   final private ModelSupplyChainApi modelSupplyChainApi;

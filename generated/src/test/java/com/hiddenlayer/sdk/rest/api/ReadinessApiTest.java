@@ -11,9 +11,9 @@
  */
 
 
-package com.hiddenlayer.sdk.rest;
+package com.hiddenlayer.sdk.rest.api;
 
-import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.rest.ApiException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

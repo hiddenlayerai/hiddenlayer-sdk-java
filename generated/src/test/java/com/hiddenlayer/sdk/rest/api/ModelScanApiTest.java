@@ -11,9 +11,9 @@
  */
 
 
-package com.hiddenlayer.sdk.rest;
+package com.hiddenlayer.sdk.rest.api;
 
-import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.rest.ApiException;
 import java.io.File;
 import com.hiddenlayer.sdk.rest.models.ScanModelRequest;
 import com.hiddenlayer.sdk.rest.models.ScanResultsV2;

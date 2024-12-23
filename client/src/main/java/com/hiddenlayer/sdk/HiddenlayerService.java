@@ -1,4 +1,4 @@
-package com.hiddenlayer;
+package com.hiddenlayer.sdk;
 
 import java.io.IOException;
 import java.net.http.HttpClient;

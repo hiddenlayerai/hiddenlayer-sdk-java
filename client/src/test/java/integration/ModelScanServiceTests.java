@@ -22,10 +22,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import com.hiddenlayer.sdk.ApiClient;
-import com.hiddenlayer.sdk.ApiException;
-import com.hiddenlayer.Configuration;
-import com.hiddenlayer.ModelScanService;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.Configuration;
+import com.hiddenlayer.sdk.ModelScanService;
 
 @WireMockTest(httpPort = 8089)
 @TestInstance(Lifecycle.PER_CLASS)

@@ -11,9 +11,9 @@
  */
 
 
-package com.hiddenlayer.sdk.rest;
+package com.hiddenlayer.sdk.rest.api;
 
-import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.rest.ApiException;
 import com.hiddenlayer.sdk.rest.models.CreateSensorRequest;
 import com.hiddenlayer.sdk.rest.models.GetMultipartUploadResponse;
 import com.hiddenlayer.sdk.rest.models.Model;

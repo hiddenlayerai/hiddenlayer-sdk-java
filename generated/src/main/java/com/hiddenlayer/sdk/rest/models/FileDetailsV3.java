@@ -43,7 +43,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   FileDetailsV3.JSON_PROPERTY_FILE_TYPE,
   FileDetailsV3.JSON_PROPERTY_FILE_TYPE_DETAILS
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-19T23:42:19.631048Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-23T18:00:16.695354Z[GMT]", comments = "Generator version: 7.6.0")
 public class FileDetailsV3 {
   public static final String JSON_PROPERTY_ESTIMATED_TIME = "estimated_time";
   private String estimatedTime;

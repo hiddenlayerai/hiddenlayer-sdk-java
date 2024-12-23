@@ -11,9 +11,12 @@
  */
 
 
-package com.hiddenlayer.sdk.rest;
+package com.hiddenlayer.sdk.rest.api;
 
-import com.hiddenlayer.sdk.ApiException;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.models.SubmissionResponse;
+import com.hiddenlayer.sdk.rest.models.SubmissionV2;
+import com.hiddenlayer.sdk.rest.models.ValidationErrorModel;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -25,16 +28,16 @@ import java.util.Set;
 
 
 /**
- * API tests for HealthApi
+ * API tests for AidrPredictiveApi
  */
 @Disabled
-public class HealthApiTest {
+public class AidrPredictiveApiTest {
 
-    private final HealthApi api = new HealthApi();
+    private final AidrPredictiveApi api = new AidrPredictiveApi();
 
     
     /**
-     * Health check endpoint for Model Supply Chain Services
+     * Submit vectors
      *
      * 
      *
@@ -42,9 +45,10 @@ public class HealthApiTest {
      *          if the Api call fails
      */
     @Test
-    public void modelscannerApiV3HealthCheckTest() throws ApiException {
-        
-        api.modelscannerApiV3HealthCheck();
+    public void submitVectorsTest() throws ApiException {
+        SubmissionV2 submissionV2 = null;
+        SubmissionResponse response = 
+        api.submitVectors(submissionV2);
         
         // TODO: test validations
     }

@@ -1,10 +1,10 @@
-# hiddenlayer-java
+# hiddenlayer-rest-java
 
 HiddenLayer ModelScan V2
 
 - API version: 1
 
-- Build date: 2024-12-19T23:42:19.631048Z[GMT]
+- Build date: 2024-12-23T18:00:16.695354Z[GMT]
 
 - Generator version: 7.6.0
 
@@ -43,7 +43,7 @@ Add this dependency to your project's POM:
 ```xml
 <dependency>
   <groupId>com.hiddenlayer</groupId>
-  <artifactId>hiddenlayer-java</artifactId>
+  <artifactId>hiddenlayer-rest-java</artifactId>
   <version>1</version>
   <scope>compile</scope>
 </dependency>
@@ -54,7 +54,7 @@ Add this dependency to your project's POM:
 Add this dependency to your project's build file:
 
 ```groovy
-compile "com.hiddenlayer:hiddenlayer-java:1"
+compile "com.hiddenlayer:hiddenlayer-rest-java:1"
 ```
 
 ### Others
@@ -67,7 +67,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-- `target/hiddenlayer-java-1.jar`
+- `target/hiddenlayer-rest-java-1.jar`
 - `target/lib/*.jar`
 
 ## Getting Started
@@ -76,9 +76,9 @@ Please follow the [installation](#installation) instruction and execute the foll
 
 ```java
 
-import com.hiddenlayer.sdk.*;
+import com.hiddenlayer.sdk.rest.*;
 import com.hiddenlayer.sdk.rest.models.*;
-import com.hiddenlayer.sdk.rest.AidrPredictiveApi;
+import com.hiddenlayer.sdk.rest.api.AidrPredictiveApi;
 
 public class AidrPredictiveApiExample {
 

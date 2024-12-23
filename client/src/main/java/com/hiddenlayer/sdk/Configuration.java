@@ -1,4 +1,4 @@
-package com.hiddenlayer;
+package com.hiddenlayer.sdk;
 
 public class Configuration {
     private String hlClientId;

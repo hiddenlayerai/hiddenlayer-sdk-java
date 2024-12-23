@@ -40,7 +40,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   ModelScanApiV3ScanQuery200Response.JSON_PROPERTY_LIMIT,
   ModelScanApiV3ScanQuery200Response.JSON_PROPERTY_OFFSET
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-19T23:42:19.631048Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-23T18:00:16.695354Z[GMT]", comments = "Generator version: 7.6.0")
 public class ModelScanApiV3ScanQuery200Response {
   public static final String JSON_PROPERTY_ITEMS = "items";
   private List<ScanReportV3> items = new ArrayList<>();
