@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install xmllint
+        run: sudo apt-get install -y libxml2-utils
       - name: Validate version in pom.xml matches release
         run: |
           VERSION=$(xmllint --xpath "/*[local-name()='project']/*[local-name()='version']" pom.xml | sed 's/<[^>]*>//g')
@@ -50,8 +52,6 @@ jobs:
           server-id: 'github'
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
-      - name: Install xmllint
-        run: sudo apt-get install -y libxml2-utils
       - name: Publish to GitHub Packages
         run: mvn deploy -Psign-artifacts,githubDeploy -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/hiddenlayerai/hiddenlayer-sdk-java
         env:
