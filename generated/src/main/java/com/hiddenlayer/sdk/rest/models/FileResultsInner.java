@@ -46,7 +46,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   FileResultsInner.JSON_PROPERTY_SEEN,
   FileResultsInner.JSON_PROPERTY_DETECTIONS
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-23T18:00:16.695354Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-23T18:20:36.233399Z[GMT]", comments = "Generator version: 7.6.0")
 public class FileResultsInner {
   public static final String JSON_PROPERTY_FILE_INSTANCE_ID = "file_instance_id";
   private String fileInstanceId;

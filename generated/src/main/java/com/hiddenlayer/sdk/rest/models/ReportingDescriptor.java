@@ -57,7 +57,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   ReportingDescriptor.JSON_PROPERTY_RELATIONSHIPS,
   ReportingDescriptor.JSON_PROPERTY_PROPERTIES
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-23T18:00:16.695354Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-23T18:20:36.233399Z[GMT]", comments = "Generator version: 7.6.0")
 public class ReportingDescriptor {
   public static final String JSON_PROPERTY_ID = "id";
   private String id;

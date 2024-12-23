@@ -40,7 +40,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   SensorSORQueryFilter.JSON_PROPERTY_CREATED_AT_STOP,
   SensorSORQueryFilter.JSON_PROPERTY_SOURCE
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-23T18:00:16.695354Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-23T18:20:36.233399Z[GMT]", comments = "Generator version: 7.6.0")
 public class SensorSORQueryFilter {
   public static final String JSON_PROPERTY_PLAINTEXT_NAME = "plaintext_name";
   private String plaintextName;
