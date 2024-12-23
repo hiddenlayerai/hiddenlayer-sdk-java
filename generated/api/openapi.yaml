@@ -90,7 +90,8 @@ paths:
         name: X-Content-Length
         required: true
         schema:
-          type: number
+          format: int64
+          type: integer
         style: simple
       responses:
         "200":
@@ -136,7 +137,7 @@ paths:
         required: true
         schema:
           title: Part Number
-          type: number
+          type: integer
         style: simple
       requestBody:
         content:
@@ -960,14 +961,14 @@ components:
       example:
         upload_id: upload_id
         parts:
-        - part_number: 0.8008281904610115
-          end_offset: 1.4658129805029452
+        - part_number: 0
+          end_offset: 1
           upload_url: upload_url
-          start_offset: 6.027456183070403
-        - part_number: 0.8008281904610115
-          end_offset: 1.4658129805029452
+          start_offset: 6
+        - part_number: 0
+          end_offset: 1
           upload_url: upload_url
-          start_offset: 6.027456183070403
+          start_offset: 6
       properties:
         upload_id:
           title: Upload Id
@@ -984,17 +985,19 @@ components:
       type: object
     MultipartUploadPart:
       example:
-        part_number: 0.8008281904610115
-        end_offset: 1.4658129805029452
+        part_number: 0
+        end_offset: 1
         upload_url: upload_url
-        start_offset: 6.027456183070403
+        start_offset: 6
       properties:
         part_number:
-          type: number
+          type: integer
         start_offset:
-          type: number
+          format: int64
+          type: integer
         end_offset:
-          type: number
+          format: int64
+          type: integer
         upload_url:
           description: only provided when part is to be directly uploaded to a cloud
             provider (adhoc)
@@ -1480,7 +1483,7 @@ components:
           description: Total number of items available based on the query criteria.
           minimum: 0
           title: Total Item Count
-          type: number
+          type: integer
         limit:
           default: 25
           description: Maximum number of items to return
@@ -4518,7 +4521,7 @@ components:
               $ref: '#/components/schemas/ScanReportV3'
             type: array
       example:
-        total: 0.08008281904610115
+        total: 0
         offset: 250
         limit: 50
         items:

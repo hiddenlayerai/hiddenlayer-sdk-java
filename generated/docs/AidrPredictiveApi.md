@@ -19,12 +19,12 @@ Submit vectors
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.AidrPredictiveApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.AidrPredictiveApi;
 
 public class Example {
     public static void main(String[] args) {
@@ -88,13 +88,13 @@ Submit vectors
 
 ```java
 // Import classes:
-import hiddenlayer.sdk.ApiClient;
-import hiddenlayer.sdk.ApiException;
-import hiddenlayer.sdk.ApiResponse;
-import hiddenlayer.sdk.Configuration;
-import hiddenlayer.sdk.auth.*;
-import hiddenlayer.sdk.models.*;
-import hiddenlayer.sdk.rest.AidrPredictiveApi;
+import com.hiddenlayer.sdk.rest.ApiClient;
+import com.hiddenlayer.sdk.rest.ApiException;
+import com.hiddenlayer.sdk.rest.ApiResponse;
+import com.hiddenlayer.sdk.rest.Configuration;
+import com.hiddenlayer.sdk.rest.auth.*;
+import com.hiddenlayer.sdk.rest.models.*;
+import com.hiddenlayer.sdk.rest.api.AidrPredictiveApi;
 
 public class Example {
     public static void main(String[] args) {

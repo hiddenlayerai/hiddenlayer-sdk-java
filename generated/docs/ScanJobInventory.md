@@ -9,9 +9,9 @@
 ## Example
 ```java
 // Import classes:
-import org.openapitools.client.model.ScanJobInventory;
-import org.openapitools.client.model.ScanModelDetailsV3;
-import org.openapitools.client.model.ScanModelIdsV3;
+import com.hiddenlayer.sdk.rest.models.ScanJobInventory;
+import com.hiddenlayer.sdk.rest.models.ScanModelDetailsV3;
+import com.hiddenlayer.sdk.rest.models.ScanModelIdsV3;
 
 public class Example {
     public static void main(String[] args) {

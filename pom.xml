@@ -2,11 +2,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.hiddenlayer</groupId>
-    <artifactId>hiddenlayer-sdk</artifactId>
-    <name>hiddenlayer-sdk</name>
-    <version>0.0.3</version>
+    <artifactId>java-client-parent</artifactId>
+    <packaging>pom</packaging>
+    <name>Java Client</name>
+    <version>0.0.4</version>
     <url>https://github.com/hiddenlayerai/hiddenlayer-sdk-java</url>
-    <description>HiddenLayer Java SDK</description>
+    <description>Java SDK for Hiddenlayer</description>
     <scm>
         <connection>scm:git:git@github.com:hiddenlayerai/hiddenlayer-sdk-java.git</connection>
         <developerConnection>scm:git:git@github.com:hiddenlayerai/hiddenlayer-sdk-java.git</developerConnection>
@@ -28,6 +29,12 @@
             <organizationUrl>https://hiddenlayer.com</organizationUrl>
         </developer>
     </developers>
+
+    <modules>
+        <module>generated</module>
+        <module>client</module>
+        <module>sdk</module>
+    </modules>
 
     <build>
         <plugins>
@@ -117,6 +124,13 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
