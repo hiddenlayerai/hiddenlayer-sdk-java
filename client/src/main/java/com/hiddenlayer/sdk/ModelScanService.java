@@ -29,15 +29,30 @@ import com.hiddenlayer.sdk.rest.api.ModelScanApi;
 import com.hiddenlayer.sdk.rest.api.ModelSupplyChainApi;
 import com.hiddenlayer.sdk.rest.api.SensorApi;
 
+/**
+ * Hiddenlayer SDK Service for scanning models
+ */
 public class ModelScanService extends HiddenlayerService {
   final private ModelSupplyChainApi modelSupplyChainApi;
   final private SensorApi sensorApi;
   final private ModelScanApi modelScanApi;
 
+  /**
+   * Constructor for ModelScanService
+   * 
+   * Credentials are read from the environment, HL_CLIENT_ID and HL_CLIENT_SECRET
+   * @throws Exception
+   */
   public ModelScanService() throws Exception {
     this(Configuration.defaultFromEnvironment());
   }
 
+  /**
+   * Constructor for ModelScanService
+   * 
+   * @param config Configuration object
+   * @throws Exception
+   */
   public ModelScanService(Configuration config) throws Exception {
     super(config);
     String jwt = getJWT();
@@ -51,11 +66,40 @@ public class ModelScanService extends HiddenlayerService {
     this.modelScanApi = new ModelScanApi(apiClient);
   }
 
+  /**
+   * Scan a file
+   * 
+   * Next version of the model will be created, starting at 1
+   * 
+   * @param modelPath Path to the model file
+   * @param modelName Name of the model
+   * @return ScanReportV3
+   * @throws Exception
+   * @throws FileNotFoundException
+   * @throws RuntimeException
+   * @throws IOException
+   * @throws ApiException
+   */
   public ScanReportV3 scanFile(String modelPath, String modelName) 
     throws Exception, FileNotFoundException, RuntimeException, IOException, ApiException {
     return scanFile(modelPath, modelName, OptionalInt.empty());
   }
 
+  /**
+   * Scan a file
+   * 
+   * Optionally specify a version for the model.  If no version is specified, the next version of the model will be created, starting at 1
+   * 
+   * @param modelPath Path to the model file
+   * @param modelName Name of the model
+   * @param modelVersion Version of the model
+   * @return ScanReportV3
+   * @throws Exception
+   * @throws FileNotFoundException
+   * @throws RuntimeException
+   * @throws IOException
+   * @throws ApiException
+   */
   public ScanReportV3 scanFile(String modelPath, String modelName, OptionalInt modelVersion) 
     throws Exception, FileNotFoundException, RuntimeException, IOException, ApiException {
     File fileToScan = new File(modelPath);
@@ -68,22 +112,86 @@ public class ModelScanService extends HiddenlayerService {
     return scanStream(modelStream, fileToScan.length(), modelName, modelVersion);
   }
 
+  /**
+   * Scan a stream
+   * 
+   * Next version of the model will be created, starting at 1
+   * 
+   * @param modelStream InputStream of the model
+   * @param streamLength Length of the stream
+   * @param modelName Name of the model
+   * @return ScanReportV3
+   * @throws Exception
+   * @throws RuntimeException
+   * @throws IOException
+   * @throws ApiException
+   */
   public ScanReportV3 scanStream(InputStream modelStream, long streamLength, String modelName) 
     throws Exception, RuntimeException, IOException, ApiException {
     return this.scanStream(modelStream, streamLength, modelName, OptionalInt.empty());
   }
 
+  /**
+   * Scan a stream
+   * 
+   * Optionally specify a version for the model.  If no version is specified, the next version of the model will be created, starting at 1
+   * 
+   * @param modelStream InputStream of the model
+   * @param streamLength Length of the stream
+   * @param modelName Name of the model
+   * @param modelVersion Version of the model
+   * @return ScanReportV3
+   * @throws Exception
+   * @throws RuntimeException
+   * @throws IOException
+   * @throws ApiException
+   */
   public ScanReportV3 scanStream(InputStream modelStream, long streamLength, String modelName, OptionalInt modelVersion) 
     throws Exception, RuntimeException, IOException, ApiException {
     Model sensor = this.submitStream(modelStream, streamLength, modelName, modelVersion);
     return this.getScanResults(sensor.getSensorId());
   }
 
+  /**
+   * Scan a folder
+   * 
+   * Folder is zipped at sent to Hiddenlayer Model Scanning service
+   * 
+   * Next version of the model will be created, starting at 1
+   * 
+   * @param folderPath Path to the folder
+   * @param modelName Name of the model
+   * @return ScanReportV3
+   * @throws Exception
+   * @throws ApiException
+   * @throws IOException
+   * @throws URISyntaxException
+   * @throws InterruptedException
+   * @throws Exception
+   */
   public ScanReportV3 scanFolder(String folderPath, String modelName) 
     throws Exception, ApiException, IOException, URISyntaxException, InterruptedException, Exception {
     return this.scanFolder(folderPath, modelName, OptionalInt.empty());
   }
 
+  /**
+   * Scan a folder
+   * 
+   * Folder is zipped at sent to Hiddenlayer Model Scanning service
+   * 
+   * Optionally specify a version for the model.  If no version is specified, the next version of the model will be created, starting at 1
+   * 
+   * @param folderPath Path to the folder
+   * @param modelName Name of the model
+   * @param modelVersion Version of the model
+   * @return ScanReportV3
+   * @throws Exception
+   * @throws ApiException
+   * @throws IOException
+   * @throws URISyntaxException
+   * @throws InterruptedException
+   * @throws Exception
+   */
   public ScanReportV3 scanFolder(String folderPath, String modelName, OptionalInt modelVersion) 
         throws Exception, ApiException, IOException, URISyntaxException, InterruptedException, Exception {
         if (modelName == null || modelName.isEmpty()) {
@@ -117,6 +225,13 @@ public class ModelScanService extends HiddenlayerService {
         return this.scanFile(modelName, tempFile.getAbsolutePath(), modelVersion);
     }
 
+    /**
+     * Get the latest scan results for a model version
+     * 
+     * @param modelVersion UUID of the model version
+     * @return ScanReportV3
+     * @throws ApiException
+     */
     private ScanReportV3 getScanResults(UUID modelVersion)
         throws ApiException {
         // model version and sensor ids are one to one currently
@@ -133,6 +248,22 @@ public class ModelScanService extends HiddenlayerService {
         return scanReport;
     }
 
+    /**
+     * Submit a stream to the Hiddenlayer Model Scanning service
+     * 
+     * Optionally specify a version for the model.  If no version is specified, the next version of the model will be created, starting at 1
+     * 
+     * @param stream
+     * @param streamLength
+     * @param modelName
+     * @param modelVersion
+     * @return
+     * @throws Exception
+     * @throws ApiException
+     * @throws InterruptedException
+     * @throws IOException
+     * @throws URISyntaxException
+     */
     private Model submitStream(InputStream stream, long streamLength, String modelName, OptionalInt modelVersion) 
       throws Exception, ApiException, InterruptedException, IOException, URISyntaxException {
       CreateSensorRequest createSensorRequest = new CreateSensorRequest();
