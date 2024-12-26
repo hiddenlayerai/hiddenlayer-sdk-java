@@ -5,7 +5,7 @@
     <artifactId>java-client-parent</artifactId>
     <packaging>pom</packaging>
     <name>Java Client</name>
-    <version>0.0.8</version>
+    <version>0.0.9</version>
     <url>https://github.com/hiddenlayerai/hiddenlayer-sdk-java</url>
     <description>Java SDK for Hiddenlayer</description>
     <scm>
@@ -63,6 +63,20 @@
         </profile>
         <profile>
             <id>centralDeploy</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.6.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <excludeArtifacts>java-client,hiddenlayer-rest-java</excludeArtifacts>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
             <distributionManagement>
                 <repository>
                     <id>central</id>
@@ -242,16 +256,6 @@
                   <importOrder/>
                 </java>
               </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.6.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <publishingServerId>central</publishingServerId>
-                    <excludeArtifacts>java-client,hiddenlayer-rest-java</excludeArtifacts>
-                </configuration>
             </plugin>
         </plugins>
     </build>
