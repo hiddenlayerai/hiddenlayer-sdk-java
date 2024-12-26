@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.hiddenlayer</groupId>
         <artifactId>java-client-parent</artifactId>
-        <version>0.0.4</version>
+        <version>0.0.7</version>
     </parent>
     <artifactId>hiddenlayer-rest-java</artifactId>
     <packaging>jar</packaging>
