@@ -7,7 +7,7 @@
     <name>Java Client</name>
     <version>0.1.4</version>
     <url>https://github.com/hiddenlayerai/hiddenlayer-sdk-java</url>
-    <description>Java SDK for Hiddenlayer</description>
+    <description>Java SDK for HiddenLayer</description>
     <scm>
         <connection>scm:git:git@github.com:hiddenlayerai/hiddenlayer-sdk-java.git</connection>
         <developerConnection>scm:git:git@github.com:hiddenlayerai/hiddenlayer-sdk-java.git</developerConnection>

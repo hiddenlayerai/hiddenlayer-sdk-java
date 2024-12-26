@@ -9,8 +9,8 @@
     </parent>
     <artifactId>hiddenlayer-sdk</artifactId>
     <packaging>jar</packaging>
-    <name>Hiddenlayer Java SDK</name>
-    <description>Java SDK for Hiddenlayer</description>
+    <name>HiddenLayer Java SDK</name>
+    <description>Java SDK for HiddenLayer</description>
     <scm>
         <connection>scm:git:git@github.com:hiddenlayerai/hiddenlayer-sdk-java.git</connection>
         <developerConnection>scm:git:git@github.com:hiddenlayerai/hiddenlayer-sdk-java.git</developerConnection>

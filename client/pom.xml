@@ -10,7 +10,7 @@
     <artifactId>java-client</artifactId>
     <packaging>jar</packaging>
     <name>Java Client</name>
-    <description>Java SDK for Hiddenlayer</description>
+    <description>Java SDK for HiddenLayer</description>
 
     <dependencies>
         <dependency>
