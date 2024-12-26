@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install xmllint
+        run: sudo apt-get install -y libxml2-utils
       - name: Validate version in pom.xml matches release
         run: |
           VERSION=$(xmllint --xpath "/*[local-name()='project']/*[local-name()='version']" pom.xml | sed 's/<[^>]*>//g')

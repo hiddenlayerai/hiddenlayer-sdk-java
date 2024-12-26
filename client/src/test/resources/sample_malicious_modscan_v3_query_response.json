@@ -1,0 +1,24 @@
+{
+    "items":[
+        {
+            "version": "24.7.0",
+            "$schema": "https://json.hiddenlayer.ai/modelscanner-1.0.0.json",
+            "scan_id": "87654321-4321-4321-4321-210987654321",
+            "start_time": "2024-05-15T11:22:50.215000Z",
+            "end_time": "2024-05-15T11:22:54.210000Z",
+            "inventory": {
+                "requested_scan_location": "s3://my-s3-bucket/this/is/a/prefix",
+                "model_version_id": "12345678-1234-1234-1234-123456789012"
+            },
+            "severity": "critical",
+            "status": "done",
+            "detection_count": 1,
+            "file_count": 3,
+            "files_with_detections_count": 1,
+            "detection_categories": ["Arbitrary Code Execution"]
+        }
+    ],
+    "total": 1,
+    "limit": 1,
+    "offset": 0
+}

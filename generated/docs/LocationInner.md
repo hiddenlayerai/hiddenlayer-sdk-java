@@ -9,9 +9,9 @@
 ## Example
 ```java
 // Import classes:
-import org.openapitools.client.model.LocationInner;
-import org.openapitools.client.model.Integer;
-import org.openapitools.client.model.String;
+import com.hiddenlayer.sdk.rest.models.LocationInner;
+import com.hiddenlayer.sdk.rest.models.Integer;
+import com.hiddenlayer.sdk.rest.models.String;
 
 public class Example {
     public static void main(String[] args) {

@@ -1,0 +1,83 @@
+{
+    "version": "24.7.0",
+    "$schema": "https://json.hiddenlayer.ai/modelscanner-1.0.0.json",
+    "scan_id": "87654321-4321-4321-4321-210987654321",
+    "start_time": "2024-05-15T11:22:50.215000Z",
+    "end_time": "2024-05-15T11:22:54.210000Z",
+    "inventory": {
+        "requested_scan_location": "s3://my-s3-bucket/this/is/a/prefix",
+        "model_version_id": "12345678-1234-1234-1234-123456789012"
+    },
+    "severity": "critical",
+    "status": "done",
+    "detection_count": 1,
+    "file_count": 3,
+    "files_with_detections_count": 1,
+    "detection_categories": ["Arbitrary Code Execution"],
+    "file_results": [
+        {
+        "file_location": "https://hl-modelscan-local/my_zip.zip",
+        "plan": "scan",
+        "start_time": "2024-05-15T11:22:50.215000Z",
+        "end_time": "2024-05-15T11:22:52.210000Z",
+        "status": "done",
+        "detections": [],
+        "labels": [],
+        "details": {
+            "md5": "8a4acf51ae676f62373e0d93e8485a04",
+            "sha256": "e4994831e63fea16f65392de37855c45e208caded5e5bd764cd7f3651f9ac123",
+            "subtype": [],
+            "tlsh": "e96234315bde2d9b6c78e123437c6269d7f78078543dd522b402190f80fe1aee29a1ccc",
+            "file_type": "ZIP",
+            "file_type_details": {"version": "6.3.10"}
+        },
+        "file_results": [
+            {
+            "file_location": "inventor.png",
+            "status": "skipped",
+            "start_time": "2024-05-15T11:22:50.215000Z",
+            "end_time": "2024-05-15T11:22:50.210000Z",
+            "labels": [],
+            "detections": []
+            },
+            {
+            "file_location": "my_model.keras",
+            "status": "done",
+            "labels": [],
+            "start_time": "2024-05-15T11:22:51.215000Z",
+            "end_time": "2024-05-15T11:22:52.190000Z",
+            "detections": [
+                {
+                "detection_id": "896d0104-8524-42e8-a12b-28d9f0a55204",
+                "risk": "MALICIOUS",
+                "category": "Arbitrary Code Execution",
+                "description": "Adversaries can inject malicious code into a model, which will be executed whenever the hijacked model is loaded into memory. This vulnerability can be used to exfiltrate sensitive data, execute malware (such as spyware or ransomware) on the machine, or run any kind of malicious scripts.",
+                "likelihood": "medium",
+                "impact": "critical",
+                "severity": "critical",
+                "mitre_atlas" : [ {"tactic": "AML.TA0001", 
+                                    "technique": "AML.T0003.45"},
+                                    {"tactic": "AML.T0011",
+                                    "technique": "AML.T0050"}],
+                "owasp": ["ML06", "LLM05"],
+                "cve": ["CVE-2021-1234"],
+                "technical_blog_href": "https://hiddenlayer.com/sai-security-advisory/2024-07-tensorflow/",
+                "cwe": "CWE-502: Deserialization of Untrusted Data",
+                "cwe_href": "https://cwe.mitre.org/data/definitions/502.html" 
+                }
+            ],
+            "details": {
+                "md5": "7a4acf51ae976f62373e0d93e8485f03",
+                "sha256": "d2884831e63fea16f65392de37855c72e208caded5e5bd764cd7f3651f9cc897",
+                "tlsh": "f8652315bde2d9b6c78e133437c6269d7f78078543dd522b402190f80fe1aee29c95ab",
+                "file_type": "keras",
+                "file_type_details": {
+                    "version": ["2.13.1","2.13.2"],
+                    "subtype": []
+                }
+            }
+            }
+        ]
+        }
+    ]
+}

@@ -1,11 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.hiddenlayer</groupId>
-    <artifactId>hiddenlayer-java</artifactId>
+    <parent>
+        <groupId>com.hiddenlayer</groupId>
+        <artifactId>java-client-parent</artifactId>
+        <version>0.0.7</version>
+    </parent>
+    <artifactId>hiddenlayer-rest-java</artifactId>
     <packaging>jar</packaging>
-    <name>hiddenlayer-java</name>
-    <version>1</version>
+    <name>hiddenlayer-rest-java</name>
     <url>https://github.com/openapitools/openapi-generator</url>
     <description>OpenAPI Java</description>
     <scm>
