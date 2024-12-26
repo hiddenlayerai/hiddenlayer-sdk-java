@@ -72,7 +72,9 @@
                         <extensions>true</extensions>
                         <configuration>
                             <publishingServerId>central</publishingServerId>
-                            <excludeArtifacts>java-client,hiddenlayer-rest-java</excludeArtifacts>
+                            <excludeArtifacts>java-client,hiddenlayer-rest-java,java-client-parent
+
+</excludeArtifacts>
                             <autoPublish>true</autoPublish>
                         </configuration>
                     </plugin>
