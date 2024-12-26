@@ -5,7 +5,7 @@
     <artifactId>java-client-parent</artifactId>
     <packaging>pom</packaging>
     <name>Java Client</name>
-    <version>0.0.7</version>
+    <version>0.1.0</version>
     <url>https://github.com/hiddenlayerai/hiddenlayer-sdk-java</url>
     <description>Java SDK for Hiddenlayer</description>
     <scm>
@@ -62,12 +62,26 @@
             </build>
         </profile>
         <profile>
-            <id>ossrhDeploy</id>
+            <id>centralDeploy</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.6.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <excludeArtifacts>java-client,hiddenlayer-rest-java</excludeArtifacts>
+                            <autoPublish>true</autoPublish>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
             <distributionManagement>
                 <repository>
-                    <id>ossrh</id>
-                    <name>Central Repository OSSRH</name>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                    <id>central</id>
+                    <name>Central Repository</name>
                 </repository>
             </distributionManagement>
         </profile>
