@@ -24,7 +24,6 @@ import com.hiddenlayer.sdk.rest.models.*;
 
 import com.hiddenlayer.sdk.rest.ApiClient;
 import com.hiddenlayer.sdk.rest.ApiException;
-import com.hiddenlayer.sdk.rest.ApiResponse;
 import com.hiddenlayer.sdk.rest.api.ModelScanApi;
 import com.hiddenlayer.sdk.rest.api.ModelSupplyChainApi;
 import com.hiddenlayer.sdk.rest.api.SensorApi;
@@ -114,7 +113,7 @@ public class ModelScanService extends HiddenlayerService {
         out.flush();
         out.close();
         
-        return this.scanFile(modelName, tempFile.getAbsolutePath(), modelVersion);
+        return this.scanFile(tempFile.getAbsolutePath(), modelName, modelVersion);
     }
 
     private ScanReportV3 getScanResults(UUID modelVersion)
