@@ -1,6 +1,6 @@
-# HiddenLayer SDK Java (Beta)
+# HiddenLayer Java SDK (Beta)
 
-HiddenLayer SDK Java is a library that provides a set of tools to interact with the HiddenLayer API.
+HiddenLayer Java SDK is a library that provides a set of tools to interact with the HiddenLayer API.
 
 ## Updating the package version
 
