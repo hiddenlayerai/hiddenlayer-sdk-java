@@ -68,8 +68,8 @@ public class ModelScanService extends HiddenlayerService {
 
   /**
    * Scan a file
-   * 
-   * Next version of the model will be created, starting at 1
+   * <p>
+   * Next version of the model will be created, starting at 1.
    * 
    * @param modelPath Path to the model file
    * @param modelName Name of the model
@@ -87,8 +87,8 @@ public class ModelScanService extends HiddenlayerService {
 
   /**
    * Scan a file
-   * 
-   * Optionally specify a version for the model.  If no version is specified, the next version of the model will be created, starting at 1
+   * <p>
+   * Optionally specify a version for the model.  If no version is specified, the next version of the model will be created, starting at 1.
    * 
    * @param modelPath Path to the model file
    * @param modelName Name of the model
@@ -114,8 +114,8 @@ public class ModelScanService extends HiddenlayerService {
 
   /**
    * Scan a stream
-   * 
-   * Next version of the model will be created, starting at 1
+   * <p>
+   * Optionally specify a version for the model. If no version is specified, the next version of the model will be created, starting at 1.
    * 
    * @param modelStream InputStream of the model
    * @param streamLength Length of the stream
@@ -132,9 +132,9 @@ public class ModelScanService extends HiddenlayerService {
   }
 
   /**
-   * Scan a stream
-   * 
-   * Optionally specify a version for the model.  If no version is specified, the next version of the model will be created, starting at 1
+   * Scan a stream.
+   * <p>
+   * Optionally specify a version for the model. If no version is specified, the next version of the model will be created, starting at 1.
    * 
    * @param modelStream InputStream of the model
    * @param streamLength Length of the stream
@@ -153,11 +153,9 @@ public class ModelScanService extends HiddenlayerService {
   }
 
   /**
-   * Scan a folder
-   * 
-   * Folder is zipped and sent to Hiddenlayer Model Scanning service
-   * 
-   * Next version of the model will be created, starting at 1
+   * Scan a folder zipping all the contents and sending to Hiddenlayer Model Scanning service.e
+   * <p>
+   * Next version of the model will be created, starting at 1.
    * 
    * @param folderPath Path to the folder
    * @param modelName Name of the model
@@ -175,11 +173,9 @@ public class ModelScanService extends HiddenlayerService {
   }
 
   /**
-   * Scan a folder
-   * 
-   * Folder is zipped and sent to Hiddenlayer Model Scanning service
-   * 
-   * Optionally specify a version for the model.  If no version is specified, the next version of the model will be created, starting at 1
+   * Scan a folder zipping all the contents and sending to Hiddenlayer Model Scanning service.
+   * <p>
+   * Optionally specify a version for the model. If no version is specified, the next version of the model will be created, starting at 1.
    * 
    * @param folderPath Path to the folder
    * @param modelName Name of the model
@@ -250,8 +246,8 @@ public class ModelScanService extends HiddenlayerService {
 
     /**
      * Submit a stream to the Hiddenlayer Model Scanning service
-     * 
-     * Optionally specify a version for the model.  If no version is specified, the next version of the model will be created, starting at 1
+     * <p>
+     * Optionally specify a version for the model. If no version is specified, the next version of the model will be created, starting at 1.
      * 
      * @param stream
      * @param streamLength
