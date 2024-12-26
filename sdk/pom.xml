@@ -5,10 +5,11 @@
     <parent>
         <groupId>com.hiddenlayer</groupId>
         <artifactId>java-client-parent</artifactId>
-        <version>0.1.4</version>
+        <version>0.1.5</version>
     </parent>
     <artifactId>hiddenlayer-sdk</artifactId>
     <packaging>jar</packaging>
+    <url>https://github.com/hiddenlayerai/hiddenlayer-sdk-java</url>
     <name>HiddenLayer Java SDK</name>
     <description>Java SDK for HiddenLayer</description>
     <scm>
