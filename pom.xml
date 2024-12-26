@@ -250,6 +250,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
+                    <excludeArtifacts>java-client,hiddenlayer-rest-java</excludeArtifacts>
                 </configuration>
             </plugin>
         </plugins>
