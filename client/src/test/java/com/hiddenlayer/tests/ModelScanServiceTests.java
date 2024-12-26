@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.stream.Collectors;
 import java.util.UUID;
 
@@ -21,6 +22,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.io.TempDir;
+
+import com.hiddenlayer.sdk.rest.models.ScanReportV3;
+import com.hiddenlayer.sdk.rest.models.ScanReportV3.StatusEnum;
 
 import com.hiddenlayer.sdk.rest.ApiClient;
 import com.hiddenlayer.sdk.rest.ApiException;
@@ -119,10 +124,78 @@ public class ModelScanServiceTests {
                 .withHeader("Content-Type", "application/json")
                 .withBody(sampleMaliciousReport)));
 
-
-        InputStream stream = new ByteArrayInputStream(MaliciousPickle.getBytes(StandardCharsets.UTF_8));
+        InputStream stream = GetResourceAsStream("malicious_model.pkl");
         Configuration config = new Configuration("test_key", "test_secret", "http://localhost:8089", "http://localhost:8089");
         ModelScanService modelScanService = new ModelScanService(config);
-        modelScanService.scanStream(stream, MaliciousPickle.length(), "test java SDK model");
+        ScanReportV3 report = modelScanService.scanStream(stream, stream.available(), "test java SDK model");
+        assertEquals(report.getScanId(), "87654321-4321-4321-4321-210987654321");
+        assertEquals(report.getStatus(), StatusEnum.DONE);
     }
+
+    @Test
+    public void testScanFolderMalicious(@TempDir Path tempDir, WireMockRuntimeInfo wmRuntimeInfo) throws Exception {
+        File tempFile = tempDir.resolve("malicious.py").toFile();
+        try {
+            java.nio.file.Files.write(tempFile.toPath(), MaliciousPickle.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        stubFor(post(urlEqualTo("/oauth2/token?grant_type=client_credentials"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")
+                .withBody("{\"access_token\": \"an_access_token\"}")));
+
+        stubFor(post(urlEqualTo("/api/v2/sensors/create"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")
+                .withBody("{\"sensor_id\": \"12345678-1234-1234-1234-123456789012\"}")));
+        
+        stubFor(post(urlEqualTo("/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/begin"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")
+                .withBody("{\"upload_id\": \"5678\", \"parts\": [{\"part_number\": 0, \"start_offset\": 0, \"end_offset\": 10, \"upload_url\": \"http://localhost:8089/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/5678/part/0\"}, {\"part_number\": 1, \"start_offset\": 10, \"end_offset\": 20, \"upload_url\": \"http://localhost:8089/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/5678/part/1\"}]}")));
+
+        stubFor(put(urlEqualTo("/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/5678/part/0"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")));
+
+        stubFor(put(urlEqualTo("/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/5678/part/1"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")));
+
+        stubFor(post(urlEqualTo("/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/5678/complete"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")
+                .withBody("{\"status\": \"complete\"}")));
+
+        stubFor(post(urlEqualTo("/api/v2/submit/sensors/12345678-1234-1234-1234-123456789012/scan"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")
+                .withBody("{\"status\": \"complete\"}")));
+
+        stubFor(get(urlEqualTo("/scan/v3/results?model_version_ids=12345678-1234-1234-1234-123456789012&latest_per_model_version_only=true"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")
+                .withBody(sampleMaliciousQueryResponse)));
+
+        stubFor(get(urlEqualTo("/scan/v3/results/87654321-4321-4321-4321-210987654321"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")
+                .withBody(sampleMaliciousReport)));
+
+        Configuration config = new Configuration("test_key", "test_secret", "http://localhost:8089", "http://localhost:8089");
+        ModelScanService modelScanService = new ModelScanService(config);
+        modelScanService.scanFolder(tempDir.toString(), "test java SDK folder model");
+    }
+
 }
