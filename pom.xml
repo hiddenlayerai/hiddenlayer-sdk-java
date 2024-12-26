@@ -5,9 +5,9 @@
     <artifactId>java-client-parent</artifactId>
     <packaging>pom</packaging>
     <name>Java Client</name>
-    <version>0.1.3</version>
+    <version>0.1.4</version>
     <url>https://github.com/hiddenlayerai/hiddenlayer-sdk-java</url>
-    <description>Java SDK for Hiddenlayer</description>
+    <description>Java SDK for HiddenLayer</description>
     <scm>
         <connection>scm:git:git@github.com:hiddenlayerai/hiddenlayer-sdk-java.git</connection>
         <developerConnection>scm:git:git@github.com:hiddenlayerai/hiddenlayer-sdk-java.git</developerConnection>
@@ -72,9 +72,7 @@
                         <extensions>true</extensions>
                         <configuration>
                             <publishingServerId>central</publishingServerId>
-                            <excludeArtifacts>java-client,hiddenlayer-rest-java,java-client-parent
-
-</excludeArtifacts>
+                            <excludeArtifacts>java-client,hiddenlayer-rest-java,java-client-parent</excludeArtifacts>
                             <autoPublish>true</autoPublish>
                         </configuration>
                     </plugin>

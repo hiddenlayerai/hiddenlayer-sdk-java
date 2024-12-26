@@ -5,12 +5,33 @@
     <parent>
         <groupId>com.hiddenlayer</groupId>
         <artifactId>java-client-parent</artifactId>
-        <version>0.1.3</version>
+        <version>0.1.4</version>
     </parent>
     <artifactId>hiddenlayer-sdk</artifactId>
     <packaging>jar</packaging>
-    <name>Java Hiddenlayer SDK</name>
-    <description>Java SDK for Hiddenlayer</description>
+    <name>HiddenLayer Java SDK</name>
+    <description>Java SDK for HiddenLayer</description>
+    <scm>
+        <connection>scm:git:git@github.com:hiddenlayerai/hiddenlayer-sdk-java.git</connection>
+        <developerConnection>scm:git:git@github.com:hiddenlayerai/hiddenlayer-sdk-java.git</developerConnection>
+        <url>https://github.com/hiddenlayerai/hiddenlayer-sdk-java</url>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://github.com/hiddenlayerai/hiddenlayer-sdk-java/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>HiddenLayer</name>
+            <organization>hiddenlayer.com</organization>
+            <organizationUrl>https://hiddenlayer.com</organizationUrl>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>
