@@ -135,6 +135,7 @@ public class ModelScanService extends HiddenlayerService {
     private Model submitStream(InputStream stream, long streamLength, String modelName, OptionalInt modelVersion) 
       throws Exception, ApiException, InterruptedException, IOException, URISyntaxException {
       CreateSensorRequest createSensorRequest = new CreateSensorRequest();
+      createSensorRequest.setAdhoc(true);
       createSensorRequest.setActive(true);
       createSensorRequest.setPlaintextName(modelName);
       if (modelVersion.isPresent()) {
@@ -159,18 +160,14 @@ public class ModelScanService extends HiddenlayerService {
       }
       UUID sensorId = model.getSensorId();
 
-      BufferedInputStream bufferedReader = null;
       try{
-          bufferedReader = new BufferedInputStream(stream);
 
           GetMultipartUploadResponse uploadStartResponse = this.sensorApi.beginMultipartUpload(sensorId, streamLength);
           for (int i = 0; i < uploadStartResponse.getParts().size(); i++) {
               MultipartUploadPart uploadPart = uploadStartResponse.getParts().get(i);
               long bytesToRead = uploadPart.getEndOffset() - uploadPart.getStartOffset();
               // TODO: appropriately handle large part sizes (this works for under 2GB parts)
-              byte[] buffer = new byte[(int)bytesToRead];
-              int read = bufferedReader.read(buffer, 0, (int)bytesToRead);
-              // TODO: throw exception if read != bytesToRead
+              byte[] buffer = stream.readNBytes((int)bytesToRead);
               if (uploadPart.getUploadUrl() != null) {
                 HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                     .uri(new URI(uploadPart.getUploadUrl()))
