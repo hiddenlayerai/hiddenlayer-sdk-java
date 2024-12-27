@@ -11,12 +11,20 @@ public class ScanModel {
     public static void main(String[] args) throws Exception {
         Options options = new Options();
         Option file = new Option("f", "file", true, "file to scan");
-        file.setRequired(true);
+        file.setRequired(false);
         options.addOption(file);
+
+        Option folder = new Option(null, "folder", true, "folder to scan");
+        folder.setRequired(false);
+        options.addOption(folder);
 
         Option model = new Option("m", "model", true, "model name");
         model.setRequired(true);
         options.addOption(model);
+
+        Option dontWait = new Option(null, "dont-wait", false, "don't wait for scan to complete");
+        dontWait.setRequired(false);
+        options.addOption(dontWait);
 
         Option clientId = new Option("c", "client-id", true, "client id");
         clientId.setRequired(true);
@@ -47,10 +55,14 @@ public class ScanModel {
             System.exit(1);
         }
 
-        String filePath = cmd.getOptionValue("file");
         String modelName = cmd.getOptionValue("model");
         String apiId = cmd.getOptionValue("client-id");
         String apiSecret = cmd.getOptionValue("client-secret");
+        Boolean waitForDone = true;
+
+        if (cmd.hasOption("dont-wait")) {
+            waitForDone = false;
+        }
 
         Configuration configuration;
 
@@ -63,7 +75,17 @@ public class ScanModel {
         }
 
         ModelScanService modelScanService = new ModelScanService(configuration);
-        ScanReportV3 report = modelScanService.scanFile(filePath, modelName, true);
+        ScanReportV3 report;
+        if (cmd.hasOption("file")) {
+            String filePath = cmd.getOptionValue("file");
+            report = modelScanService.scanFile(filePath, modelName, waitForDone);
+        } else if (cmd.hasOption("folder")) {
+            String folderPath = cmd.getOptionValue("folder");
+            report = modelScanService.scanFolder(folderPath, modelName, waitForDone);
+        } else {
+            System.out.println("Please provide either a file or folder to scan");
+            return;
+        }
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
