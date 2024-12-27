@@ -78,7 +78,7 @@ public class ModelScanServiceTests {
                 .withHeader("Content-Type", "application/json")
                 .withBody("{\"access_token\": \"an_access_token\"}")));
 
-        stubFor(post(urlEqualTo("/api/v2/sensors/create")).withRequestBody(equalToJson("{\"plaintext_name\": \"test java SDK model\", \"active\": true, \"tags\": { }, \"adhoc\": false}"))
+        stubFor(post(urlEqualTo("/api/v2/sensors/create")).withRequestBody(equalToJson("{\"plaintext_name\": \"test java SDK model\", \"active\": true, \"tags\": { }, \"adhoc\": true}"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
@@ -147,7 +147,7 @@ public class ModelScanServiceTests {
                 .withHeader("Content-Type", "application/json")
                 .withBody("{\"access_token\": \"an_access_token\"}")));
 
-        stubFor(post(urlEqualTo("/api/v2/sensors/create")).withRequestBody(equalToJson("{\"plaintext_name\": \"test java SDK folder model\", \"active\": true, \"tags\": { }, \"adhoc\": false}"))
+        stubFor(post(urlEqualTo("/api/v2/sensors/create")).withRequestBody(equalToJson("{\"plaintext_name\": \"test java SDK folder model\", \"active\": true, \"tags\": { }, \"adhoc\": true}"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
