@@ -44,7 +44,7 @@ public class ScanModel {
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
-        CommandLine cmd = null;//not a good practice, it serves it purpose 
+        CommandLine cmd = null;
 
         try {
             cmd = parser.parse(options, args);
