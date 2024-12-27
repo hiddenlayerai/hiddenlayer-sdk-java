@@ -1,6 +1,5 @@
 package com.hiddenlayer.sdk;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -64,7 +63,11 @@ public class ModelScanService extends HiddenlayerService {
         throw new FileNotFoundException("Path is not a file: " + modelPath);
     }
     InputStream modelStream = new FileInputStream(fileToScan);
-    return scanStream(modelStream, fileToScan.length(), modelName, modelVersion);
+    try{
+      return scanStream(modelStream, fileToScan.length(), modelName, modelVersion);
+    } finally {
+      modelStream.close();
+    }
   }
 
   public ScanReportV3 scanStream(InputStream modelStream, long streamLength, String modelName) 
@@ -135,6 +138,7 @@ public class ModelScanService extends HiddenlayerService {
     private Model submitStream(InputStream stream, long streamLength, String modelName, OptionalInt modelVersion) 
       throws Exception, ApiException, InterruptedException, IOException, URISyntaxException {
       CreateSensorRequest createSensorRequest = new CreateSensorRequest();
+      createSensorRequest.setAdhoc(true);
       createSensorRequest.setActive(true);
       createSensorRequest.setPlaintextName(modelName);
       if (modelVersion.isPresent()) {
@@ -159,40 +163,29 @@ public class ModelScanService extends HiddenlayerService {
       }
       UUID sensorId = model.getSensorId();
 
-      BufferedInputStream bufferedReader = null;
-      try{
-          bufferedReader = new BufferedInputStream(stream);
-
-          GetMultipartUploadResponse uploadStartResponse = this.sensorApi.beginMultipartUpload(sensorId, streamLength);
-          for (int i = 0; i < uploadStartResponse.getParts().size(); i++) {
-              MultipartUploadPart uploadPart = uploadStartResponse.getParts().get(i);
-              long bytesToRead = uploadPart.getEndOffset() - uploadPart.getStartOffset();
-              // TODO: appropriately handle large part sizes (this works for under 2GB parts)
-              byte[] buffer = new byte[(int)bytesToRead];
-              int read = bufferedReader.read(buffer, 0, (int)bytesToRead);
-              // TODO: throw exception if read != bytesToRead
-              if (uploadPart.getUploadUrl() != null) {
-                HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                    .uri(new URI(uploadPart.getUploadUrl()))
-                    .header("Content-Type", "application/octet-stream")
-                    .PUT(HttpRequest.BodyPublishers.ofByteArray(buffer));
-                HttpClient client = HttpClient.newHttpClient();
-                HttpRequest request = requestBuilder.build();
-                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                if (response.statusCode() != 200) {
-                    throw new Exception("Failed to upload part " + uploadPart.getPartNumber() + ": " + response.statusCode() + ": " + response.body());
-                }
-              } else {
-                this.sensorApi.uploadModelPart(sensorId, uploadStartResponse.getUploadId(), uploadPart.getPartNumber(), buffer);
-              }
-          }
-          this.sensorApi.completeMultipartUpload(sensorId, uploadStartResponse.getUploadId());
-          this.modelScanApi.scanModel(sensorId, null);
-      } finally {
-          if (bufferedReader != null) {
-              bufferedReader.close();
+      GetMultipartUploadResponse uploadStartResponse = this.sensorApi.beginMultipartUpload(sensorId, streamLength);
+      for (int i = 0; i < uploadStartResponse.getParts().size(); i++) {
+          MultipartUploadPart uploadPart = uploadStartResponse.getParts().get(i);
+          long bytesToRead = uploadPart.getEndOffset() - uploadPart.getStartOffset();
+          // TODO: appropriately handle large part sizes (this works for under 2GB parts)
+          byte[] buffer = stream.readNBytes((int)bytesToRead);
+          if (uploadPart.getUploadUrl() != null) {
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                .uri(new URI(uploadPart.getUploadUrl()))
+                .header("Content-Type", "application/octet-stream")
+                .PUT(HttpRequest.BodyPublishers.ofByteArray(buffer));
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = requestBuilder.build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                throw new Exception("Failed to upload part " + uploadPart.getPartNumber() + ": " + response.statusCode() + ": " + response.body());
+            }
+          } else {
+            this.sensorApi.uploadModelPart(sensorId, uploadStartResponse.getUploadId(), uploadPart.getPartNumber(), buffer);
           }
       }
+      this.sensorApi.completeMultipartUpload(sensorId, uploadStartResponse.getUploadId());
+      this.modelScanApi.scanModel(sensorId, null);
       return model;
     }
 }
