@@ -127,7 +127,7 @@ public class ModelScanServiceTests {
         InputStream stream = GetResourceAsStream("malicious_model.pkl");
         Configuration config = new Configuration("test_key", "test_secret", "http://localhost:8089", "http://localhost:8089");
         ModelScanService modelScanService = new ModelScanService(config);
-        ScanReportV3 report = modelScanService.scanStream(stream, stream.available(), "test java SDK model");
+        ScanReportV3 report = modelScanService.scanStream(stream, stream.available(), "test java SDK model", false);
         assertEquals(report.getScanId(), "87654321-4321-4321-4321-210987654321");
         assertEquals(report.getStatus(), StatusEnum.DONE);
     }
@@ -195,7 +195,7 @@ public class ModelScanServiceTests {
 
         Configuration config = new Configuration("test_key", "test_secret", "http://localhost:8089", "http://localhost:8089");
         ModelScanService modelScanService = new ModelScanService(config);
-        modelScanService.scanFolder(tempDir.toString(), "test java SDK folder model");
+        modelScanService.scanFolder(tempDir.toString(), "test java SDK folder model", false);
     }
 
 }

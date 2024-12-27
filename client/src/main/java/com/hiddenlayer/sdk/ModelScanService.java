@@ -49,12 +49,12 @@ public class ModelScanService extends HiddenlayerService {
     this.modelScanApi = new ModelScanApi(apiClient);
   }
 
-  public ScanReportV3 scanFile(String modelPath, String modelName) 
+  public ScanReportV3 scanFile(String modelPath, String modelName, boolean waitForDone) 
     throws Exception, FileNotFoundException, RuntimeException, IOException, ApiException {
-    return scanFile(modelPath, modelName, OptionalInt.empty());
+    return scanFile(modelPath, modelName, OptionalInt.empty(), waitForDone);
   }
 
-  public ScanReportV3 scanFile(String modelPath, String modelName, OptionalInt modelVersion) 
+  public ScanReportV3 scanFile(String modelPath, String modelName, OptionalInt modelVersion, boolean waitForDone) 
     throws Exception, FileNotFoundException, RuntimeException, IOException, ApiException {
     File fileToScan = new File(modelPath);
     if (!fileToScan.exists()) {
@@ -64,29 +64,33 @@ public class ModelScanService extends HiddenlayerService {
     }
     InputStream modelStream = new FileInputStream(fileToScan);
     try{
-      return scanStream(modelStream, fileToScan.length(), modelName, modelVersion);
+      return scanStream(modelStream, fileToScan.length(), modelName, modelVersion, waitForDone);
     } finally {
       modelStream.close();
     }
   }
 
-  public ScanReportV3 scanStream(InputStream modelStream, long streamLength, String modelName) 
+  public ScanReportV3 scanStream(InputStream modelStream, long streamLength, String modelName, boolean waitForDone) 
     throws Exception, RuntimeException, IOException, ApiException {
-    return this.scanStream(modelStream, streamLength, modelName, OptionalInt.empty());
+    return this.scanStream(modelStream, streamLength, modelName, OptionalInt.empty(), waitForDone);
   }
 
-  public ScanReportV3 scanStream(InputStream modelStream, long streamLength, String modelName, OptionalInt modelVersion) 
+  public ScanReportV3 scanStream(InputStream modelStream, long streamLength, String modelName, OptionalInt modelVersion, boolean waitForDone) 
     throws Exception, RuntimeException, IOException, ApiException {
     Model sensor = this.submitStream(modelStream, streamLength, modelName, modelVersion);
-    return this.getScanResults(sensor.getSensorId());
+    if (waitForDone) {
+      return this.getDoneScanResults(sensor.getSensorId());
+    } else {
+      return this.getScanResults(sensor.getSensorId());
+    }
   }
 
-  public ScanReportV3 scanFolder(String folderPath, String modelName) 
+  public ScanReportV3 scanFolder(String folderPath, String modelName, boolean waitForDone) 
     throws Exception, ApiException, IOException, URISyntaxException, InterruptedException, Exception {
-    return this.scanFolder(folderPath, modelName, OptionalInt.empty());
+    return this.scanFolder(folderPath, modelName, OptionalInt.empty(), waitForDone);
   }
 
-  public ScanReportV3 scanFolder(String folderPath, String modelName, OptionalInt modelVersion) 
+  public ScanReportV3 scanFolder(String folderPath, String modelName, OptionalInt modelVersion, boolean waitForDone) 
         throws Exception, ApiException, IOException, URISyntaxException, InterruptedException, Exception {
         if (modelName == null || modelName.isEmpty()) {
             throw new Exception("Model name is required");
@@ -116,7 +120,33 @@ public class ModelScanService extends HiddenlayerService {
         out.flush();
         out.close();
         
-        return this.scanFile(tempFile.getAbsolutePath(), modelName, modelVersion);
+        return this.scanFile(tempFile.getAbsolutePath(), modelName, modelVersion, waitForDone);
+    }
+
+    public ScanReportV3 getDoneScanResults(UUID modelVersion) 
+        throws ApiException {
+          Double baseDelay = 100.0; // milliseconds
+          Integer retries = 0;
+
+          ScanReportV3 scanReport = this.getScanResults(modelVersion);
+  
+          while (scanReport == null 
+                  || (scanReport.getStatus() != ScanReportV3.StatusEnum.DONE 
+                        && scanReport.getStatus() != ScanReportV3.StatusEnum.FAILED
+                        && scanReport.getStatus() != ScanReportV3.StatusEnum.CANCELED)) {
+              retries += 1;
+              Double delay = baseDelay * Math.pow(2, retries) + Math.random();
+              delay = Math.min(delay, 10000.0); // max 10 seconds
+              try {
+                  Thread.sleep(delay.longValue());
+              }
+              catch (InterruptedException e) {
+                  return null;
+              }
+  
+              scanReport = this.getScanResults(modelVersion);
+          }
+          return scanReport;
     }
 
     private ScanReportV3 getScanResults(UUID modelVersion)
