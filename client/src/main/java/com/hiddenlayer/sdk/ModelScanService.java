@@ -136,6 +136,7 @@ public class ModelScanService extends HiddenlayerService {
                         && scanReport.getStatus() != ScanReportV3.StatusEnum.CANCELED)) {
               retries += 1;
               Double delay = baseDelay * Math.pow(2, retries) + Math.random();
+              delay = Math.min(delay, 10000.0); // max 10 seconds
               try {
                   Thread.sleep(delay.longValue());
               }
@@ -145,7 +146,6 @@ public class ModelScanService extends HiddenlayerService {
   
               scanReport = this.getScanResults(modelVersion);
           }
-  
           return scanReport;
     }
 
