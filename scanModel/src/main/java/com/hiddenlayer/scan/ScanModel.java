@@ -88,12 +88,6 @@ public class ScanModel {
             System.out.println("Please provide either a file or folder to scan");
             return;
         }
-        for (int i = 0; i < report.getFileResults().size(); i++) {
-            System.out.printf("File %d: %s%n", i, report.getFileResults().get(i).getDetails().getFileType());
-            System.out.printf("  Status: %s%n", report.getFileResults().get(i).getStatus());
-            System.out.printf("  Children: %s%n", report.getFileResults().get(i).getFileResults().size());
-        }
-        System.out.printf("Report files: %d%n", report.getFileResults().size());
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
