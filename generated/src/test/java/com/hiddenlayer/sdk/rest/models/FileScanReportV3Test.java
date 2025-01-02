@@ -18,7 +18,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.hiddenlayer.sdk.rest.models.FileResultsInner;
+import com.hiddenlayer.sdk.rest.models.FileDetailsV3;
+import com.hiddenlayer.sdk.rest.models.ScanDetectionV3;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,6 +40,70 @@ class FileScanReportV3Test {
     @Test
     void testFileScanReportV3() {
         // TODO: test FileScanReportV3
+    }
+
+    /**
+     * Test the property 'fileInstanceId'
+     */
+    @Test
+    void fileInstanceIdTest() {
+        // TODO: test fileInstanceId
+    }
+
+    /**
+     * Test the property 'fileLocation'
+     */
+    @Test
+    void fileLocationTest() {
+        // TODO: test fileLocation
+    }
+
+    /**
+     * Test the property 'startTime'
+     */
+    @Test
+    void startTimeTest() {
+        // TODO: test startTime
+    }
+
+    /**
+     * Test the property 'endTime'
+     */
+    @Test
+    void endTimeTest() {
+        // TODO: test endTime
+    }
+
+    /**
+     * Test the property 'details'
+     */
+    @Test
+    void detailsTest() {
+        // TODO: test details
+    }
+
+    /**
+     * Test the property 'status'
+     */
+    @Test
+    void statusTest() {
+        // TODO: test status
+    }
+
+    /**
+     * Test the property 'seen'
+     */
+    @Test
+    void seenTest() {
+        // TODO: test seen
+    }
+
+    /**
+     * Test the property 'detections'
+     */
+    @Test
+    void detectionsTest() {
+        // TODO: test detections
     }
 
     /**

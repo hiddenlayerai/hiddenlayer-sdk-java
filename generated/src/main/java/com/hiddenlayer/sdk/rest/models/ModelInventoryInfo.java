@@ -40,7 +40,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   ModelInventoryInfo.JSON_PROPERTY_MODEL_ID,
   ModelInventoryInfo.JSON_PROPERTY_MODEL_VERSION_ID
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-23T18:20:36.233399Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-30T18:04:47.686514Z[GMT]", comments = "Generator version: 7.6.0")
 public class ModelInventoryInfo {
   public static final String JSON_PROPERTY_MODEL_NAME = "model_name";
   private String modelName;

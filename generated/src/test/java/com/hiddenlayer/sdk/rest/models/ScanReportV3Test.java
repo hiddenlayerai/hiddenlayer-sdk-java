@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.hiddenlayer.sdk.rest.models.FileResultsInner;
+import com.hiddenlayer.sdk.rest.models.FileScanReportV3;
 import com.hiddenlayer.sdk.rest.models.ModelInventoryInfo;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;

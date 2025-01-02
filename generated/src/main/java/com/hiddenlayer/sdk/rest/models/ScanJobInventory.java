@@ -53,7 +53,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.hiddenlayer.sdk.rest.JSON;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-23T18:20:36.233399Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-30T18:04:47.686514Z[GMT]", comments = "Generator version: 7.6.0")
 @JsonDeserialize(using = ScanJobInventory.ScanJobInventoryDeserializer.class)
 @JsonSerialize(using = ScanJobInventory.ScanJobInventorySerializer.class)
 public class ScanJobInventory extends AbstractOpenApiSchema {

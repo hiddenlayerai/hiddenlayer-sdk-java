@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.hiddenlayer.sdk.Configuration;
 import com.hiddenlayer.sdk.ModelScanService;
+import com.hiddenlayer.sdk.rest.models.FileScanReportV3;
 import com.hiddenlayer.sdk.rest.models.ScanReportV3;
+import java.util.List;
 import org.apache.commons.cli.*;
 
 public class ScanModel {
@@ -86,6 +88,12 @@ public class ScanModel {
             System.out.println("Please provide either a file or folder to scan");
             return;
         }
+        for (int i = 0; i < report.getFileResults().size(); i++) {
+            System.out.printf("File %d: %s%n", i, report.getFileResults().get(i).getDetails().getFileType());
+            System.out.printf("  Status: %s%n", report.getFileResults().get(i).getStatus());
+            System.out.printf("  Children: %s%n", report.getFileResults().get(i).getFileResults().size());
+        }
+        System.out.printf("Report files: %d%n", report.getFileResults().size());
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
@@ -93,5 +101,17 @@ public class ScanModel {
         String json = ow.writeValueAsString(report);
 
         System.out.println(json);
+    }
+
+    public static void printFileResultInfo(List<FileScanReportV3> fileResults, String spacing) {
+        for (int i = 0; i < fileResults.size(); i++) {
+            System.out.printf("%sFile %d: %s%n", i, spacing, fileResults.get(i).getDetails().getFileType());
+            System.out.printf("%s  Status: %s%n", spacing, fileResults.get(i).getStatus());
+            System.out.printf("%s  Children: %s%n", spacing, fileResults.get(i).getFileResults().size());
+            if (fileResults.get(i).getFileResults().size() > 0) {
+                printFileResultInfo(fileResults.get(i).getFileResults(), spacing + "\t");
+            }
+        }
+
     }
 }

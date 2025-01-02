@@ -1507,7 +1507,7 @@ components:
     ScanReportV3:
       allOf:
       - $ref: '#/components/schemas/ScanHeaderV3'
-      - $ref: '#/components/schemas/FileScanReportV3'
+      - $ref: '#/components/schemas/FileScanReportsV3'
       example:
         file_count: 6
         files_with_detections_count: 1
@@ -1522,6 +1522,9 @@ components:
           start_time: 2024-10-16T23:38:32.278Z
           file_location: file_location
           end_time: 2024-10-16T23:38:32.354Z
+          file_results:
+          - null
+          - null
           details:
             sha256: a54d88e06612d820bc3be72877c74f257b561b19
             file_type_details:
@@ -1599,6 +1602,9 @@ components:
           start_time: 2024-10-16T23:38:32.278Z
           file_location: file_location
           end_time: 2024-10-16T23:38:32.354Z
+          file_results:
+          - null
+          - null
           details:
             sha256: a54d88e06612d820bc3be72877c74f257b561b19
             file_type_details:
@@ -1808,13 +1814,155 @@ components:
       - model_version_id
       title: ScanModelIds
       type: object
-    FileScanReportV3:
+    FileScanReportsV3:
       properties:
         file_results:
           items:
-            $ref: '#/components/schemas/File_Results_inner'
+            $ref: '#/components/schemas/FileScanReportV3'
           title: File Results
           type: array
+      title: FileScanReportsV3
+      type: object
+    FileScanReportV3:
+      example:
+        file_instance_id: file_instance_id
+        start_time: 2024-10-16T23:38:32.278Z
+        file_location: file_location
+        end_time: 2024-10-16T23:38:32.354Z
+        file_results:
+        - null
+        - null
+        details:
+          sha256: a54d88e06612d820bc3be72877c74f257b561b19
+          file_type_details:
+            key: ""
+          file_type: safetensors
+          tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+          file_size_bytes: 9663676416
+          file_size: 9 GB
+          estimated_time: estimated_time
+          md5: ce114e4501d2f4e2dcea3e17b546f339
+        seen: 2024-10-22T17:59:12.431Z
+        status: skipped
+        detections:
+        - severity: low
+          owasp:
+          - owasp
+          - owasp
+          cwe_href: cwe_href
+          technical_blog_href: technical_blog_href
+          impact: critical
+          description: Found lambda embedded in keras model allowing custom layers
+            that support  arbitrary expression execution
+          rule_id: PICKLE_0055_202408
+          cwe: cwe
+          mitre_atlas:
+          - technique: technique
+            tactic: tactic
+          - technique: technique
+            tactic: tactic
+          cve:
+          - cve
+          - cve
+          likelihood: medium
+          risk: MALICIOUS
+          rule_details:
+          - description: description
+            status_at: 2000-01-23T04:56:07.000+00:00
+            status: created
+          - description: description
+            status_at: 2000-01-23T04:56:07.000+00:00
+            status: created
+          detection_id: 00000000-0000-0000-0000-000000000000
+          category: Arbitrary Code Execution
+        - severity: low
+          owasp:
+          - owasp
+          - owasp
+          cwe_href: cwe_href
+          technical_blog_href: technical_blog_href
+          impact: critical
+          description: Found lambda embedded in keras model allowing custom layers
+            that support  arbitrary expression execution
+          rule_id: PICKLE_0055_202408
+          cwe: cwe
+          mitre_atlas:
+          - technique: technique
+            tactic: tactic
+          - technique: technique
+            tactic: tactic
+          cve:
+          - cve
+          - cve
+          likelihood: medium
+          risk: MALICIOUS
+          rule_details:
+          - description: description
+            status_at: 2000-01-23T04:56:07.000+00:00
+            status: created
+          - description: description
+            status_at: 2000-01-23T04:56:07.000+00:00
+            status: created
+          detection_id: 00000000-0000-0000-0000-000000000000
+          category: Arbitrary Code Execution
+      properties:
+        file_instance_id:
+          description: unique ID of the file
+          title: File Instance ID
+          type: string
+        file_location:
+          description: full file path
+          title: File Location
+          type: string
+        start_time:
+          description: time the scan started
+          example: 2024-10-16T23:38:32.278Z
+          format: date-time
+          title: Scan Start Time
+          type: string
+        end_time:
+          description: time the scan ended
+          example: 2024-10-16T23:38:32.354Z
+          format: date-time
+          title: Scan End Time
+          type: string
+        details:
+          $ref: '#/components/schemas/FileDetailsV3'
+        status:
+          description: status of the scan
+          enum:
+          - skipped
+          - pending
+          - running
+          - done
+          - failed
+          - canceled
+          title: Status
+          type: string
+        seen:
+          description: time the scan was seen at
+          example: 2024-10-22T17:59:12.431Z
+          format: date-time
+          title: Seen
+          type: string
+        detections:
+          items:
+            $ref: '#/components/schemas/ScanDetectionV3'
+          title: Detections
+          type: array
+        file_results:
+          items:
+            $ref: '#/components/schemas/FileScanReportV3'
+          title: File Results
+          type: array
+      required:
+      - details
+      - end_time
+      - file_instance_id
+      - file_location
+      - seen
+      - start_time
+      - status
       title: FileScanReportV3
       type: object
     sarif-210:
@@ -4538,6 +4686,9 @@ components:
             start_time: 2024-10-16T23:38:32.278Z
             file_location: file_location
             end_time: 2024-10-16T23:38:32.354Z
+            file_results:
+            - null
+            - null
             details:
               sha256: a54d88e06612d820bc3be72877c74f257b561b19
               file_type_details:
@@ -4615,6 +4766,9 @@ components:
             start_time: 2024-10-16T23:38:32.278Z
             file_location: file_location
             end_time: 2024-10-16T23:38:32.354Z
+            file_results:
+            - null
+            - null
             details:
               sha256: a54d88e06612d820bc3be72877c74f257b561b19
               file_type_details:
@@ -4713,6 +4867,9 @@ components:
             start_time: 2024-10-16T23:38:32.278Z
             file_location: file_location
             end_time: 2024-10-16T23:38:32.354Z
+            file_results:
+            - null
+            - null
             details:
               sha256: a54d88e06612d820bc3be72877c74f257b561b19
               file_type_details:
@@ -4790,6 +4947,9 @@ components:
             start_time: 2024-10-16T23:38:32.278Z
             file_location: file_location
             end_time: 2024-10-16T23:38:32.354Z
+            file_results:
+            - null
+            - null
             details:
               sha256: a54d88e06612d820bc3be72877c74f257b561b19
               file_type_details:
@@ -4947,139 +5107,6 @@ components:
         model_id: 00000000-0000-0000-0000-000000000000
         model_source: adhoc
       title: Model Inventory Info
-      type: object
-    File_Results_inner:
-      example:
-        file_instance_id: file_instance_id
-        start_time: 2024-10-16T23:38:32.278Z
-        file_location: file_location
-        end_time: 2024-10-16T23:38:32.354Z
-        details:
-          sha256: a54d88e06612d820bc3be72877c74f257b561b19
-          file_type_details:
-            key: ""
-          file_type: safetensors
-          tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
-          file_size_bytes: 9663676416
-          file_size: 9 GB
-          estimated_time: estimated_time
-          md5: ce114e4501d2f4e2dcea3e17b546f339
-        seen: 2024-10-22T17:59:12.431Z
-        status: skipped
-        detections:
-        - severity: low
-          owasp:
-          - owasp
-          - owasp
-          cwe_href: cwe_href
-          technical_blog_href: technical_blog_href
-          impact: critical
-          description: Found lambda embedded in keras model allowing custom layers
-            that support  arbitrary expression execution
-          rule_id: PICKLE_0055_202408
-          cwe: cwe
-          mitre_atlas:
-          - technique: technique
-            tactic: tactic
-          - technique: technique
-            tactic: tactic
-          cve:
-          - cve
-          - cve
-          likelihood: medium
-          risk: MALICIOUS
-          rule_details:
-          - description: description
-            status_at: 2000-01-23T04:56:07.000+00:00
-            status: created
-          - description: description
-            status_at: 2000-01-23T04:56:07.000+00:00
-            status: created
-          detection_id: 00000000-0000-0000-0000-000000000000
-          category: Arbitrary Code Execution
-        - severity: low
-          owasp:
-          - owasp
-          - owasp
-          cwe_href: cwe_href
-          technical_blog_href: technical_blog_href
-          impact: critical
-          description: Found lambda embedded in keras model allowing custom layers
-            that support  arbitrary expression execution
-          rule_id: PICKLE_0055_202408
-          cwe: cwe
-          mitre_atlas:
-          - technique: technique
-            tactic: tactic
-          - technique: technique
-            tactic: tactic
-          cve:
-          - cve
-          - cve
-          likelihood: medium
-          risk: MALICIOUS
-          rule_details:
-          - description: description
-            status_at: 2000-01-23T04:56:07.000+00:00
-            status: created
-          - description: description
-            status_at: 2000-01-23T04:56:07.000+00:00
-            status: created
-          detection_id: 00000000-0000-0000-0000-000000000000
-          category: Arbitrary Code Execution
-      properties:
-        file_instance_id:
-          description: unique ID of the file
-          title: File Instance ID
-          type: string
-        file_location:
-          description: full file path
-          title: File Location
-          type: string
-        start_time:
-          description: time the scan started
-          example: 2024-10-16T23:38:32.278Z
-          format: date-time
-          title: Scan Start Time
-          type: string
-        end_time:
-          description: time the scan ended
-          example: 2024-10-16T23:38:32.354Z
-          format: date-time
-          title: Scan End Time
-          type: string
-        details:
-          $ref: '#/components/schemas/FileDetailsV3'
-        status:
-          description: status of the scan
-          enum:
-          - skipped
-          - pending
-          - running
-          - done
-          - failed
-          - canceled
-          title: Status
-          type: string
-        seen:
-          description: time the scan was seen at
-          example: 2024-10-22T17:59:12.431Z
-          format: date-time
-          title: Seen
-          type: string
-        detections:
-          items:
-            $ref: '#/components/schemas/ScanDetectionV3'
-          title: Detections
-          type: array
-      required:
-      - details
-      - end_time
-      - file_instance_id
-      - file_location
-      - seen
-      - start_time
-      - status
       type: object
     ScanJob_inventory:
       example:

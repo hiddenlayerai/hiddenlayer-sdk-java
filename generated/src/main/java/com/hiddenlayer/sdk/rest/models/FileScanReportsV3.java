@@ -24,82 +24,62 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.hiddenlayer.sdk.rest.models.ArtifactLocation;
-import com.hiddenlayer.sdk.rest.models.PropertyBag;
+import com.hiddenlayer.sdk.rest.models.FileScanReportV3;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * Defines locations of special significance to SARIF consumers.
+ * FileScanReportsV3
  */
 @JsonPropertyOrder({
-  SpecialLocations.JSON_PROPERTY_DISPLAY_BASE,
-  SpecialLocations.JSON_PROPERTY_PROPERTIES
+  FileScanReportsV3.JSON_PROPERTY_FILE_RESULTS
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-30T18:04:47.686514Z[GMT]", comments = "Generator version: 7.6.0")
-public class SpecialLocations {
-  public static final String JSON_PROPERTY_DISPLAY_BASE = "displayBase";
-  private ArtifactLocation displayBase;
+public class FileScanReportsV3 {
+  public static final String JSON_PROPERTY_FILE_RESULTS = "file_results";
+  private List<FileScanReportV3> fileResults = new ArrayList<>();
 
-  public static final String JSON_PROPERTY_PROPERTIES = "properties";
-  private PropertyBag properties;
-
-  public SpecialLocations() { 
+  public FileScanReportsV3() { 
   }
 
-  public SpecialLocations displayBase(ArtifactLocation displayBase) {
-    this.displayBase = displayBase;
+  public FileScanReportsV3 fileResults(List<FileScanReportV3> fileResults) {
+    this.fileResults = fileResults;
+    return this;
+  }
+
+  public FileScanReportsV3 addFileResultsItem(FileScanReportV3 fileResultsItem) {
+    if (this.fileResults == null) {
+      this.fileResults = new ArrayList<>();
+    }
+    this.fileResults.add(fileResultsItem);
     return this;
   }
 
    /**
-   * Get displayBase
-   * @return displayBase
+   * Get fileResults
+   * @return fileResults
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DISPLAY_BASE)
+  @JsonProperty(JSON_PROPERTY_FILE_RESULTS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public ArtifactLocation getDisplayBase() {
-    return displayBase;
+  public List<FileScanReportV3> getFileResults() {
+    return fileResults;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_DISPLAY_BASE)
+  @JsonProperty(JSON_PROPERTY_FILE_RESULTS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDisplayBase(ArtifactLocation displayBase) {
-    this.displayBase = displayBase;
-  }
-
-
-  public SpecialLocations properties(PropertyBag properties) {
-    this.properties = properties;
-    return this;
-  }
-
-   /**
-   * Get properties
-   * @return properties
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PROPERTIES)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public PropertyBag getProperties() {
-    return properties;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_PROPERTIES)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setProperties(PropertyBag properties) {
-    this.properties = properties;
+  public void setFileResults(List<FileScanReportV3> fileResults) {
+    this.fileResults = fileResults;
   }
 
 
   /**
-   * Return true if this specialLocations object is equal to o.
+   * Return true if this FileScanReportsV3 object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -109,22 +89,20 @@ public class SpecialLocations {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    SpecialLocations specialLocations = (SpecialLocations) o;
-    return Objects.equals(this.displayBase, specialLocations.displayBase) &&
-        Objects.equals(this.properties, specialLocations.properties);
+    FileScanReportsV3 fileScanReportsV3 = (FileScanReportsV3) o;
+    return Objects.equals(this.fileResults, fileScanReportsV3.fileResults);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(displayBase, properties);
+    return Objects.hash(fileResults);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class SpecialLocations {\n");
-    sb.append("    displayBase: ").append(toIndentedString(displayBase)).append("\n");
-    sb.append("    properties: ").append(toIndentedString(properties)).append("\n");
+    sb.append("class FileScanReportsV3 {\n");
+    sb.append("    fileResults: ").append(toIndentedString(fileResults)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -172,14 +150,14 @@ public class SpecialLocations {
 
     StringJoiner joiner = new StringJoiner("&");
 
-    // add `displayBase` to the URL query string
-    if (getDisplayBase() != null) {
-      joiner.add(getDisplayBase().toUrlQueryString(prefix + "displayBase" + suffix));
-    }
-
-    // add `properties` to the URL query string
-    if (getProperties() != null) {
-      joiner.add(String.format("%sproperties%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getProperties()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    // add `file_results` to the URL query string
+    if (getFileResults() != null) {
+      for (int i = 0; i < getFileResults().size(); i++) {
+        if (getFileResults().get(i) != null) {
+          joiner.add(getFileResults().get(i).toUrlQueryString(String.format("%sfile_results%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format("%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
     }
 
     return joiner.toString();

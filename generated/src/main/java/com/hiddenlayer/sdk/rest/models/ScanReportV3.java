@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.hiddenlayer.sdk.rest.models.FileResultsInner;
+import com.hiddenlayer.sdk.rest.models.FileScanReportV3;
 import com.hiddenlayer.sdk.rest.models.ModelInventoryInfo;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   ScanReportV3.JSON_PROPERTY_SEVERITY,
   ScanReportV3.JSON_PROPERTY_FILE_RESULTS
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-23T18:20:36.233399Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-30T18:04:47.686514Z[GMT]", comments = "Generator version: 7.6.0")
 public class ScanReportV3 {
   public static final String JSON_PROPERTY_FILE_COUNT = "file_count";
   private Integer fileCount;
@@ -170,7 +170,7 @@ public class ScanReportV3 {
   private SeverityEnum severity;
 
   public static final String JSON_PROPERTY_FILE_RESULTS = "file_results";
-  private List<FileResultsInner> fileResults = new ArrayList<>();
+  private List<FileScanReportV3> fileResults = new ArrayList<>();
 
   public ScanReportV3() { 
   }
@@ -458,12 +458,12 @@ public class ScanReportV3 {
   }
 
 
-  public ScanReportV3 fileResults(List<FileResultsInner> fileResults) {
+  public ScanReportV3 fileResults(List<FileScanReportV3> fileResults) {
     this.fileResults = fileResults;
     return this;
   }
 
-  public ScanReportV3 addFileResultsItem(FileResultsInner fileResultsItem) {
+  public ScanReportV3 addFileResultsItem(FileScanReportV3 fileResultsItem) {
     if (this.fileResults == null) {
       this.fileResults = new ArrayList<>();
     }
@@ -479,14 +479,14 @@ public class ScanReportV3 {
   @JsonProperty(JSON_PROPERTY_FILE_RESULTS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public List<FileResultsInner> getFileResults() {
+  public List<FileScanReportV3> getFileResults() {
     return fileResults;
   }
 
 
   @JsonProperty(JSON_PROPERTY_FILE_RESULTS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setFileResults(List<FileResultsInner> fileResults) {
+  public void setFileResults(List<FileScanReportV3> fileResults) {
     this.fileResults = fileResults;
   }
 

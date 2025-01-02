@@ -24,7 +24,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.hiddenlayer.sdk.rest.models.FileResultsInner;
+import com.hiddenlayer.sdk.rest.models.FileDetailsV3;
+import com.hiddenlayer.sdk.rest.models.ScanDetectionV3;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,22 +37,305 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * FileScanReportV3
  */
 @JsonPropertyOrder({
+  FileScanReportV3.JSON_PROPERTY_FILE_INSTANCE_ID,
+  FileScanReportV3.JSON_PROPERTY_FILE_LOCATION,
+  FileScanReportV3.JSON_PROPERTY_START_TIME,
+  FileScanReportV3.JSON_PROPERTY_END_TIME,
+  FileScanReportV3.JSON_PROPERTY_DETAILS,
+  FileScanReportV3.JSON_PROPERTY_STATUS,
+  FileScanReportV3.JSON_PROPERTY_SEEN,
+  FileScanReportV3.JSON_PROPERTY_DETECTIONS,
   FileScanReportV3.JSON_PROPERTY_FILE_RESULTS
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-23T18:20:36.233399Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-30T18:04:47.686514Z[GMT]", comments = "Generator version: 7.6.0")
 public class FileScanReportV3 {
+  public static final String JSON_PROPERTY_FILE_INSTANCE_ID = "file_instance_id";
+  private String fileInstanceId;
+
+  public static final String JSON_PROPERTY_FILE_LOCATION = "file_location";
+  private String fileLocation;
+
+  public static final String JSON_PROPERTY_START_TIME = "start_time";
+  private OffsetDateTime startTime;
+
+  public static final String JSON_PROPERTY_END_TIME = "end_time";
+  private OffsetDateTime endTime;
+
+  public static final String JSON_PROPERTY_DETAILS = "details";
+  private FileDetailsV3 details;
+
+  /**
+   * status of the scan
+   */
+  public enum StatusEnum {
+    SKIPPED("skipped"),
+    
+    PENDING("pending"),
+    
+    RUNNING("running"),
+    
+    DONE("done"),
+    
+    FAILED("failed"),
+    
+    CANCELED("canceled");
+
+    private String value;
+
+    StatusEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static StatusEnum fromValue(String value) {
+      for (StatusEnum b : StatusEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
+  public static final String JSON_PROPERTY_STATUS = "status";
+  private StatusEnum status;
+
+  public static final String JSON_PROPERTY_SEEN = "seen";
+  private OffsetDateTime seen;
+
+  public static final String JSON_PROPERTY_DETECTIONS = "detections";
+  private List<ScanDetectionV3> detections = new ArrayList<>();
+
   public static final String JSON_PROPERTY_FILE_RESULTS = "file_results";
-  private List<FileResultsInner> fileResults = new ArrayList<>();
+  private List<FileScanReportV3> fileResults = new ArrayList<>();
 
   public FileScanReportV3() { 
   }
 
-  public FileScanReportV3 fileResults(List<FileResultsInner> fileResults) {
+  public FileScanReportV3 fileInstanceId(String fileInstanceId) {
+    this.fileInstanceId = fileInstanceId;
+    return this;
+  }
+
+   /**
+   * unique ID of the file
+   * @return fileInstanceId
+  **/
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_FILE_INSTANCE_ID)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getFileInstanceId() {
+    return fileInstanceId;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_FILE_INSTANCE_ID)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setFileInstanceId(String fileInstanceId) {
+    this.fileInstanceId = fileInstanceId;
+  }
+
+
+  public FileScanReportV3 fileLocation(String fileLocation) {
+    this.fileLocation = fileLocation;
+    return this;
+  }
+
+   /**
+   * full file path
+   * @return fileLocation
+  **/
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_FILE_LOCATION)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public String getFileLocation() {
+    return fileLocation;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_FILE_LOCATION)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setFileLocation(String fileLocation) {
+    this.fileLocation = fileLocation;
+  }
+
+
+  public FileScanReportV3 startTime(OffsetDateTime startTime) {
+    this.startTime = startTime;
+    return this;
+  }
+
+   /**
+   * time the scan started
+   * @return startTime
+  **/
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_START_TIME)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public OffsetDateTime getStartTime() {
+    return startTime;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_START_TIME)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setStartTime(OffsetDateTime startTime) {
+    this.startTime = startTime;
+  }
+
+
+  public FileScanReportV3 endTime(OffsetDateTime endTime) {
+    this.endTime = endTime;
+    return this;
+  }
+
+   /**
+   * time the scan ended
+   * @return endTime
+  **/
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_END_TIME)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public OffsetDateTime getEndTime() {
+    return endTime;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_END_TIME)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setEndTime(OffsetDateTime endTime) {
+    this.endTime = endTime;
+  }
+
+
+  public FileScanReportV3 details(FileDetailsV3 details) {
+    this.details = details;
+    return this;
+  }
+
+   /**
+   * Get details
+   * @return details
+  **/
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_DETAILS)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public FileDetailsV3 getDetails() {
+    return details;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_DETAILS)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setDetails(FileDetailsV3 details) {
+    this.details = details;
+  }
+
+
+  public FileScanReportV3 status(StatusEnum status) {
+    this.status = status;
+    return this;
+  }
+
+   /**
+   * status of the scan
+   * @return status
+  **/
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_STATUS)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public StatusEnum getStatus() {
+    return status;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_STATUS)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setStatus(StatusEnum status) {
+    this.status = status;
+  }
+
+
+  public FileScanReportV3 seen(OffsetDateTime seen) {
+    this.seen = seen;
+    return this;
+  }
+
+   /**
+   * time the scan was seen at
+   * @return seen
+  **/
+  @javax.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_SEEN)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+
+  public OffsetDateTime getSeen() {
+    return seen;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_SEEN)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setSeen(OffsetDateTime seen) {
+    this.seen = seen;
+  }
+
+
+  public FileScanReportV3 detections(List<ScanDetectionV3> detections) {
+    this.detections = detections;
+    return this;
+  }
+
+  public FileScanReportV3 addDetectionsItem(ScanDetectionV3 detectionsItem) {
+    if (this.detections == null) {
+      this.detections = new ArrayList<>();
+    }
+    this.detections.add(detectionsItem);
+    return this;
+  }
+
+   /**
+   * Get detections
+   * @return detections
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_DETECTIONS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public List<ScanDetectionV3> getDetections() {
+    return detections;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_DETECTIONS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDetections(List<ScanDetectionV3> detections) {
+    this.detections = detections;
+  }
+
+
+  public FileScanReportV3 fileResults(List<FileScanReportV3> fileResults) {
     this.fileResults = fileResults;
     return this;
   }
 
-  public FileScanReportV3 addFileResultsItem(FileResultsInner fileResultsItem) {
+  public FileScanReportV3 addFileResultsItem(FileScanReportV3 fileResultsItem) {
     if (this.fileResults == null) {
       this.fileResults = new ArrayList<>();
     }
@@ -66,14 +351,14 @@ public class FileScanReportV3 {
   @JsonProperty(JSON_PROPERTY_FILE_RESULTS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public List<FileResultsInner> getFileResults() {
+  public List<FileScanReportV3> getFileResults() {
     return fileResults;
   }
 
 
   @JsonProperty(JSON_PROPERTY_FILE_RESULTS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setFileResults(List<FileResultsInner> fileResults) {
+  public void setFileResults(List<FileScanReportV3> fileResults) {
     this.fileResults = fileResults;
   }
 
@@ -90,18 +375,34 @@ public class FileScanReportV3 {
       return false;
     }
     FileScanReportV3 fileScanReportV3 = (FileScanReportV3) o;
-    return Objects.equals(this.fileResults, fileScanReportV3.fileResults);
+    return Objects.equals(this.fileInstanceId, fileScanReportV3.fileInstanceId) &&
+        Objects.equals(this.fileLocation, fileScanReportV3.fileLocation) &&
+        Objects.equals(this.startTime, fileScanReportV3.startTime) &&
+        Objects.equals(this.endTime, fileScanReportV3.endTime) &&
+        Objects.equals(this.details, fileScanReportV3.details) &&
+        Objects.equals(this.status, fileScanReportV3.status) &&
+        Objects.equals(this.seen, fileScanReportV3.seen) &&
+        Objects.equals(this.detections, fileScanReportV3.detections) &&
+        Objects.equals(this.fileResults, fileScanReportV3.fileResults);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(fileResults);
+    return Objects.hash(fileInstanceId, fileLocation, startTime, endTime, details, status, seen, detections, fileResults);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class FileScanReportV3 {\n");
+    sb.append("    fileInstanceId: ").append(toIndentedString(fileInstanceId)).append("\n");
+    sb.append("    fileLocation: ").append(toIndentedString(fileLocation)).append("\n");
+    sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
+    sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
+    sb.append("    details: ").append(toIndentedString(details)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    seen: ").append(toIndentedString(seen)).append("\n");
+    sb.append("    detections: ").append(toIndentedString(detections)).append("\n");
     sb.append("    fileResults: ").append(toIndentedString(fileResults)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -149,6 +450,51 @@ public class FileScanReportV3 {
     }
 
     StringJoiner joiner = new StringJoiner("&");
+
+    // add `file_instance_id` to the URL query string
+    if (getFileInstanceId() != null) {
+      joiner.add(String.format("%sfile_instance_id%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getFileInstanceId()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    }
+
+    // add `file_location` to the URL query string
+    if (getFileLocation() != null) {
+      joiner.add(String.format("%sfile_location%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getFileLocation()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    }
+
+    // add `start_time` to the URL query string
+    if (getStartTime() != null) {
+      joiner.add(String.format("%sstart_time%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getStartTime()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    }
+
+    // add `end_time` to the URL query string
+    if (getEndTime() != null) {
+      joiner.add(String.format("%send_time%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getEndTime()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    }
+
+    // add `details` to the URL query string
+    if (getDetails() != null) {
+      joiner.add(getDetails().toUrlQueryString(prefix + "details" + suffix));
+    }
+
+    // add `status` to the URL query string
+    if (getStatus() != null) {
+      joiner.add(String.format("%sstatus%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getStatus()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    }
+
+    // add `seen` to the URL query string
+    if (getSeen() != null) {
+      joiner.add(String.format("%sseen%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getSeen()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    }
+
+    // add `detections` to the URL query string
+    if (getDetections() != null) {
+      for (int i = 0; i < getDetections().size(); i++) {
+        if (getDetections().get(i) != null) {
+          joiner.add(getDetections().get(i).toUrlQueryString(String.format("%sdetections%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format("%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
 
     // add `file_results` to the URL query string
     if (getFileResults() != null) {
