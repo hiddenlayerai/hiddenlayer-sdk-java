@@ -37,9 +37,12 @@ public class ModelScanService extends HiddenlayerService {
   }
 
   public ModelScanService(Configuration config) throws Exception {
-    super(config);
+    this(config, new ApiClient());
+  }
+
+  public ModelScanService(Configuration config, ApiClient apiClient) throws Exception {
+    super(config, apiClient.getHttpClient());
     String jwt = getJWT();
-    ApiClient apiClient = new ApiClient();
     apiClient.setRequestInterceptor((request) -> {
       request.header("Authorization", "Bearer " + jwt);
     });

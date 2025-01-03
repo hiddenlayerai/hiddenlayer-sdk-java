@@ -12,10 +12,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 class HiddenlayerService {
 
+    protected HttpClient client;
     protected Configuration config;
 
     HiddenlayerService(Configuration config) {
         this.config = config;
+        this.client = HttpClient.newHttpClient();
+    }
+
+    HiddenlayerService(Configuration config, HttpClient client) {
+        this.config = config;
+        this.client = client;
     }
 
     protected String getJWT() throws Exception {
@@ -29,13 +36,12 @@ class HiddenlayerService {
     protected String getJWT(String apiId, String apiKey, String authUrl) throws Exception{
         String encoding = Base64.getEncoder().encodeToString((apiId + ":" + apiKey).getBytes());
         String tokenUrl = authUrl + "/oauth2/token?grant_type=client_credentials";
-        HttpClient httpclient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
             .POST(HttpRequest.BodyPublishers.noBody())
             .uri(URI.create(tokenUrl))
             .setHeader("Authorization", "Basic " + encoding)
             .build();
-        HttpResponse<String> response = httpclient.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() != 200) {
             throw new Exception("Failed to get JWT token: " + response.statusCode() + ": " + response.body());
         }

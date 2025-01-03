@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.hiddenlayer</groupId>
         <artifactId>java-client-parent</artifactId>
-        <version>0.1.11</version>
+        <version>0.1.12</version>
     </parent>
     <artifactId>hiddenlayer-sdk</artifactId>
     <packaging>jar</packaging>
@@ -45,6 +45,31 @@
             <artifactId>java-client</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${jackson-databind-nullable-version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -61,6 +86,14 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+              <artifactSet>
+                <excludes>
+                  <exclude>com.fasterxml.jackson.*</exclude>
+                  <exclude>javax.annotation.*</exclude>
+                </excludes>
+              </artifactSet>
+            </configuration>
             </plugin>
             <plugin>
             <groupId>org.codehaus.mojo</groupId>
