@@ -46,7 +46,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   Rectangle.JSON_PROPERTY_MESSAGE,
   Rectangle.JSON_PROPERTY_PROPERTIES
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-23T18:20:36.233399Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-30T18:04:47.686514Z[GMT]", comments = "Generator version: 7.6.0")
 public class Rectangle {
   public static final String JSON_PROPERTY_TOP = "top";
   private BigDecimal top;

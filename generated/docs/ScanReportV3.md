@@ -18,7 +18,7 @@
 |**endTime** | **OffsetDateTime** | time the scan ended |  [optional] |
 |**status** | [**StatusEnum**](#StatusEnum) | status of the scan |  |
 |**severity** | [**SeverityEnum**](#SeverityEnum) | detection severity |  [optional] |
-|**fileResults** | [**List&lt;FileResultsInner&gt;**](FileResultsInner.md) |  |  [optional] |
+|**fileResults** | [**List&lt;FileScanReportV3&gt;**](FileScanReportV3.md) |  |  [optional] |
 
 
 

@@ -49,6 +49,11 @@ public class ModelScanService extends HiddenlayerService {
     this.modelScanApi = new ModelScanApi(apiClient);
   }
 
+  public ScanReportV3 scanFile(String modelPath, String modelName) 
+    throws Exception, FileNotFoundException, RuntimeException, IOException, ApiException {
+    return scanFile(modelPath, modelName, OptionalInt.empty(), true);
+  }
+
   public ScanReportV3 scanFile(String modelPath, String modelName, boolean waitForDone) 
     throws Exception, FileNotFoundException, RuntimeException, IOException, ApiException {
     return scanFile(modelPath, modelName, OptionalInt.empty(), waitForDone);
@@ -70,6 +75,11 @@ public class ModelScanService extends HiddenlayerService {
     }
   }
 
+  public ScanReportV3 scanStream(InputStream modelStream, long streamLength, String modelName) 
+    throws Exception, RuntimeException, IOException, ApiException {
+    return this.scanStream(modelStream, streamLength, modelName, OptionalInt.empty(), true);
+  }
+
   public ScanReportV3 scanStream(InputStream modelStream, long streamLength, String modelName, boolean waitForDone) 
     throws Exception, RuntimeException, IOException, ApiException {
     return this.scanStream(modelStream, streamLength, modelName, OptionalInt.empty(), waitForDone);
@@ -83,6 +93,11 @@ public class ModelScanService extends HiddenlayerService {
     } else {
       return this.getScanResults(sensor.getSensorId());
     }
+  }
+
+  public ScanReportV3 scanFolder(String folderPath, String modelName) 
+    throws Exception, ApiException, IOException, URISyntaxException, InterruptedException, Exception {
+    return this.scanFolder(folderPath, modelName, OptionalInt.empty(), true);
   }
 
   public ScanReportV3 scanFolder(String folderPath, String modelName, boolean waitForDone) 

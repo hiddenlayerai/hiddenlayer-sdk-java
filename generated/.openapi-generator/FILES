@@ -24,8 +24,8 @@ docs/ExternalProperties.md
 docs/ExternalPropertyFileReference.md
 docs/ExternalPropertyFileReferences.md
 docs/FileDetailsV3.md
-docs/FileResultsInner.md
 docs/FileScanReportV3.md
+docs/FileScanReportsV3.md
 docs/Fix.md
 docs/GetMultipartUploadResponse.md
 docs/Graph.md
@@ -142,8 +142,8 @@ src/main/java/com/hiddenlayer/sdk/rest/models/ExternalProperties.java
 src/main/java/com/hiddenlayer/sdk/rest/models/ExternalPropertyFileReference.java
 src/main/java/com/hiddenlayer/sdk/rest/models/ExternalPropertyFileReferences.java
 src/main/java/com/hiddenlayer/sdk/rest/models/FileDetailsV3.java
-src/main/java/com/hiddenlayer/sdk/rest/models/FileResultsInner.java
 src/main/java/com/hiddenlayer/sdk/rest/models/FileScanReportV3.java
+src/main/java/com/hiddenlayer/sdk/rest/models/FileScanReportsV3.java
 src/main/java/com/hiddenlayer/sdk/rest/models/Fix.java
 src/main/java/com/hiddenlayer/sdk/rest/models/GetMultipartUploadResponse.java
 src/main/java/com/hiddenlayer/sdk/rest/models/Graph.java
@@ -236,8 +236,8 @@ src/test/java/com/hiddenlayer/sdk/rest/models/ExternalPropertiesTest.java
 src/test/java/com/hiddenlayer/sdk/rest/models/ExternalPropertyFileReferenceTest.java
 src/test/java/com/hiddenlayer/sdk/rest/models/ExternalPropertyFileReferencesTest.java
 src/test/java/com/hiddenlayer/sdk/rest/models/FileDetailsV3Test.java
-src/test/java/com/hiddenlayer/sdk/rest/models/FileResultsInnerTest.java
 src/test/java/com/hiddenlayer/sdk/rest/models/FileScanReportV3Test.java
+src/test/java/com/hiddenlayer/sdk/rest/models/FileScanReportsV3Test.java
 src/test/java/com/hiddenlayer/sdk/rest/models/FixTest.java
 src/test/java/com/hiddenlayer/sdk/rest/models/GetMultipartUploadResponseTest.java
 src/test/java/com/hiddenlayer/sdk/rest/models/GraphTest.java

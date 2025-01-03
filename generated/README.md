@@ -4,7 +4,7 @@ HiddenLayer ModelScan V2
 
 - API version: 1
 
-- Build date: 2024-12-23T18:20:36.233399Z[GMT]
+- Build date: 2024-12-30T18:04:47.686514Z[GMT]
 
 - Generator version: 7.6.0
 
@@ -176,8 +176,8 @@ Class | Method | HTTP request | Description
  - [ExternalPropertyFileReference](docs/ExternalPropertyFileReference.md)
  - [ExternalPropertyFileReferences](docs/ExternalPropertyFileReferences.md)
  - [FileDetailsV3](docs/FileDetailsV3.md)
- - [FileResultsInner](docs/FileResultsInner.md)
  - [FileScanReportV3](docs/FileScanReportV3.md)
+ - [FileScanReportsV3](docs/FileScanReportsV3.md)
  - [Fix](docs/Fix.md)
  - [GetMultipartUploadResponse](docs/GetMultipartUploadResponse.md)
  - [Graph](docs/Graph.md)

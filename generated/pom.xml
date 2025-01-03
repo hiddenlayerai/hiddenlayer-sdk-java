@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.hiddenlayer</groupId>
         <artifactId>java-client-parent</artifactId>
-        <version>0.1.10</version>
+        <version>0.1.11</version>
     </parent>
     <artifactId>hiddenlayer-rest-java</artifactId>
     <packaging>jar</packaging>
@@ -60,7 +60,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.2</version>
+                <version>3.2.5</version>
                 <configuration>
                     <systemPropertyVariables>
                         <loggerPath>conf/log4j.properties</loggerPath>
@@ -72,7 +72,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -90,7 +90,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.2</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -251,10 +251,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <jackson-version>2.18.2</jackson-version>
+        <jackson-version>2.15.2</jackson-version>
         <jackson-databind-nullable-version>0.2.6</jackson-databind-nullable-version>
         <jakarta-annotation-version>1.3.5</jakarta-annotation-version>
-        <junit-version>5.11.4</junit-version>
+        <junit-version>5.10.2</junit-version>
         <spotless.version>2.27.2</spotless.version>
     </properties>
 </project>
