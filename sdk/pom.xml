@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.hiddenlayer</groupId>
         <artifactId>java-client-parent</artifactId>
-        <version>0.1.13</version>
+        <version>0.1.14</version>
     </parent>
     <artifactId>hiddenlayer-sdk</artifactId>
     <packaging>jar</packaging>
@@ -88,10 +88,9 @@
                 </executions>
                 <configuration>
               <artifactSet>
-                <excludes>
-                  <exclude>com.fasterxml.jackson.*</exclude>
-                  <exclude>javax.annotation.*</exclude>
-                </excludes>
+                <includes>
+                  <include>com.hiddenlayer:*</include>
+                </includes>
               </artifactSet>
             </configuration>
             </plugin>
