@@ -88,10 +88,9 @@
                 </executions>
                 <configuration>
               <artifactSet>
-                <excludes>
-                  <exclude>com.fasterxml.jackson.*</exclude>
-                  <exclude>javax.annotation.*</exclude>
-                </excludes>
+                <includes>
+                  <include>com.hiddenlayer:*</include>
+                </includes>
               </artifactSet>
             </configuration>
             </plugin>
