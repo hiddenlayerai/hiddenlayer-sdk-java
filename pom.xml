@@ -5,7 +5,7 @@
     <artifactId>java-client-parent</artifactId>
     <packaging>pom</packaging>
     <name>Java Client</name>
-    <version>0.1.14</version>
+    <version>0.2.0</version>
     <url>https://github.com/hiddenlayerai/hiddenlayer-sdk-java</url>
     <description>Java SDK for HiddenLayer</description>
     <scm>
