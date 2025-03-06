@@ -17,14 +17,18 @@ import com.hiddenlayer.sdk.rest.ApiException;
 import com.hiddenlayer.sdk.rest.ApiResponse;
 import com.hiddenlayer.sdk.rest.Pair;
 
-import com.hiddenlayer.sdk.rest.models.ModelScanApiV3ScanModelVersionIdPatch200Response;
-import com.hiddenlayer.sdk.rest.models.ModelScanApiV3ScanQuery200Response;
+import com.hiddenlayer.sdk.rest.models.BeginMultiFileUpload200Response;
+import com.hiddenlayer.sdk.rest.models.BeginMultipartFileUpload200Response;
+import com.hiddenlayer.sdk.rest.models.GetCondensedModelScanReports200Response;
+import com.hiddenlayer.sdk.rest.models.MultiFileUploadRequestV3;
+import com.hiddenlayer.sdk.rest.models.NotifyModelScanCompleted200Response;
 import java.time.OffsetDateTime;
+import com.hiddenlayer.sdk.rest.models.ProblemDetails;
 import com.hiddenlayer.sdk.rest.models.Sarif210;
 import com.hiddenlayer.sdk.rest.models.ScanCreateRequest;
 import com.hiddenlayer.sdk.rest.models.ScanJob;
 import com.hiddenlayer.sdk.rest.models.ScanReportV3;
-import com.hiddenlayer.sdk.rest.models.ScanResultsV2;
+import com.hiddenlayer.sdk.rest.models.ScanResultsMapV3;
 import java.util.UUID;
 import com.hiddenlayer.sdk.rest.models.ValidationErrorModel;
 
@@ -53,7 +57,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-30T18:04:47.686514Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-06T16:41:22.054858Z[GMT]", comments = "Generator version: 7.6.0")
 public class ModelSupplyChainApi {
   private final HttpClient memberVarHttpClient;
   private final ObjectMapper memberVarObjectMapper;
@@ -91,28 +95,26 @@ public class ModelSupplyChainApi {
   }
 
   /**
-   * Get Result of a Model Scan
+   * Start V3 Upload
    * 
-   * @param scanId  (required)
-   * @param hasDetections Filter file_results to only those that have detections (and parents) (optional)
-   * @return ScanReportV3
+   * @param multiFileUploadRequestV3 Request body for create (required)
+   * @return BeginMultiFileUpload200Response
    * @throws ApiException if fails to make API call
    */
-  public ScanReportV3 modelScanApiV3ScanModelVersionIdGet(UUID scanId, Boolean hasDetections) throws ApiException {
-    ApiResponse<ScanReportV3> localVarResponse = modelScanApiV3ScanModelVersionIdGetWithHttpInfo(scanId, hasDetections);
+  public BeginMultiFileUpload200Response beginMultiFileUpload(MultiFileUploadRequestV3 multiFileUploadRequestV3) throws ApiException {
+    ApiResponse<BeginMultiFileUpload200Response> localVarResponse = beginMultiFileUploadWithHttpInfo(multiFileUploadRequestV3);
     return localVarResponse.getData();
   }
 
   /**
-   * Get Result of a Model Scan
+   * Start V3 Upload
    * 
-   * @param scanId  (required)
-   * @param hasDetections Filter file_results to only those that have detections (and parents) (optional)
-   * @return ApiResponse&lt;ScanReportV3&gt;
+   * @param multiFileUploadRequestV3 Request body for create (required)
+   * @return ApiResponse&lt;BeginMultiFileUpload200Response&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ScanReportV3> modelScanApiV3ScanModelVersionIdGetWithHttpInfo(UUID scanId, Boolean hasDetections) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = modelScanApiV3ScanModelVersionIdGetRequestBuilder(scanId, hasDetections);
+  public ApiResponse<BeginMultiFileUpload200Response> beginMultiFileUploadWithHttpInfo(MultiFileUploadRequestV3 multiFileUploadRequestV3) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = beginMultiFileUploadRequestBuilder(multiFileUploadRequestV3);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -122,12 +124,12 @@ public class ModelSupplyChainApi {
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("modelScanApiV3ScanModelVersionIdGet", localVarResponse);
+          throw getApiException("beginMultiFileUpload", localVarResponse);
         }
-        return new ApiResponse<ScanReportV3>(
+        return new ApiResponse<BeginMultiFileUpload200Response>(
           localVarResponse.statusCode(),
           localVarResponse.headers().map(),
-          localVarResponse.body() == null ? null : memberVarObjectMapper.readValue(localVarResponse.body(), new TypeReference<ScanReportV3>() {}) // closes the InputStream
+          localVarResponse.body() == null ? null : memberVarObjectMapper.readValue(localVarResponse.body(), new TypeReference<BeginMultiFileUpload200Response>() {}) // closes the InputStream
         );
       } finally {
       }
@@ -140,136 +142,24 @@ public class ModelSupplyChainApi {
     }
   }
 
-  private HttpRequest.Builder modelScanApiV3ScanModelVersionIdGetRequestBuilder(UUID scanId, Boolean hasDetections) throws ApiException {
-    // verify the required parameter 'scanId' is set
-    if (scanId == null) {
-      throw new ApiException(400, "Missing the required parameter 'scanId' when calling modelScanApiV3ScanModelVersionIdGet");
+  private HttpRequest.Builder beginMultiFileUploadRequestBuilder(MultiFileUploadRequestV3 multiFileUploadRequestV3) throws ApiException {
+    // verify the required parameter 'multiFileUploadRequestV3' is set
+    if (multiFileUploadRequestV3 == null) {
+      throw new ApiException(400, "Missing the required parameter 'multiFileUploadRequestV3' when calling beginMultiFileUpload");
     }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
-    String localVarPath = "/scan/v3/results/{scan_id}"
-        .replace("{scan_id}", ApiClient.urlEncode(scanId.toString()));
+    String localVarPath = "/scan/v3/upload";
 
-    List<Pair> localVarQueryParams = new ArrayList<>();
-    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
-    localVarQueryParameterBaseName = "has_detections";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("has_detections", hasDetections));
-
-    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
-      StringJoiner queryJoiner = new StringJoiner("&");
-      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
-      if (localVarQueryStringJoiner.length() != 0) {
-        queryJoiner.add(localVarQueryStringJoiner.toString());
-      }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
-    } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-    }
-
-    localVarRequestBuilder.header("Accept", "application/json; charset=utf-8, application/sarif+json");
-
-    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
-
-  /**
-   * Indicate part (file or files) of a model scan has completed
-   * 
-   * @param scanId  (required)
-   * @param scanReportV3 Request body for partial update (required)
-   * @param hasDetections Filter file_results to only those that have detections (and parents) (optional)
-   * @return ModelScanApiV3ScanModelVersionIdPatch200Response
-   * @throws ApiException if fails to make API call
-   */
-  public ModelScanApiV3ScanModelVersionIdPatch200Response modelScanApiV3ScanModelVersionIdPatch(UUID scanId, ScanReportV3 scanReportV3, Boolean hasDetections) throws ApiException {
-    ApiResponse<ModelScanApiV3ScanModelVersionIdPatch200Response> localVarResponse = modelScanApiV3ScanModelVersionIdPatchWithHttpInfo(scanId, scanReportV3, hasDetections);
-    return localVarResponse.getData();
-  }
-
-  /**
-   * Indicate part (file or files) of a model scan has completed
-   * 
-   * @param scanId  (required)
-   * @param scanReportV3 Request body for partial update (required)
-   * @param hasDetections Filter file_results to only those that have detections (and parents) (optional)
-   * @return ApiResponse&lt;ModelScanApiV3ScanModelVersionIdPatch200Response&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<ModelScanApiV3ScanModelVersionIdPatch200Response> modelScanApiV3ScanModelVersionIdPatchWithHttpInfo(UUID scanId, ScanReportV3 scanReportV3, Boolean hasDetections) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = modelScanApiV3ScanModelVersionIdPatchRequestBuilder(scanId, scanReportV3, hasDetections);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("modelScanApiV3ScanModelVersionIdPatch", localVarResponse);
-        }
-        return new ApiResponse<ModelScanApiV3ScanModelVersionIdPatch200Response>(
-          localVarResponse.statusCode(),
-          localVarResponse.headers().map(),
-          localVarResponse.body() == null ? null : memberVarObjectMapper.readValue(localVarResponse.body(), new TypeReference<ModelScanApiV3ScanModelVersionIdPatch200Response>() {}) // closes the InputStream
-        );
-      } finally {
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
-
-  private HttpRequest.Builder modelScanApiV3ScanModelVersionIdPatchRequestBuilder(UUID scanId, ScanReportV3 scanReportV3, Boolean hasDetections) throws ApiException {
-    // verify the required parameter 'scanId' is set
-    if (scanId == null) {
-      throw new ApiException(400, "Missing the required parameter 'scanId' when calling modelScanApiV3ScanModelVersionIdPatch");
-    }
-    // verify the required parameter 'scanReportV3' is set
-    if (scanReportV3 == null) {
-      throw new ApiException(400, "Missing the required parameter 'scanReportV3' when calling modelScanApiV3ScanModelVersionIdPatch");
-    }
-
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
-
-    String localVarPath = "/scan/v3/results/{scan_id}"
-        .replace("{scan_id}", ApiClient.urlEncode(scanId.toString()));
-
-    List<Pair> localVarQueryParams = new ArrayList<>();
-    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
-    localVarQueryParameterBaseName = "has_detections";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("has_detections", hasDetections));
-
-    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
-      StringJoiner queryJoiner = new StringJoiner("&");
-      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
-      if (localVarQueryStringJoiner.length() != 0) {
-        queryJoiner.add(localVarQueryStringJoiner.toString());
-      }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
-    } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-    }
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json");
     localVarRequestBuilder.header("Accept", "application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(scanReportV3);
-      localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(multiFileUploadRequestV3);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
     }
@@ -283,28 +173,30 @@ public class ModelSupplyChainApi {
   }
 
   /**
-   * Indicate model scan has started
+   * Add file to V3 Upload
    * 
+   * @param fileContentLength Added file size in bytes (required)
+   * @param fileName Added file name (required)
    * @param scanId  (required)
-   * @param scanReportV3 Request body for create (required)
-   * @param hasDetections Filter file_results to only those that have detections (and parents) (optional)
+   * @return BeginMultipartFileUpload200Response
    * @throws ApiException if fails to make API call
    */
-  public void modelScanApiV3ScanModelVersionIdPost(UUID scanId, ScanReportV3 scanReportV3, Boolean hasDetections) throws ApiException {
-    modelScanApiV3ScanModelVersionIdPostWithHttpInfo(scanId, scanReportV3, hasDetections);
+  public BeginMultipartFileUpload200Response beginMultipartFileUpload(Integer fileContentLength, String fileName, UUID scanId) throws ApiException {
+    ApiResponse<BeginMultipartFileUpload200Response> localVarResponse = beginMultipartFileUploadWithHttpInfo(fileContentLength, fileName, scanId);
+    return localVarResponse.getData();
   }
 
   /**
-   * Indicate model scan has started
+   * Add file to V3 Upload
    * 
+   * @param fileContentLength Added file size in bytes (required)
+   * @param fileName Added file name (required)
    * @param scanId  (required)
-   * @param scanReportV3 Request body for create (required)
-   * @param hasDetections Filter file_results to only those that have detections (and parents) (optional)
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;BeginMultipartFileUpload200Response&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> modelScanApiV3ScanModelVersionIdPostWithHttpInfo(UUID scanId, ScanReportV3 scanReportV3, Boolean hasDetections) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = modelScanApiV3ScanModelVersionIdPostRequestBuilder(scanId, scanReportV3, hasDetections);
+  public ApiResponse<BeginMultipartFileUpload200Response> beginMultipartFileUploadWithHttpInfo(Integer fileContentLength, String fileName, UUID scanId) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = beginMultipartFileUploadRequestBuilder(fileContentLength, fileName, scanId);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -314,7 +206,245 @@ public class ModelSupplyChainApi {
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("modelScanApiV3ScanModelVersionIdPost", localVarResponse);
+          throw getApiException("beginMultipartFileUpload", localVarResponse);
+        }
+        return new ApiResponse<BeginMultipartFileUpload200Response>(
+          localVarResponse.statusCode(),
+          localVarResponse.headers().map(),
+          localVarResponse.body() == null ? null : memberVarObjectMapper.readValue(localVarResponse.body(), new TypeReference<BeginMultipartFileUpload200Response>() {}) // closes the InputStream
+        );
+      } finally {
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder beginMultipartFileUploadRequestBuilder(Integer fileContentLength, String fileName, UUID scanId) throws ApiException {
+    // verify the required parameter 'fileContentLength' is set
+    if (fileContentLength == null) {
+      throw new ApiException(400, "Missing the required parameter 'fileContentLength' when calling beginMultipartFileUpload");
+    }
+    // verify the required parameter 'fileName' is set
+    if (fileName == null) {
+      throw new ApiException(400, "Missing the required parameter 'fileName' when calling beginMultipartFileUpload");
+    }
+    // verify the required parameter 'scanId' is set
+    if (scanId == null) {
+      throw new ApiException(400, "Missing the required parameter 'scanId' when calling beginMultipartFileUpload");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/scan/v3/upload/{scan_id}/file"
+        .replace("{scan_id}", ApiClient.urlEncode(scanId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    if (fileContentLength != null) {
+      localVarRequestBuilder.header("file-content-length", fileContentLength.toString());
+    }
+    if (fileName != null) {
+      localVarRequestBuilder.header("file-name", fileName.toString());
+    }
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Indicate All files are uploaded and start the scan
+   * 
+   * @param scanId  (required)
+   * @return BeginMultiFileUpload200Response
+   * @throws ApiException if fails to make API call
+   */
+  public BeginMultiFileUpload200Response completeMultiFileUpload(UUID scanId) throws ApiException {
+    ApiResponse<BeginMultiFileUpload200Response> localVarResponse = completeMultiFileUploadWithHttpInfo(scanId);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Indicate All files are uploaded and start the scan
+   * 
+   * @param scanId  (required)
+   * @return ApiResponse&lt;BeginMultiFileUpload200Response&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<BeginMultiFileUpload200Response> completeMultiFileUploadWithHttpInfo(UUID scanId) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = completeMultiFileUploadRequestBuilder(scanId);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("completeMultiFileUpload", localVarResponse);
+        }
+        return new ApiResponse<BeginMultiFileUpload200Response>(
+          localVarResponse.statusCode(),
+          localVarResponse.headers().map(),
+          localVarResponse.body() == null ? null : memberVarObjectMapper.readValue(localVarResponse.body(), new TypeReference<BeginMultiFileUpload200Response>() {}) // closes the InputStream
+        );
+      } finally {
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder completeMultiFileUploadRequestBuilder(UUID scanId) throws ApiException {
+    // verify the required parameter 'scanId' is set
+    if (scanId == null) {
+      throw new ApiException(400, "Missing the required parameter 'scanId' when calling completeMultiFileUpload");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/scan/v3/upload/{scan_id}"
+        .replace("{scan_id}", ApiClient.urlEncode(scanId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Indicate that upload is completed for {file_id}
+   * 
+   * @param scanId  (required)
+   * @param fileId  (required)
+   * @return BeginMultiFileUpload200Response
+   * @throws ApiException if fails to make API call
+   */
+  public BeginMultiFileUpload200Response completeMultipartFileUpload(UUID scanId, UUID fileId) throws ApiException {
+    ApiResponse<BeginMultiFileUpload200Response> localVarResponse = completeMultipartFileUploadWithHttpInfo(scanId, fileId);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Indicate that upload is completed for {file_id}
+   * 
+   * @param scanId  (required)
+   * @param fileId  (required)
+   * @return ApiResponse&lt;BeginMultiFileUpload200Response&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<BeginMultiFileUpload200Response> completeMultipartFileUploadWithHttpInfo(UUID scanId, UUID fileId) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = completeMultipartFileUploadRequestBuilder(scanId, fileId);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("completeMultipartFileUpload", localVarResponse);
+        }
+        return new ApiResponse<BeginMultiFileUpload200Response>(
+          localVarResponse.statusCode(),
+          localVarResponse.headers().map(),
+          localVarResponse.body() == null ? null : memberVarObjectMapper.readValue(localVarResponse.body(), new TypeReference<BeginMultiFileUpload200Response>() {}) // closes the InputStream
+        );
+      } finally {
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder completeMultipartFileUploadRequestBuilder(UUID scanId, UUID fileId) throws ApiException {
+    // verify the required parameter 'scanId' is set
+    if (scanId == null) {
+      throw new ApiException(400, "Missing the required parameter 'scanId' when calling completeMultipartFileUpload");
+    }
+    // verify the required parameter 'fileId' is set
+    if (fileId == null) {
+      throw new ApiException(400, "Missing the required parameter 'fileId' when calling completeMultipartFileUpload");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/scan/v3/upload/{scan_id}/file/{file_id}"
+        .replace("{scan_id}", ApiClient.urlEncode(scanId.toString()))
+        .replace("{file_id}", ApiClient.urlEncode(fileId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Request a Model Scan Job
+   * 
+   * @param scanJob Request body for create scan request (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void createScanJob(ScanJob scanJob) throws ApiException {
+    createScanJobWithHttpInfo(scanJob);
+  }
+
+  /**
+   * Request a Model Scan Job
+   * 
+   * @param scanJob Request body for create scan request (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> createScanJobWithHttpInfo(ScanJob scanJob) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = createScanJobRequestBuilder(scanJob);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("createScanJob", localVarResponse);
         }
         return new ApiResponse<Void>(
           localVarResponse.statusCode(),
@@ -337,43 +467,23 @@ public class ModelSupplyChainApi {
     }
   }
 
-  private HttpRequest.Builder modelScanApiV3ScanModelVersionIdPostRequestBuilder(UUID scanId, ScanReportV3 scanReportV3, Boolean hasDetections) throws ApiException {
-    // verify the required parameter 'scanId' is set
-    if (scanId == null) {
-      throw new ApiException(400, "Missing the required parameter 'scanId' when calling modelScanApiV3ScanModelVersionIdPost");
-    }
-    // verify the required parameter 'scanReportV3' is set
-    if (scanReportV3 == null) {
-      throw new ApiException(400, "Missing the required parameter 'scanReportV3' when calling modelScanApiV3ScanModelVersionIdPost");
+  private HttpRequest.Builder createScanJobRequestBuilder(ScanJob scanJob) throws ApiException {
+    // verify the required parameter 'scanJob' is set
+    if (scanJob == null) {
+      throw new ApiException(400, "Missing the required parameter 'scanJob' when calling createScanJob");
     }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
-    String localVarPath = "/scan/v3/results/{scan_id}"
-        .replace("{scan_id}", ApiClient.urlEncode(scanId.toString()));
+    String localVarPath = "/scans/v3/jobs";
 
-    List<Pair> localVarQueryParams = new ArrayList<>();
-    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
-    localVarQueryParameterBaseName = "has_detections";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("has_detections", hasDetections));
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
-    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
-      StringJoiner queryJoiner = new StringJoiner("&");
-      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
-      if (localVarQueryStringJoiner.length() != 0) {
-        queryJoiner.add(localVarQueryStringJoiner.toString());
-      }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
-    } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-    }
-
-    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Content-Type", "application/json; charset=utf-8");
     localVarRequestBuilder.header("Accept", "application/json");
 
     try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(scanReportV3);
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(scanJob);
       localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
     } catch (IOException e) {
       throw new ApiException(e);
@@ -400,11 +510,11 @@ public class ModelSupplyChainApi {
    * @param offset  (optional, default to 0)
    * @param sort allow sorting by status, severity or created at, ascending (+) or the default descending (-) (optional, default to -start_time)
    * @param latestPerModelVersionOnly only return latest result per model version (optional, default to false)
-   * @return ModelScanApiV3ScanQuery200Response
+   * @return GetCondensedModelScanReports200Response
    * @throws ApiException if fails to make API call
    */
-  public ModelScanApiV3ScanQuery200Response modelScanApiV3ScanQuery(List<String> modelVersionIds, List<String> modelIds, OffsetDateTime startTime, OffsetDateTime endTime, List<String> severity, List<String> status, Integer limit, Integer offset, String sort, Boolean latestPerModelVersionOnly) throws ApiException {
-    ApiResponse<ModelScanApiV3ScanQuery200Response> localVarResponse = modelScanApiV3ScanQueryWithHttpInfo(modelVersionIds, modelIds, startTime, endTime, severity, status, limit, offset, sort, latestPerModelVersionOnly);
+  public GetCondensedModelScanReports200Response getCondensedModelScanReports(List<String> modelVersionIds, List<String> modelIds, OffsetDateTime startTime, OffsetDateTime endTime, List<String> severity, List<String> status, Integer limit, Integer offset, String sort, Boolean latestPerModelVersionOnly) throws ApiException {
+    ApiResponse<GetCondensedModelScanReports200Response> localVarResponse = getCondensedModelScanReportsWithHttpInfo(modelVersionIds, modelIds, startTime, endTime, severity, status, limit, offset, sort, latestPerModelVersionOnly);
     return localVarResponse.getData();
   }
 
@@ -421,11 +531,11 @@ public class ModelSupplyChainApi {
    * @param offset  (optional, default to 0)
    * @param sort allow sorting by status, severity or created at, ascending (+) or the default descending (-) (optional, default to -start_time)
    * @param latestPerModelVersionOnly only return latest result per model version (optional, default to false)
-   * @return ApiResponse&lt;ModelScanApiV3ScanQuery200Response&gt;
+   * @return ApiResponse&lt;GetCondensedModelScanReports200Response&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<ModelScanApiV3ScanQuery200Response> modelScanApiV3ScanQueryWithHttpInfo(List<String> modelVersionIds, List<String> modelIds, OffsetDateTime startTime, OffsetDateTime endTime, List<String> severity, List<String> status, Integer limit, Integer offset, String sort, Boolean latestPerModelVersionOnly) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = modelScanApiV3ScanQueryRequestBuilder(modelVersionIds, modelIds, startTime, endTime, severity, status, limit, offset, sort, latestPerModelVersionOnly);
+  public ApiResponse<GetCondensedModelScanReports200Response> getCondensedModelScanReportsWithHttpInfo(List<String> modelVersionIds, List<String> modelIds, OffsetDateTime startTime, OffsetDateTime endTime, List<String> severity, List<String> status, Integer limit, Integer offset, String sort, Boolean latestPerModelVersionOnly) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getCondensedModelScanReportsRequestBuilder(modelVersionIds, modelIds, startTime, endTime, severity, status, limit, offset, sort, latestPerModelVersionOnly);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -435,12 +545,12 @@ public class ModelSupplyChainApi {
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("modelScanApiV3ScanQuery", localVarResponse);
+          throw getApiException("getCondensedModelScanReports", localVarResponse);
         }
-        return new ApiResponse<ModelScanApiV3ScanQuery200Response>(
+        return new ApiResponse<GetCondensedModelScanReports200Response>(
           localVarResponse.statusCode(),
           localVarResponse.headers().map(),
-          localVarResponse.body() == null ? null : memberVarObjectMapper.readValue(localVarResponse.body(), new TypeReference<ModelScanApiV3ScanQuery200Response>() {}) // closes the InputStream
+          localVarResponse.body() == null ? null : memberVarObjectMapper.readValue(localVarResponse.body(), new TypeReference<GetCondensedModelScanReports200Response>() {}) // closes the InputStream
         );
       } finally {
       }
@@ -453,7 +563,7 @@ public class ModelSupplyChainApi {
     }
   }
 
-  private HttpRequest.Builder modelScanApiV3ScanQueryRequestBuilder(List<String> modelVersionIds, List<String> modelIds, OffsetDateTime startTime, OffsetDateTime endTime, List<String> severity, List<String> status, Integer limit, Integer offset, String sort, Boolean latestPerModelVersionOnly) throws ApiException {
+  private HttpRequest.Builder getCondensedModelScanReportsRequestBuilder(List<String> modelVersionIds, List<String> modelIds, OffsetDateTime startTime, OffsetDateTime endTime, List<String> severity, List<String> status, Integer limit, Integer offset, String sort, Boolean latestPerModelVersionOnly) throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
@@ -507,170 +617,13 @@ public class ModelSupplyChainApi {
   }
 
   /**
-   * Retrieve Model Scan Results
-   * 
-   * @param scanId  (optional)
-   * @return List&lt;ScanResultsV2&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public List<ScanResultsV2> modelscanApiV3GetScanResults(UUID scanId) throws ApiException {
-    ApiResponse<List<ScanResultsV2>> localVarResponse = modelscanApiV3GetScanResultsWithHttpInfo(scanId);
-    return localVarResponse.getData();
-  }
-
-  /**
-   * Retrieve Model Scan Results
-   * 
-   * @param scanId  (optional)
-   * @return ApiResponse&lt;List&lt;ScanResultsV2&gt;&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<List<ScanResultsV2>> modelscanApiV3GetScanResultsWithHttpInfo(UUID scanId) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = modelscanApiV3GetScanResultsRequestBuilder(scanId);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("modelscanApiV3GetScanResults", localVarResponse);
-        }
-        return new ApiResponse<List<ScanResultsV2>>(
-          localVarResponse.statusCode(),
-          localVarResponse.headers().map(),
-          localVarResponse.body() == null ? null : memberVarObjectMapper.readValue(localVarResponse.body(), new TypeReference<List<ScanResultsV2>>() {}) // closes the InputStream
-        );
-      } finally {
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
-
-  private HttpRequest.Builder modelscanApiV3GetScanResultsRequestBuilder(UUID scanId) throws ApiException {
-
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
-
-    String localVarPath = "/scans/v3/results/{scan_id}"
-        .replace("{scan_id}", ApiClient.urlEncode(scanId.toString()));
-
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    localVarRequestBuilder.header("Accept", "application/json; charset=utf-8, application/json");
-
-    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
-
-  /**
-   * Engine Report Endpoint of Model Scan Results
-   * 
-   * @param scanId  (required)
-   * @param scanCreateRequest Request body for reporting a scan of one or more file results (required)
-   * @throws ApiException if fails to make API call
-   */
-  public void modelscanApiV3PostScanResults(UUID scanId, ScanCreateRequest scanCreateRequest) throws ApiException {
-    modelscanApiV3PostScanResultsWithHttpInfo(scanId, scanCreateRequest);
-  }
-
-  /**
-   * Engine Report Endpoint of Model Scan Results
-   * 
-   * @param scanId  (required)
-   * @param scanCreateRequest Request body for reporting a scan of one or more file results (required)
-   * @return ApiResponse&lt;Void&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<Void> modelscanApiV3PostScanResultsWithHttpInfo(UUID scanId, ScanCreateRequest scanCreateRequest) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = modelscanApiV3PostScanResultsRequestBuilder(scanId, scanCreateRequest);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("modelscanApiV3PostScanResults", localVarResponse);
-        }
-        return new ApiResponse<Void>(
-          localVarResponse.statusCode(),
-          localVarResponse.headers().map(),
-          null
-        );
-      } finally {
-        // Drain the InputStream
-        while (localVarResponse.body().read() != -1) {
-            // Ignore
-        }
-        localVarResponse.body().close();
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
-
-  private HttpRequest.Builder modelscanApiV3PostScanResultsRequestBuilder(UUID scanId, ScanCreateRequest scanCreateRequest) throws ApiException {
-    // verify the required parameter 'scanId' is set
-    if (scanId == null) {
-      throw new ApiException(400, "Missing the required parameter 'scanId' when calling modelscanApiV3PostScanResults");
-    }
-    // verify the required parameter 'scanCreateRequest' is set
-    if (scanCreateRequest == null) {
-      throw new ApiException(400, "Missing the required parameter 'scanCreateRequest' when calling modelscanApiV3PostScanResults");
-    }
-
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
-
-    String localVarPath = "/scans/v3/reports/{scan_id}"
-        .replace("{scan_id}", ApiClient.urlEncode(scanId.toString()));
-
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    localVarRequestBuilder.header("Content-Type", "application/json");
-    localVarRequestBuilder.header("Accept", "application/json");
-
-    try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(scanCreateRequest);
-      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
-
-  /**
    * List all Model Scan Jobs
    * 
    * @return List&lt;ScanJob&gt;
    * @throws ApiException if fails to make API call
    */
-  public List<ScanJob> modelscannerApiV3GetJobs() throws ApiException {
-    ApiResponse<List<ScanJob>> localVarResponse = modelscannerApiV3GetJobsWithHttpInfo();
+  public List<ScanJob> getScanJobs() throws ApiException {
+    ApiResponse<List<ScanJob>> localVarResponse = getScanJobsWithHttpInfo();
     return localVarResponse.getData();
   }
 
@@ -680,8 +633,8 @@ public class ModelSupplyChainApi {
    * @return ApiResponse&lt;List&lt;ScanJob&gt;&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<List<ScanJob>> modelscannerApiV3GetJobsWithHttpInfo() throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = modelscannerApiV3GetJobsRequestBuilder();
+  public ApiResponse<List<ScanJob>> getScanJobsWithHttpInfo() throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getScanJobsRequestBuilder();
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
           localVarRequestBuilder.build(),
@@ -691,7 +644,7 @@ public class ModelSupplyChainApi {
       }
       try {
         if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("modelscannerApiV3GetJobs", localVarResponse);
+          throw getApiException("getScanJobs", localVarResponse);
         }
         return new ApiResponse<List<ScanJob>>(
           localVarResponse.statusCode(),
@@ -709,13 +662,193 @@ public class ModelSupplyChainApi {
     }
   }
 
-  private HttpRequest.Builder modelscannerApiV3GetJobsRequestBuilder() throws ApiException {
+  private HttpRequest.Builder getScanJobsRequestBuilder() throws ApiException {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
     String localVarPath = "/scans/v3/jobs";
 
     localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json; charset=utf-8");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Get Result of a Model Scan
+   * 
+   * @param scanId  (required)
+   * @param hasDetections Filter file_results to only those that have detections (and parents) (optional)
+   * @return ScanReportV3
+   * @throws ApiException if fails to make API call
+   */
+  public ScanReportV3 getScanResults(UUID scanId, Boolean hasDetections) throws ApiException {
+    ApiResponse<ScanReportV3> localVarResponse = getScanResultsWithHttpInfo(scanId, hasDetections);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Get Result of a Model Scan
+   * 
+   * @param scanId  (required)
+   * @param hasDetections Filter file_results to only those that have detections (and parents) (optional)
+   * @return ApiResponse&lt;ScanReportV3&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ScanReportV3> getScanResultsWithHttpInfo(UUID scanId, Boolean hasDetections) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getScanResultsRequestBuilder(scanId, hasDetections);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getScanResults", localVarResponse);
+        }
+        return new ApiResponse<ScanReportV3>(
+          localVarResponse.statusCode(),
+          localVarResponse.headers().map(),
+          localVarResponse.body() == null ? null : memberVarObjectMapper.readValue(localVarResponse.body(), new TypeReference<ScanReportV3>() {}) // closes the InputStream
+        );
+      } finally {
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getScanResultsRequestBuilder(UUID scanId, Boolean hasDetections) throws ApiException {
+    // verify the required parameter 'scanId' is set
+    if (scanId == null) {
+      throw new ApiException(400, "Missing the required parameter 'scanId' when calling getScanResults");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/scan/v3/results/{scan_id}"
+        .replace("{scan_id}", ApiClient.urlEncode(scanId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "has_detections";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("has_detections", hasDetections));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    localVarRequestBuilder.header("Accept", "application/json; charset=utf-8, application/sarif+json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Retrieve Model Scan Results
+   * 
+   * @param scanId  (optional)
+   * @param cursor  (optional)
+   * @param pageSize  (optional, default to 25)
+   * @return List&lt;ScanResultsMapV3&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ScanResultsMapV3> getScanResults1(UUID scanId, String cursor, Integer pageSize) throws ApiException {
+    ApiResponse<List<ScanResultsMapV3>> localVarResponse = getScanResults1WithHttpInfo(scanId, cursor, pageSize);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Retrieve Model Scan Results
+   * 
+   * @param scanId  (optional)
+   * @param cursor  (optional)
+   * @param pageSize  (optional, default to 25)
+   * @return ApiResponse&lt;List&lt;ScanResultsMapV3&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ScanResultsMapV3>> getScanResults1WithHttpInfo(UUID scanId, String cursor, Integer pageSize) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getScanResults1RequestBuilder(scanId, cursor, pageSize);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getScanResults1", localVarResponse);
+        }
+        return new ApiResponse<List<ScanResultsMapV3>>(
+          localVarResponse.statusCode(),
+          localVarResponse.headers().map(),
+          localVarResponse.body() == null ? null : memberVarObjectMapper.readValue(localVarResponse.body(), new TypeReference<List<ScanResultsMapV3>>() {}) // closes the InputStream
+        );
+      } finally {
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getScanResults1RequestBuilder(UUID scanId, String cursor, Integer pageSize) throws ApiException {
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/scans/v3/results/{scan_id}"
+        .replace("{scan_id}", ApiClient.urlEncode(scanId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "cursor";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("cursor", cursor));
+    localVarQueryParameterBaseName = "page_size";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("page_size", pageSize));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
 
     localVarRequestBuilder.header("Accept", "application/json; charset=utf-8");
 
@@ -799,87 +932,6 @@ public class ModelSupplyChainApi {
   }
 
   /**
-   * Request a Model Scan Job
-   * 
-   * @param scanJob Request body for create scan request (required)
-   * @throws ApiException if fails to make API call
-   */
-  public void modelscannerApiV3PostRequest(ScanJob scanJob) throws ApiException {
-    modelscannerApiV3PostRequestWithHttpInfo(scanJob);
-  }
-
-  /**
-   * Request a Model Scan Job
-   * 
-   * @param scanJob Request body for create scan request (required)
-   * @return ApiResponse&lt;Void&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<Void> modelscannerApiV3PostRequestWithHttpInfo(ScanJob scanJob) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = modelscannerApiV3PostRequestRequestBuilder(scanJob);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("modelscannerApiV3PostRequest", localVarResponse);
-        }
-        return new ApiResponse<Void>(
-          localVarResponse.statusCode(),
-          localVarResponse.headers().map(),
-          null
-        );
-      } finally {
-        // Drain the InputStream
-        while (localVarResponse.body().read() != -1) {
-            // Ignore
-        }
-        localVarResponse.body().close();
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
-
-  private HttpRequest.Builder modelscannerApiV3PostRequestRequestBuilder(ScanJob scanJob) throws ApiException {
-    // verify the required parameter 'scanJob' is set
-    if (scanJob == null) {
-      throw new ApiException(400, "Missing the required parameter 'scanJob' when calling modelscannerApiV3PostRequest");
-    }
-
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
-
-    String localVarPath = "/scans/v3/jobs";
-
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    localVarRequestBuilder.header("Content-Type", "application/json; charset=utf-8");
-    localVarRequestBuilder.header("Accept", "application/json");
-
-    try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(scanJob);
-      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
-
-  /**
    * Readiness check endpoint for Model Supply Chain Services
    * 
    * @throws ApiException if fails to make API call
@@ -939,6 +991,301 @@ public class ModelSupplyChainApi {
     localVarRequestBuilder.header("Accept", "application/json");
 
     localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Indicate part (file or files) of a model scan has completed
+   * 
+   * @param scanId  (required)
+   * @param scanReportV3 Request body for partial update (required)
+   * @param hasDetections Filter file_results to only those that have detections (and parents) (optional)
+   * @return NotifyModelScanCompleted200Response
+   * @throws ApiException if fails to make API call
+   */
+  public NotifyModelScanCompleted200Response notifyModelScanCompleted(UUID scanId, ScanReportV3 scanReportV3, Boolean hasDetections) throws ApiException {
+    ApiResponse<NotifyModelScanCompleted200Response> localVarResponse = notifyModelScanCompletedWithHttpInfo(scanId, scanReportV3, hasDetections);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Indicate part (file or files) of a model scan has completed
+   * 
+   * @param scanId  (required)
+   * @param scanReportV3 Request body for partial update (required)
+   * @param hasDetections Filter file_results to only those that have detections (and parents) (optional)
+   * @return ApiResponse&lt;NotifyModelScanCompleted200Response&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<NotifyModelScanCompleted200Response> notifyModelScanCompletedWithHttpInfo(UUID scanId, ScanReportV3 scanReportV3, Boolean hasDetections) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = notifyModelScanCompletedRequestBuilder(scanId, scanReportV3, hasDetections);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("notifyModelScanCompleted", localVarResponse);
+        }
+        return new ApiResponse<NotifyModelScanCompleted200Response>(
+          localVarResponse.statusCode(),
+          localVarResponse.headers().map(),
+          localVarResponse.body() == null ? null : memberVarObjectMapper.readValue(localVarResponse.body(), new TypeReference<NotifyModelScanCompleted200Response>() {}) // closes the InputStream
+        );
+      } finally {
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder notifyModelScanCompletedRequestBuilder(UUID scanId, ScanReportV3 scanReportV3, Boolean hasDetections) throws ApiException {
+    // verify the required parameter 'scanId' is set
+    if (scanId == null) {
+      throw new ApiException(400, "Missing the required parameter 'scanId' when calling notifyModelScanCompleted");
+    }
+    // verify the required parameter 'scanReportV3' is set
+    if (scanReportV3 == null) {
+      throw new ApiException(400, "Missing the required parameter 'scanReportV3' when calling notifyModelScanCompleted");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/scan/v3/results/{scan_id}"
+        .replace("{scan_id}", ApiClient.urlEncode(scanId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "has_detections";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("has_detections", hasDetections));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(scanReportV3);
+      localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Indicate model scan has started
+   * 
+   * @param scanId  (required)
+   * @param scanReportV3 Request body for create (required)
+   * @param hasDetections Filter file_results to only those that have detections (and parents) (optional)
+   * @throws ApiException if fails to make API call
+   */
+  public void notifyModelScanStarted(UUID scanId, ScanReportV3 scanReportV3, Boolean hasDetections) throws ApiException {
+    notifyModelScanStartedWithHttpInfo(scanId, scanReportV3, hasDetections);
+  }
+
+  /**
+   * Indicate model scan has started
+   * 
+   * @param scanId  (required)
+   * @param scanReportV3 Request body for create (required)
+   * @param hasDetections Filter file_results to only those that have detections (and parents) (optional)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> notifyModelScanStartedWithHttpInfo(UUID scanId, ScanReportV3 scanReportV3, Boolean hasDetections) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = notifyModelScanStartedRequestBuilder(scanId, scanReportV3, hasDetections);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("notifyModelScanStarted", localVarResponse);
+        }
+        return new ApiResponse<Void>(
+          localVarResponse.statusCode(),
+          localVarResponse.headers().map(),
+          null
+        );
+      } finally {
+        // Drain the InputStream
+        while (localVarResponse.body().read() != -1) {
+            // Ignore
+        }
+        localVarResponse.body().close();
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder notifyModelScanStartedRequestBuilder(UUID scanId, ScanReportV3 scanReportV3, Boolean hasDetections) throws ApiException {
+    // verify the required parameter 'scanId' is set
+    if (scanId == null) {
+      throw new ApiException(400, "Missing the required parameter 'scanId' when calling notifyModelScanStarted");
+    }
+    // verify the required parameter 'scanReportV3' is set
+    if (scanReportV3 == null) {
+      throw new ApiException(400, "Missing the required parameter 'scanReportV3' when calling notifyModelScanStarted");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/scan/v3/results/{scan_id}"
+        .replace("{scan_id}", ApiClient.urlEncode(scanId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "has_detections";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("has_detections", hasDetections));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(scanReportV3);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Engine Report Endpoint of Model Scan Results
+   * 
+   * @param scanId  (required)
+   * @param scanCreateRequest Request body for reporting a scan of one or more file results (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void reportScanResults(UUID scanId, ScanCreateRequest scanCreateRequest) throws ApiException {
+    reportScanResultsWithHttpInfo(scanId, scanCreateRequest);
+  }
+
+  /**
+   * Engine Report Endpoint of Model Scan Results
+   * 
+   * @param scanId  (required)
+   * @param scanCreateRequest Request body for reporting a scan of one or more file results (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> reportScanResultsWithHttpInfo(UUID scanId, ScanCreateRequest scanCreateRequest) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = reportScanResultsRequestBuilder(scanId, scanCreateRequest);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("reportScanResults", localVarResponse);
+        }
+        return new ApiResponse<Void>(
+          localVarResponse.statusCode(),
+          localVarResponse.headers().map(),
+          null
+        );
+      } finally {
+        // Drain the InputStream
+        while (localVarResponse.body().read() != -1) {
+            // Ignore
+        }
+        localVarResponse.body().close();
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder reportScanResultsRequestBuilder(UUID scanId, ScanCreateRequest scanCreateRequest) throws ApiException {
+    // verify the required parameter 'scanId' is set
+    if (scanId == null) {
+      throw new ApiException(400, "Missing the required parameter 'scanId' when calling reportScanResults");
+    }
+    // verify the required parameter 'scanCreateRequest' is set
+    if (scanCreateRequest == null) {
+      throw new ApiException(400, "Missing the required parameter 'scanCreateRequest' when calling reportScanResults");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/scans/v3/reports/{scan_id}"
+        .replace("{scan_id}", ApiClient.urlEncode(scanId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(scanCreateRequest);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
     if (memberVarReadTimeout != null) {
       localVarRequestBuilder.timeout(memberVarReadTimeout);
     }

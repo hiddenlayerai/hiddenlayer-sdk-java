@@ -8,9 +8,9 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 |**modelId** | **UUID** |  |  |
-|**createdAt** | **OffsetDateTime** |  |  |
+|**createdAt** | **Long** | Unix Nano Epoch |  |
 |**plaintextName** | **String** |  |  |
-|**activeVersions** | **List&lt;String&gt;** |  |  |
+|**activeVersions** | **List&lt;Integer&gt;** |  |  |
 |**source** | **String** |  |  |
 |**tags** | **Map&lt;String, Object&gt;** |  |  [optional] |
 |**modelScanThreatLevel** | [**ModelScanThreatLevelEnum**](#ModelScanThreatLevelEnum) |  |  [optional] |

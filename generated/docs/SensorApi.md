@@ -4,318 +4,22 @@ All URIs are relative to *https://api.hiddenlayer.ai*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**beginMultipartUpload**](SensorApi.md#beginMultipartUpload) | **POST** /api/v2/sensors/{sensor_id}/upload/begin | Begin Multipart Upload |
-| [**beginMultipartUploadWithHttpInfo**](SensorApi.md#beginMultipartUploadWithHttpInfo) | **POST** /api/v2/sensors/{sensor_id}/upload/begin | Begin Multipart Upload |
-| [**completeMultipartUpload**](SensorApi.md#completeMultipartUpload) | **POST** /api/v2/sensors/{sensor_id}/upload/{upload_id}/complete | Complete Multipart Upload |
-| [**completeMultipartUploadWithHttpInfo**](SensorApi.md#completeMultipartUploadWithHttpInfo) | **POST** /api/v2/sensors/{sensor_id}/upload/{upload_id}/complete | Complete Multipart Upload |
 | [**createSensor**](SensorApi.md#createSensor) | **POST** /api/v2/sensors/create | Create a Sensor |
 | [**createSensorWithHttpInfo**](SensorApi.md#createSensorWithHttpInfo) | **POST** /api/v2/sensors/create | Create a Sensor |
-| [**deleteModel**](SensorApi.md#deleteModel) | **DELETE** /api/v2/sensors/{sensor_id} | Remove an Adhoc Sensor |
-| [**deleteModelWithHttpInfo**](SensorApi.md#deleteModelWithHttpInfo) | **DELETE** /api/v2/sensors/{sensor_id} | Remove an Adhoc Sensor |
-| [**getModel**](SensorApi.md#getModel) | **GET** /api/v2/sensors/{sensor_id} | Get Model |
-| [**getModelWithHttpInfo**](SensorApi.md#getModelWithHttpInfo) | **GET** /api/v2/sensors/{sensor_id} | Get Model |
+| [**deleteSensor**](SensorApi.md#deleteSensor) | **DELETE** /api/v2/sensors/{sensor_id} | Delete Sensor |
+| [**deleteSensorWithHttpInfo**](SensorApi.md#deleteSensorWithHttpInfo) | **DELETE** /api/v2/sensors/{sensor_id} | Delete Sensor |
+| [**getSensor**](SensorApi.md#getSensor) | **GET** /api/v2/sensors/{sensor_id} | Get Sensor |
+| [**getSensorWithHttpInfo**](SensorApi.md#getSensorWithHttpInfo) | **GET** /api/v2/sensors/{sensor_id} | Get Sensor |
 | [**querySensor**](SensorApi.md#querySensor) | **POST** /api/v2/sensors/query | Query a Sensor |
 | [**querySensorWithHttpInfo**](SensorApi.md#querySensorWithHttpInfo) | **POST** /api/v2/sensors/query | Query a Sensor |
 | [**sensorSorApiV3ModelCardsQueryGet**](SensorApi.md#sensorSorApiV3ModelCardsQueryGet) | **GET** /models/v3/cards | List Model Cards |
 | [**sensorSorApiV3ModelCardsQueryGetWithHttpInfo**](SensorApi.md#sensorSorApiV3ModelCardsQueryGetWithHttpInfo) | **GET** /models/v3/cards | List Model Cards |
-| [**uploadModelPart**](SensorApi.md#uploadModelPart) | **PUT** /api/v2/sensors/{sensor_id}/upload/{upload_id}/part/{part} | Upload part |
-| [**uploadModelPartWithHttpInfo**](SensorApi.md#uploadModelPartWithHttpInfo) | **PUT** /api/v2/sensors/{sensor_id}/upload/{upload_id}/part/{part} | Upload part |
 
-
-
-## beginMultipartUpload
-
-> GetMultipartUploadResponse beginMultipartUpload(sensorId, xContentLength)
-
-Begin Multipart Upload
-
-### Example
-
-```java
-// Import classes:
-import com.hiddenlayer.sdk.rest.ApiClient;
-import com.hiddenlayer.sdk.rest.ApiException;
-import com.hiddenlayer.sdk.rest.Configuration;
-import com.hiddenlayer.sdk.rest.auth.*;
-import com.hiddenlayer.sdk.rest.models.*;
-import com.hiddenlayer.sdk.rest.api.SensorApi;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.hiddenlayer.ai");
-        
-        // Configure HTTP bearer authorization: BearerAuth
-        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
-        BearerAuth.setBearerToken("BEARER TOKEN");
-
-        SensorApi apiInstance = new SensorApi(defaultClient);
-        UUID sensorId = UUID.randomUUID(); // UUID | 
-        Long xContentLength = 56L; // Long | The total size of multipart upload.
-        try {
-            GetMultipartUploadResponse result = apiInstance.beginMultipartUpload(sensorId, xContentLength);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling SensorApi#beginMultipartUpload");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **sensorId** | **UUID**|  | |
-| **xContentLength** | **Long**| The total size of multipart upload. | |
-
-### Return type
-
-[**GetMultipartUploadResponse**](GetMultipartUploadResponse.md)
-
-
-### Authorization
-
-[BearerAuth](../README.md#BearerAuth)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Successful Response |  -  |
-| **400** | The request failed due to a client error, with one or more of the following possible causes: 1. The request required a tenant_id field, which was missing. 2. The request was malformed syntactically or semantically. |  -  |
-
-## beginMultipartUploadWithHttpInfo
-
-> ApiResponse<GetMultipartUploadResponse> beginMultipartUpload beginMultipartUploadWithHttpInfo(sensorId, xContentLength)
-
-Begin Multipart Upload
-
-### Example
-
-```java
-// Import classes:
-import com.hiddenlayer.sdk.rest.ApiClient;
-import com.hiddenlayer.sdk.rest.ApiException;
-import com.hiddenlayer.sdk.rest.ApiResponse;
-import com.hiddenlayer.sdk.rest.Configuration;
-import com.hiddenlayer.sdk.rest.auth.*;
-import com.hiddenlayer.sdk.rest.models.*;
-import com.hiddenlayer.sdk.rest.api.SensorApi;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.hiddenlayer.ai");
-        
-        // Configure HTTP bearer authorization: BearerAuth
-        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
-        BearerAuth.setBearerToken("BEARER TOKEN");
-
-        SensorApi apiInstance = new SensorApi(defaultClient);
-        UUID sensorId = UUID.randomUUID(); // UUID | 
-        Long xContentLength = 56L; // Long | The total size of multipart upload.
-        try {
-            ApiResponse<GetMultipartUploadResponse> response = apiInstance.beginMultipartUploadWithHttpInfo(sensorId, xContentLength);
-            System.out.println("Status code: " + response.getStatusCode());
-            System.out.println("Response headers: " + response.getHeaders());
-            System.out.println("Response body: " + response.getData());
-        } catch (ApiException e) {
-            System.err.println("Exception when calling SensorApi#beginMultipartUpload");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            System.err.println("Reason: " + e.getResponseBody());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **sensorId** | **UUID**|  | |
-| **xContentLength** | **Long**| The total size of multipart upload. | |
-
-### Return type
-
-ApiResponse<[**GetMultipartUploadResponse**](GetMultipartUploadResponse.md)>
-
-
-### Authorization
-
-[BearerAuth](../README.md#BearerAuth)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Successful Response |  -  |
-| **400** | The request failed due to a client error, with one or more of the following possible causes: 1. The request required a tenant_id field, which was missing. 2. The request was malformed syntactically or semantically. |  -  |
-
-
-## completeMultipartUpload
-
-> void completeMultipartUpload(sensorId, uploadId)
-
-Complete Multipart Upload
-
-### Example
-
-```java
-// Import classes:
-import com.hiddenlayer.sdk.rest.ApiClient;
-import com.hiddenlayer.sdk.rest.ApiException;
-import com.hiddenlayer.sdk.rest.Configuration;
-import com.hiddenlayer.sdk.rest.auth.*;
-import com.hiddenlayer.sdk.rest.models.*;
-import com.hiddenlayer.sdk.rest.api.SensorApi;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.hiddenlayer.ai");
-        
-        // Configure HTTP bearer authorization: BearerAuth
-        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
-        BearerAuth.setBearerToken("BEARER TOKEN");
-
-        SensorApi apiInstance = new SensorApi(defaultClient);
-        UUID sensorId = UUID.randomUUID(); // UUID | 
-        String uploadId = "uploadId_example"; // String | 
-        try {
-            apiInstance.completeMultipartUpload(sensorId, uploadId);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling SensorApi#completeMultipartUpload");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **sensorId** | **UUID**|  | |
-| **uploadId** | **String**|  | |
-
-### Return type
-
-
-null (empty response body)
-
-### Authorization
-
-[BearerAuth](../README.md#BearerAuth)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: Not defined
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Successful Response |  -  |
-| **400** | The request failed due to a client error, with one or more of the following possible causes: 1. The request required a tenant_id field, which was missing. 2. The request was malformed syntactically or semantically. |  -  |
-
-## completeMultipartUploadWithHttpInfo
-
-> ApiResponse<Void> completeMultipartUpload completeMultipartUploadWithHttpInfo(sensorId, uploadId)
-
-Complete Multipart Upload
-
-### Example
-
-```java
-// Import classes:
-import com.hiddenlayer.sdk.rest.ApiClient;
-import com.hiddenlayer.sdk.rest.ApiException;
-import com.hiddenlayer.sdk.rest.ApiResponse;
-import com.hiddenlayer.sdk.rest.Configuration;
-import com.hiddenlayer.sdk.rest.auth.*;
-import com.hiddenlayer.sdk.rest.models.*;
-import com.hiddenlayer.sdk.rest.api.SensorApi;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.hiddenlayer.ai");
-        
-        // Configure HTTP bearer authorization: BearerAuth
-        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
-        BearerAuth.setBearerToken("BEARER TOKEN");
-
-        SensorApi apiInstance = new SensorApi(defaultClient);
-        UUID sensorId = UUID.randomUUID(); // UUID | 
-        String uploadId = "uploadId_example"; // String | 
-        try {
-            ApiResponse<Void> response = apiInstance.completeMultipartUploadWithHttpInfo(sensorId, uploadId);
-            System.out.println("Status code: " + response.getStatusCode());
-            System.out.println("Response headers: " + response.getHeaders());
-        } catch (ApiException e) {
-            System.err.println("Exception when calling SensorApi#completeMultipartUpload");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            System.err.println("Reason: " + e.getResponseBody());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **sensorId** | **UUID**|  | |
-| **uploadId** | **String**|  | |
-
-### Return type
-
-
-ApiResponse<Void>
-
-### Authorization
-
-[BearerAuth](../README.md#BearerAuth)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: Not defined
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Successful Response |  -  |
-| **400** | The request failed due to a client error, with one or more of the following possible causes: 1. The request required a tenant_id field, which was missing. 2. The request was malformed syntactically or semantically. |  -  |
 
 
 ## createSensor
 
-> Model createSensor(createSensorRequest)
+> Sensor createSensor(createSensorRequest)
 
 Create a Sensor
 
@@ -342,7 +46,7 @@ public class Example {
         SensorApi apiInstance = new SensorApi(defaultClient);
         CreateSensorRequest createSensorRequest = new CreateSensorRequest(); // CreateSensorRequest | Request body for create
         try {
-            Model result = apiInstance.createSensor(createSensorRequest);
+            Sensor result = apiInstance.createSensor(createSensorRequest);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling SensorApi#createSensor");
@@ -364,7 +68,7 @@ public class Example {
 
 ### Return type
 
-[**Model**](Model.md)
+[**Sensor**](Sensor.md)
 
 
 ### Authorization
@@ -385,7 +89,7 @@ public class Example {
 
 ## createSensorWithHttpInfo
 
-> ApiResponse<Model> createSensor createSensorWithHttpInfo(createSensorRequest)
+> ApiResponse<Sensor> createSensor createSensorWithHttpInfo(createSensorRequest)
 
 Create a Sensor
 
@@ -413,7 +117,7 @@ public class Example {
         SensorApi apiInstance = new SensorApi(defaultClient);
         CreateSensorRequest createSensorRequest = new CreateSensorRequest(); // CreateSensorRequest | Request body for create
         try {
-            ApiResponse<Model> response = apiInstance.createSensorWithHttpInfo(createSensorRequest);
+            ApiResponse<Sensor> response = apiInstance.createSensorWithHttpInfo(createSensorRequest);
             System.out.println("Status code: " + response.getStatusCode());
             System.out.println("Response headers: " + response.getHeaders());
             System.out.println("Response body: " + response.getData());
@@ -437,7 +141,7 @@ public class Example {
 
 ### Return type
 
-ApiResponse<[**Model**](Model.md)>
+ApiResponse<[**Sensor**](Sensor.md)>
 
 
 ### Authorization
@@ -457,11 +161,11 @@ ApiResponse<[**Model**](Model.md)>
 | **422** | Validation Error |  -  |
 
 
-## deleteModel
+## deleteSensor
 
-> void deleteModel(sensorId)
+> void deleteSensor(sensorId)
 
-Remove an Adhoc Sensor
+Delete Sensor
 
 ### Example
 
@@ -486,9 +190,9 @@ public class Example {
         SensorApi apiInstance = new SensorApi(defaultClient);
         UUID sensorId = UUID.randomUUID(); // UUID | 
         try {
-            apiInstance.deleteModel(sensorId);
+            apiInstance.deleteSensor(sensorId);
         } catch (ApiException e) {
-            System.err.println("Exception when calling SensorApi#deleteModel");
+            System.err.println("Exception when calling SensorApi#deleteSensor");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -526,11 +230,11 @@ null (empty response body)
 | **400** | The request failed due to a client error, with one or more of the following possible causes: 1. The request required a tenant_id field, which was missing. 2. The request was malformed syntactically or semantically. |  -  |
 | **404** | The specified resource was not found. |  -  |
 
-## deleteModelWithHttpInfo
+## deleteSensorWithHttpInfo
 
-> ApiResponse<Void> deleteModel deleteModelWithHttpInfo(sensorId)
+> ApiResponse<Void> deleteSensor deleteSensorWithHttpInfo(sensorId)
 
-Remove an Adhoc Sensor
+Delete Sensor
 
 ### Example
 
@@ -556,11 +260,11 @@ public class Example {
         SensorApi apiInstance = new SensorApi(defaultClient);
         UUID sensorId = UUID.randomUUID(); // UUID | 
         try {
-            ApiResponse<Void> response = apiInstance.deleteModelWithHttpInfo(sensorId);
+            ApiResponse<Void> response = apiInstance.deleteSensorWithHttpInfo(sensorId);
             System.out.println("Status code: " + response.getStatusCode());
             System.out.println("Response headers: " + response.getHeaders());
         } catch (ApiException e) {
-            System.err.println("Exception when calling SensorApi#deleteModel");
+            System.err.println("Exception when calling SensorApi#deleteSensor");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Response headers: " + e.getResponseHeaders());
             System.err.println("Reason: " + e.getResponseBody());
@@ -599,11 +303,11 @@ ApiResponse<Void>
 | **404** | The specified resource was not found. |  -  |
 
 
-## getModel
+## getSensor
 
-> Model getModel(sensorId)
+> Sensor getSensor(sensorId)
 
-Get Model
+Get Sensor
 
 ### Example
 
@@ -628,10 +332,10 @@ public class Example {
         SensorApi apiInstance = new SensorApi(defaultClient);
         UUID sensorId = UUID.randomUUID(); // UUID | 
         try {
-            Model result = apiInstance.getModel(sensorId);
+            Sensor result = apiInstance.getSensor(sensorId);
             System.out.println(result);
         } catch (ApiException e) {
-            System.err.println("Exception when calling SensorApi#getModel");
+            System.err.println("Exception when calling SensorApi#getSensor");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Reason: " + e.getResponseBody());
             System.err.println("Response headers: " + e.getResponseHeaders());
@@ -650,7 +354,7 @@ public class Example {
 
 ### Return type
 
-[**Model**](Model.md)
+[**Sensor**](Sensor.md)
 
 
 ### Authorization
@@ -669,11 +373,11 @@ public class Example {
 | **400** | The request failed due to a client error, with one or more of the following possible causes: 1. The request required a tenant_id field, which was missing. 2. The request was malformed syntactically or semantically. |  -  |
 | **404** | The specified resource was not found. |  -  |
 
-## getModelWithHttpInfo
+## getSensorWithHttpInfo
 
-> ApiResponse<Model> getModel getModelWithHttpInfo(sensorId)
+> ApiResponse<Sensor> getSensor getSensorWithHttpInfo(sensorId)
 
-Get Model
+Get Sensor
 
 ### Example
 
@@ -699,12 +403,12 @@ public class Example {
         SensorApi apiInstance = new SensorApi(defaultClient);
         UUID sensorId = UUID.randomUUID(); // UUID | 
         try {
-            ApiResponse<Model> response = apiInstance.getModelWithHttpInfo(sensorId);
+            ApiResponse<Sensor> response = apiInstance.getSensorWithHttpInfo(sensorId);
             System.out.println("Status code: " + response.getStatusCode());
             System.out.println("Response headers: " + response.getHeaders());
             System.out.println("Response body: " + response.getData());
         } catch (ApiException e) {
-            System.err.println("Exception when calling SensorApi#getModel");
+            System.err.println("Exception when calling SensorApi#getSensor");
             System.err.println("Status code: " + e.getCode());
             System.err.println("Response headers: " + e.getResponseHeaders());
             System.err.println("Reason: " + e.getResponseBody());
@@ -723,7 +427,7 @@ public class Example {
 
 ### Return type
 
-ApiResponse<[**Model**](Model.md)>
+ApiResponse<[**Sensor**](Sensor.md)>
 
 
 ### Authorization
@@ -745,7 +449,7 @@ ApiResponse<[**Model**](Model.md)>
 
 ## querySensor
 
-> ModelQueryResponse querySensor(sensorSORQueryRequest)
+> SensorQueryResponse querySensor(sensorSORQueryRequest)
 
 Query a Sensor
 
@@ -772,7 +476,7 @@ public class Example {
         SensorApi apiInstance = new SensorApi(defaultClient);
         SensorSORQueryRequest sensorSORQueryRequest = new SensorSORQueryRequest(); // SensorSORQueryRequest | Request body for create
         try {
-            ModelQueryResponse result = apiInstance.querySensor(sensorSORQueryRequest);
+            SensorQueryResponse result = apiInstance.querySensor(sensorSORQueryRequest);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling SensorApi#querySensor");
@@ -794,7 +498,7 @@ public class Example {
 
 ### Return type
 
-[**ModelQueryResponse**](ModelQueryResponse.md)
+[**SensorQueryResponse**](SensorQueryResponse.md)
 
 
 ### Authorization
@@ -814,7 +518,7 @@ public class Example {
 
 ## querySensorWithHttpInfo
 
-> ApiResponse<ModelQueryResponse> querySensor querySensorWithHttpInfo(sensorSORQueryRequest)
+> ApiResponse<SensorQueryResponse> querySensor querySensorWithHttpInfo(sensorSORQueryRequest)
 
 Query a Sensor
 
@@ -842,7 +546,7 @@ public class Example {
         SensorApi apiInstance = new SensorApi(defaultClient);
         SensorSORQueryRequest sensorSORQueryRequest = new SensorSORQueryRequest(); // SensorSORQueryRequest | Request body for create
         try {
-            ApiResponse<ModelQueryResponse> response = apiInstance.querySensorWithHttpInfo(sensorSORQueryRequest);
+            ApiResponse<SensorQueryResponse> response = apiInstance.querySensorWithHttpInfo(sensorSORQueryRequest);
             System.out.println("Status code: " + response.getStatusCode());
             System.out.println("Response headers: " + response.getHeaders());
             System.out.println("Response body: " + response.getData());
@@ -866,7 +570,7 @@ public class Example {
 
 ### Return type
 
-ApiResponse<[**ModelQueryResponse**](ModelQueryResponse.md)>
+ApiResponse<[**SensorQueryResponse**](SensorQueryResponse.md)>
 
 
 ### Authorization
@@ -1040,157 +744,5 @@ ApiResponse<[**SensorSORModelCardQueryResponse**](SensorSORModelCardQueryRespons
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Successful response |  -  |
-| **400** | The request failed due to a client error, with one or more of the following possible causes: 1. The request required a tenant_id field, which was missing. 2. The request was malformed syntactically or semantically. |  -  |
-
-
-## uploadModelPart
-
-> void uploadModelPart(sensorId, uploadId, part, body)
-
-Upload part
-
-### Example
-
-```java
-// Import classes:
-import com.hiddenlayer.sdk.rest.ApiClient;
-import com.hiddenlayer.sdk.rest.ApiException;
-import com.hiddenlayer.sdk.rest.Configuration;
-import com.hiddenlayer.sdk.rest.auth.*;
-import com.hiddenlayer.sdk.rest.models.*;
-import com.hiddenlayer.sdk.rest.api.SensorApi;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.hiddenlayer.ai");
-        
-        // Configure HTTP bearer authorization: BearerAuth
-        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
-        BearerAuth.setBearerToken("BEARER TOKEN");
-
-        SensorApi apiInstance = new SensorApi(defaultClient);
-        UUID sensorId = UUID.randomUUID(); // UUID | 
-        String uploadId = "uploadId_example"; // String | 
-        Integer part = 56; // Integer | 
-        Object body = null; // Object | 
-        try {
-            apiInstance.uploadModelPart(sensorId, uploadId, part, body);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling SensorApi#uploadModelPart");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **sensorId** | **UUID**|  | |
-| **uploadId** | **String**|  | |
-| **part** | **Integer**|  | |
-| **body** | **Object**|  | |
-
-### Return type
-
-
-null (empty response body)
-
-### Authorization
-
-[BearerAuth](../README.md#BearerAuth)
-
-### HTTP request headers
-
-- **Content-Type**: application/octet-stream
-- **Accept**: Not defined
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Successful Response |  -  |
-| **400** | The request failed due to a client error, with one or more of the following possible causes: 1. The request required a tenant_id field, which was missing. 2. The request was malformed syntactically or semantically. |  -  |
-
-## uploadModelPartWithHttpInfo
-
-> ApiResponse<Void> uploadModelPart uploadModelPartWithHttpInfo(sensorId, uploadId, part, body)
-
-Upload part
-
-### Example
-
-```java
-// Import classes:
-import com.hiddenlayer.sdk.rest.ApiClient;
-import com.hiddenlayer.sdk.rest.ApiException;
-import com.hiddenlayer.sdk.rest.ApiResponse;
-import com.hiddenlayer.sdk.rest.Configuration;
-import com.hiddenlayer.sdk.rest.auth.*;
-import com.hiddenlayer.sdk.rest.models.*;
-import com.hiddenlayer.sdk.rest.api.SensorApi;
-
-public class Example {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://api.hiddenlayer.ai");
-        
-        // Configure HTTP bearer authorization: BearerAuth
-        HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
-        BearerAuth.setBearerToken("BEARER TOKEN");
-
-        SensorApi apiInstance = new SensorApi(defaultClient);
-        UUID sensorId = UUID.randomUUID(); // UUID | 
-        String uploadId = "uploadId_example"; // String | 
-        Integer part = 56; // Integer | 
-        Object body = null; // Object | 
-        try {
-            ApiResponse<Void> response = apiInstance.uploadModelPartWithHttpInfo(sensorId, uploadId, part, body);
-            System.out.println("Status code: " + response.getStatusCode());
-            System.out.println("Response headers: " + response.getHeaders());
-        } catch (ApiException e) {
-            System.err.println("Exception when calling SensorApi#uploadModelPart");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            System.err.println("Reason: " + e.getResponseBody());
-            e.printStackTrace();
-        }
-    }
-}
-```
-
-### Parameters
-
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **sensorId** | **UUID**|  | |
-| **uploadId** | **String**|  | |
-| **part** | **Integer**|  | |
-| **body** | **Object**|  | |
-
-### Return type
-
-
-ApiResponse<Void>
-
-### Authorization
-
-[BearerAuth](../README.md#BearerAuth)
-
-### HTTP request headers
-
-- **Content-Type**: application/octet-stream
-- **Accept**: Not defined
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Successful Response |  -  |
 | **400** | The request failed due to a client error, with one or more of the following possible causes: 1. The request required a tenant_id field, which was missing. 2. The request was malformed syntactically or semantically. |  -  |
 

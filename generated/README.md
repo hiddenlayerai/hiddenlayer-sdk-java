@@ -4,7 +4,7 @@ HiddenLayer ModelScan V2
 
 - API version: 1
 
-- Build date: 2024-12-30T18:04:47.686514Z[GMT]
+- Build date: 2025-03-06T16:41:22.054858Z[GMT]
 
 - Generator version: 7.6.0
 
@@ -113,48 +113,50 @@ Class | Method | HTTP request | Description
 *AidrPredictiveApi* | [**submitVectorsWithHttpInfo**](docs/AidrPredictiveApi.md#submitVectorsWithHttpInfo) | **POST** /api/v2/submit | Submit vectors
 *HealthApi* | [**modelscannerApiV3HealthCheck**](docs/HealthApi.md#modelscannerApiV3HealthCheck) | **GET** /scans/v3/health | Health check endpoint for Model Supply Chain Services
 *HealthApi* | [**modelscannerApiV3HealthCheckWithHttpInfo**](docs/HealthApi.md#modelscannerApiV3HealthCheckWithHttpInfo) | **GET** /scans/v3/health | Health check endpoint for Model Supply Chain Services
-*ModelScanApi* | [**scanModel**](docs/ModelScanApi.md#scanModel) | **POST** /api/v2/submit/sensors/{sensor_id}/scan | Scan a model
-*ModelScanApi* | [**scanModelWithHttpInfo**](docs/ModelScanApi.md#scanModelWithHttpInfo) | **POST** /api/v2/submit/sensors/{sensor_id}/scan | Scan a model
-*ModelScanApi* | [**scanStatus**](docs/ModelScanApi.md#scanStatus) | **GET** /api/v2/scan/status/{sensor_id} | Get Status or Result of a Scan
-*ModelScanApi* | [**scanStatusWithHttpInfo**](docs/ModelScanApi.md#scanStatusWithHttpInfo) | **GET** /api/v2/scan/status/{sensor_id} | Get Status or Result of a Scan
-*ModelSupplyChainApi* | [**modelScanApiV3ScanModelVersionIdGet**](docs/ModelSupplyChainApi.md#modelScanApiV3ScanModelVersionIdGet) | **GET** /scan/v3/results/{scan_id} | Get Result of a Model Scan
-*ModelSupplyChainApi* | [**modelScanApiV3ScanModelVersionIdGetWithHttpInfo**](docs/ModelSupplyChainApi.md#modelScanApiV3ScanModelVersionIdGetWithHttpInfo) | **GET** /scan/v3/results/{scan_id} | Get Result of a Model Scan
-*ModelSupplyChainApi* | [**modelScanApiV3ScanModelVersionIdPatch**](docs/ModelSupplyChainApi.md#modelScanApiV3ScanModelVersionIdPatch) | **PATCH** /scan/v3/results/{scan_id} | Indicate part (file or files) of a model scan has completed
-*ModelSupplyChainApi* | [**modelScanApiV3ScanModelVersionIdPatchWithHttpInfo**](docs/ModelSupplyChainApi.md#modelScanApiV3ScanModelVersionIdPatchWithHttpInfo) | **PATCH** /scan/v3/results/{scan_id} | Indicate part (file or files) of a model scan has completed
-*ModelSupplyChainApi* | [**modelScanApiV3ScanModelVersionIdPost**](docs/ModelSupplyChainApi.md#modelScanApiV3ScanModelVersionIdPost) | **POST** /scan/v3/results/{scan_id} | Indicate model scan has started
-*ModelSupplyChainApi* | [**modelScanApiV3ScanModelVersionIdPostWithHttpInfo**](docs/ModelSupplyChainApi.md#modelScanApiV3ScanModelVersionIdPostWithHttpInfo) | **POST** /scan/v3/results/{scan_id} | Indicate model scan has started
-*ModelSupplyChainApi* | [**modelScanApiV3ScanQuery**](docs/ModelSupplyChainApi.md#modelScanApiV3ScanQuery) | **GET** /scan/v3/results | Get condensed reports for a Model Scan
-*ModelSupplyChainApi* | [**modelScanApiV3ScanQueryWithHttpInfo**](docs/ModelSupplyChainApi.md#modelScanApiV3ScanQueryWithHttpInfo) | **GET** /scan/v3/results | Get condensed reports for a Model Scan
-*ModelSupplyChainApi* | [**modelscanApiV3GetScanResults**](docs/ModelSupplyChainApi.md#modelscanApiV3GetScanResults) | **GET** /scans/v3/results/{scan_id} | Retrieve Model Scan Results
-*ModelSupplyChainApi* | [**modelscanApiV3GetScanResultsWithHttpInfo**](docs/ModelSupplyChainApi.md#modelscanApiV3GetScanResultsWithHttpInfo) | **GET** /scans/v3/results/{scan_id} | Retrieve Model Scan Results
-*ModelSupplyChainApi* | [**modelscanApiV3PostScanResults**](docs/ModelSupplyChainApi.md#modelscanApiV3PostScanResults) | **POST** /scans/v3/reports/{scan_id} | Engine Report Endpoint of Model Scan Results
-*ModelSupplyChainApi* | [**modelscanApiV3PostScanResultsWithHttpInfo**](docs/ModelSupplyChainApi.md#modelscanApiV3PostScanResultsWithHttpInfo) | **POST** /scans/v3/reports/{scan_id} | Engine Report Endpoint of Model Scan Results
-*ModelSupplyChainApi* | [**modelscannerApiV3GetJobs**](docs/ModelSupplyChainApi.md#modelscannerApiV3GetJobs) | **GET** /scans/v3/jobs | List all Model Scan Jobs
-*ModelSupplyChainApi* | [**modelscannerApiV3GetJobsWithHttpInfo**](docs/ModelSupplyChainApi.md#modelscannerApiV3GetJobsWithHttpInfo) | **GET** /scans/v3/jobs | List all Model Scan Jobs
+*ModelApi* | [**deleteModel**](docs/ModelApi.md#deleteModel) | **DELETE** /api/v2/models/{model_id} | Delete Adhoc Model
+*ModelApi* | [**deleteModelWithHttpInfo**](docs/ModelApi.md#deleteModelWithHttpInfo) | **DELETE** /api/v2/models/{model_id} | Delete Adhoc Model
+*ModelApi* | [**getModel**](docs/ModelApi.md#getModel) | **GET** /api/v2/models/{model_id} | Get Model
+*ModelApi* | [**getModelWithHttpInfo**](docs/ModelApi.md#getModelWithHttpInfo) | **GET** /api/v2/models/{model_id} | Get Model
+*ModelSupplyChainApi* | [**beginMultiFileUpload**](docs/ModelSupplyChainApi.md#beginMultiFileUpload) | **POST** /scan/v3/upload | Start V3 Upload
+*ModelSupplyChainApi* | [**beginMultiFileUploadWithHttpInfo**](docs/ModelSupplyChainApi.md#beginMultiFileUploadWithHttpInfo) | **POST** /scan/v3/upload | Start V3 Upload
+*ModelSupplyChainApi* | [**beginMultipartFileUpload**](docs/ModelSupplyChainApi.md#beginMultipartFileUpload) | **POST** /scan/v3/upload/{scan_id}/file | Add file to V3 Upload
+*ModelSupplyChainApi* | [**beginMultipartFileUploadWithHttpInfo**](docs/ModelSupplyChainApi.md#beginMultipartFileUploadWithHttpInfo) | **POST** /scan/v3/upload/{scan_id}/file | Add file to V3 Upload
+*ModelSupplyChainApi* | [**completeMultiFileUpload**](docs/ModelSupplyChainApi.md#completeMultiFileUpload) | **PATCH** /scan/v3/upload/{scan_id} | Indicate All files are uploaded and start the scan
+*ModelSupplyChainApi* | [**completeMultiFileUploadWithHttpInfo**](docs/ModelSupplyChainApi.md#completeMultiFileUploadWithHttpInfo) | **PATCH** /scan/v3/upload/{scan_id} | Indicate All files are uploaded and start the scan
+*ModelSupplyChainApi* | [**completeMultipartFileUpload**](docs/ModelSupplyChainApi.md#completeMultipartFileUpload) | **PATCH** /scan/v3/upload/{scan_id}/file/{file_id} | Indicate that upload is completed for {file_id}
+*ModelSupplyChainApi* | [**completeMultipartFileUploadWithHttpInfo**](docs/ModelSupplyChainApi.md#completeMultipartFileUploadWithHttpInfo) | **PATCH** /scan/v3/upload/{scan_id}/file/{file_id} | Indicate that upload is completed for {file_id}
+*ModelSupplyChainApi* | [**createScanJob**](docs/ModelSupplyChainApi.md#createScanJob) | **POST** /scans/v3/jobs | Request a Model Scan Job
+*ModelSupplyChainApi* | [**createScanJobWithHttpInfo**](docs/ModelSupplyChainApi.md#createScanJobWithHttpInfo) | **POST** /scans/v3/jobs | Request a Model Scan Job
+*ModelSupplyChainApi* | [**getCondensedModelScanReports**](docs/ModelSupplyChainApi.md#getCondensedModelScanReports) | **GET** /scan/v3/results | Get condensed reports for a Model Scan
+*ModelSupplyChainApi* | [**getCondensedModelScanReportsWithHttpInfo**](docs/ModelSupplyChainApi.md#getCondensedModelScanReportsWithHttpInfo) | **GET** /scan/v3/results | Get condensed reports for a Model Scan
+*ModelSupplyChainApi* | [**getScanJobs**](docs/ModelSupplyChainApi.md#getScanJobs) | **GET** /scans/v3/jobs | List all Model Scan Jobs
+*ModelSupplyChainApi* | [**getScanJobsWithHttpInfo**](docs/ModelSupplyChainApi.md#getScanJobsWithHttpInfo) | **GET** /scans/v3/jobs | List all Model Scan Jobs
+*ModelSupplyChainApi* | [**getScanResults**](docs/ModelSupplyChainApi.md#getScanResults) | **GET** /scan/v3/results/{scan_id} | Get Result of a Model Scan
+*ModelSupplyChainApi* | [**getScanResultsWithHttpInfo**](docs/ModelSupplyChainApi.md#getScanResultsWithHttpInfo) | **GET** /scan/v3/results/{scan_id} | Get Result of a Model Scan
+*ModelSupplyChainApi* | [**getScanResults1**](docs/ModelSupplyChainApi.md#getScanResults1) | **GET** /scans/v3/results/{scan_id} | Retrieve Model Scan Results
+*ModelSupplyChainApi* | [**getScanResults1WithHttpInfo**](docs/ModelSupplyChainApi.md#getScanResults1WithHttpInfo) | **GET** /scans/v3/results/{scan_id} | Retrieve Model Scan Results
 *ModelSupplyChainApi* | [**modelscannerApiV3HealthCheck**](docs/ModelSupplyChainApi.md#modelscannerApiV3HealthCheck) | **GET** /scans/v3/health | Health check endpoint for Model Supply Chain Services
 *ModelSupplyChainApi* | [**modelscannerApiV3HealthCheckWithHttpInfo**](docs/ModelSupplyChainApi.md#modelscannerApiV3HealthCheckWithHttpInfo) | **GET** /scans/v3/health | Health check endpoint for Model Supply Chain Services
-*ModelSupplyChainApi* | [**modelscannerApiV3PostRequest**](docs/ModelSupplyChainApi.md#modelscannerApiV3PostRequest) | **POST** /scans/v3/jobs | Request a Model Scan Job
-*ModelSupplyChainApi* | [**modelscannerApiV3PostRequestWithHttpInfo**](docs/ModelSupplyChainApi.md#modelscannerApiV3PostRequestWithHttpInfo) | **POST** /scans/v3/jobs | Request a Model Scan Job
 *ModelSupplyChainApi* | [**modelscannerApiV3ReadinessCheck**](docs/ModelSupplyChainApi.md#modelscannerApiV3ReadinessCheck) | **GET** /scans/v3/readiness | Readiness check endpoint for Model Supply Chain Services
 *ModelSupplyChainApi* | [**modelscannerApiV3ReadinessCheckWithHttpInfo**](docs/ModelSupplyChainApi.md#modelscannerApiV3ReadinessCheckWithHttpInfo) | **GET** /scans/v3/readiness | Readiness check endpoint for Model Supply Chain Services
+*ModelSupplyChainApi* | [**notifyModelScanCompleted**](docs/ModelSupplyChainApi.md#notifyModelScanCompleted) | **PATCH** /scan/v3/results/{scan_id} | Indicate part (file or files) of a model scan has completed
+*ModelSupplyChainApi* | [**notifyModelScanCompletedWithHttpInfo**](docs/ModelSupplyChainApi.md#notifyModelScanCompletedWithHttpInfo) | **PATCH** /scan/v3/results/{scan_id} | Indicate part (file or files) of a model scan has completed
+*ModelSupplyChainApi* | [**notifyModelScanStarted**](docs/ModelSupplyChainApi.md#notifyModelScanStarted) | **POST** /scan/v3/results/{scan_id} | Indicate model scan has started
+*ModelSupplyChainApi* | [**notifyModelScanStartedWithHttpInfo**](docs/ModelSupplyChainApi.md#notifyModelScanStartedWithHttpInfo) | **POST** /scan/v3/results/{scan_id} | Indicate model scan has started
+*ModelSupplyChainApi* | [**reportScanResults**](docs/ModelSupplyChainApi.md#reportScanResults) | **POST** /scans/v3/reports/{scan_id} | Engine Report Endpoint of Model Scan Results
+*ModelSupplyChainApi* | [**reportScanResultsWithHttpInfo**](docs/ModelSupplyChainApi.md#reportScanResultsWithHttpInfo) | **POST** /scans/v3/reports/{scan_id} | Engine Report Endpoint of Model Scan Results
 *ReadinessApi* | [**modelscannerApiV3ReadinessCheck**](docs/ReadinessApi.md#modelscannerApiV3ReadinessCheck) | **GET** /scans/v3/readiness | Readiness check endpoint for Model Supply Chain Services
 *ReadinessApi* | [**modelscannerApiV3ReadinessCheckWithHttpInfo**](docs/ReadinessApi.md#modelscannerApiV3ReadinessCheckWithHttpInfo) | **GET** /scans/v3/readiness | Readiness check endpoint for Model Supply Chain Services
-*SensorApi* | [**beginMultipartUpload**](docs/SensorApi.md#beginMultipartUpload) | **POST** /api/v2/sensors/{sensor_id}/upload/begin | Begin Multipart Upload
-*SensorApi* | [**beginMultipartUploadWithHttpInfo**](docs/SensorApi.md#beginMultipartUploadWithHttpInfo) | **POST** /api/v2/sensors/{sensor_id}/upload/begin | Begin Multipart Upload
-*SensorApi* | [**completeMultipartUpload**](docs/SensorApi.md#completeMultipartUpload) | **POST** /api/v2/sensors/{sensor_id}/upload/{upload_id}/complete | Complete Multipart Upload
-*SensorApi* | [**completeMultipartUploadWithHttpInfo**](docs/SensorApi.md#completeMultipartUploadWithHttpInfo) | **POST** /api/v2/sensors/{sensor_id}/upload/{upload_id}/complete | Complete Multipart Upload
 *SensorApi* | [**createSensor**](docs/SensorApi.md#createSensor) | **POST** /api/v2/sensors/create | Create a Sensor
 *SensorApi* | [**createSensorWithHttpInfo**](docs/SensorApi.md#createSensorWithHttpInfo) | **POST** /api/v2/sensors/create | Create a Sensor
-*SensorApi* | [**deleteModel**](docs/SensorApi.md#deleteModel) | **DELETE** /api/v2/sensors/{sensor_id} | Remove an Adhoc Sensor
-*SensorApi* | [**deleteModelWithHttpInfo**](docs/SensorApi.md#deleteModelWithHttpInfo) | **DELETE** /api/v2/sensors/{sensor_id} | Remove an Adhoc Sensor
-*SensorApi* | [**getModel**](docs/SensorApi.md#getModel) | **GET** /api/v2/sensors/{sensor_id} | Get Model
-*SensorApi* | [**getModelWithHttpInfo**](docs/SensorApi.md#getModelWithHttpInfo) | **GET** /api/v2/sensors/{sensor_id} | Get Model
+*SensorApi* | [**deleteSensor**](docs/SensorApi.md#deleteSensor) | **DELETE** /api/v2/sensors/{sensor_id} | Delete Sensor
+*SensorApi* | [**deleteSensorWithHttpInfo**](docs/SensorApi.md#deleteSensorWithHttpInfo) | **DELETE** /api/v2/sensors/{sensor_id} | Delete Sensor
+*SensorApi* | [**getSensor**](docs/SensorApi.md#getSensor) | **GET** /api/v2/sensors/{sensor_id} | Get Sensor
+*SensorApi* | [**getSensorWithHttpInfo**](docs/SensorApi.md#getSensorWithHttpInfo) | **GET** /api/v2/sensors/{sensor_id} | Get Sensor
 *SensorApi* | [**querySensor**](docs/SensorApi.md#querySensor) | **POST** /api/v2/sensors/query | Query a Sensor
 *SensorApi* | [**querySensorWithHttpInfo**](docs/SensorApi.md#querySensorWithHttpInfo) | **POST** /api/v2/sensors/query | Query a Sensor
 *SensorApi* | [**sensorSorApiV3ModelCardsQueryGet**](docs/SensorApi.md#sensorSorApiV3ModelCardsQueryGet) | **GET** /models/v3/cards | List Model Cards
 *SensorApi* | [**sensorSorApiV3ModelCardsQueryGetWithHttpInfo**](docs/SensorApi.md#sensorSorApiV3ModelCardsQueryGetWithHttpInfo) | **GET** /models/v3/cards | List Model Cards
-*SensorApi* | [**uploadModelPart**](docs/SensorApi.md#uploadModelPart) | **PUT** /api/v2/sensors/{sensor_id}/upload/{upload_id}/part/{part} | Upload part
-*SensorApi* | [**uploadModelPartWithHttpInfo**](docs/SensorApi.md#uploadModelPartWithHttpInfo) | **PUT** /api/v2/sensors/{sensor_id}/upload/{upload_id}/part/{part} | Upload part
 
 
 ## Documentation for Models
@@ -165,23 +167,28 @@ Class | Method | HTTP request | Description
  - [ArtifactContent](docs/ArtifactContent.md)
  - [ArtifactLocation](docs/ArtifactLocation.md)
  - [Attachment](docs/Attachment.md)
+ - [BeginMultiFileUpload200Response](docs/BeginMultiFileUpload200Response.md)
+ - [BeginMultipartFileUpload200Response](docs/BeginMultipartFileUpload200Response.md)
+ - [BeginMultipartFileUpload200ResponsePartsInner](docs/BeginMultipartFileUpload200ResponsePartsInner.md)
  - [CodeFlow](docs/CodeFlow.md)
  - [ConfigurationOverride](docs/ConfigurationOverride.md)
  - [Conversion](docs/Conversion.md)
  - [CreateSensorRequest](docs/CreateSensorRequest.md)
- - [Detections](docs/Detections.md)
  - [Edge](docs/Edge.md)
  - [EdgeTraversal](docs/EdgeTraversal.md)
+ - [ErrorsInner](docs/ErrorsInner.md)
  - [ExternalProperties](docs/ExternalProperties.md)
  - [ExternalPropertyFileReference](docs/ExternalPropertyFileReference.md)
  - [ExternalPropertyFileReferences](docs/ExternalPropertyFileReferences.md)
  - [FileDetailsV3](docs/FileDetailsV3.md)
+ - [FileResultV3](docs/FileResultV3.md)
  - [FileScanReportV3](docs/FileScanReportV3.md)
  - [FileScanReportsV3](docs/FileScanReportsV3.md)
  - [Fix](docs/Fix.md)
- - [GetMultipartUploadResponse](docs/GetMultipartUploadResponse.md)
+ - [GetCondensedModelScanReports200Response](docs/GetCondensedModelScanReports200Response.md)
  - [Graph](docs/Graph.md)
  - [GraphTraversal](docs/GraphTraversal.md)
+ - [InventoryV3](docs/InventoryV3.md)
  - [Invocation](docs/Invocation.md)
  - [Location](docs/Location.md)
  - [LocationInner](docs/LocationInner.md)
@@ -191,15 +198,16 @@ Class | Method | HTTP request | Description
  - [Message](docs/Message.md)
  - [Model](docs/Model.md)
  - [ModelInventoryInfo](docs/ModelInventoryInfo.md)
- - [ModelQueryResponse](docs/ModelQueryResponse.md)
- - [ModelScanApiV3ScanModelVersionIdPatch200Response](docs/ModelScanApiV3ScanModelVersionIdPatch200Response.md)
- - [ModelScanApiV3ScanQuery200Response](docs/ModelScanApiV3ScanQuery200Response.md)
+ - [ModelVersion](docs/ModelVersion.md)
+ - [MultiFileUploadRequestV3](docs/MultiFileUploadRequestV3.md)
  - [MultiformatMessageString](docs/MultiformatMessageString.md)
- - [MultipartUploadPart](docs/MultipartUploadPart.md)
  - [Node](docs/Node.md)
  - [Notification](docs/Notification.md)
+ - [NotifyModelScanCompleted200Response](docs/NotifyModelScanCompleted200Response.md)
  - [PagedResponseWithTotal](docs/PagedResponseWithTotal.md)
+ - [PaginationV3](docs/PaginationV3.md)
  - [PhysicalLocation](docs/PhysicalLocation.md)
+ - [ProblemDetails](docs/ProblemDetails.md)
  - [PropertyBag](docs/PropertyBag.md)
  - [Rectangle](docs/Rectangle.md)
  - [Region](docs/Region.md)
@@ -217,16 +225,18 @@ Class | Method | HTTP request | Description
  - [SarifException](docs/SarifException.md)
  - [ScanCreateRequest](docs/ScanCreateRequest.md)
  - [ScanDetectionV3](docs/ScanDetectionV3.md)
+ - [ScanDetectionV31](docs/ScanDetectionV31.md)
  - [ScanHeaderV3](docs/ScanHeaderV3.md)
  - [ScanJob](docs/ScanJob.md)
  - [ScanJobInventory](docs/ScanJobInventory.md)
  - [ScanModelDetailsV3](docs/ScanModelDetailsV3.md)
  - [ScanModelIdsV3](docs/ScanModelIdsV3.md)
- - [ScanModelRequest](docs/ScanModelRequest.md)
  - [ScanReportV3](docs/ScanReportV3.md)
- - [ScanResults](docs/ScanResults.md)
- - [ScanResultsV2](docs/ScanResultsV2.md)
+ - [ScanResultsMapV3](docs/ScanResultsMapV3.md)
+ - [ScanResultsV3](docs/ScanResultsV3.md)
  - [SecurityPosture](docs/SecurityPosture.md)
+ - [Sensor](docs/Sensor.md)
+ - [SensorQueryResponse](docs/SensorQueryResponse.md)
  - [SensorSORModelCardQueryResponse](docs/SensorSORModelCardQueryResponse.md)
  - [SensorSORModelCardResponse](docs/SensorSORModelCardResponse.md)
  - [SensorSORQueryFilter](docs/SensorSORQueryFilter.md)

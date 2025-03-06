@@ -43,7 +43,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   FileDetailsV3.JSON_PROPERTY_FILE_TYPE,
   FileDetailsV3.JSON_PROPERTY_FILE_TYPE_DETAILS
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-30T18:04:47.686514Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-06T16:41:22.054858Z[GMT]", comments = "Generator version: 7.6.0")
 public class FileDetailsV3 {
   public static final String JSON_PROPERTY_ESTIMATED_TIME = "estimated_time";
   private String estimatedTime;
@@ -63,65 +63,8 @@ public class FileDetailsV3 {
   public static final String JSON_PROPERTY_FILE_SIZE_BYTES = "file_size_bytes";
   private Integer fileSizeBytes;
 
-  /**
-   * type of the file
-   */
-  public enum FileTypeEnum {
-    SAFETENSORS("safetensors"),
-    
-    RDS("RDS"),
-    
-    ONNX("onnx"),
-    
-    TENSORFLOW("tensorflow"),
-    
-    KERAS("keras"),
-    
-    PYTORCH("pytorch"),
-    
-    PICKLE("pickle"),
-    
-    NEMO("NEMO"),
-    
-    NUMPY("numpy"),
-    
-    UNKNOWN("unknown"),
-    
-    ZIP("ZIP"),
-    
-    TAR("TAR"),
-    
-    GGUF("gguf");
-
-    private String value;
-
-    FileTypeEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static FileTypeEnum fromValue(String value) {
-      for (FileTypeEnum b : FileTypeEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-  }
-
   public static final String JSON_PROPERTY_FILE_TYPE = "file_type";
-  private FileTypeEnum fileType;
+  private String fileType;
 
   public static final String JSON_PROPERTY_FILE_TYPE_DETAILS = "file_type_details";
   private Map<String, Object> fileTypeDetails = new HashMap<>();
@@ -163,9 +106,9 @@ public class FileDetailsV3 {
    * hexadecimal md5 hash of file
    * @return md5
   **/
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_MD5)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getMd5() {
     return md5;
@@ -173,7 +116,7 @@ public class FileDetailsV3 {
 
 
   @JsonProperty(JSON_PROPERTY_MD5)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setMd5(String md5) {
     this.md5 = md5;
   }
@@ -213,9 +156,9 @@ public class FileDetailsV3 {
    * TLSH hash of file
    * @return tlsh
   **/
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_TLSH)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getTlsh() {
     return tlsh;
@@ -223,7 +166,7 @@ public class FileDetailsV3 {
 
 
   @JsonProperty(JSON_PROPERTY_TLSH)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setTlsh(String tlsh) {
     this.tlsh = tlsh;
   }
@@ -279,7 +222,7 @@ public class FileDetailsV3 {
   }
 
 
-  public FileDetailsV3 fileType(FileTypeEnum fileType) {
+  public FileDetailsV3 fileType(String fileType) {
     this.fileType = fileType;
     return this;
   }
@@ -292,14 +235,14 @@ public class FileDetailsV3 {
   @JsonProperty(JSON_PROPERTY_FILE_TYPE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
-  public FileTypeEnum getFileType() {
+  public String getFileType() {
     return fileType;
   }
 
 
   @JsonProperty(JSON_PROPERTY_FILE_TYPE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setFileType(FileTypeEnum fileType) {
+  public void setFileType(String fileType) {
     this.fileType = fileType;
   }
 

@@ -14,14 +14,18 @@
 package com.hiddenlayer.sdk.rest.api;
 
 import com.hiddenlayer.sdk.rest.ApiException;
-import com.hiddenlayer.sdk.rest.models.ModelScanApiV3ScanModelVersionIdPatch200Response;
-import com.hiddenlayer.sdk.rest.models.ModelScanApiV3ScanQuery200Response;
+import com.hiddenlayer.sdk.rest.models.BeginMultiFileUpload200Response;
+import com.hiddenlayer.sdk.rest.models.BeginMultipartFileUpload200Response;
+import com.hiddenlayer.sdk.rest.models.GetCondensedModelScanReports200Response;
+import com.hiddenlayer.sdk.rest.models.MultiFileUploadRequestV3;
+import com.hiddenlayer.sdk.rest.models.NotifyModelScanCompleted200Response;
 import java.time.OffsetDateTime;
+import com.hiddenlayer.sdk.rest.models.ProblemDetails;
 import com.hiddenlayer.sdk.rest.models.Sarif210;
 import com.hiddenlayer.sdk.rest.models.ScanCreateRequest;
 import com.hiddenlayer.sdk.rest.models.ScanJob;
 import com.hiddenlayer.sdk.rest.models.ScanReportV3;
-import com.hiddenlayer.sdk.rest.models.ScanResultsV2;
+import com.hiddenlayer.sdk.rest.models.ScanResultsMapV3;
 import java.util.UUID;
 import com.hiddenlayer.sdk.rest.models.ValidationErrorModel;
 import org.junit.jupiter.api.Disabled;
@@ -44,7 +48,7 @@ public class ModelSupplyChainApiTest {
 
     
     /**
-     * Get Result of a Model Scan
+     * Start V3 Upload
      *
      * 
      *
@@ -52,17 +56,16 @@ public class ModelSupplyChainApiTest {
      *          if the Api call fails
      */
     @Test
-    public void modelScanApiV3ScanModelVersionIdGetTest() throws ApiException {
-        UUID scanId = null;
-        Boolean hasDetections = null;
-        ScanReportV3 response = 
-        api.modelScanApiV3ScanModelVersionIdGet(scanId, hasDetections);
+    public void beginMultiFileUploadTest() throws ApiException {
+        MultiFileUploadRequestV3 multiFileUploadRequestV3 = null;
+        BeginMultiFileUpload200Response response = 
+        api.beginMultiFileUpload(multiFileUploadRequestV3);
         
         // TODO: test validations
     }
     
     /**
-     * Indicate part (file or files) of a model scan has completed
+     * Add file to V3 Upload
      *
      * 
      *
@@ -70,18 +73,18 @@ public class ModelSupplyChainApiTest {
      *          if the Api call fails
      */
     @Test
-    public void modelScanApiV3ScanModelVersionIdPatchTest() throws ApiException {
+    public void beginMultipartFileUploadTest() throws ApiException {
+        Integer fileContentLength = null;
+        String fileName = null;
         UUID scanId = null;
-        ScanReportV3 scanReportV3 = null;
-        Boolean hasDetections = null;
-        ModelScanApiV3ScanModelVersionIdPatch200Response response = 
-        api.modelScanApiV3ScanModelVersionIdPatch(scanId, scanReportV3, hasDetections);
+        BeginMultipartFileUpload200Response response = 
+        api.beginMultipartFileUpload(fileContentLength, fileName, scanId);
         
         // TODO: test validations
     }
     
     /**
-     * Indicate model scan has started
+     * Indicate All files are uploaded and start the scan
      *
      * 
      *
@@ -89,12 +92,45 @@ public class ModelSupplyChainApiTest {
      *          if the Api call fails
      */
     @Test
-    public void modelScanApiV3ScanModelVersionIdPostTest() throws ApiException {
+    public void completeMultiFileUploadTest() throws ApiException {
         UUID scanId = null;
-        ScanReportV3 scanReportV3 = null;
-        Boolean hasDetections = null;
+        BeginMultiFileUpload200Response response = 
+        api.completeMultiFileUpload(scanId);
         
-        api.modelScanApiV3ScanModelVersionIdPost(scanId, scanReportV3, hasDetections);
+        // TODO: test validations
+    }
+    
+    /**
+     * Indicate that upload is completed for {file_id}
+     *
+     * 
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void completeMultipartFileUploadTest() throws ApiException {
+        UUID scanId = null;
+        UUID fileId = null;
+        BeginMultiFileUpload200Response response = 
+        api.completeMultipartFileUpload(scanId, fileId);
+        
+        // TODO: test validations
+    }
+    
+    /**
+     * Request a Model Scan Job
+     *
+     * 
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void createScanJobTest() throws ApiException {
+        ScanJob scanJob = null;
+        
+        api.createScanJob(scanJob);
         
         // TODO: test validations
     }
@@ -108,7 +144,7 @@ public class ModelSupplyChainApiTest {
      *          if the Api call fails
      */
     @Test
-    public void modelScanApiV3ScanQueryTest() throws ApiException {
+    public void getCondensedModelScanReportsTest() throws ApiException {
         List<String> modelVersionIds = null;
         List<String> modelIds = null;
         OffsetDateTime startTime = null;
@@ -119,43 +155,8 @@ public class ModelSupplyChainApiTest {
         Integer offset = null;
         String sort = null;
         Boolean latestPerModelVersionOnly = null;
-        ModelScanApiV3ScanQuery200Response response = 
-        api.modelScanApiV3ScanQuery(modelVersionIds, modelIds, startTime, endTime, severity, status, limit, offset, sort, latestPerModelVersionOnly);
-        
-        // TODO: test validations
-    }
-    
-    /**
-     * Retrieve Model Scan Results
-     *
-     * 
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void modelscanApiV3GetScanResultsTest() throws ApiException {
-        UUID scanId = null;
-        List<ScanResultsV2> response = 
-        api.modelscanApiV3GetScanResults(scanId);
-        
-        // TODO: test validations
-    }
-    
-    /**
-     * Engine Report Endpoint of Model Scan Results
-     *
-     * 
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void modelscanApiV3PostScanResultsTest() throws ApiException {
-        UUID scanId = null;
-        ScanCreateRequest scanCreateRequest = null;
-        
-        api.modelscanApiV3PostScanResults(scanId, scanCreateRequest);
+        GetCondensedModelScanReports200Response response = 
+        api.getCondensedModelScanReports(modelVersionIds, modelIds, startTime, endTime, severity, status, limit, offset, sort, latestPerModelVersionOnly);
         
         // TODO: test validations
     }
@@ -169,9 +170,46 @@ public class ModelSupplyChainApiTest {
      *          if the Api call fails
      */
     @Test
-    public void modelscannerApiV3GetJobsTest() throws ApiException {
+    public void getScanJobsTest() throws ApiException {
         List<ScanJob> response = 
-        api.modelscannerApiV3GetJobs();
+        api.getScanJobs();
+        
+        // TODO: test validations
+    }
+    
+    /**
+     * Get Result of a Model Scan
+     *
+     * 
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void getScanResultsTest() throws ApiException {
+        UUID scanId = null;
+        Boolean hasDetections = null;
+        ScanReportV3 response = 
+        api.getScanResults(scanId, hasDetections);
+        
+        // TODO: test validations
+    }
+    
+    /**
+     * Retrieve Model Scan Results
+     *
+     * 
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void getScanResults1Test() throws ApiException {
+        UUID scanId = null;
+        String cursor = null;
+        Integer pageSize = null;
+        List<ScanResultsMapV3> response = 
+        api.getScanResults1(scanId, cursor, pageSize);
         
         // TODO: test validations
     }
@@ -193,23 +231,6 @@ public class ModelSupplyChainApiTest {
     }
     
     /**
-     * Request a Model Scan Job
-     *
-     * 
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void modelscannerApiV3PostRequestTest() throws ApiException {
-        ScanJob scanJob = null;
-        
-        api.modelscannerApiV3PostRequest(scanJob);
-        
-        // TODO: test validations
-    }
-    
-    /**
      * Readiness check endpoint for Model Supply Chain Services
      *
      * 
@@ -221,6 +242,62 @@ public class ModelSupplyChainApiTest {
     public void modelscannerApiV3ReadinessCheckTest() throws ApiException {
         
         api.modelscannerApiV3ReadinessCheck();
+        
+        // TODO: test validations
+    }
+    
+    /**
+     * Indicate part (file or files) of a model scan has completed
+     *
+     * 
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void notifyModelScanCompletedTest() throws ApiException {
+        UUID scanId = null;
+        ScanReportV3 scanReportV3 = null;
+        Boolean hasDetections = null;
+        NotifyModelScanCompleted200Response response = 
+        api.notifyModelScanCompleted(scanId, scanReportV3, hasDetections);
+        
+        // TODO: test validations
+    }
+    
+    /**
+     * Indicate model scan has started
+     *
+     * 
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void notifyModelScanStartedTest() throws ApiException {
+        UUID scanId = null;
+        ScanReportV3 scanReportV3 = null;
+        Boolean hasDetections = null;
+        
+        api.notifyModelScanStarted(scanId, scanReportV3, hasDetections);
+        
+        // TODO: test validations
+    }
+    
+    /**
+     * Engine Report Endpoint of Model Scan Results
+     *
+     * 
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void reportScanResultsTest() throws ApiException {
+        UUID scanId = null;
+        ScanCreateRequest scanCreateRequest = null;
+        
+        api.reportScanResults(scanId, scanCreateRequest);
         
         // TODO: test validations
     }

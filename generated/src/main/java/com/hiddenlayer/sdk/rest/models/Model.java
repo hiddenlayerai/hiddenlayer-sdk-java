@@ -24,10 +24,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.time.OffsetDateTime;
+import com.hiddenlayer.sdk.rest.models.ModelVersion;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -36,87 +36,54 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * Model
  */
 @JsonPropertyOrder({
-  Model.JSON_PROPERTY_SENSOR_ID,
-  Model.JSON_PROPERTY_CREATED_AT,
+  Model.JSON_PROPERTY_MODEL_ID,
   Model.JSON_PROPERTY_TENANT_ID,
-  Model.JSON_PROPERTY_PLAINTEXT_NAME,
-  Model.JSON_PROPERTY_ACTIVE,
-  Model.JSON_PROPERTY_VERSION,
-  Model.JSON_PROPERTY_TAGS
+  Model.JSON_PROPERTY_NAME,
+  Model.JSON_PROPERTY_SOURCE,
+  Model.JSON_PROPERTY_VERSIONS
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-30T18:04:47.686514Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-06T16:41:22.054858Z[GMT]", comments = "Generator version: 7.6.0")
 public class Model {
-  public static final String JSON_PROPERTY_SENSOR_ID = "sensor_id";
-  private UUID sensorId;
-
-  public static final String JSON_PROPERTY_CREATED_AT = "created_at";
-  private OffsetDateTime createdAt;
+  public static final String JSON_PROPERTY_MODEL_ID = "model_id";
+  private UUID modelId;
 
   public static final String JSON_PROPERTY_TENANT_ID = "tenant_id";
   private UUID tenantId;
 
-  public static final String JSON_PROPERTY_PLAINTEXT_NAME = "plaintext_name";
-  private String plaintextName;
+  public static final String JSON_PROPERTY_NAME = "name";
+  private String name;
 
-  public static final String JSON_PROPERTY_ACTIVE = "active";
-  private Boolean active;
+  public static final String JSON_PROPERTY_SOURCE = "source";
+  private String source;
 
-  public static final String JSON_PROPERTY_VERSION = "version";
-  private Integer version;
-
-  public static final String JSON_PROPERTY_TAGS = "tags";
-  private Map<String, Object> tags = new HashMap<>();
+  public static final String JSON_PROPERTY_VERSIONS = "versions";
+  private List<ModelVersion> versions = new ArrayList<>();
 
   public Model() { 
   }
 
-  public Model sensorId(UUID sensorId) {
-    this.sensorId = sensorId;
+  public Model modelId(UUID modelId) {
+    this.modelId = modelId;
     return this;
   }
 
    /**
-   * Get sensorId
-   * @return sensorId
+   * Get modelId
+   * @return modelId
   **/
-  @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_SENSOR_ID)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_MODEL_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public UUID getSensorId() {
-    return sensorId;
+  public UUID getModelId() {
+    return modelId;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_SENSOR_ID)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setSensorId(UUID sensorId) {
-    this.sensorId = sensorId;
-  }
-
-
-  public Model createdAt(OffsetDateTime createdAt) {
-    this.createdAt = createdAt;
-    return this;
-  }
-
-   /**
-   * Get createdAt
-   * @return createdAt
-  **/
-  @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_CREATED_AT)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public OffsetDateTime getCreatedAt() {
-    return createdAt;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_CREATED_AT)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setCreatedAt(OffsetDateTime createdAt) {
-    this.createdAt = createdAt;
+  @JsonProperty(JSON_PROPERTY_MODEL_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setModelId(UUID modelId) {
+    this.modelId = modelId;
   }
 
 
@@ -129,9 +96,9 @@ public class Model {
    * Get tenantId
    * @return tenantId
   **/
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_TENANT_ID)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public UUID getTenantId() {
     return tenantId;
@@ -139,117 +106,92 @@ public class Model {
 
 
   @JsonProperty(JSON_PROPERTY_TENANT_ID)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setTenantId(UUID tenantId) {
     this.tenantId = tenantId;
   }
 
 
-  public Model plaintextName(String plaintextName) {
-    this.plaintextName = plaintextName;
+  public Model name(String name) {
+    this.name = name;
     return this;
   }
 
    /**
-   * Get plaintextName
-   * @return plaintextName
+   * Get name
+   * @return name
   **/
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_PLAINTEXT_NAME)
+  @JsonProperty(JSON_PROPERTY_NAME)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
-  public String getPlaintextName() {
-    return plaintextName;
+  public String getName() {
+    return name;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_PLAINTEXT_NAME)
+  @JsonProperty(JSON_PROPERTY_NAME)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setPlaintextName(String plaintextName) {
-    this.plaintextName = plaintextName;
+  public void setName(String name) {
+    this.name = name;
   }
 
 
-  public Model active(Boolean active) {
-    this.active = active;
+  public Model source(String source) {
+    this.source = source;
     return this;
   }
 
    /**
-   * Get active
-   * @return active
+   * Get source
+   * @return source
   **/
   @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_ACTIVE)
+  @JsonProperty(JSON_PROPERTY_SOURCE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
-  public Boolean getActive() {
-    return active;
+  public String getSource() {
+    return source;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_ACTIVE)
+  @JsonProperty(JSON_PROPERTY_SOURCE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setActive(Boolean active) {
-    this.active = active;
+  public void setSource(String source) {
+    this.source = source;
   }
 
 
-  public Model version(Integer version) {
-    this.version = version;
+  public Model versions(List<ModelVersion> versions) {
+    this.versions = versions;
     return this;
   }
 
-   /**
-   * Get version
-   * @return version
-  **/
-  @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_VERSION)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-
-  public Integer getVersion() {
-    return version;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_VERSION)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setVersion(Integer version) {
-    this.version = version;
-  }
-
-
-  public Model tags(Map<String, Object> tags) {
-    this.tags = tags;
-    return this;
-  }
-
-  public Model putTagsItem(String key, Object tagsItem) {
-    if (this.tags == null) {
-      this.tags = new HashMap<>();
+  public Model addVersionsItem(ModelVersion versionsItem) {
+    if (this.versions == null) {
+      this.versions = new ArrayList<>();
     }
-    this.tags.put(key, tagsItem);
+    this.versions.add(versionsItem);
     return this;
   }
 
    /**
-   * Get tags
-   * @return tags
+   * Get versions
+   * @return versions
   **/
   @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_TAGS)
-  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.USE_DEFAULTS)
+  @JsonProperty(JSON_PROPERTY_VERSIONS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public Map<String, Object> getTags() {
-    return tags;
+  public List<ModelVersion> getVersions() {
+    return versions;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_TAGS)
-  @JsonInclude(content = JsonInclude.Include.ALWAYS, value = JsonInclude.Include.USE_DEFAULTS)
-  public void setTags(Map<String, Object> tags) {
-    this.tags = tags;
+  @JsonProperty(JSON_PROPERTY_VERSIONS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setVersions(List<ModelVersion> versions) {
+    this.versions = versions;
   }
 
 
@@ -265,31 +207,27 @@ public class Model {
       return false;
     }
     Model model = (Model) o;
-    return Objects.equals(this.sensorId, model.sensorId) &&
-        Objects.equals(this.createdAt, model.createdAt) &&
+    return Objects.equals(this.modelId, model.modelId) &&
         Objects.equals(this.tenantId, model.tenantId) &&
-        Objects.equals(this.plaintextName, model.plaintextName) &&
-        Objects.equals(this.active, model.active) &&
-        Objects.equals(this.version, model.version) &&
-        Objects.equals(this.tags, model.tags);
+        Objects.equals(this.name, model.name) &&
+        Objects.equals(this.source, model.source) &&
+        Objects.equals(this.versions, model.versions);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(sensorId, createdAt, tenantId, plaintextName, active, version, tags);
+    return Objects.hash(modelId, tenantId, name, source, versions);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Model {\n");
-    sb.append("    sensorId: ").append(toIndentedString(sensorId)).append("\n");
-    sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
+    sb.append("    modelId: ").append(toIndentedString(modelId)).append("\n");
     sb.append("    tenantId: ").append(toIndentedString(tenantId)).append("\n");
-    sb.append("    plaintextName: ").append(toIndentedString(plaintextName)).append("\n");
-    sb.append("    active: ").append(toIndentedString(active)).append("\n");
-    sb.append("    version: ").append(toIndentedString(version)).append("\n");
-    sb.append("    tags: ").append(toIndentedString(tags)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    source: ").append(toIndentedString(source)).append("\n");
+    sb.append("    versions: ").append(toIndentedString(versions)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -337,14 +275,9 @@ public class Model {
 
     StringJoiner joiner = new StringJoiner("&");
 
-    // add `sensor_id` to the URL query string
-    if (getSensorId() != null) {
-      joiner.add(String.format("%ssensor_id%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getSensorId()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
-    }
-
-    // add `created_at` to the URL query string
-    if (getCreatedAt() != null) {
-      joiner.add(String.format("%screated_at%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getCreatedAt()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    // add `model_id` to the URL query string
+    if (getModelId() != null) {
+      joiner.add(String.format("%smodel_id%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getModelId()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
     }
 
     // add `tenant_id` to the URL query string
@@ -352,27 +285,23 @@ public class Model {
       joiner.add(String.format("%stenant_id%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getTenantId()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
     }
 
-    // add `plaintext_name` to the URL query string
-    if (getPlaintextName() != null) {
-      joiner.add(String.format("%splaintext_name%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getPlaintextName()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    // add `name` to the URL query string
+    if (getName() != null) {
+      joiner.add(String.format("%sname%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getName()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
     }
 
-    // add `active` to the URL query string
-    if (getActive() != null) {
-      joiner.add(String.format("%sactive%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getActive()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    // add `source` to the URL query string
+    if (getSource() != null) {
+      joiner.add(String.format("%ssource%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getSource()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
     }
 
-    // add `version` to the URL query string
-    if (getVersion() != null) {
-      joiner.add(String.format("%sversion%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getVersion()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
-    }
-
-    // add `tags` to the URL query string
-    if (getTags() != null) {
-      for (String _key : getTags().keySet()) {
-        joiner.add(String.format("%stags%s%s=%s", prefix, suffix,
-            "".equals(suffix) ? "" : String.format("%s%d%s", containerPrefix, _key, containerSuffix),
-            getTags().get(_key), URLEncoder.encode(String.valueOf(getTags().get(_key)), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    // add `versions` to the URL query string
+    if (getVersions() != null) {
+      for (int i = 0; i < getVersions().size(); i++) {
+        if (getVersions().get(i) != null) {
+          joiner.add(getVersions().get(i).toUrlQueryString(String.format("%sversions%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format("%s%d%s", containerPrefix, i, containerSuffix))));
+        }
       }
     }
 

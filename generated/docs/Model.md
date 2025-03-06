@@ -7,13 +7,11 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**sensorId** | **UUID** |  |  |
-|**createdAt** | **OffsetDateTime** |  |  |
-|**tenantId** | **UUID** |  |  |
-|**plaintextName** | **String** |  |  |
-|**active** | **Boolean** |  |  |
-|**version** | **Integer** |  |  |
-|**tags** | **Map&lt;String, Object&gt;** |  |  [optional] |
+|**modelId** | **UUID** |  |  [optional] |
+|**tenantId** | **UUID** |  |  [optional] |
+|**name** | **String** |  |  |
+|**source** | **String** |  |  |
+|**versions** | [**List&lt;ModelVersion&gt;**](ModelVersion.md) |  |  [optional] |
 
 
 

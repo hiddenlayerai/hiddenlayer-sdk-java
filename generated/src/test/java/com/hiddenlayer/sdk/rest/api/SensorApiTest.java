@@ -15,9 +15,8 @@ package com.hiddenlayer.sdk.rest.api;
 
 import com.hiddenlayer.sdk.rest.ApiException;
 import com.hiddenlayer.sdk.rest.models.CreateSensorRequest;
-import com.hiddenlayer.sdk.rest.models.GetMultipartUploadResponse;
-import com.hiddenlayer.sdk.rest.models.Model;
-import com.hiddenlayer.sdk.rest.models.ModelQueryResponse;
+import com.hiddenlayer.sdk.rest.models.Sensor;
+import com.hiddenlayer.sdk.rest.models.SensorQueryResponse;
 import com.hiddenlayer.sdk.rest.models.SensorSORModelCardQueryResponse;
 import com.hiddenlayer.sdk.rest.models.SensorSORQueryRequest;
 import java.util.UUID;
@@ -42,42 +41,6 @@ public class SensorApiTest {
 
     
     /**
-     * Begin Multipart Upload
-     *
-     * 
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void beginMultipartUploadTest() throws ApiException {
-        UUID sensorId = null;
-        Long xContentLength = null;
-        GetMultipartUploadResponse response = 
-        api.beginMultipartUpload(sensorId, xContentLength);
-        
-        // TODO: test validations
-    }
-    
-    /**
-     * Complete Multipart Upload
-     *
-     * 
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void completeMultipartUploadTest() throws ApiException {
-        UUID sensorId = null;
-        String uploadId = null;
-        
-        api.completeMultipartUpload(sensorId, uploadId);
-        
-        // TODO: test validations
-    }
-    
-    /**
      * Create a Sensor
      *
      * 
@@ -88,14 +51,14 @@ public class SensorApiTest {
     @Test
     public void createSensorTest() throws ApiException {
         CreateSensorRequest createSensorRequest = null;
-        Model response = 
+        Sensor response = 
         api.createSensor(createSensorRequest);
         
         // TODO: test validations
     }
     
     /**
-     * Remove an Adhoc Sensor
+     * Delete Sensor
      *
      * 
      *
@@ -103,16 +66,16 @@ public class SensorApiTest {
      *          if the Api call fails
      */
     @Test
-    public void deleteModelTest() throws ApiException {
+    public void deleteSensorTest() throws ApiException {
         UUID sensorId = null;
         
-        api.deleteModel(sensorId);
+        api.deleteSensor(sensorId);
         
         // TODO: test validations
     }
     
     /**
-     * Get Model
+     * Get Sensor
      *
      * 
      *
@@ -120,10 +83,10 @@ public class SensorApiTest {
      *          if the Api call fails
      */
     @Test
-    public void getModelTest() throws ApiException {
+    public void getSensorTest() throws ApiException {
         UUID sensorId = null;
-        Model response = 
-        api.getModel(sensorId);
+        Sensor response = 
+        api.getSensor(sensorId);
         
         // TODO: test validations
     }
@@ -139,7 +102,7 @@ public class SensorApiTest {
     @Test
     public void querySensorTest() throws ApiException {
         SensorSORQueryRequest sensorSORQueryRequest = null;
-        ModelQueryResponse response = 
+        SensorQueryResponse response = 
         api.querySensor(sensorSORQueryRequest);
         
         // TODO: test validations
@@ -162,26 +125,6 @@ public class SensorApiTest {
         String sort = null;
         SensorSORModelCardQueryResponse response = 
         api.sensorSorApiV3ModelCardsQueryGet(modelNameEq, modelNameContains, limit, offset, sort);
-        
-        // TODO: test validations
-    }
-    
-    /**
-     * Upload part
-     *
-     * 
-     *
-     * @throws ApiException
-     *          if the Api call fails
-     */
-    @Test
-    public void uploadModelPartTest() throws ApiException {
-        UUID sensorId = null;
-        String uploadId = null;
-        Integer part = null;
-        Object body = null;
-        
-        api.uploadModelPart(sensorId, uploadId, part, body);
         
         // TODO: test validations
     }
