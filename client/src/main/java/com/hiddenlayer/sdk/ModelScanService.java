@@ -23,14 +23,10 @@ import com.hiddenlayer.sdk.rest.models.*;
 
 import com.hiddenlayer.sdk.rest.ApiClient;
 import com.hiddenlayer.sdk.rest.ApiException;
-import com.hiddenlayer.sdk.rest.api.ModelScanApi;
 import com.hiddenlayer.sdk.rest.api.ModelSupplyChainApi;
-import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class ModelScanService extends HiddenlayerService {
   final private ModelSupplyChainApi modelSupplyChainApi;
-  final private SensorApi sensorApi;
-  final private ModelScanApi modelScanApi;
 
   public ModelScanService() throws Exception {
     this(Configuration.defaultFromEnvironment());
@@ -48,21 +44,19 @@ public class ModelScanService extends HiddenlayerService {
     });
     apiClient.updateBaseUri(config.getHlApiUrl());
     this.modelSupplyChainApi = new ModelSupplyChainApi(apiClient);
-    this.sensorApi = new SensorApi(apiClient);
-    this.modelScanApi = new ModelScanApi(apiClient);
   }
 
   public ScanReportV3 scanFile(String modelPath, String modelName) 
     throws Exception, FileNotFoundException, RuntimeException, IOException, ApiException {
-    return scanFile(modelPath, modelName, OptionalInt.empty(), true);
+    return scanFile(modelPath, modelName, null, true);
   }
 
   public ScanReportV3 scanFile(String modelPath, String modelName, boolean waitForDone) 
     throws Exception, FileNotFoundException, RuntimeException, IOException, ApiException {
-    return scanFile(modelPath, modelName, OptionalInt.empty(), waitForDone);
+    return scanFile(modelPath, modelName, null, waitForDone);
   }
 
-  public ScanReportV3 scanFile(String modelPath, String modelName, OptionalInt modelVersion, boolean waitForDone) 
+  public ScanReportV3 scanFile(String modelPath, String modelName, String modelVersion, boolean waitForDone) 
     throws Exception, FileNotFoundException, RuntimeException, IOException, ApiException {
     File fileToScan = new File(modelPath);
     if (!fileToScan.exists()) {
@@ -72,43 +66,52 @@ public class ModelScanService extends HiddenlayerService {
     }
     InputStream modelStream = new FileInputStream(fileToScan);
     try{
-      return scanStream(modelStream, fileToScan.length(), modelName, modelVersion, waitForDone);
+      return scanStream(modelStream, fileToScan.getName(), fileToScan.length(), modelName, modelVersion, waitForDone);
     } finally {
       modelStream.close();
     }
   }
 
-  public ScanReportV3 scanStream(InputStream modelStream, long streamLength, String modelName) 
+  public ScanReportV3 scanStream(InputStream modelStream, String filename, long streamLength, String modelName) 
     throws Exception, RuntimeException, IOException, ApiException {
-    return this.scanStream(modelStream, streamLength, modelName, OptionalInt.empty(), true);
+    return this.scanStream(modelStream, filename, streamLength, modelName, null, true);
   }
 
-  public ScanReportV3 scanStream(InputStream modelStream, long streamLength, String modelName, boolean waitForDone) 
+  public ScanReportV3 scanStream(InputStream modelStream, String filename, long streamLength, String modelName, boolean waitForDone) 
     throws Exception, RuntimeException, IOException, ApiException {
-    return this.scanStream(modelStream, streamLength, modelName, OptionalInt.empty(), waitForDone);
+    return this.scanStream(modelStream, filename, streamLength, modelName, null, waitForDone);
   }
 
-  public ScanReportV3 scanStream(InputStream modelStream, long streamLength, String modelName, OptionalInt modelVersion, boolean waitForDone) 
+  public ScanReportV3 scanStream(InputStream modelStream, String filename, long streamLength, String modelName, String modelVersion, boolean waitForDone) 
     throws Exception, RuntimeException, IOException, ApiException {
-    Model sensor = this.submitStream(modelStream, streamLength, modelName, modelVersion);
+    MultiFileUploadRequestV3 multiFileUploadRequest = new MultiFileUploadRequestV3();
+    multiFileUploadRequest.setModelName(modelName);
+    if (modelVersion != null && !modelVersion.isEmpty()) {
+        multiFileUploadRequest.setModelVersion(modelVersion);
+    }
+    multiFileUploadRequest.setRequestingEntity("hiddenlayer-sdk-java");
+    BeginMultiFileUpload200Response multiFileUploadResponse = this.modelSupplyChainApi.beginMultiFileUpload(multiFileUploadRequest);
+    
+    this.submitStream(modelStream, filename, streamLength, multiFileUploadResponse.getScanId());
+    this.modelSupplyChainApi.completeMultiFileUpload(multiFileUploadResponse.getScanId());
     if (waitForDone) {
-      return this.getDoneScanResults(sensor.getSensorId());
+      return this.getDoneScanResults(multiFileUploadResponse.getScanId());
     } else {
-      return this.getScanResults(sensor.getSensorId());
+      return this.modelSupplyChainApi.getScanResults(multiFileUploadResponse.getScanId(), null);
     }
   }
 
   public ScanReportV3 scanFolder(String folderPath, String modelName) 
     throws Exception, ApiException, IOException, URISyntaxException, InterruptedException, Exception {
-    return this.scanFolder(folderPath, modelName, OptionalInt.empty(), true);
+    return this.scanFolder(folderPath, modelName, null, true);
   }
 
   public ScanReportV3 scanFolder(String folderPath, String modelName, boolean waitForDone) 
     throws Exception, ApiException, IOException, URISyntaxException, InterruptedException, Exception {
-    return this.scanFolder(folderPath, modelName, OptionalInt.empty(), waitForDone);
+    return this.scanFolder(folderPath, modelName, null, waitForDone);
   }
 
-  public ScanReportV3 scanFolder(String folderPath, String modelName, OptionalInt modelVersion, boolean waitForDone) 
+  public ScanReportV3 scanFolder(String folderPath, String modelName, String modelVersion, boolean waitForDone) 
         throws Exception, ApiException, IOException, URISyntaxException, InterruptedException, Exception {
         if (modelName == null || modelName.isEmpty()) {
             throw new Exception("Model name is required");
@@ -117,37 +120,35 @@ public class ModelScanService extends HiddenlayerService {
         if (!folder.isDirectory()) {
             throw new Exception("Folder path is not a directory");
         }
-        File tempFile = File.createTempFile("temp", ".zip");
-        ZipOutputStream out = new ZipOutputStream(new FileOutputStream(tempFile));
+
+        MultiFileUploadRequestV3 multiFileUploadRequest = new MultiFileUploadRequestV3();
+        multiFileUploadRequest.setModelName(modelName);
+        if (modelVersion != null && !modelVersion.isEmpty()) {
+            multiFileUploadRequest.setModelVersion(modelVersion);
+        }
+        multiFileUploadRequest.setRequestingEntity("hiddenlayer-sdk-java");
+        BeginMultiFileUpload200Response multiFileUploadResponse = this.modelSupplyChainApi.beginMultiFileUpload(multiFileUploadRequest);
+
         File[] files = folder.listFiles();
         for (File file : files) {
             if (file.isFile()) {
                 FileInputStream in = new FileInputStream(file);
-                ZipEntry entry = new ZipEntry(file.getName());
-                out.putNextEntry(entry);
-                byte[] buffer = new byte[1024];
-                int len;
-                while ((len = in.read(buffer)) > 0) {
-                    out.write(buffer, 0, len);
-                }
-                out.closeEntry();
-                in.close();
+                this.submitStream(in, file.getName(), file.length(), multiFileUploadResponse.getScanId());
             }
         }
-        out.finish();
-        out.flush();
-        out.close();
-        
-        return this.scanFile(tempFile.getAbsolutePath(), modelName, modelVersion, waitForDone);
+        if (waitForDone) {
+            return this.getDoneScanResults(multiFileUploadResponse.getScanId());
+        } else {
+            return this.modelSupplyChainApi.getScanResults(multiFileUploadResponse.getScanId(), null);
+        }
     }
 
-    public ScanReportV3 getDoneScanResults(UUID modelVersion) 
+    public ScanReportV3 getDoneScanResults(UUID scanId) 
         throws ApiException {
           Double baseDelay = 100.0; // milliseconds
           Integer retries = 0;
 
-          ScanReportV3 scanReport = this.getScanResults(modelVersion);
-  
+          ScanReportV3 scanReport = this.modelSupplyChainApi.getScanResults(scanId, null);
           while (scanReport == null 
                   || (scanReport.getStatus() != ScanReportV3.StatusEnum.DONE 
                         && scanReport.getStatus() != ScanReportV3.StatusEnum.FAILED
@@ -162,78 +163,33 @@ public class ModelScanService extends HiddenlayerService {
                   return null;
               }
   
-              scanReport = this.getScanResults(modelVersion);
+              scanReport = this.modelSupplyChainApi.getScanResults(scanId, null);
           }
           return scanReport;
     }
 
-    private ScanReportV3 getScanResults(UUID modelVersion)
-        throws ApiException {
-        // model version and sensor ids are one to one currently
-        ArrayList<String> modelVersionList = new ArrayList<String>();
-        modelVersionList.add(modelVersion.toString());
-        ModelScanApiV3ScanQuery200Response scans = this.modelSupplyChainApi.modelScanApiV3ScanQuery(modelVersionList, null, null, null, null, null, null, null, null, true);
-        if (scans.getTotal().intValue() == 0 || scans.getItems() == null) {
-          return null;
-        }
+    private void submitStream(InputStream stream, String filename, long streamLength, UUID scanId) 
+      throws ApiException, Exception {
 
-        ScanReportV3 scan = scans.getItems().get(0);
-        UUID scanUuid = UUID.fromString(scan.getScanId());
-        ScanReportV3 scanReport = this.modelSupplyChainApi.modelScanApiV3ScanModelVersionIdGet(scanUuid, null);
-        return scanReport;
-    }
+      BeginMultipartFileUpload200Response multipartResponse = 
+        this.modelSupplyChainApi.beginMultipartFileUpload(Math.toIntExact(streamLength), filename, scanId);
 
-    private Model submitStream(InputStream stream, long streamLength, String modelName, OptionalInt modelVersion) 
-      throws Exception, ApiException, InterruptedException, IOException, URISyntaxException {
-      CreateSensorRequest createSensorRequest = new CreateSensorRequest();
-      createSensorRequest.setAdhoc(true);
-      createSensorRequest.setActive(true);
-      createSensorRequest.setPlaintextName(modelName);
-      if (modelVersion.isPresent()) {
-        createSensorRequest.setVersion(modelVersion.getAsInt());
-      }
-      // actually a sensor, not a Model
-      Model model = null;
-      try{
-        model = this.sensorApi.createSensor(createSensorRequest);
-      } catch(ApiException e) {
-        if (e.getCode() == 409) {
-          // sensor already exists, get the existing sensor. Version must have been specified to trigger collision
-          ModelQueryResponse models = this.sensorApi.querySensor(new SensorSORQueryRequest().filter(new SensorSORQueryFilter().plaintextName(modelName).active(true).version(modelVersion.getAsInt())));
-          if (models.getTotalCount() > 0) {
-            model = models.getResults().get(0);
-          } else {
-            throw e;
-          }
-        } else {
-          throw e;
-        }
-      }
-      UUID sensorId = model.getSensorId();
-
-      GetMultipartUploadResponse uploadStartResponse = this.sensorApi.beginMultipartUpload(sensorId, streamLength);
-      for (int i = 0; i < uploadStartResponse.getParts().size(); i++) {
-          MultipartUploadPart uploadPart = uploadStartResponse.getParts().get(i);
+      for (int i = 0; i < multipartResponse.getParts().size(); i++) {
+          BeginMultipartFileUpload200ResponsePartsInner uploadPart = multipartResponse.getParts().get(i);
           long bytesToRead = uploadPart.getEndOffset() - uploadPart.getStartOffset();
           // TODO: appropriately handle large part sizes (this works for under 2GB parts)
           byte[] buffer = stream.readNBytes((int)bytesToRead);
-          if (uploadPart.getUploadUrl() != null) {
-            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                .uri(new URI(uploadPart.getUploadUrl()))
-                .header("Content-Type", "application/octet-stream")
-                .PUT(HttpRequest.BodyPublishers.ofByteArray(buffer));
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = requestBuilder.build();
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() != 200) {
-                throw new Exception("Failed to upload part " + uploadPart.getPartNumber() + ": " + response.statusCode() + ": " + response.body());
-            }
-          } else {
-            this.sensorApi.uploadModelPart(sensorId, uploadStartResponse.getUploadId(), uploadPart.getPartNumber(), buffer);
+          HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+              .uri(uploadPart.getUploadUrl())
+              .header("Content-Type", "application/octet-stream")
+              .PUT(HttpRequest.BodyPublishers.ofByteArray(buffer));
+          HttpClient client = HttpClient.newHttpClient();
+          HttpRequest request = requestBuilder.build();
+          HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+          if (response.statusCode() != 200) {
+              throw new Exception("Failed to upload part " + uploadPart.getPartNumber() + ": " + response.statusCode() + ": " + response.body());
           }
       }
-      this.sensorApi.completeMultipartUpload(sensorId, uploadStartResponse.getUploadId());
-      this.modelScanApi.scanModel(sensorId, null);
-      return model;
+      this.modelSupplyChainApi.completeMultipartFileUpload(scanId, multipartResponse.getUploadId());
     }
 }

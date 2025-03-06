@@ -24,7 +24,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model'
+                $ref: '#/components/schemas/Sensor'
           description: Successful response
         "400":
           description: |-
@@ -58,7 +58,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ModelQueryResponse'
+                $ref: '#/components/schemas/SensorQueryResponse'
           description: Successful response
         "400":
           description: |-
@@ -71,207 +71,9 @@ paths:
       x-content-type: application/json
       x-accepts:
       - application/json
-  /api/v2/sensors/{sensor_id}/upload/begin:
-    post:
-      operationId: begin_multipart_upload
-      parameters:
-      - explode: false
-        in: path
-        name: sensor_id
-        required: true
-        schema:
-          format: uuid
-          title: Sensor ID
-          type: string
-        style: simple
-      - description: The total size of multipart upload.
-        explode: false
-        in: header
-        name: X-Content-Length
-        required: true
-        schema:
-          format: int64
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetMultipartUploadResponse'
-          description: Successful Response
-        "400":
-          description: |-
-            The request failed due to a client error, with one or more of the following possible causes:
-            1. The request required a tenant_id field, which was missing.
-            2. The request was malformed syntactically or semantically.
-      summary: Begin Multipart Upload
-      tags:
-      - sensor
-      x-accepts:
-      - application/json
-  /api/v2/sensors/{sensor_id}/upload/{upload_id}/part/{part}:
-    put:
-      operationId: upload_model_part
-      parameters:
-      - explode: false
-        in: path
-        name: sensor_id
-        required: true
-        schema:
-          format: uuid
-          title: Sensor ID
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: upload_id
-        required: true
-        schema:
-          title: Upload Id
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: part
-        required: true
-        schema:
-          title: Part Number
-          type: integer
-        style: simple
-      requestBody:
-        content:
-          application/octet-stream:
-            schema:
-              format: binary
-        required: true
-      responses:
-        "200":
-          description: Successful Response
-        "400":
-          description: |-
-            The request failed due to a client error, with one or more of the following possible causes:
-            1. The request required a tenant_id field, which was missing.
-            2. The request was malformed syntactically or semantically.
-      summary: Upload part
-      tags:
-      - sensor
-      x-content-type: application/octet-stream
-      x-accepts:
-      - application/json
-  /api/v2/sensors/{sensor_id}/upload/{upload_id}/complete:
-    post:
-      operationId: complete_multipart_upload
-      parameters:
-      - explode: false
-        in: path
-        name: sensor_id
-        required: true
-        schema:
-          format: uuid
-          title: Sensor ID
-          type: string
-        style: simple
-      - explode: false
-        in: path
-        name: upload_id
-        required: true
-        schema:
-          title: Upload Id
-          type: string
-        style: simple
-      responses:
-        "200":
-          description: Successful Response
-        "400":
-          description: |-
-            The request failed due to a client error, with one or more of the following possible causes:
-            1. The request required a tenant_id field, which was missing.
-            2. The request was malformed syntactically or semantically.
-      summary: Complete Multipart Upload
-      tags:
-      - sensor
-      x-accepts:
-      - application/json
-  /api/v2/submit/sensors/{sensor_id}/scan:
-    post:
-      operationId: scan_model
-      parameters:
-      - explode: false
-        in: path
-        name: sensor_id
-        required: true
-        schema:
-          format: uuid
-          title: Sensor ID
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/scan_model_request'
-          application/octet-stream:
-            schema:
-              format: binary
-              type: string
-        description: Request body for create
-        required: false
-      responses:
-        "201":
-          description: The resource was successfully created.
-        "400":
-          description: |-
-            The request failed due to a client error, with one or more of the following possible causes:
-            1. The request required a tenant_id field, which was missing.
-            2. The request was malformed syntactically or semantically.
-        "422":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationErrorModel'
-          description: Validation Error
-      summary: Scan a model
-      tags:
-      - model_scan
-      x-content-type: application/json
-      x-accepts:
-      - application/json
-  /api/v2/scan/status/{sensor_id}:
-    get:
-      operationId: scan_status
-      parameters:
-      - explode: false
-        in: path
-        name: sensor_id
-        required: true
-        schema:
-          format: uuid
-          title: Sensor ID
-          type: string
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ScanResultsV2'
-          description: Successful response
-        "400":
-          description: |-
-            The request failed due to a client error, with one or more of the following possible causes:
-            1. The request required a tenant_id field, which was missing.
-            2. The request was malformed syntactically or semantically.
-        "404":
-          description: The specified resource was not found.
-      summary: Get Status or Result of a Scan
-      tags:
-      - model_scan
-      x-accepts:
-      - application/json
   /api/v2/sensors/{sensor_id}:
     delete:
-      operationId: delete_model
+      operationId: delete_sensor
       parameters:
       - explode: false
         in: path
@@ -292,13 +94,13 @@ paths:
             2. The request was malformed syntactically or semantically.
         "404":
           description: The specified resource was not found.
-      summary: Remove an Adhoc Sensor
+      summary: Delete Sensor
       tags:
       - sensor
       x-accepts:
       - application/json
     get:
-      operationId: get_model
+      operationId: get_sensor
       parameters:
       - explode: false
         in: path
@@ -314,7 +116,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model'
+                $ref: '#/components/schemas/Sensor'
           description: Successful response
         "400":
           description: |-
@@ -323,7 +125,7 @@ paths:
             2. The request was malformed syntactically or semantically.
         "404":
           description: The specified resource was not found.
-      summary: Get Model
+      summary: Get Sensor
       tags:
       - sensor
       x-accepts:
@@ -356,9 +158,72 @@ paths:
       x-content-type: application/json
       x-accepts:
       - application/json
+  /api/v2/models/{model_id}:
+    delete:
+      operationId: delete_model
+      parameters:
+      - explode: false
+        in: path
+        name: model_id
+        required: true
+        schema:
+          format: uuid
+          title: Model ID
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: Successful (No Available Content)
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "404":
+          description: The specified resource was not found.
+        "409":
+          description: The specified resource is in an incompatible state
+        "503":
+          description: The service is undergoing maintenance and is temporarily unavailable.
+      summary: Delete Adhoc Model
+      tags:
+      - model
+      x-accepts:
+      - application/json
+    get:
+      operationId: get_model
+      parameters:
+      - explode: false
+        in: path
+        name: model_id
+        required: true
+        schema:
+          format: uuid
+          title: Model ID
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+          description: Successful response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "404":
+          description: The specified resource was not found.
+      summary: Get Model
+      tags:
+      - model
+      x-accepts:
+      - application/json
   /scan/v3/results:
     get:
-      operationId: model_scan_api_v3_scan_query
+      operationId: get_condensed_model_scan_reports
       parameters:
       - description: Model Version ID
         example: "00fb9505-b9ac-4703-91a7-9d4859315a4b,0278fa73-4b08-47ca-bc23-33bc244719be"
@@ -468,7 +333,7 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/model_scan_api_v3_scan_query_200_response'
+                $ref: '#/components/schemas/get_condensed_model_scan_reports_200_response'
           description: Successful response
         "400":
           description: |-
@@ -484,7 +349,7 @@ paths:
       - application/json; charset=utf-8
   /scan/v3/results/{scan_id}:
     get:
-      operationId: model_scan_api_v3_scan_model_version_id_get
+      operationId: get_scan_results
       parameters:
       - example: 00000000-0000-0000-0000-000000000000
         explode: false
@@ -528,7 +393,7 @@ paths:
       - application/json; charset=utf-8
       - application/sarif+json
     patch:
-      operationId: model_scan_api_v3_scan_model_version_id_patch
+      operationId: notify_model_scan_completed
       parameters:
       - example: 00000000-0000-0000-0000-000000000000
         explode: false
@@ -560,7 +425,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/model_scan_api_v3_scan_model_version_id_patch_200_response'
+                $ref: '#/components/schemas/notify_model_scan_completed_200_response'
           description: Successful Response
         "400":
           description: |-
@@ -580,7 +445,7 @@ paths:
       x-accepts:
       - application/json
     post:
-      operationId: model_scan_api_v3_scan_model_version_id_post
+      operationId: notify_model_scan_started
       parameters:
       - example: 00000000-0000-0000-0000-000000000000
         explode: false
@@ -629,7 +494,7 @@ paths:
       - application/json
   /scans/v3/jobs:
     get:
-      operationId: modelscanner_api_v3_get_jobs
+      operationId: get_scan_jobs
       responses:
         "200":
           content:
@@ -652,10 +517,29 @@ paths:
       x-accepts:
       - application/json; charset=utf-8
     post:
-      operationId: modelscanner_api_v3_post_request
+      operationId: create_scan_job
       requestBody:
         content:
           application/json; charset=utf-8:
+            examples:
+              hugging_face:
+                value:
+                  access:
+                    source: HUGGING_FACE
+                  inventory:
+                    model_name: some-model
+                    model_version: main
+                    requested_scan_location: owner/repo
+                    requesting_entity: some-user@example.com
+              hugging_face_url:
+                value:
+                  access:
+                    source: HUGGING_FACE
+                  inventory:
+                    model_name: some-model
+                    model_version: main
+                    requested_scan_location: https://huggingface.co/owner/repo
+                    requesting_entity: some-user@example.com
             schema:
               $ref: '#/components/schemas/ScanJob'
           application/octet-stream: {}
@@ -672,8 +556,32 @@ paths:
         "422":
           content:
             application/json:
+              examples:
+                repo_empty:
+                  value:
+                    errors:
+                    - code: ERR_EMPTY
+                      detail: repo contains no files to scan
+                      pointer:
+                      - /inventory/requested_scan_location
+                      - /inventory/model_version
+                repo_not_found:
+                  value:
+                    errors:
+                    - code: ERR_NOT_FOUND
+                      detail: "repo or branch does not exist, or repo is private"
+                      pointer:
+                      - /inventory/requested_scan_location
+                      - /inventory/model_version
+                repo_invalid:
+                  value:
+                    errors:
+                    - code: ERR_INVALID
+                      detail: requested scan location is malformed
+                      pointer:
+                      - /inventory/requested_scan_location
               schema:
-                $ref: '#/components/schemas/ValidationErrorModel'
+                $ref: '#/components/schemas/ProblemDetails'
           description: Validation Error
       summary: Request a Model Scan Job
       tags:
@@ -683,7 +591,7 @@ paths:
       - application/json
   /scans/v3/reports/{scan_id}:
     post:
-      operationId: modelscan_api_v3_post_scan_results
+      operationId: report_scan_results
       parameters:
       - explode: false
         in: path
@@ -724,7 +632,7 @@ paths:
       - application/json
   /scans/v3/results/{scan_id}:
     get:
-      operationId: modelscan_api_v3_get_scan_results
+      operationId: get_scan_results1
       parameters:
       - explode: false
         in: path
@@ -735,23 +643,35 @@ paths:
           title: Scan Id to which the report belongs
           type: string
         style: simple
+      - explode: true
+        in: query
+        name: cursor
+        required: false
+        schema:
+          description: Cursor value returned from a previous request. Used to fetch
+            the next page of results.
+          title: Results Cursor Value
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page_size
+        required: false
+        schema:
+          default: 25
+          minimum: 1
+          title: Page Size
+          type: integer
+        style: form
       responses:
         "200":
           content:
             application/json; charset=utf-8:
               schema:
                 items:
-                  $ref: '#/components/schemas/ScanResultsV2'
+                  $ref: '#/components/schemas/ScanResultsMapV3'
                 type: array
           description: Scan finished. Full results returned.
-        "202":
-          content:
-            application/json; charset=utf-8:
-              schema:
-                items:
-                  $ref: '#/components/schemas/ScanResultsV2'
-                type: array
-          description: Scan still in progress. Partial results returned.
         "400":
           description: |-
             The request failed due to a client error, with one or more of the following possible causes:
@@ -759,17 +679,12 @@ paths:
             2. The request was malformed syntactically or semantically.
         "404":
           description: The specified resource was not found.
-        "422":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationErrorModel'
-          description: Validation Error
+        "405":
+          description: The specified method is not allowed.
       summary: Retrieve Model Scan Results
       tags:
       - Model Supply Chain
       x-accepts:
-      - application/json
       - application/json; charset=utf-8
   /scans/v3/health:
     get:
@@ -797,6 +712,171 @@ paths:
       tags:
       - Model Supply Chain
       - Readiness
+      x-accepts:
+      - application/json
+  /scan/v3/upload:
+    post:
+      operationId: begin_multi_file_upload
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MultiFileUploadRequestV3'
+        description: Request body for create
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/begin_multi_file_upload_200_response'
+          description: Successful Response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorModel'
+          description: Validation Error
+      summary: Start V3 Upload
+      tags:
+      - Model Supply Chain
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /scan/v3/upload/{scan_id}/file:
+    post:
+      operationId: begin_multipart_file_upload
+      parameters:
+      - description: Added file size in bytes
+        example: 12345
+        in: header
+        name: file-content-length
+        required: true
+        schema:
+          type: integer
+      - description: Added file name
+        example: exampleFile.txt
+        in: header
+        name: file-name
+        required: true
+        schema:
+          type: string
+      - explode: false
+        in: path
+        name: scan_id
+        required: true
+        schema:
+          format: uuid
+          title: Scan Id to which the file belongs
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/begin_multipart_file_upload_200_response'
+          description: Successful Response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorModel'
+          description: Validation Error
+      summary: Add file to V3 Upload
+      tags:
+      - Model Supply Chain
+      x-accepts:
+      - application/json
+  /scan/v3/upload/{scan_id}/file/{file_id}:
+    patch:
+      operationId: complete_multipart_file_upload
+      parameters:
+      - explode: false
+        in: path
+        name: scan_id
+        required: true
+        schema:
+          format: uuid
+          title: Scan Id to which the file belongs
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: file_id
+        required: true
+        schema:
+          format: uuid
+          title: file_id to which the file belongs
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/begin_multi_file_upload_200_response'
+          description: Successful Response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorModel'
+          description: Validation Error
+      summary: "Indicate that upload is completed for {file_id}"
+      tags:
+      - Model Supply Chain
+      x-accepts:
+      - application/json
+  /scan/v3/upload/{scan_id}:
+    patch:
+      operationId: complete_multi_file_upload
+      parameters:
+      - explode: false
+        in: path
+        name: scan_id
+        required: true
+        schema:
+          format: uuid
+          title: Scan Id to which the call belongs
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/begin_multi_file_upload_200_response'
+          description: Successful Response
+        "400":
+          description: |-
+            The request failed due to a client error, with one or more of the following possible causes:
+            1. The request required a tenant_id field, which was missing.
+            2. The request was malformed syntactically or semantically.
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorModel'
+          description: Validation Error
+      summary: Indicate All files are uploaded and start the scan
+      tags:
+      - Model Supply Chain
       x-accepts:
       - application/json
   /models/v3/cards:
@@ -878,15 +958,22 @@ components:
         title: Sensor ID
         type: string
       style: simple
-    UploadIdParameter:
-      explode: false
-      in: path
-      name: upload_id
+    ContentLengthParameter:
+      description: Added file size in bytes
+      example: 12345
+      in: header
+      name: file-content-length
       required: true
       schema:
-        title: Upload Id
+        type: integer
+    FileNameParameter:
+      description: Added file name
+      example: exampleFile.txt
+      in: header
+      name: file-name
+      required: true
+      schema:
         type: string
-      style: simple
   responses:
     BadRequestResponse:
       description: |-
@@ -899,22 +986,137 @@ components:
           schema:
             $ref: '#/components/schemas/ValidationErrorModel'
       description: Validation Error
-    EmptyResponse:
-      description: Successful Response
-    CreatedResponse:
-      description: The resource was successfully created.
     NotFoundResponse:
       description: The specified resource was not found.
+    ConflictResponse:
+      description: The specified resource is in an incompatible state
+    ServiceUnavailableResponse:
+      description: The service is undergoing maintenance and is temporarily unavailable.
+    CreatedResponse:
+      description: The resource was successfully created.
     OKResponse:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/model_scan_api_v3_scan_model_version_id_patch_200_response'
+            $ref: '#/components/schemas/notify_model_scan_completed_200_response'
+      description: Successful Response
+    MethodNotAllowedResponse:
+      description: The specified method is not allowed.
+    UploadOKResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/begin_multi_file_upload_200_response'
+      description: Successful Response
+    BeginMultipartResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/begin_multipart_file_upload_200_response'
       description: Successful Response
   schemas:
     Model:
+      example:
+        tenant_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        versions:
+        - model_version_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          multi_file: true
+          locations:
+            hl_s3: https://hl-tenant-models.s3.amazonaws.com/03289d66-71ab-11ee-b530-7ecb4245a394/12345678-1234-1234-1234-123456789012/87654321-4321-4321-4321-210987654321/model
+            azure: https://myaccount.blob.core.windows.net/mycontainer/myvirtualdirectory/model
+          version: "1"
+          retrievable: true
+          tags:
+            env: staging
+            owner: research
+        - model_version_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          multi_file: true
+          locations:
+            hl_s3: https://hl-tenant-models.s3.amazonaws.com/03289d66-71ab-11ee-b530-7ecb4245a394/12345678-1234-1234-1234-123456789012/87654321-4321-4321-4321-210987654321/model
+            azure: https://myaccount.blob.core.windows.net/mycontainer/myvirtualdirectory/model
+          version: "1"
+          retrievable: true
+          tags:
+            env: staging
+            owner: research
+        name: loan application
+        model_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        source: azure
+      properties:
+        model_id:
+          format: uuid
+          title: Model ID
+          type: string
+        tenant_id:
+          format: uuid
+          title: Tenant ID
+          type: string
+        name:
+          example: loan application
+          title: Name
+          type: string
+        source:
+          example: azure
+          title: Model Source
+          type: string
+        versions:
+          items:
+            $ref: '#/components/schemas/ModelVersion'
+          title: Model Versions
+          type: array
+      required:
+      - name
+      - source
+      title: A Model
+      type: object
+    ModelVersion:
+      example:
+        model_version_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        multi_file: true
+        locations:
+          hl_s3: https://hl-tenant-models.s3.amazonaws.com/03289d66-71ab-11ee-b530-7ecb4245a394/12345678-1234-1234-1234-123456789012/87654321-4321-4321-4321-210987654321/model
+          azure: https://myaccount.blob.core.windows.net/mycontainer/myvirtualdirectory/model
+        version: "1"
+        retrievable: true
+        tags:
+          env: staging
+          owner: research
+      properties:
+        model_version_id:
+          format: uuid
+          title: Model Version ID
+          type: string
+        version:
+          example: "1"
+          title: Version
+          type: string
+        tags:
+          additionalProperties: true
+          example:
+            env: staging
+            owner: research
+          title: Tags
+          type: object
+        locations:
+          additionalProperties: true
+          example:
+            hl_s3: https://hl-tenant-models.s3.amazonaws.com/03289d66-71ab-11ee-b530-7ecb4245a394/12345678-1234-1234-1234-123456789012/87654321-4321-4321-4321-210987654321/model
+            azure: https://myaccount.blob.core.windows.net/mycontainer/myvirtualdirectory/model
+          title: Model Locations
+          type: object
+        multi_file:
+          title: Multi field
+          type: boolean
+        retrievable:
+          title: Retrievable
+          type: boolean
+      required:
+      - version
+      title: Model Version
+      type: object
+    Sensor:
       allOf:
-      - title: Model
+      - title: Sensor
       - required:
         - active
         - created_at
@@ -957,57 +1159,6 @@ components:
         version: 0
         tags:
           key: ""
-    GetMultipartUploadResponse:
-      example:
-        upload_id: upload_id
-        parts:
-        - part_number: 0
-          end_offset: 1
-          upload_url: upload_url
-          start_offset: 6
-        - part_number: 0
-          end_offset: 1
-          upload_url: upload_url
-          start_offset: 6
-      properties:
-        upload_id:
-          title: Upload Id
-          type: string
-        parts:
-          items:
-            $ref: '#/components/schemas/MultipartUploadPart'
-          title: Parts
-          type: array
-      required:
-      - parts
-      - upload_id
-      title: GetMultipartUploadResponse
-      type: object
-    MultipartUploadPart:
-      example:
-        part_number: 0
-        end_offset: 1
-        upload_url: upload_url
-        start_offset: 6
-      properties:
-        part_number:
-          type: integer
-        start_offset:
-          format: int64
-          type: integer
-        end_offset:
-          format: int64
-          type: integer
-        upload_url:
-          description: only provided when part is to be directly uploaded to a cloud
-            provider (adhoc)
-          type: string
-      required:
-      - end_offset
-      - part_number
-      - start_offset
-      title: Multipart Upload Part
-      type: object
     SensorSORQueryRequest:
       example:
         filter:
@@ -1079,7 +1230,7 @@ components:
           type: string
       title: SensorSORQueryFilter
       type: object
-    ModelQueryResponse:
+    SensorQueryResponse:
       example:
         page_number: 1
         total_count: 0
@@ -1113,7 +1264,7 @@ components:
           type: integer
         results:
           items:
-            $ref: '#/components/schemas/Model'
+            $ref: '#/components/schemas/Sensor'
           title: Results
           type: array
       required:
@@ -1121,7 +1272,7 @@ components:
       - page_size
       - results
       - total_count
-      title: ModelQueryResponse
+      title: SensorQueryResponse
       type: object
     SubmissionV2:
       example:
@@ -1238,7 +1389,7 @@ components:
         total_count: 0
         results:
         - model_scan_threat_level: safe
-          created_at: 2000-01-23T04:56:07.000+00:00
+          created_at: 5
           model_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           source: azure:datascience-workspace
           plaintext_name: Resnet-50
@@ -1247,12 +1398,12 @@ components:
             attack_monitoring: true
             model_scan: true
           active_versions:
-          - ver1
-          - ver1
+          - 5
+          - 5
           tags:
             key: ""
         - model_scan_threat_level: safe
-          created_at: 2000-01-23T04:56:07.000+00:00
+          created_at: 5
           model_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           source: azure:datascience-workspace
           plaintext_name: Resnet-50
@@ -1261,8 +1412,8 @@ components:
             attack_monitoring: true
             model_scan: true
           active_versions:
-          - ver1
-          - ver1
+          - 5
+          - 5
           tags:
             key: ""
         page_size: 6
@@ -1305,17 +1456,17 @@ components:
             title: Model ID
             type: string
           created_at:
-            format: date-time
+            description: Unix Nano Epoch
+            format: int64
             title: Created At Time
-            type: string
+            type: integer
           plaintext_name:
             example: Resnet-50
             title: Plaintext Name
             type: string
           active_versions:
             items:
-              example: ver1
-              type: string
+              type: integer
             type: array
           source:
             example: azure:datascience-workspace
@@ -1344,7 +1495,7 @@ components:
             $ref: '#/components/schemas/SecurityPosture'
       example:
         model_scan_threat_level: safe
-        created_at: 2000-01-23T04:56:07.000+00:00
+        created_at: 5
         model_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         source: azure:datascience-workspace
         plaintext_name: Resnet-50
@@ -1353,8 +1504,8 @@ components:
           attack_monitoring: true
           model_scan: true
         active_versions:
-        - ver1
-        - ver1
+        - 5
+        - 5
         tags:
           key: ""
     SecurityPosture:
@@ -1394,80 +1545,6 @@ components:
       - msg
       - type
       title: ValidationErrorModel
-      type: object
-    ScanResultsV2:
-      example:
-        severity: UNKNOWN
-        start_time: 0
-        end_time: 6
-        scan_id: scan_id
-        results:
-          rds_version: rds_version
-          rds_writer_version: rds_writer_version
-          pickle_modules:
-          - pickle_modules
-          - pickle_modules
-          rds_encoding: rds_encoding
-          sha256: sha256
-          subtype:
-          - subtype
-          - subtype
-          rds_min_reader_version: rds_min_reader_version
-          tlsh: tlsh
-          type: type
-          md5: md5
-        status: done
-        detections:
-        - severity: MISS
-          description: description
-          message: message
-        - severity: MISS
-          description: description
-          message: message
-      properties:
-        scan_id:
-          title: Scan ID
-          type: string
-        status:
-          enum:
-          - done
-          - accepted
-          - failed
-          - pending
-          - created
-          - retry
-          - unknown
-          title: Status
-          type: string
-        start_time:
-          format: int64
-          title: Scan Start Time
-          type: integer
-        end_time:
-          format: int64
-          title: Scan End Time
-          type: integer
-        results:
-          $ref: '#/components/schemas/Scan_Results'
-        severity:
-          enum:
-          - UNKNOWN
-          - SAFE
-          - SUSPICIOUS
-          - MALICIOUS
-          title: Severity
-          type: string
-        detections:
-          items:
-            $ref: '#/components/schemas/Detections'
-          type: array
-      required:
-      - detections
-      - end_time
-      - scan_id
-      - start_time
-      - status
-      title: ModelScan V2 Response
       type: object
     PagedResponseWithTotal:
       properties:
@@ -1792,7 +1869,6 @@ components:
           type: string
       required:
       - model_name
-      - model_source
       - model_version
       - requested_scan_location
       title: ScanModelDetails
@@ -4374,6 +4450,53 @@ components:
           $ref: '#/components/schemas/ScanJob_inventory'
       title: ScanJob
       type: object
+    ProblemDetails:
+      additionalProperties: false
+      example:
+        instance: instance
+        detail: detail
+        type: https://example.net/validation-error
+        title: Your request is not valid
+        errors:
+        - pointer:
+          - pointer
+          - pointer
+          code: code
+          detail: detail
+        - pointer:
+          - pointer
+          - pointer
+          code: code
+          detail: detail
+      properties:
+        type:
+          description: https://www.rfc-editor.org/rfc/rfc9457.html#name-type
+          example: https://example.net/validation-error
+          title: Problem Type
+          type: string
+        title:
+          description: https://www.rfc-editor.org/rfc/rfc9457.html#name-title
+          example: Your request is not valid
+          title: Problem Title
+          type: string
+        detail:
+          description: https://www.rfc-editor.org/rfc/rfc9457.html#name-detail
+          title: Problem Detail
+          type: string
+        instance:
+          description: https://www.rfc-editor.org/rfc/rfc9457.html#name-instance
+          title: Problem Instance
+          type: string
+        errors:
+          description: Error details
+          items:
+            $ref: '#/components/schemas/Errors_inner'
+          title: Errors
+          type: array
+      required:
+      - errors
+      title: Problem Detail RFC9457
+      type: object
     ScanCreateRequest:
       example:
         location: location
@@ -4385,25 +4508,418 @@ components:
       - location
       title: ScanCreateRequest
       type: object
-    Detections:
+    ScanResultsMapV3:
       example:
-        severity: MISS
-        description: description
-        message: message
+        page:
+        - next: next
+          last: last
+          prev: prev
+          self: self
+          first: first
+        - next: next
+          last: last
+          prev: prev
+          self: self
+          first: first
+        items:
+        - start_time: 0
+          end_time: 6
+          file_results:
+          - start_time: 1
+            file_location: file_location
+            end_time: 5
+            details:
+              sha256: a54d88e06612d820bc3be72877c74f257b561b19
+              file_type_details:
+                key: ""
+              file_type: safetensors
+              tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+              file_size_bytes: 9663676416
+              file_size: 9 GB
+              estimated_time: estimated_time
+              md5: ce114e4501d2f4e2dcea3e17b546f339
+            seen: 5
+            status: done
+            detections:
+            - severity: low
+              technical_blog_hrefs:
+              - technical_blog_hrefs
+              - technical_blog_hrefs
+              owasp:
+              - owasp
+              - owasp
+              cwe_href: cwe_href
+              technical_blog_href: technical_blog_href
+              impact: critical
+              description: Found lambda embedded in keras model allowing custom layers
+                that support  arbitrary expression execution
+              rule_id: PICKLE_0055_202408
+              cwe: cwe
+              mitre_atlas:
+              - technique: technique
+                tactic: tactic
+              - technique: technique
+                tactic: tactic
+              cve:
+              - cve
+              - cve
+              likelihood: medium
+              risk: MALICIOUS
+              rule_details:
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              detection_id: 00000000-0000-0000-0000-000000000000
+              category: Arbitrary Code Execution
+            - severity: low
+              technical_blog_hrefs:
+              - technical_blog_hrefs
+              - technical_blog_hrefs
+              owasp:
+              - owasp
+              - owasp
+              cwe_href: cwe_href
+              technical_blog_href: technical_blog_href
+              impact: critical
+              description: Found lambda embedded in keras model allowing custom layers
+                that support  arbitrary expression execution
+              rule_id: PICKLE_0055_202408
+              cwe: cwe
+              mitre_atlas:
+              - technique: technique
+                tactic: tactic
+              - technique: technique
+                tactic: tactic
+              cve:
+              - cve
+              - cve
+              likelihood: medium
+              risk: MALICIOUS
+              rule_details:
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              detection_id: 00000000-0000-0000-0000-000000000000
+              category: Arbitrary Code Execution
+          - start_time: 1
+            file_location: file_location
+            end_time: 5
+            details:
+              sha256: a54d88e06612d820bc3be72877c74f257b561b19
+              file_type_details:
+                key: ""
+              file_type: safetensors
+              tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+              file_size_bytes: 9663676416
+              file_size: 9 GB
+              estimated_time: estimated_time
+              md5: ce114e4501d2f4e2dcea3e17b546f339
+            seen: 5
+            status: done
+            detections:
+            - severity: low
+              technical_blog_hrefs:
+              - technical_blog_hrefs
+              - technical_blog_hrefs
+              owasp:
+              - owasp
+              - owasp
+              cwe_href: cwe_href
+              technical_blog_href: technical_blog_href
+              impact: critical
+              description: Found lambda embedded in keras model allowing custom layers
+                that support  arbitrary expression execution
+              rule_id: PICKLE_0055_202408
+              cwe: cwe
+              mitre_atlas:
+              - technique: technique
+                tactic: tactic
+              - technique: technique
+                tactic: tactic
+              cve:
+              - cve
+              - cve
+              likelihood: medium
+              risk: MALICIOUS
+              rule_details:
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              detection_id: 00000000-0000-0000-0000-000000000000
+              category: Arbitrary Code Execution
+            - severity: low
+              technical_blog_hrefs:
+              - technical_blog_hrefs
+              - technical_blog_hrefs
+              owasp:
+              - owasp
+              - owasp
+              cwe_href: cwe_href
+              technical_blog_href: technical_blog_href
+              impact: critical
+              description: Found lambda embedded in keras model allowing custom layers
+                that support  arbitrary expression execution
+              rule_id: PICKLE_0055_202408
+              cwe: cwe
+              mitre_atlas:
+              - technique: technique
+                tactic: tactic
+              - technique: technique
+                tactic: tactic
+              cve:
+              - cve
+              - cve
+              likelihood: medium
+              risk: MALICIOUS
+              rule_details:
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              detection_id: 00000000-0000-0000-0000-000000000000
+              category: Arbitrary Code Execution
+          scan_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          inventory:
+            requested_scan_location: requested_scan_location
+            model_version: model_version
+            model_version_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            model_name: model_name
+            requesting_entity: requesting_entity
+            model_source: model_source
+          version: version
+          status: done
+        - start_time: 0
+          end_time: 6
+          file_results:
+          - start_time: 1
+            file_location: file_location
+            end_time: 5
+            details:
+              sha256: a54d88e06612d820bc3be72877c74f257b561b19
+              file_type_details:
+                key: ""
+              file_type: safetensors
+              tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+              file_size_bytes: 9663676416
+              file_size: 9 GB
+              estimated_time: estimated_time
+              md5: ce114e4501d2f4e2dcea3e17b546f339
+            seen: 5
+            status: done
+            detections:
+            - severity: low
+              technical_blog_hrefs:
+              - technical_blog_hrefs
+              - technical_blog_hrefs
+              owasp:
+              - owasp
+              - owasp
+              cwe_href: cwe_href
+              technical_blog_href: technical_blog_href
+              impact: critical
+              description: Found lambda embedded in keras model allowing custom layers
+                that support  arbitrary expression execution
+              rule_id: PICKLE_0055_202408
+              cwe: cwe
+              mitre_atlas:
+              - technique: technique
+                tactic: tactic
+              - technique: technique
+                tactic: tactic
+              cve:
+              - cve
+              - cve
+              likelihood: medium
+              risk: MALICIOUS
+              rule_details:
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              detection_id: 00000000-0000-0000-0000-000000000000
+              category: Arbitrary Code Execution
+            - severity: low
+              technical_blog_hrefs:
+              - technical_blog_hrefs
+              - technical_blog_hrefs
+              owasp:
+              - owasp
+              - owasp
+              cwe_href: cwe_href
+              technical_blog_href: technical_blog_href
+              impact: critical
+              description: Found lambda embedded in keras model allowing custom layers
+                that support  arbitrary expression execution
+              rule_id: PICKLE_0055_202408
+              cwe: cwe
+              mitre_atlas:
+              - technique: technique
+                tactic: tactic
+              - technique: technique
+                tactic: tactic
+              cve:
+              - cve
+              - cve
+              likelihood: medium
+              risk: MALICIOUS
+              rule_details:
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              detection_id: 00000000-0000-0000-0000-000000000000
+              category: Arbitrary Code Execution
+          - start_time: 1
+            file_location: file_location
+            end_time: 5
+            details:
+              sha256: a54d88e06612d820bc3be72877c74f257b561b19
+              file_type_details:
+                key: ""
+              file_type: safetensors
+              tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+              file_size_bytes: 9663676416
+              file_size: 9 GB
+              estimated_time: estimated_time
+              md5: ce114e4501d2f4e2dcea3e17b546f339
+            seen: 5
+            status: done
+            detections:
+            - severity: low
+              technical_blog_hrefs:
+              - technical_blog_hrefs
+              - technical_blog_hrefs
+              owasp:
+              - owasp
+              - owasp
+              cwe_href: cwe_href
+              technical_blog_href: technical_blog_href
+              impact: critical
+              description: Found lambda embedded in keras model allowing custom layers
+                that support  arbitrary expression execution
+              rule_id: PICKLE_0055_202408
+              cwe: cwe
+              mitre_atlas:
+              - technique: technique
+                tactic: tactic
+              - technique: technique
+                tactic: tactic
+              cve:
+              - cve
+              - cve
+              likelihood: medium
+              risk: MALICIOUS
+              rule_details:
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              detection_id: 00000000-0000-0000-0000-000000000000
+              category: Arbitrary Code Execution
+            - severity: low
+              technical_blog_hrefs:
+              - technical_blog_hrefs
+              - technical_blog_hrefs
+              owasp:
+              - owasp
+              - owasp
+              cwe_href: cwe_href
+              technical_blog_href: technical_blog_href
+              impact: critical
+              description: Found lambda embedded in keras model allowing custom layers
+                that support  arbitrary expression execution
+              rule_id: PICKLE_0055_202408
+              cwe: cwe
+              mitre_atlas:
+              - technique: technique
+                tactic: tactic
+              - technique: technique
+                tactic: tactic
+              cve:
+              - cve
+              - cve
+              likelihood: medium
+              risk: MALICIOUS
+              rule_details:
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              - description: description
+                status_at: 2000-01-23T04:56:07.000+00:00
+                status: created
+              detection_id: 00000000-0000-0000-0000-000000000000
+              category: Arbitrary Code Execution
+          scan_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          inventory:
+            requested_scan_location: requested_scan_location
+            model_version: model_version
+            model_version_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            model_name: model_name
+            requesting_entity: requesting_entity
+            model_source: model_source
+          version: version
+          status: done
       properties:
-        description:
+        page:
+          items:
+            $ref: '#/components/schemas/PaginationV3'
+          title: Pagination Links
+          type: array
+        items:
+          items:
+            $ref: '#/components/schemas/ScanResultsV3'
+          title: Scan Results
+          type: array
+      required:
+      - items
+      - page
+      title: ModelScan V3 Response Map
+      type: object
+    MultiFileUploadRequestV3:
+      example:
+        model_version: model_version
+        model_name: model_name
+        requesting_entity: requesting_entity
+        location_alias: location_alias
+      properties:
+        model_version:
+          description: Model version
+          title: Model Version
           type: string
-        message:
+        model_name:
+          description: Model name
+          title: Model Name
           type: string
-        severity:
-          enum:
-          - MISS
-          - SAFE
-          - SUSPICIOUS
-          - UNSAFE
-          - MALICIOUS
+        requesting_entity:
+          description: Requesting entity
+          title: Requesting Entity
           type: string
-      title: Detections
+        location_alias:
+          description: Requested location alias
+          title: Requested Location Alias
+          type: string
+      required:
+      - model_name
+      - model_version
+      - requesting_entity
+      title: MultiFileUploadRequestV3
       type: object
     Limit:
       default: 25
@@ -4468,20 +4984,6 @@ components:
           type: integer
         file_type:
           description: type of the file
-          enum:
-          - safetensors
-          - RDS
-          - onnx
-          - tensorflow
-          - keras
-          - pytorch
-          - pickle
-          - NEMO
-          - numpy
-          - unknown
-          - ZIP
-          - TAR
-          - gguf
           example: safetensors
           title: File Type
           type: string
@@ -4492,9 +4994,7 @@ components:
       required:
       - estimated_time
       - file_type
-      - md5
       - sha256
-      - tlsh
       title: FileDetailsV3
       type: object
     ScanDetectionV3:
@@ -4601,7 +5101,7 @@ components:
           title: CVE
           type: array
         cwe:
-          pattern: "^CWE-\\d{1,4}.*$"
+          pattern: "^CWE-\\d{1,4}.*$|^$"
           title: CWE
           type: string
         cwe_href:
@@ -4616,6 +5116,549 @@ components:
       - category
       - description
       - detection_id
+      - mitre_atlas
+      - owasp
+      - risk
+      - rule_id
+      - severity
+      title: ScanDetectionV3
+      type: object
+    PaginationV3:
+      example:
+        next: next
+        last: last
+        prev: prev
+        self: self
+        first: first
+      properties:
+        self:
+          format: base64
+          title: Self
+          type: string
+        first:
+          format: base64
+          title: First Result
+          type: string
+        prev:
+          format: base64
+          title: Previous Result
+          type: string
+        next:
+          format: base64
+          title: Next Result
+          type: string
+        last:
+          format: base64
+          title: Last Result
+          type: string
+      required:
+      - first
+      - last
+      - next
+      - prev
+      - self
+      title: V3 Results Pagination
+      type: object
+    ScanResultsV3:
+      example:
+        start_time: 0
+        end_time: 6
+        file_results:
+        - start_time: 1
+          file_location: file_location
+          end_time: 5
+          details:
+            sha256: a54d88e06612d820bc3be72877c74f257b561b19
+            file_type_details:
+              key: ""
+            file_type: safetensors
+            tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+            file_size_bytes: 9663676416
+            file_size: 9 GB
+            estimated_time: estimated_time
+            md5: ce114e4501d2f4e2dcea3e17b546f339
+          seen: 5
+          status: done
+          detections:
+          - severity: low
+            technical_blog_hrefs:
+            - technical_blog_hrefs
+            - technical_blog_hrefs
+            owasp:
+            - owasp
+            - owasp
+            cwe_href: cwe_href
+            technical_blog_href: technical_blog_href
+            impact: critical
+            description: Found lambda embedded in keras model allowing custom layers
+              that support  arbitrary expression execution
+            rule_id: PICKLE_0055_202408
+            cwe: cwe
+            mitre_atlas:
+            - technique: technique
+              tactic: tactic
+            - technique: technique
+              tactic: tactic
+            cve:
+            - cve
+            - cve
+            likelihood: medium
+            risk: MALICIOUS
+            rule_details:
+            - description: description
+              status_at: 2000-01-23T04:56:07.000+00:00
+              status: created
+            - description: description
+              status_at: 2000-01-23T04:56:07.000+00:00
+              status: created
+            detection_id: 00000000-0000-0000-0000-000000000000
+            category: Arbitrary Code Execution
+          - severity: low
+            technical_blog_hrefs:
+            - technical_blog_hrefs
+            - technical_blog_hrefs
+            owasp:
+            - owasp
+            - owasp
+            cwe_href: cwe_href
+            technical_blog_href: technical_blog_href
+            impact: critical
+            description: Found lambda embedded in keras model allowing custom layers
+              that support  arbitrary expression execution
+            rule_id: PICKLE_0055_202408
+            cwe: cwe
+            mitre_atlas:
+            - technique: technique
+              tactic: tactic
+            - technique: technique
+              tactic: tactic
+            cve:
+            - cve
+            - cve
+            likelihood: medium
+            risk: MALICIOUS
+            rule_details:
+            - description: description
+              status_at: 2000-01-23T04:56:07.000+00:00
+              status: created
+            - description: description
+              status_at: 2000-01-23T04:56:07.000+00:00
+              status: created
+            detection_id: 00000000-0000-0000-0000-000000000000
+            category: Arbitrary Code Execution
+        - start_time: 1
+          file_location: file_location
+          end_time: 5
+          details:
+            sha256: a54d88e06612d820bc3be72877c74f257b561b19
+            file_type_details:
+              key: ""
+            file_type: safetensors
+            tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+            file_size_bytes: 9663676416
+            file_size: 9 GB
+            estimated_time: estimated_time
+            md5: ce114e4501d2f4e2dcea3e17b546f339
+          seen: 5
+          status: done
+          detections:
+          - severity: low
+            technical_blog_hrefs:
+            - technical_blog_hrefs
+            - technical_blog_hrefs
+            owasp:
+            - owasp
+            - owasp
+            cwe_href: cwe_href
+            technical_blog_href: technical_blog_href
+            impact: critical
+            description: Found lambda embedded in keras model allowing custom layers
+              that support  arbitrary expression execution
+            rule_id: PICKLE_0055_202408
+            cwe: cwe
+            mitre_atlas:
+            - technique: technique
+              tactic: tactic
+            - technique: technique
+              tactic: tactic
+            cve:
+            - cve
+            - cve
+            likelihood: medium
+            risk: MALICIOUS
+            rule_details:
+            - description: description
+              status_at: 2000-01-23T04:56:07.000+00:00
+              status: created
+            - description: description
+              status_at: 2000-01-23T04:56:07.000+00:00
+              status: created
+            detection_id: 00000000-0000-0000-0000-000000000000
+            category: Arbitrary Code Execution
+          - severity: low
+            technical_blog_hrefs:
+            - technical_blog_hrefs
+            - technical_blog_hrefs
+            owasp:
+            - owasp
+            - owasp
+            cwe_href: cwe_href
+            technical_blog_href: technical_blog_href
+            impact: critical
+            description: Found lambda embedded in keras model allowing custom layers
+              that support  arbitrary expression execution
+            rule_id: PICKLE_0055_202408
+            cwe: cwe
+            mitre_atlas:
+            - technique: technique
+              tactic: tactic
+            - technique: technique
+              tactic: tactic
+            cve:
+            - cve
+            - cve
+            likelihood: medium
+            risk: MALICIOUS
+            rule_details:
+            - description: description
+              status_at: 2000-01-23T04:56:07.000+00:00
+              status: created
+            - description: description
+              status_at: 2000-01-23T04:56:07.000+00:00
+              status: created
+            detection_id: 00000000-0000-0000-0000-000000000000
+            category: Arbitrary Code Execution
+        scan_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        inventory:
+          requested_scan_location: requested_scan_location
+          model_version: model_version
+          model_version_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          model_name: model_name
+          requesting_entity: requesting_entity
+          model_source: model_source
+        version: version
+        status: done
+      properties:
+        scan_id:
+          format: uuid
+          title: Scan ID
+          type: string
+        start_time:
+          format: int64
+          title: Scan Start Time
+          type: integer
+        end_time:
+          format: int64
+          title: Scan End Time
+          type: integer
+        status:
+          enum:
+          - done
+          - running
+          - failed
+          - pending
+          - canceled
+          title: Status
+          type: string
+        version:
+          title: Version
+          type: string
+        inventory:
+          $ref: '#/components/schemas/InventoryV3'
+        file_results:
+          items:
+            $ref: '#/components/schemas/FileResultV3'
+          title: Scan Results
+          type: array
+      required:
+      - file_results
+      title: ModelScan V3 Response
+      type: object
+    InventoryV3:
+      example:
+        requested_scan_location: requested_scan_location
+        model_version: model_version
+        model_version_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        model_name: model_name
+        requesting_entity: requesting_entity
+        model_source: model_source
+      properties:
+        requested_scan_location:
+          title: Requested Scan Location
+          type: string
+        model_name:
+          title: Model Name
+          type: string
+        model_source:
+          title: Model Source
+          type: string
+        model_version:
+          title: Model Version
+          type: string
+        model_version_id:
+          format: uuid
+          title: Model Version ID
+          type: string
+        requesting_entity:
+          title: Requesting Entity
+          type: string
+      title: Inventory V3
+      type: object
+    FileResultV3:
+      example:
+        start_time: 1
+        file_location: file_location
+        end_time: 5
+        details:
+          sha256: a54d88e06612d820bc3be72877c74f257b561b19
+          file_type_details:
+            key: ""
+          file_type: safetensors
+          tlsh: T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293
+          file_size_bytes: 9663676416
+          file_size: 9 GB
+          estimated_time: estimated_time
+          md5: ce114e4501d2f4e2dcea3e17b546f339
+        seen: 5
+        status: done
+        detections:
+        - severity: low
+          technical_blog_hrefs:
+          - technical_blog_hrefs
+          - technical_blog_hrefs
+          owasp:
+          - owasp
+          - owasp
+          cwe_href: cwe_href
+          technical_blog_href: technical_blog_href
+          impact: critical
+          description: Found lambda embedded in keras model allowing custom layers
+            that support  arbitrary expression execution
+          rule_id: PICKLE_0055_202408
+          cwe: cwe
+          mitre_atlas:
+          - technique: technique
+            tactic: tactic
+          - technique: technique
+            tactic: tactic
+          cve:
+          - cve
+          - cve
+          likelihood: medium
+          risk: MALICIOUS
+          rule_details:
+          - description: description
+            status_at: 2000-01-23T04:56:07.000+00:00
+            status: created
+          - description: description
+            status_at: 2000-01-23T04:56:07.000+00:00
+            status: created
+          detection_id: 00000000-0000-0000-0000-000000000000
+          category: Arbitrary Code Execution
+        - severity: low
+          technical_blog_hrefs:
+          - technical_blog_hrefs
+          - technical_blog_hrefs
+          owasp:
+          - owasp
+          - owasp
+          cwe_href: cwe_href
+          technical_blog_href: technical_blog_href
+          impact: critical
+          description: Found lambda embedded in keras model allowing custom layers
+            that support  arbitrary expression execution
+          rule_id: PICKLE_0055_202408
+          cwe: cwe
+          mitre_atlas:
+          - technique: technique
+            tactic: tactic
+          - technique: technique
+            tactic: tactic
+          cve:
+          - cve
+          - cve
+          likelihood: medium
+          risk: MALICIOUS
+          rule_details:
+          - description: description
+            status_at: 2000-01-23T04:56:07.000+00:00
+            status: created
+          - description: description
+            status_at: 2000-01-23T04:56:07.000+00:00
+            status: created
+          detection_id: 00000000-0000-0000-0000-000000000000
+          category: Arbitrary Code Execution
+      properties:
+        file_location:
+          title: File Location
+          type: string
+        status:
+          enum:
+          - done
+          - running
+          - failed
+          - pending
+          - canceled
+          - skipped
+          title: Status
+          type: string
+        start_time:
+          format: int64
+          title: Scan Start Time
+          type: integer
+        end_time:
+          format: int64
+          title: Scan End Time
+          type: integer
+        details:
+          $ref: '#/components/schemas/FileDetailsV3'
+        seen:
+          format: int64
+          title: Seen
+          type: integer
+        detections:
+          items:
+            $ref: '#/components/schemas/ScanDetectionV3_1'
+          type: array
+      required:
+      - file_location
+      - status
+      title: File Result V3
+      type: object
+    ScanDetectionV3_1:
+      example:
+        severity: low
+        technical_blog_hrefs:
+        - technical_blog_hrefs
+        - technical_blog_hrefs
+        owasp:
+        - owasp
+        - owasp
+        cwe_href: cwe_href
+        technical_blog_href: technical_blog_href
+        impact: critical
+        description: Found lambda embedded in keras model allowing custom layers that
+          support  arbitrary expression execution
+        rule_id: PICKLE_0055_202408
+        cwe: cwe
+        mitre_atlas:
+        - technique: technique
+          tactic: tactic
+        - technique: technique
+          tactic: tactic
+        cve:
+        - cve
+        - cve
+        likelihood: medium
+        risk: MALICIOUS
+        rule_details:
+        - description: description
+          status_at: 2000-01-23T04:56:07.000+00:00
+          status: created
+        - description: description
+          status_at: 2000-01-23T04:56:07.000+00:00
+          status: created
+        detection_id: 00000000-0000-0000-0000-000000000000
+        category: Arbitrary Code Execution
+      properties:
+        detection_id:
+          description: unique identifier for the detection
+          example: 00000000-0000-0000-0000-000000000000
+          format: uuid
+          title: Detection ID
+          type: string
+        rule_id:
+          description: unique identifier for the rule that sourced the detection
+          example: PICKLE_0055_202408
+          title: Rule ID
+          type: string
+        risk:
+          description: detection risk
+          enum:
+          - MALICIOUS
+          - SUSPICIOUS
+          title: Risk
+          type: string
+        category:
+          description: Vulnerability category for the detection
+          example: Arbitrary Code Execution
+          title: Category
+          type: string
+        description:
+          description: detection description
+          example: Found lambda embedded in keras model allowing custom layers that
+            support  arbitrary expression execution
+          title: Description
+          type: string
+        likelihood:
+          description: detection likelihood
+          example: medium
+          title: Likelihood
+          type: string
+        impact:
+          description: detection impact
+          example: critical
+          title: Impact
+          type: string
+        severity:
+          description: detection severity
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+          title: Severity
+          type: string
+        rule_details:
+          items:
+            $ref: '#/components/schemas/Rule_Details_inner'
+          title: Rule Details
+          type: array
+        mitre_atlas:
+          items:
+            $ref: '#/components/schemas/MITRE_Atlas_inner'
+          title: MITRE Atlas
+          type: array
+        owasp:
+          items:
+            pattern: "^(ML|LLM)(\\d{2,4})$"
+            type: string
+          title: OWASP
+          type: array
+        cve:
+          items:
+            pattern: "^CVE-\\d{4}-\\d{4,9}$"
+            type: string
+          title: CVE
+          type: array
+        cwe:
+          pattern: "^CWE-\\d{1,4}.*$|^$"
+          title: CWE
+          type: string
+        cwe_href:
+          description: CWE URL for the detection
+          title: CWE Href
+          type: string
+        technical_blog_hrefs:
+          description: Hiddenlayer Technical Blog URLs for the detection
+          items:
+            type: string
+          title: Technical Blog Hrefs
+          type: array
+        technical_blog_href:
+          deprecated: true
+          description: Hiddenlayer Technical Blog URL for the detection
+          title: Technical Blog Href
+          type: string
+      required:
+      - category
+      - cve
+      - cwe
+      - cwe_href
+      - description
+      - detection_id
+      - impact
+      - likelihood
       - mitre_atlas
       - owasp
       - risk
@@ -4652,15 +5695,7 @@ components:
       required:
       - plaintext_name
       type: object
-    scan_model_request:
-      properties:
-        location:
-          title: POSIX Path
-          type: string
-      required:
-      - location
-      type: object
-    model_scan_api_v3_scan_query_200_response:
+    get_condensed_model_scan_reports_200_response:
       allOf:
       - $ref: '#/components/schemas/PagedResponseWithTotal'
       - properties:
@@ -5035,7 +6070,7 @@ components:
           detection_count: 5
           version: version
           status: pending
-    model_scan_api_v3_scan_model_version_id_patch_200_response:
+    notify_model_scan_completed_200_response:
       example:
         message: message
       properties:
@@ -5045,54 +6080,62 @@ components:
       required:
       - message
       type: object
+    begin_multi_file_upload_200_response:
+      example:
+        scan_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        scan_id:
+          description: Request to resource is successful
+          format: uuid
+          type: string
+      type: object
+    begin_multipart_file_upload_200_response_parts_inner:
+      example:
+        part_number: 0
+        end_offset: 1
+        upload_url: https://openapi-generator.tech
+        start_offset: 6
+      properties:
+        part_number:
+          minimum: 0
+          type: integer
+        start_offset:
+          type: integer
+        end_offset:
+          type: integer
+        upload_url:
+          format: uri
+          type: string
+      type: object
+    begin_multipart_file_upload_200_response:
+      example:
+        upload_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        parts:
+        - part_number: 0
+          end_offset: 1
+          upload_url: https://openapi-generator.tech
+          start_offset: 6
+        - part_number: 0
+          end_offset: 1
+          upload_url: https://openapi-generator.tech
+          start_offset: 6
+      properties:
+        upload_id:
+          description: UploadId for the current file
+          format: uuid
+          type: string
+        parts:
+          items:
+            $ref: '#/components/schemas/begin_multipart_file_upload_200_response_parts_inner'
+          type: array
+      required:
+      - parts
+      - upload_id
+      type: object
     Location_inner:
       anyOf:
       - type: string
       - type: integer
-    Scan_Results:
-      additionalProperties: true
-      example:
-        rds_version: rds_version
-        rds_writer_version: rds_writer_version
-        pickle_modules:
-        - pickle_modules
-        - pickle_modules
-        rds_encoding: rds_encoding
-        sha256: sha256
-        subtype:
-        - subtype
-        - subtype
-        rds_min_reader_version: rds_min_reader_version
-        tlsh: tlsh
-        type: type
-        md5: md5
-      properties:
-        md5:
-          type: string
-        rds_encoding:
-          type: string
-        rds_min_reader_version:
-          type: string
-        rds_version:
-          type: string
-        rds_writer_version:
-          type: string
-        sha256:
-          type: string
-        type:
-          type: string
-        subtype:
-          items:
-            type: string
-          type: array
-        tlsh:
-          type: string
-        pickle_modules:
-          items:
-            type: string
-          type: array
-      title: Scan Results
-      type: object
     Model_Inventory_Info:
       allOf:
       - $ref: '#/components/schemas/ScanModelDetailsV3'
@@ -5120,6 +6163,24 @@ components:
           example: s3://bucket-name/folder-name/file-name.ext
           title: Requested Scan Location
           type: string
+    Errors_inner:
+      example:
+        pointer:
+        - pointer
+        - pointer
+        code: code
+        detail: detail
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+        pointer:
+          description: array of JSON Pointers
+          items:
+            type: string
+          type: array
+      type: object
     Rule_Details_inner:
       example:
         description: description

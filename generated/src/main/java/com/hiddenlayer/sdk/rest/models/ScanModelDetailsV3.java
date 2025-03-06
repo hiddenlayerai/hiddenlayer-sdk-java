@@ -38,7 +38,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   ScanModelDetailsV3.JSON_PROPERTY_REQUESTED_SCAN_LOCATION,
   ScanModelDetailsV3.JSON_PROPERTY_REQUESTING_ENTITY
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-30T18:04:47.686514Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-06T16:41:22.054858Z[GMT]", comments = "Generator version: 7.6.0")
 public class ScanModelDetailsV3 {
   public static final String JSON_PROPERTY_MODEL_NAME = "model_name";
   private String modelName;
@@ -117,9 +117,9 @@ public class ScanModelDetailsV3 {
    * source (provider) info
    * @return modelSource
   **/
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_MODEL_SOURCE)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getModelSource() {
     return modelSource;
@@ -127,7 +127,7 @@ public class ScanModelDetailsV3 {
 
 
   @JsonProperty(JSON_PROPERTY_MODEL_SOURCE)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setModelSource(String modelSource) {
     this.modelSource = modelSource;
   }

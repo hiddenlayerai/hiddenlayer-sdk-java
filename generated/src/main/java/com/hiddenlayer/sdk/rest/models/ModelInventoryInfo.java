@@ -40,7 +40,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   ModelInventoryInfo.JSON_PROPERTY_MODEL_ID,
   ModelInventoryInfo.JSON_PROPERTY_MODEL_VERSION_ID
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-30T18:04:47.686514Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-06T16:41:22.054858Z[GMT]", comments = "Generator version: 7.6.0")
 public class ModelInventoryInfo {
   public static final String JSON_PROPERTY_MODEL_NAME = "model_name";
   private String modelName;
@@ -125,9 +125,9 @@ public class ModelInventoryInfo {
    * source (provider) info
    * @return modelSource
   **/
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_MODEL_SOURCE)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getModelSource() {
     return modelSource;
@@ -135,7 +135,7 @@ public class ModelInventoryInfo {
 
 
   @JsonProperty(JSON_PROPERTY_MODEL_SOURCE)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setModelSource(String modelSource) {
     this.modelSource = modelSource;
   }

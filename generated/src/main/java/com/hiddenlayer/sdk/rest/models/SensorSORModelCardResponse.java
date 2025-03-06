@@ -25,7 +25,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.hiddenlayer.sdk.rest.models.SecurityPosture;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,19 +48,19 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   SensorSORModelCardResponse.JSON_PROPERTY_ATTACK_MONITORING_THREAT_LEVEL,
   SensorSORModelCardResponse.JSON_PROPERTY_SECURITY_POSTURE
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-30T18:04:47.686514Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-06T16:41:22.054858Z[GMT]", comments = "Generator version: 7.6.0")
 public class SensorSORModelCardResponse {
   public static final String JSON_PROPERTY_MODEL_ID = "model_id";
   private UUID modelId;
 
   public static final String JSON_PROPERTY_CREATED_AT = "created_at";
-  private OffsetDateTime createdAt;
+  private Long createdAt;
 
   public static final String JSON_PROPERTY_PLAINTEXT_NAME = "plaintext_name";
   private String plaintextName;
 
   public static final String JSON_PROPERTY_ACTIVE_VERSIONS = "active_versions";
-  private List<String> activeVersions = new ArrayList<>();
+  private List<Integer> activeVersions = new ArrayList<>();
 
   public static final String JSON_PROPERTY_SOURCE = "source";
   private String source;
@@ -184,27 +183,27 @@ public class SensorSORModelCardResponse {
   }
 
 
-  public SensorSORModelCardResponse createdAt(OffsetDateTime createdAt) {
+  public SensorSORModelCardResponse createdAt(Long createdAt) {
     this.createdAt = createdAt;
     return this;
   }
 
    /**
-   * Get createdAt
+   * Unix Nano Epoch
    * @return createdAt
   **/
   @javax.annotation.Nonnull
   @JsonProperty(JSON_PROPERTY_CREATED_AT)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
-  public OffsetDateTime getCreatedAt() {
+  public Long getCreatedAt() {
     return createdAt;
   }
 
 
   @JsonProperty(JSON_PROPERTY_CREATED_AT)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setCreatedAt(OffsetDateTime createdAt) {
+  public void setCreatedAt(Long createdAt) {
     this.createdAt = createdAt;
   }
 
@@ -234,12 +233,12 @@ public class SensorSORModelCardResponse {
   }
 
 
-  public SensorSORModelCardResponse activeVersions(List<String> activeVersions) {
+  public SensorSORModelCardResponse activeVersions(List<Integer> activeVersions) {
     this.activeVersions = activeVersions;
     return this;
   }
 
-  public SensorSORModelCardResponse addActiveVersionsItem(String activeVersionsItem) {
+  public SensorSORModelCardResponse addActiveVersionsItem(Integer activeVersionsItem) {
     if (this.activeVersions == null) {
       this.activeVersions = new ArrayList<>();
     }
@@ -255,14 +254,14 @@ public class SensorSORModelCardResponse {
   @JsonProperty(JSON_PROPERTY_ACTIVE_VERSIONS)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
-  public List<String> getActiveVersions() {
+  public List<Integer> getActiveVersions() {
     return activeVersions;
   }
 
 
   @JsonProperty(JSON_PROPERTY_ACTIVE_VERSIONS)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setActiveVersions(List<String> activeVersions) {
+  public void setActiveVersions(List<Integer> activeVersions) {
     this.activeVersions = activeVersions;
   }
 

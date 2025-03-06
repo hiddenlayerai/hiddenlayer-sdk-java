@@ -52,7 +52,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   ScanDetectionV3.JSON_PROPERTY_CWE_HREF,
   ScanDetectionV3.JSON_PROPERTY_TECHNICAL_BLOG_HREF
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-30T18:04:47.686514Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-06T16:41:22.054858Z[GMT]", comments = "Generator version: 7.6.0")
 public class ScanDetectionV3 {
   public static final String JSON_PROPERTY_DESCRIPTION = "description";
   private String description;

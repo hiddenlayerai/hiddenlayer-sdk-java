@@ -40,7 +40,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   SensorSORModelCardQueryResponse.JSON_PROPERTY_PAGE_NUMBER,
   SensorSORModelCardQueryResponse.JSON_PROPERTY_RESULTS
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2024-12-30T18:04:47.686514Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-06T16:41:22.054858Z[GMT]", comments = "Generator version: 7.6.0")
 public class SensorSORModelCardQueryResponse {
   public static final String JSON_PROPERTY_TOTAL_COUNT = "total_count";
   private Integer totalCount;

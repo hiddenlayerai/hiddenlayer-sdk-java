@@ -18,10 +18,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.time.OffsetDateTime;
+import com.hiddenlayer.sdk.rest.models.ModelVersion;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -42,19 +42,11 @@ class ModelTest {
     }
 
     /**
-     * Test the property 'sensorId'
+     * Test the property 'modelId'
      */
     @Test
-    void sensorIdTest() {
-        // TODO: test sensorId
-    }
-
-    /**
-     * Test the property 'createdAt'
-     */
-    @Test
-    void createdAtTest() {
-        // TODO: test createdAt
+    void modelIdTest() {
+        // TODO: test modelId
     }
 
     /**
@@ -66,35 +58,27 @@ class ModelTest {
     }
 
     /**
-     * Test the property 'plaintextName'
+     * Test the property 'name'
      */
     @Test
-    void plaintextNameTest() {
-        // TODO: test plaintextName
+    void nameTest() {
+        // TODO: test name
     }
 
     /**
-     * Test the property 'active'
+     * Test the property 'source'
      */
     @Test
-    void activeTest() {
-        // TODO: test active
+    void sourceTest() {
+        // TODO: test source
     }
 
     /**
-     * Test the property 'version'
+     * Test the property 'versions'
      */
     @Test
-    void versionTest() {
-        // TODO: test version
-    }
-
-    /**
-     * Test the property 'tags'
-     */
-    @Test
-    void tagsTest() {
-        // TODO: test tags
+    void versionsTest() {
+        // TODO: test versions
     }
 
 }

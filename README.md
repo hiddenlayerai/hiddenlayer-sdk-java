@@ -17,5 +17,5 @@ Following command will execute a scan against the Hiddenlayer's API using the ex
 You will need a valid Api Key ID and Secret.
 
 ```
-mvn exec:java -pl 'scanModel' -Dexec.args="-f client/src/test/resources/malicious_model.pkl -m My-Test-Model -c YOUR_API_ID -s YOU_API_SECRET -a 
+mvn exec:java -pl 'scanModel' -Dexec.args="-f client/src/test/resources/malicious_model.pkl -m My-Test-Model -c YOUR_API_ID -s YOU_API_SECRET"
 ```
