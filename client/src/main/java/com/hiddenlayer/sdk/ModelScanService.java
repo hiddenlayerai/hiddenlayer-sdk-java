@@ -23,14 +23,10 @@ import com.hiddenlayer.sdk.rest.models.*;
 
 import com.hiddenlayer.sdk.rest.ApiClient;
 import com.hiddenlayer.sdk.rest.ApiException;
-import com.hiddenlayer.sdk.rest.api.ModelScanApi;
 import com.hiddenlayer.sdk.rest.api.ModelSupplyChainApi;
-import com.hiddenlayer.sdk.rest.api.SensorApi;
 
 public class ModelScanService extends HiddenlayerService {
   final private ModelSupplyChainApi modelSupplyChainApi;
-  final private SensorApi sensorApi;
-  final private ModelScanApi modelScanApi;
 
   public ModelScanService() throws Exception {
     this(Configuration.defaultFromEnvironment());
@@ -48,20 +44,19 @@ public class ModelScanService extends HiddenlayerService {
     });
     apiClient.updateBaseUri(config.getHlApiUrl());
     this.modelSupplyChainApi = new ModelSupplyChainApi(apiClient);
-    this.modelScanApi = new ModelScanApi(apiClient);
   }
 
   public ScanReportV3 scanFile(String modelPath, String modelName) 
     throws Exception, FileNotFoundException, RuntimeException, IOException, ApiException {
-    return scanFile(modelPath, modelName, OptionalInt.empty(), true);
+    return scanFile(modelPath, modelName, null, true);
   }
 
   public ScanReportV3 scanFile(String modelPath, String modelName, boolean waitForDone) 
     throws Exception, FileNotFoundException, RuntimeException, IOException, ApiException {
-    return scanFile(modelPath, modelName, OptionalInt.empty(), waitForDone);
+    return scanFile(modelPath, modelName, null, waitForDone);
   }
 
-  public ScanReportV3 scanFile(String modelPath, String modelName, OptionalInt modelVersion, boolean waitForDone) 
+  public ScanReportV3 scanFile(String modelPath, String modelName, String modelVersion, boolean waitForDone) 
     throws Exception, FileNotFoundException, RuntimeException, IOException, ApiException {
     File fileToScan = new File(modelPath);
     if (!fileToScan.exists()) {
@@ -71,50 +66,52 @@ public class ModelScanService extends HiddenlayerService {
     }
     InputStream modelStream = new FileInputStream(fileToScan);
     try{
-      return scanStream(modelStream, fileToScan.length(), modelName, modelVersion, waitForDone);
+      return scanStream(modelStream, fileToScan.getName(), fileToScan.length(), modelName, modelVersion, waitForDone);
     } finally {
       modelStream.close();
     }
   }
 
-  public ScanReportV3 scanStream(InputStream modelStream, long streamLength, String modelName) 
+  public ScanReportV3 scanStream(InputStream modelStream, String filename, long streamLength, String modelName) 
     throws Exception, RuntimeException, IOException, ApiException {
-    return this.scanStream(modelStream, streamLength, modelName, OptionalInt.empty(), true);
+    return this.scanStream(modelStream, filename, streamLength, modelName, null, true);
   }
 
-  public ScanReportV3 scanStream(InputStream modelStream, long streamLength, String modelName, boolean waitForDone) 
+  public ScanReportV3 scanStream(InputStream modelStream, String filename, long streamLength, String modelName, boolean waitForDone) 
     throws Exception, RuntimeException, IOException, ApiException {
-    return this.scanStream(modelStream, streamLength, modelName, OptionalInt.empty(), waitForDone);
+    return this.scanStream(modelStream, filename, streamLength, modelName, null, waitForDone);
   }
 
-  public ScanReportV3 scanStream(InputStream modelStream, long streamLength, String modelName, OptionalInt modelVersion, boolean waitForDone) 
+  public ScanReportV3 scanStream(InputStream modelStream, String filename, long streamLength, String modelName, String modelVersion, boolean waitForDone) 
     throws Exception, RuntimeException, IOException, ApiException {
     MultiFileUploadRequestV3 multiFileUploadRequest = new MultiFileUploadRequestV3();
     multiFileUploadRequest.setModelName(modelName);
-    if (modelVersion.isPresent()) {
-        multiFileUploadRequest.setModelVersion(modelVersion.getAsInt());
+    if (modelVersion != null && !modelVersion.isEmpty()) {
+        multiFileUploadRequest.setModelVersion(modelVersion);
     }
+    multiFileUploadRequest.setRequestingEntity("hiddenlayer-sdk-java");
     BeginMultiFileUpload200Response multiFileUploadResponse = this.modelSupplyChainApi.beginMultiFileUpload(multiFileUploadRequest);
     
-    Model sensor = this.submitStream(modelStream, streamLength, multiFileUploadResponse.getScanId());
+    this.submitStream(modelStream, filename, streamLength, multiFileUploadResponse.getScanId());
+    this.modelSupplyChainApi.completeMultiFileUpload(multiFileUploadResponse.getScanId());
     if (waitForDone) {
       return this.getDoneScanResults(multiFileUploadResponse.getScanId());
     } else {
-      return this.modelScanApi.getScanResults(multiFileUploadResponse.getScanId(), null);
+      return this.modelSupplyChainApi.getScanResults(multiFileUploadResponse.getScanId(), null);
     }
   }
 
   public ScanReportV3 scanFolder(String folderPath, String modelName) 
     throws Exception, ApiException, IOException, URISyntaxException, InterruptedException, Exception {
-    return this.scanFolder(folderPath, modelName, OptionalInt.empty(), true);
+    return this.scanFolder(folderPath, modelName, null, true);
   }
 
   public ScanReportV3 scanFolder(String folderPath, String modelName, boolean waitForDone) 
     throws Exception, ApiException, IOException, URISyntaxException, InterruptedException, Exception {
-    return this.scanFolder(folderPath, modelName, OptionalInt.empty(), waitForDone);
+    return this.scanFolder(folderPath, modelName, null, waitForDone);
   }
 
-  public ScanReportV3 scanFolder(String folderPath, String modelName, OptionalInt modelVersion, boolean waitForDone) 
+  public ScanReportV3 scanFolder(String folderPath, String modelName, String modelVersion, boolean waitForDone) 
         throws Exception, ApiException, IOException, URISyntaxException, InterruptedException, Exception {
         if (modelName == null || modelName.isEmpty()) {
             throw new Exception("Model name is required");
@@ -126,9 +123,10 @@ public class ModelScanService extends HiddenlayerService {
 
         MultiFileUploadRequestV3 multiFileUploadRequest = new MultiFileUploadRequestV3();
         multiFileUploadRequest.setModelName(modelName);
-        if (modelVersion.isPresent()) {
-            multiFileUploadRequest.setModelVersion(modelVersion.getAsInt());
+        if (modelVersion != null && !modelVersion.isEmpty()) {
+            multiFileUploadRequest.setModelVersion(modelVersion);
         }
+        multiFileUploadRequest.setRequestingEntity("hiddenlayer-sdk-java");
         BeginMultiFileUpload200Response multiFileUploadResponse = this.modelSupplyChainApi.beginMultiFileUpload(multiFileUploadRequest);
 
         File[] files = folder.listFiles();
@@ -141,7 +139,7 @@ public class ModelScanService extends HiddenlayerService {
         if (waitForDone) {
             return this.getDoneScanResults(multiFileUploadResponse.getScanId());
         } else {
-            return this.modelScanApi.getScanResults(multiFileUploadResponse.getScanId(), null);
+            return this.modelSupplyChainApi.getScanResults(multiFileUploadResponse.getScanId(), null);
         }
     }
 
@@ -177,12 +175,12 @@ public class ModelScanService extends HiddenlayerService {
         this.modelSupplyChainApi.beginMultipartFileUpload(Math.toIntExact(streamLength), filename, scanId);
 
       for (int i = 0; i < multipartResponse.getParts().size(); i++) {
-          MultipartUploadPart uploadPart = uploadStartResponse.getParts().get(i);
+          BeginMultipartFileUpload200ResponsePartsInner uploadPart = multipartResponse.getParts().get(i);
           long bytesToRead = uploadPart.getEndOffset() - uploadPart.getStartOffset();
           // TODO: appropriately handle large part sizes (this works for under 2GB parts)
           byte[] buffer = stream.readNBytes((int)bytesToRead);
           HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-              .uri(new URI(uploadPart.getUploadUrl()))
+              .uri(uploadPart.getUploadUrl())
               .header("Content-Type", "application/octet-stream")
               .PUT(HttpRequest.BodyPublishers.ofByteArray(buffer));
           HttpClient client = HttpClient.newHttpClient();

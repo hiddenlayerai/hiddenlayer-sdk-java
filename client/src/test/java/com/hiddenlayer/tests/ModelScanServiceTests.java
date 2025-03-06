@@ -78,45 +78,40 @@ public class ModelScanServiceTests {
                 .withHeader("Content-Type", "application/json")
                 .withBody("{\"access_token\": \"an_access_token\"}")));
 
-        stubFor(post(urlEqualTo("/api/v2/sensors/create")).withRequestBody(equalToJson("{\"plaintext_name\": \"test java SDK model\", \"active\": true, \"tags\": { }, \"adhoc\": true}"))
+        stubFor(post(urlEqualTo("/scan/v3/upload"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
-                .withBody("{\"sensor_id\": \"12345678-1234-1234-1234-123456789012\"}")));
+                .withBody("{\"scan_id\": \"87654321-4321-4321-4321-210987654321\"}")));
         
-        stubFor(post(urlEqualTo("/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/begin"))
+        stubFor(post(urlEqualTo("/scan/v3/upload/87654321-4321-4321-4321-210987654321/file"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
-                .withBody("{\"upload_id\": \"5678\", \"parts\": [{\"part_number\": 0, \"start_offset\": 0, \"end_offset\": 10, \"upload_url\": \"http://localhost:8089/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/5678/part/0\"}, {\"part_number\": 1, \"start_offset\": 10, \"end_offset\": 20, \"upload_url\": \"http://localhost:8089/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/5678/part/1\"}]}")));
+                .withBody("{\"upload_id\": \"11111111-1111-1111-1111-111111111111\", \"parts\": [{\"part_number\": 0, \"start_offset\": 0, \"end_offset\": 10, \"upload_url\": \"http://localhost:8089/scan/v3/upload/87654321-4321-4321-4321-210987654321/file/11111111-1111-1111-1111-111111111111/part/0\"}, {\"part_number\": 1, \"start_offset\": 10, \"end_offset\": 20, \"upload_url\": \"http://localhost:8089/scan/v3/upload/87654321-4321-4321-4321-210987654321/file/11111111-1111-1111-1111-111111111111/part/1\"}]}")));
 
-        stubFor(put(urlEqualTo("/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/5678/part/0"))
+        stubFor(put(urlEqualTo("/scan/v3/upload/87654321-4321-4321-4321-210987654321/file/11111111-1111-1111-1111-111111111111/part/0"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")));
 
-        stubFor(put(urlEqualTo("/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/5678/part/1"))
+        stubFor(put(urlEqualTo("/scan/v3/upload/87654321-4321-4321-4321-210987654321/file/11111111-1111-1111-1111-111111111111/part/1"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")));
 
-        stubFor(post(urlEqualTo("/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/5678/complete"))
+        // complete file upload
+        stubFor(patch(urlEqualTo("/scan/v3/upload/87654321-4321-4321-4321-210987654321/file/11111111-1111-1111-1111-111111111111"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
                 .withBody("{\"status\": \"complete\"}")));
-
-        stubFor(post(urlEqualTo("/api/v2/submit/sensors/12345678-1234-1234-1234-123456789012/scan"))
+        // complete upload, starts scan
+        stubFor(patch(urlEqualTo("/scan/v3/upload/87654321-4321-4321-4321-210987654321"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
                 .withBody("{\"status\": \"complete\"}")));
-
-        stubFor(get(urlEqualTo("/scan/v3/results?model_version_ids=12345678-1234-1234-1234-123456789012&latest_per_model_version_only=true"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBody(sampleMaliciousQueryResponse)));
 
         stubFor(get(urlEqualTo("/scan/v3/results/87654321-4321-4321-4321-210987654321"))
             .willReturn(aResponse()
@@ -127,9 +122,9 @@ public class ModelScanServiceTests {
         InputStream stream = GetResourceAsStream("malicious_model.pkl");
         Configuration config = new Configuration("test_key", "test_secret", "http://localhost:8089", "http://localhost:8089");
         ModelScanService modelScanService = new ModelScanService(config);
-        ScanReportV3 report = modelScanService.scanStream(stream, stream.available(), "test java SDK model", false);
-        assertEquals(report.getScanId(), "87654321-4321-4321-4321-210987654321");
-        assertEquals(report.getStatus(), StatusEnum.DONE);
+        ScanReportV3 report = modelScanService.scanStream(stream, "malicious_model.pkl", stream.available(), "test java SDK model", false);
+        assertEquals("87654321-4321-4321-4321-210987654321", report.getScanId());
+        assertEquals(StatusEnum.DONE, report.getStatus());
     }
 
     @Test
@@ -147,45 +142,40 @@ public class ModelScanServiceTests {
                 .withHeader("Content-Type", "application/json")
                 .withBody("{\"access_token\": \"an_access_token\"}")));
 
-        stubFor(post(urlEqualTo("/api/v2/sensors/create")).withRequestBody(equalToJson("{\"plaintext_name\": \"test java SDK folder model\", \"active\": true, \"tags\": { }, \"adhoc\": true}"))
+        stubFor(post(urlEqualTo("/scan/v3/upload"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
-                .withBody("{\"sensor_id\": \"12345678-1234-1234-1234-123456789012\"}")));
+                .withBody("{\"scan_id\": \"87654321-4321-4321-4321-210987654321\"}")));
         
-        stubFor(post(urlEqualTo("/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/begin"))
+        stubFor(post(urlEqualTo("/scan/v3/upload/87654321-4321-4321-4321-210987654321/file"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
-                .withBody("{\"upload_id\": \"5678\", \"parts\": [{\"part_number\": 0, \"start_offset\": 0, \"end_offset\": 10, \"upload_url\": \"http://localhost:8089/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/5678/part/0\"}, {\"part_number\": 1, \"start_offset\": 10, \"end_offset\": 20, \"upload_url\": \"http://localhost:8089/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/5678/part/1\"}]}")));
+                .withBody("{\"upload_id\": \"11111111-1111-1111-1111-111111111111\", \"parts\": [{\"part_number\": 0, \"start_offset\": 0, \"end_offset\": 10, \"upload_url\": \"http://localhost:8089/scan/v3/upload/87654321-4321-4321-4321-210987654321/file/11111111-1111-1111-1111-111111111111/part/0\"}, {\"part_number\": 1, \"start_offset\": 10, \"end_offset\": 20, \"upload_url\": \"http://localhost:8089/scan/v3/upload/87654321-4321-4321-4321-210987654321/file/11111111-1111-1111-1111-111111111111/part/1\"}]}")));
 
-        stubFor(put(urlEqualTo("/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/5678/part/0"))
+        stubFor(put(urlEqualTo("/scan/v3/upload/87654321-4321-4321-4321-210987654321/file/11111111-1111-1111-1111-111111111111/part/0"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")));
 
-        stubFor(put(urlEqualTo("/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/5678/part/1"))
+        stubFor(put(urlEqualTo("/scan/v3/upload/87654321-4321-4321-4321-210987654321/file/11111111-1111-1111-1111-111111111111/part/1"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")));
 
-        stubFor(post(urlEqualTo("/api/v2/sensors/12345678-1234-1234-1234-123456789012/upload/5678/complete"))
+        // complete file upload
+        stubFor(patch(urlEqualTo("/scan/v3/upload/87654321-4321-4321-4321-210987654321/file/11111111-1111-1111-1111-111111111111"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
                 .withBody("{\"status\": \"complete\"}")));
-
-        stubFor(post(urlEqualTo("/api/v2/submit/sensors/12345678-1234-1234-1234-123456789012/scan"))
+        // complete upload, starts scan
+        stubFor(patch(urlEqualTo("/scan/v3/upload/87654321-4321-4321-4321-210987654321"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
                 .withBody("{\"status\": \"complete\"}")));
-
-        stubFor(get(urlEqualTo("/scan/v3/results?model_version_ids=12345678-1234-1234-1234-123456789012&latest_per_model_version_only=true"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBody(sampleMaliciousQueryResponse)));
 
         stubFor(get(urlEqualTo("/scan/v3/results/87654321-4321-4321-4321-210987654321"))
             .willReturn(aResponse()
