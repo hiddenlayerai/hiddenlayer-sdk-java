@@ -1,6 +1,6 @@
 /*
- * HiddenLayer ModelScan V2
- * HiddenLayer ModelScan API for scanning of models
+ * HiddenLayer-API
+ * HiddenLayer-API
  *
  * The version of the OpenAPI document: 1
  * 
@@ -52,7 +52,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   ScanDetectionV3.JSON_PROPERTY_CWE_HREF,
   ScanDetectionV3.JSON_PROPERTY_TECHNICAL_BLOG_HREF
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-06T16:41:22.054858Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-10T21:03:59.882437Z[GMT]", comments = "Generator version: 7.6.0")
 public class ScanDetectionV3 {
   public static final String JSON_PROPERTY_DESCRIPTION = "description";
   private String description;
@@ -212,9 +212,9 @@ public class ScanDetectionV3 {
    * detection risk
    * @return risk
   **/
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_RISK)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public RiskEnum getRisk() {
     return risk;
@@ -222,7 +222,7 @@ public class ScanDetectionV3 {
 
 
   @JsonProperty(JSON_PROPERTY_RISK)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setRisk(RiskEnum risk) {
     this.risk = risk;
   }

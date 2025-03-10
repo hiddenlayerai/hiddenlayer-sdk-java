@@ -8,7 +8,7 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 |**description** | **String** | detection description |  |
-|**risk** | [**RiskEnum**](#RiskEnum) | detection risk |  |
+|**risk** | [**RiskEnum**](#RiskEnum) | detection risk |  [optional] |
 |**severity** | [**SeverityEnum**](#SeverityEnum) | detection severity |  |
 |**detectionId** | **String** | unique identifier for the detection |  |
 |**impact** | **String** | detection impact |  [optional] |

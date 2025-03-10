@@ -1,6 +1,6 @@
 /*
- * HiddenLayer ModelScan V2
- * HiddenLayer ModelScan API for scanning of models
+ * HiddenLayer-API
+ * HiddenLayer-API
  *
  * The version of the OpenAPI document: 1
  * 
@@ -40,7 +40,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   GetCondensedModelScanReports200Response.JSON_PROPERTY_LIMIT,
   GetCondensedModelScanReports200Response.JSON_PROPERTY_OFFSET
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-06T16:41:22.054858Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-10T21:03:59.882437Z[GMT]", comments = "Generator version: 7.6.0")
 public class GetCondensedModelScanReports200Response {
   public static final String JSON_PROPERTY_ITEMS = "items";
   private List<ScanReportV3> items = new ArrayList<>();
