@@ -9,7 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 |**detectionId** | **UUID** | unique identifier for the detection |  |
 |**ruleId** | **String** | unique identifier for the rule that sourced the detection |  |
-|**risk** | [**RiskEnum**](#RiskEnum) | detection risk |  |
+|**risk** | [**RiskEnum**](#RiskEnum) | detection risk |  [optional] |
 |**category** | **String** | Vulnerability category for the detection |  |
 |**description** | **String** | detection description |  |
 |**likelihood** | **String** | detection likelihood |  |

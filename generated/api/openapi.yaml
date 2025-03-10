@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
-  description: HiddenLayer ModelScan API for scanning of models
-  title: HiddenLayer ModelScan V2
+  description: HiddenLayer-API
+  title: HiddenLayer-API
   version: "1"
 servers:
 - description: Production API
@@ -5118,7 +5118,6 @@ components:
       - detection_id
       - mitre_atlas
       - owasp
-      - risk
       - rule_id
       - severity
       title: ScanDetectionV3
@@ -5661,7 +5660,6 @@ components:
       - likelihood
       - mitre_atlas
       - owasp
-      - risk
       - rule_id
       - severity
       title: ScanDetectionV3

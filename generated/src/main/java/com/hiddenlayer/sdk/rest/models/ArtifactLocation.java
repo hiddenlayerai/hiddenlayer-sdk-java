@@ -1,6 +1,6 @@
 /*
- * HiddenLayer ModelScan V2
- * HiddenLayer ModelScan API for scanning of models
+ * HiddenLayer-API
+ * HiddenLayer-API
  *
  * The version of the OpenAPI document: 1
  * 
@@ -44,7 +44,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   ArtifactLocation.JSON_PROPERTY_DESCRIPTION,
   ArtifactLocation.JSON_PROPERTY_PROPERTIES
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-06T16:41:22.054858Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-10T21:03:59.882437Z[GMT]", comments = "Generator version: 7.6.0")
 public class ArtifactLocation {
   public static final String JSON_PROPERTY_URI = "uri";
   private String uri;

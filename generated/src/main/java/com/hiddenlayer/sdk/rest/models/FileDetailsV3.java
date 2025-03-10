@@ -1,6 +1,6 @@
 /*
- * HiddenLayer ModelScan V2
- * HiddenLayer ModelScan API for scanning of models
+ * HiddenLayer-API
+ * HiddenLayer-API
  *
  * The version of the OpenAPI document: 1
  * 
@@ -43,7 +43,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   FileDetailsV3.JSON_PROPERTY_FILE_TYPE,
   FileDetailsV3.JSON_PROPERTY_FILE_TYPE_DETAILS
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-06T16:41:22.054858Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-10T21:03:59.882437Z[GMT]", comments = "Generator version: 7.6.0")
 public class FileDetailsV3 {
   public static final String JSON_PROPERTY_ESTIMATED_TIME = "estimated_time";
   private String estimatedTime;
