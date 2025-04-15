@@ -1,0 +1,82 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.hiddenlayer_sdk.api.client
+
+import com.hiddenlayer_sdk.api.core.ClientOptions
+import com.hiddenlayer_sdk.api.core.getPackageVersion
+import com.hiddenlayer_sdk.api.services.blocking.ModelService
+import com.hiddenlayer_sdk.api.services.blocking.ModelServiceImpl
+import com.hiddenlayer_sdk.api.services.blocking.ScanService
+import com.hiddenlayer_sdk.api.services.blocking.ScanServiceImpl
+import com.hiddenlayer_sdk.api.services.blocking.SensorService
+import com.hiddenlayer_sdk.api.services.blocking.SensorServiceImpl
+import com.hiddenlayer_sdk.api.services.blocking.VectorService
+import com.hiddenlayer_sdk.api.services.blocking.VectorServiceImpl
+
+class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLayerClient {
+
+    private val clientOptionsWithUserAgent =
+        if (clientOptions.headers.names().contains("User-Agent")) clientOptions
+        else
+            clientOptions
+                .toBuilder()
+                .putHeader("User-Agent", "${javaClass.simpleName}/Java ${getPackageVersion()}")
+                .build()
+
+    // Pass the original clientOptions so that this client sets its own User-Agent.
+    private val async: HiddenLayerClientAsync by lazy { HiddenLayerClientAsyncImpl(clientOptions) }
+
+    private val withRawResponse: HiddenLayerClient.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
+
+    private val models: ModelService by lazy { ModelServiceImpl(clientOptionsWithUserAgent) }
+
+    private val sensors: SensorService by lazy { SensorServiceImpl(clientOptionsWithUserAgent) }
+
+    private val vectors: VectorService by lazy { VectorServiceImpl(clientOptionsWithUserAgent) }
+
+    private val scans: ScanService by lazy { ScanServiceImpl(clientOptionsWithUserAgent) }
+
+    override fun async(): HiddenLayerClientAsync = async
+
+    override fun withRawResponse(): HiddenLayerClient.WithRawResponse = withRawResponse
+
+    override fun models(): ModelService = models
+
+    override fun sensors(): SensorService = sensors
+
+    override fun vectors(): VectorService = vectors
+
+    override fun scans(): ScanService = scans
+
+    override fun close() = clientOptions.httpClient.close()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        HiddenLayerClient.WithRawResponse {
+
+        private val models: ModelService.WithRawResponse by lazy {
+            ModelServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val sensors: SensorService.WithRawResponse by lazy {
+            SensorServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val vectors: VectorService.WithRawResponse by lazy {
+            VectorServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val scans: ScanService.WithRawResponse by lazy {
+            ScanServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        override fun models(): ModelService.WithRawResponse = models
+
+        override fun sensors(): SensorService.WithRawResponse = sensors
+
+        override fun vectors(): VectorService.WithRawResponse = vectors
+
+        override fun scans(): ScanService.WithRawResponse = scans
+    }
+}

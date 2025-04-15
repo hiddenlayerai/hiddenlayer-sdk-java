@@ -1,0 +1,137 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.hiddenlayer_sdk.api.services.blocking.scans
+
+import com.google.errorprone.annotations.MustBeClosed
+import com.hiddenlayer_sdk.api.core.RequestOptions
+import com.hiddenlayer_sdk.api.core.http.HttpResponse
+import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
+import com.hiddenlayer_sdk.api.models.scans.results.ResultListParams
+import com.hiddenlayer_sdk.api.models.scans.results.ResultListResponse
+import com.hiddenlayer_sdk.api.models.scans.results.ResultPatchParams
+import com.hiddenlayer_sdk.api.models.scans.results.ResultPatchResponse
+import com.hiddenlayer_sdk.api.models.scans.results.ResultRetrieveParams
+import com.hiddenlayer_sdk.api.models.scans.results.ResultStartParams
+import com.hiddenlayer_sdk.api.models.scans.results.ScanReport
+
+interface ResultService {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
+
+    /** Get Result of a Model Scan */
+    fun retrieve(params: ResultRetrieveParams): ScanReport = retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        params: ResultRetrieveParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ScanReport
+
+    /** Get condensed reports for a Model Scan */
+    fun list(): ResultListResponse = list(ResultListParams.none())
+
+    /** @see [list] */
+    fun list(
+        params: ResultListParams = ResultListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ResultListResponse
+
+    /** @see [list] */
+    fun list(params: ResultListParams = ResultListParams.none()): ResultListResponse =
+        list(params, RequestOptions.none())
+
+    /** @see [list] */
+    fun list(requestOptions: RequestOptions): ResultListResponse =
+        list(ResultListParams.none(), requestOptions)
+
+    /** Indicate part (file or files) of a model scan has completed */
+    fun patch(params: ResultPatchParams): ResultPatchResponse = patch(params, RequestOptions.none())
+
+    /** @see [patch] */
+    fun patch(
+        params: ResultPatchParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ResultPatchResponse
+
+    /** Indicate model scan has started */
+    fun start(params: ResultStartParams) = start(params, RequestOptions.none())
+
+    /** @see [start] */
+    fun start(params: ResultStartParams, requestOptions: RequestOptions = RequestOptions.none())
+
+    /** A view of [ResultService] that provides access to raw HTTP responses for each method. */
+    interface WithRawResponse {
+
+        /**
+         * Returns a raw HTTP response for `get /scan/v3/results/{scan_id}`, but is otherwise the
+         * same as [ResultService.retrieve].
+         */
+        @MustBeClosed
+        fun retrieve(params: ResultRetrieveParams): HttpResponseFor<ScanReport> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            params: ResultRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScanReport>
+
+        /**
+         * Returns a raw HTTP response for `get /scan/v3/results`, but is otherwise the same as
+         * [ResultService.list].
+         */
+        @MustBeClosed
+        fun list(): HttpResponseFor<ResultListResponse> = list(ResultListParams.none())
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: ResultListParams = ResultListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ResultListResponse>
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: ResultListParams = ResultListParams.none()
+        ): HttpResponseFor<ResultListResponse> = list(params, RequestOptions.none())
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(requestOptions: RequestOptions): HttpResponseFor<ResultListResponse> =
+            list(ResultListParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `patch /scan/v3/results/{scan_id}`, but is otherwise the
+         * same as [ResultService.patch].
+         */
+        @MustBeClosed
+        fun patch(params: ResultPatchParams): HttpResponseFor<ResultPatchResponse> =
+            patch(params, RequestOptions.none())
+
+        /** @see [patch] */
+        @MustBeClosed
+        fun patch(
+            params: ResultPatchParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ResultPatchResponse>
+
+        /**
+         * Returns a raw HTTP response for `post /scan/v3/results/{scan_id}`, but is otherwise the
+         * same as [ResultService.start].
+         */
+        @MustBeClosed
+        fun start(params: ResultStartParams): HttpResponse = start(params, RequestOptions.none())
+
+        /** @see [start] */
+        @MustBeClosed
+        fun start(
+            params: ResultStartParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponse
+    }
+}
