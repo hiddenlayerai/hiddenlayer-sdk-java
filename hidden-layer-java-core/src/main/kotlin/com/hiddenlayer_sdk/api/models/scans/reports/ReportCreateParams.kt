@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.hiddenlayer_sdk.api.models.scans
+package com.hiddenlayer_sdk.api.models.scans.reports
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -19,7 +19,7 @@ import java.util.Collections
 import java.util.Objects
 
 /** Engine Report Endpoint of Model Scan Results */
-class ScanCreateReportParams
+class ReportCreateParams
 private constructor(
     private val scanId: String,
     private val body: Body,
@@ -53,7 +53,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [ScanCreateReportParams].
+         * Returns a mutable builder for constructing an instance of [ReportCreateParams].
          *
          * The following fields are required:
          * ```java
@@ -64,7 +64,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [ScanCreateReportParams]. */
+    /** A builder for [ReportCreateParams]. */
     class Builder internal constructor() {
 
         private var scanId: String? = null
@@ -73,11 +73,11 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(scanCreateReportParams: ScanCreateReportParams) = apply {
-            scanId = scanCreateReportParams.scanId
-            body = scanCreateReportParams.body.toBuilder()
-            additionalHeaders = scanCreateReportParams.additionalHeaders.toBuilder()
-            additionalQueryParams = scanCreateReportParams.additionalQueryParams.toBuilder()
+        internal fun from(reportCreateParams: ReportCreateParams) = apply {
+            scanId = reportCreateParams.scanId
+            body = reportCreateParams.body.toBuilder()
+            additionalHeaders = reportCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = reportCreateParams.additionalQueryParams.toBuilder()
         }
 
         fun scanId(scanId: String) = apply { this.scanId = scanId }
@@ -219,7 +219,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [ScanCreateReportParams].
+         * Returns an immutable instance of [ReportCreateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -231,8 +231,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): ScanCreateReportParams =
-            ScanCreateReportParams(
+        fun build(): ReportCreateParams =
+            ReportCreateParams(
                 checkRequired("scanId", scanId),
                 body.build(),
                 additionalHeaders.build(),
@@ -409,11 +409,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ScanCreateReportParams && scanId == other.scanId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is ReportCreateParams && scanId == other.scanId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(scanId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "ScanCreateReportParams{scanId=$scanId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "ReportCreateParams{scanId=$scanId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

@@ -4,7 +4,6 @@ package com.hiddenlayer_sdk.api.services.async
 
 import com.hiddenlayer_sdk.api.TestServerExtension
 import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClientAsync
-import com.hiddenlayer_sdk.api.models.scans.ScanCreateReportParams
 import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -39,27 +38,6 @@ internal class ScanServiceAsyncTest {
         val scanServiceAsync = client.scans()
 
         val future = scanServiceAsync.checkReadiness()
-
-        val response = future.get()
-    }
-
-    @Disabled("skipped: tests are disabled for the time being")
-    @Test
-    fun createReport() {
-        val client =
-            HiddenLayerOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
-        val scanServiceAsync = client.scans()
-
-        val future =
-            scanServiceAsync.createReport(
-                ScanCreateReportParams.builder()
-                    .scanId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .location("location")
-                    .build()
-            )
 
         val response = future.get()
     }

@@ -1,17 +1,17 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.hiddenlayer_sdk.api.models.scans
+package com.hiddenlayer_sdk.api.models.scans.reports
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-internal class ScanCreateReportParamsTest {
+internal class ReportCreateParamsTest {
 
     @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun create() {
-        ScanCreateReportParams.builder()
+        ReportCreateParams.builder()
             .scanId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .location("location")
             .build()
@@ -21,7 +21,7 @@ internal class ScanCreateReportParamsTest {
     @Test
     fun pathParams() {
         val params =
-            ScanCreateReportParams.builder()
+            ReportCreateParams.builder()
                 .scanId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .location("location")
                 .build()
@@ -35,7 +35,7 @@ internal class ScanCreateReportParamsTest {
     @Test
     fun body() {
         val params =
-            ScanCreateReportParams.builder()
+            ReportCreateParams.builder()
                 .scanId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .location("location")
                 .build()

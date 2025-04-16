@@ -14,16 +14,16 @@ import com.hiddenlayer_sdk.api.core.http.HttpRequest
 import com.hiddenlayer_sdk.api.core.http.HttpResponse
 import com.hiddenlayer_sdk.api.core.http.HttpResponse.Handler
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
-import com.hiddenlayer_sdk.api.core.http.json
 import com.hiddenlayer_sdk.api.core.http.parseable
 import com.hiddenlayer_sdk.api.core.prepareAsync
 import com.hiddenlayer_sdk.api.models.scans.ScanCheckHealthParams
 import com.hiddenlayer_sdk.api.models.scans.ScanCheckReadinessParams
-import com.hiddenlayer_sdk.api.models.scans.ScanCreateReportParams
 import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsParams
 import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsResponse
 import com.hiddenlayer_sdk.api.services.async.scans.JobServiceAsync
 import com.hiddenlayer_sdk.api.services.async.scans.JobServiceAsyncImpl
+import com.hiddenlayer_sdk.api.services.async.scans.ReportServiceAsync
+import com.hiddenlayer_sdk.api.services.async.scans.ReportServiceAsyncImpl
 import com.hiddenlayer_sdk.api.services.async.scans.ResultServiceAsync
 import com.hiddenlayer_sdk.api.services.async.scans.ResultServiceAsyncImpl
 import com.hiddenlayer_sdk.api.services.async.scans.UploadServiceAsync
@@ -37,6 +37,8 @@ class ScanServiceAsyncImpl internal constructor(private val clientOptions: Clien
         WithRawResponseImpl(clientOptions)
     }
 
+    private val reports: ReportServiceAsync by lazy { ReportServiceAsyncImpl(clientOptions) }
+
     private val results: ResultServiceAsync by lazy { ResultServiceAsyncImpl(clientOptions) }
 
     private val jobs: JobServiceAsync by lazy { JobServiceAsyncImpl(clientOptions) }
@@ -44,6 +46,8 @@ class ScanServiceAsyncImpl internal constructor(private val clientOptions: Clien
     private val upload: UploadServiceAsync by lazy { UploadServiceAsyncImpl(clientOptions) }
 
     override fun withRawResponse(): ScanServiceAsync.WithRawResponse = withRawResponse
+
+    override fun reports(): ReportServiceAsync = reports
 
     override fun results(): ResultServiceAsync = results
 
@@ -65,13 +69,6 @@ class ScanServiceAsyncImpl internal constructor(private val clientOptions: Clien
         // get /scans/v3/readiness
         withRawResponse().checkReadiness(params, requestOptions).thenAccept {}
 
-    override fun createReport(
-        params: ScanCreateReportParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<Void?> =
-        // post /scans/v3/reports/{scan_id}
-        withRawResponse().createReport(params, requestOptions).thenAccept {}
-
     override fun retrieveResults(
         params: ScanRetrieveResultsParams,
         requestOptions: RequestOptions,
@@ -84,6 +81,10 @@ class ScanServiceAsyncImpl internal constructor(private val clientOptions: Clien
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        private val reports: ReportServiceAsync.WithRawResponse by lazy {
+            ReportServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
         private val results: ResultServiceAsync.WithRawResponse by lazy {
             ResultServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
@@ -95,6 +96,8 @@ class ScanServiceAsyncImpl internal constructor(private val clientOptions: Clien
         private val upload: UploadServiceAsync.WithRawResponse by lazy {
             UploadServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun reports(): ReportServiceAsync.WithRawResponse = reports
 
         override fun results(): ResultServiceAsync.WithRawResponse = results
 
@@ -141,28 +144,6 @@ class ScanServiceAsyncImpl internal constructor(private val clientOptions: Clien
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
                     response.parseable { response.use { checkReadinessHandler.handle(it) } }
-                }
-        }
-
-        private val createReportHandler: Handler<Void?> =
-            emptyHandler().withErrorHandler(errorHandler)
-
-        override fun createReport(
-            params: ScanCreateReportParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponse> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("scans", "v3", "reports", params._pathParam(0))
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    response.parseable { response.use { createReportHandler.handle(it) } }
                 }
         }
 

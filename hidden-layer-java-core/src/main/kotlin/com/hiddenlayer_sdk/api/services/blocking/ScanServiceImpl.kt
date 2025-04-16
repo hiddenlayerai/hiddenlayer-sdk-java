@@ -14,16 +14,16 @@ import com.hiddenlayer_sdk.api.core.http.HttpRequest
 import com.hiddenlayer_sdk.api.core.http.HttpResponse
 import com.hiddenlayer_sdk.api.core.http.HttpResponse.Handler
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
-import com.hiddenlayer_sdk.api.core.http.json
 import com.hiddenlayer_sdk.api.core.http.parseable
 import com.hiddenlayer_sdk.api.core.prepare
 import com.hiddenlayer_sdk.api.models.scans.ScanCheckHealthParams
 import com.hiddenlayer_sdk.api.models.scans.ScanCheckReadinessParams
-import com.hiddenlayer_sdk.api.models.scans.ScanCreateReportParams
 import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsParams
 import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsResponse
 import com.hiddenlayer_sdk.api.services.blocking.scans.JobService
 import com.hiddenlayer_sdk.api.services.blocking.scans.JobServiceImpl
+import com.hiddenlayer_sdk.api.services.blocking.scans.ReportService
+import com.hiddenlayer_sdk.api.services.blocking.scans.ReportServiceImpl
 import com.hiddenlayer_sdk.api.services.blocking.scans.ResultService
 import com.hiddenlayer_sdk.api.services.blocking.scans.ResultServiceImpl
 import com.hiddenlayer_sdk.api.services.blocking.scans.UploadService
@@ -35,6 +35,8 @@ class ScanServiceImpl internal constructor(private val clientOptions: ClientOpti
         WithRawResponseImpl(clientOptions)
     }
 
+    private val reports: ReportService by lazy { ReportServiceImpl(clientOptions) }
+
     private val results: ResultService by lazy { ResultServiceImpl(clientOptions) }
 
     private val jobs: JobService by lazy { JobServiceImpl(clientOptions) }
@@ -42,6 +44,8 @@ class ScanServiceImpl internal constructor(private val clientOptions: ClientOpti
     private val upload: UploadService by lazy { UploadServiceImpl(clientOptions) }
 
     override fun withRawResponse(): ScanService.WithRawResponse = withRawResponse
+
+    override fun reports(): ReportService = reports
 
     override fun results(): ResultService = results
 
@@ -59,11 +63,6 @@ class ScanServiceImpl internal constructor(private val clientOptions: ClientOpti
         withRawResponse().checkReadiness(params, requestOptions)
     }
 
-    override fun createReport(params: ScanCreateReportParams, requestOptions: RequestOptions) {
-        // post /scans/v3/reports/{scan_id}
-        withRawResponse().createReport(params, requestOptions)
-    }
-
     override fun retrieveResults(
         params: ScanRetrieveResultsParams,
         requestOptions: RequestOptions,
@@ -76,6 +75,10 @@ class ScanServiceImpl internal constructor(private val clientOptions: ClientOpti
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        private val reports: ReportService.WithRawResponse by lazy {
+            ReportServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
         private val results: ResultService.WithRawResponse by lazy {
             ResultServiceImpl.WithRawResponseImpl(clientOptions)
         }
@@ -87,6 +90,8 @@ class ScanServiceImpl internal constructor(private val clientOptions: ClientOpti
         private val upload: UploadService.WithRawResponse by lazy {
             UploadServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun reports(): ReportService.WithRawResponse = reports
 
         override fun results(): ResultService.WithRawResponse = results
 
@@ -128,25 +133,6 @@ class ScanServiceImpl internal constructor(private val clientOptions: ClientOpti
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return response.parseable { response.use { checkReadinessHandler.handle(it) } }
-        }
-
-        private val createReportHandler: Handler<Void?> =
-            emptyHandler().withErrorHandler(errorHandler)
-
-        override fun createReport(
-            params: ScanCreateReportParams,
-            requestOptions: RequestOptions,
-        ): HttpResponse {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("scans", "v3", "reports", params._pathParam(0))
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable { response.use { createReportHandler.handle(it) } }
         }
 
         private val retrieveResultsHandler: Handler<ScanRetrieveResultsResponse> =

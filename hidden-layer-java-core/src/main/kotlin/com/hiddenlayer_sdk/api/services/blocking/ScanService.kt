@@ -8,10 +8,10 @@ import com.hiddenlayer_sdk.api.core.http.HttpResponse
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.models.scans.ScanCheckHealthParams
 import com.hiddenlayer_sdk.api.models.scans.ScanCheckReadinessParams
-import com.hiddenlayer_sdk.api.models.scans.ScanCreateReportParams
 import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsParams
 import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsResponse
 import com.hiddenlayer_sdk.api.services.blocking.scans.JobService
+import com.hiddenlayer_sdk.api.services.blocking.scans.ReportService
 import com.hiddenlayer_sdk.api.services.blocking.scans.ResultService
 import com.hiddenlayer_sdk.api.services.blocking.scans.UploadService
 
@@ -21,6 +21,8 @@ interface ScanService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    fun reports(): ReportService
 
     fun results(): ResultService
 
@@ -62,15 +64,6 @@ interface ScanService {
     fun checkReadiness(requestOptions: RequestOptions) =
         checkReadiness(ScanCheckReadinessParams.none(), requestOptions)
 
-    /** Engine Report Endpoint of Model Scan Results */
-    fun createReport(params: ScanCreateReportParams) = createReport(params, RequestOptions.none())
-
-    /** @see [createReport] */
-    fun createReport(
-        params: ScanCreateReportParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    )
-
     /** Retrieve Model Scan Results */
     fun retrieveResults(params: ScanRetrieveResultsParams): ScanRetrieveResultsResponse =
         retrieveResults(params, RequestOptions.none())
@@ -83,6 +76,8 @@ interface ScanService {
 
     /** A view of [ScanService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        fun reports(): ReportService.WithRawResponse
 
         fun results(): ResultService.WithRawResponse
 
@@ -138,21 +133,6 @@ interface ScanService {
         @MustBeClosed
         fun checkReadiness(requestOptions: RequestOptions): HttpResponse =
             checkReadiness(ScanCheckReadinessParams.none(), requestOptions)
-
-        /**
-         * Returns a raw HTTP response for `post /scans/v3/reports/{scan_id}`, but is otherwise the
-         * same as [ScanService.createReport].
-         */
-        @MustBeClosed
-        fun createReport(params: ScanCreateReportParams): HttpResponse =
-            createReport(params, RequestOptions.none())
-
-        /** @see [createReport] */
-        @MustBeClosed
-        fun createReport(
-            params: ScanCreateReportParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponse
 
         /**
          * Returns a raw HTTP response for `get /scans/v3/results/{scan_id}`, but is otherwise the

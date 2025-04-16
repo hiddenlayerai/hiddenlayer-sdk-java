@@ -8,10 +8,10 @@ import com.hiddenlayer_sdk.api.core.http.HttpResponse
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.models.scans.ScanCheckHealthParams
 import com.hiddenlayer_sdk.api.models.scans.ScanCheckReadinessParams
-import com.hiddenlayer_sdk.api.models.scans.ScanCreateReportParams
 import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsParams
 import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsResponse
 import com.hiddenlayer_sdk.api.services.async.scans.JobServiceAsync
+import com.hiddenlayer_sdk.api.services.async.scans.ReportServiceAsync
 import com.hiddenlayer_sdk.api.services.async.scans.ResultServiceAsync
 import com.hiddenlayer_sdk.api.services.async.scans.UploadServiceAsync
 import java.util.concurrent.CompletableFuture
@@ -22,6 +22,8 @@ interface ScanServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    fun reports(): ReportServiceAsync
 
     fun results(): ResultServiceAsync
 
@@ -65,16 +67,6 @@ interface ScanServiceAsync {
     fun checkReadiness(requestOptions: RequestOptions): CompletableFuture<Void?> =
         checkReadiness(ScanCheckReadinessParams.none(), requestOptions)
 
-    /** Engine Report Endpoint of Model Scan Results */
-    fun createReport(params: ScanCreateReportParams): CompletableFuture<Void?> =
-        createReport(params, RequestOptions.none())
-
-    /** @see [createReport] */
-    fun createReport(
-        params: ScanCreateReportParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<Void?>
-
     /** Retrieve Model Scan Results */
     fun retrieveResults(
         params: ScanRetrieveResultsParams
@@ -89,6 +81,8 @@ interface ScanServiceAsync {
 
     /** A view of [ScanServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        fun reports(): ReportServiceAsync.WithRawResponse
 
         fun results(): ResultServiceAsync.WithRawResponse
 
@@ -147,21 +141,6 @@ interface ScanServiceAsync {
         @MustBeClosed
         fun checkReadiness(requestOptions: RequestOptions): CompletableFuture<HttpResponse> =
             checkReadiness(ScanCheckReadinessParams.none(), requestOptions)
-
-        /**
-         * Returns a raw HTTP response for `post /scans/v3/reports/{scan_id}`, but is otherwise the
-         * same as [ScanServiceAsync.createReport].
-         */
-        @MustBeClosed
-        fun createReport(params: ScanCreateReportParams): CompletableFuture<HttpResponse> =
-            createReport(params, RequestOptions.none())
-
-        /** @see [createReport] */
-        @MustBeClosed
-        fun createReport(
-            params: ScanCreateReportParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponse>
 
         /**
          * Returns a raw HTTP response for `get /scans/v3/results/{scan_id}`, but is otherwise the
