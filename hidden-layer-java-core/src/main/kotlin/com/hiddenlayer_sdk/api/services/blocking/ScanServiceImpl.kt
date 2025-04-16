@@ -22,8 +22,6 @@ import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsParams
 import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsResponse
 import com.hiddenlayer_sdk.api.services.blocking.scans.JobService
 import com.hiddenlayer_sdk.api.services.blocking.scans.JobServiceImpl
-import com.hiddenlayer_sdk.api.services.blocking.scans.ReportService
-import com.hiddenlayer_sdk.api.services.blocking.scans.ReportServiceImpl
 import com.hiddenlayer_sdk.api.services.blocking.scans.ResultService
 import com.hiddenlayer_sdk.api.services.blocking.scans.ResultServiceImpl
 import com.hiddenlayer_sdk.api.services.blocking.scans.UploadService
@@ -35,8 +33,6 @@ class ScanServiceImpl internal constructor(private val clientOptions: ClientOpti
         WithRawResponseImpl(clientOptions)
     }
 
-    private val reports: ReportService by lazy { ReportServiceImpl(clientOptions) }
-
     private val results: ResultService by lazy { ResultServiceImpl(clientOptions) }
 
     private val jobs: JobService by lazy { JobServiceImpl(clientOptions) }
@@ -44,8 +40,6 @@ class ScanServiceImpl internal constructor(private val clientOptions: ClientOpti
     private val upload: UploadService by lazy { UploadServiceImpl(clientOptions) }
 
     override fun withRawResponse(): ScanService.WithRawResponse = withRawResponse
-
-    override fun reports(): ReportService = reports
 
     override fun results(): ResultService = results
 
@@ -75,10 +69,6 @@ class ScanServiceImpl internal constructor(private val clientOptions: ClientOpti
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
-        private val reports: ReportService.WithRawResponse by lazy {
-            ReportServiceImpl.WithRawResponseImpl(clientOptions)
-        }
-
         private val results: ResultService.WithRawResponse by lazy {
             ResultServiceImpl.WithRawResponseImpl(clientOptions)
         }
@@ -90,8 +80,6 @@ class ScanServiceImpl internal constructor(private val clientOptions: ClientOpti
         private val upload: UploadService.WithRawResponse by lazy {
             UploadServiceImpl.WithRawResponseImpl(clientOptions)
         }
-
-        override fun reports(): ReportService.WithRawResponse = reports
 
         override fun results(): ResultService.WithRawResponse = results
 

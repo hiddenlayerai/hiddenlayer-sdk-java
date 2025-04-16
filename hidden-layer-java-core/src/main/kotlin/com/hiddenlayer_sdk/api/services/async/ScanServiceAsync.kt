@@ -11,7 +11,6 @@ import com.hiddenlayer_sdk.api.models.scans.ScanCheckReadinessParams
 import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsParams
 import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsResponse
 import com.hiddenlayer_sdk.api.services.async.scans.JobServiceAsync
-import com.hiddenlayer_sdk.api.services.async.scans.ReportServiceAsync
 import com.hiddenlayer_sdk.api.services.async.scans.ResultServiceAsync
 import com.hiddenlayer_sdk.api.services.async.scans.UploadServiceAsync
 import java.util.concurrent.CompletableFuture
@@ -22,8 +21,6 @@ interface ScanServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
-
-    fun reports(): ReportServiceAsync
 
     fun results(): ResultServiceAsync
 
@@ -81,8 +78,6 @@ interface ScanServiceAsync {
 
     /** A view of [ScanServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
-
-        fun reports(): ReportServiceAsync.WithRawResponse
 
         fun results(): ResultServiceAsync.WithRawResponse
 

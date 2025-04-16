@@ -22,8 +22,6 @@ import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsParams
 import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsResponse
 import com.hiddenlayer_sdk.api.services.async.scans.JobServiceAsync
 import com.hiddenlayer_sdk.api.services.async.scans.JobServiceAsyncImpl
-import com.hiddenlayer_sdk.api.services.async.scans.ReportServiceAsync
-import com.hiddenlayer_sdk.api.services.async.scans.ReportServiceAsyncImpl
 import com.hiddenlayer_sdk.api.services.async.scans.ResultServiceAsync
 import com.hiddenlayer_sdk.api.services.async.scans.ResultServiceAsyncImpl
 import com.hiddenlayer_sdk.api.services.async.scans.UploadServiceAsync
@@ -37,8 +35,6 @@ class ScanServiceAsyncImpl internal constructor(private val clientOptions: Clien
         WithRawResponseImpl(clientOptions)
     }
 
-    private val reports: ReportServiceAsync by lazy { ReportServiceAsyncImpl(clientOptions) }
-
     private val results: ResultServiceAsync by lazy { ResultServiceAsyncImpl(clientOptions) }
 
     private val jobs: JobServiceAsync by lazy { JobServiceAsyncImpl(clientOptions) }
@@ -46,8 +42,6 @@ class ScanServiceAsyncImpl internal constructor(private val clientOptions: Clien
     private val upload: UploadServiceAsync by lazy { UploadServiceAsyncImpl(clientOptions) }
 
     override fun withRawResponse(): ScanServiceAsync.WithRawResponse = withRawResponse
-
-    override fun reports(): ReportServiceAsync = reports
 
     override fun results(): ResultServiceAsync = results
 
@@ -81,10 +75,6 @@ class ScanServiceAsyncImpl internal constructor(private val clientOptions: Clien
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
-        private val reports: ReportServiceAsync.WithRawResponse by lazy {
-            ReportServiceAsyncImpl.WithRawResponseImpl(clientOptions)
-        }
-
         private val results: ResultServiceAsync.WithRawResponse by lazy {
             ResultServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
@@ -96,8 +86,6 @@ class ScanServiceAsyncImpl internal constructor(private val clientOptions: Clien
         private val upload: UploadServiceAsync.WithRawResponse by lazy {
             UploadServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
-
-        override fun reports(): ReportServiceAsync.WithRawResponse = reports
 
         override fun results(): ResultServiceAsync.WithRawResponse = results
 

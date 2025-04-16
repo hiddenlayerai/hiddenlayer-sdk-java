@@ -11,7 +11,6 @@ import com.hiddenlayer_sdk.api.models.scans.ScanCheckReadinessParams
 import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsParams
 import com.hiddenlayer_sdk.api.models.scans.ScanRetrieveResultsResponse
 import com.hiddenlayer_sdk.api.services.blocking.scans.JobService
-import com.hiddenlayer_sdk.api.services.blocking.scans.ReportService
 import com.hiddenlayer_sdk.api.services.blocking.scans.ResultService
 import com.hiddenlayer_sdk.api.services.blocking.scans.UploadService
 
@@ -21,8 +20,6 @@ interface ScanService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
-
-    fun reports(): ReportService
 
     fun results(): ResultService
 
@@ -76,8 +73,6 @@ interface ScanService {
 
     /** A view of [ScanService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
-
-        fun reports(): ReportService.WithRawResponse
 
         fun results(): ResultService.WithRawResponse
 
