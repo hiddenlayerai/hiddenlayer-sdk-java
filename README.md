@@ -304,6 +304,42 @@ HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
     .build();
 ```
 
+### Custom HTTP client
+
+The SDK consists of three artifacts:
+
+- `hidden-layer-java-core`
+  - Contains core SDK logic
+  - Does not depend on [OkHttp](https://square.github.io/okhttp)
+  - Exposes [`HiddenLayerClient`](hidden-layer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClient.kt), [`HiddenLayerClientAsync`](hidden-layer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientAsync.kt), [`HiddenLayerClientImpl`](hidden-layer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientImpl.kt), and [`HiddenLayerClientAsyncImpl`](hidden-layer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientAsyncImpl.kt), all of which can work with any HTTP client
+- `hidden-layer-java-client-okhttp`
+  - Depends on [OkHttp](https://square.github.io/okhttp)
+  - Exposes [`HiddenLayerOkHttpClient`](hidden-layer-java-client-okhttp/src/main/kotlin/com/hiddenlayer_sdk/api/client/okhttp/HiddenLayerOkHttpClient.kt) and [`HiddenLayerOkHttpClientAsync`](hidden-layer-java-client-okhttp/src/main/kotlin/com/hiddenlayer_sdk/api/client/okhttp/HiddenLayerOkHttpClientAsync.kt), which provide a way to construct [`HiddenLayerClientImpl`](hidden-layer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientImpl.kt) and [`HiddenLayerClientAsyncImpl`](hidden-layer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientAsyncImpl.kt), respectively, using OkHttp
+- `hidden-layer-java`
+  - Depends on and exposes the APIs of both `hidden-layer-java-core` and `hidden-layer-java-client-okhttp`
+  - Does not have its own logic
+
+This structure allows replacing the SDK's default HTTP client without pulling in unnecessary dependencies.
+
+#### Customized [`OkHttpClient`](https://square.github.io/okhttp/3.x/okhttp/okhttp3/OkHttpClient.html)
+
+> [!TIP]
+> Try the available [network options](#network-options) before replacing the default client.
+
+To use a customized `OkHttpClient`:
+
+1. Replace your [`hidden-layer-java` dependency](#installation) with `hidden-layer-java-core`
+2. Copy `hidden-layer-java-client-okhttp`'s [`OkHttpClient`](hidden-layer-java-client-okhttp/src/main/kotlin/com/hiddenlayer_sdk/api/client/okhttp/OkHttpClient.kt) class into your code and customize it
+3. Construct [`HiddenLayerClientImpl`](hidden-layer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientImpl.kt) or [`HiddenLayerClientAsyncImpl`](hidden-layer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientAsyncImpl.kt), similarly to [`HiddenLayerOkHttpClient`](hidden-layer-java-client-okhttp/src/main/kotlin/com/hiddenlayer_sdk/api/client/okhttp/HiddenLayerOkHttpClient.kt) or [`HiddenLayerOkHttpClientAsync`](hidden-layer-java-client-okhttp/src/main/kotlin/com/hiddenlayer_sdk/api/client/okhttp/HiddenLayerOkHttpClientAsync.kt), using your customized client
+
+### Completely custom HTTP client
+
+To use a completely custom HTTP client:
+
+1. Replace your [`hidden-layer-java` dependency](#installation) with `hidden-layer-java-core`
+2. Write a class that implements the [`HttpClient`](hidden-layer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/core/http/HttpClient.kt) interface
+3. Construct [`HiddenLayerClientImpl`](hidden-layer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientImpl.kt) or [`HiddenLayerClientAsyncImpl`](hidden-layer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientAsyncImpl.kt), similarly to [`HiddenLayerOkHttpClient`](hidden-layer-java-client-okhttp/src/main/kotlin/com/hiddenlayer_sdk/api/client/okhttp/HiddenLayerOkHttpClient.kt) or [`HiddenLayerOkHttpClientAsync`](hidden-layer-java-client-okhttp/src/main/kotlin/com/hiddenlayer_sdk/api/client/okhttp/HiddenLayerOkHttpClientAsync.kt), using your new client class
+
 ## Undocumented API functionality
 
 The SDK is typed for convenient usage of the documented API. However, it also supports working with undocumented or not yet supported parts of the API.
