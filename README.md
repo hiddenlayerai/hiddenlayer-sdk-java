@@ -264,7 +264,6 @@ To set a custom timeout, configure the method call using the `timeout` method:
 
 ```java
 import com.hiddenlayer_sdk.api.models.sensors.Sensor;
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
 
 Sensor sensor = client.sensors().create(
   params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
@@ -511,7 +510,6 @@ Or configure the method call to validate the response using the `responseValidat
 
 ```java
 import com.hiddenlayer_sdk.api.models.sensors.Sensor;
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
 
 Sensor sensor = client.sensors().create(
   params, RequestOptions.builder().responseValidation(true).build()
