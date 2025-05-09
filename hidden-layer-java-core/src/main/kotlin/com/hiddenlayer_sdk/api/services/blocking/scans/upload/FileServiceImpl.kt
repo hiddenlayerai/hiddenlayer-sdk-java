@@ -5,6 +5,7 @@ package com.hiddenlayer_sdk.api.services.blocking.scans.upload
 import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.RequestOptions
+import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.handlers.errorHandler
 import com.hiddenlayer_sdk.api.core.handlers.jsonHandler
 import com.hiddenlayer_sdk.api.core.handlers.withErrorHandler
@@ -19,6 +20,7 @@ import com.hiddenlayer_sdk.api.models.scans.upload.file.FileAddParams
 import com.hiddenlayer_sdk.api.models.scans.upload.file.FileAddResponse
 import com.hiddenlayer_sdk.api.models.scans.upload.file.FileCompleteParams
 import com.hiddenlayer_sdk.api.models.scans.upload.file.FileCompleteResponse
+import kotlin.jvm.optionals.getOrNull
 
 class FileServiceImpl internal constructor(private val clientOptions: ClientOptions) : FileService {
 
@@ -51,6 +53,9 @@ class FileServiceImpl internal constructor(private val clientOptions: ClientOpti
             params: FileAddParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<FileAddResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("scanId", params.scanId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -79,6 +84,9 @@ class FileServiceImpl internal constructor(private val clientOptions: ClientOpti
             params: FileCompleteParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<FileCompleteResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("fileId", params.fileId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)

@@ -4,23 +4,23 @@ package com.hiddenlayer_sdk.api.models.sensors
 
 import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.Params
-import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import com.hiddenlayer_sdk.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Delete Sensor */
 class SensorDeleteParams
 private constructor(
-    private val sensorId: String,
+    private val sensorId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
-    fun sensorId(): String = sensorId
+    fun sensorId(): Optional<String> = Optional.ofNullable(sensorId)
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
@@ -32,14 +32,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [SensorDeleteParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .sensorId()
-         * ```
-         */
+        @JvmStatic fun none(): SensorDeleteParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [SensorDeleteParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -59,7 +54,10 @@ private constructor(
             additionalBodyProperties = sensorDeleteParams.additionalBodyProperties.toMutableMap()
         }
 
-        fun sensorId(sensorId: String) = apply { this.sensorId = sensorId }
+        fun sensorId(sensorId: String?) = apply { this.sensorId = sensorId }
+
+        /** Alias for calling [Builder.sensorId] with `sensorId.orElse(null)`. */
+        fun sensorId(sensorId: Optional<String>) = sensorId(sensorId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -185,17 +183,10 @@ private constructor(
          * Returns an immutable instance of [SensorDeleteParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .sensorId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): SensorDeleteParams =
             SensorDeleteParams(
-                checkRequired("sensorId", sensorId),
+                sensorId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -207,7 +198,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> sensorId
+            0 -> sensorId ?: ""
             else -> ""
         }
 

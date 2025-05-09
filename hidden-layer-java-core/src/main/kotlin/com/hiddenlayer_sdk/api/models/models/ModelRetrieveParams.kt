@@ -3,20 +3,21 @@
 package com.hiddenlayer_sdk.api.models.models
 
 import com.hiddenlayer_sdk.api.core.Params
-import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Get Model */
 class ModelRetrieveParams
 private constructor(
-    private val modelId: String,
+    private val modelId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun modelId(): String = modelId
+    fun modelId(): Optional<String> = Optional.ofNullable(modelId)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
@@ -26,14 +27,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ModelRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .modelId()
-         * ```
-         */
+        @JvmStatic fun none(): ModelRetrieveParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ModelRetrieveParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -51,7 +47,10 @@ private constructor(
             additionalQueryParams = modelRetrieveParams.additionalQueryParams.toBuilder()
         }
 
-        fun modelId(modelId: String) = apply { this.modelId = modelId }
+        fun modelId(modelId: String?) = apply { this.modelId = modelId }
+
+        /** Alias for calling [Builder.modelId] with `modelId.orElse(null)`. */
+        fun modelId(modelId: Optional<String>) = modelId(modelId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -155,25 +154,14 @@ private constructor(
          * Returns an immutable instance of [ModelRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .modelId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ModelRetrieveParams =
-            ModelRetrieveParams(
-                checkRequired("modelId", modelId),
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
-            )
+            ModelRetrieveParams(modelId, additionalHeaders.build(), additionalQueryParams.build())
     }
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> modelId
+            0 -> modelId ?: ""
             else -> ""
         }
 

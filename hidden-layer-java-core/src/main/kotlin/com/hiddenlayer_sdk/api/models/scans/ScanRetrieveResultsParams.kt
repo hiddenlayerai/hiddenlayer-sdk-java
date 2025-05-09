@@ -3,7 +3,6 @@
 package com.hiddenlayer_sdk.api.models.scans
 
 import com.hiddenlayer_sdk.api.core.Params
-import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import java.util.Objects
@@ -13,14 +12,14 @@ import kotlin.jvm.optionals.getOrNull
 /** Retrieve Model Scan Results */
 class ScanRetrieveResultsParams
 private constructor(
-    private val scanId: String,
+    private val scanId: String?,
     private val cursor: String?,
     private val pageSize: Long?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun scanId(): String = scanId
+    fun scanId(): Optional<String> = Optional.ofNullable(scanId)
 
     /** Cursor value returned from a previous request. Used to fetch the next page of results. */
     fun cursor(): Optional<String> = Optional.ofNullable(cursor)
@@ -35,13 +34,10 @@ private constructor(
 
     companion object {
 
+        @JvmStatic fun none(): ScanRetrieveResultsParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of [ScanRetrieveResultsParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .scanId()
-         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -64,7 +60,10 @@ private constructor(
             additionalQueryParams = scanRetrieveResultsParams.additionalQueryParams.toBuilder()
         }
 
-        fun scanId(scanId: String) = apply { this.scanId = scanId }
+        fun scanId(scanId: String?) = apply { this.scanId = scanId }
+
+        /** Alias for calling [Builder.scanId] with `scanId.orElse(null)`. */
+        fun scanId(scanId: Optional<String>) = scanId(scanId.getOrNull())
 
         /**
          * Cursor value returned from a previous request. Used to fetch the next page of results.
@@ -188,17 +187,10 @@ private constructor(
          * Returns an immutable instance of [ScanRetrieveResultsParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .scanId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ScanRetrieveResultsParams =
             ScanRetrieveResultsParams(
-                checkRequired("scanId", scanId),
+                scanId,
                 cursor,
                 pageSize,
                 additionalHeaders.build(),
@@ -208,7 +200,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> scanId
+            0 -> scanId ?: ""
             else -> ""
         }
 

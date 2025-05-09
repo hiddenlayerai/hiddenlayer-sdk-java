@@ -65,6 +65,31 @@ interface ScanServiceAsync {
         checkReadiness(ScanCheckReadinessParams.none(), requestOptions)
 
     /** Retrieve Model Scan Results */
+    fun retrieveResults(scanId: String): CompletableFuture<ScanRetrieveResultsResponse> =
+        retrieveResults(scanId, ScanRetrieveResultsParams.none())
+
+    /** @see [retrieveResults] */
+    fun retrieveResults(
+        scanId: String,
+        params: ScanRetrieveResultsParams = ScanRetrieveResultsParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ScanRetrieveResultsResponse> =
+        retrieveResults(params.toBuilder().scanId(scanId).build(), requestOptions)
+
+    /** @see [retrieveResults] */
+    fun retrieveResults(
+        scanId: String,
+        params: ScanRetrieveResultsParams = ScanRetrieveResultsParams.none(),
+    ): CompletableFuture<ScanRetrieveResultsResponse> =
+        retrieveResults(scanId, params, RequestOptions.none())
+
+    /** @see [retrieveResults] */
+    fun retrieveResults(
+        params: ScanRetrieveResultsParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ScanRetrieveResultsResponse>
+
+    /** @see [retrieveResults] */
     fun retrieveResults(
         params: ScanRetrieveResultsParams
     ): CompletableFuture<ScanRetrieveResultsResponse> =
@@ -72,9 +97,10 @@ interface ScanServiceAsync {
 
     /** @see [retrieveResults] */
     fun retrieveResults(
-        params: ScanRetrieveResultsParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<ScanRetrieveResultsResponse>
+        scanId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<ScanRetrieveResultsResponse> =
+        retrieveResults(scanId, ScanRetrieveResultsParams.none(), requestOptions)
 
     /** A view of [ScanServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -143,9 +169,26 @@ interface ScanServiceAsync {
          */
         @MustBeClosed
         fun retrieveResults(
-            params: ScanRetrieveResultsParams
+            scanId: String
         ): CompletableFuture<HttpResponseFor<ScanRetrieveResultsResponse>> =
-            retrieveResults(params, RequestOptions.none())
+            retrieveResults(scanId, ScanRetrieveResultsParams.none())
+
+        /** @see [retrieveResults] */
+        @MustBeClosed
+        fun retrieveResults(
+            scanId: String,
+            params: ScanRetrieveResultsParams = ScanRetrieveResultsParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ScanRetrieveResultsResponse>> =
+            retrieveResults(params.toBuilder().scanId(scanId).build(), requestOptions)
+
+        /** @see [retrieveResults] */
+        @MustBeClosed
+        fun retrieveResults(
+            scanId: String,
+            params: ScanRetrieveResultsParams = ScanRetrieveResultsParams.none(),
+        ): CompletableFuture<HttpResponseFor<ScanRetrieveResultsResponse>> =
+            retrieveResults(scanId, params, RequestOptions.none())
 
         /** @see [retrieveResults] */
         @MustBeClosed
@@ -153,5 +196,20 @@ interface ScanServiceAsync {
             params: ScanRetrieveResultsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ScanRetrieveResultsResponse>>
+
+        /** @see [retrieveResults] */
+        @MustBeClosed
+        fun retrieveResults(
+            params: ScanRetrieveResultsParams
+        ): CompletableFuture<HttpResponseFor<ScanRetrieveResultsResponse>> =
+            retrieveResults(params, RequestOptions.none())
+
+        /** @see [retrieveResults] */
+        @MustBeClosed
+        fun retrieveResults(
+            scanId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ScanRetrieveResultsResponse>> =
+            retrieveResults(scanId, ScanRetrieveResultsParams.none(), requestOptions)
     }
 }

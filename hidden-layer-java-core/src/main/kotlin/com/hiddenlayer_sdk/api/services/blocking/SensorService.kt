@@ -30,7 +30,20 @@ interface SensorService {
     ): Sensor
 
     /** Get Sensor */
-    fun retrieve(params: SensorRetrieveParams): Sensor = retrieve(params, RequestOptions.none())
+    fun retrieve(sensorId: String): Sensor = retrieve(sensorId, SensorRetrieveParams.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        sensorId: String,
+        params: SensorRetrieveParams = SensorRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): Sensor = retrieve(params.toBuilder().sensorId(sensorId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
+        sensorId: String,
+        params: SensorRetrieveParams = SensorRetrieveParams.none(),
+    ): Sensor = retrieve(sensorId, params, RequestOptions.none())
 
     /** @see [retrieve] */
     fun retrieve(
@@ -38,11 +51,36 @@ interface SensorService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Sensor
 
+    /** @see [retrieve] */
+    fun retrieve(params: SensorRetrieveParams): Sensor = retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(sensorId: String, requestOptions: RequestOptions): Sensor =
+        retrieve(sensorId, SensorRetrieveParams.none(), requestOptions)
+
     /** Delete Sensor */
-    fun delete(params: SensorDeleteParams) = delete(params, RequestOptions.none())
+    fun delete(sensorId: String) = delete(sensorId, SensorDeleteParams.none())
+
+    /** @see [delete] */
+    fun delete(
+        sensorId: String,
+        params: SensorDeleteParams = SensorDeleteParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ) = delete(params.toBuilder().sensorId(sensorId).build(), requestOptions)
+
+    /** @see [delete] */
+    fun delete(sensorId: String, params: SensorDeleteParams = SensorDeleteParams.none()) =
+        delete(sensorId, params, RequestOptions.none())
 
     /** @see [delete] */
     fun delete(params: SensorDeleteParams, requestOptions: RequestOptions = RequestOptions.none())
+
+    /** @see [delete] */
+    fun delete(params: SensorDeleteParams) = delete(params, RequestOptions.none())
+
+    /** @see [delete] */
+    fun delete(sensorId: String, requestOptions: RequestOptions) =
+        delete(sensorId, SensorDeleteParams.none(), requestOptions)
 
     /** Query a Sensor */
     fun query(): SensorQueryResponse = query(SensorQueryParams.none())
@@ -84,8 +122,24 @@ interface SensorService {
          * same as [SensorService.retrieve].
          */
         @MustBeClosed
-        fun retrieve(params: SensorRetrieveParams): HttpResponseFor<Sensor> =
-            retrieve(params, RequestOptions.none())
+        fun retrieve(sensorId: String): HttpResponseFor<Sensor> =
+            retrieve(sensorId, SensorRetrieveParams.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            sensorId: String,
+            params: SensorRetrieveParams = SensorRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Sensor> =
+            retrieve(params.toBuilder().sensorId(sensorId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            sensorId: String,
+            params: SensorRetrieveParams = SensorRetrieveParams.none(),
+        ): HttpResponseFor<Sensor> = retrieve(sensorId, params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
@@ -94,12 +148,37 @@ interface SensorService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Sensor>
 
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(params: SensorRetrieveParams): HttpResponseFor<Sensor> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(sensorId: String, requestOptions: RequestOptions): HttpResponseFor<Sensor> =
+            retrieve(sensorId, SensorRetrieveParams.none(), requestOptions)
+
         /**
          * Returns a raw HTTP response for `delete /api/v2/sensors/{sensor_id}`, but is otherwise
          * the same as [SensorService.delete].
          */
         @MustBeClosed
-        fun delete(params: SensorDeleteParams): HttpResponse = delete(params, RequestOptions.none())
+        fun delete(sensorId: String): HttpResponse = delete(sensorId, SensorDeleteParams.none())
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            sensorId: String,
+            params: SensorDeleteParams = SensorDeleteParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponse = delete(params.toBuilder().sensorId(sensorId).build(), requestOptions)
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            sensorId: String,
+            params: SensorDeleteParams = SensorDeleteParams.none(),
+        ): HttpResponse = delete(sensorId, params, RequestOptions.none())
 
         /** @see [delete] */
         @MustBeClosed
@@ -107,6 +186,15 @@ interface SensorService {
             params: SensorDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponse
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(params: SensorDeleteParams): HttpResponse = delete(params, RequestOptions.none())
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(sensorId: String, requestOptions: RequestOptions): HttpResponse =
+            delete(sensorId, SensorDeleteParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `post /api/v2/sensors/query`, but is otherwise the same

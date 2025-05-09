@@ -5,6 +5,7 @@ package com.hiddenlayer_sdk.api.services.blocking.scans
 import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.RequestOptions
+import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.handlers.emptyHandler
 import com.hiddenlayer_sdk.api.core.handlers.errorHandler
 import com.hiddenlayer_sdk.api.core.handlers.jsonHandler
@@ -24,6 +25,7 @@ import com.hiddenlayer_sdk.api.models.scans.results.ResultPatchResponse
 import com.hiddenlayer_sdk.api.models.scans.results.ResultRetrieveParams
 import com.hiddenlayer_sdk.api.models.scans.results.ResultStartParams
 import com.hiddenlayer_sdk.api.models.scans.results.ScanReport
+import kotlin.jvm.optionals.getOrNull
 
 class ResultServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     ResultService {
@@ -72,6 +74,9 @@ class ResultServiceImpl internal constructor(private val clientOptions: ClientOp
             params: ResultRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<ScanReport> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("scanId", params.scanId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -125,6 +130,9 @@ class ResultServiceImpl internal constructor(private val clientOptions: ClientOp
             params: ResultPatchParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<ResultPatchResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("pathScanId", params.pathScanId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
@@ -151,6 +159,9 @@ class ResultServiceImpl internal constructor(private val clientOptions: ClientOp
             params: ResultStartParams,
             requestOptions: RequestOptions,
         ): HttpResponse {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("pathScanId", params.pathScanId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)

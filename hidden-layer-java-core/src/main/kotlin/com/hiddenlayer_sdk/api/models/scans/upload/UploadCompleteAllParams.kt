@@ -4,23 +4,23 @@ package com.hiddenlayer_sdk.api.models.scans.upload
 
 import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.Params
-import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import com.hiddenlayer_sdk.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Indicate All files are uploaded and start the scan */
 class UploadCompleteAllParams
 private constructor(
-    private val scanId: String,
+    private val scanId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
-    fun scanId(): String = scanId
+    fun scanId(): Optional<String> = Optional.ofNullable(scanId)
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
@@ -32,14 +32,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [UploadCompleteAllParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .scanId()
-         * ```
-         */
+        @JvmStatic fun none(): UploadCompleteAllParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [UploadCompleteAllParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -60,7 +55,10 @@ private constructor(
                 uploadCompleteAllParams.additionalBodyProperties.toMutableMap()
         }
 
-        fun scanId(scanId: String) = apply { this.scanId = scanId }
+        fun scanId(scanId: String?) = apply { this.scanId = scanId }
+
+        /** Alias for calling [Builder.scanId] with `scanId.orElse(null)`. */
+        fun scanId(scanId: Optional<String>) = scanId(scanId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -186,17 +184,10 @@ private constructor(
          * Returns an immutable instance of [UploadCompleteAllParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .scanId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): UploadCompleteAllParams =
             UploadCompleteAllParams(
-                checkRequired("scanId", scanId),
+                scanId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -208,7 +199,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> scanId
+            0 -> scanId ?: ""
             else -> ""
         }
 

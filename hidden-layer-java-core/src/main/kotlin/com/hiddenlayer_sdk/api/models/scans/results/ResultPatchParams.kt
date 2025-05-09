@@ -14,14 +14,14 @@ import kotlin.jvm.optionals.getOrNull
 /** Indicate part (file or files) of a model scan has completed */
 class ResultPatchParams
 private constructor(
-    private val pathScanId: String,
+    private val pathScanId: String?,
     private val hasDetections: Boolean?,
     private val scanReport: ScanReport,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun pathScanId(): String = pathScanId
+    fun pathScanId(): Optional<String> = Optional.ofNullable(pathScanId)
 
     /** Filter file_results to only those that have detections (and parents) */
     fun hasDetections(): Optional<Boolean> = Optional.ofNullable(hasDetections)
@@ -43,7 +43,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .pathScanId()
          * .scanReport()
          * ```
          */
@@ -68,7 +67,10 @@ private constructor(
             additionalQueryParams = resultPatchParams.additionalQueryParams.toBuilder()
         }
 
-        fun pathScanId(pathScanId: String) = apply { this.pathScanId = pathScanId }
+        fun pathScanId(pathScanId: String?) = apply { this.pathScanId = pathScanId }
+
+        /** Alias for calling [Builder.pathScanId] with `pathScanId.orElse(null)`. */
+        fun pathScanId(pathScanId: Optional<String>) = pathScanId(pathScanId.getOrNull())
 
         /** Filter file_results to only those that have detections (and parents) */
         fun hasDetections(hasDetections: Boolean?) = apply { this.hasDetections = hasDetections }
@@ -191,7 +193,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .pathScanId()
          * .scanReport()
          * ```
          *
@@ -199,7 +200,7 @@ private constructor(
          */
         fun build(): ResultPatchParams =
             ResultPatchParams(
-                checkRequired("pathScanId", pathScanId),
+                pathScanId,
                 hasDetections,
                 checkRequired("scanReport", scanReport),
                 additionalHeaders.build(),
@@ -211,7 +212,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> pathScanId
+            0 -> pathScanId ?: ""
             else -> ""
         }
 

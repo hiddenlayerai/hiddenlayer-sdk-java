@@ -62,14 +62,39 @@ interface ScanService {
         checkReadiness(ScanCheckReadinessParams.none(), requestOptions)
 
     /** Retrieve Model Scan Results */
-    fun retrieveResults(params: ScanRetrieveResultsParams): ScanRetrieveResultsResponse =
-        retrieveResults(params, RequestOptions.none())
+    fun retrieveResults(scanId: String): ScanRetrieveResultsResponse =
+        retrieveResults(scanId, ScanRetrieveResultsParams.none())
+
+    /** @see [retrieveResults] */
+    fun retrieveResults(
+        scanId: String,
+        params: ScanRetrieveResultsParams = ScanRetrieveResultsParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ScanRetrieveResultsResponse =
+        retrieveResults(params.toBuilder().scanId(scanId).build(), requestOptions)
+
+    /** @see [retrieveResults] */
+    fun retrieveResults(
+        scanId: String,
+        params: ScanRetrieveResultsParams = ScanRetrieveResultsParams.none(),
+    ): ScanRetrieveResultsResponse = retrieveResults(scanId, params, RequestOptions.none())
 
     /** @see [retrieveResults] */
     fun retrieveResults(
         params: ScanRetrieveResultsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ScanRetrieveResultsResponse
+
+    /** @see [retrieveResults] */
+    fun retrieveResults(params: ScanRetrieveResultsParams): ScanRetrieveResultsResponse =
+        retrieveResults(params, RequestOptions.none())
+
+    /** @see [retrieveResults] */
+    fun retrieveResults(
+        scanId: String,
+        requestOptions: RequestOptions,
+    ): ScanRetrieveResultsResponse =
+        retrieveResults(scanId, ScanRetrieveResultsParams.none(), requestOptions)
 
     /** A view of [ScanService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -134,6 +159,35 @@ interface ScanService {
          * same as [ScanService.retrieveResults].
          */
         @MustBeClosed
+        fun retrieveResults(scanId: String): HttpResponseFor<ScanRetrieveResultsResponse> =
+            retrieveResults(scanId, ScanRetrieveResultsParams.none())
+
+        /** @see [retrieveResults] */
+        @MustBeClosed
+        fun retrieveResults(
+            scanId: String,
+            params: ScanRetrieveResultsParams = ScanRetrieveResultsParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScanRetrieveResultsResponse> =
+            retrieveResults(params.toBuilder().scanId(scanId).build(), requestOptions)
+
+        /** @see [retrieveResults] */
+        @MustBeClosed
+        fun retrieveResults(
+            scanId: String,
+            params: ScanRetrieveResultsParams = ScanRetrieveResultsParams.none(),
+        ): HttpResponseFor<ScanRetrieveResultsResponse> =
+            retrieveResults(scanId, params, RequestOptions.none())
+
+        /** @see [retrieveResults] */
+        @MustBeClosed
+        fun retrieveResults(
+            params: ScanRetrieveResultsParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScanRetrieveResultsResponse>
+
+        /** @see [retrieveResults] */
+        @MustBeClosed
         fun retrieveResults(
             params: ScanRetrieveResultsParams
         ): HttpResponseFor<ScanRetrieveResultsResponse> =
@@ -142,8 +196,9 @@ interface ScanService {
         /** @see [retrieveResults] */
         @MustBeClosed
         fun retrieveResults(
-            params: ScanRetrieveResultsParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<ScanRetrieveResultsResponse>
+            scanId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<ScanRetrieveResultsResponse> =
+            retrieveResults(scanId, ScanRetrieveResultsParams.none(), requestOptions)
     }
 }

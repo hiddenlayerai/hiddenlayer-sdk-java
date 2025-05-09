@@ -10,12 +10,13 @@ import com.hiddenlayer_sdk.api.core.http.QueryParams
 import com.hiddenlayer_sdk.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Indicate that upload is completed for {file_id} */
 class FileCompleteParams
 private constructor(
     private val scanId: String,
-    private val fileId: String,
+    private val fileId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
@@ -23,7 +24,7 @@ private constructor(
 
     fun scanId(): String = scanId
 
-    fun fileId(): String = fileId
+    fun fileId(): Optional<String> = Optional.ofNullable(fileId)
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
@@ -41,7 +42,6 @@ private constructor(
          * The following fields are required:
          * ```java
          * .scanId()
-         * .fileId()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -67,7 +67,10 @@ private constructor(
 
         fun scanId(scanId: String) = apply { this.scanId = scanId }
 
-        fun fileId(fileId: String) = apply { this.fileId = fileId }
+        fun fileId(fileId: String?) = apply { this.fileId = fileId }
+
+        /** Alias for calling [Builder.fileId] with `fileId.orElse(null)`. */
+        fun fileId(fileId: Optional<String>) = fileId(fileId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -197,7 +200,6 @@ private constructor(
          * The following fields are required:
          * ```java
          * .scanId()
-         * .fileId()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -205,7 +207,7 @@ private constructor(
         fun build(): FileCompleteParams =
             FileCompleteParams(
                 checkRequired("scanId", scanId),
-                checkRequired("fileId", fileId),
+                fileId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -218,7 +220,7 @@ private constructor(
     fun _pathParam(index: Int): String =
         when (index) {
             0 -> scanId
-            1 -> fileId
+            1 -> fileId ?: ""
             else -> ""
         }
 

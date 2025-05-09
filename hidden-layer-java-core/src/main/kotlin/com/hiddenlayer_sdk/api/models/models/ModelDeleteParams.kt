@@ -4,23 +4,23 @@ package com.hiddenlayer_sdk.api.models.models
 
 import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.Params
-import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import com.hiddenlayer_sdk.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Delete Adhoc Model */
 class ModelDeleteParams
 private constructor(
-    private val modelId: String,
+    private val modelId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
-    fun modelId(): String = modelId
+    fun modelId(): Optional<String> = Optional.ofNullable(modelId)
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
@@ -32,14 +32,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ModelDeleteParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .modelId()
-         * ```
-         */
+        @JvmStatic fun none(): ModelDeleteParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ModelDeleteParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -59,7 +54,10 @@ private constructor(
             additionalBodyProperties = modelDeleteParams.additionalBodyProperties.toMutableMap()
         }
 
-        fun modelId(modelId: String) = apply { this.modelId = modelId }
+        fun modelId(modelId: String?) = apply { this.modelId = modelId }
+
+        /** Alias for calling [Builder.modelId] with `modelId.orElse(null)`. */
+        fun modelId(modelId: Optional<String>) = modelId(modelId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -185,17 +183,10 @@ private constructor(
          * Returns an immutable instance of [ModelDeleteParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .modelId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ModelDeleteParams =
             ModelDeleteParams(
-                checkRequired("modelId", modelId),
+                modelId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -207,7 +198,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> modelId
+            0 -> modelId ?: ""
             else -> ""
         }
 

@@ -19,6 +19,18 @@ interface FileServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Add file to V3 Upload */
+    fun add(scanId: String, params: FileAddParams): CompletableFuture<FileAddResponse> =
+        add(scanId, params, RequestOptions.none())
+
+    /** @see [add] */
+    fun add(
+        scanId: String,
+        params: FileAddParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<FileAddResponse> =
+        add(params.toBuilder().scanId(scanId).build(), requestOptions)
+
+    /** @see [add] */
     fun add(params: FileAddParams): CompletableFuture<FileAddResponse> =
         add(params, RequestOptions.none())
 
@@ -29,6 +41,20 @@ interface FileServiceAsync {
     ): CompletableFuture<FileAddResponse>
 
     /** Indicate that upload is completed for {file_id} */
+    fun complete(
+        fileId: String,
+        params: FileCompleteParams,
+    ): CompletableFuture<FileCompleteResponse> = complete(fileId, params, RequestOptions.none())
+
+    /** @see [complete] */
+    fun complete(
+        fileId: String,
+        params: FileCompleteParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<FileCompleteResponse> =
+        complete(params.toBuilder().fileId(fileId).build(), requestOptions)
+
+    /** @see [complete] */
     fun complete(params: FileCompleteParams): CompletableFuture<FileCompleteResponse> =
         complete(params, RequestOptions.none())
 
@@ -46,6 +72,23 @@ interface FileServiceAsync {
          * the same as [FileServiceAsync.add].
          */
         @MustBeClosed
+        fun add(
+            scanId: String,
+            params: FileAddParams,
+        ): CompletableFuture<HttpResponseFor<FileAddResponse>> =
+            add(scanId, params, RequestOptions.none())
+
+        /** @see [add] */
+        @MustBeClosed
+        fun add(
+            scanId: String,
+            params: FileAddParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<FileAddResponse>> =
+            add(params.toBuilder().scanId(scanId).build(), requestOptions)
+
+        /** @see [add] */
+        @MustBeClosed
         fun add(params: FileAddParams): CompletableFuture<HttpResponseFor<FileAddResponse>> =
             add(params, RequestOptions.none())
 
@@ -60,6 +103,23 @@ interface FileServiceAsync {
          * Returns a raw HTTP response for `patch /scan/v3/upload/{scan_id}/file/{file_id}`, but is
          * otherwise the same as [FileServiceAsync.complete].
          */
+        @MustBeClosed
+        fun complete(
+            fileId: String,
+            params: FileCompleteParams,
+        ): CompletableFuture<HttpResponseFor<FileCompleteResponse>> =
+            complete(fileId, params, RequestOptions.none())
+
+        /** @see [complete] */
+        @MustBeClosed
+        fun complete(
+            fileId: String,
+            params: FileCompleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<FileCompleteResponse>> =
+            complete(params.toBuilder().fileId(fileId).build(), requestOptions)
+
+        /** @see [complete] */
         @MustBeClosed
         fun complete(
             params: FileCompleteParams

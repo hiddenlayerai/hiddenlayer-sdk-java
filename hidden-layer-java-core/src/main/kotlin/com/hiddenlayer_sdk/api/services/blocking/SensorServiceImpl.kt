@@ -5,6 +5,7 @@ package com.hiddenlayer_sdk.api.services.blocking
 import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.RequestOptions
+import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.handlers.emptyHandler
 import com.hiddenlayer_sdk.api.core.handlers.errorHandler
 import com.hiddenlayer_sdk.api.core.handlers.jsonHandler
@@ -23,6 +24,7 @@ import com.hiddenlayer_sdk.api.models.sensors.SensorDeleteParams
 import com.hiddenlayer_sdk.api.models.sensors.SensorQueryParams
 import com.hiddenlayer_sdk.api.models.sensors.SensorQueryResponse
 import com.hiddenlayer_sdk.api.models.sensors.SensorRetrieveParams
+import kotlin.jvm.optionals.getOrNull
 
 class SensorServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     SensorService {
@@ -92,6 +94,9 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
             params: SensorRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<Sensor> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("sensorId", params.sensorId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -117,6 +122,9 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
             params: SensorDeleteParams,
             requestOptions: RequestOptions,
         ): HttpResponse {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("sensorId", params.sensorId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)

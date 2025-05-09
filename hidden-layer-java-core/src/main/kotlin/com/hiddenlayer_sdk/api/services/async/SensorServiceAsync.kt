@@ -32,8 +32,22 @@ interface SensorServiceAsync {
     ): CompletableFuture<Sensor>
 
     /** Get Sensor */
-    fun retrieve(params: SensorRetrieveParams): CompletableFuture<Sensor> =
-        retrieve(params, RequestOptions.none())
+    fun retrieve(sensorId: String): CompletableFuture<Sensor> =
+        retrieve(sensorId, SensorRetrieveParams.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        sensorId: String,
+        params: SensorRetrieveParams = SensorRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Sensor> =
+        retrieve(params.toBuilder().sensorId(sensorId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
+        sensorId: String,
+        params: SensorRetrieveParams = SensorRetrieveParams.none(),
+    ): CompletableFuture<Sensor> = retrieve(sensorId, params, RequestOptions.none())
 
     /** @see [retrieve] */
     fun retrieve(
@@ -41,15 +55,45 @@ interface SensorServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Sensor>
 
+    /** @see [retrieve] */
+    fun retrieve(params: SensorRetrieveParams): CompletableFuture<Sensor> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(sensorId: String, requestOptions: RequestOptions): CompletableFuture<Sensor> =
+        retrieve(sensorId, SensorRetrieveParams.none(), requestOptions)
+
     /** Delete Sensor */
-    fun delete(params: SensorDeleteParams): CompletableFuture<Void?> =
-        delete(params, RequestOptions.none())
+    fun delete(sensorId: String): CompletableFuture<Void?> =
+        delete(sensorId, SensorDeleteParams.none())
+
+    /** @see [delete] */
+    fun delete(
+        sensorId: String,
+        params: SensorDeleteParams = SensorDeleteParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Void?> =
+        delete(params.toBuilder().sensorId(sensorId).build(), requestOptions)
+
+    /** @see [delete] */
+    fun delete(
+        sensorId: String,
+        params: SensorDeleteParams = SensorDeleteParams.none(),
+    ): CompletableFuture<Void?> = delete(sensorId, params, RequestOptions.none())
 
     /** @see [delete] */
     fun delete(
         params: SensorDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
+
+    /** @see [delete] */
+    fun delete(params: SensorDeleteParams): CompletableFuture<Void?> =
+        delete(params, RequestOptions.none())
+
+    /** @see [delete] */
+    fun delete(sensorId: String, requestOptions: RequestOptions): CompletableFuture<Void?> =
+        delete(sensorId, SensorDeleteParams.none(), requestOptions)
 
     /** Query a Sensor */
     fun query(): CompletableFuture<SensorQueryResponse> = query(SensorQueryParams.none())
@@ -94,8 +138,25 @@ interface SensorServiceAsync {
          * same as [SensorServiceAsync.retrieve].
          */
         @MustBeClosed
-        fun retrieve(params: SensorRetrieveParams): CompletableFuture<HttpResponseFor<Sensor>> =
-            retrieve(params, RequestOptions.none())
+        fun retrieve(sensorId: String): CompletableFuture<HttpResponseFor<Sensor>> =
+            retrieve(sensorId, SensorRetrieveParams.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            sensorId: String,
+            params: SensorRetrieveParams = SensorRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Sensor>> =
+            retrieve(params.toBuilder().sensorId(sensorId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            sensorId: String,
+            params: SensorRetrieveParams = SensorRetrieveParams.none(),
+        ): CompletableFuture<HttpResponseFor<Sensor>> =
+            retrieve(sensorId, params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
@@ -104,13 +165,42 @@ interface SensorServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Sensor>>
 
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(params: SensorRetrieveParams): CompletableFuture<HttpResponseFor<Sensor>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            sensorId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<Sensor>> =
+            retrieve(sensorId, SensorRetrieveParams.none(), requestOptions)
+
         /**
          * Returns a raw HTTP response for `delete /api/v2/sensors/{sensor_id}`, but is otherwise
          * the same as [SensorServiceAsync.delete].
          */
         @MustBeClosed
-        fun delete(params: SensorDeleteParams): CompletableFuture<HttpResponse> =
-            delete(params, RequestOptions.none())
+        fun delete(sensorId: String): CompletableFuture<HttpResponse> =
+            delete(sensorId, SensorDeleteParams.none())
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            sensorId: String,
+            params: SensorDeleteParams = SensorDeleteParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponse> =
+            delete(params.toBuilder().sensorId(sensorId).build(), requestOptions)
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            sensorId: String,
+            params: SensorDeleteParams = SensorDeleteParams.none(),
+        ): CompletableFuture<HttpResponse> = delete(sensorId, params, RequestOptions.none())
 
         /** @see [delete] */
         @MustBeClosed
@@ -118,6 +208,19 @@ interface SensorServiceAsync {
             params: SensorDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(params: SensorDeleteParams): CompletableFuture<HttpResponse> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            sensorId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponse> =
+            delete(sensorId, SensorDeleteParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `post /api/v2/sensors/query`, but is otherwise the same

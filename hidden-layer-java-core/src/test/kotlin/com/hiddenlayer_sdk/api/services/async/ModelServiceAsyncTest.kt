@@ -4,8 +4,6 @@ package com.hiddenlayer_sdk.api.services.async
 
 import com.hiddenlayer_sdk.api.TestServerExtension
 import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClientAsync
-import com.hiddenlayer_sdk.api.models.models.ModelDeleteParams
-import com.hiddenlayer_sdk.api.models.models.ModelRetrieveParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -23,12 +21,7 @@ internal class ModelServiceAsyncTest {
                 .build()
         val modelServiceAsync = client.models()
 
-        val modelFuture =
-            modelServiceAsync.retrieve(
-                ModelRetrieveParams.builder()
-                    .modelId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val modelFuture = modelServiceAsync.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         val model = modelFuture.get()
         model.validate()
@@ -44,10 +37,7 @@ internal class ModelServiceAsyncTest {
                 .build()
         val modelServiceAsync = client.models()
 
-        val future =
-            modelServiceAsync.delete(
-                ModelDeleteParams.builder().modelId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
-            )
+        val future = modelServiceAsync.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         val response = future.get()
     }

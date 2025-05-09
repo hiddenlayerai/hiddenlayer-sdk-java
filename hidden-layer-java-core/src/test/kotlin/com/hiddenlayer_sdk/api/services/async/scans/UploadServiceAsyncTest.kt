@@ -4,7 +4,6 @@ package com.hiddenlayer_sdk.api.services.async.scans
 
 import com.hiddenlayer_sdk.api.TestServerExtension
 import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClientAsync
-import com.hiddenlayer_sdk.api.models.scans.upload.UploadCompleteAllParams
 import com.hiddenlayer_sdk.api.models.scans.upload.UploadStartParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -23,12 +22,7 @@ internal class UploadServiceAsyncTest {
                 .build()
         val uploadServiceAsync = client.scans().upload()
 
-        val responseFuture =
-            uploadServiceAsync.completeAll(
-                UploadCompleteAllParams.builder()
-                    .scanId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val responseFuture = uploadServiceAsync.completeAll("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         val response = responseFuture.get()
         response.validate()

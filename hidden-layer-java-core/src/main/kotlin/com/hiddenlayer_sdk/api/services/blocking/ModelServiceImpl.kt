@@ -5,6 +5,7 @@ package com.hiddenlayer_sdk.api.services.blocking
 import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.RequestOptions
+import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.handlers.emptyHandler
 import com.hiddenlayer_sdk.api.core.handlers.errorHandler
 import com.hiddenlayer_sdk.api.core.handlers.jsonHandler
@@ -22,6 +23,7 @@ import com.hiddenlayer_sdk.api.models.models.ModelRetrieveParams
 import com.hiddenlayer_sdk.api.models.models.ModelRetrieveResponse
 import com.hiddenlayer_sdk.api.services.blocking.models.CardService
 import com.hiddenlayer_sdk.api.services.blocking.models.CardServiceImpl
+import kotlin.jvm.optionals.getOrNull
 
 class ModelServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     ModelService {
@@ -67,6 +69,9 @@ class ModelServiceImpl internal constructor(private val clientOptions: ClientOpt
             params: ModelRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<ModelRetrieveResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("modelId", params.modelId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -92,6 +97,9 @@ class ModelServiceImpl internal constructor(private val clientOptions: ClientOpt
             params: ModelDeleteParams,
             requestOptions: RequestOptions,
         ): HttpResponse {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("modelId", params.modelId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)

@@ -23,14 +23,36 @@ interface ResultServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Get Result of a Model Scan */
-    fun retrieve(params: ResultRetrieveParams): CompletableFuture<ScanReport> =
-        retrieve(params, RequestOptions.none())
+    fun retrieve(scanId: String): CompletableFuture<ScanReport> =
+        retrieve(scanId, ResultRetrieveParams.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        scanId: String,
+        params: ResultRetrieveParams = ResultRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ScanReport> =
+        retrieve(params.toBuilder().scanId(scanId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
+        scanId: String,
+        params: ResultRetrieveParams = ResultRetrieveParams.none(),
+    ): CompletableFuture<ScanReport> = retrieve(scanId, params, RequestOptions.none())
 
     /** @see [retrieve] */
     fun retrieve(
         params: ResultRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ScanReport>
+
+    /** @see [retrieve] */
+    fun retrieve(params: ResultRetrieveParams): CompletableFuture<ScanReport> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(scanId: String, requestOptions: RequestOptions): CompletableFuture<ScanReport> =
+        retrieve(scanId, ResultRetrieveParams.none(), requestOptions)
 
     /** Get condensed reports for a Model Scan */
     fun list(): CompletableFuture<ResultListResponse> = list(ResultListParams.none())
@@ -51,6 +73,20 @@ interface ResultServiceAsync {
         list(ResultListParams.none(), requestOptions)
 
     /** Indicate part (file or files) of a model scan has completed */
+    fun patch(
+        pathScanId: String,
+        params: ResultPatchParams,
+    ): CompletableFuture<ResultPatchResponse> = patch(pathScanId, params, RequestOptions.none())
+
+    /** @see [patch] */
+    fun patch(
+        pathScanId: String,
+        params: ResultPatchParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ResultPatchResponse> =
+        patch(params.toBuilder().pathScanId(pathScanId).build(), requestOptions)
+
+    /** @see [patch] */
     fun patch(params: ResultPatchParams): CompletableFuture<ResultPatchResponse> =
         patch(params, RequestOptions.none())
 
@@ -61,6 +97,18 @@ interface ResultServiceAsync {
     ): CompletableFuture<ResultPatchResponse>
 
     /** Indicate model scan has started */
+    fun start(pathScanId: String, params: ResultStartParams): CompletableFuture<Void?> =
+        start(pathScanId, params, RequestOptions.none())
+
+    /** @see [start] */
+    fun start(
+        pathScanId: String,
+        params: ResultStartParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Void?> =
+        start(params.toBuilder().pathScanId(pathScanId).build(), requestOptions)
+
+    /** @see [start] */
     fun start(params: ResultStartParams): CompletableFuture<Void?> =
         start(params, RequestOptions.none())
 
@@ -80,8 +128,25 @@ interface ResultServiceAsync {
          * same as [ResultServiceAsync.retrieve].
          */
         @MustBeClosed
-        fun retrieve(params: ResultRetrieveParams): CompletableFuture<HttpResponseFor<ScanReport>> =
-            retrieve(params, RequestOptions.none())
+        fun retrieve(scanId: String): CompletableFuture<HttpResponseFor<ScanReport>> =
+            retrieve(scanId, ResultRetrieveParams.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            scanId: String,
+            params: ResultRetrieveParams = ResultRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ScanReport>> =
+            retrieve(params.toBuilder().scanId(scanId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            scanId: String,
+            params: ResultRetrieveParams = ResultRetrieveParams.none(),
+        ): CompletableFuture<HttpResponseFor<ScanReport>> =
+            retrieve(scanId, params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
@@ -89,6 +154,19 @@ interface ResultServiceAsync {
             params: ResultRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ScanReport>>
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(params: ResultRetrieveParams): CompletableFuture<HttpResponseFor<ScanReport>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            scanId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ScanReport>> =
+            retrieve(scanId, ResultRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /scan/v3/results`, but is otherwise the same as
@@ -125,6 +203,23 @@ interface ResultServiceAsync {
          */
         @MustBeClosed
         fun patch(
+            pathScanId: String,
+            params: ResultPatchParams,
+        ): CompletableFuture<HttpResponseFor<ResultPatchResponse>> =
+            patch(pathScanId, params, RequestOptions.none())
+
+        /** @see [patch] */
+        @MustBeClosed
+        fun patch(
+            pathScanId: String,
+            params: ResultPatchParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ResultPatchResponse>> =
+            patch(params.toBuilder().pathScanId(pathScanId).build(), requestOptions)
+
+        /** @see [patch] */
+        @MustBeClosed
+        fun patch(
             params: ResultPatchParams
         ): CompletableFuture<HttpResponseFor<ResultPatchResponse>> =
             patch(params, RequestOptions.none())
@@ -140,6 +235,20 @@ interface ResultServiceAsync {
          * Returns a raw HTTP response for `post /scan/v3/results/{scan_id}`, but is otherwise the
          * same as [ResultServiceAsync.start].
          */
+        @MustBeClosed
+        fun start(pathScanId: String, params: ResultStartParams): CompletableFuture<HttpResponse> =
+            start(pathScanId, params, RequestOptions.none())
+
+        /** @see [start] */
+        @MustBeClosed
+        fun start(
+            pathScanId: String,
+            params: ResultStartParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponse> =
+            start(params.toBuilder().pathScanId(pathScanId).build(), requestOptions)
+
+        /** @see [start] */
         @MustBeClosed
         fun start(params: ResultStartParams): CompletableFuture<HttpResponse> =
             start(params, RequestOptions.none())

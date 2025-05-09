@@ -10,11 +10,12 @@ import com.hiddenlayer_sdk.api.core.http.QueryParams
 import com.hiddenlayer_sdk.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Add file to V3 Upload */
 class FileAddParams
 private constructor(
-    private val scanId: String,
+    private val scanId: String?,
     private val fileContentLength: Long,
     private val fileName: String,
     private val additionalHeaders: Headers,
@@ -22,7 +23,7 @@ private constructor(
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
-    fun scanId(): String = scanId
+    fun scanId(): Optional<String> = Optional.ofNullable(scanId)
 
     fun fileContentLength(): Long = fileContentLength
 
@@ -43,7 +44,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .scanId()
          * .fileContentLength()
          * .fileName()
          * ```
@@ -71,7 +71,10 @@ private constructor(
             additionalBodyProperties = fileAddParams.additionalBodyProperties.toMutableMap()
         }
 
-        fun scanId(scanId: String) = apply { this.scanId = scanId }
+        fun scanId(scanId: String?) = apply { this.scanId = scanId }
+
+        /** Alias for calling [Builder.scanId] with `scanId.orElse(null)`. */
+        fun scanId(scanId: Optional<String>) = scanId(scanId.getOrNull())
 
         fun fileContentLength(fileContentLength: Long) = apply {
             this.fileContentLength = fileContentLength
@@ -206,7 +209,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .scanId()
          * .fileContentLength()
          * .fileName()
          * ```
@@ -215,7 +217,7 @@ private constructor(
          */
         fun build(): FileAddParams =
             FileAddParams(
-                checkRequired("scanId", scanId),
+                scanId,
                 checkRequired("fileContentLength", fileContentLength),
                 checkRequired("fileName", fileName),
                 additionalHeaders.build(),
@@ -229,7 +231,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> scanId
+            0 -> scanId ?: ""
             else -> ""
         }
 

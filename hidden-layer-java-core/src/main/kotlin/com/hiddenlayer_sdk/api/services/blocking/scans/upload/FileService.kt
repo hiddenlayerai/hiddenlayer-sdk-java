@@ -18,6 +18,17 @@ interface FileService {
     fun withRawResponse(): WithRawResponse
 
     /** Add file to V3 Upload */
+    fun add(scanId: String, params: FileAddParams): FileAddResponse =
+        add(scanId, params, RequestOptions.none())
+
+    /** @see [add] */
+    fun add(
+        scanId: String,
+        params: FileAddParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): FileAddResponse = add(params.toBuilder().scanId(scanId).build(), requestOptions)
+
+    /** @see [add] */
     fun add(params: FileAddParams): FileAddResponse = add(params, RequestOptions.none())
 
     /** @see [add] */
@@ -27,6 +38,17 @@ interface FileService {
     ): FileAddResponse
 
     /** Indicate that upload is completed for {file_id} */
+    fun complete(fileId: String, params: FileCompleteParams): FileCompleteResponse =
+        complete(fileId, params, RequestOptions.none())
+
+    /** @see [complete] */
+    fun complete(
+        fileId: String,
+        params: FileCompleteParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): FileCompleteResponse = complete(params.toBuilder().fileId(fileId).build(), requestOptions)
+
+    /** @see [complete] */
     fun complete(params: FileCompleteParams): FileCompleteResponse =
         complete(params, RequestOptions.none())
 
@@ -44,6 +66,20 @@ interface FileService {
          * the same as [FileService.add].
          */
         @MustBeClosed
+        fun add(scanId: String, params: FileAddParams): HttpResponseFor<FileAddResponse> =
+            add(scanId, params, RequestOptions.none())
+
+        /** @see [add] */
+        @MustBeClosed
+        fun add(
+            scanId: String,
+            params: FileAddParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<FileAddResponse> =
+            add(params.toBuilder().scanId(scanId).build(), requestOptions)
+
+        /** @see [add] */
+        @MustBeClosed
         fun add(params: FileAddParams): HttpResponseFor<FileAddResponse> =
             add(params, RequestOptions.none())
 
@@ -58,6 +94,22 @@ interface FileService {
          * Returns a raw HTTP response for `patch /scan/v3/upload/{scan_id}/file/{file_id}`, but is
          * otherwise the same as [FileService.complete].
          */
+        @MustBeClosed
+        fun complete(
+            fileId: String,
+            params: FileCompleteParams,
+        ): HttpResponseFor<FileCompleteResponse> = complete(fileId, params, RequestOptions.none())
+
+        /** @see [complete] */
+        @MustBeClosed
+        fun complete(
+            fileId: String,
+            params: FileCompleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<FileCompleteResponse> =
+            complete(params.toBuilder().fileId(fileId).build(), requestOptions)
+
+        /** @see [complete] */
         @MustBeClosed
         fun complete(params: FileCompleteParams): HttpResponseFor<FileCompleteResponse> =
             complete(params, RequestOptions.none())

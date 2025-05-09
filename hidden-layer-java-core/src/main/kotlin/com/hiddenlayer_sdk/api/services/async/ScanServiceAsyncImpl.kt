@@ -5,6 +5,7 @@ package com.hiddenlayer_sdk.api.services.async
 import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.RequestOptions
+import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.handlers.emptyHandler
 import com.hiddenlayer_sdk.api.core.handlers.errorHandler
 import com.hiddenlayer_sdk.api.core.handlers.jsonHandler
@@ -27,6 +28,7 @@ import com.hiddenlayer_sdk.api.services.async.scans.ResultServiceAsyncImpl
 import com.hiddenlayer_sdk.api.services.async.scans.UploadServiceAsync
 import com.hiddenlayer_sdk.api.services.async.scans.UploadServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class ScanServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     ScanServiceAsync {
@@ -143,6 +145,9 @@ class ScanServiceAsyncImpl internal constructor(private val clientOptions: Clien
             params: ScanRetrieveResultsParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<ScanRetrieveResultsResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("scanId", params.scanId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

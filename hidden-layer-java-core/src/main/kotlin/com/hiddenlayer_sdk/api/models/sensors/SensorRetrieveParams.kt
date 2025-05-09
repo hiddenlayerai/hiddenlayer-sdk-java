@@ -3,20 +3,21 @@
 package com.hiddenlayer_sdk.api.models.sensors
 
 import com.hiddenlayer_sdk.api.core.Params
-import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Get Sensor */
 class SensorRetrieveParams
 private constructor(
-    private val sensorId: String,
+    private val sensorId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun sensorId(): String = sensorId
+    fun sensorId(): Optional<String> = Optional.ofNullable(sensorId)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
@@ -26,14 +27,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [SensorRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .sensorId()
-         * ```
-         */
+        @JvmStatic fun none(): SensorRetrieveParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [SensorRetrieveParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -51,7 +47,10 @@ private constructor(
             additionalQueryParams = sensorRetrieveParams.additionalQueryParams.toBuilder()
         }
 
-        fun sensorId(sensorId: String) = apply { this.sensorId = sensorId }
+        fun sensorId(sensorId: String?) = apply { this.sensorId = sensorId }
+
+        /** Alias for calling [Builder.sensorId] with `sensorId.orElse(null)`. */
+        fun sensorId(sensorId: Optional<String>) = sensorId(sensorId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -155,25 +154,14 @@ private constructor(
          * Returns an immutable instance of [SensorRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .sensorId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): SensorRetrieveParams =
-            SensorRetrieveParams(
-                checkRequired("sensorId", sensorId),
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
-            )
+            SensorRetrieveParams(sensorId, additionalHeaders.build(), additionalQueryParams.build())
     }
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> sensorId
+            0 -> sensorId ?: ""
             else -> ""
         }
 

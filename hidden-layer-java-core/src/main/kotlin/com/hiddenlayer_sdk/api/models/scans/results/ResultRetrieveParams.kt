@@ -3,7 +3,6 @@
 package com.hiddenlayer_sdk.api.models.scans.results
 
 import com.hiddenlayer_sdk.api.core.Params
-import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import java.util.Objects
@@ -13,13 +12,13 @@ import kotlin.jvm.optionals.getOrNull
 /** Get Result of a Model Scan */
 class ResultRetrieveParams
 private constructor(
-    private val scanId: String,
+    private val scanId: String?,
     private val hasDetections: Boolean?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun scanId(): String = scanId
+    fun scanId(): Optional<String> = Optional.ofNullable(scanId)
 
     /** Filter file_results to only those that have detections (and parents) */
     fun hasDetections(): Optional<Boolean> = Optional.ofNullable(hasDetections)
@@ -32,14 +31,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ResultRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .scanId()
-         * ```
-         */
+        @JvmStatic fun none(): ResultRetrieveParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [ResultRetrieveParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -59,7 +53,10 @@ private constructor(
             additionalQueryParams = resultRetrieveParams.additionalQueryParams.toBuilder()
         }
 
-        fun scanId(scanId: String) = apply { this.scanId = scanId }
+        fun scanId(scanId: String?) = apply { this.scanId = scanId }
+
+        /** Alias for calling [Builder.scanId] with `scanId.orElse(null)`. */
+        fun scanId(scanId: Optional<String>) = scanId(scanId.getOrNull())
 
         /** Filter file_results to only those that have detections (and parents) */
         fun hasDetections(hasDetections: Boolean?) = apply { this.hasDetections = hasDetections }
@@ -177,17 +174,10 @@ private constructor(
          * Returns an immutable instance of [ResultRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .scanId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ResultRetrieveParams =
             ResultRetrieveParams(
-                checkRequired("scanId", scanId),
+                scanId,
                 hasDetections,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -196,7 +186,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> scanId
+            0 -> scanId ?: ""
             else -> ""
         }
 
