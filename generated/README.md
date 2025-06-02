@@ -44,7 +44,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>com.hiddenlayer</groupId>
   <artifactId>hiddenlayer-rest-java</artifactId>
-  <version>1</version>
+  <version>0.3.2</version>
   <scope>compile</scope>
 </dependency>
 ```
