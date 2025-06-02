@@ -47,7 +47,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   FileScanReportV3.JSON_PROPERTY_DETECTIONS,
   FileScanReportV3.JSON_PROPERTY_FILE_RESULTS
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-10T21:03:59.882437Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-06-02T17:04:04.425318Z[GMT]", comments = "Generator version: 7.6.0")
 public class FileScanReportV3 {
   public static final String JSON_PROPERTY_FILE_INSTANCE_ID = "file_instance_id";
   private String fileInstanceId;

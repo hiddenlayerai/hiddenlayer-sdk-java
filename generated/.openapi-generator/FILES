@@ -78,8 +78,9 @@ docs/ScanDetectionV3.md
 docs/ScanDetectionV31.md
 docs/ScanHeaderV3.md
 docs/ScanJob.md
-docs/ScanJobInventory.md
+docs/ScanJobAccess.md
 docs/ScanModelDetailsV3.md
+docs/ScanModelDetailsV31.md
 docs/ScanModelIdsV3.md
 docs/ScanReportV3.md
 docs/ScanResultsMapV3.md
@@ -200,8 +201,9 @@ src/main/java/com/hiddenlayer/sdk/rest/models/ScanDetectionV3.java
 src/main/java/com/hiddenlayer/sdk/rest/models/ScanDetectionV31.java
 src/main/java/com/hiddenlayer/sdk/rest/models/ScanHeaderV3.java
 src/main/java/com/hiddenlayer/sdk/rest/models/ScanJob.java
-src/main/java/com/hiddenlayer/sdk/rest/models/ScanJobInventory.java
+src/main/java/com/hiddenlayer/sdk/rest/models/ScanJobAccess.java
 src/main/java/com/hiddenlayer/sdk/rest/models/ScanModelDetailsV3.java
+src/main/java/com/hiddenlayer/sdk/rest/models/ScanModelDetailsV31.java
 src/main/java/com/hiddenlayer/sdk/rest/models/ScanModelIdsV3.java
 src/main/java/com/hiddenlayer/sdk/rest/models/ScanReportV3.java
 src/main/java/com/hiddenlayer/sdk/rest/models/ScanResultsMapV3.java
@@ -301,8 +303,9 @@ src/test/java/com/hiddenlayer/sdk/rest/models/ScanCreateRequestTest.java
 src/test/java/com/hiddenlayer/sdk/rest/models/ScanDetectionV31Test.java
 src/test/java/com/hiddenlayer/sdk/rest/models/ScanDetectionV3Test.java
 src/test/java/com/hiddenlayer/sdk/rest/models/ScanHeaderV3Test.java
-src/test/java/com/hiddenlayer/sdk/rest/models/ScanJobInventoryTest.java
+src/test/java/com/hiddenlayer/sdk/rest/models/ScanJobAccessTest.java
 src/test/java/com/hiddenlayer/sdk/rest/models/ScanJobTest.java
+src/test/java/com/hiddenlayer/sdk/rest/models/ScanModelDetailsV31Test.java
 src/test/java/com/hiddenlayer/sdk/rest/models/ScanModelDetailsV3Test.java
 src/test/java/com/hiddenlayer/sdk/rest/models/ScanModelIdsV3Test.java
 src/test/java/com/hiddenlayer/sdk/rest/models/ScanReportV3Test.java

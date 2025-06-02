@@ -5,11 +5,7 @@
     <artifactId>hiddenlayer-rest-java</artifactId>
     <packaging>jar</packaging>
     <name>hiddenlayer-rest-java</name>
-    <parent>
-        <groupId>com.hiddenlayer</groupId>
-        <artifactId>java-client-parent</artifactId>
-        <version>0.3.1</version>
-    </parent>
+    <version>1</version>
     <url>https://github.com/openapitools/openapi-generator</url>
     <description>OpenAPI Java</description>
     <scm>

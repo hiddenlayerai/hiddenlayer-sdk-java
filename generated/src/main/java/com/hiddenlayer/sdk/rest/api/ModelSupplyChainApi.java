@@ -57,7 +57,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-10T21:03:59.882437Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-06-02T17:04:04.425318Z[GMT]", comments = "Generator version: 7.6.0")
 public class ModelSupplyChainApi {
   private final HttpClient memberVarHttpClient;
   private final ObjectMapper memberVarObjectMapper;
@@ -420,20 +420,22 @@ public class ModelSupplyChainApi {
    * Request a Model Scan Job
    * 
    * @param scanJob Request body for create scan request (required)
+   * @return ScanReportV3
    * @throws ApiException if fails to make API call
    */
-  public void createScanJob(ScanJob scanJob) throws ApiException {
-    createScanJobWithHttpInfo(scanJob);
+  public ScanReportV3 createScanJob(ScanJob scanJob) throws ApiException {
+    ApiResponse<ScanReportV3> localVarResponse = createScanJobWithHttpInfo(scanJob);
+    return localVarResponse.getData();
   }
 
   /**
    * Request a Model Scan Job
    * 
    * @param scanJob Request body for create scan request (required)
-   * @return ApiResponse&lt;Void&gt;
+   * @return ApiResponse&lt;ScanReportV3&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<Void> createScanJobWithHttpInfo(ScanJob scanJob) throws ApiException {
+  public ApiResponse<ScanReportV3> createScanJobWithHttpInfo(ScanJob scanJob) throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = createScanJobRequestBuilder(scanJob);
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -446,17 +448,12 @@ public class ModelSupplyChainApi {
         if (localVarResponse.statusCode()/ 100 != 2) {
           throw getApiException("createScanJob", localVarResponse);
         }
-        return new ApiResponse<Void>(
+        return new ApiResponse<ScanReportV3>(
           localVarResponse.statusCode(),
           localVarResponse.headers().map(),
-          null
+          localVarResponse.body() == null ? null : memberVarObjectMapper.readValue(localVarResponse.body(), new TypeReference<ScanReportV3>() {}) // closes the InputStream
         );
       } finally {
-        // Drain the InputStream
-        while (localVarResponse.body().read() != -1) {
-            // Ignore
-        }
-        localVarResponse.body().close();
       }
     } catch (IOException e) {
       throw new ApiException(e);
@@ -475,12 +472,12 @@ public class ModelSupplyChainApi {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
-    String localVarPath = "/scans/v3/jobs";
+    String localVarPath = "/scan/v3/jobs";
 
     localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
     localVarRequestBuilder.header("Content-Type", "application/json; charset=utf-8");
-    localVarRequestBuilder.header("Accept", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json; charset=utf-8, application/json");
 
     try {
       byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(scanJob);
@@ -619,21 +616,21 @@ public class ModelSupplyChainApi {
   /**
    * List all Model Scan Jobs
    * 
-   * @return List&lt;ScanJob&gt;
+   * @return ScanJob
    * @throws ApiException if fails to make API call
    */
-  public List<ScanJob> getScanJobs() throws ApiException {
-    ApiResponse<List<ScanJob>> localVarResponse = getScanJobsWithHttpInfo();
+  public ScanJob getScanJobs() throws ApiException {
+    ApiResponse<ScanJob> localVarResponse = getScanJobsWithHttpInfo();
     return localVarResponse.getData();
   }
 
   /**
    * List all Model Scan Jobs
    * 
-   * @return ApiResponse&lt;List&lt;ScanJob&gt;&gt;
+   * @return ApiResponse&lt;ScanJob&gt;
    * @throws ApiException if fails to make API call
    */
-  public ApiResponse<List<ScanJob>> getScanJobsWithHttpInfo() throws ApiException {
+  public ApiResponse<ScanJob> getScanJobsWithHttpInfo() throws ApiException {
     HttpRequest.Builder localVarRequestBuilder = getScanJobsRequestBuilder();
     try {
       HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
@@ -646,10 +643,10 @@ public class ModelSupplyChainApi {
         if (localVarResponse.statusCode()/ 100 != 2) {
           throw getApiException("getScanJobs", localVarResponse);
         }
-        return new ApiResponse<List<ScanJob>>(
+        return new ApiResponse<ScanJob>(
           localVarResponse.statusCode(),
           localVarResponse.headers().map(),
-          localVarResponse.body() == null ? null : memberVarObjectMapper.readValue(localVarResponse.body(), new TypeReference<List<ScanJob>>() {}) // closes the InputStream
+          localVarResponse.body() == null ? null : memberVarObjectMapper.readValue(localVarResponse.body(), new TypeReference<ScanJob>() {}) // closes the InputStream
         );
       } finally {
       }
@@ -666,7 +663,7 @@ public class ModelSupplyChainApi {
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
-    String localVarPath = "/scans/v3/jobs";
+    String localVarPath = "/scan/v3/jobs";
 
     localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
@@ -775,7 +772,7 @@ public class ModelSupplyChainApi {
   /**
    * Retrieve Model Scan Results
    * 
-   * @param scanId  (optional)
+   * @param scanId  (required)
    * @param cursor  (optional)
    * @param pageSize  (optional, default to 25)
    * @return List&lt;ScanResultsMapV3&gt;
@@ -789,7 +786,7 @@ public class ModelSupplyChainApi {
   /**
    * Retrieve Model Scan Results
    * 
-   * @param scanId  (optional)
+   * @param scanId  (required)
    * @param cursor  (optional)
    * @param pageSize  (optional, default to 25)
    * @return ApiResponse&lt;List&lt;ScanResultsMapV3&gt;&gt;
@@ -825,6 +822,10 @@ public class ModelSupplyChainApi {
   }
 
   private HttpRequest.Builder getScanResults1RequestBuilder(UUID scanId, String cursor, Integer pageSize) throws ApiException {
+    // verify the required parameter 'scanId' is set
+    if (scanId == null) {
+      throw new ApiException(400, "Missing the required parameter 'scanId' when calling getScanResults1");
+    }
 
     HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 

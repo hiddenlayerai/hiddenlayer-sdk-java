@@ -492,7 +492,7 @@ paths:
       x-content-type: application/json
       x-accepts:
       - application/json
-  /scans/v3/jobs:
+  /scan/v3/jobs:
     get:
       operationId: get_scan_jobs
       responses:
@@ -500,9 +500,7 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                items:
-                  $ref: '#/components/schemas/ScanJob'
-                type: array
+                $ref: '#/components/schemas/ScanJob'
           description: Successful response
         "400":
           description: |-
@@ -547,7 +545,11 @@ paths:
         required: true
       responses:
         "201":
-          description: The resource was successfully created.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ScanReportV3'
+          description: Scan Job Created
         "400":
           description: |-
             The request failed due to a client error, with one or more of the following possible causes:
@@ -589,6 +591,7 @@ paths:
       x-content-type: application/json; charset=utf-8
       x-accepts:
       - application/json
+      - application/json; charset=utf-8
   /scans/v3/reports/{scan_id}:
     post:
       operationId: report_scan_results
@@ -637,7 +640,7 @@ paths:
       - explode: false
         in: path
         name: scan_id
-        required: false
+        required: true
         schema:
           format: uuid
           title: Scan Id to which the report belongs
@@ -4422,11 +4425,22 @@ components:
       type: object
     ScanJob:
       example:
+        access:
+          source: LOCAL
         scan_id: 00000000-0000-0000-0000-000000000000
         inventory:
-          requested_scan_location: s3://bucket-name/folder-name/file-name.ext
+          model_version: 1.0.0
+          requested_scan_location: /files-to-scan
+          model_name: keras-tf-2025-05-27
+          origin: Hugging Face
+          requesting_entity: requesting_entity
+          request_source: API Upload
         status: pending
       properties:
+        access:
+          $ref: '#/components/schemas/ScanJob_access'
+        inventory:
+          $ref: '#/components/schemas/ScanModelDetailsV3_1'
         scan_id:
           description: unique identifier for the scan
           example: 00000000-0000-0000-0000-000000000000
@@ -4446,9 +4460,54 @@ components:
           readOnly: true
           title: Status
           type: string
-        inventory:
-          $ref: '#/components/schemas/ScanJob_inventory'
       title: ScanJob
+      type: object
+    ScanModelDetailsV3_1:
+      example:
+        model_version: 1.0.0
+        requested_scan_location: /files-to-scan
+        model_name: keras-tf-2025-05-27
+        origin: Hugging Face
+        requesting_entity: requesting_entity
+        request_source: API Upload
+      properties:
+        model_name:
+          description: Name of the model
+          example: keras-tf-2025-05-27
+          title: Model Name
+          type: string
+        model_version:
+          description: "If you do not provide a version, one will be generated for\
+            \ you."
+          example: 1.0.0
+          title: Model Version
+          type: string
+        requested_scan_location:
+          description: Location to be scanned
+          example: /files-to-scan
+          title: Requested Scan Location
+          type: string
+        requesting_entity:
+          description: Entity that requested the scan
+          title: Requesting Entity
+          type: string
+        request_source:
+          description: Identifies the system that requested the scan
+          example: API Upload
+          title: Request Source
+          type: string
+        origin:
+          description: Specifies the platform or service where the model originated
+            before being scanned
+          example: Hugging Face
+          title: Origin
+          type: string
+      required:
+      - model_name
+      - model_version
+      - requested_scan_location
+      - requesting_entity
+      title: ScanModelDetails
       type: object
     ProblemDetails:
       additionalProperties: false
@@ -4695,8 +4754,10 @@ components:
             model_version: model_version
             model_version_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             model_name: model_name
+            origin: Hugging Face
             requesting_entity: requesting_entity
             model_source: model_source
+            request_source: API Upload
           version: version
           status: done
         - start_time: 0
@@ -4872,8 +4933,10 @@ components:
             model_version: model_version
             model_version_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             model_name: model_name
+            origin: Hugging Face
             requesting_entity: requesting_entity
             model_source: model_source
+            request_source: API Upload
           version: version
           status: done
       properties:
@@ -4962,7 +5025,7 @@ components:
         sha256:
           description: hexadecimal sha256 hash of file
           example: a54d88e06612d820bc3be72877c74f257b561b19
-          pattern: "^[a-fA-F0-9]{64}$"
+          pattern: "^$|^[a-fA-F0-9]{64}$"
           title: SHA256
           type: string
         tlsh:
@@ -5333,8 +5396,10 @@ components:
           model_version: model_version
           model_version_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           model_name: model_name
+          origin: Hugging Face
           requesting_entity: requesting_entity
           model_source: model_source
+          request_source: API Upload
         version: version
         status: done
       properties:
@@ -5379,8 +5444,10 @@ components:
         model_version: model_version
         model_version_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         model_name: model_name
+        origin: Hugging Face
         requesting_entity: requesting_entity
         model_source: model_source
+        request_source: API Upload
       properties:
         requested_scan_location:
           title: Requested Scan Location
@@ -5400,6 +5467,17 @@ components:
           type: string
         requesting_entity:
           title: Requesting Entity
+          type: string
+        request_source:
+          description: Identifies the system that requested the scan
+          example: API Upload
+          title: Request Source
+          type: string
+        origin:
+          description: Specifies the platform or service where the model originated
+            before being scanned
+          example: Hugging Face
+          title: Origin
           type: string
       title: Inventory V3
       type: object
@@ -6149,17 +6227,21 @@ components:
         model_source: adhoc
       title: Model Inventory Info
       type: object
-    ScanJob_inventory:
+    ScanJob_access:
       example:
-        requested_scan_location: s3://bucket-name/folder-name/file-name.ext
-      oneOf:
-      - $ref: '#/components/schemas/ScanModelDetailsV3'
-      - $ref: '#/components/schemas/ScanModelIdsV3'
+        source: LOCAL
       properties:
-        requested_scan_location:
-          description: Location to be scanned
-          example: s3://bucket-name/folder-name/file-name.ext
-          title: Requested Scan Location
+        source:
+          enum:
+          - LOCAL
+          - AWS_PRESIGNED
+          - AWS_IAM_ROLE
+          - AZURE_BLOB_SAS
+          - AZURE_BLOB_AD
+          - GOOGLE_SIGNED
+          - GOOGLE_OAUTH
+          - HUGGING_FACE
+          title: Source
           type: string
     Errors_inner:
       example:

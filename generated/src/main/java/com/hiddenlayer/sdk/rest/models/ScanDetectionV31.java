@@ -54,7 +54,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   ScanDetectionV31.JSON_PROPERTY_TECHNICAL_BLOG_HREFS,
   ScanDetectionV31.JSON_PROPERTY_TECHNICAL_BLOG_HREF
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-10T21:03:59.882437Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-06-02T17:04:04.425318Z[GMT]", comments = "Generator version: 7.6.0")
 public class ScanDetectionV31 {
   public static final String JSON_PROPERTY_DETECTION_ID = "detection_id";
   private UUID detectionId;
