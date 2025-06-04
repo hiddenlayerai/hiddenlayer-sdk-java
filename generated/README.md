@@ -4,7 +4,7 @@ HiddenLayer-API
 
 - API version: 1
 
-- Build date: 2025-03-10T21:03:59.882437Z[GMT]
+- Build date: 2025-06-02T17:04:04.425318Z[GMT]
 
 - Generator version: 7.6.0
 
@@ -44,7 +44,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>com.hiddenlayer</groupId>
   <artifactId>hiddenlayer-rest-java</artifactId>
-  <version>1</version>
+  <version>0.3.2</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -125,12 +125,12 @@ Class | Method | HTTP request | Description
 *ModelSupplyChainApi* | [**completeMultiFileUploadWithHttpInfo**](docs/ModelSupplyChainApi.md#completeMultiFileUploadWithHttpInfo) | **PATCH** /scan/v3/upload/{scan_id} | Indicate All files are uploaded and start the scan
 *ModelSupplyChainApi* | [**completeMultipartFileUpload**](docs/ModelSupplyChainApi.md#completeMultipartFileUpload) | **PATCH** /scan/v3/upload/{scan_id}/file/{file_id} | Indicate that upload is completed for {file_id}
 *ModelSupplyChainApi* | [**completeMultipartFileUploadWithHttpInfo**](docs/ModelSupplyChainApi.md#completeMultipartFileUploadWithHttpInfo) | **PATCH** /scan/v3/upload/{scan_id}/file/{file_id} | Indicate that upload is completed for {file_id}
-*ModelSupplyChainApi* | [**createScanJob**](docs/ModelSupplyChainApi.md#createScanJob) | **POST** /scans/v3/jobs | Request a Model Scan Job
-*ModelSupplyChainApi* | [**createScanJobWithHttpInfo**](docs/ModelSupplyChainApi.md#createScanJobWithHttpInfo) | **POST** /scans/v3/jobs | Request a Model Scan Job
+*ModelSupplyChainApi* | [**createScanJob**](docs/ModelSupplyChainApi.md#createScanJob) | **POST** /scan/v3/jobs | Request a Model Scan Job
+*ModelSupplyChainApi* | [**createScanJobWithHttpInfo**](docs/ModelSupplyChainApi.md#createScanJobWithHttpInfo) | **POST** /scan/v3/jobs | Request a Model Scan Job
 *ModelSupplyChainApi* | [**getCondensedModelScanReports**](docs/ModelSupplyChainApi.md#getCondensedModelScanReports) | **GET** /scan/v3/results | Get condensed reports for a Model Scan
 *ModelSupplyChainApi* | [**getCondensedModelScanReportsWithHttpInfo**](docs/ModelSupplyChainApi.md#getCondensedModelScanReportsWithHttpInfo) | **GET** /scan/v3/results | Get condensed reports for a Model Scan
-*ModelSupplyChainApi* | [**getScanJobs**](docs/ModelSupplyChainApi.md#getScanJobs) | **GET** /scans/v3/jobs | List all Model Scan Jobs
-*ModelSupplyChainApi* | [**getScanJobsWithHttpInfo**](docs/ModelSupplyChainApi.md#getScanJobsWithHttpInfo) | **GET** /scans/v3/jobs | List all Model Scan Jobs
+*ModelSupplyChainApi* | [**getScanJobs**](docs/ModelSupplyChainApi.md#getScanJobs) | **GET** /scan/v3/jobs | List all Model Scan Jobs
+*ModelSupplyChainApi* | [**getScanJobsWithHttpInfo**](docs/ModelSupplyChainApi.md#getScanJobsWithHttpInfo) | **GET** /scan/v3/jobs | List all Model Scan Jobs
 *ModelSupplyChainApi* | [**getScanResults**](docs/ModelSupplyChainApi.md#getScanResults) | **GET** /scan/v3/results/{scan_id} | Get Result of a Model Scan
 *ModelSupplyChainApi* | [**getScanResultsWithHttpInfo**](docs/ModelSupplyChainApi.md#getScanResultsWithHttpInfo) | **GET** /scan/v3/results/{scan_id} | Get Result of a Model Scan
 *ModelSupplyChainApi* | [**getScanResults1**](docs/ModelSupplyChainApi.md#getScanResults1) | **GET** /scans/v3/results/{scan_id} | Retrieve Model Scan Results
@@ -228,8 +228,9 @@ Class | Method | HTTP request | Description
  - [ScanDetectionV31](docs/ScanDetectionV31.md)
  - [ScanHeaderV3](docs/ScanHeaderV3.md)
  - [ScanJob](docs/ScanJob.md)
- - [ScanJobInventory](docs/ScanJobInventory.md)
+ - [ScanJobAccess](docs/ScanJobAccess.md)
  - [ScanModelDetailsV3](docs/ScanModelDetailsV3.md)
+ - [ScanModelDetailsV31](docs/ScanModelDetailsV31.md)
  - [ScanModelIdsV3](docs/ScanModelIdsV3.md)
  - [ScanReportV3](docs/ScanReportV3.md)
  - [ScanResultsMapV3](docs/ScanResultsMapV3.md)

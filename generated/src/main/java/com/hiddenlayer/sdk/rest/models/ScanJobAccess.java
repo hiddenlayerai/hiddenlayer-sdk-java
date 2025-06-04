@@ -29,46 +29,93 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * ScanCreateRequest
+ * ScanJobAccess
  */
 @JsonPropertyOrder({
-  ScanCreateRequest.JSON_PROPERTY_LOCATION
+  ScanJobAccess.JSON_PROPERTY_SOURCE
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-06-02T17:04:04.425318Z[GMT]", comments = "Generator version: 7.6.0")
-public class ScanCreateRequest {
-  public static final String JSON_PROPERTY_LOCATION = "location";
-  private String location;
+public class ScanJobAccess {
+  /**
+   * Gets or Sets source
+   */
+  public enum SourceEnum {
+    LOCAL("LOCAL"),
+    
+    AWS_PRESIGNED("AWS_PRESIGNED"),
+    
+    AWS_IAM_ROLE("AWS_IAM_ROLE"),
+    
+    AZURE_BLOB_SAS("AZURE_BLOB_SAS"),
+    
+    AZURE_BLOB_AD("AZURE_BLOB_AD"),
+    
+    GOOGLE_SIGNED("GOOGLE_SIGNED"),
+    
+    GOOGLE_OAUTH("GOOGLE_OAUTH"),
+    
+    HUGGING_FACE("HUGGING_FACE");
 
-  public ScanCreateRequest() { 
+    private String value;
+
+    SourceEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static SourceEnum fromValue(String value) {
+      for (SourceEnum b : SourceEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
   }
 
-  public ScanCreateRequest location(String location) {
-    this.location = location;
+  public static final String JSON_PROPERTY_SOURCE = "source";
+  private SourceEnum source;
+
+  public ScanJobAccess() { 
+  }
+
+  public ScanJobAccess source(SourceEnum source) {
+    this.source = source;
     return this;
   }
 
    /**
-   * Get location
-   * @return location
+   * Get source
+   * @return source
   **/
-  @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_LOCATION)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_SOURCE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getLocation() {
-    return location;
+  public SourceEnum getSource() {
+    return source;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_LOCATION)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setLocation(String location) {
-    this.location = location;
+  @JsonProperty(JSON_PROPERTY_SOURCE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSource(SourceEnum source) {
+    this.source = source;
   }
 
 
   /**
-   * Return true if this ScanCreateRequest object is equal to o.
+   * Return true if this ScanJob_access object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -78,20 +125,20 @@ public class ScanCreateRequest {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ScanCreateRequest scanCreateRequest = (ScanCreateRequest) o;
-    return Objects.equals(this.location, scanCreateRequest.location);
+    ScanJobAccess scanJobAccess = (ScanJobAccess) o;
+    return Objects.equals(this.source, scanJobAccess.source);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(location);
+    return Objects.hash(source);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ScanCreateRequest {\n");
-    sb.append("    location: ").append(toIndentedString(location)).append("\n");
+    sb.append("class ScanJobAccess {\n");
+    sb.append("    source: ").append(toIndentedString(source)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -139,9 +186,9 @@ public class ScanCreateRequest {
 
     StringJoiner joiner = new StringJoiner("&");
 
-    // add `location` to the URL query string
-    if (getLocation() != null) {
-      joiner.add(String.format("%slocation%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getLocation()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    // add `source` to the URL query string
+    if (getSource() != null) {
+      joiner.add(String.format("%ssource%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getSource()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
     }
 
     return joiner.toString();

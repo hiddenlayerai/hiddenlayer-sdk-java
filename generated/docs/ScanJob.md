@@ -7,9 +7,10 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
+|**access** | [**ScanJobAccess**](ScanJobAccess.md) |  |  [optional] |
+|**inventory** | [**ScanModelDetailsV31**](ScanModelDetailsV31.md) |  |  [optional] |
 |**scanId** | **UUID** | unique identifier for the scan |  [optional] [readonly] |
 |**status** | [**StatusEnum**](#StatusEnum) | Status of the scan |  [optional] [readonly] |
-|**inventory** | [**ScanJobInventory**](ScanJobInventory.md) |  |  [optional] |
 
 
 

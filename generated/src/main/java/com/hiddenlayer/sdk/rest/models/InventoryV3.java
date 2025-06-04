@@ -38,9 +38,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   InventoryV3.JSON_PROPERTY_MODEL_SOURCE,
   InventoryV3.JSON_PROPERTY_MODEL_VERSION,
   InventoryV3.JSON_PROPERTY_MODEL_VERSION_ID,
-  InventoryV3.JSON_PROPERTY_REQUESTING_ENTITY
+  InventoryV3.JSON_PROPERTY_REQUESTING_ENTITY,
+  InventoryV3.JSON_PROPERTY_REQUEST_SOURCE,
+  InventoryV3.JSON_PROPERTY_ORIGIN
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-10T21:03:59.882437Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-06-02T17:04:04.425318Z[GMT]", comments = "Generator version: 7.6.0")
 public class InventoryV3 {
   public static final String JSON_PROPERTY_REQUESTED_SCAN_LOCATION = "requested_scan_location";
   private String requestedScanLocation;
@@ -59,6 +61,12 @@ public class InventoryV3 {
 
   public static final String JSON_PROPERTY_REQUESTING_ENTITY = "requesting_entity";
   private String requestingEntity;
+
+  public static final String JSON_PROPERTY_REQUEST_SOURCE = "request_source";
+  private String requestSource;
+
+  public static final String JSON_PROPERTY_ORIGIN = "origin";
+  private String origin;
 
   public InventoryV3() { 
   }
@@ -213,6 +221,56 @@ public class InventoryV3 {
   }
 
 
+  public InventoryV3 requestSource(String requestSource) {
+    this.requestSource = requestSource;
+    return this;
+  }
+
+   /**
+   * Identifies the system that requested the scan
+   * @return requestSource
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_REQUEST_SOURCE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getRequestSource() {
+    return requestSource;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_REQUEST_SOURCE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setRequestSource(String requestSource) {
+    this.requestSource = requestSource;
+  }
+
+
+  public InventoryV3 origin(String origin) {
+    this.origin = origin;
+    return this;
+  }
+
+   /**
+   * Specifies the platform or service where the model originated before being scanned
+   * @return origin
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_ORIGIN)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getOrigin() {
+    return origin;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_ORIGIN)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setOrigin(String origin) {
+    this.origin = origin;
+  }
+
+
   /**
    * Return true if this InventoryV3 object is equal to o.
    */
@@ -230,12 +288,14 @@ public class InventoryV3 {
         Objects.equals(this.modelSource, inventoryV3.modelSource) &&
         Objects.equals(this.modelVersion, inventoryV3.modelVersion) &&
         Objects.equals(this.modelVersionId, inventoryV3.modelVersionId) &&
-        Objects.equals(this.requestingEntity, inventoryV3.requestingEntity);
+        Objects.equals(this.requestingEntity, inventoryV3.requestingEntity) &&
+        Objects.equals(this.requestSource, inventoryV3.requestSource) &&
+        Objects.equals(this.origin, inventoryV3.origin);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(requestedScanLocation, modelName, modelSource, modelVersion, modelVersionId, requestingEntity);
+    return Objects.hash(requestedScanLocation, modelName, modelSource, modelVersion, modelVersionId, requestingEntity, requestSource, origin);
   }
 
   @Override
@@ -248,6 +308,8 @@ public class InventoryV3 {
     sb.append("    modelVersion: ").append(toIndentedString(modelVersion)).append("\n");
     sb.append("    modelVersionId: ").append(toIndentedString(modelVersionId)).append("\n");
     sb.append("    requestingEntity: ").append(toIndentedString(requestingEntity)).append("\n");
+    sb.append("    requestSource: ").append(toIndentedString(requestSource)).append("\n");
+    sb.append("    origin: ").append(toIndentedString(origin)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -323,6 +385,16 @@ public class InventoryV3 {
     // add `requesting_entity` to the URL query string
     if (getRequestingEntity() != null) {
       joiner.add(String.format("%srequesting_entity%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getRequestingEntity()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    }
+
+    // add `request_source` to the URL query string
+    if (getRequestSource() != null) {
+      joiner.add(String.format("%srequest_source%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getRequestSource()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    }
+
+    // add `origin` to the URL query string
+    if (getOrigin() != null) {
+      joiner.add(String.format("%sorigin%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getOrigin()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
     }
 
     return joiner.toString();

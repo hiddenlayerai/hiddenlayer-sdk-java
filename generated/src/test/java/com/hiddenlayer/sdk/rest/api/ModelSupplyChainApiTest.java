@@ -129,7 +129,7 @@ public class ModelSupplyChainApiTest {
     @Test
     public void createScanJobTest() throws ApiException {
         ScanJob scanJob = null;
-        
+        ScanReportV3 response = 
         api.createScanJob(scanJob);
         
         // TODO: test validations
@@ -171,7 +171,7 @@ public class ModelSupplyChainApiTest {
      */
     @Test
     public void getScanJobsTest() throws ApiException {
-        List<ScanJob> response = 
+        ScanJob response = 
         api.getScanJobs();
         
         // TODO: test validations

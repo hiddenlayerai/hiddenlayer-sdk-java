@@ -12,12 +12,12 @@ All URIs are relative to *https://api.hiddenlayer.ai*
 | [**completeMultiFileUploadWithHttpInfo**](ModelSupplyChainApi.md#completeMultiFileUploadWithHttpInfo) | **PATCH** /scan/v3/upload/{scan_id} | Indicate All files are uploaded and start the scan |
 | [**completeMultipartFileUpload**](ModelSupplyChainApi.md#completeMultipartFileUpload) | **PATCH** /scan/v3/upload/{scan_id}/file/{file_id} | Indicate that upload is completed for {file_id} |
 | [**completeMultipartFileUploadWithHttpInfo**](ModelSupplyChainApi.md#completeMultipartFileUploadWithHttpInfo) | **PATCH** /scan/v3/upload/{scan_id}/file/{file_id} | Indicate that upload is completed for {file_id} |
-| [**createScanJob**](ModelSupplyChainApi.md#createScanJob) | **POST** /scans/v3/jobs | Request a Model Scan Job |
-| [**createScanJobWithHttpInfo**](ModelSupplyChainApi.md#createScanJobWithHttpInfo) | **POST** /scans/v3/jobs | Request a Model Scan Job |
+| [**createScanJob**](ModelSupplyChainApi.md#createScanJob) | **POST** /scan/v3/jobs | Request a Model Scan Job |
+| [**createScanJobWithHttpInfo**](ModelSupplyChainApi.md#createScanJobWithHttpInfo) | **POST** /scan/v3/jobs | Request a Model Scan Job |
 | [**getCondensedModelScanReports**](ModelSupplyChainApi.md#getCondensedModelScanReports) | **GET** /scan/v3/results | Get condensed reports for a Model Scan |
 | [**getCondensedModelScanReportsWithHttpInfo**](ModelSupplyChainApi.md#getCondensedModelScanReportsWithHttpInfo) | **GET** /scan/v3/results | Get condensed reports for a Model Scan |
-| [**getScanJobs**](ModelSupplyChainApi.md#getScanJobs) | **GET** /scans/v3/jobs | List all Model Scan Jobs |
-| [**getScanJobsWithHttpInfo**](ModelSupplyChainApi.md#getScanJobsWithHttpInfo) | **GET** /scans/v3/jobs | List all Model Scan Jobs |
+| [**getScanJobs**](ModelSupplyChainApi.md#getScanJobs) | **GET** /scan/v3/jobs | List all Model Scan Jobs |
+| [**getScanJobsWithHttpInfo**](ModelSupplyChainApi.md#getScanJobsWithHttpInfo) | **GET** /scan/v3/jobs | List all Model Scan Jobs |
 | [**getScanResults**](ModelSupplyChainApi.md#getScanResults) | **GET** /scan/v3/results/{scan_id} | Get Result of a Model Scan |
 | [**getScanResultsWithHttpInfo**](ModelSupplyChainApi.md#getScanResultsWithHttpInfo) | **GET** /scan/v3/results/{scan_id} | Get Result of a Model Scan |
 | [**getScanResults1**](ModelSupplyChainApi.md#getScanResults1) | **GET** /scans/v3/results/{scan_id} | Retrieve Model Scan Results |
@@ -625,7 +625,7 @@ ApiResponse<[**BeginMultiFileUpload200Response**](BeginMultiFileUpload200Respons
 
 ## createScanJob
 
-> void createScanJob(scanJob)
+> ScanReportV3 createScanJob(scanJob)
 
 Request a Model Scan Job
 
@@ -652,7 +652,8 @@ public class Example {
         ModelSupplyChainApi apiInstance = new ModelSupplyChainApi(defaultClient);
         ScanJob scanJob = new ScanJob(); // ScanJob | Request body for create scan request
         try {
-            apiInstance.createScanJob(scanJob);
+            ScanReportV3 result = apiInstance.createScanJob(scanJob);
+            System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ModelSupplyChainApi#createScanJob");
             System.err.println("Status code: " + e.getCode());
@@ -673,8 +674,8 @@ public class Example {
 
 ### Return type
 
+[**ScanReportV3**](ScanReportV3.md)
 
-null (empty response body)
 
 ### Authorization
 
@@ -683,18 +684,18 @@ null (empty response body)
 ### HTTP request headers
 
 - **Content-Type**: application/json; charset=utf-8, application/octet-stream
-- **Accept**: application/json
+- **Accept**: application/json; charset=utf-8, application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **201** | The resource was successfully created. |  -  |
+| **201** | Scan Job Created |  -  |
 | **400** | The request failed due to a client error, with one or more of the following possible causes: 1. The request required a tenant_id field, which was missing. 2. The request was malformed syntactically or semantically. |  -  |
 | **422** | Validation Error |  -  |
 
 ## createScanJobWithHttpInfo
 
-> ApiResponse<Void> createScanJob createScanJobWithHttpInfo(scanJob)
+> ApiResponse<ScanReportV3> createScanJob createScanJobWithHttpInfo(scanJob)
 
 Request a Model Scan Job
 
@@ -722,9 +723,10 @@ public class Example {
         ModelSupplyChainApi apiInstance = new ModelSupplyChainApi(defaultClient);
         ScanJob scanJob = new ScanJob(); // ScanJob | Request body for create scan request
         try {
-            ApiResponse<Void> response = apiInstance.createScanJobWithHttpInfo(scanJob);
+            ApiResponse<ScanReportV3> response = apiInstance.createScanJobWithHttpInfo(scanJob);
             System.out.println("Status code: " + response.getStatusCode());
             System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
         } catch (ApiException e) {
             System.err.println("Exception when calling ModelSupplyChainApi#createScanJob");
             System.err.println("Status code: " + e.getCode());
@@ -745,8 +747,8 @@ public class Example {
 
 ### Return type
 
+ApiResponse<[**ScanReportV3**](ScanReportV3.md)>
 
-ApiResponse<Void>
 
 ### Authorization
 
@@ -755,12 +757,12 @@ ApiResponse<Void>
 ### HTTP request headers
 
 - **Content-Type**: application/json; charset=utf-8, application/octet-stream
-- **Accept**: application/json
+- **Accept**: application/json; charset=utf-8, application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **201** | The resource was successfully created. |  -  |
+| **201** | Scan Job Created |  -  |
 | **400** | The request failed due to a client error, with one or more of the following possible causes: 1. The request required a tenant_id field, which was missing. 2. The request was malformed syntactically or semantically. |  -  |
 | **422** | Validation Error |  -  |
 
@@ -947,7 +949,7 @@ ApiResponse<[**GetCondensedModelScanReports200Response**](GetCondensedModelScanR
 
 ## getScanJobs
 
-> List<ScanJob> getScanJobs()
+> ScanJob getScanJobs()
 
 List all Model Scan Jobs
 
@@ -973,7 +975,7 @@ public class Example {
 
         ModelSupplyChainApi apiInstance = new ModelSupplyChainApi(defaultClient);
         try {
-            List<ScanJob> result = apiInstance.getScanJobs();
+            ScanJob result = apiInstance.getScanJobs();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ModelSupplyChainApi#getScanJobs");
@@ -992,7 +994,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**List&lt;ScanJob&gt;**](ScanJob.md)
+[**ScanJob**](ScanJob.md)
 
 
 ### Authorization
@@ -1013,7 +1015,7 @@ This endpoint does not need any parameter.
 
 ## getScanJobsWithHttpInfo
 
-> ApiResponse<List<ScanJob>> getScanJobs getScanJobsWithHttpInfo()
+> ApiResponse<ScanJob> getScanJobs getScanJobsWithHttpInfo()
 
 List all Model Scan Jobs
 
@@ -1040,7 +1042,7 @@ public class Example {
 
         ModelSupplyChainApi apiInstance = new ModelSupplyChainApi(defaultClient);
         try {
-            ApiResponse<List<ScanJob>> response = apiInstance.getScanJobsWithHttpInfo();
+            ApiResponse<ScanJob> response = apiInstance.getScanJobsWithHttpInfo();
             System.out.println("Status code: " + response.getStatusCode());
             System.out.println("Response headers: " + response.getHeaders());
             System.out.println("Response body: " + response.getData());
@@ -1061,7 +1063,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-ApiResponse<[**List&lt;ScanJob&gt;**](ScanJob.md)>
+ApiResponse<[**ScanJob**](ScanJob.md)>
 
 
 ### Authorization
@@ -1278,7 +1280,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **scanId** | **UUID**|  | [optional] |
+| **scanId** | **UUID**|  | |
 | **cursor** | **String**|  | [optional] |
 | **pageSize** | **Integer**|  | [optional] [default to 25] |
 
@@ -1356,7 +1358,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **scanId** | **UUID**|  | [optional] |
+| **scanId** | **UUID**|  | |
 | **cursor** | **String**|  | [optional] |
 | **pageSize** | **Integer**|  | [optional] [default to 25] |
 

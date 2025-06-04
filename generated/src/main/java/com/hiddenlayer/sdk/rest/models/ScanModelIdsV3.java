@@ -35,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   ScanModelIdsV3.JSON_PROPERTY_MODEL_ID,
   ScanModelIdsV3.JSON_PROPERTY_MODEL_VERSION_ID
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-10T21:03:59.882437Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-06-02T17:04:04.425318Z[GMT]", comments = "Generator version: 7.6.0")
 public class ScanModelIdsV3 {
   public static final String JSON_PROPERTY_MODEL_ID = "model_id";
   private String modelId;

@@ -18,25 +18,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.hiddenlayer.sdk.rest.models.ScanModelDetailsV3;
-import com.hiddenlayer.sdk.rest.models.ScanModelIdsV3;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
- * Model tests for ScanJobInventory
+ * Model tests for ScanModelDetailsV31
  */
-class ScanJobInventoryTest {
-    private final ScanJobInventory model = new ScanJobInventory();
+class ScanModelDetailsV31Test {
+    private final ScanModelDetailsV31 model = new ScanModelDetailsV31();
 
     /**
-     * Model tests for ScanJobInventory
+     * Model tests for ScanModelDetailsV31
      */
     @Test
-    void testScanJobInventory() {
-        // TODO: test ScanJobInventory
+    void testScanModelDetailsV31() {
+        // TODO: test ScanModelDetailsV31
     }
 
     /**
@@ -56,14 +54,6 @@ class ScanJobInventoryTest {
     }
 
     /**
-     * Test the property 'modelSource'
-     */
-    @Test
-    void modelSourceTest() {
-        // TODO: test modelSource
-    }
-
-    /**
      * Test the property 'requestedScanLocation'
      */
     @Test
@@ -80,19 +70,19 @@ class ScanJobInventoryTest {
     }
 
     /**
-     * Test the property 'modelId'
+     * Test the property 'requestSource'
      */
     @Test
-    void modelIdTest() {
-        // TODO: test modelId
+    void requestSourceTest() {
+        // TODO: test requestSource
     }
 
     /**
-     * Test the property 'modelVersionId'
+     * Test the property 'origin'
      */
     @Test
-    void modelVersionIdTest() {
-        // TODO: test modelVersionId
+    void originTest() {
+        // TODO: test origin
     }
 
 }

@@ -86,4 +86,20 @@ class InventoryV3Test {
         // TODO: test requestingEntity
     }
 
+    /**
+     * Test the property 'requestSource'
+     */
+    @Test
+    void requestSourceTest() {
+        // TODO: test requestSource
+    }
+
+    /**
+     * Test the property 'origin'
+     */
+    @Test
+    void originTest() {
+        // TODO: test origin
+    }
+
 }

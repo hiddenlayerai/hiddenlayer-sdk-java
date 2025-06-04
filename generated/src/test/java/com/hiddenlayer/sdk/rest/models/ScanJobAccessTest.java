@@ -18,58 +18,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.hiddenlayer.sdk.rest.models.ScanJobAccess;
-import com.hiddenlayer.sdk.rest.models.ScanModelDetailsV31;
 import java.util.Arrays;
-import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
- * Model tests for ScanJob
+ * Model tests for ScanJobAccess
  */
-class ScanJobTest {
-    private final ScanJob model = new ScanJob();
+class ScanJobAccessTest {
+    private final ScanJobAccess model = new ScanJobAccess();
 
     /**
-     * Model tests for ScanJob
+     * Model tests for ScanJobAccess
      */
     @Test
-    void testScanJob() {
-        // TODO: test ScanJob
+    void testScanJobAccess() {
+        // TODO: test ScanJobAccess
     }
 
     /**
-     * Test the property 'access'
+     * Test the property 'source'
      */
     @Test
-    void accessTest() {
-        // TODO: test access
-    }
-
-    /**
-     * Test the property 'inventory'
-     */
-    @Test
-    void inventoryTest() {
-        // TODO: test inventory
-    }
-
-    /**
-     * Test the property 'scanId'
-     */
-    @Test
-    void scanIdTest() {
-        // TODO: test scanId
-    }
-
-    /**
-     * Test the property 'status'
-     */
-    @Test
-    void statusTest() {
-        // TODO: test status
+    void sourceTest() {
+        // TODO: test source
     }
 
 }

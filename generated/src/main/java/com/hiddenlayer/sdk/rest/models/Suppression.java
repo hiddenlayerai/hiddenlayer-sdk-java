@@ -41,7 +41,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   Suppression.JSON_PROPERTY_LOCATION,
   Suppression.JSON_PROPERTY_PROPERTIES
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-10T21:03:59.882437Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-06-02T17:04:04.425318Z[GMT]", comments = "Generator version: 7.6.0")
 public class Suppression {
   public static final String JSON_PROPERTY_GUID = "guid";
   private String guid;

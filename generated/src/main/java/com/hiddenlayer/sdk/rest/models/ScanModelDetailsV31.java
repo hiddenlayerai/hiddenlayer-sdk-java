@@ -29,27 +29,23 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * information about model and version that this scan relates to
+ * ScanModelDetailsV31
  */
 @JsonPropertyOrder({
-  ModelInventoryInfo.JSON_PROPERTY_MODEL_NAME,
-  ModelInventoryInfo.JSON_PROPERTY_MODEL_VERSION,
-  ModelInventoryInfo.JSON_PROPERTY_MODEL_SOURCE,
-  ModelInventoryInfo.JSON_PROPERTY_REQUESTED_SCAN_LOCATION,
-  ModelInventoryInfo.JSON_PROPERTY_REQUESTING_ENTITY,
-  ModelInventoryInfo.JSON_PROPERTY_MODEL_ID,
-  ModelInventoryInfo.JSON_PROPERTY_MODEL_VERSION_ID
+  ScanModelDetailsV31.JSON_PROPERTY_MODEL_NAME,
+  ScanModelDetailsV31.JSON_PROPERTY_MODEL_VERSION,
+  ScanModelDetailsV31.JSON_PROPERTY_REQUESTED_SCAN_LOCATION,
+  ScanModelDetailsV31.JSON_PROPERTY_REQUESTING_ENTITY,
+  ScanModelDetailsV31.JSON_PROPERTY_REQUEST_SOURCE,
+  ScanModelDetailsV31.JSON_PROPERTY_ORIGIN
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-06-02T17:04:04.425318Z[GMT]", comments = "Generator version: 7.6.0")
-public class ModelInventoryInfo {
+public class ScanModelDetailsV31 {
   public static final String JSON_PROPERTY_MODEL_NAME = "model_name";
   private String modelName;
 
   public static final String JSON_PROPERTY_MODEL_VERSION = "model_version";
   private String modelVersion;
-
-  public static final String JSON_PROPERTY_MODEL_SOURCE = "model_source";
-  private String modelSource;
 
   public static final String JSON_PROPERTY_REQUESTED_SCAN_LOCATION = "requested_scan_location";
   private String requestedScanLocation;
@@ -57,22 +53,22 @@ public class ModelInventoryInfo {
   public static final String JSON_PROPERTY_REQUESTING_ENTITY = "requesting_entity";
   private String requestingEntity;
 
-  public static final String JSON_PROPERTY_MODEL_ID = "model_id";
-  private String modelId;
+  public static final String JSON_PROPERTY_REQUEST_SOURCE = "request_source";
+  private String requestSource;
 
-  public static final String JSON_PROPERTY_MODEL_VERSION_ID = "model_version_id";
-  private String modelVersionId;
+  public static final String JSON_PROPERTY_ORIGIN = "origin";
+  private String origin;
 
-  public ModelInventoryInfo() { 
+  public ScanModelDetailsV31() { 
   }
 
-  public ModelInventoryInfo modelName(String modelName) {
+  public ScanModelDetailsV31 modelName(String modelName) {
     this.modelName = modelName;
     return this;
   }
 
    /**
-   * name of the model
+   * Name of the model
    * @return modelName
   **/
   @javax.annotation.Nonnull
@@ -91,13 +87,13 @@ public class ModelInventoryInfo {
   }
 
 
-  public ModelInventoryInfo modelVersion(String modelVersion) {
+  public ScanModelDetailsV31 modelVersion(String modelVersion) {
     this.modelVersion = modelVersion;
     return this;
   }
 
    /**
-   * version of the model
+   * If you do not provide a version, one will be generated for you.
    * @return modelVersion
   **/
   @javax.annotation.Nonnull
@@ -116,32 +112,7 @@ public class ModelInventoryInfo {
   }
 
 
-  public ModelInventoryInfo modelSource(String modelSource) {
-    this.modelSource = modelSource;
-    return this;
-  }
-
-   /**
-   * source (provider) info
-   * @return modelSource
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_MODEL_SOURCE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getModelSource() {
-    return modelSource;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_MODEL_SOURCE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setModelSource(String modelSource) {
-    this.modelSource = modelSource;
-  }
-
-
-  public ModelInventoryInfo requestedScanLocation(String requestedScanLocation) {
+  public ScanModelDetailsV31 requestedScanLocation(String requestedScanLocation) {
     this.requestedScanLocation = requestedScanLocation;
     return this;
   }
@@ -166,7 +137,7 @@ public class ModelInventoryInfo {
   }
 
 
-  public ModelInventoryInfo requestingEntity(String requestingEntity) {
+  public ScanModelDetailsV31 requestingEntity(String requestingEntity) {
     this.requestingEntity = requestingEntity;
     return this;
   }
@@ -175,9 +146,9 @@ public class ModelInventoryInfo {
    * Entity that requested the scan
    * @return requestingEntity
   **/
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   @JsonProperty(JSON_PROPERTY_REQUESTING_ENTITY)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public String getRequestingEntity() {
     return requestingEntity;
@@ -185,64 +156,64 @@ public class ModelInventoryInfo {
 
 
   @JsonProperty(JSON_PROPERTY_REQUESTING_ENTITY)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setRequestingEntity(String requestingEntity) {
     this.requestingEntity = requestingEntity;
   }
 
 
-  public ModelInventoryInfo modelId(String modelId) {
-    this.modelId = modelId;
+  public ScanModelDetailsV31 requestSource(String requestSource) {
+    this.requestSource = requestSource;
     return this;
   }
 
    /**
-   * Unique identifier for the model
-   * @return modelId
+   * Identifies the system that requested the scan
+   * @return requestSource
   **/
-  @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_MODEL_ID)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_REQUEST_SOURCE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getModelId() {
-    return modelId;
+  public String getRequestSource() {
+    return requestSource;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_MODEL_ID)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setModelId(String modelId) {
-    this.modelId = modelId;
+  @JsonProperty(JSON_PROPERTY_REQUEST_SOURCE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setRequestSource(String requestSource) {
+    this.requestSource = requestSource;
   }
 
 
-  public ModelInventoryInfo modelVersionId(String modelVersionId) {
-    this.modelVersionId = modelVersionId;
+  public ScanModelDetailsV31 origin(String origin) {
+    this.origin = origin;
     return this;
   }
 
    /**
-   * unique identifier for the model version
-   * @return modelVersionId
+   * Specifies the platform or service where the model originated before being scanned
+   * @return origin
   **/
-  @javax.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_MODEL_VERSION_ID)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_ORIGIN)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getModelVersionId() {
-    return modelVersionId;
+  public String getOrigin() {
+    return origin;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_MODEL_VERSION_ID)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setModelVersionId(String modelVersionId) {
-    this.modelVersionId = modelVersionId;
+  @JsonProperty(JSON_PROPERTY_ORIGIN)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setOrigin(String origin) {
+    this.origin = origin;
   }
 
 
   /**
-   * Return true if this Model_Inventory_Info object is equal to o.
+   * Return true if this ScanModelDetailsV3_1 object is equal to o.
    */
   @Override
   public boolean equals(Object o) {
@@ -252,32 +223,30 @@ public class ModelInventoryInfo {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ModelInventoryInfo modelInventoryInfo = (ModelInventoryInfo) o;
-    return Objects.equals(this.modelName, modelInventoryInfo.modelName) &&
-        Objects.equals(this.modelVersion, modelInventoryInfo.modelVersion) &&
-        Objects.equals(this.modelSource, modelInventoryInfo.modelSource) &&
-        Objects.equals(this.requestedScanLocation, modelInventoryInfo.requestedScanLocation) &&
-        Objects.equals(this.requestingEntity, modelInventoryInfo.requestingEntity) &&
-        Objects.equals(this.modelId, modelInventoryInfo.modelId) &&
-        Objects.equals(this.modelVersionId, modelInventoryInfo.modelVersionId);
+    ScanModelDetailsV31 scanModelDetailsV31 = (ScanModelDetailsV31) o;
+    return Objects.equals(this.modelName, scanModelDetailsV31.modelName) &&
+        Objects.equals(this.modelVersion, scanModelDetailsV31.modelVersion) &&
+        Objects.equals(this.requestedScanLocation, scanModelDetailsV31.requestedScanLocation) &&
+        Objects.equals(this.requestingEntity, scanModelDetailsV31.requestingEntity) &&
+        Objects.equals(this.requestSource, scanModelDetailsV31.requestSource) &&
+        Objects.equals(this.origin, scanModelDetailsV31.origin);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(modelName, modelVersion, modelSource, requestedScanLocation, requestingEntity, modelId, modelVersionId);
+    return Objects.hash(modelName, modelVersion, requestedScanLocation, requestingEntity, requestSource, origin);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ModelInventoryInfo {\n");
+    sb.append("class ScanModelDetailsV31 {\n");
     sb.append("    modelName: ").append(toIndentedString(modelName)).append("\n");
     sb.append("    modelVersion: ").append(toIndentedString(modelVersion)).append("\n");
-    sb.append("    modelSource: ").append(toIndentedString(modelSource)).append("\n");
     sb.append("    requestedScanLocation: ").append(toIndentedString(requestedScanLocation)).append("\n");
     sb.append("    requestingEntity: ").append(toIndentedString(requestingEntity)).append("\n");
-    sb.append("    modelId: ").append(toIndentedString(modelId)).append("\n");
-    sb.append("    modelVersionId: ").append(toIndentedString(modelVersionId)).append("\n");
+    sb.append("    requestSource: ").append(toIndentedString(requestSource)).append("\n");
+    sb.append("    origin: ").append(toIndentedString(origin)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -335,11 +304,6 @@ public class ModelInventoryInfo {
       joiner.add(String.format("%smodel_version%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getModelVersion()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
     }
 
-    // add `model_source` to the URL query string
-    if (getModelSource() != null) {
-      joiner.add(String.format("%smodel_source%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getModelSource()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
-    }
-
     // add `requested_scan_location` to the URL query string
     if (getRequestedScanLocation() != null) {
       joiner.add(String.format("%srequested_scan_location%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getRequestedScanLocation()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
@@ -350,14 +314,14 @@ public class ModelInventoryInfo {
       joiner.add(String.format("%srequesting_entity%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getRequestingEntity()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
     }
 
-    // add `model_id` to the URL query string
-    if (getModelId() != null) {
-      joiner.add(String.format("%smodel_id%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getModelId()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    // add `request_source` to the URL query string
+    if (getRequestSource() != null) {
+      joiner.add(String.format("%srequest_source%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getRequestSource()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
     }
 
-    // add `model_version_id` to the URL query string
-    if (getModelVersionId() != null) {
-      joiner.add(String.format("%smodel_version_id%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getModelVersionId()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
+    // add `origin` to the URL query string
+    if (getOrigin() != null) {
+      joiner.add(String.format("%sorigin%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getOrigin()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
     }
 
     return joiner.toString();

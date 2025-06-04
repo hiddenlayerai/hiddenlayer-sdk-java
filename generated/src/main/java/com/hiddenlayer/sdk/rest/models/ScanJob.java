@@ -24,7 +24,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.hiddenlayer.sdk.rest.models.ScanJobInventory;
+import com.hiddenlayer.sdk.rest.models.ScanJobAccess;
+import com.hiddenlayer.sdk.rest.models.ScanModelDetailsV31;
 import java.util.Arrays;
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -34,12 +35,19 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * ScanJob
  */
 @JsonPropertyOrder({
+  ScanJob.JSON_PROPERTY_ACCESS,
+  ScanJob.JSON_PROPERTY_INVENTORY,
   ScanJob.JSON_PROPERTY_SCAN_ID,
-  ScanJob.JSON_PROPERTY_STATUS,
-  ScanJob.JSON_PROPERTY_INVENTORY
+  ScanJob.JSON_PROPERTY_STATUS
 })
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-03-10T21:03:59.882437Z[GMT]", comments = "Generator version: 7.6.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-06-02T17:04:04.425318Z[GMT]", comments = "Generator version: 7.6.0")
 public class ScanJob {
+  public static final String JSON_PROPERTY_ACCESS = "access";
+  private ScanJobAccess access;
+
+  public static final String JSON_PROPERTY_INVENTORY = "inventory";
+  private ScanModelDetailsV31 inventory;
+
   public static final String JSON_PROPERTY_SCAN_ID = "scan_id";
   private UUID scanId;
 
@@ -87,9 +95,6 @@ public class ScanJob {
   public static final String JSON_PROPERTY_STATUS = "status";
   private StatusEnum status;
 
-  public static final String JSON_PROPERTY_INVENTORY = "inventory";
-  private ScanJobInventory inventory;
-
   public ScanJob() { 
   }
 
@@ -102,6 +107,56 @@ public class ScanJob {
     this.scanId = scanId;
     this.status = status;
   }
+
+  public ScanJob access(ScanJobAccess access) {
+    this.access = access;
+    return this;
+  }
+
+   /**
+   * Get access
+   * @return access
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_ACCESS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public ScanJobAccess getAccess() {
+    return access;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_ACCESS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setAccess(ScanJobAccess access) {
+    this.access = access;
+  }
+
+
+  public ScanJob inventory(ScanModelDetailsV31 inventory) {
+    this.inventory = inventory;
+    return this;
+  }
+
+   /**
+   * Get inventory
+   * @return inventory
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_INVENTORY)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public ScanModelDetailsV31 getInventory() {
+    return inventory;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_INVENTORY)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setInventory(ScanModelDetailsV31 inventory) {
+    this.inventory = inventory;
+  }
+
 
    /**
    * unique identifier for the scan
@@ -133,31 +188,6 @@ public class ScanJob {
 
 
 
-  public ScanJob inventory(ScanJobInventory inventory) {
-    this.inventory = inventory;
-    return this;
-  }
-
-   /**
-   * Get inventory
-   * @return inventory
-  **/
-  @javax.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_INVENTORY)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public ScanJobInventory getInventory() {
-    return inventory;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_INVENTORY)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setInventory(ScanJobInventory inventory) {
-    this.inventory = inventory;
-  }
-
-
   /**
    * Return true if this ScanJob object is equal to o.
    */
@@ -170,23 +200,25 @@ public class ScanJob {
       return false;
     }
     ScanJob scanJob = (ScanJob) o;
-    return Objects.equals(this.scanId, scanJob.scanId) &&
-        Objects.equals(this.status, scanJob.status) &&
-        Objects.equals(this.inventory, scanJob.inventory);
+    return Objects.equals(this.access, scanJob.access) &&
+        Objects.equals(this.inventory, scanJob.inventory) &&
+        Objects.equals(this.scanId, scanJob.scanId) &&
+        Objects.equals(this.status, scanJob.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(scanId, status, inventory);
+    return Objects.hash(access, inventory, scanId, status);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ScanJob {\n");
+    sb.append("    access: ").append(toIndentedString(access)).append("\n");
+    sb.append("    inventory: ").append(toIndentedString(inventory)).append("\n");
     sb.append("    scanId: ").append(toIndentedString(scanId)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
-    sb.append("    inventory: ").append(toIndentedString(inventory)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -234,6 +266,16 @@ public class ScanJob {
 
     StringJoiner joiner = new StringJoiner("&");
 
+    // add `access` to the URL query string
+    if (getAccess() != null) {
+      joiner.add(getAccess().toUrlQueryString(prefix + "access" + suffix));
+    }
+
+    // add `inventory` to the URL query string
+    if (getInventory() != null) {
+      joiner.add(getInventory().toUrlQueryString(prefix + "inventory" + suffix));
+    }
+
     // add `scan_id` to the URL query string
     if (getScanId() != null) {
       joiner.add(String.format("%sscan_id%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getScanId()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
@@ -242,11 +284,6 @@ public class ScanJob {
     // add `status` to the URL query string
     if (getStatus() != null) {
       joiner.add(String.format("%sstatus%s=%s", prefix, suffix, URLEncoder.encode(String.valueOf(getStatus()), StandardCharsets.UTF_8).replaceAll("\\+", "%20")));
-    }
-
-    // add `inventory` to the URL query string
-    if (getInventory() != null) {
-      joiner.add(getInventory().toUrlQueryString(prefix + "inventory" + suffix));
     }
 
     return joiner.toString();
