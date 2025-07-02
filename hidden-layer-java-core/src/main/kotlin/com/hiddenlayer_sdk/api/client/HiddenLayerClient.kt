@@ -2,10 +2,12 @@
 
 package com.hiddenlayer_sdk.api.client
 
+import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.services.blocking.ModelService
 import com.hiddenlayer_sdk.api.services.blocking.ScanService
 import com.hiddenlayer_sdk.api.services.blocking.SensorService
 import com.hiddenlayer_sdk.api.services.blocking.VectorService
+import java.util.function.Consumer
 
 /**
  * A client for interacting with the Hidden Layer REST API synchronously. You can also switch to
@@ -36,6 +38,13 @@ interface HiddenLayerClient {
      */
     fun withRawResponse(): WithRawResponse
 
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): HiddenLayerClient
+
     fun models(): ModelService
 
     fun sensors(): SensorService
@@ -59,6 +68,15 @@ interface HiddenLayerClient {
 
     /** A view of [HiddenLayerClient] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): HiddenLayerClient.WithRawResponse
 
         fun models(): ModelService.WithRawResponse
 

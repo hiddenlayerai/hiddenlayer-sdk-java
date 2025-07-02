@@ -9,6 +9,8 @@ import com.hiddenlayer_sdk.api.core.http.PhantomReachableClosingHttpClient
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import com.hiddenlayer_sdk.api.core.http.RetryingHttpClient
 import java.time.Clock
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 class ClientOptions
 private constructor(
@@ -17,7 +19,7 @@ private constructor(
     @get:JvmName("checkJacksonVersionCompatibility") val checkJacksonVersionCompatibility: Boolean,
     @get:JvmName("jsonMapper") val jsonMapper: JsonMapper,
     @get:JvmName("clock") val clock: Clock,
-    @get:JvmName("baseUrl") val baseUrl: String,
+    private val baseUrl: String?,
     @get:JvmName("headers") val headers: Headers,
     @get:JvmName("queryParams") val queryParams: QueryParams,
     @get:JvmName("responseValidation") val responseValidation: Boolean,
@@ -31,6 +33,8 @@ private constructor(
             checkJacksonVersionCompatibility()
         }
     }
+
+    fun baseUrl(): String = baseUrl ?: PRODUCTION_URL
 
     fun toBuilder() = Builder().from(this)
 
@@ -59,7 +63,7 @@ private constructor(
         private var checkJacksonVersionCompatibility: Boolean = true
         private var jsonMapper: JsonMapper = jsonMapper()
         private var clock: Clock = Clock.systemUTC()
-        private var baseUrl: String = PRODUCTION_URL
+        private var baseUrl: String? = null
         private var headers: Headers.Builder = Headers.builder()
         private var queryParams: QueryParams.Builder = QueryParams.builder()
         private var responseValidation: Boolean = false
@@ -82,7 +86,9 @@ private constructor(
             bearerToken = clientOptions.bearerToken
         }
 
-        fun httpClient(httpClient: HttpClient) = apply { this.httpClient = httpClient }
+        fun httpClient(httpClient: HttpClient) = apply {
+            this.httpClient = PhantomReachableClosingHttpClient(httpClient)
+        }
 
         fun checkJacksonVersionCompatibility(checkJacksonVersionCompatibility: Boolean) = apply {
             this.checkJacksonVersionCompatibility = checkJacksonVersionCompatibility
@@ -92,7 +98,10 @@ private constructor(
 
         fun clock(clock: Clock) = apply { this.clock = clock }
 
-        fun baseUrl(baseUrl: String) = apply { this.baseUrl = baseUrl }
+        fun baseUrl(baseUrl: String?) = apply { this.baseUrl = baseUrl }
+
+        /** Alias for calling [Builder.baseUrl] with `baseUrl.orElse(null)`. */
+        fun baseUrl(baseUrl: Optional<String>) = baseUrl(baseUrl.getOrNull())
 
         fun responseValidation(responseValidation: Boolean) = apply {
             this.responseValidation = responseValidation
@@ -184,8 +193,6 @@ private constructor(
 
         fun removeAllQueryParams(keys: Set<String>) = apply { queryParams.removeAll(keys) }
 
-        fun baseUrl(): String = baseUrl
-
         fun fromEnv() = apply {
             System.getenv("HIDDEN_LAYER_BASE_URL")?.let { baseUrl(it) }
             System.getenv("HIDDENLAYER_TOKEN")?.let { bearerToken(it) }
@@ -227,13 +234,11 @@ private constructor(
 
             return ClientOptions(
                 httpClient,
-                PhantomReachableClosingHttpClient(
-                    RetryingHttpClient.builder()
-                        .httpClient(httpClient)
-                        .clock(clock)
-                        .maxRetries(maxRetries)
-                        .build()
-                ),
+                RetryingHttpClient.builder()
+                    .httpClient(httpClient)
+                    .clock(clock)
+                    .maxRetries(maxRetries)
+                    .build(),
                 checkJacksonVersionCompatibility,
                 jsonMapper,
                 clock,

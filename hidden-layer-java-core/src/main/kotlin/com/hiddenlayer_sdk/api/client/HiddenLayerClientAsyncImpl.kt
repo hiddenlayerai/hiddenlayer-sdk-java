@@ -12,6 +12,7 @@ import com.hiddenlayer_sdk.api.services.async.SensorServiceAsync
 import com.hiddenlayer_sdk.api.services.async.SensorServiceAsyncImpl
 import com.hiddenlayer_sdk.api.services.async.VectorServiceAsync
 import com.hiddenlayer_sdk.api.services.async.VectorServiceAsyncImpl
+import java.util.function.Consumer
 
 class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
     HiddenLayerClientAsync {
@@ -49,6 +50,9 @@ class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
 
     override fun withRawResponse(): HiddenLayerClientAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): HiddenLayerClientAsync =
+        HiddenLayerClientAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun models(): ModelServiceAsync = models
 
     override fun sensors(): SensorServiceAsync = sensors
@@ -77,6 +81,13 @@ class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
         private val scans: ScanServiceAsync.WithRawResponse by lazy {
             ScanServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): HiddenLayerClientAsync.WithRawResponse =
+            HiddenLayerClientAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun models(): ModelServiceAsync.WithRawResponse = models
 

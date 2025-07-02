@@ -17,6 +17,7 @@ import com.hiddenlayer_sdk.api.core.http.parseable
 import com.hiddenlayer_sdk.api.core.prepare
 import com.hiddenlayer_sdk.api.models.vectors.VectorSubmitVectorsParams
 import com.hiddenlayer_sdk.api.models.vectors.VectorSubmitVectorsResponse
+import java.util.function.Consumer
 
 class VectorServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     VectorService {
@@ -26,6 +27,9 @@ class VectorServiceImpl internal constructor(private val clientOptions: ClientOp
     }
 
     override fun withRawResponse(): VectorService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): VectorService =
+        VectorServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun submitVectors(
         params: VectorSubmitVectorsParams,
@@ -39,6 +43,13 @@ class VectorServiceImpl internal constructor(private val clientOptions: ClientOp
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): VectorService.WithRawResponse =
+            VectorServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val submitVectorsHandler: Handler<VectorSubmitVectorsResponse> =
             jsonHandler<VectorSubmitVectorsResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -50,6 +61,7 @@ class VectorServiceImpl internal constructor(private val clientOptions: ClientOp
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("api", "v2", "submit")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

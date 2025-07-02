@@ -21,25 +21,25 @@ internal class SensorTest {
                 .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .plaintextName("plaintext_name")
                 .sensorId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .tenantId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .version(0L)
                 .tags(
                     Sensor.Tags.builder()
                         .putAdditionalProperty("foo", JsonValue.from("bar"))
                         .build()
                 )
-                .tenantId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .version(0L)
                 .build()
 
-        assertThat(sensor.active()).contains(true)
-        assertThat(sensor.createdAt()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-        assertThat(sensor.plaintextName()).contains("plaintext_name")
-        assertThat(sensor.sensorId()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(sensor.active()).isEqualTo(true)
+        assertThat(sensor.createdAt()).isEqualTo(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+        assertThat(sensor.plaintextName()).isEqualTo("plaintext_name")
+        assertThat(sensor.sensorId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(sensor.tenantId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(sensor.version()).isEqualTo(0L)
         assertThat(sensor.tags())
             .contains(
                 Sensor.Tags.builder().putAdditionalProperty("foo", JsonValue.from("bar")).build()
             )
-        assertThat(sensor.tenantId()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(sensor.version()).contains(0L)
     }
 
     @Disabled("skipped: tests are disabled for the time being")
@@ -52,13 +52,13 @@ internal class SensorTest {
                 .createdAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .plaintextName("plaintext_name")
                 .sensorId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .tenantId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .version(0L)
                 .tags(
                     Sensor.Tags.builder()
                         .putAdditionalProperty("foo", JsonValue.from("bar"))
                         .build()
                 )
-                .tenantId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .version(0L)
                 .build()
 
         val roundtrippedSensor =

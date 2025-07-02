@@ -23,6 +23,7 @@ import com.hiddenlayer_sdk.api.models.models.ModelRetrieveParams
 import com.hiddenlayer_sdk.api.models.models.ModelRetrieveResponse
 import com.hiddenlayer_sdk.api.services.blocking.models.CardService
 import com.hiddenlayer_sdk.api.services.blocking.models.CardServiceImpl
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class ModelServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -35,6 +36,9 @@ class ModelServiceImpl internal constructor(private val clientOptions: ClientOpt
     private val cards: CardService by lazy { CardServiceImpl(clientOptions) }
 
     override fun withRawResponse(): ModelService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ModelService =
+        ModelServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun cards(): CardService = cards
 
@@ -59,6 +63,13 @@ class ModelServiceImpl internal constructor(private val clientOptions: ClientOpt
             CardServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ModelService.WithRawResponse =
+            ModelServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         override fun cards(): CardService.WithRawResponse = cards
 
         private val retrieveHandler: Handler<ModelRetrieveResponse> =
@@ -75,6 +86,7 @@ class ModelServiceImpl internal constructor(private val clientOptions: ClientOpt
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("api", "v2", "models", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)
@@ -103,6 +115,7 @@ class ModelServiceImpl internal constructor(private val clientOptions: ClientOpt
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("api", "v2", "models", params._pathParam(0))
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()

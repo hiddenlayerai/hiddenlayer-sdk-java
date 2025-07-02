@@ -3,6 +3,7 @@
 package com.hiddenlayer_sdk.api.services.blocking
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.core.RequestOptions
 import com.hiddenlayer_sdk.api.core.http.HttpResponse
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
@@ -10,6 +11,7 @@ import com.hiddenlayer_sdk.api.models.models.ModelDeleteParams
 import com.hiddenlayer_sdk.api.models.models.ModelRetrieveParams
 import com.hiddenlayer_sdk.api.models.models.ModelRetrieveResponse
 import com.hiddenlayer_sdk.api.services.blocking.models.CardService
+import java.util.function.Consumer
 
 interface ModelService {
 
@@ -17,6 +19,13 @@ interface ModelService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): ModelService
 
     fun cards(): CardService
 
@@ -77,6 +86,13 @@ interface ModelService {
 
     /** A view of [ModelService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): ModelService.WithRawResponse
 
         fun cards(): CardService.WithRawResponse
 

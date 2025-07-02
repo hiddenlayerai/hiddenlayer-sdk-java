@@ -2,7 +2,7 @@
 
 package com.hiddenlayer_sdk.api.services.async
 
-import com.google.errorprone.annotations.MustBeClosed
+import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.core.RequestOptions
 import com.hiddenlayer_sdk.api.core.http.HttpResponse
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
@@ -11,6 +11,7 @@ import com.hiddenlayer_sdk.api.models.models.ModelRetrieveParams
 import com.hiddenlayer_sdk.api.models.models.ModelRetrieveResponse
 import com.hiddenlayer_sdk.api.services.async.models.CardServiceAsync
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface ModelServiceAsync {
 
@@ -18,6 +19,13 @@ interface ModelServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): ModelServiceAsync
 
     fun cards(): CardServiceAsync
 
@@ -91,18 +99,25 @@ interface ModelServiceAsync {
     /** A view of [ModelServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ModelServiceAsync.WithRawResponse
+
         fun cards(): CardServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `get /api/v2/models/{model_id}`, but is otherwise the
          * same as [ModelServiceAsync.retrieve].
          */
-        @MustBeClosed
         fun retrieve(modelId: String): CompletableFuture<HttpResponseFor<ModelRetrieveResponse>> =
             retrieve(modelId, ModelRetrieveParams.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             modelId: String,
             params: ModelRetrieveParams = ModelRetrieveParams.none(),
@@ -111,7 +126,6 @@ interface ModelServiceAsync {
             retrieve(params.toBuilder().modelId(modelId).build(), requestOptions)
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             modelId: String,
             params: ModelRetrieveParams = ModelRetrieveParams.none(),
@@ -119,21 +133,18 @@ interface ModelServiceAsync {
             retrieve(modelId, params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: ModelRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ModelRetrieveResponse>>
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: ModelRetrieveParams
         ): CompletableFuture<HttpResponseFor<ModelRetrieveResponse>> =
             retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             modelId: String,
             requestOptions: RequestOptions,
@@ -144,12 +155,10 @@ interface ModelServiceAsync {
          * Returns a raw HTTP response for `delete /api/v2/models/{model_id}`, but is otherwise the
          * same as [ModelServiceAsync.delete].
          */
-        @MustBeClosed
         fun delete(modelId: String): CompletableFuture<HttpResponse> =
             delete(modelId, ModelDeleteParams.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             modelId: String,
             params: ModelDeleteParams = ModelDeleteParams.none(),
@@ -158,26 +167,22 @@ interface ModelServiceAsync {
             delete(params.toBuilder().modelId(modelId).build(), requestOptions)
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             modelId: String,
             params: ModelDeleteParams = ModelDeleteParams.none(),
         ): CompletableFuture<HttpResponse> = delete(modelId, params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             params: ModelDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(params: ModelDeleteParams): CompletableFuture<HttpResponse> =
             delete(params, RequestOptions.none())
 
         /** @see [delete] */
-        @MustBeClosed
         fun delete(
             modelId: String,
             requestOptions: RequestOptions,

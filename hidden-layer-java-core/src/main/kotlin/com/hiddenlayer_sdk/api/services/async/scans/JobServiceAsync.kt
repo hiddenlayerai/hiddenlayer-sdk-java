@@ -2,7 +2,7 @@
 
 package com.hiddenlayer_sdk.api.services.async.scans
 
-import com.google.errorprone.annotations.MustBeClosed
+import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.core.RequestOptions
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobListParams
@@ -10,6 +10,7 @@ import com.hiddenlayer_sdk.api.models.scans.jobs.JobRequestParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.ScanJob
 import com.hiddenlayer_sdk.api.models.scans.results.ScanReport
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface JobServiceAsync {
 
@@ -17,6 +18,13 @@ interface JobServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobServiceAsync
 
     /** List all Model Scan Jobs */
     fun list(): CompletableFuture<ScanJob> = list(JobListParams.none())
@@ -49,27 +57,30 @@ interface JobServiceAsync {
     interface WithRawResponse {
 
         /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobServiceAsync.WithRawResponse
+
+        /**
          * Returns a raw HTTP response for `get /scan/v3/jobs`, but is otherwise the same as
          * [JobServiceAsync.list].
          */
-        @MustBeClosed
         fun list(): CompletableFuture<HttpResponseFor<ScanJob>> = list(JobListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: JobListParams = JobListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ScanJob>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: JobListParams = JobListParams.none()
         ): CompletableFuture<HttpResponseFor<ScanJob>> = list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<ScanJob>> =
             list(JobListParams.none(), requestOptions)
 
@@ -77,12 +88,10 @@ interface JobServiceAsync {
          * Returns a raw HTTP response for `post /scan/v3/jobs`, but is otherwise the same as
          * [JobServiceAsync.request].
          */
-        @MustBeClosed
         fun request(params: JobRequestParams): CompletableFuture<HttpResponseFor<ScanReport>> =
             request(params, RequestOptions.none())
 
         /** @see [request] */
-        @MustBeClosed
         fun request(
             params: JobRequestParams,
             requestOptions: RequestOptions = RequestOptions.none(),

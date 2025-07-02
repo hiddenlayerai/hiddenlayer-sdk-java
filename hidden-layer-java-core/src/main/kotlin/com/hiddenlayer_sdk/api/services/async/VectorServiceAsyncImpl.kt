@@ -18,6 +18,7 @@ import com.hiddenlayer_sdk.api.core.prepareAsync
 import com.hiddenlayer_sdk.api.models.vectors.VectorSubmitVectorsParams
 import com.hiddenlayer_sdk.api.models.vectors.VectorSubmitVectorsResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class VectorServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     VectorServiceAsync {
@@ -27,6 +28,9 @@ class VectorServiceAsyncImpl internal constructor(private val clientOptions: Cli
     }
 
     override fun withRawResponse(): VectorServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): VectorServiceAsync =
+        VectorServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun submitVectors(
         params: VectorSubmitVectorsParams,
@@ -40,6 +44,13 @@ class VectorServiceAsyncImpl internal constructor(private val clientOptions: Cli
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): VectorServiceAsync.WithRawResponse =
+            VectorServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val submitVectorsHandler: Handler<VectorSubmitVectorsResponse> =
             jsonHandler<VectorSubmitVectorsResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -51,6 +62,7 @@ class VectorServiceAsyncImpl internal constructor(private val clientOptions: Cli
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("api", "v2", "submit")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

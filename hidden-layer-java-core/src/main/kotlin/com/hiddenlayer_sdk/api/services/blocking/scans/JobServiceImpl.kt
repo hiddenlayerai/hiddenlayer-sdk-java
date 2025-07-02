@@ -19,6 +19,7 @@ import com.hiddenlayer_sdk.api.models.scans.jobs.JobListParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobRequestParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.ScanJob
 import com.hiddenlayer_sdk.api.models.scans.results.ScanReport
+import java.util.function.Consumer
 
 class JobServiceImpl internal constructor(private val clientOptions: ClientOptions) : JobService {
 
@@ -27,6 +28,9 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
     }
 
     override fun withRawResponse(): JobService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobService =
+        JobServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun list(params: JobListParams, requestOptions: RequestOptions): ScanJob =
         // get /scan/v3/jobs
@@ -41,6 +45,13 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): JobService.WithRawResponse =
+            JobServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val listHandler: Handler<ScanJob> =
             jsonHandler<ScanJob>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -51,6 +62,7 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scan", "v3", "jobs")
                     .build()
                     .prepare(clientOptions, params)
@@ -77,6 +89,7 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scan", "v3", "jobs")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

@@ -25,6 +25,7 @@ import com.hiddenlayer_sdk.api.models.scans.results.ResultPatchResponse
 import com.hiddenlayer_sdk.api.models.scans.results.ResultRetrieveParams
 import com.hiddenlayer_sdk.api.models.scans.results.ResultStartParams
 import com.hiddenlayer_sdk.api.models.scans.results.ScanReport
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class ResultServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -35,6 +36,9 @@ class ResultServiceImpl internal constructor(private val clientOptions: ClientOp
     }
 
     override fun withRawResponse(): ResultService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ResultService =
+        ResultServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun retrieve(
         params: ResultRetrieveParams,
@@ -67,6 +71,13 @@ class ResultServiceImpl internal constructor(private val clientOptions: ClientOp
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ResultService.WithRawResponse =
+            ResultServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val retrieveHandler: Handler<ScanReport> =
             jsonHandler<ScanReport>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -80,6 +91,7 @@ class ResultServiceImpl internal constructor(private val clientOptions: ClientOp
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scan", "v3", "results", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)
@@ -106,6 +118,7 @@ class ResultServiceImpl internal constructor(private val clientOptions: ClientOp
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scan", "v3", "results")
                     .build()
                     .prepare(clientOptions, params)
@@ -136,6 +149,7 @@ class ResultServiceImpl internal constructor(private val clientOptions: ClientOp
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scan", "v3", "results", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -165,6 +179,7 @@ class ResultServiceImpl internal constructor(private val clientOptions: ClientOp
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scan", "v3", "results", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

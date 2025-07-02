@@ -163,13 +163,7 @@ class HiddenLayerOkHttpClientAsync private constructor() {
         fun build(): HiddenLayerClientAsync =
             HiddenLayerClientAsyncImpl(
                 clientOptions
-                    .httpClient(
-                        OkHttpClient.builder()
-                            .baseUrl(clientOptions.baseUrl())
-                            .timeout(timeout)
-                            .proxy(proxy)
-                            .build()
-                    )
+                    .httpClient(OkHttpClient.builder().timeout(timeout).proxy(proxy).build())
                     .build()
             )
     }

@@ -17,6 +17,7 @@ import com.hiddenlayer_sdk.api.core.prepareAsync
 import com.hiddenlayer_sdk.api.models.models.cards.CardListParams
 import com.hiddenlayer_sdk.api.models.models.cards.CardListResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class CardServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     CardServiceAsync {
@@ -26,6 +27,9 @@ class CardServiceAsyncImpl internal constructor(private val clientOptions: Clien
     }
 
     override fun withRawResponse(): CardServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): CardServiceAsync =
+        CardServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun list(
         params: CardListParams,
@@ -39,6 +43,13 @@ class CardServiceAsyncImpl internal constructor(private val clientOptions: Clien
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): CardServiceAsync.WithRawResponse =
+            CardServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val listHandler: Handler<CardListResponse> =
             jsonHandler<CardListResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -49,6 +60,7 @@ class CardServiceAsyncImpl internal constructor(private val clientOptions: Clien
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("models", "v3", "cards")
                     .build()
                     .prepareAsync(clientOptions, params)

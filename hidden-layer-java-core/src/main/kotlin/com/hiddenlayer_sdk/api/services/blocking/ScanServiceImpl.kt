@@ -27,6 +27,7 @@ import com.hiddenlayer_sdk.api.services.blocking.scans.ResultService
 import com.hiddenlayer_sdk.api.services.blocking.scans.ResultServiceImpl
 import com.hiddenlayer_sdk.api.services.blocking.scans.UploadService
 import com.hiddenlayer_sdk.api.services.blocking.scans.UploadServiceImpl
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class ScanServiceImpl internal constructor(private val clientOptions: ClientOptions) : ScanService {
@@ -42,6 +43,9 @@ class ScanServiceImpl internal constructor(private val clientOptions: ClientOpti
     private val upload: UploadService by lazy { UploadServiceImpl(clientOptions) }
 
     override fun withRawResponse(): ScanService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ScanService =
+        ScanServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun results(): ResultService = results
 
@@ -83,6 +87,13 @@ class ScanServiceImpl internal constructor(private val clientOptions: ClientOpti
             UploadServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ScanService.WithRawResponse =
+            ScanServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         override fun results(): ResultService.WithRawResponse = results
 
         override fun jobs(): JobService.WithRawResponse = jobs
@@ -99,6 +110,7 @@ class ScanServiceImpl internal constructor(private val clientOptions: ClientOpti
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scans", "v3", "health")
                     .build()
                     .prepare(clientOptions, params)
@@ -117,6 +129,7 @@ class ScanServiceImpl internal constructor(private val clientOptions: ClientOpti
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scans", "v3", "readiness")
                     .build()
                     .prepare(clientOptions, params)
@@ -139,6 +152,7 @@ class ScanServiceImpl internal constructor(private val clientOptions: ClientOpti
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scans", "v3", "results", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)

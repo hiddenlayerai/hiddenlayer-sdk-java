@@ -12,6 +12,7 @@ import com.hiddenlayer_sdk.api.services.blocking.SensorService
 import com.hiddenlayer_sdk.api.services.blocking.SensorServiceImpl
 import com.hiddenlayer_sdk.api.services.blocking.VectorService
 import com.hiddenlayer_sdk.api.services.blocking.VectorServiceImpl
+import java.util.function.Consumer
 
 class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLayerClient {
 
@@ -42,6 +43,9 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
 
     override fun withRawResponse(): HiddenLayerClient.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): HiddenLayerClient =
+        HiddenLayerClientImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun models(): ModelService = models
 
     override fun sensors(): SensorService = sensors
@@ -70,6 +74,13 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
         private val scans: ScanService.WithRawResponse by lazy {
             ScanServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): HiddenLayerClient.WithRawResponse =
+            HiddenLayerClientImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun models(): ModelService.WithRawResponse = models
 

@@ -22,6 +22,7 @@ import com.hiddenlayer_sdk.api.models.scans.upload.UploadStartParams
 import com.hiddenlayer_sdk.api.models.scans.upload.UploadStartResponse
 import com.hiddenlayer_sdk.api.services.blocking.scans.upload.FileService
 import com.hiddenlayer_sdk.api.services.blocking.scans.upload.FileServiceImpl
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class UploadServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -34,6 +35,9 @@ class UploadServiceImpl internal constructor(private val clientOptions: ClientOp
     private val file: FileService by lazy { FileServiceImpl(clientOptions) }
 
     override fun withRawResponse(): UploadService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): UploadService =
+        UploadServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun file(): FileService = file
 
@@ -60,6 +64,13 @@ class UploadServiceImpl internal constructor(private val clientOptions: ClientOp
             FileServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): UploadService.WithRawResponse =
+            UploadServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         override fun file(): FileService.WithRawResponse = file
 
         private val completeAllHandler: Handler<UploadCompleteAllResponse> =
@@ -76,6 +87,7 @@ class UploadServiceImpl internal constructor(private val clientOptions: ClientOp
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scan", "v3", "upload", params._pathParam(0))
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
@@ -104,6 +116,7 @@ class UploadServiceImpl internal constructor(private val clientOptions: ClientOp
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scan", "v3", "upload")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

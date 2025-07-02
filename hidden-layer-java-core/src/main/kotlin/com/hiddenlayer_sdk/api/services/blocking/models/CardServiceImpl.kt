@@ -16,6 +16,7 @@ import com.hiddenlayer_sdk.api.core.http.parseable
 import com.hiddenlayer_sdk.api.core.prepare
 import com.hiddenlayer_sdk.api.models.models.cards.CardListParams
 import com.hiddenlayer_sdk.api.models.models.cards.CardListResponse
+import java.util.function.Consumer
 
 class CardServiceImpl internal constructor(private val clientOptions: ClientOptions) : CardService {
 
@@ -25,6 +26,9 @@ class CardServiceImpl internal constructor(private val clientOptions: ClientOpti
 
     override fun withRawResponse(): CardService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): CardService =
+        CardServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun list(params: CardListParams, requestOptions: RequestOptions): CardListResponse =
         // get /models/v3/cards
         withRawResponse().list(params, requestOptions).parse()
@@ -33,6 +37,13 @@ class CardServiceImpl internal constructor(private val clientOptions: ClientOpti
         CardService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): CardService.WithRawResponse =
+            CardServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val listHandler: Handler<CardListResponse> =
             jsonHandler<CardListResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
@@ -44,6 +55,7 @@ class CardServiceImpl internal constructor(private val clientOptions: ClientOpti
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("models", "v3", "cards")
                     .build()
                     .prepare(clientOptions, params)

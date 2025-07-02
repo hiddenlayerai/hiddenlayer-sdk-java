@@ -3,6 +3,7 @@
 package com.hiddenlayer_sdk.api.services.blocking.scans
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.core.RequestOptions
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.models.scans.upload.UploadCompleteAllParams
@@ -10,6 +11,7 @@ import com.hiddenlayer_sdk.api.models.scans.upload.UploadCompleteAllResponse
 import com.hiddenlayer_sdk.api.models.scans.upload.UploadStartParams
 import com.hiddenlayer_sdk.api.models.scans.upload.UploadStartResponse
 import com.hiddenlayer_sdk.api.services.blocking.scans.upload.FileService
+import java.util.function.Consumer
 
 interface UploadService {
 
@@ -17,6 +19,13 @@ interface UploadService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): UploadService
 
     fun file(): FileService
 
@@ -63,6 +72,13 @@ interface UploadService {
 
     /** A view of [UploadService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): UploadService.WithRawResponse
 
         fun file(): FileService.WithRawResponse
 

@@ -28,6 +28,7 @@ import com.hiddenlayer_sdk.api.services.async.scans.ResultServiceAsyncImpl
 import com.hiddenlayer_sdk.api.services.async.scans.UploadServiceAsync
 import com.hiddenlayer_sdk.api.services.async.scans.UploadServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class ScanServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -44,6 +45,9 @@ class ScanServiceAsyncImpl internal constructor(private val clientOptions: Clien
     private val upload: UploadServiceAsync by lazy { UploadServiceAsyncImpl(clientOptions) }
 
     override fun withRawResponse(): ScanServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ScanServiceAsync =
+        ScanServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun results(): ResultServiceAsync = results
 
@@ -89,6 +93,13 @@ class ScanServiceAsyncImpl internal constructor(private val clientOptions: Clien
             UploadServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ScanServiceAsync.WithRawResponse =
+            ScanServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         override fun results(): ResultServiceAsync.WithRawResponse = results
 
         override fun jobs(): JobServiceAsync.WithRawResponse = jobs
@@ -105,6 +116,7 @@ class ScanServiceAsyncImpl internal constructor(private val clientOptions: Clien
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scans", "v3", "health")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -126,6 +138,7 @@ class ScanServiceAsyncImpl internal constructor(private val clientOptions: Clien
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scans", "v3", "readiness")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -151,6 +164,7 @@ class ScanServiceAsyncImpl internal constructor(private val clientOptions: Clien
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scans", "v3", "results", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)

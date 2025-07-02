@@ -23,6 +23,7 @@ import com.hiddenlayer_sdk.api.models.scans.upload.UploadStartResponse
 import com.hiddenlayer_sdk.api.services.async.scans.upload.FileServiceAsync
 import com.hiddenlayer_sdk.api.services.async.scans.upload.FileServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class UploadServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -35,6 +36,9 @@ class UploadServiceAsyncImpl internal constructor(private val clientOptions: Cli
     private val file: FileServiceAsync by lazy { FileServiceAsyncImpl(clientOptions) }
 
     override fun withRawResponse(): UploadServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): UploadServiceAsync =
+        UploadServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun file(): FileServiceAsync = file
 
@@ -61,6 +65,13 @@ class UploadServiceAsyncImpl internal constructor(private val clientOptions: Cli
             FileServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): UploadServiceAsync.WithRawResponse =
+            UploadServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         override fun file(): FileServiceAsync.WithRawResponse = file
 
         private val completeAllHandler: Handler<UploadCompleteAllResponse> =
@@ -77,6 +88,7 @@ class UploadServiceAsyncImpl internal constructor(private val clientOptions: Cli
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scan", "v3", "upload", params._pathParam(0))
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
@@ -108,6 +120,7 @@ class UploadServiceAsyncImpl internal constructor(private val clientOptions: Cli
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scan", "v3", "upload")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

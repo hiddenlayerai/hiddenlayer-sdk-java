@@ -21,20 +21,20 @@ internal class CardListResponseTest {
                 .addResult(
                     CardListResponse.Result.builder()
                         .addActiveVersion(0L)
+                        .createdAt(0L)
+                        .modelId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .plaintextName("Resnet-50")
+                        .source("azure:datascience-workspace")
                         .attackMonitoringThreatLevel(
                             CardListResponse.Result.AttackMonitoringThreatLevel.SAFE
                         )
-                        .createdAt(0L)
-                        .modelId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .modelScanThreatLevel(CardListResponse.Result.ModelScanThreatLevel.SAFE)
-                        .plaintextName("Resnet-50")
                         .securityPosture(
                             CardListResponse.Result.SecurityPosture.builder()
                                 .attackMonitoring(true)
                                 .modelScan(true)
                                 .build()
                         )
-                        .source("azure:datascience-workspace")
                         .tags(
                             CardListResponse.Result.Tags.builder()
                                 .putAdditionalProperty("foo", JsonValue.from("bar"))
@@ -51,20 +51,20 @@ internal class CardListResponseTest {
             .containsExactly(
                 CardListResponse.Result.builder()
                     .addActiveVersion(0L)
+                    .createdAt(0L)
+                    .modelId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .plaintextName("Resnet-50")
+                    .source("azure:datascience-workspace")
                     .attackMonitoringThreatLevel(
                         CardListResponse.Result.AttackMonitoringThreatLevel.SAFE
                     )
-                    .createdAt(0L)
-                    .modelId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .modelScanThreatLevel(CardListResponse.Result.ModelScanThreatLevel.SAFE)
-                    .plaintextName("Resnet-50")
                     .securityPosture(
                         CardListResponse.Result.SecurityPosture.builder()
                             .attackMonitoring(true)
                             .modelScan(true)
                             .build()
                     )
-                    .source("azure:datascience-workspace")
                     .tags(
                         CardListResponse.Result.Tags.builder()
                             .putAdditionalProperty("foo", JsonValue.from("bar"))
@@ -86,20 +86,20 @@ internal class CardListResponseTest {
                 .addResult(
                     CardListResponse.Result.builder()
                         .addActiveVersion(0L)
+                        .createdAt(0L)
+                        .modelId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .plaintextName("Resnet-50")
+                        .source("azure:datascience-workspace")
                         .attackMonitoringThreatLevel(
                             CardListResponse.Result.AttackMonitoringThreatLevel.SAFE
                         )
-                        .createdAt(0L)
-                        .modelId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .modelScanThreatLevel(CardListResponse.Result.ModelScanThreatLevel.SAFE)
-                        .plaintextName("Resnet-50")
                         .securityPosture(
                             CardListResponse.Result.SecurityPosture.builder()
                                 .attackMonitoring(true)
                                 .modelScan(true)
                                 .build()
                         )
-                        .source("azure:datascience-workspace")
                         .tags(
                             CardListResponse.Result.Tags.builder()
                                 .putAdditionalProperty("foo", JsonValue.from("bar"))

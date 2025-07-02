@@ -26,6 +26,7 @@ import com.hiddenlayer_sdk.api.models.scans.results.ResultRetrieveParams
 import com.hiddenlayer_sdk.api.models.scans.results.ResultStartParams
 import com.hiddenlayer_sdk.api.models.scans.results.ScanReport
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class ResultServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -36,6 +37,9 @@ class ResultServiceAsyncImpl internal constructor(private val clientOptions: Cli
     }
 
     override fun withRawResponse(): ResultServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ResultServiceAsync =
+        ResultServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun retrieve(
         params: ResultRetrieveParams,
@@ -70,6 +74,13 @@ class ResultServiceAsyncImpl internal constructor(private val clientOptions: Cli
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ResultServiceAsync.WithRawResponse =
+            ResultServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val retrieveHandler: Handler<ScanReport> =
             jsonHandler<ScanReport>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -83,6 +94,7 @@ class ResultServiceAsyncImpl internal constructor(private val clientOptions: Cli
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scan", "v3", "results", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -112,6 +124,7 @@ class ResultServiceAsyncImpl internal constructor(private val clientOptions: Cli
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scan", "v3", "results")
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -145,6 +158,7 @@ class ResultServiceAsyncImpl internal constructor(private val clientOptions: Cli
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scan", "v3", "results", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -177,6 +191,7 @@ class ResultServiceAsyncImpl internal constructor(private val clientOptions: Cli
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scan", "v3", "results", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

@@ -2,7 +2,7 @@
 
 package com.hiddenlayer_sdk.api.services.async
 
-import com.google.errorprone.annotations.MustBeClosed
+import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.core.RequestOptions
 import com.hiddenlayer_sdk.api.core.http.HttpResponse
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
@@ -14,6 +14,7 @@ import com.hiddenlayer_sdk.api.services.async.scans.JobServiceAsync
 import com.hiddenlayer_sdk.api.services.async.scans.ResultServiceAsync
 import com.hiddenlayer_sdk.api.services.async.scans.UploadServiceAsync
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface ScanServiceAsync {
 
@@ -21,6 +22,13 @@ interface ScanServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): ScanServiceAsync
 
     fun results(): ResultServiceAsync
 
@@ -105,6 +113,13 @@ interface ScanServiceAsync {
     /** A view of [ScanServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): ScanServiceAsync.WithRawResponse
+
         fun results(): ResultServiceAsync.WithRawResponse
 
         fun jobs(): JobServiceAsync.WithRawResponse
@@ -115,25 +130,21 @@ interface ScanServiceAsync {
          * Returns a raw HTTP response for `get /scans/v3/health`, but is otherwise the same as
          * [ScanServiceAsync.checkHealth].
          */
-        @MustBeClosed
         fun checkHealth(): CompletableFuture<HttpResponse> =
             checkHealth(ScanCheckHealthParams.none())
 
         /** @see [checkHealth] */
-        @MustBeClosed
         fun checkHealth(
             params: ScanCheckHealthParams = ScanCheckHealthParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
 
         /** @see [checkHealth] */
-        @MustBeClosed
         fun checkHealth(
             params: ScanCheckHealthParams = ScanCheckHealthParams.none()
         ): CompletableFuture<HttpResponse> = checkHealth(params, RequestOptions.none())
 
         /** @see [checkHealth] */
-        @MustBeClosed
         fun checkHealth(requestOptions: RequestOptions): CompletableFuture<HttpResponse> =
             checkHealth(ScanCheckHealthParams.none(), requestOptions)
 
@@ -141,25 +152,21 @@ interface ScanServiceAsync {
          * Returns a raw HTTP response for `get /scans/v3/readiness`, but is otherwise the same as
          * [ScanServiceAsync.checkReadiness].
          */
-        @MustBeClosed
         fun checkReadiness(): CompletableFuture<HttpResponse> =
             checkReadiness(ScanCheckReadinessParams.none())
 
         /** @see [checkReadiness] */
-        @MustBeClosed
         fun checkReadiness(
             params: ScanCheckReadinessParams = ScanCheckReadinessParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
 
         /** @see [checkReadiness] */
-        @MustBeClosed
         fun checkReadiness(
             params: ScanCheckReadinessParams = ScanCheckReadinessParams.none()
         ): CompletableFuture<HttpResponse> = checkReadiness(params, RequestOptions.none())
 
         /** @see [checkReadiness] */
-        @MustBeClosed
         fun checkReadiness(requestOptions: RequestOptions): CompletableFuture<HttpResponse> =
             checkReadiness(ScanCheckReadinessParams.none(), requestOptions)
 
@@ -167,14 +174,12 @@ interface ScanServiceAsync {
          * Returns a raw HTTP response for `get /scans/v3/results/{scan_id}`, but is otherwise the
          * same as [ScanServiceAsync.retrieveResults].
          */
-        @MustBeClosed
         fun retrieveResults(
             scanId: String
         ): CompletableFuture<HttpResponseFor<ScanRetrieveResultsResponse>> =
             retrieveResults(scanId, ScanRetrieveResultsParams.none())
 
         /** @see [retrieveResults] */
-        @MustBeClosed
         fun retrieveResults(
             scanId: String,
             params: ScanRetrieveResultsParams = ScanRetrieveResultsParams.none(),
@@ -183,7 +188,6 @@ interface ScanServiceAsync {
             retrieveResults(params.toBuilder().scanId(scanId).build(), requestOptions)
 
         /** @see [retrieveResults] */
-        @MustBeClosed
         fun retrieveResults(
             scanId: String,
             params: ScanRetrieveResultsParams = ScanRetrieveResultsParams.none(),
@@ -191,21 +195,18 @@ interface ScanServiceAsync {
             retrieveResults(scanId, params, RequestOptions.none())
 
         /** @see [retrieveResults] */
-        @MustBeClosed
         fun retrieveResults(
             params: ScanRetrieveResultsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ScanRetrieveResultsResponse>>
 
         /** @see [retrieveResults] */
-        @MustBeClosed
         fun retrieveResults(
             params: ScanRetrieveResultsParams
         ): CompletableFuture<HttpResponseFor<ScanRetrieveResultsResponse>> =
             retrieveResults(params, RequestOptions.none())
 
         /** @see [retrieveResults] */
-        @MustBeClosed
         fun retrieveResults(
             scanId: String,
             requestOptions: RequestOptions,

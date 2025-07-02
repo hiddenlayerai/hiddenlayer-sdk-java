@@ -10,6 +10,7 @@ import com.hiddenlayer_sdk.api.core.ExcludeMissing
 import com.hiddenlayer_sdk.api.core.JsonField
 import com.hiddenlayer_sdk.api.core.JsonMissing
 import com.hiddenlayer_sdk.api.core.JsonValue
+import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.toImmutable
 import com.hiddenlayer_sdk.api.errors.HiddenLayerInvalidDataException
 import java.time.OffsetDateTime
@@ -24,9 +25,9 @@ private constructor(
     private val createdAt: JsonField<OffsetDateTime>,
     private val plaintextName: JsonField<String>,
     private val sensorId: JsonField<String>,
-    private val tags: JsonField<Tags>,
     private val tenantId: JsonField<String>,
     private val version: JsonField<Long>,
+    private val tags: JsonField<Tags>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -40,52 +41,52 @@ private constructor(
         @ExcludeMissing
         plaintextName: JsonField<String> = JsonMissing.of(),
         @JsonProperty("sensor_id") @ExcludeMissing sensorId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("tags") @ExcludeMissing tags: JsonField<Tags> = JsonMissing.of(),
         @JsonProperty("tenant_id") @ExcludeMissing tenantId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("version") @ExcludeMissing version: JsonField<Long> = JsonMissing.of(),
-    ) : this(active, createdAt, plaintextName, sensorId, tags, tenantId, version, mutableMapOf())
+        @JsonProperty("tags") @ExcludeMissing tags: JsonField<Tags> = JsonMissing.of(),
+    ) : this(active, createdAt, plaintextName, sensorId, tenantId, version, tags, mutableMapOf())
 
     /**
-     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun active(): Optional<Boolean> = active.getOptional("active")
+    fun active(): Boolean = active.getRequired("active")
 
     /**
-     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun createdAt(): Optional<OffsetDateTime> = createdAt.getOptional("created_at")
+    fun createdAt(): OffsetDateTime = createdAt.getRequired("created_at")
 
     /**
-     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun plaintextName(): Optional<String> = plaintextName.getOptional("plaintext_name")
+    fun plaintextName(): String = plaintextName.getRequired("plaintext_name")
 
     /**
-     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun sensorId(): Optional<String> = sensorId.getOptional("sensor_id")
+    fun sensorId(): String = sensorId.getRequired("sensor_id")
+
+    /**
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun tenantId(): String = tenantId.getRequired("tenant_id")
+
+    /**
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun version(): Long = version.getRequired("version")
 
     /**
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun tags(): Optional<Tags> = tags.getOptional("tags")
-
-    /**
-     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun tenantId(): Optional<String> = tenantId.getOptional("tenant_id")
-
-    /**
-     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun version(): Optional<Long> = version.getOptional("version")
 
     /**
      * Returns the raw JSON value of [active].
@@ -120,13 +121,6 @@ private constructor(
     @JsonProperty("sensor_id") @ExcludeMissing fun _sensorId(): JsonField<String> = sensorId
 
     /**
-     * Returns the raw JSON value of [tags].
-     *
-     * Unlike [tags], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<Tags> = tags
-
-    /**
      * Returns the raw JSON value of [tenantId].
      *
      * Unlike [tenantId], this method doesn't throw if the JSON field has an unexpected type.
@@ -139,6 +133,13 @@ private constructor(
      * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<Long> = version
+
+    /**
+     * Returns the raw JSON value of [tags].
+     *
+     * Unlike [tags], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<Tags> = tags
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -154,20 +155,32 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [Sensor]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [Sensor].
+         *
+         * The following fields are required:
+         * ```java
+         * .active()
+         * .createdAt()
+         * .plaintextName()
+         * .sensorId()
+         * .tenantId()
+         * .version()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [Sensor]. */
     class Builder internal constructor() {
 
-        private var active: JsonField<Boolean> = JsonMissing.of()
-        private var createdAt: JsonField<OffsetDateTime> = JsonMissing.of()
-        private var plaintextName: JsonField<String> = JsonMissing.of()
-        private var sensorId: JsonField<String> = JsonMissing.of()
+        private var active: JsonField<Boolean>? = null
+        private var createdAt: JsonField<OffsetDateTime>? = null
+        private var plaintextName: JsonField<String>? = null
+        private var sensorId: JsonField<String>? = null
+        private var tenantId: JsonField<String>? = null
+        private var version: JsonField<Long>? = null
         private var tags: JsonField<Tags> = JsonMissing.of()
-        private var tenantId: JsonField<String> = JsonMissing.of()
-        private var version: JsonField<Long> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -176,9 +189,9 @@ private constructor(
             createdAt = sensor.createdAt
             plaintextName = sensor.plaintextName
             sensorId = sensor.sensorId
-            tags = sensor.tags
             tenantId = sensor.tenantId
             version = sensor.version
+            tags = sensor.tags
             additionalProperties = sensor.additionalProperties.toMutableMap()
         }
 
@@ -226,16 +239,6 @@ private constructor(
          */
         fun sensorId(sensorId: JsonField<String>) = apply { this.sensorId = sensorId }
 
-        fun tags(tags: Tags) = tags(JsonField.of(tags))
-
-        /**
-         * Sets [Builder.tags] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.tags] with a well-typed [Tags] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun tags(tags: JsonField<Tags>) = apply { this.tags = tags }
-
         fun tenantId(tenantId: String) = tenantId(JsonField.of(tenantId))
 
         /**
@@ -255,6 +258,16 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun version(version: JsonField<Long>) = apply { this.version = version }
+
+        fun tags(tags: Tags) = tags(JsonField.of(tags))
+
+        /**
+         * Sets [Builder.tags] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.tags] with a well-typed [Tags] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun tags(tags: JsonField<Tags>) = apply { this.tags = tags }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -279,16 +292,28 @@ private constructor(
          * Returns an immutable instance of [Sensor].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .active()
+         * .createdAt()
+         * .plaintextName()
+         * .sensorId()
+         * .tenantId()
+         * .version()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): Sensor =
             Sensor(
-                active,
-                createdAt,
-                plaintextName,
-                sensorId,
+                checkRequired("active", active),
+                checkRequired("createdAt", createdAt),
+                checkRequired("plaintextName", plaintextName),
+                checkRequired("sensorId", sensorId),
+                checkRequired("tenantId", tenantId),
+                checkRequired("version", version),
                 tags,
-                tenantId,
-                version,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -304,9 +329,9 @@ private constructor(
         createdAt()
         plaintextName()
         sensorId()
-        tags().ifPresent { it.validate() }
         tenantId()
         version()
+        tags().ifPresent { it.validate() }
         validated = true
     }
 
@@ -329,9 +354,9 @@ private constructor(
             (if (createdAt.asKnown().isPresent) 1 else 0) +
             (if (plaintextName.asKnown().isPresent) 1 else 0) +
             (if (sensorId.asKnown().isPresent) 1 else 0) +
-            (tags.asKnown().getOrNull()?.validity() ?: 0) +
             (if (tenantId.asKnown().isPresent) 1 else 0) +
-            (if (version.asKnown().isPresent) 1 else 0)
+            (if (version.asKnown().isPresent) 1 else 0) +
+            (tags.asKnown().getOrNull()?.validity() ?: 0)
 
     class Tags
     @JsonCreator
@@ -439,15 +464,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Sensor && active == other.active && createdAt == other.createdAt && plaintextName == other.plaintextName && sensorId == other.sensorId && tags == other.tags && tenantId == other.tenantId && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is Sensor && active == other.active && createdAt == other.createdAt && plaintextName == other.plaintextName && sensorId == other.sensorId && tenantId == other.tenantId && version == other.version && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(active, createdAt, plaintextName, sensorId, tags, tenantId, version, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(active, createdAt, plaintextName, sensorId, tenantId, version, tags, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Sensor{active=$active, createdAt=$createdAt, plaintextName=$plaintextName, sensorId=$sensorId, tags=$tags, tenantId=$tenantId, version=$version, additionalProperties=$additionalProperties}"
+        "Sensor{active=$active, createdAt=$createdAt, plaintextName=$plaintextName, sensorId=$sensorId, tenantId=$tenantId, version=$version, tags=$tags, additionalProperties=$additionalProperties}"
 }

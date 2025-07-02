@@ -24,6 +24,7 @@ import com.hiddenlayer_sdk.api.models.models.ModelRetrieveResponse
 import com.hiddenlayer_sdk.api.services.async.models.CardServiceAsync
 import com.hiddenlayer_sdk.api.services.async.models.CardServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class ModelServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -36,6 +37,9 @@ class ModelServiceAsyncImpl internal constructor(private val clientOptions: Clie
     private val cards: CardServiceAsync by lazy { CardServiceAsyncImpl(clientOptions) }
 
     override fun withRawResponse(): ModelServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ModelServiceAsync =
+        ModelServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun cards(): CardServiceAsync = cards
 
@@ -62,6 +66,13 @@ class ModelServiceAsyncImpl internal constructor(private val clientOptions: Clie
             CardServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ModelServiceAsync.WithRawResponse =
+            ModelServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         override fun cards(): CardServiceAsync.WithRawResponse = cards
 
         private val retrieveHandler: Handler<ModelRetrieveResponse> =
@@ -78,6 +89,7 @@ class ModelServiceAsyncImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("api", "v2", "models", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -109,6 +121,7 @@ class ModelServiceAsyncImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("api", "v2", "models", params._pathParam(0))
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()

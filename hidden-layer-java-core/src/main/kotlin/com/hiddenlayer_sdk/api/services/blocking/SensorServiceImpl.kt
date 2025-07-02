@@ -24,6 +24,7 @@ import com.hiddenlayer_sdk.api.models.sensors.SensorDeleteParams
 import com.hiddenlayer_sdk.api.models.sensors.SensorQueryParams
 import com.hiddenlayer_sdk.api.models.sensors.SensorQueryResponse
 import com.hiddenlayer_sdk.api.models.sensors.SensorRetrieveParams
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class SensorServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -34,6 +35,9 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
     }
 
     override fun withRawResponse(): SensorService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): SensorService =
+        SensorServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(params: SensorCreateParams, requestOptions: RequestOptions): Sensor =
         // post /api/v2/sensors/create
@@ -60,6 +64,13 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): SensorService.WithRawResponse =
+            SensorServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val createHandler: Handler<Sensor> =
             jsonHandler<Sensor>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -70,6 +81,7 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("api", "v2", "sensors", "create")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -100,6 +112,7 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("api", "v2", "sensors", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)
@@ -128,6 +141,7 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("api", "v2", "sensors", params._pathParam(0))
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
@@ -148,6 +162,7 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("api", "v2", "sensors", "query")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

@@ -20,6 +20,7 @@ import com.hiddenlayer_sdk.api.models.scans.upload.file.FileAddParams
 import com.hiddenlayer_sdk.api.models.scans.upload.file.FileAddResponse
 import com.hiddenlayer_sdk.api.models.scans.upload.file.FileCompleteParams
 import com.hiddenlayer_sdk.api.models.scans.upload.file.FileCompleteResponse
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class FileServiceImpl internal constructor(private val clientOptions: ClientOptions) : FileService {
@@ -29,6 +30,9 @@ class FileServiceImpl internal constructor(private val clientOptions: ClientOpti
     }
 
     override fun withRawResponse(): FileService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): FileService =
+        FileServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun add(params: FileAddParams, requestOptions: RequestOptions): FileAddResponse =
         // post /scan/v3/upload/{scan_id}/file
@@ -46,6 +50,13 @@ class FileServiceImpl internal constructor(private val clientOptions: ClientOpti
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): FileService.WithRawResponse =
+            FileServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val addHandler: Handler<FileAddResponse> =
             jsonHandler<FileAddResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
@@ -59,6 +70,7 @@ class FileServiceImpl internal constructor(private val clientOptions: ClientOpti
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scan", "v3", "upload", params._pathParam(0), "file")
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
@@ -90,6 +102,7 @@ class FileServiceImpl internal constructor(private val clientOptions: ClientOpti
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments(
                         "scan",
                         "v3",
