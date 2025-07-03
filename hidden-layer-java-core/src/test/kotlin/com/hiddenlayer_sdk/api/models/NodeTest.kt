@@ -19,11 +19,11 @@ internal class NodeTest {
                 .id("id")
                 .children(listOf())
                 .label(
-                    Node.Label.builder()
+                    Message.builder()
                         .id("id")
                         .addArgument("string")
                         .markdown("markdown")
-                        .properties(Node.Label.Properties.builder().addTag("string").build())
+                        .properties(PropertyBag.builder().addTag("string").build())
                         .text("text")
                         .build()
                 )
@@ -31,7 +31,7 @@ internal class NodeTest {
                     Node.Location.builder()
                         .id(-1L)
                         .addAnnotation(
-                            Node.Location.Annotation.builder()
+                            Region.builder()
                                 .byteLength(0L)
                                 .byteOffset(-1L)
                                 .charLength(0L)
@@ -39,41 +39,25 @@ internal class NodeTest {
                                 .endColumn(1L)
                                 .endLine(1L)
                                 .message(
-                                    Node.Location.Annotation.Message.builder()
+                                    Message.builder()
                                         .id("id")
                                         .addArgument("string")
                                         .markdown("markdown")
-                                        .properties(
-                                            Node.Location.Annotation.Message.Properties.builder()
-                                                .addTag("string")
-                                                .build()
-                                        )
+                                        .properties(PropertyBag.builder().addTag("string").build())
                                         .text("text")
                                         .build()
                                 )
-                                .properties(
-                                    Node.Location.Annotation.Properties.builder()
-                                        .addTag("string")
-                                        .build()
-                                )
+                                .properties(PropertyBag.builder().addTag("string").build())
                                 .snippet(
-                                    Node.Location.Annotation.Snippet.builder()
+                                    ArtifactContent.builder()
                                         .binary("binary")
-                                        .properties(
-                                            Node.Location.Annotation.Snippet.Properties.builder()
-                                                .addTag("string")
-                                                .build()
-                                        )
+                                        .properties(PropertyBag.builder().addTag("string").build())
                                         .rendered(
-                                            Node.Location.Annotation.Snippet.Rendered.builder()
+                                            MultiformatMessageString.builder()
                                                 .text("text")
                                                 .markdown("markdown")
                                                 .properties(
-                                                    Node.Location.Annotation.Snippet.Rendered
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .build()
                                         )
@@ -93,23 +77,15 @@ internal class NodeTest {
                                 .kind("kind")
                                 .name("name")
                                 .parentIndex(-1L)
-                                .properties(
-                                    Node.Location.LogicalLocation.Properties.builder()
-                                        .addTag("string")
-                                        .build()
-                                )
+                                .properties(PropertyBag.builder().addTag("string").build())
                                 .build()
                         )
                         .message(
-                            Node.Location.Message.builder()
+                            Message.builder()
                                 .id("id")
                                 .addArgument("string")
                                 .markdown("markdown")
-                                .properties(
-                                    Node.Location.Message.Properties.builder()
-                                        .addTag("string")
-                                        .build()
-                                )
+                                .properties(PropertyBag.builder().addTag("string").build())
                                 .text("text")
                                 .build()
                         )
@@ -125,49 +101,31 @@ internal class NodeTest {
                                         .name("name")
                                         .offsetFromParent(0L)
                                         .parentIndex(-1L)
-                                        .properties(
-                                            Node.Location.PhysicalLocation.Address.Properties
-                                                .builder()
-                                                .addTag("string")
-                                                .build()
-                                        )
+                                        .properties(PropertyBag.builder().addTag("string").build())
                                         .relativeAddress(0L)
                                         .build()
                                 )
                                 .artifactLocation(
                                     Node.Location.PhysicalLocation.ArtifactLocation.builder()
                                         .description(
-                                            Node.Location.PhysicalLocation.ArtifactLocation
-                                                .Description
-                                                .builder()
+                                            Message.builder()
                                                 .id("id")
                                                 .addArgument("string")
                                                 .markdown("markdown")
                                                 .properties(
-                                                    Node.Location.PhysicalLocation.ArtifactLocation
-                                                        .Description
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .text("text")
                                                 .build()
                                         )
                                         .index(-1L)
-                                        .properties(
-                                            Node.Location.PhysicalLocation.ArtifactLocation
-                                                .Properties
-                                                .builder()
-                                                .addTag("string")
-                                                .build()
-                                        )
+                                        .properties(PropertyBag.builder().addTag("string").build())
                                         .uri("uri")
                                         .uriBaseId("uriBaseId")
                                         .build()
                                 )
                                 .contextRegion(
-                                    Node.Location.PhysicalLocation.ContextRegion.builder()
+                                    Region.builder()
                                         .byteLength(0L)
                                         .byteOffset(-1L)
                                         .charLength(0L)
@@ -175,54 +133,29 @@ internal class NodeTest {
                                         .endColumn(1L)
                                         .endLine(1L)
                                         .message(
-                                            Node.Location.PhysicalLocation.ContextRegion.Message
-                                                .builder()
+                                            Message.builder()
                                                 .id("id")
                                                 .addArgument("string")
                                                 .markdown("markdown")
                                                 .properties(
-                                                    Node.Location.PhysicalLocation.ContextRegion
-                                                        .Message
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .text("text")
                                                 .build()
                                         )
-                                        .properties(
-                                            Node.Location.PhysicalLocation.ContextRegion.Properties
-                                                .builder()
-                                                .addTag("string")
-                                                .build()
-                                        )
+                                        .properties(PropertyBag.builder().addTag("string").build())
                                         .snippet(
-                                            Node.Location.PhysicalLocation.ContextRegion.Snippet
-                                                .builder()
+                                            ArtifactContent.builder()
                                                 .binary("binary")
                                                 .properties(
-                                                    Node.Location.PhysicalLocation.ContextRegion
-                                                        .Snippet
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .rendered(
-                                                    Node.Location.PhysicalLocation.ContextRegion
-                                                        .Snippet
-                                                        .Rendered
-                                                        .builder()
+                                                    MultiformatMessageString.builder()
                                                         .text("text")
                                                         .markdown("markdown")
                                                         .properties(
-                                                            Node.Location.PhysicalLocation
-                                                                .ContextRegion
-                                                                .Snippet
-                                                                .Rendered
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
@@ -236,13 +169,9 @@ internal class NodeTest {
                                         .startLine(1L)
                                         .build()
                                 )
-                                .properties(
-                                    Node.Location.PhysicalLocation.Properties.builder()
-                                        .addTag("string")
-                                        .build()
-                                )
+                                .properties(PropertyBag.builder().addTag("string").build())
                                 .region(
-                                    Node.Location.PhysicalLocation.Region.builder()
+                                    Region.builder()
                                         .byteLength(0L)
                                         .byteOffset(-1L)
                                         .charLength(0L)
@@ -250,48 +179,29 @@ internal class NodeTest {
                                         .endColumn(1L)
                                         .endLine(1L)
                                         .message(
-                                            Node.Location.PhysicalLocation.Region.Message.builder()
+                                            Message.builder()
                                                 .id("id")
                                                 .addArgument("string")
                                                 .markdown("markdown")
                                                 .properties(
-                                                    Node.Location.PhysicalLocation.Region.Message
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .text("text")
                                                 .build()
                                         )
-                                        .properties(
-                                            Node.Location.PhysicalLocation.Region.Properties
-                                                .builder()
-                                                .addTag("string")
-                                                .build()
-                                        )
+                                        .properties(PropertyBag.builder().addTag("string").build())
                                         .snippet(
-                                            Node.Location.PhysicalLocation.Region.Snippet.builder()
+                                            ArtifactContent.builder()
                                                 .binary("binary")
                                                 .properties(
-                                                    Node.Location.PhysicalLocation.Region.Snippet
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .rendered(
-                                                    Node.Location.PhysicalLocation.Region.Snippet
-                                                        .Rendered
-                                                        .builder()
+                                                    MultiformatMessageString.builder()
                                                         .text("text")
                                                         .markdown("markdown")
                                                         .properties(
-                                                            Node.Location.PhysicalLocation.Region
-                                                                .Snippet
-                                                                .Rendered
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
@@ -307,46 +217,37 @@ internal class NodeTest {
                                 )
                                 .build()
                         )
-                        .properties(Node.Location.Properties.builder().addTag("string").build())
+                        .properties(PropertyBag.builder().addTag("string").build())
                         .addRelationship(
                             Node.Location.Relationship.builder()
                                 .target(0L)
                                 .description(
-                                    Node.Location.Relationship.Description.builder()
+                                    Message.builder()
                                         .id("id")
                                         .addArgument("string")
                                         .markdown("markdown")
-                                        .properties(
-                                            Node.Location.Relationship.Description.Properties
-                                                .builder()
-                                                .addTag("string")
-                                                .build()
-                                        )
+                                        .properties(PropertyBag.builder().addTag("string").build())
                                         .text("text")
                                         .build()
                                 )
                                 .addKind("string")
-                                .properties(
-                                    Node.Location.Relationship.Properties.builder()
-                                        .addTag("string")
-                                        .build()
-                                )
+                                .properties(PropertyBag.builder().addTag("string").build())
                                 .build()
                         )
                         .build()
                 )
-                .properties(Node.Properties.builder().addTag("string").build())
+                .properties(PropertyBag.builder().addTag("string").build())
                 .build()
 
         assertThat(node.id()).isEqualTo("id")
         assertThat(node.children().getOrNull()).containsExactly()
         assertThat(node.label())
             .contains(
-                Node.Label.builder()
+                Message.builder()
                     .id("id")
                     .addArgument("string")
                     .markdown("markdown")
-                    .properties(Node.Label.Properties.builder().addTag("string").build())
+                    .properties(PropertyBag.builder().addTag("string").build())
                     .text("text")
                     .build()
             )
@@ -355,7 +256,7 @@ internal class NodeTest {
                 Node.Location.builder()
                     .id(-1L)
                     .addAnnotation(
-                        Node.Location.Annotation.builder()
+                        Region.builder()
                             .byteLength(0L)
                             .byteOffset(-1L)
                             .charLength(0L)
@@ -363,40 +264,25 @@ internal class NodeTest {
                             .endColumn(1L)
                             .endLine(1L)
                             .message(
-                                Node.Location.Annotation.Message.builder()
+                                Message.builder()
                                     .id("id")
                                     .addArgument("string")
                                     .markdown("markdown")
-                                    .properties(
-                                        Node.Location.Annotation.Message.Properties.builder()
-                                            .addTag("string")
-                                            .build()
-                                    )
+                                    .properties(PropertyBag.builder().addTag("string").build())
                                     .text("text")
                                     .build()
                             )
-                            .properties(
-                                Node.Location.Annotation.Properties.builder()
-                                    .addTag("string")
-                                    .build()
-                            )
+                            .properties(PropertyBag.builder().addTag("string").build())
                             .snippet(
-                                Node.Location.Annotation.Snippet.builder()
+                                ArtifactContent.builder()
                                     .binary("binary")
-                                    .properties(
-                                        Node.Location.Annotation.Snippet.Properties.builder()
-                                            .addTag("string")
-                                            .build()
-                                    )
+                                    .properties(PropertyBag.builder().addTag("string").build())
                                     .rendered(
-                                        Node.Location.Annotation.Snippet.Rendered.builder()
+                                        MultiformatMessageString.builder()
                                             .text("text")
                                             .markdown("markdown")
                                             .properties(
-                                                Node.Location.Annotation.Snippet.Rendered.Properties
-                                                    .builder()
-                                                    .addTag("string")
-                                                    .build()
+                                                PropertyBag.builder().addTag("string").build()
                                             )
                                             .build()
                                     )
@@ -416,21 +302,15 @@ internal class NodeTest {
                             .kind("kind")
                             .name("name")
                             .parentIndex(-1L)
-                            .properties(
-                                Node.Location.LogicalLocation.Properties.builder()
-                                    .addTag("string")
-                                    .build()
-                            )
+                            .properties(PropertyBag.builder().addTag("string").build())
                             .build()
                     )
                     .message(
-                        Node.Location.Message.builder()
+                        Message.builder()
                             .id("id")
                             .addArgument("string")
                             .markdown("markdown")
-                            .properties(
-                                Node.Location.Message.Properties.builder().addTag("string").build()
-                            )
+                            .properties(PropertyBag.builder().addTag("string").build())
                             .text("text")
                             .build()
                     )
@@ -446,46 +326,31 @@ internal class NodeTest {
                                     .name("name")
                                     .offsetFromParent(0L)
                                     .parentIndex(-1L)
-                                    .properties(
-                                        Node.Location.PhysicalLocation.Address.Properties.builder()
-                                            .addTag("string")
-                                            .build()
-                                    )
+                                    .properties(PropertyBag.builder().addTag("string").build())
                                     .relativeAddress(0L)
                                     .build()
                             )
                             .artifactLocation(
                                 Node.Location.PhysicalLocation.ArtifactLocation.builder()
                                     .description(
-                                        Node.Location.PhysicalLocation.ArtifactLocation.Description
-                                            .builder()
+                                        Message.builder()
                                             .id("id")
                                             .addArgument("string")
                                             .markdown("markdown")
                                             .properties(
-                                                Node.Location.PhysicalLocation.ArtifactLocation
-                                                    .Description
-                                                    .Properties
-                                                    .builder()
-                                                    .addTag("string")
-                                                    .build()
+                                                PropertyBag.builder().addTag("string").build()
                                             )
                                             .text("text")
                                             .build()
                                     )
                                     .index(-1L)
-                                    .properties(
-                                        Node.Location.PhysicalLocation.ArtifactLocation.Properties
-                                            .builder()
-                                            .addTag("string")
-                                            .build()
-                                    )
+                                    .properties(PropertyBag.builder().addTag("string").build())
                                     .uri("uri")
                                     .uriBaseId("uriBaseId")
                                     .build()
                             )
                             .contextRegion(
-                                Node.Location.PhysicalLocation.ContextRegion.builder()
+                                Region.builder()
                                     .byteLength(0L)
                                     .byteOffset(-1L)
                                     .charLength(0L)
@@ -493,50 +358,29 @@ internal class NodeTest {
                                     .endColumn(1L)
                                     .endLine(1L)
                                     .message(
-                                        Node.Location.PhysicalLocation.ContextRegion.Message
-                                            .builder()
+                                        Message.builder()
                                             .id("id")
                                             .addArgument("string")
                                             .markdown("markdown")
                                             .properties(
-                                                Node.Location.PhysicalLocation.ContextRegion.Message
-                                                    .Properties
-                                                    .builder()
-                                                    .addTag("string")
-                                                    .build()
+                                                PropertyBag.builder().addTag("string").build()
                                             )
                                             .text("text")
                                             .build()
                                     )
-                                    .properties(
-                                        Node.Location.PhysicalLocation.ContextRegion.Properties
-                                            .builder()
-                                            .addTag("string")
-                                            .build()
-                                    )
+                                    .properties(PropertyBag.builder().addTag("string").build())
                                     .snippet(
-                                        Node.Location.PhysicalLocation.ContextRegion.Snippet
-                                            .builder()
+                                        ArtifactContent.builder()
                                             .binary("binary")
                                             .properties(
-                                                Node.Location.PhysicalLocation.ContextRegion.Snippet
-                                                    .Properties
-                                                    .builder()
-                                                    .addTag("string")
-                                                    .build()
+                                                PropertyBag.builder().addTag("string").build()
                                             )
                                             .rendered(
-                                                Node.Location.PhysicalLocation.ContextRegion.Snippet
-                                                    .Rendered
-                                                    .builder()
+                                                MultiformatMessageString.builder()
                                                     .text("text")
                                                     .markdown("markdown")
                                                     .properties(
-                                                        Node.Location.PhysicalLocation.ContextRegion
-                                                            .Snippet
-                                                            .Rendered
-                                                            .Properties
-                                                            .builder()
+                                                        PropertyBag.builder()
                                                             .addTag("string")
                                                             .build()
                                                     )
@@ -550,13 +394,9 @@ internal class NodeTest {
                                     .startLine(1L)
                                     .build()
                             )
-                            .properties(
-                                Node.Location.PhysicalLocation.Properties.builder()
-                                    .addTag("string")
-                                    .build()
-                            )
+                            .properties(PropertyBag.builder().addTag("string").build())
                             .region(
-                                Node.Location.PhysicalLocation.Region.builder()
+                                Region.builder()
                                     .byteLength(0L)
                                     .byteOffset(-1L)
                                     .charLength(0L)
@@ -564,47 +404,29 @@ internal class NodeTest {
                                     .endColumn(1L)
                                     .endLine(1L)
                                     .message(
-                                        Node.Location.PhysicalLocation.Region.Message.builder()
+                                        Message.builder()
                                             .id("id")
                                             .addArgument("string")
                                             .markdown("markdown")
                                             .properties(
-                                                Node.Location.PhysicalLocation.Region.Message
-                                                    .Properties
-                                                    .builder()
-                                                    .addTag("string")
-                                                    .build()
+                                                PropertyBag.builder().addTag("string").build()
                                             )
                                             .text("text")
                                             .build()
                                     )
-                                    .properties(
-                                        Node.Location.PhysicalLocation.Region.Properties.builder()
-                                            .addTag("string")
-                                            .build()
-                                    )
+                                    .properties(PropertyBag.builder().addTag("string").build())
                                     .snippet(
-                                        Node.Location.PhysicalLocation.Region.Snippet.builder()
+                                        ArtifactContent.builder()
                                             .binary("binary")
                                             .properties(
-                                                Node.Location.PhysicalLocation.Region.Snippet
-                                                    .Properties
-                                                    .builder()
-                                                    .addTag("string")
-                                                    .build()
+                                                PropertyBag.builder().addTag("string").build()
                                             )
                                             .rendered(
-                                                Node.Location.PhysicalLocation.Region.Snippet
-                                                    .Rendered
-                                                    .builder()
+                                                MultiformatMessageString.builder()
                                                     .text("text")
                                                     .markdown("markdown")
                                                     .properties(
-                                                        Node.Location.PhysicalLocation.Region
-                                                            .Snippet
-                                                            .Rendered
-                                                            .Properties
-                                                            .builder()
+                                                        PropertyBag.builder()
                                                             .addTag("string")
                                                             .build()
                                                     )
@@ -620,34 +442,26 @@ internal class NodeTest {
                             )
                             .build()
                     )
-                    .properties(Node.Location.Properties.builder().addTag("string").build())
+                    .properties(PropertyBag.builder().addTag("string").build())
                     .addRelationship(
                         Node.Location.Relationship.builder()
                             .target(0L)
                             .description(
-                                Node.Location.Relationship.Description.builder()
+                                Message.builder()
                                     .id("id")
                                     .addArgument("string")
                                     .markdown("markdown")
-                                    .properties(
-                                        Node.Location.Relationship.Description.Properties.builder()
-                                            .addTag("string")
-                                            .build()
-                                    )
+                                    .properties(PropertyBag.builder().addTag("string").build())
                                     .text("text")
                                     .build()
                             )
                             .addKind("string")
-                            .properties(
-                                Node.Location.Relationship.Properties.builder()
-                                    .addTag("string")
-                                    .build()
-                            )
+                            .properties(PropertyBag.builder().addTag("string").build())
                             .build()
                     )
                     .build()
             )
-        assertThat(node.properties()).contains(Node.Properties.builder().addTag("string").build())
+        assertThat(node.properties()).contains(PropertyBag.builder().addTag("string").build())
     }
 
     @Disabled("skipped: tests are disabled for the time being")
@@ -659,11 +473,11 @@ internal class NodeTest {
                 .id("id")
                 .children(listOf())
                 .label(
-                    Node.Label.builder()
+                    Message.builder()
                         .id("id")
                         .addArgument("string")
                         .markdown("markdown")
-                        .properties(Node.Label.Properties.builder().addTag("string").build())
+                        .properties(PropertyBag.builder().addTag("string").build())
                         .text("text")
                         .build()
                 )
@@ -671,7 +485,7 @@ internal class NodeTest {
                     Node.Location.builder()
                         .id(-1L)
                         .addAnnotation(
-                            Node.Location.Annotation.builder()
+                            Region.builder()
                                 .byteLength(0L)
                                 .byteOffset(-1L)
                                 .charLength(0L)
@@ -679,41 +493,25 @@ internal class NodeTest {
                                 .endColumn(1L)
                                 .endLine(1L)
                                 .message(
-                                    Node.Location.Annotation.Message.builder()
+                                    Message.builder()
                                         .id("id")
                                         .addArgument("string")
                                         .markdown("markdown")
-                                        .properties(
-                                            Node.Location.Annotation.Message.Properties.builder()
-                                                .addTag("string")
-                                                .build()
-                                        )
+                                        .properties(PropertyBag.builder().addTag("string").build())
                                         .text("text")
                                         .build()
                                 )
-                                .properties(
-                                    Node.Location.Annotation.Properties.builder()
-                                        .addTag("string")
-                                        .build()
-                                )
+                                .properties(PropertyBag.builder().addTag("string").build())
                                 .snippet(
-                                    Node.Location.Annotation.Snippet.builder()
+                                    ArtifactContent.builder()
                                         .binary("binary")
-                                        .properties(
-                                            Node.Location.Annotation.Snippet.Properties.builder()
-                                                .addTag("string")
-                                                .build()
-                                        )
+                                        .properties(PropertyBag.builder().addTag("string").build())
                                         .rendered(
-                                            Node.Location.Annotation.Snippet.Rendered.builder()
+                                            MultiformatMessageString.builder()
                                                 .text("text")
                                                 .markdown("markdown")
                                                 .properties(
-                                                    Node.Location.Annotation.Snippet.Rendered
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .build()
                                         )
@@ -733,23 +531,15 @@ internal class NodeTest {
                                 .kind("kind")
                                 .name("name")
                                 .parentIndex(-1L)
-                                .properties(
-                                    Node.Location.LogicalLocation.Properties.builder()
-                                        .addTag("string")
-                                        .build()
-                                )
+                                .properties(PropertyBag.builder().addTag("string").build())
                                 .build()
                         )
                         .message(
-                            Node.Location.Message.builder()
+                            Message.builder()
                                 .id("id")
                                 .addArgument("string")
                                 .markdown("markdown")
-                                .properties(
-                                    Node.Location.Message.Properties.builder()
-                                        .addTag("string")
-                                        .build()
-                                )
+                                .properties(PropertyBag.builder().addTag("string").build())
                                 .text("text")
                                 .build()
                         )
@@ -765,49 +555,31 @@ internal class NodeTest {
                                         .name("name")
                                         .offsetFromParent(0L)
                                         .parentIndex(-1L)
-                                        .properties(
-                                            Node.Location.PhysicalLocation.Address.Properties
-                                                .builder()
-                                                .addTag("string")
-                                                .build()
-                                        )
+                                        .properties(PropertyBag.builder().addTag("string").build())
                                         .relativeAddress(0L)
                                         .build()
                                 )
                                 .artifactLocation(
                                     Node.Location.PhysicalLocation.ArtifactLocation.builder()
                                         .description(
-                                            Node.Location.PhysicalLocation.ArtifactLocation
-                                                .Description
-                                                .builder()
+                                            Message.builder()
                                                 .id("id")
                                                 .addArgument("string")
                                                 .markdown("markdown")
                                                 .properties(
-                                                    Node.Location.PhysicalLocation.ArtifactLocation
-                                                        .Description
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .text("text")
                                                 .build()
                                         )
                                         .index(-1L)
-                                        .properties(
-                                            Node.Location.PhysicalLocation.ArtifactLocation
-                                                .Properties
-                                                .builder()
-                                                .addTag("string")
-                                                .build()
-                                        )
+                                        .properties(PropertyBag.builder().addTag("string").build())
                                         .uri("uri")
                                         .uriBaseId("uriBaseId")
                                         .build()
                                 )
                                 .contextRegion(
-                                    Node.Location.PhysicalLocation.ContextRegion.builder()
+                                    Region.builder()
                                         .byteLength(0L)
                                         .byteOffset(-1L)
                                         .charLength(0L)
@@ -815,54 +587,29 @@ internal class NodeTest {
                                         .endColumn(1L)
                                         .endLine(1L)
                                         .message(
-                                            Node.Location.PhysicalLocation.ContextRegion.Message
-                                                .builder()
+                                            Message.builder()
                                                 .id("id")
                                                 .addArgument("string")
                                                 .markdown("markdown")
                                                 .properties(
-                                                    Node.Location.PhysicalLocation.ContextRegion
-                                                        .Message
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .text("text")
                                                 .build()
                                         )
-                                        .properties(
-                                            Node.Location.PhysicalLocation.ContextRegion.Properties
-                                                .builder()
-                                                .addTag("string")
-                                                .build()
-                                        )
+                                        .properties(PropertyBag.builder().addTag("string").build())
                                         .snippet(
-                                            Node.Location.PhysicalLocation.ContextRegion.Snippet
-                                                .builder()
+                                            ArtifactContent.builder()
                                                 .binary("binary")
                                                 .properties(
-                                                    Node.Location.PhysicalLocation.ContextRegion
-                                                        .Snippet
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .rendered(
-                                                    Node.Location.PhysicalLocation.ContextRegion
-                                                        .Snippet
-                                                        .Rendered
-                                                        .builder()
+                                                    MultiformatMessageString.builder()
                                                         .text("text")
                                                         .markdown("markdown")
                                                         .properties(
-                                                            Node.Location.PhysicalLocation
-                                                                .ContextRegion
-                                                                .Snippet
-                                                                .Rendered
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
@@ -876,13 +623,9 @@ internal class NodeTest {
                                         .startLine(1L)
                                         .build()
                                 )
-                                .properties(
-                                    Node.Location.PhysicalLocation.Properties.builder()
-                                        .addTag("string")
-                                        .build()
-                                )
+                                .properties(PropertyBag.builder().addTag("string").build())
                                 .region(
-                                    Node.Location.PhysicalLocation.Region.builder()
+                                    Region.builder()
                                         .byteLength(0L)
                                         .byteOffset(-1L)
                                         .charLength(0L)
@@ -890,48 +633,29 @@ internal class NodeTest {
                                         .endColumn(1L)
                                         .endLine(1L)
                                         .message(
-                                            Node.Location.PhysicalLocation.Region.Message.builder()
+                                            Message.builder()
                                                 .id("id")
                                                 .addArgument("string")
                                                 .markdown("markdown")
                                                 .properties(
-                                                    Node.Location.PhysicalLocation.Region.Message
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .text("text")
                                                 .build()
                                         )
-                                        .properties(
-                                            Node.Location.PhysicalLocation.Region.Properties
-                                                .builder()
-                                                .addTag("string")
-                                                .build()
-                                        )
+                                        .properties(PropertyBag.builder().addTag("string").build())
                                         .snippet(
-                                            Node.Location.PhysicalLocation.Region.Snippet.builder()
+                                            ArtifactContent.builder()
                                                 .binary("binary")
                                                 .properties(
-                                                    Node.Location.PhysicalLocation.Region.Snippet
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .rendered(
-                                                    Node.Location.PhysicalLocation.Region.Snippet
-                                                        .Rendered
-                                                        .builder()
+                                                    MultiformatMessageString.builder()
                                                         .text("text")
                                                         .markdown("markdown")
                                                         .properties(
-                                                            Node.Location.PhysicalLocation.Region
-                                                                .Snippet
-                                                                .Rendered
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
@@ -947,35 +671,26 @@ internal class NodeTest {
                                 )
                                 .build()
                         )
-                        .properties(Node.Location.Properties.builder().addTag("string").build())
+                        .properties(PropertyBag.builder().addTag("string").build())
                         .addRelationship(
                             Node.Location.Relationship.builder()
                                 .target(0L)
                                 .description(
-                                    Node.Location.Relationship.Description.builder()
+                                    Message.builder()
                                         .id("id")
                                         .addArgument("string")
                                         .markdown("markdown")
-                                        .properties(
-                                            Node.Location.Relationship.Description.Properties
-                                                .builder()
-                                                .addTag("string")
-                                                .build()
-                                        )
+                                        .properties(PropertyBag.builder().addTag("string").build())
                                         .text("text")
                                         .build()
                                 )
                                 .addKind("string")
-                                .properties(
-                                    Node.Location.Relationship.Properties.builder()
-                                        .addTag("string")
-                                        .build()
-                                )
+                                .properties(PropertyBag.builder().addTag("string").build())
                                 .build()
                         )
                         .build()
                 )
-                .properties(Node.Properties.builder().addTag("string").build())
+                .properties(PropertyBag.builder().addTag("string").build())
                 .build()
 
         val roundtrippedNode =

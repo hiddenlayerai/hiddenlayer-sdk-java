@@ -6,7 +6,6 @@ import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.services.blocking.ModelService
 import com.hiddenlayer_sdk.api.services.blocking.ScanService
 import com.hiddenlayer_sdk.api.services.blocking.SensorService
-import com.hiddenlayer_sdk.api.services.blocking.VectorService
 import java.util.function.Consumer
 
 /**
@@ -49,8 +48,6 @@ interface HiddenLayerClient {
 
     fun sensors(): SensorService
 
-    fun vectors(): VectorService
-
     fun scans(): ScanService
 
     /**
@@ -81,8 +78,6 @@ interface HiddenLayerClient {
         fun models(): ModelService.WithRawResponse
 
         fun sensors(): SensorService.WithRawResponse
-
-        fun vectors(): VectorService.WithRawResponse
 
         fun scans(): ScanService.WithRawResponse
     }

@@ -10,8 +10,6 @@ import com.hiddenlayer_sdk.api.services.blocking.ScanService
 import com.hiddenlayer_sdk.api.services.blocking.ScanServiceImpl
 import com.hiddenlayer_sdk.api.services.blocking.SensorService
 import com.hiddenlayer_sdk.api.services.blocking.SensorServiceImpl
-import com.hiddenlayer_sdk.api.services.blocking.VectorService
-import com.hiddenlayer_sdk.api.services.blocking.VectorServiceImpl
 import java.util.function.Consumer
 
 class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLayerClient {
@@ -35,8 +33,6 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
 
     private val sensors: SensorService by lazy { SensorServiceImpl(clientOptionsWithUserAgent) }
 
-    private val vectors: VectorService by lazy { VectorServiceImpl(clientOptionsWithUserAgent) }
-
     private val scans: ScanService by lazy { ScanServiceImpl(clientOptionsWithUserAgent) }
 
     override fun async(): HiddenLayerClientAsync = async
@@ -49,8 +45,6 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
     override fun models(): ModelService = models
 
     override fun sensors(): SensorService = sensors
-
-    override fun vectors(): VectorService = vectors
 
     override fun scans(): ScanService = scans
 
@@ -67,10 +61,6 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
             SensorServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
-        private val vectors: VectorService.WithRawResponse by lazy {
-            VectorServiceImpl.WithRawResponseImpl(clientOptions)
-        }
-
         private val scans: ScanService.WithRawResponse by lazy {
             ScanServiceImpl.WithRawResponseImpl(clientOptions)
         }
@@ -85,8 +75,6 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
         override fun models(): ModelService.WithRawResponse = models
 
         override fun sensors(): SensorService.WithRawResponse = sensors
-
-        override fun vectors(): VectorService.WithRawResponse = vectors
 
         override fun scans(): ScanService.WithRawResponse = scans
     }

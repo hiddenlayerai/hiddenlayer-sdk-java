@@ -19,7 +19,7 @@ internal class ExceptionTest {
                 .innerExceptions(listOf())
                 .kind("kind")
                 .message("message")
-                .properties(Exception.Properties.builder().addTag("string").build())
+                .properties(PropertyBag.builder().addTag("string").build())
                 .stack(
                     Exception.Stack.builder()
                         .addFrame(
@@ -28,7 +28,7 @@ internal class ExceptionTest {
                                     Exception.Stack.Frame.Location.builder()
                                         .id(-1L)
                                         .addAnnotation(
-                                            Exception.Stack.Frame.Location.Annotation.builder()
+                                            Region.builder()
                                                 .byteLength(0L)
                                                 .byteOffset(-1L)
                                                 .charLength(0L)
@@ -36,18 +36,12 @@ internal class ExceptionTest {
                                                 .endColumn(1L)
                                                 .endLine(1L)
                                                 .message(
-                                                    Exception.Stack.Frame.Location.Annotation
-                                                        .Message
-                                                        .builder()
+                                                    Message.builder()
                                                         .id("id")
                                                         .addArgument("string")
                                                         .markdown("markdown")
                                                         .properties(
-                                                            Exception.Stack.Frame.Location
-                                                                .Annotation
-                                                                .Message
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
@@ -55,41 +49,22 @@ internal class ExceptionTest {
                                                         .build()
                                                 )
                                                 .properties(
-                                                    Exception.Stack.Frame.Location.Annotation
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .snippet(
-                                                    Exception.Stack.Frame.Location.Annotation
-                                                        .Snippet
-                                                        .builder()
+                                                    ArtifactContent.builder()
                                                         .binary("binary")
                                                         .properties(
-                                                            Exception.Stack.Frame.Location
-                                                                .Annotation
-                                                                .Snippet
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
                                                         .rendered(
-                                                            Exception.Stack.Frame.Location
-                                                                .Annotation
-                                                                .Snippet
-                                                                .Rendered
-                                                                .builder()
+                                                            MultiformatMessageString.builder()
                                                                 .text("text")
                                                                 .markdown("markdown")
                                                                 .properties(
-                                                                    Exception.Stack.Frame.Location
-                                                                        .Annotation
-                                                                        .Snippet
-                                                                        .Rendered
-                                                                        .Properties
-                                                                        .builder()
+                                                                    PropertyBag.builder()
                                                                         .addTag("string")
                                                                         .build()
                                                                 )
@@ -112,25 +87,17 @@ internal class ExceptionTest {
                                                 .name("name")
                                                 .parentIndex(-1L)
                                                 .properties(
-                                                    Exception.Stack.Frame.Location.LogicalLocation
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .build()
                                         )
                                         .message(
-                                            Exception.Stack.Frame.Location.Message.builder()
+                                            Message.builder()
                                                 .id("id")
                                                 .addArgument("string")
                                                 .markdown("markdown")
                                                 .properties(
-                                                    Exception.Stack.Frame.Location.Message
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .text("text")
                                                 .build()
@@ -151,11 +118,7 @@ internal class ExceptionTest {
                                                         .offsetFromParent(0L)
                                                         .parentIndex(-1L)
                                                         .properties(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .Address
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
@@ -167,21 +130,12 @@ internal class ExceptionTest {
                                                         .ArtifactLocation
                                                         .builder()
                                                         .description(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .ArtifactLocation
-                                                                .Description
-                                                                .builder()
+                                                            Message.builder()
                                                                 .id("id")
                                                                 .addArgument("string")
                                                                 .markdown("markdown")
                                                                 .properties(
-                                                                    Exception.Stack.Frame.Location
-                                                                        .PhysicalLocation
-                                                                        .ArtifactLocation
-                                                                        .Description
-                                                                        .Properties
-                                                                        .builder()
+                                                                    PropertyBag.builder()
                                                                         .addTag("string")
                                                                         .build()
                                                                 )
@@ -190,11 +144,7 @@ internal class ExceptionTest {
                                                         )
                                                         .index(-1L)
                                                         .properties(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .ArtifactLocation
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
@@ -203,9 +153,7 @@ internal class ExceptionTest {
                                                         .build()
                                                 )
                                                 .contextRegion(
-                                                    Exception.Stack.Frame.Location.PhysicalLocation
-                                                        .ContextRegion
-                                                        .builder()
+                                                    Region.builder()
                                                         .byteLength(0L)
                                                         .byteOffset(-1L)
                                                         .charLength(0L)
@@ -213,21 +161,12 @@ internal class ExceptionTest {
                                                         .endColumn(1L)
                                                         .endLine(1L)
                                                         .message(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .ContextRegion
-                                                                .Message
-                                                                .builder()
+                                                            Message.builder()
                                                                 .id("id")
                                                                 .addArgument("string")
                                                                 .markdown("markdown")
                                                                 .properties(
-                                                                    Exception.Stack.Frame.Location
-                                                                        .PhysicalLocation
-                                                                        .ContextRegion
-                                                                        .Message
-                                                                        .Properties
-                                                                        .builder()
+                                                                    PropertyBag.builder()
                                                                         .addTag("string")
                                                                         .build()
                                                                 )
@@ -235,49 +174,25 @@ internal class ExceptionTest {
                                                                 .build()
                                                         )
                                                         .properties(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .ContextRegion
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
                                                         .snippet(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .ContextRegion
-                                                                .Snippet
-                                                                .builder()
+                                                            ArtifactContent.builder()
                                                                 .binary("binary")
                                                                 .properties(
-                                                                    Exception.Stack.Frame.Location
-                                                                        .PhysicalLocation
-                                                                        .ContextRegion
-                                                                        .Snippet
-                                                                        .Properties
-                                                                        .builder()
+                                                                    PropertyBag.builder()
                                                                         .addTag("string")
                                                                         .build()
                                                                 )
                                                                 .rendered(
-                                                                    Exception.Stack.Frame.Location
-                                                                        .PhysicalLocation
-                                                                        .ContextRegion
-                                                                        .Snippet
-                                                                        .Rendered
+                                                                    MultiformatMessageString
                                                                         .builder()
                                                                         .text("text")
                                                                         .markdown("markdown")
                                                                         .properties(
-                                                                            Exception.Stack.Frame
-                                                                                .Location
-                                                                                .PhysicalLocation
-                                                                                .ContextRegion
-                                                                                .Snippet
-                                                                                .Rendered
-                                                                                .Properties
-                                                                                .builder()
+                                                                            PropertyBag.builder()
                                                                                 .addTag("string")
                                                                                 .build()
                                                                         )
@@ -292,16 +207,10 @@ internal class ExceptionTest {
                                                         .build()
                                                 )
                                                 .properties(
-                                                    Exception.Stack.Frame.Location.PhysicalLocation
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .region(
-                                                    Exception.Stack.Frame.Location.PhysicalLocation
-                                                        .Region
-                                                        .builder()
+                                                    Region.builder()
                                                         .byteLength(0L)
                                                         .byteOffset(-1L)
                                                         .charLength(0L)
@@ -309,21 +218,12 @@ internal class ExceptionTest {
                                                         .endColumn(1L)
                                                         .endLine(1L)
                                                         .message(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .Region
-                                                                .Message
-                                                                .builder()
+                                                            Message.builder()
                                                                 .id("id")
                                                                 .addArgument("string")
                                                                 .markdown("markdown")
                                                                 .properties(
-                                                                    Exception.Stack.Frame.Location
-                                                                        .PhysicalLocation
-                                                                        .Region
-                                                                        .Message
-                                                                        .Properties
-                                                                        .builder()
+                                                                    PropertyBag.builder()
                                                                         .addTag("string")
                                                                         .build()
                                                                 )
@@ -331,49 +231,25 @@ internal class ExceptionTest {
                                                                 .build()
                                                         )
                                                         .properties(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .Region
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
                                                         .snippet(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .Region
-                                                                .Snippet
-                                                                .builder()
+                                                            ArtifactContent.builder()
                                                                 .binary("binary")
                                                                 .properties(
-                                                                    Exception.Stack.Frame.Location
-                                                                        .PhysicalLocation
-                                                                        .Region
-                                                                        .Snippet
-                                                                        .Properties
-                                                                        .builder()
+                                                                    PropertyBag.builder()
                                                                         .addTag("string")
                                                                         .build()
                                                                 )
                                                                 .rendered(
-                                                                    Exception.Stack.Frame.Location
-                                                                        .PhysicalLocation
-                                                                        .Region
-                                                                        .Snippet
-                                                                        .Rendered
+                                                                    MultiformatMessageString
                                                                         .builder()
                                                                         .text("text")
                                                                         .markdown("markdown")
                                                                         .properties(
-                                                                            Exception.Stack.Frame
-                                                                                .Location
-                                                                                .PhysicalLocation
-                                                                                .Region
-                                                                                .Snippet
-                                                                                .Rendered
-                                                                                .Properties
-                                                                                .builder()
+                                                                            PropertyBag.builder()
                                                                                 .addTag("string")
                                                                                 .build()
                                                                         )
@@ -389,27 +265,17 @@ internal class ExceptionTest {
                                                 )
                                                 .build()
                                         )
-                                        .properties(
-                                            Exception.Stack.Frame.Location.Properties.builder()
-                                                .addTag("string")
-                                                .build()
-                                        )
+                                        .properties(PropertyBag.builder().addTag("string").build())
                                         .addRelationship(
                                             Exception.Stack.Frame.Location.Relationship.builder()
                                                 .target(0L)
                                                 .description(
-                                                    Exception.Stack.Frame.Location.Relationship
-                                                        .Description
-                                                        .builder()
+                                                    Message.builder()
                                                         .id("id")
                                                         .addArgument("string")
                                                         .markdown("markdown")
                                                         .properties(
-                                                            Exception.Stack.Frame.Location
-                                                                .Relationship
-                                                                .Description
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
@@ -418,11 +284,7 @@ internal class ExceptionTest {
                                                 )
                                                 .addKind("string")
                                                 .properties(
-                                                    Exception.Stack.Frame.Location.Relationship
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .build()
                                         )
@@ -430,28 +292,20 @@ internal class ExceptionTest {
                                 )
                                 .module("module")
                                 .addParameter("string")
-                                .properties(
-                                    Exception.Stack.Frame.Properties.builder()
-                                        .addTag("string")
-                                        .build()
-                                )
+                                .properties(PropertyBag.builder().addTag("string").build())
                                 .threadId(0L)
                                 .build()
                         )
                         .message(
-                            Exception.Stack.Message.builder()
+                            Message.builder()
                                 .id("id")
                                 .addArgument("string")
                                 .markdown("markdown")
-                                .properties(
-                                    Exception.Stack.Message.Properties.builder()
-                                        .addTag("string")
-                                        .build()
-                                )
+                                .properties(PropertyBag.builder().addTag("string").build())
                                 .text("text")
                                 .build()
                         )
-                        .properties(Exception.Stack.Properties.builder().addTag("string").build())
+                        .properties(PropertyBag.builder().addTag("string").build())
                         .build()
                 )
                 .build()
@@ -459,8 +313,7 @@ internal class ExceptionTest {
         assertThat(exception.innerExceptions().getOrNull()).containsExactly()
         assertThat(exception.kind()).contains("kind")
         assertThat(exception.message()).contains("message")
-        assertThat(exception.properties())
-            .contains(Exception.Properties.builder().addTag("string").build())
+        assertThat(exception.properties()).contains(PropertyBag.builder().addTag("string").build())
         assertThat(exception.stack())
             .contains(
                 Exception.Stack.builder()
@@ -470,7 +323,7 @@ internal class ExceptionTest {
                                 Exception.Stack.Frame.Location.builder()
                                     .id(-1L)
                                     .addAnnotation(
-                                        Exception.Stack.Frame.Location.Annotation.builder()
+                                        Region.builder()
                                             .byteLength(0L)
                                             .byteOffset(-1L)
                                             .charLength(0L)
@@ -478,16 +331,12 @@ internal class ExceptionTest {
                                             .endColumn(1L)
                                             .endLine(1L)
                                             .message(
-                                                Exception.Stack.Frame.Location.Annotation.Message
-                                                    .builder()
+                                                Message.builder()
                                                     .id("id")
                                                     .addArgument("string")
                                                     .markdown("markdown")
                                                     .properties(
-                                                        Exception.Stack.Frame.Location.Annotation
-                                                            .Message
-                                                            .Properties
-                                                            .builder()
+                                                        PropertyBag.builder()
                                                             .addTag("string")
                                                             .build()
                                                     )
@@ -495,37 +344,22 @@ internal class ExceptionTest {
                                                     .build()
                                             )
                                             .properties(
-                                                Exception.Stack.Frame.Location.Annotation.Properties
-                                                    .builder()
-                                                    .addTag("string")
-                                                    .build()
+                                                PropertyBag.builder().addTag("string").build()
                                             )
                                             .snippet(
-                                                Exception.Stack.Frame.Location.Annotation.Snippet
-                                                    .builder()
+                                                ArtifactContent.builder()
                                                     .binary("binary")
                                                     .properties(
-                                                        Exception.Stack.Frame.Location.Annotation
-                                                            .Snippet
-                                                            .Properties
-                                                            .builder()
+                                                        PropertyBag.builder()
                                                             .addTag("string")
                                                             .build()
                                                     )
                                                     .rendered(
-                                                        Exception.Stack.Frame.Location.Annotation
-                                                            .Snippet
-                                                            .Rendered
-                                                            .builder()
+                                                        MultiformatMessageString.builder()
                                                             .text("text")
                                                             .markdown("markdown")
                                                             .properties(
-                                                                Exception.Stack.Frame.Location
-                                                                    .Annotation
-                                                                    .Snippet
-                                                                    .Rendered
-                                                                    .Properties
-                                                                    .builder()
+                                                                PropertyBag.builder()
                                                                     .addTag("string")
                                                                     .build()
                                                             )
@@ -548,24 +382,17 @@ internal class ExceptionTest {
                                             .name("name")
                                             .parentIndex(-1L)
                                             .properties(
-                                                Exception.Stack.Frame.Location.LogicalLocation
-                                                    .Properties
-                                                    .builder()
-                                                    .addTag("string")
-                                                    .build()
+                                                PropertyBag.builder().addTag("string").build()
                                             )
                                             .build()
                                     )
                                     .message(
-                                        Exception.Stack.Frame.Location.Message.builder()
+                                        Message.builder()
                                             .id("id")
                                             .addArgument("string")
                                             .markdown("markdown")
                                             .properties(
-                                                Exception.Stack.Frame.Location.Message.Properties
-                                                    .builder()
-                                                    .addTag("string")
-                                                    .build()
+                                                PropertyBag.builder().addTag("string").build()
                                             )
                                             .text("text")
                                             .build()
@@ -585,11 +412,7 @@ internal class ExceptionTest {
                                                     .offsetFromParent(0L)
                                                     .parentIndex(-1L)
                                                     .properties(
-                                                        Exception.Stack.Frame.Location
-                                                            .PhysicalLocation
-                                                            .Address
-                                                            .Properties
-                                                            .builder()
+                                                        PropertyBag.builder()
                                                             .addTag("string")
                                                             .build()
                                                     )
@@ -601,21 +424,12 @@ internal class ExceptionTest {
                                                     .ArtifactLocation
                                                     .builder()
                                                     .description(
-                                                        Exception.Stack.Frame.Location
-                                                            .PhysicalLocation
-                                                            .ArtifactLocation
-                                                            .Description
-                                                            .builder()
+                                                        Message.builder()
                                                             .id("id")
                                                             .addArgument("string")
                                                             .markdown("markdown")
                                                             .properties(
-                                                                Exception.Stack.Frame.Location
-                                                                    .PhysicalLocation
-                                                                    .ArtifactLocation
-                                                                    .Description
-                                                                    .Properties
-                                                                    .builder()
+                                                                PropertyBag.builder()
                                                                     .addTag("string")
                                                                     .build()
                                                             )
@@ -624,11 +438,7 @@ internal class ExceptionTest {
                                                     )
                                                     .index(-1L)
                                                     .properties(
-                                                        Exception.Stack.Frame.Location
-                                                            .PhysicalLocation
-                                                            .ArtifactLocation
-                                                            .Properties
-                                                            .builder()
+                                                        PropertyBag.builder()
                                                             .addTag("string")
                                                             .build()
                                                     )
@@ -637,9 +447,7 @@ internal class ExceptionTest {
                                                     .build()
                                             )
                                             .contextRegion(
-                                                Exception.Stack.Frame.Location.PhysicalLocation
-                                                    .ContextRegion
-                                                    .builder()
+                                                Region.builder()
                                                     .byteLength(0L)
                                                     .byteOffset(-1L)
                                                     .charLength(0L)
@@ -647,21 +455,12 @@ internal class ExceptionTest {
                                                     .endColumn(1L)
                                                     .endLine(1L)
                                                     .message(
-                                                        Exception.Stack.Frame.Location
-                                                            .PhysicalLocation
-                                                            .ContextRegion
-                                                            .Message
-                                                            .builder()
+                                                        Message.builder()
                                                             .id("id")
                                                             .addArgument("string")
                                                             .markdown("markdown")
                                                             .properties(
-                                                                Exception.Stack.Frame.Location
-                                                                    .PhysicalLocation
-                                                                    .ContextRegion
-                                                                    .Message
-                                                                    .Properties
-                                                                    .builder()
+                                                                PropertyBag.builder()
                                                                     .addTag("string")
                                                                     .build()
                                                             )
@@ -669,49 +468,24 @@ internal class ExceptionTest {
                                                             .build()
                                                     )
                                                     .properties(
-                                                        Exception.Stack.Frame.Location
-                                                            .PhysicalLocation
-                                                            .ContextRegion
-                                                            .Properties
-                                                            .builder()
+                                                        PropertyBag.builder()
                                                             .addTag("string")
                                                             .build()
                                                     )
                                                     .snippet(
-                                                        Exception.Stack.Frame.Location
-                                                            .PhysicalLocation
-                                                            .ContextRegion
-                                                            .Snippet
-                                                            .builder()
+                                                        ArtifactContent.builder()
                                                             .binary("binary")
                                                             .properties(
-                                                                Exception.Stack.Frame.Location
-                                                                    .PhysicalLocation
-                                                                    .ContextRegion
-                                                                    .Snippet
-                                                                    .Properties
-                                                                    .builder()
+                                                                PropertyBag.builder()
                                                                     .addTag("string")
                                                                     .build()
                                                             )
                                                             .rendered(
-                                                                Exception.Stack.Frame.Location
-                                                                    .PhysicalLocation
-                                                                    .ContextRegion
-                                                                    .Snippet
-                                                                    .Rendered
-                                                                    .builder()
+                                                                MultiformatMessageString.builder()
                                                                     .text("text")
                                                                     .markdown("markdown")
                                                                     .properties(
-                                                                        Exception.Stack.Frame
-                                                                            .Location
-                                                                            .PhysicalLocation
-                                                                            .ContextRegion
-                                                                            .Snippet
-                                                                            .Rendered
-                                                                            .Properties
-                                                                            .builder()
+                                                                        PropertyBag.builder()
                                                                             .addTag("string")
                                                                             .build()
                                                                     )
@@ -726,16 +500,10 @@ internal class ExceptionTest {
                                                     .build()
                                             )
                                             .properties(
-                                                Exception.Stack.Frame.Location.PhysicalLocation
-                                                    .Properties
-                                                    .builder()
-                                                    .addTag("string")
-                                                    .build()
+                                                PropertyBag.builder().addTag("string").build()
                                             )
                                             .region(
-                                                Exception.Stack.Frame.Location.PhysicalLocation
-                                                    .Region
-                                                    .builder()
+                                                Region.builder()
                                                     .byteLength(0L)
                                                     .byteOffset(-1L)
                                                     .charLength(0L)
@@ -743,21 +511,12 @@ internal class ExceptionTest {
                                                     .endColumn(1L)
                                                     .endLine(1L)
                                                     .message(
-                                                        Exception.Stack.Frame.Location
-                                                            .PhysicalLocation
-                                                            .Region
-                                                            .Message
-                                                            .builder()
+                                                        Message.builder()
                                                             .id("id")
                                                             .addArgument("string")
                                                             .markdown("markdown")
                                                             .properties(
-                                                                Exception.Stack.Frame.Location
-                                                                    .PhysicalLocation
-                                                                    .Region
-                                                                    .Message
-                                                                    .Properties
-                                                                    .builder()
+                                                                PropertyBag.builder()
                                                                     .addTag("string")
                                                                     .build()
                                                             )
@@ -765,49 +524,24 @@ internal class ExceptionTest {
                                                             .build()
                                                     )
                                                     .properties(
-                                                        Exception.Stack.Frame.Location
-                                                            .PhysicalLocation
-                                                            .Region
-                                                            .Properties
-                                                            .builder()
+                                                        PropertyBag.builder()
                                                             .addTag("string")
                                                             .build()
                                                     )
                                                     .snippet(
-                                                        Exception.Stack.Frame.Location
-                                                            .PhysicalLocation
-                                                            .Region
-                                                            .Snippet
-                                                            .builder()
+                                                        ArtifactContent.builder()
                                                             .binary("binary")
                                                             .properties(
-                                                                Exception.Stack.Frame.Location
-                                                                    .PhysicalLocation
-                                                                    .Region
-                                                                    .Snippet
-                                                                    .Properties
-                                                                    .builder()
+                                                                PropertyBag.builder()
                                                                     .addTag("string")
                                                                     .build()
                                                             )
                                                             .rendered(
-                                                                Exception.Stack.Frame.Location
-                                                                    .PhysicalLocation
-                                                                    .Region
-                                                                    .Snippet
-                                                                    .Rendered
-                                                                    .builder()
+                                                                MultiformatMessageString.builder()
                                                                     .text("text")
                                                                     .markdown("markdown")
                                                                     .properties(
-                                                                        Exception.Stack.Frame
-                                                                            .Location
-                                                                            .PhysicalLocation
-                                                                            .Region
-                                                                            .Snippet
-                                                                            .Rendered
-                                                                            .Properties
-                                                                            .builder()
+                                                                        PropertyBag.builder()
                                                                             .addTag("string")
                                                                             .build()
                                                                     )
@@ -823,26 +557,17 @@ internal class ExceptionTest {
                                             )
                                             .build()
                                     )
-                                    .properties(
-                                        Exception.Stack.Frame.Location.Properties.builder()
-                                            .addTag("string")
-                                            .build()
-                                    )
+                                    .properties(PropertyBag.builder().addTag("string").build())
                                     .addRelationship(
                                         Exception.Stack.Frame.Location.Relationship.builder()
                                             .target(0L)
                                             .description(
-                                                Exception.Stack.Frame.Location.Relationship
-                                                    .Description
-                                                    .builder()
+                                                Message.builder()
                                                     .id("id")
                                                     .addArgument("string")
                                                     .markdown("markdown")
                                                     .properties(
-                                                        Exception.Stack.Frame.Location.Relationship
-                                                            .Description
-                                                            .Properties
-                                                            .builder()
+                                                        PropertyBag.builder()
                                                             .addTag("string")
                                                             .build()
                                                     )
@@ -851,11 +576,7 @@ internal class ExceptionTest {
                                             )
                                             .addKind("string")
                                             .properties(
-                                                Exception.Stack.Frame.Location.Relationship
-                                                    .Properties
-                                                    .builder()
-                                                    .addTag("string")
-                                                    .build()
+                                                PropertyBag.builder().addTag("string").build()
                                             )
                                             .build()
                                     )
@@ -863,26 +584,20 @@ internal class ExceptionTest {
                             )
                             .module("module")
                             .addParameter("string")
-                            .properties(
-                                Exception.Stack.Frame.Properties.builder().addTag("string").build()
-                            )
+                            .properties(PropertyBag.builder().addTag("string").build())
                             .threadId(0L)
                             .build()
                     )
                     .message(
-                        Exception.Stack.Message.builder()
+                        Message.builder()
                             .id("id")
                             .addArgument("string")
                             .markdown("markdown")
-                            .properties(
-                                Exception.Stack.Message.Properties.builder()
-                                    .addTag("string")
-                                    .build()
-                            )
+                            .properties(PropertyBag.builder().addTag("string").build())
                             .text("text")
                             .build()
                     )
-                    .properties(Exception.Stack.Properties.builder().addTag("string").build())
+                    .properties(PropertyBag.builder().addTag("string").build())
                     .build()
             )
     }
@@ -896,7 +611,7 @@ internal class ExceptionTest {
                 .innerExceptions(listOf())
                 .kind("kind")
                 .message("message")
-                .properties(Exception.Properties.builder().addTag("string").build())
+                .properties(PropertyBag.builder().addTag("string").build())
                 .stack(
                     Exception.Stack.builder()
                         .addFrame(
@@ -905,7 +620,7 @@ internal class ExceptionTest {
                                     Exception.Stack.Frame.Location.builder()
                                         .id(-1L)
                                         .addAnnotation(
-                                            Exception.Stack.Frame.Location.Annotation.builder()
+                                            Region.builder()
                                                 .byteLength(0L)
                                                 .byteOffset(-1L)
                                                 .charLength(0L)
@@ -913,18 +628,12 @@ internal class ExceptionTest {
                                                 .endColumn(1L)
                                                 .endLine(1L)
                                                 .message(
-                                                    Exception.Stack.Frame.Location.Annotation
-                                                        .Message
-                                                        .builder()
+                                                    Message.builder()
                                                         .id("id")
                                                         .addArgument("string")
                                                         .markdown("markdown")
                                                         .properties(
-                                                            Exception.Stack.Frame.Location
-                                                                .Annotation
-                                                                .Message
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
@@ -932,41 +641,22 @@ internal class ExceptionTest {
                                                         .build()
                                                 )
                                                 .properties(
-                                                    Exception.Stack.Frame.Location.Annotation
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .snippet(
-                                                    Exception.Stack.Frame.Location.Annotation
-                                                        .Snippet
-                                                        .builder()
+                                                    ArtifactContent.builder()
                                                         .binary("binary")
                                                         .properties(
-                                                            Exception.Stack.Frame.Location
-                                                                .Annotation
-                                                                .Snippet
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
                                                         .rendered(
-                                                            Exception.Stack.Frame.Location
-                                                                .Annotation
-                                                                .Snippet
-                                                                .Rendered
-                                                                .builder()
+                                                            MultiformatMessageString.builder()
                                                                 .text("text")
                                                                 .markdown("markdown")
                                                                 .properties(
-                                                                    Exception.Stack.Frame.Location
-                                                                        .Annotation
-                                                                        .Snippet
-                                                                        .Rendered
-                                                                        .Properties
-                                                                        .builder()
+                                                                    PropertyBag.builder()
                                                                         .addTag("string")
                                                                         .build()
                                                                 )
@@ -989,25 +679,17 @@ internal class ExceptionTest {
                                                 .name("name")
                                                 .parentIndex(-1L)
                                                 .properties(
-                                                    Exception.Stack.Frame.Location.LogicalLocation
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .build()
                                         )
                                         .message(
-                                            Exception.Stack.Frame.Location.Message.builder()
+                                            Message.builder()
                                                 .id("id")
                                                 .addArgument("string")
                                                 .markdown("markdown")
                                                 .properties(
-                                                    Exception.Stack.Frame.Location.Message
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .text("text")
                                                 .build()
@@ -1028,11 +710,7 @@ internal class ExceptionTest {
                                                         .offsetFromParent(0L)
                                                         .parentIndex(-1L)
                                                         .properties(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .Address
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
@@ -1044,21 +722,12 @@ internal class ExceptionTest {
                                                         .ArtifactLocation
                                                         .builder()
                                                         .description(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .ArtifactLocation
-                                                                .Description
-                                                                .builder()
+                                                            Message.builder()
                                                                 .id("id")
                                                                 .addArgument("string")
                                                                 .markdown("markdown")
                                                                 .properties(
-                                                                    Exception.Stack.Frame.Location
-                                                                        .PhysicalLocation
-                                                                        .ArtifactLocation
-                                                                        .Description
-                                                                        .Properties
-                                                                        .builder()
+                                                                    PropertyBag.builder()
                                                                         .addTag("string")
                                                                         .build()
                                                                 )
@@ -1067,11 +736,7 @@ internal class ExceptionTest {
                                                         )
                                                         .index(-1L)
                                                         .properties(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .ArtifactLocation
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
@@ -1080,9 +745,7 @@ internal class ExceptionTest {
                                                         .build()
                                                 )
                                                 .contextRegion(
-                                                    Exception.Stack.Frame.Location.PhysicalLocation
-                                                        .ContextRegion
-                                                        .builder()
+                                                    Region.builder()
                                                         .byteLength(0L)
                                                         .byteOffset(-1L)
                                                         .charLength(0L)
@@ -1090,21 +753,12 @@ internal class ExceptionTest {
                                                         .endColumn(1L)
                                                         .endLine(1L)
                                                         .message(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .ContextRegion
-                                                                .Message
-                                                                .builder()
+                                                            Message.builder()
                                                                 .id("id")
                                                                 .addArgument("string")
                                                                 .markdown("markdown")
                                                                 .properties(
-                                                                    Exception.Stack.Frame.Location
-                                                                        .PhysicalLocation
-                                                                        .ContextRegion
-                                                                        .Message
-                                                                        .Properties
-                                                                        .builder()
+                                                                    PropertyBag.builder()
                                                                         .addTag("string")
                                                                         .build()
                                                                 )
@@ -1112,49 +766,25 @@ internal class ExceptionTest {
                                                                 .build()
                                                         )
                                                         .properties(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .ContextRegion
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
                                                         .snippet(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .ContextRegion
-                                                                .Snippet
-                                                                .builder()
+                                                            ArtifactContent.builder()
                                                                 .binary("binary")
                                                                 .properties(
-                                                                    Exception.Stack.Frame.Location
-                                                                        .PhysicalLocation
-                                                                        .ContextRegion
-                                                                        .Snippet
-                                                                        .Properties
-                                                                        .builder()
+                                                                    PropertyBag.builder()
                                                                         .addTag("string")
                                                                         .build()
                                                                 )
                                                                 .rendered(
-                                                                    Exception.Stack.Frame.Location
-                                                                        .PhysicalLocation
-                                                                        .ContextRegion
-                                                                        .Snippet
-                                                                        .Rendered
+                                                                    MultiformatMessageString
                                                                         .builder()
                                                                         .text("text")
                                                                         .markdown("markdown")
                                                                         .properties(
-                                                                            Exception.Stack.Frame
-                                                                                .Location
-                                                                                .PhysicalLocation
-                                                                                .ContextRegion
-                                                                                .Snippet
-                                                                                .Rendered
-                                                                                .Properties
-                                                                                .builder()
+                                                                            PropertyBag.builder()
                                                                                 .addTag("string")
                                                                                 .build()
                                                                         )
@@ -1169,16 +799,10 @@ internal class ExceptionTest {
                                                         .build()
                                                 )
                                                 .properties(
-                                                    Exception.Stack.Frame.Location.PhysicalLocation
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .region(
-                                                    Exception.Stack.Frame.Location.PhysicalLocation
-                                                        .Region
-                                                        .builder()
+                                                    Region.builder()
                                                         .byteLength(0L)
                                                         .byteOffset(-1L)
                                                         .charLength(0L)
@@ -1186,21 +810,12 @@ internal class ExceptionTest {
                                                         .endColumn(1L)
                                                         .endLine(1L)
                                                         .message(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .Region
-                                                                .Message
-                                                                .builder()
+                                                            Message.builder()
                                                                 .id("id")
                                                                 .addArgument("string")
                                                                 .markdown("markdown")
                                                                 .properties(
-                                                                    Exception.Stack.Frame.Location
-                                                                        .PhysicalLocation
-                                                                        .Region
-                                                                        .Message
-                                                                        .Properties
-                                                                        .builder()
+                                                                    PropertyBag.builder()
                                                                         .addTag("string")
                                                                         .build()
                                                                 )
@@ -1208,49 +823,25 @@ internal class ExceptionTest {
                                                                 .build()
                                                         )
                                                         .properties(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .Region
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
                                                         .snippet(
-                                                            Exception.Stack.Frame.Location
-                                                                .PhysicalLocation
-                                                                .Region
-                                                                .Snippet
-                                                                .builder()
+                                                            ArtifactContent.builder()
                                                                 .binary("binary")
                                                                 .properties(
-                                                                    Exception.Stack.Frame.Location
-                                                                        .PhysicalLocation
-                                                                        .Region
-                                                                        .Snippet
-                                                                        .Properties
-                                                                        .builder()
+                                                                    PropertyBag.builder()
                                                                         .addTag("string")
                                                                         .build()
                                                                 )
                                                                 .rendered(
-                                                                    Exception.Stack.Frame.Location
-                                                                        .PhysicalLocation
-                                                                        .Region
-                                                                        .Snippet
-                                                                        .Rendered
+                                                                    MultiformatMessageString
                                                                         .builder()
                                                                         .text("text")
                                                                         .markdown("markdown")
                                                                         .properties(
-                                                                            Exception.Stack.Frame
-                                                                                .Location
-                                                                                .PhysicalLocation
-                                                                                .Region
-                                                                                .Snippet
-                                                                                .Rendered
-                                                                                .Properties
-                                                                                .builder()
+                                                                            PropertyBag.builder()
                                                                                 .addTag("string")
                                                                                 .build()
                                                                         )
@@ -1266,27 +857,17 @@ internal class ExceptionTest {
                                                 )
                                                 .build()
                                         )
-                                        .properties(
-                                            Exception.Stack.Frame.Location.Properties.builder()
-                                                .addTag("string")
-                                                .build()
-                                        )
+                                        .properties(PropertyBag.builder().addTag("string").build())
                                         .addRelationship(
                                             Exception.Stack.Frame.Location.Relationship.builder()
                                                 .target(0L)
                                                 .description(
-                                                    Exception.Stack.Frame.Location.Relationship
-                                                        .Description
-                                                        .builder()
+                                                    Message.builder()
                                                         .id("id")
                                                         .addArgument("string")
                                                         .markdown("markdown")
                                                         .properties(
-                                                            Exception.Stack.Frame.Location
-                                                                .Relationship
-                                                                .Description
-                                                                .Properties
-                                                                .builder()
+                                                            PropertyBag.builder()
                                                                 .addTag("string")
                                                                 .build()
                                                         )
@@ -1295,11 +876,7 @@ internal class ExceptionTest {
                                                 )
                                                 .addKind("string")
                                                 .properties(
-                                                    Exception.Stack.Frame.Location.Relationship
-                                                        .Properties
-                                                        .builder()
-                                                        .addTag("string")
-                                                        .build()
+                                                    PropertyBag.builder().addTag("string").build()
                                                 )
                                                 .build()
                                         )
@@ -1307,28 +884,20 @@ internal class ExceptionTest {
                                 )
                                 .module("module")
                                 .addParameter("string")
-                                .properties(
-                                    Exception.Stack.Frame.Properties.builder()
-                                        .addTag("string")
-                                        .build()
-                                )
+                                .properties(PropertyBag.builder().addTag("string").build())
                                 .threadId(0L)
                                 .build()
                         )
                         .message(
-                            Exception.Stack.Message.builder()
+                            Message.builder()
                                 .id("id")
                                 .addArgument("string")
                                 .markdown("markdown")
-                                .properties(
-                                    Exception.Stack.Message.Properties.builder()
-                                        .addTag("string")
-                                        .build()
-                                )
+                                .properties(PropertyBag.builder().addTag("string").build())
                                 .text("text")
                                 .build()
                         )
-                        .properties(Exception.Stack.Properties.builder().addTag("string").build())
+                        .properties(PropertyBag.builder().addTag("string").build())
                         .build()
                 )
                 .build()

@@ -6,7 +6,6 @@ import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.services.async.ModelServiceAsync
 import com.hiddenlayer_sdk.api.services.async.ScanServiceAsync
 import com.hiddenlayer_sdk.api.services.async.SensorServiceAsync
-import com.hiddenlayer_sdk.api.services.async.VectorServiceAsync
 import java.util.function.Consumer
 
 /**
@@ -49,8 +48,6 @@ interface HiddenLayerClientAsync {
 
     fun sensors(): SensorServiceAsync
 
-    fun vectors(): VectorServiceAsync
-
     fun scans(): ScanServiceAsync
 
     /**
@@ -84,8 +81,6 @@ interface HiddenLayerClientAsync {
         fun models(): ModelServiceAsync.WithRawResponse
 
         fun sensors(): SensorServiceAsync.WithRawResponse
-
-        fun vectors(): VectorServiceAsync.WithRawResponse
 
         fun scans(): ScanServiceAsync.WithRawResponse
     }
