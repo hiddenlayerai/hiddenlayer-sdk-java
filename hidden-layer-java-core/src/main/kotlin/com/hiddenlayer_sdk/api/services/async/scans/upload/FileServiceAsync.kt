@@ -26,7 +26,7 @@ interface FileServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): FileServiceAsync
 
-    /** Add file to V3 Upload */
+    /** Upload a model file */
     fun add(scanId: String, params: FileAddParams): CompletableFuture<FileAddResponse> =
         add(scanId, params, RequestOptions.none())
 
@@ -48,7 +48,7 @@ interface FileServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FileAddResponse>
 
-    /** Indicate that upload is completed for {file_id} */
+    /** Complete a file upload */
     fun complete(
         fileId: String,
         params: FileCompleteParams,

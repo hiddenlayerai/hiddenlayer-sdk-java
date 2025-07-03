@@ -36,16 +36,17 @@ This library requires Java 8 or later.
 ```java
 import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
 import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
-import com.hiddenlayer_sdk.api.models.sensors.Sensor;
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
+import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
 
 // Configures using the `HIDDENLAYER_TOKEN` and `HIDDEN_LAYER_BASE_URL` environment variables
 HiddenLayerClient client = HiddenLayerOkHttpClient.fromEnv();
 
 SensorCreateParams params = SensorCreateParams.builder()
+    .xCorrelationId("00000000-0000-0000-0000-000000000000")
     .plaintextName("REPLACE_ME")
     .build();
-Sensor sensor = client.sensors().create(params);
+SensorCreateResponse sensor = client.sensors().create(params);
 ```
 
 ## Client configuration
@@ -114,7 +115,7 @@ The `withOptions()` method does not affect the original client or service.
 
 To send a request to the Hidden Layer API, build an instance of some `Params` class and pass it to the corresponding client method. When the response is received, it will be deserialized into an instance of a Java class.
 
-For example, `client.sensors().create(...)` should be called with an instance of `SensorCreateParams`, and it will return an instance of `Sensor`.
+For example, `client.sensors().create(...)` should be called with an instance of `SensorCreateParams`, and it will return an instance of `SensorCreateResponse`.
 
 ## Immutability
 
@@ -131,17 +132,18 @@ The default client is synchronous. To switch to asynchronous execution, call the
 ```java
 import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
 import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
-import com.hiddenlayer_sdk.api.models.sensors.Sensor;
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
+import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
 import java.util.concurrent.CompletableFuture;
 
 // Configures using the `HIDDENLAYER_TOKEN` and `HIDDEN_LAYER_BASE_URL` environment variables
 HiddenLayerClient client = HiddenLayerOkHttpClient.fromEnv();
 
 SensorCreateParams params = SensorCreateParams.builder()
+    .xCorrelationId("00000000-0000-0000-0000-000000000000")
     .plaintextName("REPLACE_ME")
     .build();
-CompletableFuture<Sensor> sensor = client.async().sensors().create(params);
+CompletableFuture<SensorCreateResponse> sensor = client.async().sensors().create(params);
 ```
 
 Or create an asynchronous client from the beginning:
@@ -149,17 +151,18 @@ Or create an asynchronous client from the beginning:
 ```java
 import com.hiddenlayer_sdk.api.client.HiddenLayerClientAsync;
 import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClientAsync;
-import com.hiddenlayer_sdk.api.models.sensors.Sensor;
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
+import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
 import java.util.concurrent.CompletableFuture;
 
 // Configures using the `HIDDENLAYER_TOKEN` and `HIDDEN_LAYER_BASE_URL` environment variables
 HiddenLayerClientAsync client = HiddenLayerOkHttpClientAsync.fromEnv();
 
 SensorCreateParams params = SensorCreateParams.builder()
+    .xCorrelationId("00000000-0000-0000-0000-000000000000")
     .plaintextName("REPLACE_ME")
     .build();
-CompletableFuture<Sensor> sensor = client.sensors().create(params);
+CompletableFuture<SensorCreateResponse> sensor = client.sensors().create(params);
 ```
 
 The asynchronous client supports the same options as the synchronous one, except most methods return `CompletableFuture`s.
@@ -173,13 +176,14 @@ To access this data, prefix any HTTP method call on a client or service with `wi
 ```java
 import com.hiddenlayer_sdk.api.core.http.Headers;
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor;
-import com.hiddenlayer_sdk.api.models.sensors.Sensor;
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
+import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
 
 SensorCreateParams params = SensorCreateParams.builder()
+    .xCorrelationId("00000000-0000-0000-0000-000000000000")
     .plaintextName("REPLACE_ME")
     .build();
-HttpResponseFor<Sensor> sensor = client.sensors().withRawResponse().create(params);
+HttpResponseFor<SensorCreateResponse> sensor = client.sensors().withRawResponse().create(params);
 
 int statusCode = sensor.statusCode();
 Headers headers = sensor.headers();
@@ -188,9 +192,9 @@ Headers headers = sensor.headers();
 You can still deserialize the response into an instance of a Java class if needed:
 
 ```java
-import com.hiddenlayer_sdk.api.models.sensors.Sensor;
+import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
 
-Sensor parsedSensor = sensor.parse();
+SensorCreateResponse parsedSensor = sensor.parse();
 ```
 
 ## Error handling
@@ -278,9 +282,9 @@ Requests time out after 1 minute by default.
 To set a custom timeout, configure the method call using the `timeout` method:
 
 ```java
-import com.hiddenlayer_sdk.api.models.sensors.Sensor;
+import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
 
-Sensor sensor = client.sensors().create(
+SensorCreateResponse sensor = client.sensors().create(
   params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
 );
 ```
@@ -379,10 +383,10 @@ To set undocumented parameters on _nested_ headers, query params, or body classe
 
 ```java
 import com.hiddenlayer_sdk.api.core.JsonValue;
-import com.hiddenlayer_sdk.api.models.sensors.SensorQueryParams;
+import com.hiddenlayer_sdk.api.models.models.cards.CardListParams;
 
-SensorQueryParams params = SensorQueryParams.builder()
-    .filter(SensorQueryParams.Filter.builder()
+CardListParams params = CardListParams.builder()
+    .modelCreated(CardListParams.ModelCreated.builder()
         .putAdditionalProperty("secretProperty", JsonValue.from("42"))
         .build())
     .build();
@@ -397,6 +401,7 @@ import com.hiddenlayer_sdk.api.core.JsonValue;
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
 
 SensorCreateParams params = SensorCreateParams.builder()
+    .xCorrelationId("00000000-0000-0000-0000-000000000000")
     .plaintextName(JsonValue.from(42))
     .build();
 ```
@@ -449,6 +454,7 @@ import com.hiddenlayer_sdk.api.core.JsonMissing;
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
 
 SensorCreateParams params = SensorCreateParams.builder()
+    .xCorrelationId("00000000-0000-0000-0000-000000000000")
     .plaintextName(JsonMissing.of())
     .build();
 ```
@@ -516,17 +522,17 @@ By default, the SDK will not throw an exception in this case. It will throw [`Hi
 If you would prefer to check that the response is completely well-typed upfront, then either call `validate()`:
 
 ```java
-import com.hiddenlayer_sdk.api.models.sensors.Sensor;
+import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
 
-Sensor sensor = client.sensors().create(params).validate();
+SensorCreateResponse sensor = client.sensors().create(params).validate();
 ```
 
 Or configure the method call to validate the response using the `responseValidation` method:
 
 ```java
-import com.hiddenlayer_sdk.api.models.sensors.Sensor;
+import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
 
-Sensor sensor = client.sensors().create(
+SensorCreateResponse sensor = client.sensors().create(
   params, RequestOptions.builder().responseValidation(true).build()
 );
 ```

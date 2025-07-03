@@ -44,15 +44,16 @@ internal class ServiceParamsTest {
 
         sensorService.create(
             SensorCreateParams.builder()
-                .plaintextName("example_model")
+                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .plaintextName("plaintext_name")
                 .active(true)
                 .adhoc(true)
                 .tags(
                     SensorCreateParams.Tags.builder()
-                        .putAdditionalProperty("0", JsonValue.from("bar"))
+                        .putAdditionalProperty("foo", JsonValue.from("bar"))
                         .build()
                 )
-                .version(1L)
+                .version(0L)
                 .putAdditionalHeader("Secret-Header", "42")
                 .putAdditionalQueryParam("secret_query_param", "42")
                 .putAdditionalBodyProperty("secretProperty", JsonValue.from("42"))

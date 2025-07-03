@@ -12,6 +12,7 @@ import com.hiddenlayer_sdk.api.core.JsonField
 import com.hiddenlayer_sdk.api.core.JsonMissing
 import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.Params
+import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import com.hiddenlayer_sdk.api.errors.HiddenLayerInvalidDataException
@@ -21,13 +22,16 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Query a Sensor */
+/** Query Sensors */
 class SensorQueryParams
 private constructor(
+    private val xCorrelationId: String,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
+
+    fun xCorrelationId(): String = xCorrelationId
 
     /**
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -104,25 +108,34 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): SensorQueryParams = builder().build()
-
-        /** Returns a mutable builder for constructing an instance of [SensorQueryParams]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [SensorQueryParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .xCorrelationId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [SensorQueryParams]. */
     class Builder internal constructor() {
 
+        private var xCorrelationId: String? = null
         private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(sensorQueryParams: SensorQueryParams) = apply {
+            xCorrelationId = sensorQueryParams.xCorrelationId
             body = sensorQueryParams.body.toBuilder()
             additionalHeaders = sensorQueryParams.additionalHeaders.toBuilder()
             additionalQueryParams = sensorQueryParams.additionalQueryParams.toBuilder()
         }
+
+        fun xCorrelationId(xCorrelationId: String) = apply { this.xCorrelationId = xCorrelationId }
 
         /**
          * Sets the entire request body.
@@ -310,9 +323,17 @@ private constructor(
          * Returns an immutable instance of [SensorQueryParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .xCorrelationId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): SensorQueryParams =
             SensorQueryParams(
+                checkRequired("xCorrelationId", xCorrelationId),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -321,7 +342,13 @@ private constructor(
 
     fun _body(): Body = body
 
-    override fun _headers(): Headers = additionalHeaders
+    override fun _headers(): Headers =
+        Headers.builder()
+            .apply {
+                put("X-Correlation-Id", xCorrelationId)
+                putAll(additionalHeaders)
+            }
+            .build()
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -1193,11 +1220,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SensorQueryParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is SensorQueryParams && xCorrelationId == other.xCorrelationId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(xCorrelationId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "SensorQueryParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "SensorQueryParams{xCorrelationId=$xCorrelationId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

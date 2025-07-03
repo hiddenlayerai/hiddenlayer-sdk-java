@@ -18,7 +18,6 @@ import com.hiddenlayer_sdk.api.core.prepareAsync
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobListParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobRequestParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.ScanJob
-import com.hiddenlayer_sdk.api.models.scans.results.ScanReport
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -37,14 +36,14 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
     override fun list(
         params: JobListParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<ScanJob> =
+    ): CompletableFuture<List<ScanJob>> =
         // get /scan/v3/jobs
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
     override fun request(
         params: JobRequestParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<ScanReport> =
+    ): CompletableFuture<ScanJob> =
         // post /scan/v3/jobs
         withRawResponse().request(params, requestOptions).thenApply { it.parse() }
 
@@ -60,13 +59,13 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val listHandler: Handler<ScanJob> =
-            jsonHandler<ScanJob>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val listHandler: Handler<List<ScanJob>> =
+            jsonHandler<List<ScanJob>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
         override fun list(
             params: JobListParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<ScanJob>> {
+        ): CompletableFuture<HttpResponseFor<List<ScanJob>>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -83,20 +82,20 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
                             .use { listHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
-                                    it.validate()
+                                    it.forEach { it.validate() }
                                 }
                             }
                     }
                 }
         }
 
-        private val requestHandler: Handler<ScanReport> =
-            jsonHandler<ScanReport>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val requestHandler: Handler<ScanJob> =
+            jsonHandler<ScanJob>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
         override fun request(
             params: JobRequestParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<ScanReport>> {
+        ): CompletableFuture<HttpResponseFor<ScanJob>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)

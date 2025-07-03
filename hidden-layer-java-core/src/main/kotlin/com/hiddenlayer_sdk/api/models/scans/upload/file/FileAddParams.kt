@@ -12,12 +12,13 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Add file to V3 Upload */
+/** Upload a model file */
 class FileAddParams
 private constructor(
     private val scanId: String?,
     private val fileContentLength: Long,
     private val fileName: String,
+    private val xCorrelationId: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
@@ -28,6 +29,8 @@ private constructor(
     fun fileContentLength(): Long = fileContentLength
 
     fun fileName(): String = fileName
+
+    fun xCorrelationId(): String = xCorrelationId
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
@@ -46,6 +49,7 @@ private constructor(
          * ```java
          * .fileContentLength()
          * .fileName()
+         * .xCorrelationId()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -57,6 +61,7 @@ private constructor(
         private var scanId: String? = null
         private var fileContentLength: Long? = null
         private var fileName: String? = null
+        private var xCorrelationId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -66,6 +71,7 @@ private constructor(
             scanId = fileAddParams.scanId
             fileContentLength = fileAddParams.fileContentLength
             fileName = fileAddParams.fileName
+            xCorrelationId = fileAddParams.xCorrelationId
             additionalHeaders = fileAddParams.additionalHeaders.toBuilder()
             additionalQueryParams = fileAddParams.additionalQueryParams.toBuilder()
             additionalBodyProperties = fileAddParams.additionalBodyProperties.toMutableMap()
@@ -81,6 +87,8 @@ private constructor(
         }
 
         fun fileName(fileName: String) = apply { this.fileName = fileName }
+
+        fun xCorrelationId(xCorrelationId: String) = apply { this.xCorrelationId = xCorrelationId }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -211,6 +219,7 @@ private constructor(
          * ```java
          * .fileContentLength()
          * .fileName()
+         * .xCorrelationId()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -220,6 +229,7 @@ private constructor(
                 scanId,
                 checkRequired("fileContentLength", fileContentLength),
                 checkRequired("fileName", fileName),
+                checkRequired("xCorrelationId", xCorrelationId),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -240,6 +250,7 @@ private constructor(
             .apply {
                 put("file-content-length", fileContentLength.toString())
                 put("file-name", fileName)
+                put("X-Correlation-Id", xCorrelationId)
                 putAll(additionalHeaders)
             }
             .build()
@@ -251,11 +262,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is FileAddParams && scanId == other.scanId && fileContentLength == other.fileContentLength && fileName == other.fileName && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is FileAddParams && scanId == other.scanId && fileContentLength == other.fileContentLength && fileName == other.fileName && xCorrelationId == other.xCorrelationId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(scanId, fileContentLength, fileName, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(scanId, fileContentLength, fileName, xCorrelationId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
-        "FileAddParams{scanId=$scanId, fileContentLength=$fileContentLength, fileName=$fileName, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "FileAddParams{scanId=$scanId, fileContentLength=$fileContentLength, fileName=$fileName, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

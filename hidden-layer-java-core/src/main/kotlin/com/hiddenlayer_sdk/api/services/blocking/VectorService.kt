@@ -2,12 +2,7 @@
 
 package com.hiddenlayer_sdk.api.services.blocking
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.hiddenlayer_sdk.api.core.ClientOptions
-import com.hiddenlayer_sdk.api.core.RequestOptions
-import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
-import com.hiddenlayer_sdk.api.models.vectors.VectorSubmitVectorsParams
-import com.hiddenlayer_sdk.api.models.vectors.VectorSubmitVectorsResponse
 import java.util.function.Consumer
 
 interface VectorService {
@@ -24,16 +19,6 @@ interface VectorService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): VectorService
 
-    /** Submit vectors */
-    fun submitVectors(params: VectorSubmitVectorsParams): VectorSubmitVectorsResponse =
-        submitVectors(params, RequestOptions.none())
-
-    /** @see [submitVectors] */
-    fun submitVectors(
-        params: VectorSubmitVectorsParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): VectorSubmitVectorsResponse
-
     /** A view of [VectorService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
@@ -43,22 +28,5 @@ interface VectorService {
          * The original service is not modified.
          */
         fun withOptions(modifier: Consumer<ClientOptions.Builder>): VectorService.WithRawResponse
-
-        /**
-         * Returns a raw HTTP response for `post /api/v2/submit`, but is otherwise the same as
-         * [VectorService.submitVectors].
-         */
-        @MustBeClosed
-        fun submitVectors(
-            params: VectorSubmitVectorsParams
-        ): HttpResponseFor<VectorSubmitVectorsResponse> =
-            submitVectors(params, RequestOptions.none())
-
-        /** @see [submitVectors] */
-        @MustBeClosed
-        fun submitVectors(
-            params: VectorSubmitVectorsParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<VectorSubmitVectorsResponse>
     }
 }

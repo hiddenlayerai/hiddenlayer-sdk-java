@@ -4,6 +4,7 @@ package com.hiddenlayer_sdk.api.models.models
 
 import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.Params
+import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import com.hiddenlayer_sdk.api.core.toImmutable
@@ -15,12 +16,15 @@ import kotlin.jvm.optionals.getOrNull
 class ModelDeleteParams
 private constructor(
     private val modelId: String?,
+    private val xCorrelationId: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
     fun modelId(): Optional<String> = Optional.ofNullable(modelId)
+
+    fun xCorrelationId(): String = xCorrelationId
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
@@ -32,9 +36,14 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): ModelDeleteParams = builder().build()
-
-        /** Returns a mutable builder for constructing an instance of [ModelDeleteParams]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [ModelDeleteParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .xCorrelationId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -42,6 +51,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var modelId: String? = null
+        private var xCorrelationId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -49,6 +59,7 @@ private constructor(
         @JvmSynthetic
         internal fun from(modelDeleteParams: ModelDeleteParams) = apply {
             modelId = modelDeleteParams.modelId
+            xCorrelationId = modelDeleteParams.xCorrelationId
             additionalHeaders = modelDeleteParams.additionalHeaders.toBuilder()
             additionalQueryParams = modelDeleteParams.additionalQueryParams.toBuilder()
             additionalBodyProperties = modelDeleteParams.additionalBodyProperties.toMutableMap()
@@ -58,6 +69,8 @@ private constructor(
 
         /** Alias for calling [Builder.modelId] with `modelId.orElse(null)`. */
         fun modelId(modelId: Optional<String>) = modelId(modelId.getOrNull())
+
+        fun xCorrelationId(xCorrelationId: String) = apply { this.xCorrelationId = xCorrelationId }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -183,10 +196,18 @@ private constructor(
          * Returns an immutable instance of [ModelDeleteParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .xCorrelationId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ModelDeleteParams =
             ModelDeleteParams(
                 modelId,
+                checkRequired("xCorrelationId", xCorrelationId),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -202,7 +223,13 @@ private constructor(
             else -> ""
         }
 
-    override fun _headers(): Headers = additionalHeaders
+    override fun _headers(): Headers =
+        Headers.builder()
+            .apply {
+                put("X-Correlation-Id", xCorrelationId)
+                putAll(additionalHeaders)
+            }
+            .build()
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -211,11 +238,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ModelDeleteParams && modelId == other.modelId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ModelDeleteParams && modelId == other.modelId && xCorrelationId == other.xCorrelationId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(modelId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(modelId, xCorrelationId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
-        "ModelDeleteParams{modelId=$modelId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "ModelDeleteParams{modelId=$modelId, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

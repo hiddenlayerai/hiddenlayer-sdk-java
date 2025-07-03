@@ -2,6 +2,7 @@
 
 package com.hiddenlayer_sdk.api.models.scans.results
 
+import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
@@ -14,6 +15,7 @@ internal class ResultRetrieveParamsTest {
     fun create() {
         ResultRetrieveParams.builder()
             .scanId("00000000-0000-0000-0000-000000000000")
+            .xCorrelationId("00000000-0000-0000-0000-000000000000")
             .hasDetections(true)
             .build()
     }
@@ -22,7 +24,10 @@ internal class ResultRetrieveParamsTest {
     @Test
     fun pathParams() {
         val params =
-            ResultRetrieveParams.builder().scanId("00000000-0000-0000-0000-000000000000").build()
+            ResultRetrieveParams.builder()
+                .scanId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .build()
 
         assertThat(params._pathParam(0)).isEqualTo("00000000-0000-0000-0000-000000000000")
         // out-of-bound path param
@@ -31,10 +36,50 @@ internal class ResultRetrieveParamsTest {
 
     @Disabled("skipped: tests are disabled for the time being")
     @Test
+    fun headers() {
+        val params =
+            ResultRetrieveParams.builder()
+                .scanId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .hasDetections(true)
+                .build()
+
+        val headers = params._headers()
+
+        assertThat(headers)
+            .isEqualTo(
+                Headers.builder()
+                    .put("X-Correlation-Id", "00000000-0000-0000-0000-000000000000")
+                    .build()
+            )
+    }
+
+    @Disabled("skipped: tests are disabled for the time being")
+    @Test
+    fun headersWithoutOptionalFields() {
+        val params =
+            ResultRetrieveParams.builder()
+                .scanId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .build()
+
+        val headers = params._headers()
+
+        assertThat(headers)
+            .isEqualTo(
+                Headers.builder()
+                    .put("X-Correlation-Id", "00000000-0000-0000-0000-000000000000")
+                    .build()
+            )
+    }
+
+    @Disabled("skipped: tests are disabled for the time being")
+    @Test
     fun queryParams() {
         val params =
             ResultRetrieveParams.builder()
                 .scanId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("00000000-0000-0000-0000-000000000000")
                 .hasDetections(true)
                 .build()
 
@@ -48,7 +93,10 @@ internal class ResultRetrieveParamsTest {
     @Test
     fun queryParamsWithoutOptionalFields() {
         val params =
-            ResultRetrieveParams.builder().scanId("00000000-0000-0000-0000-000000000000").build()
+            ResultRetrieveParams.builder()
+                .scanId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .build()
 
         val queryParams = params._queryParams()
 

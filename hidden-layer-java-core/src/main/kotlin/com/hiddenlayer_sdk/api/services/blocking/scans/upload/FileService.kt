@@ -26,7 +26,7 @@ interface FileService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): FileService
 
-    /** Add file to V3 Upload */
+    /** Upload a model file */
     fun add(scanId: String, params: FileAddParams): FileAddResponse =
         add(scanId, params, RequestOptions.none())
 
@@ -46,7 +46,7 @@ interface FileService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): FileAddResponse
 
-    /** Indicate that upload is completed for {file_id} */
+    /** Complete a file upload */
     fun complete(fileId: String, params: FileCompleteParams): FileCompleteResponse =
         complete(fileId, params, RequestOptions.none())
 

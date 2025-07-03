@@ -6,7 +6,9 @@ import com.hiddenlayer_sdk.api.TestServerExtension
 import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient
 import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams
+import com.hiddenlayer_sdk.api.models.sensors.SensorDeleteParams
 import com.hiddenlayer_sdk.api.models.sensors.SensorQueryParams
+import com.hiddenlayer_sdk.api.models.sensors.SensorRetrieveParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -28,15 +30,16 @@ internal class SensorServiceTest {
         val sensor =
             sensorService.create(
                 SensorCreateParams.builder()
-                    .plaintextName("example_model")
+                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                    .plaintextName("plaintext_name")
                     .active(true)
                     .adhoc(true)
                     .tags(
                         SensorCreateParams.Tags.builder()
-                            .putAdditionalProperty("0", JsonValue.from("bar"))
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
                             .build()
                     )
-                    .version(1L)
+                    .version(0L)
                     .build()
             )
 
@@ -53,7 +56,13 @@ internal class SensorServiceTest {
                 .build()
         val sensorService = client.sensors()
 
-        val sensor = sensorService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        val sensor =
+            sensorService.retrieve(
+                SensorRetrieveParams.builder()
+                    .sensorId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                    .build()
+            )
 
         sensor.validate()
     }
@@ -68,7 +77,12 @@ internal class SensorServiceTest {
                 .build()
         val sensorService = client.sensors()
 
-        sensorService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        sensorService.delete(
+            SensorDeleteParams.builder()
+                .sensorId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .build()
+        )
     }
 
     @Disabled("skipped: tests are disabled for the time being")
@@ -84,6 +98,7 @@ internal class SensorServiceTest {
         val response =
             sensorService.query(
                 SensorQueryParams.builder()
+                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
                     .filter(
                         SensorQueryParams.Filter.builder()
                             .active(true)

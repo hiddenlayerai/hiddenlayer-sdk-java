@@ -19,7 +19,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-class Sensor
+class SensorRetrieveResponse
 private constructor(
     private val active: JsonField<Boolean>,
     private val createdAt: JsonField<OffsetDateTime>,
@@ -27,6 +27,7 @@ private constructor(
     private val sensorId: JsonField<String>,
     private val tenantId: JsonField<String>,
     private val version: JsonField<Long>,
+    private val adhoc: JsonField<Boolean>,
     private val tags: JsonField<Tags>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -43,8 +44,19 @@ private constructor(
         @JsonProperty("sensor_id") @ExcludeMissing sensorId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("tenant_id") @ExcludeMissing tenantId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("version") @ExcludeMissing version: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("adhoc") @ExcludeMissing adhoc: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("tags") @ExcludeMissing tags: JsonField<Tags> = JsonMissing.of(),
-    ) : this(active, createdAt, plaintextName, sensorId, tenantId, version, tags, mutableMapOf())
+    ) : this(
+        active,
+        createdAt,
+        plaintextName,
+        sensorId,
+        tenantId,
+        version,
+        adhoc,
+        tags,
+        mutableMapOf(),
+    )
 
     /**
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
@@ -81,6 +93,12 @@ private constructor(
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun version(): Long = version.getRequired("version")
+
+    /**
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun adhoc(): Optional<Boolean> = adhoc.getOptional("adhoc")
 
     /**
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -135,6 +153,13 @@ private constructor(
     @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<Long> = version
 
     /**
+     * Returns the raw JSON value of [adhoc].
+     *
+     * Unlike [adhoc], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("adhoc") @ExcludeMissing fun _adhoc(): JsonField<Boolean> = adhoc
+
+    /**
      * Returns the raw JSON value of [tags].
      *
      * Unlike [tags], this method doesn't throw if the JSON field has an unexpected type.
@@ -156,7 +181,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [Sensor].
+         * Returns a mutable builder for constructing an instance of [SensorRetrieveResponse].
          *
          * The following fields are required:
          * ```java
@@ -171,7 +196,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [Sensor]. */
+    /** A builder for [SensorRetrieveResponse]. */
     class Builder internal constructor() {
 
         private var active: JsonField<Boolean>? = null
@@ -180,19 +205,21 @@ private constructor(
         private var sensorId: JsonField<String>? = null
         private var tenantId: JsonField<String>? = null
         private var version: JsonField<Long>? = null
+        private var adhoc: JsonField<Boolean> = JsonMissing.of()
         private var tags: JsonField<Tags> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(sensor: Sensor) = apply {
-            active = sensor.active
-            createdAt = sensor.createdAt
-            plaintextName = sensor.plaintextName
-            sensorId = sensor.sensorId
-            tenantId = sensor.tenantId
-            version = sensor.version
-            tags = sensor.tags
-            additionalProperties = sensor.additionalProperties.toMutableMap()
+        internal fun from(sensorRetrieveResponse: SensorRetrieveResponse) = apply {
+            active = sensorRetrieveResponse.active
+            createdAt = sensorRetrieveResponse.createdAt
+            plaintextName = sensorRetrieveResponse.plaintextName
+            sensorId = sensorRetrieveResponse.sensorId
+            tenantId = sensorRetrieveResponse.tenantId
+            version = sensorRetrieveResponse.version
+            adhoc = sensorRetrieveResponse.adhoc
+            tags = sensorRetrieveResponse.tags
+            additionalProperties = sensorRetrieveResponse.additionalProperties.toMutableMap()
         }
 
         fun active(active: Boolean) = active(JsonField.of(active))
@@ -259,6 +286,16 @@ private constructor(
          */
         fun version(version: JsonField<Long>) = apply { this.version = version }
 
+        fun adhoc(adhoc: Boolean) = adhoc(JsonField.of(adhoc))
+
+        /**
+         * Sets [Builder.adhoc] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.adhoc] with a well-typed [Boolean] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun adhoc(adhoc: JsonField<Boolean>) = apply { this.adhoc = adhoc }
+
         fun tags(tags: Tags) = tags(JsonField.of(tags))
 
         /**
@@ -289,7 +326,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [Sensor].
+         * Returns an immutable instance of [SensorRetrieveResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -305,14 +342,15 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): Sensor =
-            Sensor(
+        fun build(): SensorRetrieveResponse =
+            SensorRetrieveResponse(
                 checkRequired("active", active),
                 checkRequired("createdAt", createdAt),
                 checkRequired("plaintextName", plaintextName),
                 checkRequired("sensorId", sensorId),
                 checkRequired("tenantId", tenantId),
                 checkRequired("version", version),
+                adhoc,
                 tags,
                 additionalProperties.toMutableMap(),
             )
@@ -320,7 +358,7 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): Sensor = apply {
+    fun validate(): SensorRetrieveResponse = apply {
         if (validated) {
             return@apply
         }
@@ -331,6 +369,7 @@ private constructor(
         sensorId()
         tenantId()
         version()
+        adhoc()
         tags().ifPresent { it.validate() }
         validated = true
     }
@@ -356,6 +395,7 @@ private constructor(
             (if (sensorId.asKnown().isPresent) 1 else 0) +
             (if (tenantId.asKnown().isPresent) 1 else 0) +
             (if (version.asKnown().isPresent) 1 else 0) +
+            (if (adhoc.asKnown().isPresent) 1 else 0) +
             (tags.asKnown().getOrNull()?.validity() ?: 0)
 
     class Tags
@@ -464,15 +504,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is Sensor && active == other.active && createdAt == other.createdAt && plaintextName == other.plaintextName && sensorId == other.sensorId && tenantId == other.tenantId && version == other.version && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is SensorRetrieveResponse && active == other.active && createdAt == other.createdAt && plaintextName == other.plaintextName && sensorId == other.sensorId && tenantId == other.tenantId && version == other.version && adhoc == other.adhoc && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(active, createdAt, plaintextName, sensorId, tenantId, version, tags, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(active, createdAt, plaintextName, sensorId, tenantId, version, adhoc, tags, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Sensor{active=$active, createdAt=$createdAt, plaintextName=$plaintextName, sensorId=$sensorId, tenantId=$tenantId, version=$version, tags=$tags, additionalProperties=$additionalProperties}"
+        "SensorRetrieveResponse{active=$active, createdAt=$createdAt, plaintextName=$plaintextName, sensorId=$sensorId, tenantId=$tenantId, version=$version, adhoc=$adhoc, tags=$tags, additionalProperties=$additionalProperties}"
 }

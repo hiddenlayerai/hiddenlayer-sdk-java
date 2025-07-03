@@ -9,7 +9,6 @@ import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobListParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobRequestParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.ScanJob
-import com.hiddenlayer_sdk.api.models.scans.results.ScanReport
 import java.util.function.Consumer
 
 interface JobService {
@@ -26,30 +25,31 @@ interface JobService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobService
 
-    /** List all Model Scan Jobs */
-    fun list(): ScanJob = list(JobListParams.none())
+    /** List model scan jobs */
+    fun list(): List<ScanJob> = list(JobListParams.none())
 
     /** @see [list] */
     fun list(
         params: JobListParams = JobListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): ScanJob
+    ): List<ScanJob>
 
     /** @see [list] */
-    fun list(params: JobListParams = JobListParams.none()): ScanJob =
+    fun list(params: JobListParams = JobListParams.none()): List<ScanJob> =
         list(params, RequestOptions.none())
 
     /** @see [list] */
-    fun list(requestOptions: RequestOptions): ScanJob = list(JobListParams.none(), requestOptions)
+    fun list(requestOptions: RequestOptions): List<ScanJob> =
+        list(JobListParams.none(), requestOptions)
 
-    /** Request a Model Scan Job */
-    fun request(params: JobRequestParams): ScanReport = request(params, RequestOptions.none())
+    /** Scan a remote model */
+    fun request(params: JobRequestParams): ScanJob = request(params, RequestOptions.none())
 
     /** @see [request] */
     fun request(
         params: JobRequestParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): ScanReport
+    ): ScanJob
 
     /** A view of [JobService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -65,23 +65,23 @@ interface JobService {
          * Returns a raw HTTP response for `get /scan/v3/jobs`, but is otherwise the same as
          * [JobService.list].
          */
-        @MustBeClosed fun list(): HttpResponseFor<ScanJob> = list(JobListParams.none())
+        @MustBeClosed fun list(): HttpResponseFor<List<ScanJob>> = list(JobListParams.none())
 
         /** @see [list] */
         @MustBeClosed
         fun list(
             params: JobListParams = JobListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<ScanJob>
+        ): HttpResponseFor<List<ScanJob>>
 
         /** @see [list] */
         @MustBeClosed
-        fun list(params: JobListParams = JobListParams.none()): HttpResponseFor<ScanJob> =
+        fun list(params: JobListParams = JobListParams.none()): HttpResponseFor<List<ScanJob>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): HttpResponseFor<ScanJob> =
+        fun list(requestOptions: RequestOptions): HttpResponseFor<List<ScanJob>> =
             list(JobListParams.none(), requestOptions)
 
         /**
@@ -89,7 +89,7 @@ interface JobService {
          * [JobService.request].
          */
         @MustBeClosed
-        fun request(params: JobRequestParams): HttpResponseFor<ScanReport> =
+        fun request(params: JobRequestParams): HttpResponseFor<ScanJob> =
             request(params, RequestOptions.none())
 
         /** @see [request] */
@@ -97,6 +97,6 @@ interface JobService {
         fun request(
             params: JobRequestParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<ScanReport>
+        ): HttpResponseFor<ScanJob>
     }
 }

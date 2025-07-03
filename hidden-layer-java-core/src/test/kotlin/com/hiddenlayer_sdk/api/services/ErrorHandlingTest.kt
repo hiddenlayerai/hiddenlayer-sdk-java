@@ -74,15 +74,16 @@ internal class ErrorHandlingTest {
             assertThrows<BadRequestException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .plaintextName("example_model")
+                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                        .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
                         .tags(
                             SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("0", JsonValue.from("bar"))
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
-                        .version(1L)
+                        .version(0L)
                         .build()
                 )
             }
@@ -107,15 +108,16 @@ internal class ErrorHandlingTest {
             assertThrows<UnauthorizedException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .plaintextName("example_model")
+                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                        .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
                         .tags(
                             SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("0", JsonValue.from("bar"))
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
-                        .version(1L)
+                        .version(0L)
                         .build()
                 )
             }
@@ -140,15 +142,16 @@ internal class ErrorHandlingTest {
             assertThrows<PermissionDeniedException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .plaintextName("example_model")
+                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                        .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
                         .tags(
                             SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("0", JsonValue.from("bar"))
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
-                        .version(1L)
+                        .version(0L)
                         .build()
                 )
             }
@@ -173,15 +176,16 @@ internal class ErrorHandlingTest {
             assertThrows<NotFoundException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .plaintextName("example_model")
+                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                        .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
                         .tags(
                             SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("0", JsonValue.from("bar"))
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
-                        .version(1L)
+                        .version(0L)
                         .build()
                 )
             }
@@ -206,15 +210,16 @@ internal class ErrorHandlingTest {
             assertThrows<UnprocessableEntityException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .plaintextName("example_model")
+                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                        .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
                         .tags(
                             SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("0", JsonValue.from("bar"))
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
-                        .version(1L)
+                        .version(0L)
                         .build()
                 )
             }
@@ -239,15 +244,16 @@ internal class ErrorHandlingTest {
             assertThrows<RateLimitException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .plaintextName("example_model")
+                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                        .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
                         .tags(
                             SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("0", JsonValue.from("bar"))
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
-                        .version(1L)
+                        .version(0L)
                         .build()
                 )
             }
@@ -272,15 +278,16 @@ internal class ErrorHandlingTest {
             assertThrows<InternalServerException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .plaintextName("example_model")
+                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                        .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
                         .tags(
                             SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("0", JsonValue.from("bar"))
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
-                        .version(1L)
+                        .version(0L)
                         .build()
                 )
             }
@@ -305,15 +312,16 @@ internal class ErrorHandlingTest {
             assertThrows<UnexpectedStatusCodeException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .plaintextName("example_model")
+                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                        .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
                         .tags(
                             SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("0", JsonValue.from("bar"))
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
-                        .version(1L)
+                        .version(0L)
                         .build()
                 )
             }
@@ -336,15 +344,16 @@ internal class ErrorHandlingTest {
             assertThrows<HiddenLayerException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .plaintextName("example_model")
+                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                        .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
                         .tags(
                             SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("0", JsonValue.from("bar"))
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
                                 .build()
                         )
-                        .version(1L)
+                        .version(0L)
                         .build()
                 )
             }

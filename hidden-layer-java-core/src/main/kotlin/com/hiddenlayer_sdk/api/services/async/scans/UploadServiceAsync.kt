@@ -29,30 +29,20 @@ interface UploadServiceAsync {
 
     fun file(): FileServiceAsync
 
-    /** Indicate All files are uploaded and start the scan */
-    fun completeAll(scanId: String): CompletableFuture<UploadCompleteAllResponse> =
-        completeAll(scanId, UploadCompleteAllParams.none())
-
-    /** @see [completeAll] */
+    /** Scan uploaded files */
     fun completeAll(
         scanId: String,
-        params: UploadCompleteAllParams = UploadCompleteAllParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<UploadCompleteAllResponse> =
-        completeAll(params.toBuilder().scanId(scanId).build(), requestOptions)
-
-    /** @see [completeAll] */
-    fun completeAll(
-        scanId: String,
-        params: UploadCompleteAllParams = UploadCompleteAllParams.none(),
+        params: UploadCompleteAllParams,
     ): CompletableFuture<UploadCompleteAllResponse> =
         completeAll(scanId, params, RequestOptions.none())
 
     /** @see [completeAll] */
     fun completeAll(
+        scanId: String,
         params: UploadCompleteAllParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<UploadCompleteAllResponse>
+    ): CompletableFuture<UploadCompleteAllResponse> =
+        completeAll(params.toBuilder().scanId(scanId).build(), requestOptions)
 
     /** @see [completeAll] */
     fun completeAll(params: UploadCompleteAllParams): CompletableFuture<UploadCompleteAllResponse> =
@@ -60,12 +50,11 @@ interface UploadServiceAsync {
 
     /** @see [completeAll] */
     fun completeAll(
-        scanId: String,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<UploadCompleteAllResponse> =
-        completeAll(scanId, UploadCompleteAllParams.none(), requestOptions)
+        params: UploadCompleteAllParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<UploadCompleteAllResponse>
 
-    /** Start V3 Upload */
+    /** Start a model upload */
     fun start(params: UploadStartParams): CompletableFuture<UploadStartResponse> =
         start(params, RequestOptions.none())
 
@@ -96,30 +85,18 @@ interface UploadServiceAsync {
          * same as [UploadServiceAsync.completeAll].
          */
         fun completeAll(
-            scanId: String
-        ): CompletableFuture<HttpResponseFor<UploadCompleteAllResponse>> =
-            completeAll(scanId, UploadCompleteAllParams.none())
-
-        /** @see [completeAll] */
-        fun completeAll(
             scanId: String,
-            params: UploadCompleteAllParams = UploadCompleteAllParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<UploadCompleteAllResponse>> =
-            completeAll(params.toBuilder().scanId(scanId).build(), requestOptions)
-
-        /** @see [completeAll] */
-        fun completeAll(
-            scanId: String,
-            params: UploadCompleteAllParams = UploadCompleteAllParams.none(),
+            params: UploadCompleteAllParams,
         ): CompletableFuture<HttpResponseFor<UploadCompleteAllResponse>> =
             completeAll(scanId, params, RequestOptions.none())
 
         /** @see [completeAll] */
         fun completeAll(
+            scanId: String,
             params: UploadCompleteAllParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<UploadCompleteAllResponse>>
+        ): CompletableFuture<HttpResponseFor<UploadCompleteAllResponse>> =
+            completeAll(params.toBuilder().scanId(scanId).build(), requestOptions)
 
         /** @see [completeAll] */
         fun completeAll(
@@ -129,10 +106,9 @@ interface UploadServiceAsync {
 
         /** @see [completeAll] */
         fun completeAll(
-            scanId: String,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<UploadCompleteAllResponse>> =
-            completeAll(scanId, UploadCompleteAllParams.none(), requestOptions)
+            params: UploadCompleteAllParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<UploadCompleteAllResponse>>
 
         /**
          * Returns a raw HTTP response for `post /scan/v3/upload`, but is otherwise the same as

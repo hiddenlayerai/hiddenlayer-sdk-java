@@ -3,22 +3,26 @@
 package com.hiddenlayer_sdk.api.models.scans.results
 
 import com.hiddenlayer_sdk.api.core.Params
+import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Get Result of a Model Scan */
+/** Get scan results (SARIF / V3) */
 class ResultRetrieveParams
 private constructor(
     private val scanId: String?,
+    private val xCorrelationId: String,
     private val hasDetections: Boolean?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     fun scanId(): Optional<String> = Optional.ofNullable(scanId)
+
+    fun xCorrelationId(): String = xCorrelationId
 
     /** Filter file_results to only those that have detections (and parents) */
     fun hasDetections(): Optional<Boolean> = Optional.ofNullable(hasDetections)
@@ -31,9 +35,14 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): ResultRetrieveParams = builder().build()
-
-        /** Returns a mutable builder for constructing an instance of [ResultRetrieveParams]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [ResultRetrieveParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .xCorrelationId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -41,6 +50,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var scanId: String? = null
+        private var xCorrelationId: String? = null
         private var hasDetections: Boolean? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
@@ -48,6 +58,7 @@ private constructor(
         @JvmSynthetic
         internal fun from(resultRetrieveParams: ResultRetrieveParams) = apply {
             scanId = resultRetrieveParams.scanId
+            xCorrelationId = resultRetrieveParams.xCorrelationId
             hasDetections = resultRetrieveParams.hasDetections
             additionalHeaders = resultRetrieveParams.additionalHeaders.toBuilder()
             additionalQueryParams = resultRetrieveParams.additionalQueryParams.toBuilder()
@@ -57,6 +68,8 @@ private constructor(
 
         /** Alias for calling [Builder.scanId] with `scanId.orElse(null)`. */
         fun scanId(scanId: Optional<String>) = scanId(scanId.getOrNull())
+
+        fun xCorrelationId(xCorrelationId: String) = apply { this.xCorrelationId = xCorrelationId }
 
         /** Filter file_results to only those that have detections (and parents) */
         fun hasDetections(hasDetections: Boolean?) = apply { this.hasDetections = hasDetections }
@@ -174,10 +187,18 @@ private constructor(
          * Returns an immutable instance of [ResultRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .xCorrelationId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ResultRetrieveParams =
             ResultRetrieveParams(
                 scanId,
+                checkRequired("xCorrelationId", xCorrelationId),
                 hasDetections,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -190,7 +211,13 @@ private constructor(
             else -> ""
         }
 
-    override fun _headers(): Headers = additionalHeaders
+    override fun _headers(): Headers =
+        Headers.builder()
+            .apply {
+                put("X-Correlation-Id", xCorrelationId)
+                putAll(additionalHeaders)
+            }
+            .build()
 
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
@@ -205,11 +232,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ResultRetrieveParams && scanId == other.scanId && hasDetections == other.hasDetections && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is ResultRetrieveParams && scanId == other.scanId && xCorrelationId == other.xCorrelationId && hasDetections == other.hasDetections && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(scanId, hasDetections, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(scanId, xCorrelationId, hasDetections, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "ResultRetrieveParams{scanId=$scanId, hasDetections=$hasDetections, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "ResultRetrieveParams{scanId=$scanId, xCorrelationId=$xCorrelationId, hasDetections=$hasDetections, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

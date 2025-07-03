@@ -4,6 +4,7 @@ package com.hiddenlayer_sdk.api.models.sensors
 
 import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.Params
+import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import com.hiddenlayer_sdk.api.core.toImmutable
@@ -11,16 +12,19 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Delete Sensor */
+/** Remove an Adhoc Sensor */
 class SensorDeleteParams
 private constructor(
     private val sensorId: String?,
+    private val xCorrelationId: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
     fun sensorId(): Optional<String> = Optional.ofNullable(sensorId)
+
+    fun xCorrelationId(): String = xCorrelationId
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
@@ -32,9 +36,14 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): SensorDeleteParams = builder().build()
-
-        /** Returns a mutable builder for constructing an instance of [SensorDeleteParams]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [SensorDeleteParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .xCorrelationId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -42,6 +51,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var sensorId: String? = null
+        private var xCorrelationId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -49,6 +59,7 @@ private constructor(
         @JvmSynthetic
         internal fun from(sensorDeleteParams: SensorDeleteParams) = apply {
             sensorId = sensorDeleteParams.sensorId
+            xCorrelationId = sensorDeleteParams.xCorrelationId
             additionalHeaders = sensorDeleteParams.additionalHeaders.toBuilder()
             additionalQueryParams = sensorDeleteParams.additionalQueryParams.toBuilder()
             additionalBodyProperties = sensorDeleteParams.additionalBodyProperties.toMutableMap()
@@ -58,6 +69,8 @@ private constructor(
 
         /** Alias for calling [Builder.sensorId] with `sensorId.orElse(null)`. */
         fun sensorId(sensorId: Optional<String>) = sensorId(sensorId.getOrNull())
+
+        fun xCorrelationId(xCorrelationId: String) = apply { this.xCorrelationId = xCorrelationId }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -183,10 +196,18 @@ private constructor(
          * Returns an immutable instance of [SensorDeleteParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .xCorrelationId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): SensorDeleteParams =
             SensorDeleteParams(
                 sensorId,
+                checkRequired("xCorrelationId", xCorrelationId),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -202,7 +223,13 @@ private constructor(
             else -> ""
         }
 
-    override fun _headers(): Headers = additionalHeaders
+    override fun _headers(): Headers =
+        Headers.builder()
+            .apply {
+                put("X-Correlation-Id", xCorrelationId)
+                putAll(additionalHeaders)
+            }
+            .build()
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -211,11 +238,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SensorDeleteParams && sensorId == other.sensorId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is SensorDeleteParams && sensorId == other.sensorId && xCorrelationId == other.xCorrelationId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(sensorId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(sensorId, xCorrelationId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
-        "SensorDeleteParams{sensorId=$sensorId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "SensorDeleteParams{sensorId=$sensorId, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

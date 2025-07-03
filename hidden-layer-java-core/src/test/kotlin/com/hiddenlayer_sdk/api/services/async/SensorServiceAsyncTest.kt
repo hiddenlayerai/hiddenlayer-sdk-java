@@ -6,7 +6,9 @@ import com.hiddenlayer_sdk.api.TestServerExtension
 import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClientAsync
 import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams
+import com.hiddenlayer_sdk.api.models.sensors.SensorDeleteParams
 import com.hiddenlayer_sdk.api.models.sensors.SensorQueryParams
+import com.hiddenlayer_sdk.api.models.sensors.SensorRetrieveParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -28,15 +30,16 @@ internal class SensorServiceAsyncTest {
         val sensorFuture =
             sensorServiceAsync.create(
                 SensorCreateParams.builder()
-                    .plaintextName("example_model")
+                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                    .plaintextName("plaintext_name")
                     .active(true)
                     .adhoc(true)
                     .tags(
                         SensorCreateParams.Tags.builder()
-                            .putAdditionalProperty("0", JsonValue.from("bar"))
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
                             .build()
                     )
-                    .version(1L)
+                    .version(0L)
                     .build()
             )
 
@@ -54,7 +57,13 @@ internal class SensorServiceAsyncTest {
                 .build()
         val sensorServiceAsync = client.sensors()
 
-        val sensorFuture = sensorServiceAsync.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        val sensorFuture =
+            sensorServiceAsync.retrieve(
+                SensorRetrieveParams.builder()
+                    .sensorId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                    .build()
+            )
 
         val sensor = sensorFuture.get()
         sensor.validate()
@@ -70,7 +79,13 @@ internal class SensorServiceAsyncTest {
                 .build()
         val sensorServiceAsync = client.sensors()
 
-        val future = sensorServiceAsync.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        val future =
+            sensorServiceAsync.delete(
+                SensorDeleteParams.builder()
+                    .sensorId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                    .build()
+            )
 
         val response = future.get()
     }
@@ -88,6 +103,7 @@ internal class SensorServiceAsyncTest {
         val responseFuture =
             sensorServiceAsync.query(
                 SensorQueryParams.builder()
+                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
                     .filter(
                         SensorQueryParams.Filter.builder()
                             .active(true)

@@ -3,6 +3,7 @@
 package com.hiddenlayer_sdk.api.models.sensors
 
 import com.hiddenlayer_sdk.api.core.Params
+import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import java.util.Objects
@@ -13,11 +14,14 @@ import kotlin.jvm.optionals.getOrNull
 class SensorRetrieveParams
 private constructor(
     private val sensorId: String?,
+    private val xCorrelationId: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     fun sensorId(): Optional<String> = Optional.ofNullable(sensorId)
+
+    fun xCorrelationId(): String = xCorrelationId
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
@@ -27,9 +31,14 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): SensorRetrieveParams = builder().build()
-
-        /** Returns a mutable builder for constructing an instance of [SensorRetrieveParams]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [SensorRetrieveParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .xCorrelationId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -37,12 +46,14 @@ private constructor(
     class Builder internal constructor() {
 
         private var sensorId: String? = null
+        private var xCorrelationId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(sensorRetrieveParams: SensorRetrieveParams) = apply {
             sensorId = sensorRetrieveParams.sensorId
+            xCorrelationId = sensorRetrieveParams.xCorrelationId
             additionalHeaders = sensorRetrieveParams.additionalHeaders.toBuilder()
             additionalQueryParams = sensorRetrieveParams.additionalQueryParams.toBuilder()
         }
@@ -51,6 +62,8 @@ private constructor(
 
         /** Alias for calling [Builder.sensorId] with `sensorId.orElse(null)`. */
         fun sensorId(sensorId: Optional<String>) = sensorId(sensorId.getOrNull())
+
+        fun xCorrelationId(xCorrelationId: String) = apply { this.xCorrelationId = xCorrelationId }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -154,9 +167,21 @@ private constructor(
          * Returns an immutable instance of [SensorRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .xCorrelationId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): SensorRetrieveParams =
-            SensorRetrieveParams(sensorId, additionalHeaders.build(), additionalQueryParams.build())
+            SensorRetrieveParams(
+                sensorId,
+                checkRequired("xCorrelationId", xCorrelationId),
+                additionalHeaders.build(),
+                additionalQueryParams.build(),
+            )
     }
 
     fun _pathParam(index: Int): String =
@@ -165,7 +190,13 @@ private constructor(
             else -> ""
         }
 
-    override fun _headers(): Headers = additionalHeaders
+    override fun _headers(): Headers =
+        Headers.builder()
+            .apply {
+                put("X-Correlation-Id", xCorrelationId)
+                putAll(additionalHeaders)
+            }
+            .build()
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -174,11 +205,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SensorRetrieveParams && sensorId == other.sensorId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is SensorRetrieveParams && sensorId == other.sensorId && xCorrelationId == other.xCorrelationId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(sensorId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(sensorId, xCorrelationId, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "SensorRetrieveParams{sensorId=$sensorId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "SensorRetrieveParams{sensorId=$sensorId, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

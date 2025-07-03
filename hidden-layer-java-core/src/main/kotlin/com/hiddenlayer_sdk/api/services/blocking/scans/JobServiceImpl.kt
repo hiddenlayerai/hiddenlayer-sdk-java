@@ -18,7 +18,6 @@ import com.hiddenlayer_sdk.api.core.prepare
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobListParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobRequestParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.ScanJob
-import com.hiddenlayer_sdk.api.models.scans.results.ScanReport
 import java.util.function.Consumer
 
 class JobServiceImpl internal constructor(private val clientOptions: ClientOptions) : JobService {
@@ -32,11 +31,11 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobService =
         JobServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
-    override fun list(params: JobListParams, requestOptions: RequestOptions): ScanJob =
+    override fun list(params: JobListParams, requestOptions: RequestOptions): List<ScanJob> =
         // get /scan/v3/jobs
         withRawResponse().list(params, requestOptions).parse()
 
-    override fun request(params: JobRequestParams, requestOptions: RequestOptions): ScanReport =
+    override fun request(params: JobRequestParams, requestOptions: RequestOptions): ScanJob =
         // post /scan/v3/jobs
         withRawResponse().request(params, requestOptions).parse()
 
@@ -52,13 +51,13 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val listHandler: Handler<ScanJob> =
-            jsonHandler<ScanJob>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val listHandler: Handler<List<ScanJob>> =
+            jsonHandler<List<ScanJob>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
         override fun list(
             params: JobListParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<ScanJob> {
+        ): HttpResponseFor<List<ScanJob>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -73,19 +72,19 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
                     .use { listHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
-                            it.validate()
+                            it.forEach { it.validate() }
                         }
                     }
             }
         }
 
-        private val requestHandler: Handler<ScanReport> =
-            jsonHandler<ScanReport>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val requestHandler: Handler<ScanJob> =
+            jsonHandler<ScanJob>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
         override fun request(
             params: JobRequestParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<ScanReport> {
+        ): HttpResponseFor<ScanJob> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)

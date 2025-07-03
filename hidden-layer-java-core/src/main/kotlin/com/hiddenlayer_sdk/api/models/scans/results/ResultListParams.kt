@@ -2,32 +2,47 @@
 
 package com.hiddenlayer_sdk.api.models.scans.results
 
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.hiddenlayer_sdk.api.core.Enum
+import com.hiddenlayer_sdk.api.core.JsonField
 import com.hiddenlayer_sdk.api.core.Params
+import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import com.hiddenlayer_sdk.api.core.toImmutable
+import com.hiddenlayer_sdk.api.errors.HiddenLayerInvalidDataException
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Get condensed reports for a Model Scan */
+/** Get scan results (Summaries) */
 class ResultListParams
 private constructor(
+    private val xCorrelationId: String,
+    private val detectionCategory: String?,
     private val endTime: OffsetDateTime?,
     private val latestPerModelVersionOnly: Boolean?,
     private val limit: Long?,
     private val modelIds: List<String>?,
+    private val modelName: ModelName?,
     private val modelVersionIds: List<String>?,
     private val offset: Long?,
+    private val scannerVersion: String?,
     private val severity: List<String>?,
     private val sort: String?,
+    private val source: Source?,
     private val startTime: OffsetDateTime?,
     private val status: List<String>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
+
+    fun xCorrelationId(): String = xCorrelationId
+
+    /** filter by a single detection category */
+    fun detectionCategory(): Optional<String> = Optional.ofNullable(detectionCategory)
 
     /** End Time */
     fun endTime(): Optional<OffsetDateTime> = Optional.ofNullable(endTime)
@@ -41,18 +56,28 @@ private constructor(
     /** Model ID */
     fun modelIds(): Optional<List<String>> = Optional.ofNullable(modelIds)
 
+    /** filter by the model name */
+    fun modelName(): Optional<ModelName> = Optional.ofNullable(modelName)
+
     /** Model Version ID */
     fun modelVersionIds(): Optional<List<String>> = Optional.ofNullable(modelVersionIds)
 
     fun offset(): Optional<Long> = Optional.ofNullable(offset)
 
+    /** filter by version of the scanner */
+    fun scannerVersion(): Optional<String> = Optional.ofNullable(scannerVersion)
+
     /** Severities */
     fun severity(): Optional<List<String>> = Optional.ofNullable(severity)
 
     /**
-     * allow sorting by status, severity or created at, ascending (+) or the default descending (-)
+     * allow sorting by model name, status, severity or created at, ascending (+) or the default
+     * descending (-)
      */
     fun sort(): Optional<String> = Optional.ofNullable(sort)
+
+    /** source of model related to scans */
+    fun source(): Optional<Source> = Optional.ofNullable(source)
 
     /** Start Time */
     fun startTime(): Optional<OffsetDateTime> = Optional.ofNullable(startTime)
@@ -68,23 +93,33 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): ResultListParams = builder().build()
-
-        /** Returns a mutable builder for constructing an instance of [ResultListParams]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [ResultListParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .xCorrelationId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [ResultListParams]. */
     class Builder internal constructor() {
 
+        private var xCorrelationId: String? = null
+        private var detectionCategory: String? = null
         private var endTime: OffsetDateTime? = null
         private var latestPerModelVersionOnly: Boolean? = null
         private var limit: Long? = null
         private var modelIds: MutableList<String>? = null
+        private var modelName: ModelName? = null
         private var modelVersionIds: MutableList<String>? = null
         private var offset: Long? = null
+        private var scannerVersion: String? = null
         private var severity: MutableList<String>? = null
         private var sort: String? = null
+        private var source: Source? = null
         private var startTime: OffsetDateTime? = null
         private var status: MutableList<String>? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -92,19 +127,35 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(resultListParams: ResultListParams) = apply {
+            xCorrelationId = resultListParams.xCorrelationId
+            detectionCategory = resultListParams.detectionCategory
             endTime = resultListParams.endTime
             latestPerModelVersionOnly = resultListParams.latestPerModelVersionOnly
             limit = resultListParams.limit
             modelIds = resultListParams.modelIds?.toMutableList()
+            modelName = resultListParams.modelName
             modelVersionIds = resultListParams.modelVersionIds?.toMutableList()
             offset = resultListParams.offset
+            scannerVersion = resultListParams.scannerVersion
             severity = resultListParams.severity?.toMutableList()
             sort = resultListParams.sort
+            source = resultListParams.source
             startTime = resultListParams.startTime
             status = resultListParams.status?.toMutableList()
             additionalHeaders = resultListParams.additionalHeaders.toBuilder()
             additionalQueryParams = resultListParams.additionalQueryParams.toBuilder()
         }
+
+        fun xCorrelationId(xCorrelationId: String) = apply { this.xCorrelationId = xCorrelationId }
+
+        /** filter by a single detection category */
+        fun detectionCategory(detectionCategory: String?) = apply {
+            this.detectionCategory = detectionCategory
+        }
+
+        /** Alias for calling [Builder.detectionCategory] with `detectionCategory.orElse(null)`. */
+        fun detectionCategory(detectionCategory: Optional<String>) =
+            detectionCategory(detectionCategory.getOrNull())
 
         /** End Time */
         fun endTime(endTime: OffsetDateTime?) = apply { this.endTime = endTime }
@@ -159,6 +210,12 @@ private constructor(
             modelIds = (modelIds ?: mutableListOf()).apply { add(modelId) }
         }
 
+        /** filter by the model name */
+        fun modelName(modelName: ModelName?) = apply { this.modelName = modelName }
+
+        /** Alias for calling [Builder.modelName] with `modelName.orElse(null)`. */
+        fun modelName(modelName: Optional<ModelName>) = modelName(modelName.getOrNull())
+
         /** Model Version ID */
         fun modelVersionIds(modelVersionIds: List<String>?) = apply {
             this.modelVersionIds = modelVersionIds?.toMutableList()
@@ -189,6 +246,13 @@ private constructor(
         /** Alias for calling [Builder.offset] with `offset.orElse(null)`. */
         fun offset(offset: Optional<Long>) = offset(offset.getOrNull())
 
+        /** filter by version of the scanner */
+        fun scannerVersion(scannerVersion: String?) = apply { this.scannerVersion = scannerVersion }
+
+        /** Alias for calling [Builder.scannerVersion] with `scannerVersion.orElse(null)`. */
+        fun scannerVersion(scannerVersion: Optional<String>) =
+            scannerVersion(scannerVersion.getOrNull())
+
         /** Severities */
         fun severity(severity: List<String>?) = apply { this.severity = severity?.toMutableList() }
 
@@ -205,13 +269,19 @@ private constructor(
         }
 
         /**
-         * allow sorting by status, severity or created at, ascending (+) or the default descending
-         * (-)
+         * allow sorting by model name, status, severity or created at, ascending (+) or the default
+         * descending (-)
          */
         fun sort(sort: String?) = apply { this.sort = sort }
 
         /** Alias for calling [Builder.sort] with `sort.orElse(null)`. */
         fun sort(sort: Optional<String>) = sort(sort.getOrNull())
+
+        /** source of model related to scans */
+        fun source(source: Source?) = apply { this.source = source }
+
+        /** Alias for calling [Builder.source] with `source.orElse(null)`. */
+        fun source(source: Optional<Source>) = source(source.getOrNull())
 
         /** Start Time */
         fun startTime(startTime: OffsetDateTime?) = apply { this.startTime = startTime }
@@ -336,17 +406,29 @@ private constructor(
          * Returns an immutable instance of [ResultListParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .xCorrelationId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ResultListParams =
             ResultListParams(
+                checkRequired("xCorrelationId", xCorrelationId),
+                detectionCategory,
                 endTime,
                 latestPerModelVersionOnly,
                 limit,
                 modelIds?.toImmutable(),
+                modelName,
                 modelVersionIds?.toImmutable(),
                 offset,
+                scannerVersion,
                 severity?.toImmutable(),
                 sort,
+                source,
                 startTime,
                 status?.toImmutable(),
                 additionalHeaders.build(),
@@ -354,21 +436,46 @@ private constructor(
             )
     }
 
-    override fun _headers(): Headers = additionalHeaders
+    override fun _headers(): Headers =
+        Headers.builder()
+            .apply {
+                put("X-Correlation-Id", xCorrelationId)
+                putAll(additionalHeaders)
+            }
+            .build()
 
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
+                detectionCategory?.let { put("detection_category", it) }
                 endTime?.let { put("end_time", DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(it)) }
                 latestPerModelVersionOnly?.let {
                     put("latest_per_model_version_only", it.toString())
                 }
                 limit?.let { put("limit", it.toString()) }
                 modelIds?.let { put("model_ids", it.joinToString(",")) }
+                modelName?.let {
+                    it.contains().ifPresent { put("model_name[contains]", it) }
+                    it.eq().ifPresent { put("model_name[eq]", it) }
+                    it._additionalProperties().keys().forEach { key ->
+                        it._additionalProperties().values(key).forEach { value ->
+                            put("model_name[$key]", value)
+                        }
+                    }
+                }
                 modelVersionIds?.let { put("model_version_ids", it.joinToString(",")) }
                 offset?.let { put("offset", it.toString()) }
+                scannerVersion?.let { put("scanner_version", it) }
                 severity?.let { put("severity", it.joinToString(",")) }
                 sort?.let { put("sort", it) }
+                source?.let {
+                    it.eq().ifPresent { put("source[eq]", it.toString()) }
+                    it._additionalProperties().keys().forEach { key ->
+                        it._additionalProperties().values(key).forEach { value ->
+                            put("source[$key]", value)
+                        }
+                    }
+                }
                 startTime?.let {
                     put("start_time", DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(it))
                 }
@@ -377,16 +484,365 @@ private constructor(
             }
             .build()
 
+    /** filter by the model name */
+    class ModelName
+    private constructor(
+        private val contains: String?,
+        private val eq: String?,
+        private val additionalProperties: QueryParams,
+    ) {
+
+        fun contains(): Optional<String> = Optional.ofNullable(contains)
+
+        fun eq(): Optional<String> = Optional.ofNullable(eq)
+
+        fun _additionalProperties(): QueryParams = additionalProperties
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [ModelName]. */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [ModelName]. */
+        class Builder internal constructor() {
+
+            private var contains: String? = null
+            private var eq: String? = null
+            private var additionalProperties: QueryParams.Builder = QueryParams.builder()
+
+            @JvmSynthetic
+            internal fun from(modelName: ModelName) = apply {
+                contains = modelName.contains
+                eq = modelName.eq
+                additionalProperties = modelName.additionalProperties.toBuilder()
+            }
+
+            fun contains(contains: String?) = apply { this.contains = contains }
+
+            /** Alias for calling [Builder.contains] with `contains.orElse(null)`. */
+            fun contains(contains: Optional<String>) = contains(contains.getOrNull())
+
+            fun eq(eq: String?) = apply { this.eq = eq }
+
+            /** Alias for calling [Builder.eq] with `eq.orElse(null)`. */
+            fun eq(eq: Optional<String>) = eq(eq.getOrNull())
+
+            fun additionalProperties(additionalProperties: QueryParams) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, Iterable<String>>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: String) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAdditionalProperties(key: String, values: Iterable<String>) = apply {
+                additionalProperties.put(key, values)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: QueryParams) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, Iterable<String>>) =
+                apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
+
+            fun replaceAdditionalProperties(key: String, value: String) = apply {
+                additionalProperties.replace(key, value)
+            }
+
+            fun replaceAdditionalProperties(key: String, values: Iterable<String>) = apply {
+                additionalProperties.replace(key, values)
+            }
+
+            fun replaceAllAdditionalProperties(additionalProperties: QueryParams) = apply {
+                this.additionalProperties.replaceAll(additionalProperties)
+            }
+
+            fun replaceAllAdditionalProperties(
+                additionalProperties: Map<String, Iterable<String>>
+            ) = apply { this.additionalProperties.replaceAll(additionalProperties) }
+
+            fun removeAdditionalProperties(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                additionalProperties.removeAll(keys)
+            }
+
+            /**
+             * Returns an immutable instance of [ModelName].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): ModelName = ModelName(contains, eq, additionalProperties.build())
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ModelName && contains == other.contains && eq == other.eq && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(contains, eq, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "ModelName{contains=$contains, eq=$eq, additionalProperties=$additionalProperties}"
+    }
+
+    /** source of model related to scans */
+    class Source
+    private constructor(private val eq: Eq?, private val additionalProperties: QueryParams) {
+
+        fun eq(): Optional<Eq> = Optional.ofNullable(eq)
+
+        fun _additionalProperties(): QueryParams = additionalProperties
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [Source]. */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Source]. */
+        class Builder internal constructor() {
+
+            private var eq: Eq? = null
+            private var additionalProperties: QueryParams.Builder = QueryParams.builder()
+
+            @JvmSynthetic
+            internal fun from(source: Source) = apply {
+                eq = source.eq
+                additionalProperties = source.additionalProperties.toBuilder()
+            }
+
+            fun eq(eq: Eq?) = apply { this.eq = eq }
+
+            /** Alias for calling [Builder.eq] with `eq.orElse(null)`. */
+            fun eq(eq: Optional<Eq>) = eq(eq.getOrNull())
+
+            fun additionalProperties(additionalProperties: QueryParams) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, Iterable<String>>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: String) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAdditionalProperties(key: String, values: Iterable<String>) = apply {
+                additionalProperties.put(key, values)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: QueryParams) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, Iterable<String>>) =
+                apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
+
+            fun replaceAdditionalProperties(key: String, value: String) = apply {
+                additionalProperties.replace(key, value)
+            }
+
+            fun replaceAdditionalProperties(key: String, values: Iterable<String>) = apply {
+                additionalProperties.replace(key, values)
+            }
+
+            fun replaceAllAdditionalProperties(additionalProperties: QueryParams) = apply {
+                this.additionalProperties.replaceAll(additionalProperties)
+            }
+
+            fun replaceAllAdditionalProperties(
+                additionalProperties: Map<String, Iterable<String>>
+            ) = apply { this.additionalProperties.replaceAll(additionalProperties) }
+
+            fun removeAdditionalProperties(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                additionalProperties.removeAll(keys)
+            }
+
+            /**
+             * Returns an immutable instance of [Source].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Source = Source(eq, additionalProperties.build())
+        }
+
+        class Eq @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val ADHOC = of("adhoc")
+
+                @JvmStatic fun of(value: String) = Eq(JsonField.of(value))
+            }
+
+            /** An enum containing [Eq]'s known values. */
+            enum class Known {
+                ADHOC
+            }
+
+            /**
+             * An enum containing [Eq]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Eq] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                ADHOC,
+                /** An enum member indicating that [Eq] was instantiated with an unknown value. */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    ADHOC -> Value.ADHOC
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value is a not a
+             *   known member.
+             */
+            fun known(): Known =
+                when (this) {
+                    ADHOC -> Known.ADHOC
+                    else -> throw HiddenLayerInvalidDataException("Unknown Eq: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value does not have
+             *   the expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    HiddenLayerInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): Eq = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: HiddenLayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Eq && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Source && eq == other.eq && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(eq, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() = "Source{eq=$eq, additionalProperties=$additionalProperties}"
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is ResultListParams && endTime == other.endTime && latestPerModelVersionOnly == other.latestPerModelVersionOnly && limit == other.limit && modelIds == other.modelIds && modelVersionIds == other.modelVersionIds && offset == other.offset && severity == other.severity && sort == other.sort && startTime == other.startTime && status == other.status && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is ResultListParams && xCorrelationId == other.xCorrelationId && detectionCategory == other.detectionCategory && endTime == other.endTime && latestPerModelVersionOnly == other.latestPerModelVersionOnly && limit == other.limit && modelIds == other.modelIds && modelName == other.modelName && modelVersionIds == other.modelVersionIds && offset == other.offset && scannerVersion == other.scannerVersion && severity == other.severity && sort == other.sort && source == other.source && startTime == other.startTime && status == other.status && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(endTime, latestPerModelVersionOnly, limit, modelIds, modelVersionIds, offset, severity, sort, startTime, status, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(xCorrelationId, detectionCategory, endTime, latestPerModelVersionOnly, limit, modelIds, modelName, modelVersionIds, offset, scannerVersion, severity, sort, source, startTime, status, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "ResultListParams{endTime=$endTime, latestPerModelVersionOnly=$latestPerModelVersionOnly, limit=$limit, modelIds=$modelIds, modelVersionIds=$modelVersionIds, offset=$offset, severity=$severity, sort=$sort, startTime=$startTime, status=$status, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "ResultListParams{xCorrelationId=$xCorrelationId, detectionCategory=$detectionCategory, endTime=$endTime, latestPerModelVersionOnly=$latestPerModelVersionOnly, limit=$limit, modelIds=$modelIds, modelName=$modelName, modelVersionIds=$modelVersionIds, offset=$offset, scannerVersion=$scannerVersion, severity=$severity, sort=$sort, source=$source, startTime=$startTime, status=$status, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

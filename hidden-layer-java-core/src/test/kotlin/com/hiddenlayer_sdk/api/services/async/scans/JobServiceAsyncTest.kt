@@ -5,7 +5,6 @@ package com.hiddenlayer_sdk.api.services.async.scans
 import com.hiddenlayer_sdk.api.TestServerExtension
 import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClientAsync
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobRequestParams
-import com.hiddenlayer_sdk.api.models.scans.jobs.ScanJob
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -23,10 +22,10 @@ internal class JobServiceAsyncTest {
                 .build()
         val jobServiceAsync = client.scans().jobs()
 
-        val scanJobFuture = jobServiceAsync.list()
+        val scanJobsFuture = jobServiceAsync.list()
 
-        val scanJob = scanJobFuture.get()
-        scanJob.validate()
+        val scanJobs = scanJobsFuture.get()
+        scanJobs.forEach { it.validate() }
     }
 
     @Disabled("skipped: tests are disabled for the time being")
@@ -39,32 +38,30 @@ internal class JobServiceAsyncTest {
                 .build()
         val jobServiceAsync = client.scans().jobs()
 
-        val scanReportFuture =
+        val scanJobFuture =
             jobServiceAsync.request(
                 JobRequestParams.builder()
-                    .scanJob(
-                        ScanJob.builder()
-                            .access(
-                                ScanJob.Access.builder()
-                                    .source(ScanJob.Access.Source.HUGGING_FACE)
-                                    .build()
-                            )
-                            .inventory(
-                                ScanJob.Inventory.builder()
-                                    .modelName("some-model")
-                                    .modelVersion("main")
-                                    .requestedScanLocation("owner/repo")
-                                    .requestingEntity("some-user@example.com")
-                                    .build()
-                            )
-                            .scanId("00000000-0000-0000-0000-000000000000")
-                            .status(ScanJob.Status.PENDING)
+                    .access(
+                        JobRequestParams.Access.builder()
+                            .source(JobRequestParams.Access.Source.HUGGING_FACE)
                             .build()
                     )
+                    .inventory(
+                        JobRequestParams.Inventory.builder()
+                            .modelName("some-model")
+                            .modelVersion("")
+                            .requestedScanLocation("owner/repo")
+                            .requestingEntity("some-user@example.com")
+                            .origin("Hugging Face")
+                            .requestSource(JobRequestParams.Inventory.RequestSource.API_UPLOAD)
+                            .build()
+                    )
+                    .scanId("00000000-0000-0000-0000-000000000000")
+                    .status(JobRequestParams.Status.PENDING)
                     .build()
             )
 
-        val scanReport = scanReportFuture.get()
-        scanReport.validate()
+        val scanJob = scanJobFuture.get()
+        scanJob.validate()
     }
 }

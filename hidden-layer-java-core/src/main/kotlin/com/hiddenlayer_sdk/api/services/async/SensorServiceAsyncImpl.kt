@@ -18,12 +18,13 @@ import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.core.http.json
 import com.hiddenlayer_sdk.api.core.http.parseable
 import com.hiddenlayer_sdk.api.core.prepareAsync
-import com.hiddenlayer_sdk.api.models.sensors.Sensor
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams
+import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse
 import com.hiddenlayer_sdk.api.models.sensors.SensorDeleteParams
 import com.hiddenlayer_sdk.api.models.sensors.SensorQueryParams
 import com.hiddenlayer_sdk.api.models.sensors.SensorQueryResponse
 import com.hiddenlayer_sdk.api.models.sensors.SensorRetrieveParams
+import com.hiddenlayer_sdk.api.models.sensors.SensorRetrieveResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
@@ -43,14 +44,14 @@ class SensorServiceAsyncImpl internal constructor(private val clientOptions: Cli
     override fun create(
         params: SensorCreateParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<Sensor> =
+    ): CompletableFuture<SensorCreateResponse> =
         // post /api/v2/sensors/create
         withRawResponse().create(params, requestOptions).thenApply { it.parse() }
 
     override fun retrieve(
         params: SensorRetrieveParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<Sensor> =
+    ): CompletableFuture<SensorRetrieveResponse> =
         // get /api/v2/sensors/{sensor_id}
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
@@ -80,13 +81,14 @@ class SensorServiceAsyncImpl internal constructor(private val clientOptions: Cli
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val createHandler: Handler<Sensor> =
-            jsonHandler<Sensor>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val createHandler: Handler<SensorCreateResponse> =
+            jsonHandler<SensorCreateResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
         override fun create(
             params: SensorCreateParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<Sensor>> {
+        ): CompletableFuture<HttpResponseFor<SensorCreateResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -111,13 +113,14 @@ class SensorServiceAsyncImpl internal constructor(private val clientOptions: Cli
                 }
         }
 
-        private val retrieveHandler: Handler<Sensor> =
-            jsonHandler<Sensor>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val retrieveHandler: Handler<SensorRetrieveResponse> =
+            jsonHandler<SensorRetrieveResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
         override fun retrieve(
             params: SensorRetrieveParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<Sensor>> {
+        ): CompletableFuture<HttpResponseFor<SensorRetrieveResponse>> {
             // We check here instead of in the params builder because this can be specified
             // positionally or in the params class.
             checkRequired("sensorId", params.sensorId().getOrNull())

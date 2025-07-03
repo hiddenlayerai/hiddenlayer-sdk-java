@@ -24,6 +24,12 @@ internal class ModelRetrieveResponseTest {
                 .addVersion(
                     ModelRetrieveResponse.Version.builder()
                         .version("1")
+                        .addDeployment(
+                            ModelRetrieveResponse.Version.Deployment.builder()
+                                .active(true)
+                                .path("path")
+                                .build()
+                        )
                         .locations(
                             ModelRetrieveResponse.Version.Locations.builder()
                                 .putAdditionalProperty("hl_s3", JsonValue.from("bar"))
@@ -52,6 +58,12 @@ internal class ModelRetrieveResponseTest {
             .containsExactly(
                 ModelRetrieveResponse.Version.builder()
                     .version("1")
+                    .addDeployment(
+                        ModelRetrieveResponse.Version.Deployment.builder()
+                            .active(true)
+                            .path("path")
+                            .build()
+                    )
                     .locations(
                         ModelRetrieveResponse.Version.Locations.builder()
                             .putAdditionalProperty("hl_s3", JsonValue.from("bar"))
@@ -84,6 +96,12 @@ internal class ModelRetrieveResponseTest {
                 .addVersion(
                     ModelRetrieveResponse.Version.builder()
                         .version("1")
+                        .addDeployment(
+                            ModelRetrieveResponse.Version.Deployment.builder()
+                                .active(true)
+                                .path("path")
+                                .build()
+                        )
                         .locations(
                             ModelRetrieveResponse.Version.Locations.builder()
                                 .putAdditionalProperty("hl_s3", JsonValue.from("bar"))

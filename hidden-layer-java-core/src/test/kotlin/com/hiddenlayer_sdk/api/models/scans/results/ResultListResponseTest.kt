@@ -3,10 +3,8 @@
 package com.hiddenlayer_sdk.api.models.scans.results
 
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.jsonMapper
 import java.time.OffsetDateTime
-import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -18,22 +16,21 @@ internal class ResultListResponseTest {
     fun create() {
         val resultListResponse =
             ResultListResponse.builder()
-                .limit(50L)
-                .offset(250L)
-                .total(0L)
                 .addItem(
                     ScanReport.builder()
                         .detectionCount(0L)
                         .fileCount(0L)
                         .filesWithDetectionsCount(0L)
                         .inventory(
-                            ScanReport.Inventory.builder()
-                                .modelId("00000000-0000-0000-0000-000000000000")
+                            ScanReport.Inventory.ScanModelDetailsV3.builder()
                                 .modelName("keras-tf-2025-05-27")
-                                .modelVersion("1.0.0")
-                                .modelVersionId("00000000-0000-0000-0000-000000000000")
                                 .requestedScanLocation("/files-to-scan")
                                 .modelSource("adhoc")
+                                .modelVersion("1.0.0")
+                                .origin("Hugging Face")
+                                .requestSource(
+                                    ScanReport.Inventory.ScanModelDetailsV3.RequestSource.API_UPLOAD
+                                )
                                 .requestingEntity("requesting_entity")
                                 .build()
                         )
@@ -44,17 +41,19 @@ internal class ResultListResponseTest {
                         .addDetectionCategory("string")
                         .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .addFileResult(
-                            FileScanReport.builder()
+                            ScanReport.FileResult.builder()
                                 .details(
-                                    FileScanReport.Details.builder()
+                                    ScanReport.FileResult.Details.builder()
                                         .estimatedTime("estimated_time")
                                         .fileType("safetensors")
                                         .sha256("a54d88e06612d820bc3be72877c74f257b561b19")
                                         .fileSize("9 GB")
                                         .fileSizeBytes(9663676416L)
                                         .fileTypeDetails(
-                                            FileScanReport.Details.FileTypeDetails.builder()
-                                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                            ScanReport.FileResult.Details.FileTypeDetails
+                                                .GgufFileAttributes
+                                                .builder()
+                                                .addSubtype("string")
                                                 .build()
                                         )
                                         .md5("ce114e4501d2f4e2dcea3e17b546f339")
@@ -63,39 +62,34 @@ internal class ResultListResponseTest {
                                         )
                                         .build()
                                 )
-                                .endTime(OffsetDateTime.parse("2024-10-16T23:38:32.354Z"))
-                                .fileInstanceId("file_instance_id")
-                                .fileLocation("file_location")
-                                .seen(OffsetDateTime.parse("2024-10-22T17:59:12.431Z"))
-                                .startTime(OffsetDateTime.parse("2024-10-16T23:38:32.278Z"))
-                                .status(FileScanReport.Status.SKIPPED)
                                 .addDetection(
-                                    FileScanReport.Detection.builder()
+                                    ScanReport.FileResult.Detection.builder()
                                         .category("Arbitrary Code Execution")
+                                        .addCve("CVE-7321-910225")
+                                        .cwe("")
+                                        .cweHref("cwe_href")
                                         .description(
                                             "Found lambda embedded in keras model allowing custom layers that support  arbitrary expression execution"
                                         )
                                         .detectionId("00000000-0000-0000-0000-000000000000")
+                                        .impact("critical")
+                                        .likelihood("medium")
                                         .addMitreAtlas(
-                                            FileScanReport.Detection.MitreAtlas.builder()
+                                            ScanReport.FileResult.Detection.MitreAtlas.builder()
                                                 .tactic("AML.TA0001")
                                                 .technique("AML.T0003.45")
                                                 .build()
                                         )
                                         .addOwasp("LLM21")
+                                        .risk(ScanReport.FileResult.Detection.Risk.MALICIOUS)
                                         .ruleId("PICKLE_0055_202408")
-                                        .severity(FileScanReport.Detection.Severity.LOW)
-                                        .addCve("CVE-7321-910225")
-                                        .cwe("")
-                                        .cweHref("cwe_href")
-                                        .impact("critical")
-                                        .likelihood("medium")
-                                        .risk(FileScanReport.Detection.Risk.MALICIOUS)
+                                        .severity(ScanReport.FileResult.Detection.Severity.LOW)
                                         .addRuleDetail(
-                                            FileScanReport.Detection.RuleDetail.builder()
+                                            ScanReport.FileResult.Detection.RuleDetail.builder()
                                                 .description("description")
                                                 .status(
-                                                    FileScanReport.Detection.RuleDetail.Status
+                                                    ScanReport.FileResult.Detection.RuleDetail
+                                                        .Status
                                                         .CREATED
                                                 )
                                                 .statusAt(
@@ -104,33 +98,43 @@ internal class ResultListResponseTest {
                                                 .build()
                                         )
                                         .technicalBlogHref("technical_blog_href")
+                                        .addTechnicalBlogHref("string")
                                         .build()
                                 )
-                                .fileResults(listOf())
+                                .endTime(OffsetDateTime.parse("2024-10-16T23:38:32.354Z"))
+                                .fileInstanceId("file_instance_id")
+                                .fileLocation("file_location")
+                                .seen(OffsetDateTime.parse("2024-10-22T17:59:12.431Z"))
+                                .startTime(OffsetDateTime.parse("2024-10-16T23:38:32.278Z"))
+                                .status(ScanReport.FileResult.Status.SKIPPED)
+                                .addFileError("File not found")
                                 .build()
                         )
+                        .hasGenealogy(true)
                         .severity(ScanReport.Severity.LOW)
                         .build()
                 )
+                .limit(50L)
+                .offset(250L)
+                .total(0.0)
                 .build()
 
-        assertThat(resultListResponse.limit()).isEqualTo(50L)
-        assertThat(resultListResponse.offset()).isEqualTo(250L)
-        assertThat(resultListResponse.total()).isEqualTo(0L)
-        assertThat(resultListResponse.items().getOrNull())
+        assertThat(resultListResponse.items())
             .containsExactly(
                 ScanReport.builder()
                     .detectionCount(0L)
                     .fileCount(0L)
                     .filesWithDetectionsCount(0L)
                     .inventory(
-                        ScanReport.Inventory.builder()
-                            .modelId("00000000-0000-0000-0000-000000000000")
+                        ScanReport.Inventory.ScanModelDetailsV3.builder()
                             .modelName("keras-tf-2025-05-27")
-                            .modelVersion("1.0.0")
-                            .modelVersionId("00000000-0000-0000-0000-000000000000")
                             .requestedScanLocation("/files-to-scan")
                             .modelSource("adhoc")
+                            .modelVersion("1.0.0")
+                            .origin("Hugging Face")
+                            .requestSource(
+                                ScanReport.Inventory.ScanModelDetailsV3.RequestSource.API_UPLOAD
+                            )
                             .requestingEntity("requesting_entity")
                             .build()
                     )
@@ -141,17 +145,19 @@ internal class ResultListResponseTest {
                     .addDetectionCategory("string")
                     .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .addFileResult(
-                        FileScanReport.builder()
+                        ScanReport.FileResult.builder()
                             .details(
-                                FileScanReport.Details.builder()
+                                ScanReport.FileResult.Details.builder()
                                     .estimatedTime("estimated_time")
                                     .fileType("safetensors")
                                     .sha256("a54d88e06612d820bc3be72877c74f257b561b19")
                                     .fileSize("9 GB")
                                     .fileSizeBytes(9663676416L)
                                     .fileTypeDetails(
-                                        FileScanReport.Details.FileTypeDetails.builder()
-                                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                        ScanReport.FileResult.Details.FileTypeDetails
+                                            .GgufFileAttributes
+                                            .builder()
+                                            .addSubtype("string")
                                             .build()
                                     )
                                     .md5("ce114e4501d2f4e2dcea3e17b546f339")
@@ -160,39 +166,34 @@ internal class ResultListResponseTest {
                                     )
                                     .build()
                             )
-                            .endTime(OffsetDateTime.parse("2024-10-16T23:38:32.354Z"))
-                            .fileInstanceId("file_instance_id")
-                            .fileLocation("file_location")
-                            .seen(OffsetDateTime.parse("2024-10-22T17:59:12.431Z"))
-                            .startTime(OffsetDateTime.parse("2024-10-16T23:38:32.278Z"))
-                            .status(FileScanReport.Status.SKIPPED)
                             .addDetection(
-                                FileScanReport.Detection.builder()
+                                ScanReport.FileResult.Detection.builder()
                                     .category("Arbitrary Code Execution")
+                                    .addCve("CVE-7321-910225")
+                                    .cwe("")
+                                    .cweHref("cwe_href")
                                     .description(
                                         "Found lambda embedded in keras model allowing custom layers that support  arbitrary expression execution"
                                     )
                                     .detectionId("00000000-0000-0000-0000-000000000000")
+                                    .impact("critical")
+                                    .likelihood("medium")
                                     .addMitreAtlas(
-                                        FileScanReport.Detection.MitreAtlas.builder()
+                                        ScanReport.FileResult.Detection.MitreAtlas.builder()
                                             .tactic("AML.TA0001")
                                             .technique("AML.T0003.45")
                                             .build()
                                     )
                                     .addOwasp("LLM21")
+                                    .risk(ScanReport.FileResult.Detection.Risk.MALICIOUS)
                                     .ruleId("PICKLE_0055_202408")
-                                    .severity(FileScanReport.Detection.Severity.LOW)
-                                    .addCve("CVE-7321-910225")
-                                    .cwe("")
-                                    .cweHref("cwe_href")
-                                    .impact("critical")
-                                    .likelihood("medium")
-                                    .risk(FileScanReport.Detection.Risk.MALICIOUS)
+                                    .severity(ScanReport.FileResult.Detection.Severity.LOW)
                                     .addRuleDetail(
-                                        FileScanReport.Detection.RuleDetail.builder()
+                                        ScanReport.FileResult.Detection.RuleDetail.builder()
                                             .description("description")
                                             .status(
-                                                FileScanReport.Detection.RuleDetail.Status.CREATED
+                                                ScanReport.FileResult.Detection.RuleDetail.Status
+                                                    .CREATED
                                             )
                                             .statusAt(
                                                 OffsetDateTime.parse("2019-12-27T18:11:19.117Z")
@@ -200,14 +201,25 @@ internal class ResultListResponseTest {
                                             .build()
                                     )
                                     .technicalBlogHref("technical_blog_href")
+                                    .addTechnicalBlogHref("string")
                                     .build()
                             )
-                            .fileResults(listOf())
+                            .endTime(OffsetDateTime.parse("2024-10-16T23:38:32.354Z"))
+                            .fileInstanceId("file_instance_id")
+                            .fileLocation("file_location")
+                            .seen(OffsetDateTime.parse("2024-10-22T17:59:12.431Z"))
+                            .startTime(OffsetDateTime.parse("2024-10-16T23:38:32.278Z"))
+                            .status(ScanReport.FileResult.Status.SKIPPED)
+                            .addFileError("File not found")
                             .build()
                     )
+                    .hasGenealogy(true)
                     .severity(ScanReport.Severity.LOW)
                     .build()
             )
+        assertThat(resultListResponse.limit()).isEqualTo(50L)
+        assertThat(resultListResponse.offset()).isEqualTo(250L)
+        assertThat(resultListResponse.total()).isEqualTo(0.0)
     }
 
     @Disabled("skipped: tests are disabled for the time being")
@@ -216,22 +228,21 @@ internal class ResultListResponseTest {
         val jsonMapper = jsonMapper()
         val resultListResponse =
             ResultListResponse.builder()
-                .limit(50L)
-                .offset(250L)
-                .total(0L)
                 .addItem(
                     ScanReport.builder()
                         .detectionCount(0L)
                         .fileCount(0L)
                         .filesWithDetectionsCount(0L)
                         .inventory(
-                            ScanReport.Inventory.builder()
-                                .modelId("00000000-0000-0000-0000-000000000000")
+                            ScanReport.Inventory.ScanModelDetailsV3.builder()
                                 .modelName("keras-tf-2025-05-27")
-                                .modelVersion("1.0.0")
-                                .modelVersionId("00000000-0000-0000-0000-000000000000")
                                 .requestedScanLocation("/files-to-scan")
                                 .modelSource("adhoc")
+                                .modelVersion("1.0.0")
+                                .origin("Hugging Face")
+                                .requestSource(
+                                    ScanReport.Inventory.ScanModelDetailsV3.RequestSource.API_UPLOAD
+                                )
                                 .requestingEntity("requesting_entity")
                                 .build()
                         )
@@ -242,17 +253,19 @@ internal class ResultListResponseTest {
                         .addDetectionCategory("string")
                         .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .addFileResult(
-                            FileScanReport.builder()
+                            ScanReport.FileResult.builder()
                                 .details(
-                                    FileScanReport.Details.builder()
+                                    ScanReport.FileResult.Details.builder()
                                         .estimatedTime("estimated_time")
                                         .fileType("safetensors")
                                         .sha256("a54d88e06612d820bc3be72877c74f257b561b19")
                                         .fileSize("9 GB")
                                         .fileSizeBytes(9663676416L)
                                         .fileTypeDetails(
-                                            FileScanReport.Details.FileTypeDetails.builder()
-                                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                            ScanReport.FileResult.Details.FileTypeDetails
+                                                .GgufFileAttributes
+                                                .builder()
+                                                .addSubtype("string")
                                                 .build()
                                         )
                                         .md5("ce114e4501d2f4e2dcea3e17b546f339")
@@ -261,39 +274,34 @@ internal class ResultListResponseTest {
                                         )
                                         .build()
                                 )
-                                .endTime(OffsetDateTime.parse("2024-10-16T23:38:32.354Z"))
-                                .fileInstanceId("file_instance_id")
-                                .fileLocation("file_location")
-                                .seen(OffsetDateTime.parse("2024-10-22T17:59:12.431Z"))
-                                .startTime(OffsetDateTime.parse("2024-10-16T23:38:32.278Z"))
-                                .status(FileScanReport.Status.SKIPPED)
                                 .addDetection(
-                                    FileScanReport.Detection.builder()
+                                    ScanReport.FileResult.Detection.builder()
                                         .category("Arbitrary Code Execution")
+                                        .addCve("CVE-7321-910225")
+                                        .cwe("")
+                                        .cweHref("cwe_href")
                                         .description(
                                             "Found lambda embedded in keras model allowing custom layers that support  arbitrary expression execution"
                                         )
                                         .detectionId("00000000-0000-0000-0000-000000000000")
+                                        .impact("critical")
+                                        .likelihood("medium")
                                         .addMitreAtlas(
-                                            FileScanReport.Detection.MitreAtlas.builder()
+                                            ScanReport.FileResult.Detection.MitreAtlas.builder()
                                                 .tactic("AML.TA0001")
                                                 .technique("AML.T0003.45")
                                                 .build()
                                         )
                                         .addOwasp("LLM21")
+                                        .risk(ScanReport.FileResult.Detection.Risk.MALICIOUS)
                                         .ruleId("PICKLE_0055_202408")
-                                        .severity(FileScanReport.Detection.Severity.LOW)
-                                        .addCve("CVE-7321-910225")
-                                        .cwe("")
-                                        .cweHref("cwe_href")
-                                        .impact("critical")
-                                        .likelihood("medium")
-                                        .risk(FileScanReport.Detection.Risk.MALICIOUS)
+                                        .severity(ScanReport.FileResult.Detection.Severity.LOW)
                                         .addRuleDetail(
-                                            FileScanReport.Detection.RuleDetail.builder()
+                                            ScanReport.FileResult.Detection.RuleDetail.builder()
                                                 .description("description")
                                                 .status(
-                                                    FileScanReport.Detection.RuleDetail.Status
+                                                    ScanReport.FileResult.Detection.RuleDetail
+                                                        .Status
                                                         .CREATED
                                                 )
                                                 .statusAt(
@@ -302,14 +310,25 @@ internal class ResultListResponseTest {
                                                 .build()
                                         )
                                         .technicalBlogHref("technical_blog_href")
+                                        .addTechnicalBlogHref("string")
                                         .build()
                                 )
-                                .fileResults(listOf())
+                                .endTime(OffsetDateTime.parse("2024-10-16T23:38:32.354Z"))
+                                .fileInstanceId("file_instance_id")
+                                .fileLocation("file_location")
+                                .seen(OffsetDateTime.parse("2024-10-22T17:59:12.431Z"))
+                                .startTime(OffsetDateTime.parse("2024-10-16T23:38:32.278Z"))
+                                .status(ScanReport.FileResult.Status.SKIPPED)
+                                .addFileError("File not found")
                                 .build()
                         )
+                        .hasGenealogy(true)
                         .severity(ScanReport.Severity.LOW)
                         .build()
                 )
+                .limit(50L)
+                .offset(250L)
+                .total(0.0)
                 .build()
 
         val roundtrippedResultListResponse =

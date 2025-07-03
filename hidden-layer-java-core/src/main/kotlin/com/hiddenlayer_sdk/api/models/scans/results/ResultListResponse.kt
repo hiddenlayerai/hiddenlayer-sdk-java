@@ -16,25 +16,34 @@ import com.hiddenlayer_sdk.api.core.toImmutable
 import com.hiddenlayer_sdk.api.errors.HiddenLayerInvalidDataException
 import java.util.Collections
 import java.util.Objects
-import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class ResultListResponse
 private constructor(
+    private val items: JsonField<List<ScanReport>>,
     private val limit: JsonField<Long>,
     private val offset: JsonField<Long>,
-    private val total: JsonField<Long>,
-    private val items: JsonField<List<ScanReport>>,
+    private val total: JsonField<Double>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
+        @JsonProperty("items")
+        @ExcludeMissing
+        items: JsonField<List<ScanReport>> = JsonMissing.of(),
         @JsonProperty("limit") @ExcludeMissing limit: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("offset") @ExcludeMissing offset: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("total") @ExcludeMissing total: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("items") @ExcludeMissing items: JsonField<List<ScanReport>> = JsonMissing.of(),
-    ) : this(limit, offset, total, items, mutableMapOf())
+        @JsonProperty("total") @ExcludeMissing total: JsonField<Double> = JsonMissing.of(),
+    ) : this(items, limit, offset, total, mutableMapOf())
+
+    /**
+     * List of items. If no matching items are found, then `[]` will be returned.
+     *
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun items(): List<ScanReport> = items.getRequired("items")
 
     /**
      * Maximum number of items to return
@@ -58,15 +67,14 @@ private constructor(
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun total(): Long = total.getRequired("total")
+    fun total(): Double = total.getRequired("total")
 
     /**
-     * List of items. If no matching items are found, then `[]` will be returned.
+     * Returns the raw JSON value of [items].
      *
-     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun items(): Optional<List<ScanReport>> = items.getOptional("items")
+    @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<ScanReport>> = items
 
     /**
      * Returns the raw JSON value of [limit].
@@ -87,14 +95,7 @@ private constructor(
      *
      * Unlike [total], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("total") @ExcludeMissing fun _total(): JsonField<Long> = total
-
-    /**
-     * Returns the raw JSON value of [items].
-     *
-     * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<ScanReport>> = items
+    @JsonProperty("total") @ExcludeMissing fun _total(): JsonField<Double> = total
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -115,6 +116,7 @@ private constructor(
          *
          * The following fields are required:
          * ```java
+         * .items()
          * .limit()
          * .offset()
          * .total()
@@ -126,19 +128,43 @@ private constructor(
     /** A builder for [ResultListResponse]. */
     class Builder internal constructor() {
 
+        private var items: JsonField<MutableList<ScanReport>>? = null
         private var limit: JsonField<Long>? = null
         private var offset: JsonField<Long>? = null
-        private var total: JsonField<Long>? = null
-        private var items: JsonField<MutableList<ScanReport>>? = null
+        private var total: JsonField<Double>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(resultListResponse: ResultListResponse) = apply {
+            items = resultListResponse.items.map { it.toMutableList() }
             limit = resultListResponse.limit
             offset = resultListResponse.offset
             total = resultListResponse.total
-            items = resultListResponse.items.map { it.toMutableList() }
             additionalProperties = resultListResponse.additionalProperties.toMutableMap()
+        }
+
+        /** List of items. If no matching items are found, then `[]` will be returned. */
+        fun items(items: List<ScanReport>) = items(JsonField.of(items))
+
+        /**
+         * Sets [Builder.items] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.items] with a well-typed `List<ScanReport>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun items(items: JsonField<List<ScanReport>>) = apply {
+            this.items = items.map { it.toMutableList() }
+        }
+
+        /**
+         * Adds a single [ScanReport] to [items].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addItem(item: ScanReport) = apply {
+            items =
+                (items ?: JsonField.of(mutableListOf())).also { checkKnown("items", it).add(item) }
         }
 
         /** Maximum number of items to return */
@@ -164,39 +190,15 @@ private constructor(
         fun offset(offset: JsonField<Long>) = apply { this.offset = offset }
 
         /** Total number of items available based on the query criteria. */
-        fun total(total: Long) = total(JsonField.of(total))
+        fun total(total: Double) = total(JsonField.of(total))
 
         /**
          * Sets [Builder.total] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.total] with a well-typed [Long] value instead. This
+         * You should usually call [Builder.total] with a well-typed [Double] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun total(total: JsonField<Long>) = apply { this.total = total }
-
-        /** List of items. If no matching items are found, then `[]` will be returned. */
-        fun items(items: List<ScanReport>) = items(JsonField.of(items))
-
-        /**
-         * Sets [Builder.items] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.items] with a well-typed `List<ScanReport>` value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
-         */
-        fun items(items: JsonField<List<ScanReport>>) = apply {
-            this.items = items.map { it.toMutableList() }
-        }
-
-        /**
-         * Adds a single [ScanReport] to [items].
-         *
-         * @throws IllegalStateException if the field was previously set to a non-list.
-         */
-        fun addItem(item: ScanReport) = apply {
-            items =
-                (items ?: JsonField.of(mutableListOf())).also { checkKnown("items", it).add(item) }
-        }
+        fun total(total: JsonField<Double>) = apply { this.total = total }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -224,6 +226,7 @@ private constructor(
          *
          * The following fields are required:
          * ```java
+         * .items()
          * .limit()
          * .offset()
          * .total()
@@ -233,10 +236,10 @@ private constructor(
          */
         fun build(): ResultListResponse =
             ResultListResponse(
+                checkRequired("items", items).map { it.toImmutable() },
                 checkRequired("limit", limit),
                 checkRequired("offset", offset),
                 checkRequired("total", total),
-                (items ?: JsonMissing.of()).map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
             )
     }
@@ -248,10 +251,10 @@ private constructor(
             return@apply
         }
 
+        items().forEach { it.validate() }
         limit()
         offset()
         total()
-        items().ifPresent { it.forEach { it.validate() } }
         validated = true
     }
 
@@ -270,25 +273,25 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (limit.asKnown().isPresent) 1 else 0) +
+        (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (if (limit.asKnown().isPresent) 1 else 0) +
             (if (offset.asKnown().isPresent) 1 else 0) +
-            (if (total.asKnown().isPresent) 1 else 0) +
-            (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
+            (if (total.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is ResultListResponse && limit == other.limit && offset == other.offset && total == other.total && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is ResultListResponse && items == other.items && limit == other.limit && offset == other.offset && total == other.total && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(limit, offset, total, items, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(items, limit, offset, total, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ResultListResponse{limit=$limit, offset=$offset, total=$total, items=$items, additionalProperties=$additionalProperties}"
+        "ResultListResponse{items=$items, limit=$limit, offset=$offset, total=$total, additionalProperties=$additionalProperties}"
 }

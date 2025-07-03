@@ -272,11 +272,11 @@ private constructor(
 
     class Result
     private constructor(
-        private val activeVersions: JsonField<List<Long>>,
         private val createdAt: JsonField<Long>,
         private val modelId: JsonField<String>,
         private val plaintextName: JsonField<String>,
         private val source: JsonField<String>,
+        private val activeVersions: JsonField<List<Long>>,
         private val attackMonitoringThreatLevel: JsonField<AttackMonitoringThreatLevel>,
         private val modelScanThreatLevel: JsonField<ModelScanThreatLevel>,
         private val securityPosture: JsonField<SecurityPosture>,
@@ -286,9 +286,6 @@ private constructor(
 
         @JsonCreator
         private constructor(
-            @JsonProperty("active_versions")
-            @ExcludeMissing
-            activeVersions: JsonField<List<Long>> = JsonMissing.of(),
             @JsonProperty("created_at")
             @ExcludeMissing
             createdAt: JsonField<Long> = JsonMissing.of(),
@@ -297,6 +294,9 @@ private constructor(
             @ExcludeMissing
             plaintextName: JsonField<String> = JsonMissing.of(),
             @JsonProperty("source") @ExcludeMissing source: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("active_versions")
+            @ExcludeMissing
+            activeVersions: JsonField<List<Long>> = JsonMissing.of(),
             @JsonProperty("attack_monitoring_threat_level")
             @ExcludeMissing
             attackMonitoringThreatLevel: JsonField<AttackMonitoringThreatLevel> = JsonMissing.of(),
@@ -308,11 +308,11 @@ private constructor(
             securityPosture: JsonField<SecurityPosture> = JsonMissing.of(),
             @JsonProperty("tags") @ExcludeMissing tags: JsonField<Tags> = JsonMissing.of(),
         ) : this(
-            activeVersions,
             createdAt,
             modelId,
             plaintextName,
             source,
+            activeVersions,
             attackMonitoringThreatLevel,
             modelScanThreatLevel,
             securityPosture,
@@ -321,13 +321,7 @@ private constructor(
         )
 
         /**
-         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun activeVersions(): List<Long> = activeVersions.getRequired("active_versions")
-
-        /**
-         * Unix Nano Epoch
+         * Unix Nano Epoch Timestamp
          *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -356,6 +350,12 @@ private constructor(
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
+        fun activeVersions(): Optional<List<Long>> = activeVersions.getOptional("active_versions")
+
+        /**
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun attackMonitoringThreatLevel(): Optional<AttackMonitoringThreatLevel> =
             attackMonitoringThreatLevel.getOptional("attack_monitoring_threat_level")
 
@@ -378,16 +378,6 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun tags(): Optional<Tags> = tags.getOptional("tags")
-
-        /**
-         * Returns the raw JSON value of [activeVersions].
-         *
-         * Unlike [activeVersions], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("active_versions")
-        @ExcludeMissing
-        fun _activeVersions(): JsonField<List<Long>> = activeVersions
 
         /**
          * Returns the raw JSON value of [createdAt].
@@ -419,6 +409,16 @@ private constructor(
          * Unlike [source], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("source") @ExcludeMissing fun _source(): JsonField<String> = source
+
+        /**
+         * Returns the raw JSON value of [activeVersions].
+         *
+         * Unlike [activeVersions], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("active_versions")
+        @ExcludeMissing
+        fun _activeVersions(): JsonField<List<Long>> = activeVersions
 
         /**
          * Returns the raw JSON value of [attackMonitoringThreatLevel].
@@ -477,7 +477,6 @@ private constructor(
              *
              * The following fields are required:
              * ```java
-             * .activeVersions()
              * .createdAt()
              * .modelId()
              * .plaintextName()
@@ -490,11 +489,11 @@ private constructor(
         /** A builder for [Result]. */
         class Builder internal constructor() {
 
-            private var activeVersions: JsonField<MutableList<Long>>? = null
             private var createdAt: JsonField<Long>? = null
             private var modelId: JsonField<String>? = null
             private var plaintextName: JsonField<String>? = null
             private var source: JsonField<String>? = null
+            private var activeVersions: JsonField<MutableList<Long>>? = null
             private var attackMonitoringThreatLevel: JsonField<AttackMonitoringThreatLevel> =
                 JsonMissing.of()
             private var modelScanThreatLevel: JsonField<ModelScanThreatLevel> = JsonMissing.of()
@@ -504,11 +503,11 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(result: Result) = apply {
-                activeVersions = result.activeVersions.map { it.toMutableList() }
                 createdAt = result.createdAt
                 modelId = result.modelId
                 plaintextName = result.plaintextName
                 source = result.source
+                activeVersions = result.activeVersions.map { it.toMutableList() }
                 attackMonitoringThreatLevel = result.attackMonitoringThreatLevel
                 modelScanThreatLevel = result.modelScanThreatLevel
                 securityPosture = result.securityPosture
@@ -516,33 +515,7 @@ private constructor(
                 additionalProperties = result.additionalProperties.toMutableMap()
             }
 
-            fun activeVersions(activeVersions: List<Long>) =
-                activeVersions(JsonField.of(activeVersions))
-
-            /**
-             * Sets [Builder.activeVersions] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.activeVersions] with a well-typed `List<Long>` value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun activeVersions(activeVersions: JsonField<List<Long>>) = apply {
-                this.activeVersions = activeVersions.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [Long] to [activeVersions].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addActiveVersion(activeVersion: Long) = apply {
-                activeVersions =
-                    (activeVersions ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("activeVersions", it).add(activeVersion)
-                    }
-            }
-
-            /** Unix Nano Epoch */
+            /** Unix Nano Epoch Timestamp */
             fun createdAt(createdAt: Long) = createdAt(JsonField.of(createdAt))
 
             /**
@@ -588,6 +561,32 @@ private constructor(
              * supported value.
              */
             fun source(source: JsonField<String>) = apply { this.source = source }
+
+            fun activeVersions(activeVersions: List<Long>) =
+                activeVersions(JsonField.of(activeVersions))
+
+            /**
+             * Sets [Builder.activeVersions] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.activeVersions] with a well-typed `List<Long>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun activeVersions(activeVersions: JsonField<List<Long>>) = apply {
+                this.activeVersions = activeVersions.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [Long] to [activeVersions].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addActiveVersion(activeVersion: Long) = apply {
+                activeVersions =
+                    (activeVersions ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("activeVersions", it).add(activeVersion)
+                    }
+            }
 
             fun attackMonitoringThreatLevel(
                 attackMonitoringThreatLevel: AttackMonitoringThreatLevel
@@ -670,7 +669,6 @@ private constructor(
              *
              * The following fields are required:
              * ```java
-             * .activeVersions()
              * .createdAt()
              * .modelId()
              * .plaintextName()
@@ -681,11 +679,11 @@ private constructor(
              */
             fun build(): Result =
                 Result(
-                    checkRequired("activeVersions", activeVersions).map { it.toImmutable() },
                     checkRequired("createdAt", createdAt),
                     checkRequired("modelId", modelId),
                     checkRequired("plaintextName", plaintextName),
                     checkRequired("source", source),
+                    (activeVersions ?: JsonMissing.of()).map { it.toImmutable() },
                     attackMonitoringThreatLevel,
                     modelScanThreatLevel,
                     securityPosture,
@@ -701,11 +699,11 @@ private constructor(
                 return@apply
             }
 
-            activeVersions()
             createdAt()
             modelId()
             plaintextName()
             source()
+            activeVersions()
             attackMonitoringThreatLevel().ifPresent { it.validate() }
             modelScanThreatLevel().ifPresent { it.validate() }
             securityPosture().ifPresent { it.validate() }
@@ -729,11 +727,11 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (activeVersions.asKnown().getOrNull()?.size ?: 0) +
-                (if (createdAt.asKnown().isPresent) 1 else 0) +
+            (if (createdAt.asKnown().isPresent) 1 else 0) +
                 (if (modelId.asKnown().isPresent) 1 else 0) +
                 (if (plaintextName.asKnown().isPresent) 1 else 0) +
                 (if (source.asKnown().isPresent) 1 else 0) +
+                (activeVersions.asKnown().getOrNull()?.size ?: 0) +
                 (attackMonitoringThreatLevel.asKnown().getOrNull()?.validity() ?: 0) +
                 (modelScanThreatLevel.asKnown().getOrNull()?.validity() ?: 0) +
                 (securityPosture.asKnown().getOrNull()?.validity() ?: 0) +
@@ -1337,17 +1335,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Result && activeVersions == other.activeVersions && createdAt == other.createdAt && modelId == other.modelId && plaintextName == other.plaintextName && source == other.source && attackMonitoringThreatLevel == other.attackMonitoringThreatLevel && modelScanThreatLevel == other.modelScanThreatLevel && securityPosture == other.securityPosture && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Result && createdAt == other.createdAt && modelId == other.modelId && plaintextName == other.plaintextName && source == other.source && activeVersions == other.activeVersions && attackMonitoringThreatLevel == other.attackMonitoringThreatLevel && modelScanThreatLevel == other.modelScanThreatLevel && securityPosture == other.securityPosture && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(activeVersions, createdAt, modelId, plaintextName, source, attackMonitoringThreatLevel, modelScanThreatLevel, securityPosture, tags, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(createdAt, modelId, plaintextName, source, activeVersions, attackMonitoringThreatLevel, modelScanThreatLevel, securityPosture, tags, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Result{activeVersions=$activeVersions, createdAt=$createdAt, modelId=$modelId, plaintextName=$plaintextName, source=$source, attackMonitoringThreatLevel=$attackMonitoringThreatLevel, modelScanThreatLevel=$modelScanThreatLevel, securityPosture=$securityPosture, tags=$tags, additionalProperties=$additionalProperties}"
+            "Result{createdAt=$createdAt, modelId=$modelId, plaintextName=$plaintextName, source=$source, activeVersions=$activeVersions, attackMonitoringThreatLevel=$attackMonitoringThreatLevel, modelScanThreatLevel=$modelScanThreatLevel, securityPosture=$securityPosture, tags=$tags, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

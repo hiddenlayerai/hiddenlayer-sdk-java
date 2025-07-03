@@ -12,23 +12,23 @@ internal class JobRequestParamsTest {
     @Test
     fun create() {
         JobRequestParams.builder()
-            .scanJob(
-                ScanJob.builder()
-                    .access(
-                        ScanJob.Access.builder().source(ScanJob.Access.Source.HUGGING_FACE).build()
-                    )
-                    .inventory(
-                        ScanJob.Inventory.builder()
-                            .modelName("some-model")
-                            .modelVersion("main")
-                            .requestedScanLocation("owner/repo")
-                            .requestingEntity("some-user@example.com")
-                            .build()
-                    )
-                    .scanId("00000000-0000-0000-0000-000000000000")
-                    .status(ScanJob.Status.PENDING)
+            .access(
+                JobRequestParams.Access.builder()
+                    .source(JobRequestParams.Access.Source.HUGGING_FACE)
                     .build()
             )
+            .inventory(
+                JobRequestParams.Inventory.builder()
+                    .modelName("some-model")
+                    .modelVersion("")
+                    .requestedScanLocation("owner/repo")
+                    .requestingEntity("some-user@example.com")
+                    .origin("Hugging Face")
+                    .requestSource(JobRequestParams.Inventory.RequestSource.API_UPLOAD)
+                    .build()
+            )
+            .scanId("00000000-0000-0000-0000-000000000000")
+            .status(JobRequestParams.Status.PENDING)
             .build()
     }
 
@@ -37,56 +37,75 @@ internal class JobRequestParamsTest {
     fun body() {
         val params =
             JobRequestParams.builder()
-                .scanJob(
-                    ScanJob.builder()
-                        .access(
-                            ScanJob.Access.builder()
-                                .source(ScanJob.Access.Source.HUGGING_FACE)
-                                .build()
-                        )
-                        .inventory(
-                            ScanJob.Inventory.builder()
-                                .modelName("some-model")
-                                .modelVersion("main")
-                                .requestedScanLocation("owner/repo")
-                                .requestingEntity("some-user@example.com")
-                                .build()
-                        )
-                        .scanId("00000000-0000-0000-0000-000000000000")
-                        .status(ScanJob.Status.PENDING)
+                .access(
+                    JobRequestParams.Access.builder()
+                        .source(JobRequestParams.Access.Source.HUGGING_FACE)
+                        .build()
+                )
+                .inventory(
+                    JobRequestParams.Inventory.builder()
+                        .modelName("some-model")
+                        .modelVersion("")
+                        .requestedScanLocation("owner/repo")
+                        .requestingEntity("some-user@example.com")
+                        .origin("Hugging Face")
+                        .requestSource(JobRequestParams.Inventory.RequestSource.API_UPLOAD)
+                        .build()
+                )
+                .scanId("00000000-0000-0000-0000-000000000000")
+                .status(JobRequestParams.Status.PENDING)
+                .build()
+
+        val body = params._body()
+
+        assertThat(body.access())
+            .isEqualTo(
+                JobRequestParams.Access.builder()
+                    .source(JobRequestParams.Access.Source.HUGGING_FACE)
+                    .build()
+            )
+        assertThat(body.inventory())
+            .isEqualTo(
+                JobRequestParams.Inventory.builder()
+                    .modelName("some-model")
+                    .modelVersion("")
+                    .requestedScanLocation("owner/repo")
+                    .requestingEntity("some-user@example.com")
+                    .origin("Hugging Face")
+                    .requestSource(JobRequestParams.Inventory.RequestSource.API_UPLOAD)
+                    .build()
+            )
+        assertThat(body.scanId()).contains("00000000-0000-0000-0000-000000000000")
+        assertThat(body.status()).contains(JobRequestParams.Status.PENDING)
+    }
+
+    @Disabled("skipped: tests are disabled for the time being")
+    @Test
+    fun bodyWithoutOptionalFields() {
+        val params =
+            JobRequestParams.builder()
+                .access(JobRequestParams.Access.builder().build())
+                .inventory(
+                    JobRequestParams.Inventory.builder()
+                        .modelName("some-model")
+                        .modelVersion("")
+                        .requestedScanLocation("owner/repo")
+                        .requestingEntity("some-user@example.com")
                         .build()
                 )
                 .build()
 
         val body = params._body()
 
-        assertThat(body)
+        assertThat(body.access()).isEqualTo(JobRequestParams.Access.builder().build())
+        assertThat(body.inventory())
             .isEqualTo(
-                ScanJob.builder()
-                    .access(
-                        ScanJob.Access.builder().source(ScanJob.Access.Source.HUGGING_FACE).build()
-                    )
-                    .inventory(
-                        ScanJob.Inventory.builder()
-                            .modelName("some-model")
-                            .modelVersion("main")
-                            .requestedScanLocation("owner/repo")
-                            .requestingEntity("some-user@example.com")
-                            .build()
-                    )
-                    .scanId("00000000-0000-0000-0000-000000000000")
-                    .status(ScanJob.Status.PENDING)
+                JobRequestParams.Inventory.builder()
+                    .modelName("some-model")
+                    .modelVersion("")
+                    .requestedScanLocation("owner/repo")
+                    .requestingEntity("some-user@example.com")
                     .build()
             )
-    }
-
-    @Disabled("skipped: tests are disabled for the time being")
-    @Test
-    fun bodyWithoutOptionalFields() {
-        val params = JobRequestParams.builder().scanJob(ScanJob.builder().build()).build()
-
-        val body = params._body()
-
-        assertThat(body).isEqualTo(ScanJob.builder().build())
     }
 }

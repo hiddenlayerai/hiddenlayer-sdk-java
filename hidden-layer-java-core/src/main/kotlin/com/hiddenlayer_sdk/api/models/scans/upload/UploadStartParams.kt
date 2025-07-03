@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.hiddenlayer_sdk.api.core.Enum
 import com.hiddenlayer_sdk.api.core.ExcludeMissing
 import com.hiddenlayer_sdk.api.core.JsonField
 import com.hiddenlayer_sdk.api.core.JsonMissing
@@ -18,14 +19,18 @@ import com.hiddenlayer_sdk.api.errors.HiddenLayerInvalidDataException
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
-/** Start V3 Upload */
+/** Start a model upload */
 class UploadStartParams
 private constructor(
+    private val xCorrelationId: String,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
+
+    fun xCorrelationId(): String = xCorrelationId
 
     /**
      * Model name
@@ -60,6 +65,22 @@ private constructor(
     fun locationAlias(): Optional<String> = body.locationAlias()
 
     /**
+     * Specifies the platform or service where the model originated before being scanned
+     *
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun origin(): Optional<String> = body.origin()
+
+    /**
+     * Identifies the system that requested the scan
+     *
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun requestSource(): Optional<RequestSource> = body.requestSource()
+
+    /**
      * Returns the raw JSON value of [modelName].
      *
      * Unlike [modelName], this method doesn't throw if the JSON field has an unexpected type.
@@ -88,6 +109,20 @@ private constructor(
      */
     fun _locationAlias(): JsonField<String> = body._locationAlias()
 
+    /**
+     * Returns the raw JSON value of [origin].
+     *
+     * Unlike [origin], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _origin(): JsonField<String> = body._origin()
+
+    /**
+     * Returns the raw JSON value of [requestSource].
+     *
+     * Unlike [requestSource], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _requestSource(): JsonField<RequestSource> = body._requestSource()
+
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -103,6 +138,7 @@ private constructor(
          *
          * The following fields are required:
          * ```java
+         * .xCorrelationId()
          * .modelName()
          * .modelVersion()
          * .requestingEntity()
@@ -114,16 +150,20 @@ private constructor(
     /** A builder for [UploadStartParams]. */
     class Builder internal constructor() {
 
+        private var xCorrelationId: String? = null
         private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(uploadStartParams: UploadStartParams) = apply {
+            xCorrelationId = uploadStartParams.xCorrelationId
             body = uploadStartParams.body.toBuilder()
             additionalHeaders = uploadStartParams.additionalHeaders.toBuilder()
             additionalQueryParams = uploadStartParams.additionalQueryParams.toBuilder()
         }
+
+        fun xCorrelationId(xCorrelationId: String) = apply { this.xCorrelationId = xCorrelationId }
 
         /**
          * Sets the entire request body.
@@ -134,6 +174,8 @@ private constructor(
          * - [modelVersion]
          * - [requestingEntity]
          * - [locationAlias]
+         * - [origin]
+         * - etc.
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
@@ -191,6 +233,33 @@ private constructor(
          */
         fun locationAlias(locationAlias: JsonField<String>) = apply {
             body.locationAlias(locationAlias)
+        }
+
+        /** Specifies the platform or service where the model originated before being scanned */
+        fun origin(origin: String) = apply { body.origin(origin) }
+
+        /**
+         * Sets [Builder.origin] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.origin] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun origin(origin: JsonField<String>) = apply { body.origin(origin) }
+
+        /** Identifies the system that requested the scan */
+        fun requestSource(requestSource: RequestSource) = apply {
+            body.requestSource(requestSource)
+        }
+
+        /**
+         * Sets [Builder.requestSource] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.requestSource] with a well-typed [RequestSource] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun requestSource(requestSource: JsonField<RequestSource>) = apply {
+            body.requestSource(requestSource)
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
@@ -317,6 +386,7 @@ private constructor(
          *
          * The following fields are required:
          * ```java
+         * .xCorrelationId()
          * .modelName()
          * .modelVersion()
          * .requestingEntity()
@@ -326,6 +396,7 @@ private constructor(
          */
         fun build(): UploadStartParams =
             UploadStartParams(
+                checkRequired("xCorrelationId", xCorrelationId),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -334,7 +405,13 @@ private constructor(
 
     fun _body(): Body = body
 
-    override fun _headers(): Headers = additionalHeaders
+    override fun _headers(): Headers =
+        Headers.builder()
+            .apply {
+                put("X-Correlation-Id", xCorrelationId)
+                putAll(additionalHeaders)
+            }
+            .build()
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -344,6 +421,8 @@ private constructor(
         private val modelVersion: JsonField<String>,
         private val requestingEntity: JsonField<String>,
         private val locationAlias: JsonField<String>,
+        private val origin: JsonField<String>,
+        private val requestSource: JsonField<RequestSource>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -361,7 +440,19 @@ private constructor(
             @JsonProperty("location_alias")
             @ExcludeMissing
             locationAlias: JsonField<String> = JsonMissing.of(),
-        ) : this(modelName, modelVersion, requestingEntity, locationAlias, mutableMapOf())
+            @JsonProperty("origin") @ExcludeMissing origin: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("request_source")
+            @ExcludeMissing
+            requestSource: JsonField<RequestSource> = JsonMissing.of(),
+        ) : this(
+            modelName,
+            modelVersion,
+            requestingEntity,
+            locationAlias,
+            origin,
+            requestSource,
+            mutableMapOf(),
+        )
 
         /**
          * Model name
@@ -394,6 +485,22 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun locationAlias(): Optional<String> = locationAlias.getOptional("location_alias")
+
+        /**
+         * Specifies the platform or service where the model originated before being scanned
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun origin(): Optional<String> = origin.getOptional("origin")
+
+        /**
+         * Identifies the system that requested the scan
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun requestSource(): Optional<RequestSource> = requestSource.getOptional("request_source")
 
         /**
          * Returns the raw JSON value of [modelName].
@@ -432,6 +539,23 @@ private constructor(
         @ExcludeMissing
         fun _locationAlias(): JsonField<String> = locationAlias
 
+        /**
+         * Returns the raw JSON value of [origin].
+         *
+         * Unlike [origin], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("origin") @ExcludeMissing fun _origin(): JsonField<String> = origin
+
+        /**
+         * Returns the raw JSON value of [requestSource].
+         *
+         * Unlike [requestSource], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("request_source")
+        @ExcludeMissing
+        fun _requestSource(): JsonField<RequestSource> = requestSource
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -466,6 +590,8 @@ private constructor(
             private var modelVersion: JsonField<String>? = null
             private var requestingEntity: JsonField<String>? = null
             private var locationAlias: JsonField<String> = JsonMissing.of()
+            private var origin: JsonField<String> = JsonMissing.of()
+            private var requestSource: JsonField<RequestSource> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -474,6 +600,8 @@ private constructor(
                 modelVersion = body.modelVersion
                 requestingEntity = body.requestingEntity
                 locationAlias = body.locationAlias
+                origin = body.origin
+                requestSource = body.requestSource
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
@@ -532,6 +660,33 @@ private constructor(
                 this.locationAlias = locationAlias
             }
 
+            /** Specifies the platform or service where the model originated before being scanned */
+            fun origin(origin: String) = origin(JsonField.of(origin))
+
+            /**
+             * Sets [Builder.origin] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.origin] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun origin(origin: JsonField<String>) = apply { this.origin = origin }
+
+            /** Identifies the system that requested the scan */
+            fun requestSource(requestSource: RequestSource) =
+                requestSource(JsonField.of(requestSource))
+
+            /**
+             * Sets [Builder.requestSource] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.requestSource] with a well-typed [RequestSource]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun requestSource(requestSource: JsonField<RequestSource>) = apply {
+                this.requestSource = requestSource
+            }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -571,6 +726,8 @@ private constructor(
                     checkRequired("modelVersion", modelVersion),
                     checkRequired("requestingEntity", requestingEntity),
                     locationAlias,
+                    origin,
+                    requestSource,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -586,6 +743,8 @@ private constructor(
             modelVersion()
             requestingEntity()
             locationAlias()
+            origin()
+            requestSource().ifPresent { it.validate() }
             validated = true
         }
 
@@ -608,24 +767,170 @@ private constructor(
             (if (modelName.asKnown().isPresent) 1 else 0) +
                 (if (modelVersion.asKnown().isPresent) 1 else 0) +
                 (if (requestingEntity.asKnown().isPresent) 1 else 0) +
-                (if (locationAlias.asKnown().isPresent) 1 else 0)
+                (if (locationAlias.asKnown().isPresent) 1 else 0) +
+                (if (origin.asKnown().isPresent) 1 else 0) +
+                (requestSource.asKnown().getOrNull()?.validity() ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
             }
 
-            return /* spotless:off */ other is Body && modelName == other.modelName && modelVersion == other.modelVersion && requestingEntity == other.requestingEntity && locationAlias == other.locationAlias && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && modelName == other.modelName && modelVersion == other.modelVersion && requestingEntity == other.requestingEntity && locationAlias == other.locationAlias && origin == other.origin && requestSource == other.requestSource && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(modelName, modelVersion, requestingEntity, locationAlias, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(modelName, modelVersion, requestingEntity, locationAlias, origin, requestSource, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{modelName=$modelName, modelVersion=$modelVersion, requestingEntity=$requestingEntity, locationAlias=$locationAlias, additionalProperties=$additionalProperties}"
+            "Body{modelName=$modelName, modelVersion=$modelVersion, requestingEntity=$requestingEntity, locationAlias=$locationAlias, origin=$origin, requestSource=$requestSource, additionalProperties=$additionalProperties}"
+    }
+
+    /** Identifies the system that requested the scan */
+    class RequestSource @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val HYBRID_UPLOAD = of("Hybrid Upload")
+
+            @JvmField val API_UPLOAD = of("API Upload")
+
+            @JvmField val INTEGRATION = of("Integration")
+
+            @JvmField val UI_UPLOAD = of("UI Upload")
+
+            @JvmStatic fun of(value: String) = RequestSource(JsonField.of(value))
+        }
+
+        /** An enum containing [RequestSource]'s known values. */
+        enum class Known {
+            HYBRID_UPLOAD,
+            API_UPLOAD,
+            INTEGRATION,
+            UI_UPLOAD,
+        }
+
+        /**
+         * An enum containing [RequestSource]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [RequestSource] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            HYBRID_UPLOAD,
+            API_UPLOAD,
+            INTEGRATION,
+            UI_UPLOAD,
+            /**
+             * An enum member indicating that [RequestSource] was instantiated with an unknown
+             * value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                HYBRID_UPLOAD -> Value.HYBRID_UPLOAD
+                API_UPLOAD -> Value.API_UPLOAD
+                INTEGRATION -> Value.INTEGRATION
+                UI_UPLOAD -> Value.UI_UPLOAD
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                HYBRID_UPLOAD -> Known.HYBRID_UPLOAD
+                API_UPLOAD -> Known.API_UPLOAD
+                INTEGRATION -> Known.INTEGRATION
+                UI_UPLOAD -> Known.UI_UPLOAD
+                else -> throw HiddenLayerInvalidDataException("Unknown RequestSource: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                HiddenLayerInvalidDataException("Value is not a String")
+            }
+
+        private var validated: Boolean = false
+
+        fun validate(): RequestSource = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: HiddenLayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is RequestSource && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {
@@ -633,11 +938,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is UploadStartParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is UploadStartParams && xCorrelationId == other.xCorrelationId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(xCorrelationId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "UploadStartParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "UploadStartParams{xCorrelationId=$xCorrelationId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

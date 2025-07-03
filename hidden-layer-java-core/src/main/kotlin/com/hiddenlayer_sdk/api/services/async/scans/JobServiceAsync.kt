@@ -8,7 +8,6 @@ import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobListParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobRequestParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.ScanJob
-import com.hiddenlayer_sdk.api.models.scans.results.ScanReport
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -26,32 +25,32 @@ interface JobServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobServiceAsync
 
-    /** List all Model Scan Jobs */
-    fun list(): CompletableFuture<ScanJob> = list(JobListParams.none())
+    /** List model scan jobs */
+    fun list(): CompletableFuture<List<ScanJob>> = list(JobListParams.none())
 
     /** @see [list] */
     fun list(
         params: JobListParams = JobListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<ScanJob>
+    ): CompletableFuture<List<ScanJob>>
 
     /** @see [list] */
-    fun list(params: JobListParams = JobListParams.none()): CompletableFuture<ScanJob> =
+    fun list(params: JobListParams = JobListParams.none()): CompletableFuture<List<ScanJob>> =
         list(params, RequestOptions.none())
 
     /** @see [list] */
-    fun list(requestOptions: RequestOptions): CompletableFuture<ScanJob> =
+    fun list(requestOptions: RequestOptions): CompletableFuture<List<ScanJob>> =
         list(JobListParams.none(), requestOptions)
 
-    /** Request a Model Scan Job */
-    fun request(params: JobRequestParams): CompletableFuture<ScanReport> =
+    /** Scan a remote model */
+    fun request(params: JobRequestParams): CompletableFuture<ScanJob> =
         request(params, RequestOptions.none())
 
     /** @see [request] */
     fun request(
         params: JobRequestParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<ScanReport>
+    ): CompletableFuture<ScanJob>
 
     /** A view of [JobServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -67,34 +66,36 @@ interface JobServiceAsync {
          * Returns a raw HTTP response for `get /scan/v3/jobs`, but is otherwise the same as
          * [JobServiceAsync.list].
          */
-        fun list(): CompletableFuture<HttpResponseFor<ScanJob>> = list(JobListParams.none())
+        fun list(): CompletableFuture<HttpResponseFor<List<ScanJob>>> = list(JobListParams.none())
 
         /** @see [list] */
         fun list(
             params: JobListParams = JobListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<ScanJob>>
+        ): CompletableFuture<HttpResponseFor<List<ScanJob>>>
 
         /** @see [list] */
         fun list(
             params: JobListParams = JobListParams.none()
-        ): CompletableFuture<HttpResponseFor<ScanJob>> = list(params, RequestOptions.none())
+        ): CompletableFuture<HttpResponseFor<List<ScanJob>>> = list(params, RequestOptions.none())
 
         /** @see [list] */
-        fun list(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<ScanJob>> =
+        fun list(
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<List<ScanJob>>> =
             list(JobListParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `post /scan/v3/jobs`, but is otherwise the same as
          * [JobServiceAsync.request].
          */
-        fun request(params: JobRequestParams): CompletableFuture<HttpResponseFor<ScanReport>> =
+        fun request(params: JobRequestParams): CompletableFuture<HttpResponseFor<ScanJob>> =
             request(params, RequestOptions.none())
 
         /** @see [request] */
         fun request(
             params: JobRequestParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<ScanReport>>
+        ): CompletableFuture<HttpResponseFor<ScanJob>>
     }
 }

@@ -7,7 +7,7 @@ import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import java.util.Objects
 
-/** List all Model Scan Jobs */
+/** List model scan jobs */
 class JobListParams
 private constructor(
     private val additionalHeaders: Headers,
