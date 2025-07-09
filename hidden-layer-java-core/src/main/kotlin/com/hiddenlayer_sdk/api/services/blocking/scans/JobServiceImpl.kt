@@ -15,6 +15,8 @@ import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.core.http.json
 import com.hiddenlayer_sdk.api.core.http.parseable
 import com.hiddenlayer_sdk.api.core.prepare
+import com.hiddenlayer_sdk.api.models.scans.jobs.JobListParams
+import com.hiddenlayer_sdk.api.models.scans.jobs.JobListResponse
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobRequestParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.ScanJob
 import java.util.function.Consumer
@@ -29,6 +31,10 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
 
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobService =
         JobServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
+    override fun list(params: JobListParams, requestOptions: RequestOptions): JobListResponse =
+        // get /scan/v3/results
+        withRawResponse().list(params, requestOptions).parse()
 
     override fun request(params: JobRequestParams, requestOptions: RequestOptions): ScanJob =
         // post /scan/v3/jobs
@@ -45,6 +51,33 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
             JobServiceImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
+
+        private val listHandler: Handler<JobListResponse> =
+            jsonHandler<JobListResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+
+        override fun list(
+            params: JobListParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<JobListResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("scan", "v3", "results")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { listHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
 
         private val requestHandler: Handler<ScanJob> =
             jsonHandler<ScanJob>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
