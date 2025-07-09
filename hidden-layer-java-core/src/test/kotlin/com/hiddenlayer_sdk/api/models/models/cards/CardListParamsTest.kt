@@ -30,7 +30,7 @@ internal class CardListParamsTest {
             .modscanStatus(CardListParams.ModscanStatus.ENABLED)
             .offset(0L)
             .addProvider(CardListParams.Provider.AZURE)
-            .sort("sort")
+            .sort("-model_name")
             .source(CardListParams.Source.builder().contains("contains").eq("eq").build())
             .build()
     }
@@ -55,7 +55,7 @@ internal class CardListParamsTest {
                 .modscanStatus(CardListParams.ModscanStatus.ENABLED)
                 .offset(0L)
                 .addProvider(CardListParams.Provider.AZURE)
-                .sort("sort")
+                .sort("-model_name")
                 .source(CardListParams.Source.builder().contains("contains").eq("eq").build())
                 .build()
 
@@ -105,7 +105,7 @@ internal class CardListParamsTest {
                 .modscanStatus(CardListParams.ModscanStatus.ENABLED)
                 .offset(0L)
                 .addProvider(CardListParams.Provider.AZURE)
-                .sort("sort")
+                .sort("-model_name")
                 .source(CardListParams.Source.builder().contains("contains").eq("eq").build())
                 .build()
 
@@ -125,7 +125,7 @@ internal class CardListParamsTest {
                     .put("modscan_status", "ENABLED")
                     .put("offset", "0")
                     .put("provider", listOf("AZURE").joinToString(","))
-                    .put("sort", "sort")
+                    .put("sort", "-model_name")
                     .put("source[contains]", "contains")
                     .put("source[eq]", "eq")
                     .build()
