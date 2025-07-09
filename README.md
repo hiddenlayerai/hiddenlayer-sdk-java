@@ -39,7 +39,7 @@ import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
 
-// Configures using the `HIDDENLAYER_TOKEN` and `HIDDEN_LAYER_BASE_URL` environment variables
+// Configures using the `HIDDENLAYER_TOKEN`, `HIDDENLAYER_CLIENT_ID`, `HIDDENLAYER_CLIENT_SECRET` and `HIDDEN_LAYER_BASE_URL` environment variables
 HiddenLayerClient client = HiddenLayerOkHttpClient.fromEnv();
 
 SensorCreateParams params = SensorCreateParams.builder()
@@ -57,7 +57,7 @@ Configure the client using environment variables:
 import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
 import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
 
-// Configures using the `HIDDENLAYER_TOKEN` and `HIDDEN_LAYER_BASE_URL` environment variables
+// Configures using the `HIDDENLAYER_TOKEN`, `HIDDENLAYER_CLIENT_ID`, `HIDDENLAYER_CLIENT_SECRET` and `HIDDEN_LAYER_BASE_URL` environment variables
 HiddenLayerClient client = HiddenLayerOkHttpClient.fromEnv();
 ```
 
@@ -79,7 +79,7 @@ import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
 import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
 
 HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
-    // Configures using the `HIDDENLAYER_TOKEN` and `HIDDEN_LAYER_BASE_URL` environment variables
+    // Configures using the `HIDDENLAYER_TOKEN`, `HIDDENLAYER_CLIENT_ID`, `HIDDENLAYER_CLIENT_SECRET` and `HIDDEN_LAYER_BASE_URL` environment variables
     .fromEnv()
     .bearerToken("My Bearer Token")
     .build();
@@ -87,10 +87,12 @@ HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
 
 See this table for the available options:
 
-| Setter        | Environment variable    | Required | Default value                  |
-| ------------- | ----------------------- | -------- | ------------------------------ |
-| `bearerToken` | `HIDDENLAYER_TOKEN`     | true     | -                              |
-| `baseUrl`     | `HIDDEN_LAYER_BASE_URL` | true     | `"https://api.hiddenlayer.ai"` |
+| Setter         | Environment variable        | Required | Default value                  |
+| -------------- | --------------------------- | -------- | ------------------------------ |
+| `bearerToken`  | `HIDDENLAYER_TOKEN`         | false    | -                              |
+| `clientId`     | `HIDDENLAYER_CLIENT_ID`     | false    | -                              |
+| `clientSecret` | `HIDDENLAYER_CLIENT_SECRET` | false    | -                              |
+| `baseUrl`      | `HIDDEN_LAYER_BASE_URL`     | true     | `"https://api.hiddenlayer.ai"` |
 
 > [!TIP]
 > Don't create more than one client in the same application. Each client has a connection pool and
@@ -136,7 +138,7 @@ import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
 import java.util.concurrent.CompletableFuture;
 
-// Configures using the `HIDDENLAYER_TOKEN` and `HIDDEN_LAYER_BASE_URL` environment variables
+// Configures using the `HIDDENLAYER_TOKEN`, `HIDDENLAYER_CLIENT_ID`, `HIDDENLAYER_CLIENT_SECRET` and `HIDDEN_LAYER_BASE_URL` environment variables
 HiddenLayerClient client = HiddenLayerOkHttpClient.fromEnv();
 
 SensorCreateParams params = SensorCreateParams.builder()
@@ -155,7 +157,7 @@ import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
 import java.util.concurrent.CompletableFuture;
 
-// Configures using the `HIDDENLAYER_TOKEN` and `HIDDEN_LAYER_BASE_URL` environment variables
+// Configures using the `HIDDENLAYER_TOKEN`, `HIDDENLAYER_CLIENT_ID`, `HIDDENLAYER_CLIENT_SECRET` and `HIDDEN_LAYER_BASE_URL` environment variables
 HiddenLayerClientAsync client = HiddenLayerOkHttpClientAsync.fromEnv();
 
 SensorCreateParams params = SensorCreateParams.builder()

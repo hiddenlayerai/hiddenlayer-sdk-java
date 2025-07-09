@@ -25,7 +25,9 @@ private constructor(
     @get:JvmName("responseValidation") val responseValidation: Boolean,
     @get:JvmName("timeout") val timeout: Timeout,
     @get:JvmName("maxRetries") val maxRetries: Int,
-    @get:JvmName("bearerToken") val bearerToken: String,
+    private val bearerToken: String?,
+    private val clientId: String?,
+    private val clientSecret: String?,
 ) {
 
     init {
@@ -35,6 +37,12 @@ private constructor(
     }
 
     fun baseUrl(): String = baseUrl ?: PRODUCTION_URL
+
+    fun bearerToken(): Optional<String> = Optional.ofNullable(bearerToken)
+
+    fun clientId(): Optional<String> = Optional.ofNullable(clientId)
+
+    fun clientSecret(): Optional<String> = Optional.ofNullable(clientSecret)
 
     fun toBuilder() = Builder().from(this)
 
@@ -48,7 +56,6 @@ private constructor(
          * The following fields are required:
          * ```java
          * .httpClient()
-         * .bearerToken()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -70,6 +77,8 @@ private constructor(
         private var timeout: Timeout = Timeout.default()
         private var maxRetries: Int = 2
         private var bearerToken: String? = null
+        private var clientId: String? = null
+        private var clientSecret: String? = null
 
         @JvmSynthetic
         internal fun from(clientOptions: ClientOptions) = apply {
@@ -84,6 +93,8 @@ private constructor(
             timeout = clientOptions.timeout
             maxRetries = clientOptions.maxRetries
             bearerToken = clientOptions.bearerToken
+            clientId = clientOptions.clientId
+            clientSecret = clientOptions.clientSecret
         }
 
         fun httpClient(httpClient: HttpClient) = apply {
@@ -111,7 +122,20 @@ private constructor(
 
         fun maxRetries(maxRetries: Int) = apply { this.maxRetries = maxRetries }
 
-        fun bearerToken(bearerToken: String) = apply { this.bearerToken = bearerToken }
+        fun bearerToken(bearerToken: String?) = apply { this.bearerToken = bearerToken }
+
+        /** Alias for calling [Builder.bearerToken] with `bearerToken.orElse(null)`. */
+        fun bearerToken(bearerToken: Optional<String>) = bearerToken(bearerToken.getOrNull())
+
+        fun clientId(clientId: String?) = apply { this.clientId = clientId }
+
+        /** Alias for calling [Builder.clientId] with `clientId.orElse(null)`. */
+        fun clientId(clientId: Optional<String>) = clientId(clientId.getOrNull())
+
+        fun clientSecret(clientSecret: String?) = apply { this.clientSecret = clientSecret }
+
+        /** Alias for calling [Builder.clientSecret] with `clientSecret.orElse(null)`. */
+        fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.getOrNull())
 
         fun headers(headers: Headers) = apply {
             this.headers.clear()
@@ -196,6 +220,8 @@ private constructor(
         fun fromEnv() = apply {
             System.getenv("HIDDEN_LAYER_BASE_URL")?.let { baseUrl(it) }
             System.getenv("HIDDENLAYER_TOKEN")?.let { bearerToken(it) }
+            System.getenv("HIDDENLAYER_CLIENT_ID")?.let { clientId(it) }
+            System.getenv("HIDDENLAYER_CLIENT_SECRET")?.let { clientSecret(it) }
         }
 
         /**
@@ -206,14 +232,12 @@ private constructor(
          * The following fields are required:
          * ```java
          * .httpClient()
-         * .bearerToken()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ClientOptions {
             val httpClient = checkRequired("httpClient", httpClient)
-            val bearerToken = checkRequired("bearerToken", bearerToken)
 
             val headers = Headers.builder()
             val queryParams = QueryParams.builder()
@@ -224,7 +248,7 @@ private constructor(
             headers.put("X-Stainless-Package-Version", getPackageVersion())
             headers.put("X-Stainless-Runtime", "JRE")
             headers.put("X-Stainless-Runtime-Version", getJavaVersion())
-            bearerToken.let {
+            bearerToken?.let {
                 if (!it.isEmpty()) {
                     headers.put("Authorization", "Bearer $it")
                 }
@@ -249,6 +273,8 @@ private constructor(
                 timeout,
                 maxRetries,
                 bearerToken,
+                clientId,
+                clientSecret,
             )
         }
     }

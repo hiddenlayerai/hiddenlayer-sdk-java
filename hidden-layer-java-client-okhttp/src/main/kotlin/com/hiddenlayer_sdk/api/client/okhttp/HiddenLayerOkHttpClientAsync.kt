@@ -12,6 +12,8 @@ import com.hiddenlayer_sdk.api.core.http.QueryParams
 import java.net.Proxy
 import java.time.Clock
 import java.time.Duration
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 class HiddenLayerOkHttpClientAsync private constructor() {
 
@@ -151,7 +153,20 @@ class HiddenLayerOkHttpClientAsync private constructor() {
             clientOptions.responseValidation(responseValidation)
         }
 
-        fun bearerToken(bearerToken: String) = apply { clientOptions.bearerToken(bearerToken) }
+        fun bearerToken(bearerToken: String?) = apply { clientOptions.bearerToken(bearerToken) }
+
+        /** Alias for calling [Builder.bearerToken] with `bearerToken.orElse(null)`. */
+        fun bearerToken(bearerToken: Optional<String>) = bearerToken(bearerToken.getOrNull())
+
+        fun clientId(clientId: String?) = apply { clientOptions.clientId(clientId) }
+
+        /** Alias for calling [Builder.clientId] with `clientId.orElse(null)`. */
+        fun clientId(clientId: Optional<String>) = clientId(clientId.getOrNull())
+
+        fun clientSecret(clientSecret: String?) = apply { clientOptions.clientSecret(clientSecret) }
+
+        /** Alias for calling [Builder.clientSecret] with `clientSecret.orElse(null)`. */
+        fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.getOrNull())
 
         fun fromEnv() = apply { clientOptions.fromEnv() }
 
