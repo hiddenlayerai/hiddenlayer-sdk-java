@@ -14,21 +14,6 @@ internal class JobServiceTest {
 
     @Disabled("skipped: tests are disabled for the time being")
     @Test
-    fun list() {
-        val client =
-            HiddenLayerOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
-        val jobService = client.scans().jobs()
-
-        val scanJobs = jobService.list()
-
-        scanJobs.forEach { it.validate() }
-    }
-
-    @Disabled("skipped: tests are disabled for the time being")
-    @Test
     fun request() {
         val client =
             HiddenLayerOkHttpClient.builder()

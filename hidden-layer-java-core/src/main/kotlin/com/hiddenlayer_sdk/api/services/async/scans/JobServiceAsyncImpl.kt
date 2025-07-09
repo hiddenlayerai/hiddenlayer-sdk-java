@@ -15,7 +15,6 @@ import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.core.http.json
 import com.hiddenlayer_sdk.api.core.http.parseable
 import com.hiddenlayer_sdk.api.core.prepareAsync
-import com.hiddenlayer_sdk.api.models.scans.jobs.JobListParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobRequestParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.ScanJob
 import java.util.concurrent.CompletableFuture
@@ -32,13 +31,6 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
 
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobServiceAsync =
         JobServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
-
-    override fun list(
-        params: JobListParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<List<ScanJob>> =
-        // get /scan/v3/jobs
-        withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
     override fun request(
         params: JobRequestParams,
@@ -58,36 +50,6 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
             JobServiceAsyncImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
-
-        private val listHandler: Handler<List<ScanJob>> =
-            jsonHandler<List<ScanJob>>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
-
-        override fun list(
-            params: JobListParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<List<ScanJob>>> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("scan", "v3", "jobs")
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    response.parseable {
-                        response
-                            .use { listHandler.handle(it) }
-                            .also {
-                                if (requestOptions.responseValidation!!) {
-                                    it.forEach { it.validate() }
-                                }
-                            }
-                    }
-                }
-        }
 
         private val requestHandler: Handler<ScanJob> =
             jsonHandler<ScanJob>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

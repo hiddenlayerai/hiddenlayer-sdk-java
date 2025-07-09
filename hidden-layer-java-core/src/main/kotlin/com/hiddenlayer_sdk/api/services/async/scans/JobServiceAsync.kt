@@ -5,7 +5,6 @@ package com.hiddenlayer_sdk.api.services.async.scans
 import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.core.RequestOptions
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
-import com.hiddenlayer_sdk.api.models.scans.jobs.JobListParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobRequestParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.ScanJob
 import java.util.concurrent.CompletableFuture
@@ -24,23 +23,6 @@ interface JobServiceAsync {
      * The original service is not modified.
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobServiceAsync
-
-    /** List model scan jobs */
-    fun list(): CompletableFuture<List<ScanJob>> = list(JobListParams.none())
-
-    /** @see [list] */
-    fun list(
-        params: JobListParams = JobListParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<List<ScanJob>>
-
-    /** @see [list] */
-    fun list(params: JobListParams = JobListParams.none()): CompletableFuture<List<ScanJob>> =
-        list(params, RequestOptions.none())
-
-    /** @see [list] */
-    fun list(requestOptions: RequestOptions): CompletableFuture<List<ScanJob>> =
-        list(JobListParams.none(), requestOptions)
 
     /** Scan a remote model */
     fun request(params: JobRequestParams): CompletableFuture<ScanJob> =
@@ -61,29 +43,6 @@ interface JobServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobServiceAsync.WithRawResponse
-
-        /**
-         * Returns a raw HTTP response for `get /scan/v3/jobs`, but is otherwise the same as
-         * [JobServiceAsync.list].
-         */
-        fun list(): CompletableFuture<HttpResponseFor<List<ScanJob>>> = list(JobListParams.none())
-
-        /** @see [list] */
-        fun list(
-            params: JobListParams = JobListParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<List<ScanJob>>>
-
-        /** @see [list] */
-        fun list(
-            params: JobListParams = JobListParams.none()
-        ): CompletableFuture<HttpResponseFor<List<ScanJob>>> = list(params, RequestOptions.none())
-
-        /** @see [list] */
-        fun list(
-            requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<List<ScanJob>>> =
-            list(JobListParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `post /scan/v3/jobs`, but is otherwise the same as
