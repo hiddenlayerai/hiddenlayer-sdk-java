@@ -6,6 +6,7 @@ import com.hiddenlayer_sdk.api.TestServerExtension
 import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClientAsync
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobListParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobRequestParams
+import com.hiddenlayer_sdk.api.models.scans.jobs.JobRetrieveParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -13,6 +14,29 @@ import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
 internal class JobServiceAsyncTest {
+
+    @Disabled("skipped: tests are disabled for the time being")
+    @Test
+    fun retrieve() {
+        val client =
+            HiddenLayerOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .bearerToken("My Bearer Token")
+                .build()
+        val jobServiceAsync = client.scans().jobs()
+
+        val scanReportFuture =
+            jobServiceAsync.retrieve(
+                JobRetrieveParams.builder()
+                    .scanId("00000000-0000-0000-0000-000000000000")
+                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                    .hasDetections(true)
+                    .build()
+            )
+
+        val scanReport = scanReportFuture.get()
+        scanReport.validate()
+    }
 
     @Disabled("skipped: tests are disabled for the time being")
     @Test

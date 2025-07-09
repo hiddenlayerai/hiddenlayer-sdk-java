@@ -8,7 +8,9 @@ import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobListParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobListResponse
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobRequestParams
+import com.hiddenlayer_sdk.api.models.scans.jobs.JobRetrieveParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.ScanJob
+import com.hiddenlayer_sdk.api.models.scans.results.ScanReport
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -25,6 +27,28 @@ interface JobServiceAsync {
      * The original service is not modified.
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobServiceAsync
+
+    /** Get scan results (SARIF / V3) */
+    fun retrieve(scanId: String, params: JobRetrieveParams): CompletableFuture<ScanReport> =
+        retrieve(scanId, params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        scanId: String,
+        params: JobRetrieveParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ScanReport> =
+        retrieve(params.toBuilder().scanId(scanId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(params: JobRetrieveParams): CompletableFuture<ScanReport> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        params: JobRetrieveParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ScanReport>
 
     /** Get scan results (Summaries) */
     fun list(params: JobListParams): CompletableFuture<JobListResponse> =
@@ -55,6 +79,34 @@ interface JobServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobServiceAsync.WithRawResponse
+
+        /**
+         * Returns a raw HTTP response for `get /scan/v3/results/{scan_id}`, but is otherwise the
+         * same as [JobServiceAsync.retrieve].
+         */
+        fun retrieve(
+            scanId: String,
+            params: JobRetrieveParams,
+        ): CompletableFuture<HttpResponseFor<ScanReport>> =
+            retrieve(scanId, params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        fun retrieve(
+            scanId: String,
+            params: JobRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ScanReport>> =
+            retrieve(params.toBuilder().scanId(scanId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        fun retrieve(params: JobRetrieveParams): CompletableFuture<HttpResponseFor<ScanReport>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        fun retrieve(
+            params: JobRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ScanReport>>
 
         /**
          * Returns a raw HTTP response for `get /scan/v3/results`, but is otherwise the same as

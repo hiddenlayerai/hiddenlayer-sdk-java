@@ -9,7 +9,9 @@ import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobListParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobListResponse
 import com.hiddenlayer_sdk.api.models.scans.jobs.JobRequestParams
+import com.hiddenlayer_sdk.api.models.scans.jobs.JobRetrieveParams
 import com.hiddenlayer_sdk.api.models.scans.jobs.ScanJob
+import com.hiddenlayer_sdk.api.models.scans.results.ScanReport
 import java.util.function.Consumer
 
 interface JobService {
@@ -25,6 +27,26 @@ interface JobService {
      * The original service is not modified.
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobService
+
+    /** Get scan results (SARIF / V3) */
+    fun retrieve(scanId: String, params: JobRetrieveParams): ScanReport =
+        retrieve(scanId, params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        scanId: String,
+        params: JobRetrieveParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ScanReport = retrieve(params.toBuilder().scanId(scanId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(params: JobRetrieveParams): ScanReport = retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        params: JobRetrieveParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ScanReport
 
     /** Get scan results (Summaries) */
     fun list(params: JobListParams): JobListResponse = list(params, RequestOptions.none())
@@ -53,6 +75,35 @@ interface JobService {
          * The original service is not modified.
          */
         fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobService.WithRawResponse
+
+        /**
+         * Returns a raw HTTP response for `get /scan/v3/results/{scan_id}`, but is otherwise the
+         * same as [JobService.retrieve].
+         */
+        @MustBeClosed
+        fun retrieve(scanId: String, params: JobRetrieveParams): HttpResponseFor<ScanReport> =
+            retrieve(scanId, params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            scanId: String,
+            params: JobRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScanReport> =
+            retrieve(params.toBuilder().scanId(scanId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(params: JobRetrieveParams): HttpResponseFor<ScanReport> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            params: JobRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScanReport>
 
         /**
          * Returns a raw HTTP response for `get /scan/v3/results`, but is otherwise the same as
