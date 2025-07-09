@@ -43,7 +43,7 @@ internal class CardServiceTest {
                     .modscanStatus(CardListParams.ModscanStatus.ENABLED)
                     .offset(0L)
                     .addProvider(CardListParams.Provider.AZURE)
-                    .sort("-model_name")
+                    .sort("sort")
                     .source(CardListParams.Source.builder().contains("contains").eq("eq").build())
                     .build()
             )

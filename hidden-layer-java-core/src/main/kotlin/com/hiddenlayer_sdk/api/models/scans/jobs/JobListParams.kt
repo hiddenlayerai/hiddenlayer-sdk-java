@@ -59,7 +59,7 @@ private constructor(
     /** filter by the model name */
     fun modelName(): Optional<ModelName> = Optional.ofNullable(modelName)
 
-    /** Model Version IDs */
+    /** Model Version ID */
     fun modelVersionIds(): Optional<List<String>> = Optional.ofNullable(modelVersionIds)
 
     fun offset(): Optional<Long> = Optional.ofNullable(offset)
@@ -216,7 +216,7 @@ private constructor(
         /** Alias for calling [Builder.modelName] with `modelName.orElse(null)`. */
         fun modelName(modelName: Optional<ModelName>) = modelName(modelName.getOrNull())
 
-        /** Model Version IDs */
+        /** Model Version ID */
         fun modelVersionIds(modelVersionIds: List<String>?) = apply {
             this.modelVersionIds = modelVersionIds?.toMutableList()
         }
