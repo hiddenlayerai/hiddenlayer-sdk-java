@@ -24,13 +24,10 @@ import kotlin.jvm.optionals.getOrNull
 /** Create Sensor Record */
 class SensorCreateParams
 private constructor(
-    private val xCorrelationId: String,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
-
-    fun xCorrelationId(): String = xCorrelationId
 
     /**
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
@@ -112,7 +109,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .xCorrelationId()
          * .plaintextName()
          * ```
          */
@@ -122,20 +118,16 @@ private constructor(
     /** A builder for [SensorCreateParams]. */
     class Builder internal constructor() {
 
-        private var xCorrelationId: String? = null
         private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(sensorCreateParams: SensorCreateParams) = apply {
-            xCorrelationId = sensorCreateParams.xCorrelationId
             body = sensorCreateParams.body.toBuilder()
             additionalHeaders = sensorCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = sensorCreateParams.additionalQueryParams.toBuilder()
         }
-
-        fun xCorrelationId(xCorrelationId: String) = apply { this.xCorrelationId = xCorrelationId }
 
         /**
          * Sets the entire request body.
@@ -328,7 +320,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .xCorrelationId()
          * .plaintextName()
          * ```
          *
@@ -336,7 +327,6 @@ private constructor(
          */
         fun build(): SensorCreateParams =
             SensorCreateParams(
-                checkRequired("xCorrelationId", xCorrelationId),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -345,13 +335,7 @@ private constructor(
 
     fun _body(): Body = body
 
-    override fun _headers(): Headers =
-        Headers.builder()
-            .apply {
-                put("X-Correlation-Id", xCorrelationId)
-                putAll(additionalHeaders)
-            }
-            .build()
+    override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -749,11 +733,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SensorCreateParams && xCorrelationId == other.xCorrelationId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is SensorCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(xCorrelationId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "SensorCreateParams{xCorrelationId=$xCorrelationId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "SensorCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

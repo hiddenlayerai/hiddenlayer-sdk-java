@@ -25,13 +25,21 @@ interface CardService {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): CardService
 
     /** List Model Cards */
-    fun list(params: CardListParams): CardListResponse = list(params, RequestOptions.none())
+    fun list(): CardListResponse = list(CardListParams.none())
 
     /** @see [list] */
     fun list(
-        params: CardListParams,
+        params: CardListParams = CardListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CardListResponse
+
+    /** @see [list] */
+    fun list(params: CardListParams = CardListParams.none()): CardListResponse =
+        list(params, RequestOptions.none())
+
+    /** @see [list] */
+    fun list(requestOptions: RequestOptions): CardListResponse =
+        list(CardListParams.none(), requestOptions)
 
     /** A view of [CardService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -47,15 +55,24 @@ interface CardService {
          * Returns a raw HTTP response for `get /models/v3/cards`, but is otherwise the same as
          * [CardService.list].
          */
-        @MustBeClosed
-        fun list(params: CardListParams): HttpResponseFor<CardListResponse> =
-            list(params, RequestOptions.none())
+        @MustBeClosed fun list(): HttpResponseFor<CardListResponse> = list(CardListParams.none())
 
         /** @see [list] */
         @MustBeClosed
         fun list(
-            params: CardListParams,
+            params: CardListParams = CardListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<CardListResponse>
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: CardListParams = CardListParams.none()
+        ): HttpResponseFor<CardListResponse> = list(params, RequestOptions.none())
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(requestOptions: RequestOptions): HttpResponseFor<CardListResponse> =
+            list(CardListParams.none(), requestOptions)
     }
 }

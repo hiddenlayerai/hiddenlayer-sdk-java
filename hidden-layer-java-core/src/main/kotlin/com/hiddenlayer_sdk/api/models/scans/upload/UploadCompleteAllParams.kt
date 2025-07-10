@@ -4,7 +4,6 @@ package com.hiddenlayer_sdk.api.models.scans.upload
 
 import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.Params
-import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import com.hiddenlayer_sdk.api.core.toImmutable
@@ -16,15 +15,12 @@ import kotlin.jvm.optionals.getOrNull
 class UploadCompleteAllParams
 private constructor(
     private val scanId: String?,
-    private val xCorrelationId: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
     fun scanId(): Optional<String> = Optional.ofNullable(scanId)
-
-    fun xCorrelationId(): String = xCorrelationId
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
@@ -36,14 +32,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [UploadCompleteAllParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .xCorrelationId()
-         * ```
-         */
+        @JvmStatic fun none(): UploadCompleteAllParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [UploadCompleteAllParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -51,7 +42,6 @@ private constructor(
     class Builder internal constructor() {
 
         private var scanId: String? = null
-        private var xCorrelationId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -59,7 +49,6 @@ private constructor(
         @JvmSynthetic
         internal fun from(uploadCompleteAllParams: UploadCompleteAllParams) = apply {
             scanId = uploadCompleteAllParams.scanId
-            xCorrelationId = uploadCompleteAllParams.xCorrelationId
             additionalHeaders = uploadCompleteAllParams.additionalHeaders.toBuilder()
             additionalQueryParams = uploadCompleteAllParams.additionalQueryParams.toBuilder()
             additionalBodyProperties =
@@ -70,8 +59,6 @@ private constructor(
 
         /** Alias for calling [Builder.scanId] with `scanId.orElse(null)`. */
         fun scanId(scanId: Optional<String>) = scanId(scanId.getOrNull())
-
-        fun xCorrelationId(xCorrelationId: String) = apply { this.xCorrelationId = xCorrelationId }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -197,18 +184,10 @@ private constructor(
          * Returns an immutable instance of [UploadCompleteAllParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .xCorrelationId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): UploadCompleteAllParams =
             UploadCompleteAllParams(
                 scanId,
-                checkRequired("xCorrelationId", xCorrelationId),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -224,13 +203,7 @@ private constructor(
             else -> ""
         }
 
-    override fun _headers(): Headers =
-        Headers.builder()
-            .apply {
-                put("X-Correlation-Id", xCorrelationId)
-                putAll(additionalHeaders)
-            }
-            .build()
+    override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -239,11 +212,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is UploadCompleteAllParams && scanId == other.scanId && xCorrelationId == other.xCorrelationId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is UploadCompleteAllParams && scanId == other.scanId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(scanId, xCorrelationId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(scanId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
-        "UploadCompleteAllParams{scanId=$scanId, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "UploadCompleteAllParams{scanId=$scanId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

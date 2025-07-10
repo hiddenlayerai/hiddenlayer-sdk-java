@@ -2,7 +2,6 @@
 
 package com.hiddenlayer_sdk.api.models.sensors
 
-import com.hiddenlayer_sdk.api.core.http.Headers
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
@@ -14,7 +13,6 @@ internal class SensorQueryParamsTest {
     @Test
     fun create() {
         SensorQueryParams.builder()
-            .xCorrelationId("00000000-0000-0000-0000-000000000000")
             .filter(
                 SensorQueryParams.Filter.builder()
                     .active(true)
@@ -34,60 +32,9 @@ internal class SensorQueryParamsTest {
 
     @Disabled("skipped: tests are disabled for the time being")
     @Test
-    fun headers() {
-        val params =
-            SensorQueryParams.builder()
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                .filter(
-                    SensorQueryParams.Filter.builder()
-                        .active(true)
-                        .createdAtStart(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                        .createdAtStop(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                        .plaintextName("plaintext_name")
-                        .source(SensorQueryParams.Filter.Source.ADHOC)
-                        .version(0L)
-                        .build()
-                )
-                .orderBy("order_by")
-                .orderDir(SensorQueryParams.OrderDir.ASC)
-                .pageNumber(0L)
-                .pageSize(0L)
-                .build()
-
-        val headers = params._headers()
-
-        assertThat(headers)
-            .isEqualTo(
-                Headers.builder()
-                    .put("X-Correlation-Id", "00000000-0000-0000-0000-000000000000")
-                    .build()
-            )
-    }
-
-    @Disabled("skipped: tests are disabled for the time being")
-    @Test
-    fun headersWithoutOptionalFields() {
-        val params =
-            SensorQueryParams.builder()
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                .build()
-
-        val headers = params._headers()
-
-        assertThat(headers)
-            .isEqualTo(
-                Headers.builder()
-                    .put("X-Correlation-Id", "00000000-0000-0000-0000-000000000000")
-                    .build()
-            )
-    }
-
-    @Disabled("skipped: tests are disabled for the time being")
-    @Test
     fun body() {
         val params =
             SensorQueryParams.builder()
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
                 .filter(
                     SensorQueryParams.Filter.builder()
                         .active(true)
@@ -126,10 +73,7 @@ internal class SensorQueryParamsTest {
     @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun bodyWithoutOptionalFields() {
-        val params =
-            SensorQueryParams.builder()
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                .build()
+        val params = SensorQueryParams.builder().build()
 
         val body = params._body()
     }

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.hiddenlayer_sdk.api.core.Enum
 import com.hiddenlayer_sdk.api.core.JsonField
 import com.hiddenlayer_sdk.api.core.Params
-import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import com.hiddenlayer_sdk.api.core.toImmutable
@@ -20,7 +19,6 @@ import kotlin.jvm.optionals.getOrNull
 /** List Model Cards */
 class CardListParams
 private constructor(
-    private val xCorrelationId: String,
     private val aidrSeverity: List<AidrSeverity>?,
     private val aidrStatus: AidrStatus?,
     private val limit: Long?,
@@ -35,8 +33,6 @@ private constructor(
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
-
-    fun xCorrelationId(): String = xCorrelationId
 
     fun aidrSeverity(): Optional<List<AidrSeverity>> = Optional.ofNullable(aidrSeverity)
 
@@ -76,21 +72,15 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [CardListParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .xCorrelationId()
-         * ```
-         */
+        @JvmStatic fun none(): CardListParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [CardListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [CardListParams]. */
     class Builder internal constructor() {
 
-        private var xCorrelationId: String? = null
         private var aidrSeverity: MutableList<AidrSeverity>? = null
         private var aidrStatus: AidrStatus? = null
         private var limit: Long? = null
@@ -107,7 +97,6 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(cardListParams: CardListParams) = apply {
-            xCorrelationId = cardListParams.xCorrelationId
             aidrSeverity = cardListParams.aidrSeverity?.toMutableList()
             aidrStatus = cardListParams.aidrStatus
             limit = cardListParams.limit
@@ -122,8 +111,6 @@ private constructor(
             additionalHeaders = cardListParams.additionalHeaders.toBuilder()
             additionalQueryParams = cardListParams.additionalQueryParams.toBuilder()
         }
-
-        fun xCorrelationId(xCorrelationId: String) = apply { this.xCorrelationId = xCorrelationId }
 
         fun aidrSeverity(aidrSeverity: List<AidrSeverity>?) = apply {
             this.aidrSeverity = aidrSeverity?.toMutableList()
@@ -344,17 +331,9 @@ private constructor(
          * Returns an immutable instance of [CardListParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .xCorrelationId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): CardListParams =
             CardListParams(
-                checkRequired("xCorrelationId", xCorrelationId),
                 aidrSeverity?.toImmutable(),
                 aidrStatus,
                 limit,
@@ -371,13 +350,7 @@ private constructor(
             )
     }
 
-    override fun _headers(): Headers =
-        Headers.builder()
-            .apply {
-                put("X-Correlation-Id", xCorrelationId)
-                putAll(additionalHeaders)
-            }
-            .build()
+    override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
@@ -1480,11 +1453,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is CardListParams && xCorrelationId == other.xCorrelationId && aidrSeverity == other.aidrSeverity && aidrStatus == other.aidrStatus && limit == other.limit && modelCreated == other.modelCreated && modelName == other.modelName && modscanSeverity == other.modscanSeverity && modscanStatus == other.modscanStatus && offset == other.offset && provider == other.provider && sort == other.sort && source == other.source && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is CardListParams && aidrSeverity == other.aidrSeverity && aidrStatus == other.aidrStatus && limit == other.limit && modelCreated == other.modelCreated && modelName == other.modelName && modscanSeverity == other.modscanSeverity && modscanStatus == other.modscanStatus && offset == other.offset && provider == other.provider && sort == other.sort && source == other.source && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(xCorrelationId, aidrSeverity, aidrStatus, limit, modelCreated, modelName, modscanSeverity, modscanStatus, offset, provider, sort, source, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(aidrSeverity, aidrStatus, limit, modelCreated, modelName, modscanSeverity, modscanStatus, offset, provider, sort, source, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "CardListParams{xCorrelationId=$xCorrelationId, aidrSeverity=$aidrSeverity, aidrStatus=$aidrStatus, limit=$limit, modelCreated=$modelCreated, modelName=$modelName, modscanSeverity=$modscanSeverity, modscanStatus=$modscanStatus, offset=$offset, provider=$provider, sort=$sort, source=$source, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "CardListParams{aidrSeverity=$aidrSeverity, aidrStatus=$aidrStatus, limit=$limit, modelCreated=$modelCreated, modelName=$modelName, modscanSeverity=$modscanSeverity, modscanStatus=$modscanStatus, offset=$offset, provider=$provider, sort=$sort, source=$source, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

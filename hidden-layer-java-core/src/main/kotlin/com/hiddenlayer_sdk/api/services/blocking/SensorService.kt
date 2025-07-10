@@ -41,20 +41,22 @@ interface SensorService {
     ): SensorCreateResponse
 
     /** Get Sensor */
-    fun retrieve(sensorId: String, params: SensorRetrieveParams): SensorRetrieveResponse =
-        retrieve(sensorId, params, RequestOptions.none())
+    fun retrieve(sensorId: String): SensorRetrieveResponse =
+        retrieve(sensorId, SensorRetrieveParams.none())
 
     /** @see [retrieve] */
     fun retrieve(
         sensorId: String,
-        params: SensorRetrieveParams,
+        params: SensorRetrieveParams = SensorRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): SensorRetrieveResponse =
         retrieve(params.toBuilder().sensorId(sensorId).build(), requestOptions)
 
     /** @see [retrieve] */
-    fun retrieve(params: SensorRetrieveParams): SensorRetrieveResponse =
-        retrieve(params, RequestOptions.none())
+    fun retrieve(
+        sensorId: String,
+        params: SensorRetrieveParams = SensorRetrieveParams.none(),
+    ): SensorRetrieveResponse = retrieve(sensorId, params, RequestOptions.none())
 
     /** @see [retrieve] */
     fun retrieve(
@@ -62,31 +64,54 @@ interface SensorService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): SensorRetrieveResponse
 
+    /** @see [retrieve] */
+    fun retrieve(params: SensorRetrieveParams): SensorRetrieveResponse =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(sensorId: String, requestOptions: RequestOptions): SensorRetrieveResponse =
+        retrieve(sensorId, SensorRetrieveParams.none(), requestOptions)
+
     /** Remove an Adhoc Sensor */
-    fun delete(sensorId: String, params: SensorDeleteParams) =
-        delete(sensorId, params, RequestOptions.none())
+    fun delete(sensorId: String) = delete(sensorId, SensorDeleteParams.none())
 
     /** @see [delete] */
     fun delete(
         sensorId: String,
-        params: SensorDeleteParams,
+        params: SensorDeleteParams = SensorDeleteParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ) = delete(params.toBuilder().sensorId(sensorId).build(), requestOptions)
+
+    /** @see [delete] */
+    fun delete(sensorId: String, params: SensorDeleteParams = SensorDeleteParams.none()) =
+        delete(sensorId, params, RequestOptions.none())
+
+    /** @see [delete] */
+    fun delete(params: SensorDeleteParams, requestOptions: RequestOptions = RequestOptions.none())
 
     /** @see [delete] */
     fun delete(params: SensorDeleteParams) = delete(params, RequestOptions.none())
 
     /** @see [delete] */
-    fun delete(params: SensorDeleteParams, requestOptions: RequestOptions = RequestOptions.none())
+    fun delete(sensorId: String, requestOptions: RequestOptions) =
+        delete(sensorId, SensorDeleteParams.none(), requestOptions)
 
     /** Query Sensors */
-    fun query(params: SensorQueryParams): SensorQueryResponse = query(params, RequestOptions.none())
+    fun query(): SensorQueryResponse = query(SensorQueryParams.none())
 
     /** @see [query] */
     fun query(
-        params: SensorQueryParams,
+        params: SensorQueryParams = SensorQueryParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): SensorQueryResponse
+
+    /** @see [query] */
+    fun query(params: SensorQueryParams = SensorQueryParams.none()): SensorQueryResponse =
+        query(params, RequestOptions.none())
+
+    /** @see [query] */
+    fun query(requestOptions: RequestOptions): SensorQueryResponse =
+        query(SensorQueryParams.none(), requestOptions)
 
     /** A view of [SensorService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -118,20 +143,32 @@ interface SensorService {
          * same as [SensorService.retrieve].
          */
         @MustBeClosed
+        fun retrieve(sensorId: String): HttpResponseFor<SensorRetrieveResponse> =
+            retrieve(sensorId, SensorRetrieveParams.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
         fun retrieve(
             sensorId: String,
-            params: SensorRetrieveParams,
+            params: SensorRetrieveParams = SensorRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<SensorRetrieveResponse> =
+            retrieve(params.toBuilder().sensorId(sensorId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            sensorId: String,
+            params: SensorRetrieveParams = SensorRetrieveParams.none(),
         ): HttpResponseFor<SensorRetrieveResponse> =
             retrieve(sensorId, params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
-            sensorId: String,
             params: SensorRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<SensorRetrieveResponse> =
-            retrieve(params.toBuilder().sensorId(sensorId).build(), requestOptions)
+        ): HttpResponseFor<SensorRetrieveResponse>
 
         /** @see [retrieve] */
         @MustBeClosed
@@ -141,29 +178,32 @@ interface SensorService {
         /** @see [retrieve] */
         @MustBeClosed
         fun retrieve(
-            params: SensorRetrieveParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<SensorRetrieveResponse>
+            sensorId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<SensorRetrieveResponse> =
+            retrieve(sensorId, SensorRetrieveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `delete /api/v2/sensors/{sensor_id}`, but is otherwise
          * the same as [SensorService.delete].
          */
         @MustBeClosed
-        fun delete(sensorId: String, params: SensorDeleteParams): HttpResponse =
-            delete(sensorId, params, RequestOptions.none())
+        fun delete(sensorId: String): HttpResponse = delete(sensorId, SensorDeleteParams.none())
 
         /** @see [delete] */
         @MustBeClosed
         fun delete(
             sensorId: String,
-            params: SensorDeleteParams,
+            params: SensorDeleteParams = SensorDeleteParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponse = delete(params.toBuilder().sensorId(sensorId).build(), requestOptions)
 
         /** @see [delete] */
         @MustBeClosed
-        fun delete(params: SensorDeleteParams): HttpResponse = delete(params, RequestOptions.none())
+        fun delete(
+            sensorId: String,
+            params: SensorDeleteParams = SensorDeleteParams.none(),
+        ): HttpResponse = delete(sensorId, params, RequestOptions.none())
 
         /** @see [delete] */
         @MustBeClosed
@@ -172,19 +212,38 @@ interface SensorService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponse
 
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(params: SensorDeleteParams): HttpResponse = delete(params, RequestOptions.none())
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(sensorId: String, requestOptions: RequestOptions): HttpResponse =
+            delete(sensorId, SensorDeleteParams.none(), requestOptions)
+
         /**
          * Returns a raw HTTP response for `post /api/v2/sensors/query`, but is otherwise the same
          * as [SensorService.query].
          */
         @MustBeClosed
-        fun query(params: SensorQueryParams): HttpResponseFor<SensorQueryResponse> =
-            query(params, RequestOptions.none())
+        fun query(): HttpResponseFor<SensorQueryResponse> = query(SensorQueryParams.none())
 
         /** @see [query] */
         @MustBeClosed
         fun query(
-            params: SensorQueryParams,
+            params: SensorQueryParams = SensorQueryParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<SensorQueryResponse>
+
+        /** @see [query] */
+        @MustBeClosed
+        fun query(
+            params: SensorQueryParams = SensorQueryParams.none()
+        ): HttpResponseFor<SensorQueryResponse> = query(params, RequestOptions.none())
+
+        /** @see [query] */
+        @MustBeClosed
+        fun query(requestOptions: RequestOptions): HttpResponseFor<SensorQueryResponse> =
+            query(SensorQueryParams.none(), requestOptions)
     }
 }

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.hiddenlayer_sdk.api.core.Enum
 import com.hiddenlayer_sdk.api.core.JsonField
 import com.hiddenlayer_sdk.api.core.Params
-import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import com.hiddenlayer_sdk.api.core.toImmutable
@@ -20,7 +19,6 @@ import kotlin.jvm.optionals.getOrNull
 /** Get scan results (Summaries) */
 class JobListParams
 private constructor(
-    private val xCorrelationId: String,
     private val detectionCategory: String?,
     private val endTime: OffsetDateTime?,
     private val latestPerModelVersionOnly: Boolean?,
@@ -38,8 +36,6 @@ private constructor(
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
-
-    fun xCorrelationId(): String = xCorrelationId
 
     /** filter by a single detection category */
     fun detectionCategory(): Optional<String> = Optional.ofNullable(detectionCategory)
@@ -93,21 +89,15 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [JobListParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .xCorrelationId()
-         * ```
-         */
+        @JvmStatic fun none(): JobListParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [JobListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
     /** A builder for [JobListParams]. */
     class Builder internal constructor() {
 
-        private var xCorrelationId: String? = null
         private var detectionCategory: String? = null
         private var endTime: OffsetDateTime? = null
         private var latestPerModelVersionOnly: Boolean? = null
@@ -127,7 +117,6 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(jobListParams: JobListParams) = apply {
-            xCorrelationId = jobListParams.xCorrelationId
             detectionCategory = jobListParams.detectionCategory
             endTime = jobListParams.endTime
             latestPerModelVersionOnly = jobListParams.latestPerModelVersionOnly
@@ -145,8 +134,6 @@ private constructor(
             additionalHeaders = jobListParams.additionalHeaders.toBuilder()
             additionalQueryParams = jobListParams.additionalQueryParams.toBuilder()
         }
-
-        fun xCorrelationId(xCorrelationId: String) = apply { this.xCorrelationId = xCorrelationId }
 
         /** filter by a single detection category */
         fun detectionCategory(detectionCategory: String?) = apply {
@@ -406,17 +393,9 @@ private constructor(
          * Returns an immutable instance of [JobListParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .xCorrelationId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): JobListParams =
             JobListParams(
-                checkRequired("xCorrelationId", xCorrelationId),
                 detectionCategory,
                 endTime,
                 latestPerModelVersionOnly,
@@ -436,13 +415,7 @@ private constructor(
             )
     }
 
-    override fun _headers(): Headers =
-        Headers.builder()
-            .apply {
-                put("X-Correlation-Id", xCorrelationId)
-                putAll(additionalHeaders)
-            }
-            .build()
+    override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
@@ -838,11 +811,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is JobListParams && xCorrelationId == other.xCorrelationId && detectionCategory == other.detectionCategory && endTime == other.endTime && latestPerModelVersionOnly == other.latestPerModelVersionOnly && limit == other.limit && modelIds == other.modelIds && modelName == other.modelName && modelVersionIds == other.modelVersionIds && offset == other.offset && scannerVersion == other.scannerVersion && severity == other.severity && sort == other.sort && source == other.source && startTime == other.startTime && status == other.status && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is JobListParams && detectionCategory == other.detectionCategory && endTime == other.endTime && latestPerModelVersionOnly == other.latestPerModelVersionOnly && limit == other.limit && modelIds == other.modelIds && modelName == other.modelName && modelVersionIds == other.modelVersionIds && offset == other.offset && scannerVersion == other.scannerVersion && severity == other.severity && sort == other.sort && source == other.source && startTime == other.startTime && status == other.status && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(xCorrelationId, detectionCategory, endTime, latestPerModelVersionOnly, limit, modelIds, modelName, modelVersionIds, offset, scannerVersion, severity, sort, source, startTime, status, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(detectionCategory, endTime, latestPerModelVersionOnly, limit, modelIds, modelName, modelVersionIds, offset, scannerVersion, severity, sort, source, startTime, status, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "JobListParams{xCorrelationId=$xCorrelationId, detectionCategory=$detectionCategory, endTime=$endTime, latestPerModelVersionOnly=$latestPerModelVersionOnly, limit=$limit, modelIds=$modelIds, modelName=$modelName, modelVersionIds=$modelVersionIds, offset=$offset, scannerVersion=$scannerVersion, severity=$severity, sort=$sort, source=$source, startTime=$startTime, status=$status, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "JobListParams{detectionCategory=$detectionCategory, endTime=$endTime, latestPerModelVersionOnly=$latestPerModelVersionOnly, limit=$limit, modelIds=$modelIds, modelName=$modelName, modelVersionIds=$modelVersionIds, offset=$offset, scannerVersion=$scannerVersion, severity=$severity, sort=$sort, source=$source, startTime=$startTime, status=$status, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

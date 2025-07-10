@@ -2,7 +2,6 @@
 
 package com.hiddenlayer_sdk.api.models.scans.jobs
 
-import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
@@ -15,7 +14,6 @@ internal class JobRetrieveParamsTest {
     fun create() {
         JobRetrieveParams.builder()
             .scanId("00000000-0000-0000-0000-000000000000")
-            .xCorrelationId("00000000-0000-0000-0000-000000000000")
             .hasDetections(true)
             .build()
     }
@@ -24,10 +22,7 @@ internal class JobRetrieveParamsTest {
     @Test
     fun pathParams() {
         val params =
-            JobRetrieveParams.builder()
-                .scanId("00000000-0000-0000-0000-000000000000")
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                .build()
+            JobRetrieveParams.builder().scanId("00000000-0000-0000-0000-000000000000").build()
 
         assertThat(params._pathParam(0)).isEqualTo("00000000-0000-0000-0000-000000000000")
         // out-of-bound path param
@@ -36,50 +31,10 @@ internal class JobRetrieveParamsTest {
 
     @Disabled("skipped: tests are disabled for the time being")
     @Test
-    fun headers() {
-        val params =
-            JobRetrieveParams.builder()
-                .scanId("00000000-0000-0000-0000-000000000000")
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                .hasDetections(true)
-                .build()
-
-        val headers = params._headers()
-
-        assertThat(headers)
-            .isEqualTo(
-                Headers.builder()
-                    .put("X-Correlation-Id", "00000000-0000-0000-0000-000000000000")
-                    .build()
-            )
-    }
-
-    @Disabled("skipped: tests are disabled for the time being")
-    @Test
-    fun headersWithoutOptionalFields() {
-        val params =
-            JobRetrieveParams.builder()
-                .scanId("00000000-0000-0000-0000-000000000000")
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                .build()
-
-        val headers = params._headers()
-
-        assertThat(headers)
-            .isEqualTo(
-                Headers.builder()
-                    .put("X-Correlation-Id", "00000000-0000-0000-0000-000000000000")
-                    .build()
-            )
-    }
-
-    @Disabled("skipped: tests are disabled for the time being")
-    @Test
     fun queryParams() {
         val params =
             JobRetrieveParams.builder()
                 .scanId("00000000-0000-0000-0000-000000000000")
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
                 .hasDetections(true)
                 .build()
 
@@ -93,10 +48,7 @@ internal class JobRetrieveParamsTest {
     @Test
     fun queryParamsWithoutOptionalFields() {
         val params =
-            JobRetrieveParams.builder()
-                .scanId("00000000-0000-0000-0000-000000000000")
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                .build()
+            JobRetrieveParams.builder().scanId("00000000-0000-0000-0000-000000000000").build()
 
         val queryParams = params._queryParams()
 

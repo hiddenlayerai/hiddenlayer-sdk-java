@@ -29,7 +29,6 @@ internal class JobServiceTest {
             jobService.retrieve(
                 JobRetrieveParams.builder()
                     .scanId("00000000-0000-0000-0000-000000000000")
-                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
                     .hasDetections(true)
                     .build()
             )
@@ -50,7 +49,6 @@ internal class JobServiceTest {
         val jobs =
             jobService.list(
                 JobListParams.builder()
-                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
                     .detectionCategory("detection_category")
                     .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .latestPerModelVersionOnly(true)

@@ -74,7 +74,6 @@ internal class ErrorHandlingTest {
             assertThrows<BadRequestException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
                         .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
@@ -108,7 +107,6 @@ internal class ErrorHandlingTest {
             assertThrows<UnauthorizedException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
                         .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
@@ -142,7 +140,6 @@ internal class ErrorHandlingTest {
             assertThrows<PermissionDeniedException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
                         .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
@@ -176,7 +173,6 @@ internal class ErrorHandlingTest {
             assertThrows<NotFoundException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
                         .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
@@ -210,7 +206,6 @@ internal class ErrorHandlingTest {
             assertThrows<UnprocessableEntityException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
                         .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
@@ -244,7 +239,6 @@ internal class ErrorHandlingTest {
             assertThrows<RateLimitException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
                         .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
@@ -278,7 +272,6 @@ internal class ErrorHandlingTest {
             assertThrows<InternalServerException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
                         .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
@@ -312,7 +305,6 @@ internal class ErrorHandlingTest {
             assertThrows<UnexpectedStatusCodeException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
                         .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)
@@ -344,7 +336,6 @@ internal class ErrorHandlingTest {
             assertThrows<HiddenLayerException> {
                 sensorService.create(
                     SensorCreateParams.builder()
-                        .xCorrelationId("00000000-0000-0000-0000-000000000000")
                         .plaintextName("plaintext_name")
                         .active(true)
                         .adhoc(true)

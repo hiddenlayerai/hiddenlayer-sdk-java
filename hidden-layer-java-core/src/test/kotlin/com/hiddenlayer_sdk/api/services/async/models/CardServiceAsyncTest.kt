@@ -26,7 +26,6 @@ internal class CardServiceAsyncTest {
         val cardsFuture =
             cardServiceAsync.list(
                 CardListParams.builder()
-                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
                     .addAidrSeverity(CardListParams.AidrSeverity.SAFE)
                     .aidrStatus(CardListParams.AidrStatus.ENABLED)
                     .limit(1L)

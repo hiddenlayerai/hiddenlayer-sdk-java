@@ -24,13 +24,10 @@ import kotlin.jvm.optionals.getOrNull
 /** Start a model upload */
 class UploadStartParams
 private constructor(
-    private val xCorrelationId: String,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
-
-    fun xCorrelationId(): String = xCorrelationId
 
     /**
      * Model name
@@ -138,7 +135,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .xCorrelationId()
          * .modelName()
          * .modelVersion()
          * .requestingEntity()
@@ -150,20 +146,16 @@ private constructor(
     /** A builder for [UploadStartParams]. */
     class Builder internal constructor() {
 
-        private var xCorrelationId: String? = null
         private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(uploadStartParams: UploadStartParams) = apply {
-            xCorrelationId = uploadStartParams.xCorrelationId
             body = uploadStartParams.body.toBuilder()
             additionalHeaders = uploadStartParams.additionalHeaders.toBuilder()
             additionalQueryParams = uploadStartParams.additionalQueryParams.toBuilder()
         }
-
-        fun xCorrelationId(xCorrelationId: String) = apply { this.xCorrelationId = xCorrelationId }
 
         /**
          * Sets the entire request body.
@@ -386,7 +378,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .xCorrelationId()
          * .modelName()
          * .modelVersion()
          * .requestingEntity()
@@ -396,7 +387,6 @@ private constructor(
          */
         fun build(): UploadStartParams =
             UploadStartParams(
-                checkRequired("xCorrelationId", xCorrelationId),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -405,13 +395,7 @@ private constructor(
 
     fun _body(): Body = body
 
-    override fun _headers(): Headers =
-        Headers.builder()
-            .apply {
-                put("X-Correlation-Id", xCorrelationId)
-                putAll(additionalHeaders)
-            }
-            .build()
+    override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -938,11 +922,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is UploadStartParams && xCorrelationId == other.xCorrelationId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is UploadStartParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(xCorrelationId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "UploadStartParams{xCorrelationId=$xCorrelationId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "UploadStartParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

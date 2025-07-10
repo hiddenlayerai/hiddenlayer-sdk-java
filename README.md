@@ -43,7 +43,6 @@ import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
 HiddenLayerClient client = HiddenLayerOkHttpClient.fromEnv();
 
 SensorCreateParams params = SensorCreateParams.builder()
-    .xCorrelationId("00000000-0000-0000-0000-000000000000")
     .plaintextName("REPLACE_ME")
     .build();
 SensorCreateResponse sensor = client.sensors().create(params);
@@ -142,7 +141,6 @@ import java.util.concurrent.CompletableFuture;
 HiddenLayerClient client = HiddenLayerOkHttpClient.fromEnv();
 
 SensorCreateParams params = SensorCreateParams.builder()
-    .xCorrelationId("00000000-0000-0000-0000-000000000000")
     .plaintextName("REPLACE_ME")
     .build();
 CompletableFuture<SensorCreateResponse> sensor = client.async().sensors().create(params);
@@ -161,7 +159,6 @@ import java.util.concurrent.CompletableFuture;
 HiddenLayerClientAsync client = HiddenLayerOkHttpClientAsync.fromEnv();
 
 SensorCreateParams params = SensorCreateParams.builder()
-    .xCorrelationId("00000000-0000-0000-0000-000000000000")
     .plaintextName("REPLACE_ME")
     .build();
 CompletableFuture<SensorCreateResponse> sensor = client.sensors().create(params);
@@ -182,7 +179,6 @@ import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
 
 SensorCreateParams params = SensorCreateParams.builder()
-    .xCorrelationId("00000000-0000-0000-0000-000000000000")
     .plaintextName("REPLACE_ME")
     .build();
 HttpResponseFor<SensorCreateResponse> sensor = client.sensors().withRawResponse().create(params);
@@ -403,7 +399,6 @@ import com.hiddenlayer_sdk.api.core.JsonValue;
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
 
 SensorCreateParams params = SensorCreateParams.builder()
-    .xCorrelationId("00000000-0000-0000-0000-000000000000")
     .plaintextName(JsonValue.from(42))
     .build();
 ```
@@ -456,7 +451,6 @@ import com.hiddenlayer_sdk.api.core.JsonMissing;
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
 
 SensorCreateParams params = SensorCreateParams.builder()
-    .xCorrelationId("00000000-0000-0000-0000-000000000000")
     .plaintextName(JsonMissing.of())
     .build();
 ```

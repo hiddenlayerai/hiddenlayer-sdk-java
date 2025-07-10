@@ -44,7 +44,6 @@ internal class ServiceParamsTest {
 
         sensorService.create(
             SensorCreateParams.builder()
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
                 .plaintextName("plaintext_name")
                 .active(true)
                 .adhoc(true)

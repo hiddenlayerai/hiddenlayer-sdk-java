@@ -17,7 +17,6 @@ class FileCompleteParams
 private constructor(
     private val scanId: String,
     private val fileId: String?,
-    private val xCorrelationId: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
@@ -26,8 +25,6 @@ private constructor(
     fun scanId(): String = scanId
 
     fun fileId(): Optional<String> = Optional.ofNullable(fileId)
-
-    fun xCorrelationId(): String = xCorrelationId
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
@@ -45,7 +42,6 @@ private constructor(
          * The following fields are required:
          * ```java
          * .scanId()
-         * .xCorrelationId()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -56,7 +52,6 @@ private constructor(
 
         private var scanId: String? = null
         private var fileId: String? = null
-        private var xCorrelationId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -65,7 +60,6 @@ private constructor(
         internal fun from(fileCompleteParams: FileCompleteParams) = apply {
             scanId = fileCompleteParams.scanId
             fileId = fileCompleteParams.fileId
-            xCorrelationId = fileCompleteParams.xCorrelationId
             additionalHeaders = fileCompleteParams.additionalHeaders.toBuilder()
             additionalQueryParams = fileCompleteParams.additionalQueryParams.toBuilder()
             additionalBodyProperties = fileCompleteParams.additionalBodyProperties.toMutableMap()
@@ -77,8 +71,6 @@ private constructor(
 
         /** Alias for calling [Builder.fileId] with `fileId.orElse(null)`. */
         fun fileId(fileId: Optional<String>) = fileId(fileId.getOrNull())
-
-        fun xCorrelationId(xCorrelationId: String) = apply { this.xCorrelationId = xCorrelationId }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -208,7 +200,6 @@ private constructor(
          * The following fields are required:
          * ```java
          * .scanId()
-         * .xCorrelationId()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -217,7 +208,6 @@ private constructor(
             FileCompleteParams(
                 checkRequired("scanId", scanId),
                 fileId,
-                checkRequired("xCorrelationId", xCorrelationId),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -234,13 +224,7 @@ private constructor(
             else -> ""
         }
 
-    override fun _headers(): Headers =
-        Headers.builder()
-            .apply {
-                put("X-Correlation-Id", xCorrelationId)
-                putAll(additionalHeaders)
-            }
-            .build()
+    override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -249,11 +233,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is FileCompleteParams && scanId == other.scanId && fileId == other.fileId && xCorrelationId == other.xCorrelationId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is FileCompleteParams && scanId == other.scanId && fileId == other.fileId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(scanId, fileId, xCorrelationId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(scanId, fileId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
-        "FileCompleteParams{scanId=$scanId, fileId=$fileId, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "FileCompleteParams{scanId=$scanId, fileId=$fileId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

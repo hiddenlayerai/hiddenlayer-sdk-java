@@ -3,7 +3,6 @@
 package com.hiddenlayer_sdk.api.models.scans.jobs
 
 import com.hiddenlayer_sdk.api.core.Params
-import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import java.util.Objects
@@ -14,15 +13,12 @@ import kotlin.jvm.optionals.getOrNull
 class JobRetrieveParams
 private constructor(
     private val scanId: String?,
-    private val xCorrelationId: String,
     private val hasDetections: Boolean?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     fun scanId(): Optional<String> = Optional.ofNullable(scanId)
-
-    fun xCorrelationId(): String = xCorrelationId
 
     /** Filter file_results to only those that have detections (and parents) */
     fun hasDetections(): Optional<Boolean> = Optional.ofNullable(hasDetections)
@@ -35,14 +31,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [JobRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .xCorrelationId()
-         * ```
-         */
+        @JvmStatic fun none(): JobRetrieveParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [JobRetrieveParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -50,7 +41,6 @@ private constructor(
     class Builder internal constructor() {
 
         private var scanId: String? = null
-        private var xCorrelationId: String? = null
         private var hasDetections: Boolean? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
@@ -58,7 +48,6 @@ private constructor(
         @JvmSynthetic
         internal fun from(jobRetrieveParams: JobRetrieveParams) = apply {
             scanId = jobRetrieveParams.scanId
-            xCorrelationId = jobRetrieveParams.xCorrelationId
             hasDetections = jobRetrieveParams.hasDetections
             additionalHeaders = jobRetrieveParams.additionalHeaders.toBuilder()
             additionalQueryParams = jobRetrieveParams.additionalQueryParams.toBuilder()
@@ -68,8 +57,6 @@ private constructor(
 
         /** Alias for calling [Builder.scanId] with `scanId.orElse(null)`. */
         fun scanId(scanId: Optional<String>) = scanId(scanId.getOrNull())
-
-        fun xCorrelationId(xCorrelationId: String) = apply { this.xCorrelationId = xCorrelationId }
 
         /** Filter file_results to only those that have detections (and parents) */
         fun hasDetections(hasDetections: Boolean?) = apply { this.hasDetections = hasDetections }
@@ -187,18 +174,10 @@ private constructor(
          * Returns an immutable instance of [JobRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .xCorrelationId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): JobRetrieveParams =
             JobRetrieveParams(
                 scanId,
-                checkRequired("xCorrelationId", xCorrelationId),
                 hasDetections,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -211,13 +190,7 @@ private constructor(
             else -> ""
         }
 
-    override fun _headers(): Headers =
-        Headers.builder()
-            .apply {
-                put("X-Correlation-Id", xCorrelationId)
-                putAll(additionalHeaders)
-            }
-            .build()
+    override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
@@ -232,11 +205,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is JobRetrieveParams && scanId == other.scanId && xCorrelationId == other.xCorrelationId && hasDetections == other.hasDetections && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is JobRetrieveParams && scanId == other.scanId && hasDetections == other.hasDetections && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(scanId, xCorrelationId, hasDetections, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(scanId, hasDetections, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "JobRetrieveParams{scanId=$scanId, xCorrelationId=$xCorrelationId, hasDetections=$hasDetections, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "JobRetrieveParams{scanId=$scanId, hasDetections=$hasDetections, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
