@@ -32,6 +32,8 @@ class HiddenLayerOkHttpClient private constructor() {
         private var timeout: Timeout = Timeout.default()
         private var proxy: Proxy? = null
 
+        fun prodEu() = apply { baseUrl(ClientOptions.PROD_EU_URL) }
+
         fun baseUrl(baseUrl: String) = apply { clientOptions.baseUrl(baseUrl) }
 
         /**

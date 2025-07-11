@@ -320,6 +320,20 @@ HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
     .build();
 ```
 
+### Environments
+
+The SDK sends requests to the prod-us by default. To send requests to a different environment, configure the client like so:
+
+```java
+import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
+import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
+
+HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
+    .fromEnv()
+    .prodEu()
+    .build();
+```
+
 ### Custom HTTP client
 
 The SDK consists of three artifacts:

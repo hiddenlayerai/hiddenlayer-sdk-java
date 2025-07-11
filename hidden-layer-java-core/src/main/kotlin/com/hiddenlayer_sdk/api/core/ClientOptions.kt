@@ -36,7 +36,7 @@ private constructor(
         }
     }
 
-    fun baseUrl(): String = baseUrl ?: PRODUCTION_URL
+    fun baseUrl(): String = baseUrl ?: PROD_US_URL
 
     fun bearerToken(): Optional<String> = Optional.ofNullable(bearerToken)
 
@@ -48,7 +48,9 @@ private constructor(
 
     companion object {
 
-        const val PRODUCTION_URL = "https://api.hiddenlayer.ai"
+        const val PROD_US_URL = "https://api.hiddenlayer.ai"
+
+        const val PROD_EU_URL = "https://api.eu.hiddenlayer.ai"
 
         /**
          * Returns a mutable builder for constructing an instance of [ClientOptions].
