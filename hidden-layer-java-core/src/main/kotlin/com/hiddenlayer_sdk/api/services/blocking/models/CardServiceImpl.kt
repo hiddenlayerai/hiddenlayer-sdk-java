@@ -14,8 +14,9 @@ import com.hiddenlayer_sdk.api.core.http.HttpResponse.Handler
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.core.http.parseable
 import com.hiddenlayer_sdk.api.core.prepare
+import com.hiddenlayer_sdk.api.models.models.cards.CardListPage
+import com.hiddenlayer_sdk.api.models.models.cards.CardListPageResponse
 import com.hiddenlayer_sdk.api.models.models.cards.CardListParams
-import com.hiddenlayer_sdk.api.models.models.cards.CardListResponse
 import java.util.function.Consumer
 
 class CardServiceImpl internal constructor(private val clientOptions: ClientOptions) : CardService {
@@ -29,8 +30,8 @@ class CardServiceImpl internal constructor(private val clientOptions: ClientOpti
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): CardService =
         CardServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
-    override fun list(params: CardListParams, requestOptions: RequestOptions): CardListResponse =
-        // get /models/v3/cards
+    override fun list(params: CardListParams, requestOptions: RequestOptions): CardListPage =
+        // get /models/v4/cards
         withRawResponse().list(params, requestOptions).parse()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -45,18 +46,19 @@ class CardServiceImpl internal constructor(private val clientOptions: ClientOpti
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val listHandler: Handler<CardListResponse> =
-            jsonHandler<CardListResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val listHandler: Handler<CardListPageResponse> =
+            jsonHandler<CardListPageResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
         override fun list(
             params: CardListParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<CardListResponse> {
+        ): HttpResponseFor<CardListPage> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
                     .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("models", "v3", "cards")
+                    .addPathSegments("models", "v4", "cards")
                     .build()
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
@@ -68,6 +70,13 @@ class CardServiceImpl internal constructor(private val clientOptions: ClientOpti
                         if (requestOptions.responseValidation!!) {
                             it.validate()
                         }
+                    }
+                    .let {
+                        CardListPage.builder()
+                            .service(CardServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }

@@ -14,8 +14,9 @@ import com.hiddenlayer_sdk.api.core.http.HttpResponse.Handler
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.core.http.parseable
 import com.hiddenlayer_sdk.api.core.prepareAsync
+import com.hiddenlayer_sdk.api.models.models.cards.CardListPageAsync
+import com.hiddenlayer_sdk.api.models.models.cards.CardListPageResponse
 import com.hiddenlayer_sdk.api.models.models.cards.CardListParams
-import com.hiddenlayer_sdk.api.models.models.cards.CardListResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -34,8 +35,8 @@ class CardServiceAsyncImpl internal constructor(private val clientOptions: Clien
     override fun list(
         params: CardListParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<CardListResponse> =
-        // get /models/v3/cards
+    ): CompletableFuture<CardListPageAsync> =
+        // get /models/v4/cards
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -50,18 +51,19 @@ class CardServiceAsyncImpl internal constructor(private val clientOptions: Clien
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val listHandler: Handler<CardListResponse> =
-            jsonHandler<CardListResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val listHandler: Handler<CardListPageResponse> =
+            jsonHandler<CardListPageResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
         override fun list(
             params: CardListParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<CardListResponse>> {
+        ): CompletableFuture<HttpResponseFor<CardListPageAsync>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
                     .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("models", "v3", "cards")
+                    .addPathSegments("models", "v4", "cards")
                     .build()
                     .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
@@ -75,6 +77,14 @@ class CardServiceAsyncImpl internal constructor(private val clientOptions: Clien
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()
                                 }
+                            }
+                            .let {
+                                CardListPageAsync.builder()
+                                    .service(CardServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }
