@@ -274,12 +274,13 @@ private constructor(
     private constructor(
         private val active: JsonField<Boolean>,
         private val createdAt: JsonField<OffsetDateTime>,
+        private val modelId: JsonField<String>,
         private val plaintextName: JsonField<String>,
         private val sensorId: JsonField<String>,
-        private val tenantId: JsonField<String>,
-        private val version: JsonField<Long>,
-        private val adhoc: JsonField<Boolean>,
         private val tags: JsonField<Tags>,
+        private val tenantId: JsonField<String>,
+        private val adhoc: JsonField<Boolean>,
+        private val version: JsonField<Long>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -289,27 +290,29 @@ private constructor(
             @JsonProperty("created_at")
             @ExcludeMissing
             createdAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("model_id") @ExcludeMissing modelId: JsonField<String> = JsonMissing.of(),
             @JsonProperty("plaintext_name")
             @ExcludeMissing
             plaintextName: JsonField<String> = JsonMissing.of(),
             @JsonProperty("sensor_id")
             @ExcludeMissing
             sensorId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("tags") @ExcludeMissing tags: JsonField<Tags> = JsonMissing.of(),
             @JsonProperty("tenant_id")
             @ExcludeMissing
             tenantId: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("version") @ExcludeMissing version: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("adhoc") @ExcludeMissing adhoc: JsonField<Boolean> = JsonMissing.of(),
-            @JsonProperty("tags") @ExcludeMissing tags: JsonField<Tags> = JsonMissing.of(),
+            @JsonProperty("version") @ExcludeMissing version: JsonField<Long> = JsonMissing.of(),
         ) : this(
             active,
             createdAt,
+            modelId,
             plaintextName,
             sensorId,
-            tenantId,
-            version,
-            adhoc,
             tags,
+            tenantId,
+            adhoc,
+            version,
             mutableMapOf(),
         )
 
@@ -329,6 +332,12 @@ private constructor(
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
+        fun modelId(): String = modelId.getRequired("model_id")
+
+        /**
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun plaintextName(): String = plaintextName.getRequired("plaintext_name")
 
         /**
@@ -341,13 +350,13 @@ private constructor(
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun tenantId(): String = tenantId.getRequired("tenant_id")
+        fun tags(): Tags = tags.getRequired("tags")
 
         /**
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun version(): Long = version.getRequired("version")
+        fun tenantId(): String = tenantId.getRequired("tenant_id")
 
         /**
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
@@ -359,7 +368,7 @@ private constructor(
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun tags(): Optional<Tags> = tags.getOptional("tags")
+        fun version(): Optional<Long> = version.getOptional("version")
 
         /**
          * Returns the raw JSON value of [active].
@@ -376,6 +385,13 @@ private constructor(
         @JsonProperty("created_at")
         @ExcludeMissing
         fun _createdAt(): JsonField<OffsetDateTime> = createdAt
+
+        /**
+         * Returns the raw JSON value of [modelId].
+         *
+         * Unlike [modelId], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("model_id") @ExcludeMissing fun _modelId(): JsonField<String> = modelId
 
         /**
          * Returns the raw JSON value of [plaintextName].
@@ -395,18 +411,18 @@ private constructor(
         @JsonProperty("sensor_id") @ExcludeMissing fun _sensorId(): JsonField<String> = sensorId
 
         /**
+         * Returns the raw JSON value of [tags].
+         *
+         * Unlike [tags], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<Tags> = tags
+
+        /**
          * Returns the raw JSON value of [tenantId].
          *
          * Unlike [tenantId], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("tenant_id") @ExcludeMissing fun _tenantId(): JsonField<String> = tenantId
-
-        /**
-         * Returns the raw JSON value of [version].
-         *
-         * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<Long> = version
 
         /**
          * Returns the raw JSON value of [adhoc].
@@ -416,11 +432,11 @@ private constructor(
         @JsonProperty("adhoc") @ExcludeMissing fun _adhoc(): JsonField<Boolean> = adhoc
 
         /**
-         * Returns the raw JSON value of [tags].
+         * Returns the raw JSON value of [version].
          *
-         * Unlike [tags], this method doesn't throw if the JSON field has an unexpected type.
+         * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<Tags> = tags
+        @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<Long> = version
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -443,10 +459,11 @@ private constructor(
              * ```java
              * .active()
              * .createdAt()
+             * .modelId()
              * .plaintextName()
              * .sensorId()
+             * .tags()
              * .tenantId()
-             * .version()
              * ```
              */
             @JvmStatic fun builder() = Builder()
@@ -457,24 +474,26 @@ private constructor(
 
             private var active: JsonField<Boolean>? = null
             private var createdAt: JsonField<OffsetDateTime>? = null
+            private var modelId: JsonField<String>? = null
             private var plaintextName: JsonField<String>? = null
             private var sensorId: JsonField<String>? = null
+            private var tags: JsonField<Tags>? = null
             private var tenantId: JsonField<String>? = null
-            private var version: JsonField<Long>? = null
             private var adhoc: JsonField<Boolean> = JsonMissing.of()
-            private var tags: JsonField<Tags> = JsonMissing.of()
+            private var version: JsonField<Long> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(result: Result) = apply {
                 active = result.active
                 createdAt = result.createdAt
+                modelId = result.modelId
                 plaintextName = result.plaintextName
                 sensorId = result.sensorId
-                tenantId = result.tenantId
-                version = result.version
-                adhoc = result.adhoc
                 tags = result.tags
+                tenantId = result.tenantId
+                adhoc = result.adhoc
+                version = result.version
                 additionalProperties = result.additionalProperties.toMutableMap()
             }
 
@@ -502,6 +521,17 @@ private constructor(
                 this.createdAt = createdAt
             }
 
+            fun modelId(modelId: String) = modelId(JsonField.of(modelId))
+
+            /**
+             * Sets [Builder.modelId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.modelId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun modelId(modelId: JsonField<String>) = apply { this.modelId = modelId }
+
             fun plaintextName(plaintextName: String) = plaintextName(JsonField.of(plaintextName))
 
             /**
@@ -526,6 +556,17 @@ private constructor(
              */
             fun sensorId(sensorId: JsonField<String>) = apply { this.sensorId = sensorId }
 
+            fun tags(tags: Tags) = tags(JsonField.of(tags))
+
+            /**
+             * Sets [Builder.tags] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.tags] with a well-typed [Tags] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun tags(tags: JsonField<Tags>) = apply { this.tags = tags }
+
             fun tenantId(tenantId: String) = tenantId(JsonField.of(tenantId))
 
             /**
@@ -536,17 +577,6 @@ private constructor(
              * supported value.
              */
             fun tenantId(tenantId: JsonField<String>) = apply { this.tenantId = tenantId }
-
-            fun version(version: Long) = version(JsonField.of(version))
-
-            /**
-             * Sets [Builder.version] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.version] with a well-typed [Long] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun version(version: JsonField<Long>) = apply { this.version = version }
 
             fun adhoc(adhoc: Boolean) = adhoc(JsonField.of(adhoc))
 
@@ -559,16 +589,16 @@ private constructor(
              */
             fun adhoc(adhoc: JsonField<Boolean>) = apply { this.adhoc = adhoc }
 
-            fun tags(tags: Tags) = tags(JsonField.of(tags))
+            fun version(version: Long) = version(JsonField.of(version))
 
             /**
-             * Sets [Builder.tags] to an arbitrary JSON value.
+             * Sets [Builder.version] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.tags] with a well-typed [Tags] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
+             * You should usually call [Builder.version] with a well-typed [Long] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
-            fun tags(tags: JsonField<Tags>) = apply { this.tags = tags }
+            fun version(version: JsonField<Long>) = apply { this.version = version }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -598,10 +628,11 @@ private constructor(
              * ```java
              * .active()
              * .createdAt()
+             * .modelId()
              * .plaintextName()
              * .sensorId()
+             * .tags()
              * .tenantId()
-             * .version()
              * ```
              *
              * @throws IllegalStateException if any required field is unset.
@@ -610,12 +641,13 @@ private constructor(
                 Result(
                     checkRequired("active", active),
                     checkRequired("createdAt", createdAt),
+                    checkRequired("modelId", modelId),
                     checkRequired("plaintextName", plaintextName),
                     checkRequired("sensorId", sensorId),
+                    checkRequired("tags", tags),
                     checkRequired("tenantId", tenantId),
-                    checkRequired("version", version),
                     adhoc,
-                    tags,
+                    version,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -629,12 +661,13 @@ private constructor(
 
             active()
             createdAt()
+            modelId()
             plaintextName()
             sensorId()
+            tags().validate()
             tenantId()
-            version()
             adhoc()
-            tags().ifPresent { it.validate() }
+            version()
             validated = true
         }
 
@@ -656,12 +689,13 @@ private constructor(
         internal fun validity(): Int =
             (if (active.asKnown().isPresent) 1 else 0) +
                 (if (createdAt.asKnown().isPresent) 1 else 0) +
+                (if (modelId.asKnown().isPresent) 1 else 0) +
                 (if (plaintextName.asKnown().isPresent) 1 else 0) +
                 (if (sensorId.asKnown().isPresent) 1 else 0) +
+                (tags.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (tenantId.asKnown().isPresent) 1 else 0) +
-                (if (version.asKnown().isPresent) 1 else 0) +
                 (if (adhoc.asKnown().isPresent) 1 else 0) +
-                (tags.asKnown().getOrNull()?.validity() ?: 0)
+                (if (version.asKnown().isPresent) 1 else 0)
 
         class Tags
         @JsonCreator
@@ -772,17 +806,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Result && active == other.active && createdAt == other.createdAt && plaintextName == other.plaintextName && sensorId == other.sensorId && tenantId == other.tenantId && version == other.version && adhoc == other.adhoc && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Result && active == other.active && createdAt == other.createdAt && modelId == other.modelId && plaintextName == other.plaintextName && sensorId == other.sensorId && tags == other.tags && tenantId == other.tenantId && adhoc == other.adhoc && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(active, createdAt, plaintextName, sensorId, tenantId, version, adhoc, tags, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(active, createdAt, modelId, plaintextName, sensorId, tags, tenantId, adhoc, version, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Result{active=$active, createdAt=$createdAt, plaintextName=$plaintextName, sensorId=$sensorId, tenantId=$tenantId, version=$version, adhoc=$adhoc, tags=$tags, additionalProperties=$additionalProperties}"
+            "Result{active=$active, createdAt=$createdAt, modelId=$modelId, plaintextName=$plaintextName, sensorId=$sensorId, tags=$tags, tenantId=$tenantId, adhoc=$adhoc, version=$version, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

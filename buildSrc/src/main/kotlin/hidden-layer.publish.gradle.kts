@@ -9,8 +9,8 @@ configure<PublishingExtension> {
             from(components["java"])
 
             pom {
-                name.set("HiddenLayer Access API")
-                description.set("Manage users and API keys for a tenant")
+                name.set("HiddenLayer Platform API")
+                description.set("HiddenLayer Platform API")
                 url.set("https://docs.hiddenlayer-sdk.com")
 
                 licenses {
