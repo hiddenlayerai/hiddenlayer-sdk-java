@@ -25,6 +25,8 @@ import com.hiddenlayer_sdk.api.models.sensors.SensorQueryParams
 import com.hiddenlayer_sdk.api.models.sensors.SensorQueryResponse
 import com.hiddenlayer_sdk.api.models.sensors.SensorRetrieveParams
 import com.hiddenlayer_sdk.api.models.sensors.SensorRetrieveResponse
+import com.hiddenlayer_sdk.api.models.sensors.SensorUpdateParams
+import com.hiddenlayer_sdk.api.models.sensors.SensorUpdateResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
@@ -54,6 +56,13 @@ class SensorServiceAsyncImpl internal constructor(private val clientOptions: Cli
     ): CompletableFuture<SensorRetrieveResponse> =
         // get /api/v2/sensors/{sensor_id}
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
+
+    override fun update(
+        params: SensorUpdateParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<SensorUpdateResponse> =
+        // put /api/v2/sensors/{sensor_id}
+        withRawResponse().update(params, requestOptions).thenApply { it.parse() }
 
     override fun delete(
         params: SensorDeleteParams,
@@ -138,6 +147,41 @@ class SensorServiceAsyncImpl internal constructor(private val clientOptions: Cli
                     response.parseable {
                         response
                             .use { retrieveHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val updateHandler: Handler<SensorUpdateResponse> =
+            jsonHandler<SensorUpdateResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun update(
+            params: SensorUpdateParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<SensorUpdateResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("sensorId", params.sensorId().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("api", "v2", "sensors", params._pathParam(0))
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { updateHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()

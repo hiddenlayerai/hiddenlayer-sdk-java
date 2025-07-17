@@ -14,6 +14,8 @@ import com.hiddenlayer_sdk.api.models.sensors.SensorQueryParams
 import com.hiddenlayer_sdk.api.models.sensors.SensorQueryResponse
 import com.hiddenlayer_sdk.api.models.sensors.SensorRetrieveParams
 import com.hiddenlayer_sdk.api.models.sensors.SensorRetrieveResponse
+import com.hiddenlayer_sdk.api.models.sensors.SensorUpdateParams
+import com.hiddenlayer_sdk.api.models.sensors.SensorUpdateResponse
 import java.util.function.Consumer
 
 interface SensorService {
@@ -71,6 +73,36 @@ interface SensorService {
     /** @see [retrieve] */
     fun retrieve(sensorId: String, requestOptions: RequestOptions): SensorRetrieveResponse =
         retrieve(sensorId, SensorRetrieveParams.none(), requestOptions)
+
+    /** Update Sensor */
+    fun update(sensorId: String): SensorUpdateResponse = update(sensorId, SensorUpdateParams.none())
+
+    /** @see [update] */
+    fun update(
+        sensorId: String,
+        params: SensorUpdateParams = SensorUpdateParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): SensorUpdateResponse = update(params.toBuilder().sensorId(sensorId).build(), requestOptions)
+
+    /** @see [update] */
+    fun update(
+        sensorId: String,
+        params: SensorUpdateParams = SensorUpdateParams.none(),
+    ): SensorUpdateResponse = update(sensorId, params, RequestOptions.none())
+
+    /** @see [update] */
+    fun update(
+        params: SensorUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): SensorUpdateResponse
+
+    /** @see [update] */
+    fun update(params: SensorUpdateParams): SensorUpdateResponse =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
+    fun update(sensorId: String, requestOptions: RequestOptions): SensorUpdateResponse =
+        update(sensorId, SensorUpdateParams.none(), requestOptions)
 
     /** Remove an Adhoc Sensor */
     fun delete(sensorId: String) = delete(sensorId, SensorDeleteParams.none())
@@ -182,6 +214,50 @@ interface SensorService {
             requestOptions: RequestOptions,
         ): HttpResponseFor<SensorRetrieveResponse> =
             retrieve(sensorId, SensorRetrieveParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `put /api/v2/sensors/{sensor_id}`, but is otherwise the
+         * same as [SensorService.update].
+         */
+        @MustBeClosed
+        fun update(sensorId: String): HttpResponseFor<SensorUpdateResponse> =
+            update(sensorId, SensorUpdateParams.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            sensorId: String,
+            params: SensorUpdateParams = SensorUpdateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<SensorUpdateResponse> =
+            update(params.toBuilder().sensorId(sensorId).build(), requestOptions)
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            sensorId: String,
+            params: SensorUpdateParams = SensorUpdateParams.none(),
+        ): HttpResponseFor<SensorUpdateResponse> = update(sensorId, params, RequestOptions.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            params: SensorUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<SensorUpdateResponse>
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(params: SensorUpdateParams): HttpResponseFor<SensorUpdateResponse> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            sensorId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<SensorUpdateResponse> =
+            update(sensorId, SensorUpdateParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `delete /api/v2/sensors/{sensor_id}`, but is otherwise

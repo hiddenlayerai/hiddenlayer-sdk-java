@@ -13,6 +13,8 @@ import com.hiddenlayer_sdk.api.models.sensors.SensorQueryParams
 import com.hiddenlayer_sdk.api.models.sensors.SensorQueryResponse
 import com.hiddenlayer_sdk.api.models.sensors.SensorRetrieveParams
 import com.hiddenlayer_sdk.api.models.sensors.SensorRetrieveResponse
+import com.hiddenlayer_sdk.api.models.sensors.SensorUpdateParams
+import com.hiddenlayer_sdk.api.models.sensors.SensorUpdateResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -74,6 +76,41 @@ interface SensorServiceAsync {
         requestOptions: RequestOptions,
     ): CompletableFuture<SensorRetrieveResponse> =
         retrieve(sensorId, SensorRetrieveParams.none(), requestOptions)
+
+    /** Update Sensor */
+    fun update(sensorId: String): CompletableFuture<SensorUpdateResponse> =
+        update(sensorId, SensorUpdateParams.none())
+
+    /** @see [update] */
+    fun update(
+        sensorId: String,
+        params: SensorUpdateParams = SensorUpdateParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<SensorUpdateResponse> =
+        update(params.toBuilder().sensorId(sensorId).build(), requestOptions)
+
+    /** @see [update] */
+    fun update(
+        sensorId: String,
+        params: SensorUpdateParams = SensorUpdateParams.none(),
+    ): CompletableFuture<SensorUpdateResponse> = update(sensorId, params, RequestOptions.none())
+
+    /** @see [update] */
+    fun update(
+        params: SensorUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<SensorUpdateResponse>
+
+    /** @see [update] */
+    fun update(params: SensorUpdateParams): CompletableFuture<SensorUpdateResponse> =
+        update(params, RequestOptions.none())
+
+    /** @see [update] */
+    fun update(
+        sensorId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<SensorUpdateResponse> =
+        update(sensorId, SensorUpdateParams.none(), requestOptions)
 
     /** Remove an Adhoc Sensor */
     fun delete(sensorId: String): CompletableFuture<Void?> =
@@ -194,6 +231,47 @@ interface SensorServiceAsync {
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<SensorRetrieveResponse>> =
             retrieve(sensorId, SensorRetrieveParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `put /api/v2/sensors/{sensor_id}`, but is otherwise the
+         * same as [SensorServiceAsync.update].
+         */
+        fun update(sensorId: String): CompletableFuture<HttpResponseFor<SensorUpdateResponse>> =
+            update(sensorId, SensorUpdateParams.none())
+
+        /** @see [update] */
+        fun update(
+            sensorId: String,
+            params: SensorUpdateParams = SensorUpdateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<SensorUpdateResponse>> =
+            update(params.toBuilder().sensorId(sensorId).build(), requestOptions)
+
+        /** @see [update] */
+        fun update(
+            sensorId: String,
+            params: SensorUpdateParams = SensorUpdateParams.none(),
+        ): CompletableFuture<HttpResponseFor<SensorUpdateResponse>> =
+            update(sensorId, params, RequestOptions.none())
+
+        /** @see [update] */
+        fun update(
+            params: SensorUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<SensorUpdateResponse>>
+
+        /** @see [update] */
+        fun update(
+            params: SensorUpdateParams
+        ): CompletableFuture<HttpResponseFor<SensorUpdateResponse>> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
+        fun update(
+            sensorId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<SensorUpdateResponse>> =
+            update(sensorId, SensorUpdateParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `delete /api/v2/sensors/{sensor_id}`, but is otherwise

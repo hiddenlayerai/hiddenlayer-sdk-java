@@ -7,6 +7,7 @@ import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient
 import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams
 import com.hiddenlayer_sdk.api.models.sensors.SensorQueryParams
+import com.hiddenlayer_sdk.api.models.sensors.SensorUpdateParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -54,6 +55,33 @@ internal class SensorServiceTest {
         val sensorService = client.sensors()
 
         val sensor = sensorService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+
+        sensor.validate()
+    }
+
+    @Disabled("skipped: tests are disabled for the time being")
+    @Test
+    fun update() {
+        val client =
+            HiddenLayerOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .bearerToken("My Bearer Token")
+                .build()
+        val sensorService = client.sensors()
+
+        val sensor =
+            sensorService.update(
+                SensorUpdateParams.builder()
+                    .sensorId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .active(true)
+                    .plaintextName("plaintext_name")
+                    .tags(
+                        SensorUpdateParams.Tags.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
+                    .build()
+            )
 
         sensor.validate()
     }
