@@ -17,5 +17,12 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 application {
-    mainClass = "com.hiddenlayer_sdk.api.example.Main"
+    // Use `./gradlew :hidden-layer-java-example:run` to run `Main`
+    // Use `./gradlew :hidden-layer-java-example:run -Dexample=Something` to run `SomethingExample`
+    mainClass = "com.hiddenlayer_sdk.api.example.${
+        if (project.hasProperty("example"))
+            "${project.property("example")}Example"
+        else
+            "Main"
+    }"
 }
