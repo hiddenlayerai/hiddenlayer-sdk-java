@@ -17,6 +17,8 @@ import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.core.http.json
 import com.hiddenlayer_sdk.api.core.http.parseable
 import com.hiddenlayer_sdk.api.core.prepare
+import com.hiddenlayer_sdk.api.models.models.ModelCreateParams
+import com.hiddenlayer_sdk.api.models.models.ModelCreateResponse
 import com.hiddenlayer_sdk.api.models.models.ModelDeleteParams
 import com.hiddenlayer_sdk.api.models.models.ModelRetrieveParams
 import com.hiddenlayer_sdk.api.models.models.ModelRetrieveResponse
@@ -40,6 +42,13 @@ class ModelServiceImpl internal constructor(private val clientOptions: ClientOpt
         ModelServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun cards(): CardService = cards
+
+    override fun create(
+        params: ModelCreateParams,
+        requestOptions: RequestOptions,
+    ): ModelCreateResponse =
+        // put /api/v2/models
+        withRawResponse().create(params, requestOptions).parse()
 
     override fun retrieve(
         params: ModelRetrieveParams,
@@ -71,6 +80,34 @@ class ModelServiceImpl internal constructor(private val clientOptions: ClientOpt
             )
 
         override fun cards(): CardService.WithRawResponse = cards
+
+        private val createHandler: Handler<ModelCreateResponse> =
+            jsonHandler<ModelCreateResponse>(clientOptions.jsonMapper)
+
+        override fun create(
+            params: ModelCreateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<ModelCreateResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("api", "v2", "models")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { createHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
 
         private val retrieveHandler: Handler<ModelRetrieveResponse> =
             jsonHandler<ModelRetrieveResponse>(clientOptions.jsonMapper)
