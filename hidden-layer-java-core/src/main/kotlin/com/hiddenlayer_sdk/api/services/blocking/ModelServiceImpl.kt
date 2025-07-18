@@ -3,13 +3,12 @@
 package com.hiddenlayer_sdk.api.services.blocking
 
 import com.hiddenlayer_sdk.api.core.ClientOptions
-import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.RequestOptions
 import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.handlers.emptyHandler
+import com.hiddenlayer_sdk.api.core.handlers.errorBodyHandler
 import com.hiddenlayer_sdk.api.core.handlers.errorHandler
 import com.hiddenlayer_sdk.api.core.handlers.jsonHandler
-import com.hiddenlayer_sdk.api.core.handlers.withErrorHandler
 import com.hiddenlayer_sdk.api.core.http.HttpMethod
 import com.hiddenlayer_sdk.api.core.http.HttpRequest
 import com.hiddenlayer_sdk.api.core.http.HttpResponse
@@ -57,7 +56,8 @@ class ModelServiceImpl internal constructor(private val clientOptions: ClientOpt
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         ModelService.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         private val cards: CardService.WithRawResponse by lazy {
             CardServiceImpl.WithRawResponseImpl(clientOptions)
@@ -74,7 +74,6 @@ class ModelServiceImpl internal constructor(private val clientOptions: ClientOpt
 
         private val retrieveHandler: Handler<ModelRetrieveResponse> =
             jsonHandler<ModelRetrieveResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun retrieve(
             params: ModelRetrieveParams,
@@ -92,7 +91,7 @@ class ModelServiceImpl internal constructor(private val clientOptions: ClientOpt
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { retrieveHandler.handle(it) }
                     .also {
@@ -103,7 +102,7 @@ class ModelServiceImpl internal constructor(private val clientOptions: ClientOpt
             }
         }
 
-        private val deleteHandler: Handler<Void?> = emptyHandler().withErrorHandler(errorHandler)
+        private val deleteHandler: Handler<Void?> = emptyHandler()
 
         override fun delete(
             params: ModelDeleteParams,
@@ -122,7 +121,9 @@ class ModelServiceImpl internal constructor(private val clientOptions: ClientOpt
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable { response.use { deleteHandler.handle(it) } }
+            return errorHandler.handle(response).parseable {
+                response.use { deleteHandler.handle(it) }
+            }
         }
     }
 }

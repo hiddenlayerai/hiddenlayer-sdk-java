@@ -3,14 +3,14 @@
 package com.hiddenlayer_sdk.api.services.blocking.scans.upload
 
 import com.hiddenlayer_sdk.api.core.ClientOptions
-import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.RequestOptions
 import com.hiddenlayer_sdk.api.core.checkRequired
+import com.hiddenlayer_sdk.api.core.handlers.errorBodyHandler
 import com.hiddenlayer_sdk.api.core.handlers.errorHandler
 import com.hiddenlayer_sdk.api.core.handlers.jsonHandler
-import com.hiddenlayer_sdk.api.core.handlers.withErrorHandler
 import com.hiddenlayer_sdk.api.core.http.HttpMethod
 import com.hiddenlayer_sdk.api.core.http.HttpRequest
+import com.hiddenlayer_sdk.api.core.http.HttpResponse
 import com.hiddenlayer_sdk.api.core.http.HttpResponse.Handler
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.core.http.json
@@ -48,7 +48,8 @@ class FileServiceImpl internal constructor(private val clientOptions: ClientOpti
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         FileService.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -58,7 +59,7 @@ class FileServiceImpl internal constructor(private val clientOptions: ClientOpti
             )
 
         private val addHandler: Handler<FileAddResponse> =
-            jsonHandler<FileAddResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<FileAddResponse>(clientOptions.jsonMapper)
 
         override fun add(
             params: FileAddParams,
@@ -77,7 +78,7 @@ class FileServiceImpl internal constructor(private val clientOptions: ClientOpti
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { addHandler.handle(it) }
                     .also {
@@ -90,7 +91,6 @@ class FileServiceImpl internal constructor(private val clientOptions: ClientOpti
 
         private val completeHandler: Handler<FileCompleteResponse> =
             jsonHandler<FileCompleteResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun complete(
             params: FileCompleteParams,
@@ -116,7 +116,7 @@ class FileServiceImpl internal constructor(private val clientOptions: ClientOpti
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { completeHandler.handle(it) }
                     .also {

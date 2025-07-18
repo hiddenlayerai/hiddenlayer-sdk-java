@@ -3,14 +3,14 @@
 package com.hiddenlayer_sdk.api.services.async.scans
 
 import com.hiddenlayer_sdk.api.core.ClientOptions
-import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.RequestOptions
 import com.hiddenlayer_sdk.api.core.checkRequired
+import com.hiddenlayer_sdk.api.core.handlers.errorBodyHandler
 import com.hiddenlayer_sdk.api.core.handlers.errorHandler
 import com.hiddenlayer_sdk.api.core.handlers.jsonHandler
-import com.hiddenlayer_sdk.api.core.handlers.withErrorHandler
 import com.hiddenlayer_sdk.api.core.http.HttpMethod
 import com.hiddenlayer_sdk.api.core.http.HttpRequest
+import com.hiddenlayer_sdk.api.core.http.HttpResponse
 import com.hiddenlayer_sdk.api.core.http.HttpResponse.Handler
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.core.http.json
@@ -62,7 +62,8 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         JobServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -72,7 +73,7 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
             )
 
         private val retrieveHandler: Handler<ScanReport> =
-            jsonHandler<ScanReport>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<ScanReport>(clientOptions.jsonMapper)
 
         override fun retrieve(
             params: JobRetrieveParams,
@@ -92,7 +93,7 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { retrieveHandler.handle(it) }
                             .also {
@@ -105,7 +106,7 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
         }
 
         private val listHandler: Handler<JobListResponse> =
-            jsonHandler<JobListResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<JobListResponse>(clientOptions.jsonMapper)
 
         override fun list(
             params: JobListParams,
@@ -122,7 +123,7 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { listHandler.handle(it) }
                             .also {
@@ -135,7 +136,7 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
         }
 
         private val requestHandler: Handler<ScanJob> =
-            jsonHandler<ScanJob>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<ScanJob>(clientOptions.jsonMapper)
 
         override fun request(
             params: JobRequestParams,
@@ -153,7 +154,7 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { requestHandler.handle(it) }
                             .also {

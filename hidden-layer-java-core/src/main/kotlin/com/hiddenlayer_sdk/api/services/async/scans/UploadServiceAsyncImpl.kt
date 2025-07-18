@@ -3,14 +3,14 @@
 package com.hiddenlayer_sdk.api.services.async.scans
 
 import com.hiddenlayer_sdk.api.core.ClientOptions
-import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.RequestOptions
 import com.hiddenlayer_sdk.api.core.checkRequired
+import com.hiddenlayer_sdk.api.core.handlers.errorBodyHandler
 import com.hiddenlayer_sdk.api.core.handlers.errorHandler
 import com.hiddenlayer_sdk.api.core.handlers.jsonHandler
-import com.hiddenlayer_sdk.api.core.handlers.withErrorHandler
 import com.hiddenlayer_sdk.api.core.http.HttpMethod
 import com.hiddenlayer_sdk.api.core.http.HttpRequest
+import com.hiddenlayer_sdk.api.core.http.HttpResponse
 import com.hiddenlayer_sdk.api.core.http.HttpResponse.Handler
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
 import com.hiddenlayer_sdk.api.core.http.json
@@ -59,7 +59,8 @@ class UploadServiceAsyncImpl internal constructor(private val clientOptions: Cli
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         UploadServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         private val file: FileServiceAsync.WithRawResponse by lazy {
             FileServiceAsyncImpl.WithRawResponseImpl(clientOptions)
@@ -76,7 +77,6 @@ class UploadServiceAsyncImpl internal constructor(private val clientOptions: Cli
 
         private val completeAllHandler: Handler<UploadCompleteAllResponse> =
             jsonHandler<UploadCompleteAllResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun completeAll(
             params: UploadCompleteAllParams,
@@ -97,7 +97,7 @@ class UploadServiceAsyncImpl internal constructor(private val clientOptions: Cli
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { completeAllHandler.handle(it) }
                             .also {
@@ -111,7 +111,6 @@ class UploadServiceAsyncImpl internal constructor(private val clientOptions: Cli
 
         private val startHandler: Handler<UploadStartResponse> =
             jsonHandler<UploadStartResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun start(
             params: UploadStartParams,
@@ -129,7 +128,7 @@ class UploadServiceAsyncImpl internal constructor(private val clientOptions: Cli
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { startHandler.handle(it) }
                             .also {

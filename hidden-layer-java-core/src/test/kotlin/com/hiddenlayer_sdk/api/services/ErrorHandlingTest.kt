@@ -94,8 +94,74 @@ internal class ErrorHandlingTest {
 
     @Disabled("skipped: tests are disabled for the time being")
     @Test
+    fun sensorsCreate400WithRawResponse() {
+        val sensorService = client.sensors().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(400).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<BadRequestException> {
+                sensorService.create(
+                    SensorCreateParams.builder()
+                        .plaintextName("plaintext_name")
+                        .active(true)
+                        .adhoc(true)
+                        .tags(
+                            SensorCreateParams.Tags.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .version(0L)
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(400)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Disabled("skipped: tests are disabled for the time being")
+    @Test
     fun sensorsCreate401() {
         val sensorService = client.sensors()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(401).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<UnauthorizedException> {
+                sensorService.create(
+                    SensorCreateParams.builder()
+                        .plaintextName("plaintext_name")
+                        .active(true)
+                        .adhoc(true)
+                        .tags(
+                            SensorCreateParams.Tags.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .version(0L)
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(401)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Disabled("skipped: tests are disabled for the time being")
+    @Test
+    fun sensorsCreate401WithRawResponse() {
+        val sensorService = client.sensors().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -160,8 +226,74 @@ internal class ErrorHandlingTest {
 
     @Disabled("skipped: tests are disabled for the time being")
     @Test
+    fun sensorsCreate403WithRawResponse() {
+        val sensorService = client.sensors().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(403).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<PermissionDeniedException> {
+                sensorService.create(
+                    SensorCreateParams.builder()
+                        .plaintextName("plaintext_name")
+                        .active(true)
+                        .adhoc(true)
+                        .tags(
+                            SensorCreateParams.Tags.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .version(0L)
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(403)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Disabled("skipped: tests are disabled for the time being")
+    @Test
     fun sensorsCreate404() {
         val sensorService = client.sensors()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(404).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<NotFoundException> {
+                sensorService.create(
+                    SensorCreateParams.builder()
+                        .plaintextName("plaintext_name")
+                        .active(true)
+                        .adhoc(true)
+                        .tags(
+                            SensorCreateParams.Tags.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .version(0L)
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(404)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Disabled("skipped: tests are disabled for the time being")
+    @Test
+    fun sensorsCreate404WithRawResponse() {
+        val sensorService = client.sensors().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -226,8 +358,74 @@ internal class ErrorHandlingTest {
 
     @Disabled("skipped: tests are disabled for the time being")
     @Test
+    fun sensorsCreate422WithRawResponse() {
+        val sensorService = client.sensors().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(422).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<UnprocessableEntityException> {
+                sensorService.create(
+                    SensorCreateParams.builder()
+                        .plaintextName("plaintext_name")
+                        .active(true)
+                        .adhoc(true)
+                        .tags(
+                            SensorCreateParams.Tags.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .version(0L)
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(422)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Disabled("skipped: tests are disabled for the time being")
+    @Test
     fun sensorsCreate429() {
         val sensorService = client.sensors()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(429).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<RateLimitException> {
+                sensorService.create(
+                    SensorCreateParams.builder()
+                        .plaintextName("plaintext_name")
+                        .active(true)
+                        .adhoc(true)
+                        .tags(
+                            SensorCreateParams.Tags.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .version(0L)
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(429)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Disabled("skipped: tests are disabled for the time being")
+    @Test
+    fun sensorsCreate429WithRawResponse() {
+        val sensorService = client.sensors().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -292,8 +490,74 @@ internal class ErrorHandlingTest {
 
     @Disabled("skipped: tests are disabled for the time being")
     @Test
+    fun sensorsCreate500WithRawResponse() {
+        val sensorService = client.sensors().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(500).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<InternalServerException> {
+                sensorService.create(
+                    SensorCreateParams.builder()
+                        .plaintextName("plaintext_name")
+                        .active(true)
+                        .adhoc(true)
+                        .tags(
+                            SensorCreateParams.Tags.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .version(0L)
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(500)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Disabled("skipped: tests are disabled for the time being")
+    @Test
     fun sensorsCreate999() {
         val sensorService = client.sensors()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(999).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<UnexpectedStatusCodeException> {
+                sensorService.create(
+                    SensorCreateParams.builder()
+                        .plaintextName("plaintext_name")
+                        .active(true)
+                        .adhoc(true)
+                        .tags(
+                            SensorCreateParams.Tags.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .version(0L)
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(999)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Disabled("skipped: tests are disabled for the time being")
+    @Test
+    fun sensorsCreate999WithRawResponse() {
+        val sensorService = client.sensors().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
