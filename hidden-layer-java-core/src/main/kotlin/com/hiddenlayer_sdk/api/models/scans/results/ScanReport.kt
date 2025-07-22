@@ -42,6 +42,7 @@ private constructor(
     private val startTime: JsonField<OffsetDateTime>,
     private val status: JsonField<Status>,
     private val version: JsonField<String>,
+    private val schemaVersion: JsonField<String>,
     private val detectionCategories: JsonField<List<String>>,
     private val endTime: JsonField<OffsetDateTime>,
     private val fileResults: JsonField<List<FileResult>>,
@@ -69,6 +70,9 @@ private constructor(
         startTime: JsonField<OffsetDateTime> = JsonMissing.of(),
         @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
         @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("\$schema_version")
+        @ExcludeMissing
+        schemaVersion: JsonField<String> = JsonMissing.of(),
         @JsonProperty("detection_categories")
         @ExcludeMissing
         detectionCategories: JsonField<List<String>> = JsonMissing.of(),
@@ -92,6 +96,7 @@ private constructor(
         startTime,
         status,
         version,
+        schemaVersion,
         detectionCategories,
         endTime,
         fileResults,
@@ -165,6 +170,14 @@ private constructor(
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun version(): String = version.getRequired("version")
+
+    /**
+     * version of the scan report schema format
+     *
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun schemaVersion(): Optional<String> = schemaVersion.getOptional("\$schema_version")
 
     /**
      * list of detection categories found
@@ -277,6 +290,15 @@ private constructor(
     @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
     /**
+     * Returns the raw JSON value of [schemaVersion].
+     *
+     * Unlike [schemaVersion], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("\$schema_version")
+    @ExcludeMissing
+    fun _schemaVersion(): JsonField<String> = schemaVersion
+
+    /**
      * Returns the raw JSON value of [detectionCategories].
      *
      * Unlike [detectionCategories], this method doesn't throw if the JSON field has an unexpected
@@ -368,6 +390,7 @@ private constructor(
         private var startTime: JsonField<OffsetDateTime>? = null
         private var status: JsonField<Status>? = null
         private var version: JsonField<String>? = null
+        private var schemaVersion: JsonField<String> = JsonMissing.of()
         private var detectionCategories: JsonField<MutableList<String>>? = null
         private var endTime: JsonField<OffsetDateTime> = JsonMissing.of()
         private var fileResults: JsonField<MutableList<FileResult>>? = null
@@ -386,6 +409,7 @@ private constructor(
             startTime = scanReport.startTime
             status = scanReport.status
             version = scanReport.version
+            schemaVersion = scanReport.schemaVersion
             detectionCategories = scanReport.detectionCategories.map { it.toMutableList() }
             endTime = scanReport.endTime
             fileResults = scanReport.fileResults.map { it.toMutableList() }
@@ -505,6 +529,20 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun version(version: JsonField<String>) = apply { this.version = version }
+
+        /** version of the scan report schema format */
+        fun schemaVersion(schemaVersion: String) = schemaVersion(JsonField.of(schemaVersion))
+
+        /**
+         * Sets [Builder.schemaVersion] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.schemaVersion] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun schemaVersion(schemaVersion: JsonField<String>) = apply {
+            this.schemaVersion = schemaVersion
+        }
 
         /** list of detection categories found */
         fun detectionCategories(detectionCategories: List<String>) =
@@ -655,6 +693,7 @@ private constructor(
                 checkRequired("startTime", startTime),
                 checkRequired("status", status),
                 checkRequired("version", version),
+                schemaVersion,
                 (detectionCategories ?: JsonMissing.of()).map { it.toImmutable() },
                 endTime,
                 (fileResults ?: JsonMissing.of()).map { it.toImmutable() },
@@ -680,6 +719,7 @@ private constructor(
         startTime()
         status().validate()
         version()
+        schemaVersion()
         detectionCategories()
         endTime()
         fileResults().ifPresent { it.forEach { it.validate() } }
@@ -712,6 +752,7 @@ private constructor(
             (if (startTime.asKnown().isPresent) 1 else 0) +
             (status.asKnown().getOrNull()?.validity() ?: 0) +
             (if (version.asKnown().isPresent) 1 else 0) +
+            (if (schemaVersion.asKnown().isPresent) 1 else 0) +
             (detectionCategories.asKnown().getOrNull()?.size ?: 0) +
             (if (endTime.asKnown().isPresent) 1 else 0) +
             (fileResults.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
@@ -7612,15 +7653,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ScanReport && detectionCount == other.detectionCount && fileCount == other.fileCount && filesWithDetectionsCount == other.filesWithDetectionsCount && inventory == other.inventory && scanId == other.scanId && startTime == other.startTime && status == other.status && version == other.version && detectionCategories == other.detectionCategories && endTime == other.endTime && fileResults == other.fileResults && hasGenealogy == other.hasGenealogy && severity == other.severity && summary == other.summary && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is ScanReport && detectionCount == other.detectionCount && fileCount == other.fileCount && filesWithDetectionsCount == other.filesWithDetectionsCount && inventory == other.inventory && scanId == other.scanId && startTime == other.startTime && status == other.status && version == other.version && schemaVersion == other.schemaVersion && detectionCategories == other.detectionCategories && endTime == other.endTime && fileResults == other.fileResults && hasGenealogy == other.hasGenealogy && severity == other.severity && summary == other.summary && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(detectionCount, fileCount, filesWithDetectionsCount, inventory, scanId, startTime, status, version, detectionCategories, endTime, fileResults, hasGenealogy, severity, summary, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(detectionCount, fileCount, filesWithDetectionsCount, inventory, scanId, startTime, status, version, schemaVersion, detectionCategories, endTime, fileResults, hasGenealogy, severity, summary, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ScanReport{detectionCount=$detectionCount, fileCount=$fileCount, filesWithDetectionsCount=$filesWithDetectionsCount, inventory=$inventory, scanId=$scanId, startTime=$startTime, status=$status, version=$version, detectionCategories=$detectionCategories, endTime=$endTime, fileResults=$fileResults, hasGenealogy=$hasGenealogy, severity=$severity, summary=$summary, additionalProperties=$additionalProperties}"
+        "ScanReport{detectionCount=$detectionCount, fileCount=$fileCount, filesWithDetectionsCount=$filesWithDetectionsCount, inventory=$inventory, scanId=$scanId, startTime=$startTime, status=$status, version=$version, schemaVersion=$schemaVersion, detectionCategories=$detectionCategories, endTime=$endTime, fileResults=$fileResults, hasGenealogy=$hasGenealogy, severity=$severity, summary=$summary, additionalProperties=$additionalProperties}"
 }

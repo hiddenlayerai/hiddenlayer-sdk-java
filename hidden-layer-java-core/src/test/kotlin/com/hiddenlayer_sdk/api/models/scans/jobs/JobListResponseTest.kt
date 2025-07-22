@@ -39,6 +39,7 @@ internal class JobListResponseTest {
                         .startTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .status(ScanReport.Status.PENDING)
                         .version("version")
+                        .schemaVersion("\$schema_version")
                         .addDetectionCategory("string")
                         .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .addFileResult(
@@ -154,6 +155,7 @@ internal class JobListResponseTest {
                     .startTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .status(ScanReport.Status.PENDING)
                     .version("version")
+                    .schemaVersion("\$schema_version")
                     .addDetectionCategory("string")
                     .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .addFileResult(
@@ -273,6 +275,7 @@ internal class JobListResponseTest {
                         .startTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .status(ScanReport.Status.PENDING)
                         .version("version")
+                        .schemaVersion("\$schema_version")
                         .addDetectionCategory("string")
                         .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .addFileResult(

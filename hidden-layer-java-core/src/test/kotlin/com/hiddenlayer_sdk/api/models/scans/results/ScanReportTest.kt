@@ -37,6 +37,7 @@ internal class ScanReportTest {
                 .startTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .status(ScanReport.Status.PENDING)
                 .version("version")
+                .schemaVersion("\$schema_version")
                 .addDetectionCategory("string")
                 .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .addFileResult(
@@ -144,6 +145,7 @@ internal class ScanReportTest {
             .isEqualTo(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
         assertThat(scanReport.status()).isEqualTo(ScanReport.Status.PENDING)
         assertThat(scanReport.version()).isEqualTo("version")
+        assertThat(scanReport.schemaVersion()).contains("\$schema_version")
         assertThat(scanReport.detectionCategories().getOrNull()).containsExactly("string")
         assertThat(scanReport.endTime()).contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
         assertThat(scanReport.fileResults().getOrNull())
@@ -254,6 +256,7 @@ internal class ScanReportTest {
                 .startTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .status(ScanReport.Status.PENDING)
                 .version("version")
+                .schemaVersion("\$schema_version")
                 .addDetectionCategory("string")
                 .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .addFileResult(
