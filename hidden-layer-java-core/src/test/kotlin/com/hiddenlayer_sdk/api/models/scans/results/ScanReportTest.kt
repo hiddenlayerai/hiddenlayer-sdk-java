@@ -109,7 +109,7 @@ internal class ScanReportTest {
                 .severity(ScanReport.Severity.LOW)
                 .summary(
                     ScanReport.Summary.builder()
-                        .addCategory("string")
+                        .addDetectionCategory("string")
                         .detectionCount(0L)
                         .fileCount(0L)
                         .filesFailedToScan(0L)
@@ -217,7 +217,7 @@ internal class ScanReportTest {
         assertThat(scanReport.summary())
             .contains(
                 ScanReport.Summary.builder()
-                    .addCategory("string")
+                    .addDetectionCategory("string")
                     .detectionCount(0L)
                     .fileCount(0L)
                     .filesFailedToScan(0L)
@@ -326,7 +326,7 @@ internal class ScanReportTest {
                 .severity(ScanReport.Severity.LOW)
                 .summary(
                     ScanReport.Summary.builder()
-                        .addCategory("string")
+                        .addDetectionCategory("string")
                         .detectionCount(0L)
                         .fileCount(0L)
                         .filesFailedToScan(0L)

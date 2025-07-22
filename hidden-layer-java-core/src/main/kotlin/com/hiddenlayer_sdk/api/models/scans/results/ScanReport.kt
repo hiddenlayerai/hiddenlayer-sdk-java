@@ -7038,7 +7038,7 @@ private constructor(
     /** aggregated summary statistics for the scan */
     class Summary
     private constructor(
-        private val categories: JsonField<List<String>>,
+        private val detectionCategories: JsonField<List<String>>,
         private val detectionCount: JsonField<Long>,
         private val fileCount: JsonField<Long>,
         private val filesFailedToScan: JsonField<Long>,
@@ -7050,9 +7050,9 @@ private constructor(
 
         @JsonCreator
         private constructor(
-            @JsonProperty("categories")
+            @JsonProperty("detection_categories")
             @ExcludeMissing
-            categories: JsonField<List<String>> = JsonMissing.of(),
+            detectionCategories: JsonField<List<String>> = JsonMissing.of(),
             @JsonProperty("detection_count")
             @ExcludeMissing
             detectionCount: JsonField<Long> = JsonMissing.of(),
@@ -7072,7 +7072,7 @@ private constructor(
             @ExcludeMissing
             unknownFiles: JsonField<Long> = JsonMissing.of(),
         ) : this(
-            categories,
+            detectionCategories,
             detectionCount,
             fileCount,
             filesFailedToScan,
@@ -7088,7 +7088,8 @@ private constructor(
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun categories(): Optional<List<String>> = categories.getOptional("categories")
+        fun detectionCategories(): Optional<List<String>> =
+            detectionCategories.getOptional("detection_categories")
 
         /**
          * total number of detections found
@@ -7141,13 +7142,14 @@ private constructor(
         fun unknownFiles(): Optional<Long> = unknownFiles.getOptional("unknown_files")
 
         /**
-         * Returns the raw JSON value of [categories].
+         * Returns the raw JSON value of [detectionCategories].
          *
-         * Unlike [categories], this method doesn't throw if the JSON field has an unexpected type.
+         * Unlike [detectionCategories], this method doesn't throw if the JSON field has an
+         * unexpected type.
          */
-        @JsonProperty("categories")
+        @JsonProperty("detection_categories")
         @ExcludeMissing
-        fun _categories(): JsonField<List<String>> = categories
+        fun _detectionCategories(): JsonField<List<String>> = detectionCategories
 
         /**
          * Returns the raw JSON value of [detectionCount].
@@ -7224,7 +7226,7 @@ private constructor(
         /** A builder for [Summary]. */
         class Builder internal constructor() {
 
-            private var categories: JsonField<MutableList<String>>? = null
+            private var detectionCategories: JsonField<MutableList<String>>? = null
             private var detectionCount: JsonField<Long> = JsonMissing.of()
             private var fileCount: JsonField<Long> = JsonMissing.of()
             private var filesFailedToScan: JsonField<Long> = JsonMissing.of()
@@ -7235,7 +7237,7 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(summary: Summary) = apply {
-                categories = summary.categories.map { it.toMutableList() }
+                detectionCategories = summary.detectionCategories.map { it.toMutableList() }
                 detectionCount = summary.detectionCount
                 fileCount = summary.fileCount
                 filesFailedToScan = summary.filesFailedToScan
@@ -7246,28 +7248,29 @@ private constructor(
             }
 
             /** list of unique detection categories found */
-            fun categories(categories: List<String>) = categories(JsonField.of(categories))
+            fun detectionCategories(detectionCategories: List<String>) =
+                detectionCategories(JsonField.of(detectionCategories))
 
             /**
-             * Sets [Builder.categories] to an arbitrary JSON value.
+             * Sets [Builder.detectionCategories] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.categories] with a well-typed `List<String>` value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
+             * You should usually call [Builder.detectionCategories] with a well-typed
+             * `List<String>` value instead. This method is primarily for setting the field to an
+             * undocumented or not yet supported value.
              */
-            fun categories(categories: JsonField<List<String>>) = apply {
-                this.categories = categories.map { it.toMutableList() }
+            fun detectionCategories(detectionCategories: JsonField<List<String>>) = apply {
+                this.detectionCategories = detectionCategories.map { it.toMutableList() }
             }
 
             /**
-             * Adds a single [String] to [categories].
+             * Adds a single [String] to [detectionCategories].
              *
              * @throws IllegalStateException if the field was previously set to a non-list.
              */
-            fun addCategory(category: String) = apply {
-                categories =
-                    (categories ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("categories", it).add(category)
+            fun addDetectionCategory(detectionCategory: String) = apply {
+                detectionCategories =
+                    (detectionCategories ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("detectionCategories", it).add(detectionCategory)
                     }
             }
 
@@ -7379,7 +7382,7 @@ private constructor(
              */
             fun build(): Summary =
                 Summary(
-                    (categories ?: JsonMissing.of()).map { it.toImmutable() },
+                    (detectionCategories ?: JsonMissing.of()).map { it.toImmutable() },
                     detectionCount,
                     fileCount,
                     filesFailedToScan,
@@ -7397,7 +7400,7 @@ private constructor(
                 return@apply
             }
 
-            categories()
+            detectionCategories()
             detectionCount()
             fileCount()
             filesFailedToScan()
@@ -7423,7 +7426,7 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (categories.asKnown().getOrNull()?.size ?: 0) +
+            (detectionCategories.asKnown().getOrNull()?.size ?: 0) +
                 (if (detectionCount.asKnown().isPresent) 1 else 0) +
                 (if (fileCount.asKnown().isPresent) 1 else 0) +
                 (if (filesFailedToScan.asKnown().isPresent) 1 else 0) +
@@ -7591,17 +7594,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Summary && categories == other.categories && detectionCount == other.detectionCount && fileCount == other.fileCount && filesFailedToScan == other.filesFailedToScan && filesWithDetectionsCount == other.filesWithDetectionsCount && severity == other.severity && unknownFiles == other.unknownFiles && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Summary && detectionCategories == other.detectionCategories && detectionCount == other.detectionCount && fileCount == other.fileCount && filesFailedToScan == other.filesFailedToScan && filesWithDetectionsCount == other.filesWithDetectionsCount && severity == other.severity && unknownFiles == other.unknownFiles && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(categories, detectionCount, fileCount, filesFailedToScan, filesWithDetectionsCount, severity, unknownFiles, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(detectionCategories, detectionCount, fileCount, filesFailedToScan, filesWithDetectionsCount, severity, unknownFiles, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Summary{categories=$categories, detectionCount=$detectionCount, fileCount=$fileCount, filesFailedToScan=$filesFailedToScan, filesWithDetectionsCount=$filesWithDetectionsCount, severity=$severity, unknownFiles=$unknownFiles, additionalProperties=$additionalProperties}"
+            "Summary{detectionCategories=$detectionCategories, detectionCount=$detectionCount, fileCount=$fileCount, filesFailedToScan=$filesFailedToScan, filesWithDetectionsCount=$filesWithDetectionsCount, severity=$severity, unknownFiles=$unknownFiles, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
