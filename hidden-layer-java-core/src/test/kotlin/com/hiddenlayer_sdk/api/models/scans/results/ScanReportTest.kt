@@ -107,6 +107,17 @@ internal class ScanReportTest {
                 )
                 .hasGenealogy(true)
                 .severity(ScanReport.Severity.LOW)
+                .summary(
+                    ScanReport.Summary.builder()
+                        .addCategory("string")
+                        .detectionCount(0L)
+                        .fileCount(0L)
+                        .filesFailedToScan(0L)
+                        .filesWithDetectionsCount(0L)
+                        .severity(ScanReport.Summary.Severity.LOW)
+                        .unknownFiles(0L)
+                        .build()
+                )
                 .build()
 
         assertThat(scanReport.detectionCount()).isEqualTo(0L)
@@ -203,6 +214,18 @@ internal class ScanReportTest {
             )
         assertThat(scanReport.hasGenealogy()).contains(true)
         assertThat(scanReport.severity()).contains(ScanReport.Severity.LOW)
+        assertThat(scanReport.summary())
+            .contains(
+                ScanReport.Summary.builder()
+                    .addCategory("string")
+                    .detectionCount(0L)
+                    .fileCount(0L)
+                    .filesFailedToScan(0L)
+                    .filesWithDetectionsCount(0L)
+                    .severity(ScanReport.Summary.Severity.LOW)
+                    .unknownFiles(0L)
+                    .build()
+            )
     }
 
     @Disabled("skipped: tests are disabled for the time being")
@@ -301,6 +324,17 @@ internal class ScanReportTest {
                 )
                 .hasGenealogy(true)
                 .severity(ScanReport.Severity.LOW)
+                .summary(
+                    ScanReport.Summary.builder()
+                        .addCategory("string")
+                        .detectionCount(0L)
+                        .fileCount(0L)
+                        .filesFailedToScan(0L)
+                        .filesWithDetectionsCount(0L)
+                        .severity(ScanReport.Summary.Severity.LOW)
+                        .unknownFiles(0L)
+                        .build()
+                )
                 .build()
 
         val roundtrippedScanReport =

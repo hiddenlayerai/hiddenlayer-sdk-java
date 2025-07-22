@@ -47,6 +47,7 @@ private constructor(
     private val fileResults: JsonField<List<FileResult>>,
     private val hasGenealogy: JsonField<Boolean>,
     private val severity: JsonField<Severity>,
+    private val summary: JsonField<Summary>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -81,6 +82,7 @@ private constructor(
         @ExcludeMissing
         hasGenealogy: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("severity") @ExcludeMissing severity: JsonField<Severity> = JsonMissing.of(),
+        @JsonProperty("summary") @ExcludeMissing summary: JsonField<Summary> = JsonMissing.of(),
     ) : this(
         detectionCount,
         fileCount,
@@ -95,6 +97,7 @@ private constructor(
         fileResults,
         hasGenealogy,
         severity,
+        summary,
         mutableMapOf(),
     )
 
@@ -203,6 +206,14 @@ private constructor(
     fun severity(): Optional<Severity> = severity.getOptional("severity")
 
     /**
+     * aggregated summary statistics for the scan
+     *
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun summary(): Optional<Summary> = summary.getOptional("summary")
+
+    /**
      * Returns the raw JSON value of [detectionCount].
      *
      * Unlike [detectionCount], this method doesn't throw if the JSON field has an unexpected type.
@@ -307,6 +318,13 @@ private constructor(
      */
     @JsonProperty("severity") @ExcludeMissing fun _severity(): JsonField<Severity> = severity
 
+    /**
+     * Returns the raw JSON value of [summary].
+     *
+     * Unlike [summary], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("summary") @ExcludeMissing fun _summary(): JsonField<Summary> = summary
+
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
         additionalProperties.put(key, value)
@@ -355,6 +373,7 @@ private constructor(
         private var fileResults: JsonField<MutableList<FileResult>>? = null
         private var hasGenealogy: JsonField<Boolean> = JsonMissing.of()
         private var severity: JsonField<Severity> = JsonMissing.of()
+        private var summary: JsonField<Summary> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -372,6 +391,7 @@ private constructor(
             fileResults = scanReport.fileResults.map { it.toMutableList() }
             hasGenealogy = scanReport.hasGenealogy
             severity = scanReport.severity
+            summary = scanReport.summary
             additionalProperties = scanReport.additionalProperties.toMutableMap()
         }
 
@@ -576,6 +596,17 @@ private constructor(
          */
         fun severity(severity: JsonField<Severity>) = apply { this.severity = severity }
 
+        /** aggregated summary statistics for the scan */
+        fun summary(summary: Summary) = summary(JsonField.of(summary))
+
+        /**
+         * Sets [Builder.summary] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.summary] with a well-typed [Summary] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun summary(summary: JsonField<Summary>) = apply { this.summary = summary }
+
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
@@ -629,6 +660,7 @@ private constructor(
                 (fileResults ?: JsonMissing.of()).map { it.toImmutable() },
                 hasGenealogy,
                 severity,
+                summary,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -653,6 +685,7 @@ private constructor(
         fileResults().ifPresent { it.forEach { it.validate() } }
         hasGenealogy()
         severity().ifPresent { it.validate() }
+        summary().ifPresent { it.validate() }
         validated = true
     }
 
@@ -683,7 +716,8 @@ private constructor(
             (if (endTime.asKnown().isPresent) 1 else 0) +
             (fileResults.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (if (hasGenealogy.asKnown().isPresent) 1 else 0) +
-            (severity.asKnown().getOrNull()?.validity() ?: 0)
+            (severity.asKnown().getOrNull()?.validity() ?: 0) +
+            (summary.asKnown().getOrNull()?.validity() ?: 0)
 
     /** information about model and version that this scan relates to */
     @JsonDeserialize(using = Inventory.Deserializer::class)
@@ -7001,20 +7035,589 @@ private constructor(
         override fun toString() = value.toString()
     }
 
+    /** aggregated summary statistics for the scan */
+    class Summary
+    private constructor(
+        private val categories: JsonField<List<String>>,
+        private val detectionCount: JsonField<Long>,
+        private val fileCount: JsonField<Long>,
+        private val filesFailedToScan: JsonField<Long>,
+        private val filesWithDetectionsCount: JsonField<Long>,
+        private val severity: JsonField<Severity>,
+        private val unknownFiles: JsonField<Long>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("categories")
+            @ExcludeMissing
+            categories: JsonField<List<String>> = JsonMissing.of(),
+            @JsonProperty("detection_count")
+            @ExcludeMissing
+            detectionCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("file_count")
+            @ExcludeMissing
+            fileCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("files_failed_to_scan")
+            @ExcludeMissing
+            filesFailedToScan: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("files_with_detections_count")
+            @ExcludeMissing
+            filesWithDetectionsCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("severity")
+            @ExcludeMissing
+            severity: JsonField<Severity> = JsonMissing.of(),
+            @JsonProperty("unknown_files")
+            @ExcludeMissing
+            unknownFiles: JsonField<Long> = JsonMissing.of(),
+        ) : this(
+            categories,
+            detectionCount,
+            fileCount,
+            filesFailedToScan,
+            filesWithDetectionsCount,
+            severity,
+            unknownFiles,
+            mutableMapOf(),
+        )
+
+        /**
+         * list of unique detection categories found
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun categories(): Optional<List<String>> = categories.getOptional("categories")
+
+        /**
+         * total number of detections found
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun detectionCount(): Optional<Long> = detectionCount.getOptional("detection_count")
+
+        /**
+         * total number of files scanned
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun fileCount(): Optional<Long> = fileCount.getOptional("file_count")
+
+        /**
+         * number of files that failed during scanning
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun filesFailedToScan(): Optional<Long> =
+            filesFailedToScan.getOptional("files_failed_to_scan")
+
+        /**
+         * number of files that contain detections
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun filesWithDetectionsCount(): Optional<Long> =
+            filesWithDetectionsCount.getOptional("files_with_detections_count")
+
+        /**
+         * highest severity level found across all detections
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun severity(): Optional<Severity> = severity.getOptional("severity")
+
+        /**
+         * number of files with unknown file type
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun unknownFiles(): Optional<Long> = unknownFiles.getOptional("unknown_files")
+
+        /**
+         * Returns the raw JSON value of [categories].
+         *
+         * Unlike [categories], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("categories")
+        @ExcludeMissing
+        fun _categories(): JsonField<List<String>> = categories
+
+        /**
+         * Returns the raw JSON value of [detectionCount].
+         *
+         * Unlike [detectionCount], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("detection_count")
+        @ExcludeMissing
+        fun _detectionCount(): JsonField<Long> = detectionCount
+
+        /**
+         * Returns the raw JSON value of [fileCount].
+         *
+         * Unlike [fileCount], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("file_count") @ExcludeMissing fun _fileCount(): JsonField<Long> = fileCount
+
+        /**
+         * Returns the raw JSON value of [filesFailedToScan].
+         *
+         * Unlike [filesFailedToScan], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("files_failed_to_scan")
+        @ExcludeMissing
+        fun _filesFailedToScan(): JsonField<Long> = filesFailedToScan
+
+        /**
+         * Returns the raw JSON value of [filesWithDetectionsCount].
+         *
+         * Unlike [filesWithDetectionsCount], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("files_with_detections_count")
+        @ExcludeMissing
+        fun _filesWithDetectionsCount(): JsonField<Long> = filesWithDetectionsCount
+
+        /**
+         * Returns the raw JSON value of [severity].
+         *
+         * Unlike [severity], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("severity") @ExcludeMissing fun _severity(): JsonField<Severity> = severity
+
+        /**
+         * Returns the raw JSON value of [unknownFiles].
+         *
+         * Unlike [unknownFiles], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("unknown_files")
+        @ExcludeMissing
+        fun _unknownFiles(): JsonField<Long> = unknownFiles
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [Summary]. */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Summary]. */
+        class Builder internal constructor() {
+
+            private var categories: JsonField<MutableList<String>>? = null
+            private var detectionCount: JsonField<Long> = JsonMissing.of()
+            private var fileCount: JsonField<Long> = JsonMissing.of()
+            private var filesFailedToScan: JsonField<Long> = JsonMissing.of()
+            private var filesWithDetectionsCount: JsonField<Long> = JsonMissing.of()
+            private var severity: JsonField<Severity> = JsonMissing.of()
+            private var unknownFiles: JsonField<Long> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(summary: Summary) = apply {
+                categories = summary.categories.map { it.toMutableList() }
+                detectionCount = summary.detectionCount
+                fileCount = summary.fileCount
+                filesFailedToScan = summary.filesFailedToScan
+                filesWithDetectionsCount = summary.filesWithDetectionsCount
+                severity = summary.severity
+                unknownFiles = summary.unknownFiles
+                additionalProperties = summary.additionalProperties.toMutableMap()
+            }
+
+            /** list of unique detection categories found */
+            fun categories(categories: List<String>) = categories(JsonField.of(categories))
+
+            /**
+             * Sets [Builder.categories] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.categories] with a well-typed `List<String>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun categories(categories: JsonField<List<String>>) = apply {
+                this.categories = categories.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [String] to [categories].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addCategory(category: String) = apply {
+                categories =
+                    (categories ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("categories", it).add(category)
+                    }
+            }
+
+            /** total number of detections found */
+            fun detectionCount(detectionCount: Long) = detectionCount(JsonField.of(detectionCount))
+
+            /**
+             * Sets [Builder.detectionCount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.detectionCount] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun detectionCount(detectionCount: JsonField<Long>) = apply {
+                this.detectionCount = detectionCount
+            }
+
+            /** total number of files scanned */
+            fun fileCount(fileCount: Long) = fileCount(JsonField.of(fileCount))
+
+            /**
+             * Sets [Builder.fileCount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.fileCount] with a well-typed [Long] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun fileCount(fileCount: JsonField<Long>) = apply { this.fileCount = fileCount }
+
+            /** number of files that failed during scanning */
+            fun filesFailedToScan(filesFailedToScan: Long) =
+                filesFailedToScan(JsonField.of(filesFailedToScan))
+
+            /**
+             * Sets [Builder.filesFailedToScan] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.filesFailedToScan] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun filesFailedToScan(filesFailedToScan: JsonField<Long>) = apply {
+                this.filesFailedToScan = filesFailedToScan
+            }
+
+            /** number of files that contain detections */
+            fun filesWithDetectionsCount(filesWithDetectionsCount: Long) =
+                filesWithDetectionsCount(JsonField.of(filesWithDetectionsCount))
+
+            /**
+             * Sets [Builder.filesWithDetectionsCount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.filesWithDetectionsCount] with a well-typed [Long]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun filesWithDetectionsCount(filesWithDetectionsCount: JsonField<Long>) = apply {
+                this.filesWithDetectionsCount = filesWithDetectionsCount
+            }
+
+            /** highest severity level found across all detections */
+            fun severity(severity: Severity) = severity(JsonField.of(severity))
+
+            /**
+             * Sets [Builder.severity] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.severity] with a well-typed [Severity] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun severity(severity: JsonField<Severity>) = apply { this.severity = severity }
+
+            /** number of files with unknown file type */
+            fun unknownFiles(unknownFiles: Long) = unknownFiles(JsonField.of(unknownFiles))
+
+            /**
+             * Sets [Builder.unknownFiles] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.unknownFiles] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun unknownFiles(unknownFiles: JsonField<Long>) = apply {
+                this.unknownFiles = unknownFiles
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Summary].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Summary =
+                Summary(
+                    (categories ?: JsonMissing.of()).map { it.toImmutable() },
+                    detectionCount,
+                    fileCount,
+                    filesFailedToScan,
+                    filesWithDetectionsCount,
+                    severity,
+                    unknownFiles,
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Summary = apply {
+            if (validated) {
+                return@apply
+            }
+
+            categories()
+            detectionCount()
+            fileCount()
+            filesFailedToScan()
+            filesWithDetectionsCount()
+            severity().ifPresent { it.validate() }
+            unknownFiles()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: HiddenLayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (categories.asKnown().getOrNull()?.size ?: 0) +
+                (if (detectionCount.asKnown().isPresent) 1 else 0) +
+                (if (fileCount.asKnown().isPresent) 1 else 0) +
+                (if (filesFailedToScan.asKnown().isPresent) 1 else 0) +
+                (if (filesWithDetectionsCount.asKnown().isPresent) 1 else 0) +
+                (severity.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (unknownFiles.asKnown().isPresent) 1 else 0)
+
+        /** highest severity level found across all detections */
+        class Severity @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val LOW = of("low")
+
+                @JvmField val MEDIUM = of("medium")
+
+                @JvmField val HIGH = of("high")
+
+                @JvmField val CRITICAL = of("critical")
+
+                @JvmField val SAFE = of("safe")
+
+                @JvmField val UNKNOWN = of("unknown")
+
+                @JvmStatic fun of(value: String) = Severity(JsonField.of(value))
+            }
+
+            /** An enum containing [Severity]'s known values. */
+            enum class Known {
+                LOW,
+                MEDIUM,
+                HIGH,
+                CRITICAL,
+                SAFE,
+                UNKNOWN,
+            }
+
+            /**
+             * An enum containing [Severity]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Severity] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                LOW,
+                MEDIUM,
+                HIGH,
+                CRITICAL,
+                SAFE,
+                UNKNOWN,
+                /**
+                 * An enum member indicating that [Severity] was instantiated with an unknown value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    LOW -> Value.LOW
+                    MEDIUM -> Value.MEDIUM
+                    HIGH -> Value.HIGH
+                    CRITICAL -> Value.CRITICAL
+                    SAFE -> Value.SAFE
+                    UNKNOWN -> Value.UNKNOWN
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value is a not a
+             *   known member.
+             */
+            fun known(): Known =
+                when (this) {
+                    LOW -> Known.LOW
+                    MEDIUM -> Known.MEDIUM
+                    HIGH -> Known.HIGH
+                    CRITICAL -> Known.CRITICAL
+                    SAFE -> Known.SAFE
+                    UNKNOWN -> Known.UNKNOWN
+                    else -> throw HiddenLayerInvalidDataException("Unknown Severity: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value does not have
+             *   the expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    HiddenLayerInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): Severity = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: HiddenLayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Severity && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Summary && categories == other.categories && detectionCount == other.detectionCount && fileCount == other.fileCount && filesFailedToScan == other.filesFailedToScan && filesWithDetectionsCount == other.filesWithDetectionsCount && severity == other.severity && unknownFiles == other.unknownFiles && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(categories, detectionCount, fileCount, filesFailedToScan, filesWithDetectionsCount, severity, unknownFiles, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Summary{categories=$categories, detectionCount=$detectionCount, fileCount=$fileCount, filesFailedToScan=$filesFailedToScan, filesWithDetectionsCount=$filesWithDetectionsCount, severity=$severity, unknownFiles=$unknownFiles, additionalProperties=$additionalProperties}"
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is ScanReport && detectionCount == other.detectionCount && fileCount == other.fileCount && filesWithDetectionsCount == other.filesWithDetectionsCount && inventory == other.inventory && scanId == other.scanId && startTime == other.startTime && status == other.status && version == other.version && detectionCategories == other.detectionCategories && endTime == other.endTime && fileResults == other.fileResults && hasGenealogy == other.hasGenealogy && severity == other.severity && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is ScanReport && detectionCount == other.detectionCount && fileCount == other.fileCount && filesWithDetectionsCount == other.filesWithDetectionsCount && inventory == other.inventory && scanId == other.scanId && startTime == other.startTime && status == other.status && version == other.version && detectionCategories == other.detectionCategories && endTime == other.endTime && fileResults == other.fileResults && hasGenealogy == other.hasGenealogy && severity == other.severity && summary == other.summary && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(detectionCount, fileCount, filesWithDetectionsCount, inventory, scanId, startTime, status, version, detectionCategories, endTime, fileResults, hasGenealogy, severity, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(detectionCount, fileCount, filesWithDetectionsCount, inventory, scanId, startTime, status, version, detectionCategories, endTime, fileResults, hasGenealogy, severity, summary, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ScanReport{detectionCount=$detectionCount, fileCount=$fileCount, filesWithDetectionsCount=$filesWithDetectionsCount, inventory=$inventory, scanId=$scanId, startTime=$startTime, status=$status, version=$version, detectionCategories=$detectionCategories, endTime=$endTime, fileResults=$fileResults, hasGenealogy=$hasGenealogy, severity=$severity, additionalProperties=$additionalProperties}"
+        "ScanReport{detectionCount=$detectionCount, fileCount=$fileCount, filesWithDetectionsCount=$filesWithDetectionsCount, inventory=$inventory, scanId=$scanId, startTime=$startTime, status=$status, version=$version, detectionCategories=$detectionCategories, endTime=$endTime, fileResults=$fileResults, hasGenealogy=$hasGenealogy, severity=$severity, summary=$summary, additionalProperties=$additionalProperties}"
 }
