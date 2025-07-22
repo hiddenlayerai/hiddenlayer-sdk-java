@@ -259,10 +259,17 @@ private constructor(
         fun timeout(): Timeout = timeout
 
         fun fromEnv() = apply {
-            System.getenv("HIDDEN_LAYER_BASE_URL")?.let { baseUrl(it) }
-            System.getenv("HIDDENLAYER_TOKEN")?.let { bearerToken(it) }
-            System.getenv("HIDDENLAYER_CLIENT_ID")?.let { clientId(it) }
-            System.getenv("HIDDENLAYER_CLIENT_SECRET")?.let { clientSecret(it) }
+            (System.getProperty("hiddenlayer.baseUrl") ?: System.getenv("HIDDEN_LAYER_BASE_URL"))
+                ?.let { baseUrl(it) }
+            (System.getProperty("hiddenlayer.hiddenlayerToken")
+                    ?: System.getenv("HIDDENLAYER_TOKEN"))
+                ?.let { bearerToken(it) }
+            (System.getProperty("hiddenlayer.hiddenlayerClientId")
+                    ?: System.getenv("HIDDENLAYER_CLIENT_ID"))
+                ?.let { clientId(it) }
+            (System.getProperty("hiddenlayer.hiddenlayerClientSecret")
+                    ?: System.getenv("HIDDENLAYER_CLIENT_SECRET"))
+                ?.let { clientSecret(it) }
         }
 
         /**
