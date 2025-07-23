@@ -6,6 +6,8 @@ import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.core.getPackageVersion
 import com.hiddenlayer_sdk.api.services.blocking.ModelService
 import com.hiddenlayer_sdk.api.services.blocking.ModelServiceImpl
+import com.hiddenlayer_sdk.api.services.blocking.PromptAnalyzerService
+import com.hiddenlayer_sdk.api.services.blocking.PromptAnalyzerServiceImpl
 import com.hiddenlayer_sdk.api.services.blocking.ScanService
 import com.hiddenlayer_sdk.api.services.blocking.ScanServiceImpl
 import com.hiddenlayer_sdk.api.services.blocking.SensorService
@@ -31,6 +33,10 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
 
     private val models: ModelService by lazy { ModelServiceImpl(clientOptionsWithUserAgent) }
 
+    private val promptAnalyzer: PromptAnalyzerService by lazy {
+        PromptAnalyzerServiceImpl(clientOptionsWithUserAgent)
+    }
+
     private val sensors: SensorService by lazy { SensorServiceImpl(clientOptionsWithUserAgent) }
 
     private val scans: ScanService by lazy { ScanServiceImpl(clientOptionsWithUserAgent) }
@@ -44,6 +50,8 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
 
     override fun models(): ModelService = models
 
+    override fun promptAnalyzer(): PromptAnalyzerService = promptAnalyzer
+
     override fun sensors(): SensorService = sensors
 
     override fun scans(): ScanService = scans
@@ -55,6 +63,10 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
 
         private val models: ModelService.WithRawResponse by lazy {
             ModelServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val promptAnalyzer: PromptAnalyzerService.WithRawResponse by lazy {
+            PromptAnalyzerServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val sensors: SensorService.WithRawResponse by lazy {
@@ -73,6 +85,8 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
             )
 
         override fun models(): ModelService.WithRawResponse = models
+
+        override fun promptAnalyzer(): PromptAnalyzerService.WithRawResponse = promptAnalyzer
 
         override fun sensors(): SensorService.WithRawResponse = sensors
 

@@ -4,6 +4,7 @@ package com.hiddenlayer_sdk.api.client
 
 import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.services.blocking.ModelService
+import com.hiddenlayer_sdk.api.services.blocking.PromptAnalyzerService
 import com.hiddenlayer_sdk.api.services.blocking.ScanService
 import com.hiddenlayer_sdk.api.services.blocking.SensorService
 import java.util.function.Consumer
@@ -46,6 +47,8 @@ interface HiddenLayerClient {
 
     fun models(): ModelService
 
+    fun promptAnalyzer(): PromptAnalyzerService
+
     fun sensors(): SensorService
 
     fun scans(): ScanService
@@ -76,6 +79,8 @@ interface HiddenLayerClient {
         ): HiddenLayerClient.WithRawResponse
 
         fun models(): ModelService.WithRawResponse
+
+        fun promptAnalyzer(): PromptAnalyzerService.WithRawResponse
 
         fun sensors(): SensorService.WithRawResponse
 
