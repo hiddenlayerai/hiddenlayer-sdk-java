@@ -81,7 +81,7 @@ import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
 
 HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
     // Configures using the `hiddenlayer.hiddenlayerToken`, `hiddenlayer.hiddenlayerClientId`, `hiddenlayer.hiddenlayerClientSecret` and `hiddenlayer.baseUrl` system properties
-    Or configures using the `HIDDENLAYER_TOKEN`, `HIDDENLAYER_CLIENT_ID`, `HIDDENLAYER_CLIENT_SECRET` and `HIDDEN_LAYER_BASE_URL` environment variables
+    // Or configures using the `HIDDENLAYER_TOKEN`, `HIDDENLAYER_CLIENT_ID`, `HIDDENLAYER_CLIENT_SECRET` and `HIDDEN_LAYER_BASE_URL` environment variables
     .fromEnv()
     .bearerToken("My Bearer Token")
     .build();
