@@ -27,17 +27,17 @@ interface CardService {
     /** List Model Cards */
     fun list(): CardListPage = list(CardListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: CardListParams = CardListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CardListPage
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: CardListParams = CardListParams.none()): CardListPage =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CardListPage =
         list(CardListParams.none(), requestOptions)
 
@@ -57,19 +57,19 @@ interface CardService {
          */
         @MustBeClosed fun list(): HttpResponseFor<CardListPage> = list(CardListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: CardListParams = CardListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<CardListPage>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(params: CardListParams = CardListParams.none()): HttpResponseFor<CardListPage> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<CardListPage> =
             list(CardListParams.none(), requestOptions)

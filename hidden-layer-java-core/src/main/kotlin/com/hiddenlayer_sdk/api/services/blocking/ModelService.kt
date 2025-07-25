@@ -35,7 +35,7 @@ interface ModelService {
     fun create(params: ModelCreateParams): ModelCreateResponse =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: ModelCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -45,54 +45,54 @@ interface ModelService {
     fun retrieve(modelId: String): ModelRetrieveResponse =
         retrieve(modelId, ModelRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         modelId: String,
         params: ModelRetrieveParams = ModelRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ModelRetrieveResponse = retrieve(params.toBuilder().modelId(modelId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         modelId: String,
         params: ModelRetrieveParams = ModelRetrieveParams.none(),
     ): ModelRetrieveResponse = retrieve(modelId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: ModelRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ModelRetrieveResponse
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: ModelRetrieveParams): ModelRetrieveResponse =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(modelId: String, requestOptions: RequestOptions): ModelRetrieveResponse =
         retrieve(modelId, ModelRetrieveParams.none(), requestOptions)
 
     /** Delete Adhoc Model */
     fun delete(modelId: String) = delete(modelId, ModelDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         modelId: String,
         params: ModelDeleteParams = ModelDeleteParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ) = delete(params.toBuilder().modelId(modelId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(modelId: String, params: ModelDeleteParams = ModelDeleteParams.none()) =
         delete(modelId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: ModelDeleteParams, requestOptions: RequestOptions = RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: ModelDeleteParams) = delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(modelId: String, requestOptions: RequestOptions) =
         delete(modelId, ModelDeleteParams.none(), requestOptions)
 
@@ -116,7 +116,7 @@ interface ModelService {
         fun create(params: ModelCreateParams): HttpResponseFor<ModelCreateResponse> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: ModelCreateParams,
@@ -131,7 +131,7 @@ interface ModelService {
         fun retrieve(modelId: String): HttpResponseFor<ModelRetrieveResponse> =
             retrieve(modelId, ModelRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             modelId: String,
@@ -140,26 +140,26 @@ interface ModelService {
         ): HttpResponseFor<ModelRetrieveResponse> =
             retrieve(params.toBuilder().modelId(modelId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             modelId: String,
             params: ModelRetrieveParams = ModelRetrieveParams.none(),
         ): HttpResponseFor<ModelRetrieveResponse> = retrieve(modelId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: ModelRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ModelRetrieveResponse>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(params: ModelRetrieveParams): HttpResponseFor<ModelRetrieveResponse> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             modelId: String,
@@ -174,7 +174,7 @@ interface ModelService {
         @MustBeClosed
         fun delete(modelId: String): HttpResponse = delete(modelId, ModelDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             modelId: String,
@@ -182,25 +182,25 @@ interface ModelService {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponse = delete(params.toBuilder().modelId(modelId).build(), requestOptions)
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             modelId: String,
             params: ModelDeleteParams = ModelDeleteParams.none(),
         ): HttpResponse = delete(modelId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             params: ModelDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponse
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(params: ModelDeleteParams): HttpResponse = delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(modelId: String, requestOptions: RequestOptions): HttpResponse =
             delete(modelId, ModelDeleteParams.none(), requestOptions)

@@ -30,7 +30,7 @@ interface FileServiceAsync {
     fun add(scanId: String, params: FileAddParams): CompletableFuture<FileAddResponse> =
         add(scanId, params, RequestOptions.none())
 
-    /** @see [add] */
+    /** @see add */
     fun add(
         scanId: String,
         params: FileAddParams,
@@ -38,11 +38,11 @@ interface FileServiceAsync {
     ): CompletableFuture<FileAddResponse> =
         add(params.toBuilder().scanId(scanId).build(), requestOptions)
 
-    /** @see [add] */
+    /** @see add */
     fun add(params: FileAddParams): CompletableFuture<FileAddResponse> =
         add(params, RequestOptions.none())
 
-    /** @see [add] */
+    /** @see add */
     fun add(
         params: FileAddParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -54,7 +54,7 @@ interface FileServiceAsync {
         params: FileCompleteParams,
     ): CompletableFuture<FileCompleteResponse> = complete(fileId, params, RequestOptions.none())
 
-    /** @see [complete] */
+    /** @see complete */
     fun complete(
         fileId: String,
         params: FileCompleteParams,
@@ -62,11 +62,11 @@ interface FileServiceAsync {
     ): CompletableFuture<FileCompleteResponse> =
         complete(params.toBuilder().fileId(fileId).build(), requestOptions)
 
-    /** @see [complete] */
+    /** @see complete */
     fun complete(params: FileCompleteParams): CompletableFuture<FileCompleteResponse> =
         complete(params, RequestOptions.none())
 
-    /** @see [complete] */
+    /** @see complete */
     fun complete(
         params: FileCompleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -92,7 +92,7 @@ interface FileServiceAsync {
         ): CompletableFuture<HttpResponseFor<FileAddResponse>> =
             add(scanId, params, RequestOptions.none())
 
-        /** @see [add] */
+        /** @see add */
         fun add(
             scanId: String,
             params: FileAddParams,
@@ -100,11 +100,11 @@ interface FileServiceAsync {
         ): CompletableFuture<HttpResponseFor<FileAddResponse>> =
             add(params.toBuilder().scanId(scanId).build(), requestOptions)
 
-        /** @see [add] */
+        /** @see add */
         fun add(params: FileAddParams): CompletableFuture<HttpResponseFor<FileAddResponse>> =
             add(params, RequestOptions.none())
 
-        /** @see [add] */
+        /** @see add */
         fun add(
             params: FileAddParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -120,7 +120,7 @@ interface FileServiceAsync {
         ): CompletableFuture<HttpResponseFor<FileCompleteResponse>> =
             complete(fileId, params, RequestOptions.none())
 
-        /** @see [complete] */
+        /** @see complete */
         fun complete(
             fileId: String,
             params: FileCompleteParams,
@@ -128,13 +128,13 @@ interface FileServiceAsync {
         ): CompletableFuture<HttpResponseFor<FileCompleteResponse>> =
             complete(params.toBuilder().fileId(fileId).build(), requestOptions)
 
-        /** @see [complete] */
+        /** @see complete */
         fun complete(
             params: FileCompleteParams
         ): CompletableFuture<HttpResponseFor<FileCompleteResponse>> =
             complete(params, RequestOptions.none())
 
-        /** @see [complete] */
+        /** @see complete */
         fun complete(
             params: FileCompleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),

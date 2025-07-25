@@ -30,17 +30,17 @@ interface FileService {
     fun add(scanId: String, params: FileAddParams): FileAddResponse =
         add(scanId, params, RequestOptions.none())
 
-    /** @see [add] */
+    /** @see add */
     fun add(
         scanId: String,
         params: FileAddParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): FileAddResponse = add(params.toBuilder().scanId(scanId).build(), requestOptions)
 
-    /** @see [add] */
+    /** @see add */
     fun add(params: FileAddParams): FileAddResponse = add(params, RequestOptions.none())
 
-    /** @see [add] */
+    /** @see add */
     fun add(
         params: FileAddParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -50,18 +50,18 @@ interface FileService {
     fun complete(fileId: String, params: FileCompleteParams): FileCompleteResponse =
         complete(fileId, params, RequestOptions.none())
 
-    /** @see [complete] */
+    /** @see complete */
     fun complete(
         fileId: String,
         params: FileCompleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): FileCompleteResponse = complete(params.toBuilder().fileId(fileId).build(), requestOptions)
 
-    /** @see [complete] */
+    /** @see complete */
     fun complete(params: FileCompleteParams): FileCompleteResponse =
         complete(params, RequestOptions.none())
 
-    /** @see [complete] */
+    /** @see complete */
     fun complete(
         params: FileCompleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -85,7 +85,7 @@ interface FileService {
         fun add(scanId: String, params: FileAddParams): HttpResponseFor<FileAddResponse> =
             add(scanId, params, RequestOptions.none())
 
-        /** @see [add] */
+        /** @see add */
         @MustBeClosed
         fun add(
             scanId: String,
@@ -94,12 +94,12 @@ interface FileService {
         ): HttpResponseFor<FileAddResponse> =
             add(params.toBuilder().scanId(scanId).build(), requestOptions)
 
-        /** @see [add] */
+        /** @see add */
         @MustBeClosed
         fun add(params: FileAddParams): HttpResponseFor<FileAddResponse> =
             add(params, RequestOptions.none())
 
-        /** @see [add] */
+        /** @see add */
         @MustBeClosed
         fun add(
             params: FileAddParams,
@@ -116,7 +116,7 @@ interface FileService {
             params: FileCompleteParams,
         ): HttpResponseFor<FileCompleteResponse> = complete(fileId, params, RequestOptions.none())
 
-        /** @see [complete] */
+        /** @see complete */
         @MustBeClosed
         fun complete(
             fileId: String,
@@ -125,12 +125,12 @@ interface FileService {
         ): HttpResponseFor<FileCompleteResponse> =
             complete(params.toBuilder().fileId(fileId).build(), requestOptions)
 
-        /** @see [complete] */
+        /** @see complete */
         @MustBeClosed
         fun complete(params: FileCompleteParams): HttpResponseFor<FileCompleteResponse> =
             complete(params, RequestOptions.none())
 
-        /** @see [complete] */
+        /** @see complete */
         @MustBeClosed
         fun complete(
             params: FileCompleteParams,

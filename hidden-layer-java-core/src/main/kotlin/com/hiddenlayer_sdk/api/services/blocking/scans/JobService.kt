@@ -31,51 +31,51 @@ interface JobService {
     /** Get scan results (SARIF / V3) */
     fun retrieve(scanId: String): ScanReport = retrieve(scanId, JobRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         scanId: String,
         params: JobRetrieveParams = JobRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ScanReport = retrieve(params.toBuilder().scanId(scanId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(scanId: String, params: JobRetrieveParams = JobRetrieveParams.none()): ScanReport =
         retrieve(scanId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: JobRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ScanReport
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: JobRetrieveParams): ScanReport = retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(scanId: String, requestOptions: RequestOptions): ScanReport =
         retrieve(scanId, JobRetrieveParams.none(), requestOptions)
 
     /** Get scan results (Summaries) */
     fun list(): JobListResponse = list(JobListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: JobListParams = JobListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): JobListResponse
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: JobListParams = JobListParams.none()): JobListResponse =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): JobListResponse =
         list(JobListParams.none(), requestOptions)
 
     /** Scan a remote model */
     fun request(params: JobRequestParams): ScanJob = request(params, RequestOptions.none())
 
-    /** @see [request] */
+    /** @see request */
     fun request(
         params: JobRequestParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -99,7 +99,7 @@ interface JobService {
         fun retrieve(scanId: String): HttpResponseFor<ScanReport> =
             retrieve(scanId, JobRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             scanId: String,
@@ -108,26 +108,26 @@ interface JobService {
         ): HttpResponseFor<ScanReport> =
             retrieve(params.toBuilder().scanId(scanId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             scanId: String,
             params: JobRetrieveParams = JobRetrieveParams.none(),
         ): HttpResponseFor<ScanReport> = retrieve(scanId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: JobRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ScanReport>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(params: JobRetrieveParams): HttpResponseFor<ScanReport> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(scanId: String, requestOptions: RequestOptions): HttpResponseFor<ScanReport> =
             retrieve(scanId, JobRetrieveParams.none(), requestOptions)
@@ -138,19 +138,19 @@ interface JobService {
          */
         @MustBeClosed fun list(): HttpResponseFor<JobListResponse> = list(JobListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: JobListParams = JobListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<JobListResponse>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(params: JobListParams = JobListParams.none()): HttpResponseFor<JobListResponse> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<JobListResponse> =
             list(JobListParams.none(), requestOptions)
@@ -163,7 +163,7 @@ interface JobService {
         fun request(params: JobRequestParams): HttpResponseFor<ScanJob> =
             request(params, RequestOptions.none())
 
-        /** @see [request] */
+        /** @see request */
         @MustBeClosed
         fun request(
             params: JobRequestParams,

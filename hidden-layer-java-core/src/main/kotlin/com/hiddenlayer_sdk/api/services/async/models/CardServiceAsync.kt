@@ -27,17 +27,17 @@ interface CardServiceAsync {
     /** List Model Cards */
     fun list(): CompletableFuture<CardListPageAsync> = list(CardListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: CardListParams = CardListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CardListPageAsync>
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: CardListParams = CardListParams.none()): CompletableFuture<CardListPageAsync> =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<CardListPageAsync> =
         list(CardListParams.none(), requestOptions)
 
@@ -58,19 +58,19 @@ interface CardServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<CardListPageAsync>> =
             list(CardListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: CardListParams = CardListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<CardListPageAsync>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: CardListParams = CardListParams.none()
         ): CompletableFuture<HttpResponseFor<CardListPageAsync>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<CardListPageAsync>> =

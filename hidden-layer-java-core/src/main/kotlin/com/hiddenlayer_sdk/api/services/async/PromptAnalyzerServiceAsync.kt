@@ -29,7 +29,7 @@ interface PromptAnalyzerServiceAsync {
         params: PromptAnalyzerCreateParams
     ): CompletableFuture<PromptAnalyzerCreateResponse> = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: PromptAnalyzerCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -59,7 +59,7 @@ interface PromptAnalyzerServiceAsync {
         ): CompletableFuture<HttpResponseFor<PromptAnalyzerCreateResponse>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: PromptAnalyzerCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

@@ -33,7 +33,7 @@ interface UploadService {
     fun completeAll(scanId: String): UploadCompleteAllResponse =
         completeAll(scanId, UploadCompleteAllParams.none())
 
-    /** @see [completeAll] */
+    /** @see completeAll */
     fun completeAll(
         scanId: String,
         params: UploadCompleteAllParams = UploadCompleteAllParams.none(),
@@ -41,30 +41,30 @@ interface UploadService {
     ): UploadCompleteAllResponse =
         completeAll(params.toBuilder().scanId(scanId).build(), requestOptions)
 
-    /** @see [completeAll] */
+    /** @see completeAll */
     fun completeAll(
         scanId: String,
         params: UploadCompleteAllParams = UploadCompleteAllParams.none(),
     ): UploadCompleteAllResponse = completeAll(scanId, params, RequestOptions.none())
 
-    /** @see [completeAll] */
+    /** @see completeAll */
     fun completeAll(
         params: UploadCompleteAllParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): UploadCompleteAllResponse
 
-    /** @see [completeAll] */
+    /** @see completeAll */
     fun completeAll(params: UploadCompleteAllParams): UploadCompleteAllResponse =
         completeAll(params, RequestOptions.none())
 
-    /** @see [completeAll] */
+    /** @see completeAll */
     fun completeAll(scanId: String, requestOptions: RequestOptions): UploadCompleteAllResponse =
         completeAll(scanId, UploadCompleteAllParams.none(), requestOptions)
 
     /** Start a model upload */
     fun start(params: UploadStartParams): UploadStartResponse = start(params, RequestOptions.none())
 
-    /** @see [start] */
+    /** @see start */
     fun start(
         params: UploadStartParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -90,7 +90,7 @@ interface UploadService {
         fun completeAll(scanId: String): HttpResponseFor<UploadCompleteAllResponse> =
             completeAll(scanId, UploadCompleteAllParams.none())
 
-        /** @see [completeAll] */
+        /** @see completeAll */
         @MustBeClosed
         fun completeAll(
             scanId: String,
@@ -99,7 +99,7 @@ interface UploadService {
         ): HttpResponseFor<UploadCompleteAllResponse> =
             completeAll(params.toBuilder().scanId(scanId).build(), requestOptions)
 
-        /** @see [completeAll] */
+        /** @see completeAll */
         @MustBeClosed
         fun completeAll(
             scanId: String,
@@ -107,20 +107,20 @@ interface UploadService {
         ): HttpResponseFor<UploadCompleteAllResponse> =
             completeAll(scanId, params, RequestOptions.none())
 
-        /** @see [completeAll] */
+        /** @see completeAll */
         @MustBeClosed
         fun completeAll(
             params: UploadCompleteAllParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<UploadCompleteAllResponse>
 
-        /** @see [completeAll] */
+        /** @see completeAll */
         @MustBeClosed
         fun completeAll(
             params: UploadCompleteAllParams
         ): HttpResponseFor<UploadCompleteAllResponse> = completeAll(params, RequestOptions.none())
 
-        /** @see [completeAll] */
+        /** @see completeAll */
         @MustBeClosed
         fun completeAll(
             scanId: String,
@@ -136,7 +136,7 @@ interface UploadService {
         fun start(params: UploadStartParams): HttpResponseFor<UploadStartResponse> =
             start(params, RequestOptions.none())
 
-        /** @see [start] */
+        /** @see start */
         @MustBeClosed
         fun start(
             params: UploadStartParams,

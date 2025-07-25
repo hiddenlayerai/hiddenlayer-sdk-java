@@ -11,7 +11,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrDefault
 import kotlin.jvm.optionals.getOrNull
 
-/** @see [CardService.list] */
+/** @see CardService.list */
 class CardListPage
 private constructor(
     private val service: CardService,
@@ -22,7 +22,7 @@ private constructor(
     /**
      * Delegates to [CardListPageResponse], but gracefully handles missing data.
      *
-     * @see [CardListPageResponse.results]
+     * @see CardListPageResponse.results
      */
     fun results(): List<CardListResponse> =
         response._results().getOptional("results").getOrNull() ?: emptyList()
@@ -30,21 +30,21 @@ private constructor(
     /**
      * Delegates to [CardListPageResponse], but gracefully handles missing data.
      *
-     * @see [CardListPageResponse.totalCount]
+     * @see CardListPageResponse.totalCount
      */
     fun totalCount(): Optional<Long> = response._totalCount().getOptional("total_count")
 
     /**
      * Delegates to [CardListPageResponse], but gracefully handles missing data.
      *
-     * @see [CardListPageResponse.pageSize]
+     * @see CardListPageResponse.pageSize
      */
     fun pageSize(): Optional<Long> = response._pageSize().getOptional("page_size")
 
     /**
      * Delegates to [CardListPageResponse], but gracefully handles missing data.
      *
-     * @see [CardListPageResponse.pageNumber]
+     * @see CardListPageResponse.pageNumber
      */
     fun pageNumber(): Optional<Long> = response._pageNumber().getOptional("page_number")
 

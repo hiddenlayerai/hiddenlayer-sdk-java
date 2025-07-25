@@ -28,7 +28,7 @@ interface PromptAnalyzerService {
     fun create(params: PromptAnalyzerCreateParams): PromptAnalyzerCreateResponse =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: PromptAnalyzerCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -57,7 +57,7 @@ interface PromptAnalyzerService {
             params: PromptAnalyzerCreateParams
         ): HttpResponseFor<PromptAnalyzerCreateResponse> = create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: PromptAnalyzerCreateParams,

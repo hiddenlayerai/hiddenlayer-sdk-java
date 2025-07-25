@@ -32,7 +32,7 @@ interface JobServiceAsync {
     fun retrieve(scanId: String): CompletableFuture<ScanReport> =
         retrieve(scanId, JobRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         scanId: String,
         params: JobRetrieveParams = JobRetrieveParams.none(),
@@ -40,40 +40,40 @@ interface JobServiceAsync {
     ): CompletableFuture<ScanReport> =
         retrieve(params.toBuilder().scanId(scanId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         scanId: String,
         params: JobRetrieveParams = JobRetrieveParams.none(),
     ): CompletableFuture<ScanReport> = retrieve(scanId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: JobRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ScanReport>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: JobRetrieveParams): CompletableFuture<ScanReport> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(scanId: String, requestOptions: RequestOptions): CompletableFuture<ScanReport> =
         retrieve(scanId, JobRetrieveParams.none(), requestOptions)
 
     /** Get scan results (Summaries) */
     fun list(): CompletableFuture<JobListResponse> = list(JobListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: JobListParams = JobListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<JobListResponse>
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: JobListParams = JobListParams.none()): CompletableFuture<JobListResponse> =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<JobListResponse> =
         list(JobListParams.none(), requestOptions)
 
@@ -81,7 +81,7 @@ interface JobServiceAsync {
     fun request(params: JobRequestParams): CompletableFuture<ScanJob> =
         request(params, RequestOptions.none())
 
-    /** @see [request] */
+    /** @see request */
     fun request(
         params: JobRequestParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -104,7 +104,7 @@ interface JobServiceAsync {
         fun retrieve(scanId: String): CompletableFuture<HttpResponseFor<ScanReport>> =
             retrieve(scanId, JobRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             scanId: String,
             params: JobRetrieveParams = JobRetrieveParams.none(),
@@ -112,24 +112,24 @@ interface JobServiceAsync {
         ): CompletableFuture<HttpResponseFor<ScanReport>> =
             retrieve(params.toBuilder().scanId(scanId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             scanId: String,
             params: JobRetrieveParams = JobRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<ScanReport>> =
             retrieve(scanId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: JobRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ScanReport>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(params: JobRetrieveParams): CompletableFuture<HttpResponseFor<ScanReport>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             scanId: String,
             requestOptions: RequestOptions,
@@ -142,18 +142,18 @@ interface JobServiceAsync {
          */
         fun list(): CompletableFuture<HttpResponseFor<JobListResponse>> = list(JobListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: JobListParams = JobListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<JobListResponse>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: JobListParams = JobListParams.none()
         ): CompletableFuture<HttpResponseFor<JobListResponse>> = list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<JobListResponse>> =
@@ -166,7 +166,7 @@ interface JobServiceAsync {
         fun request(params: JobRequestParams): CompletableFuture<HttpResponseFor<ScanJob>> =
             request(params, RequestOptions.none())
 
-        /** @see [request] */
+        /** @see request */
         fun request(
             params: JobRequestParams,
             requestOptions: RequestOptions = RequestOptions.none(),

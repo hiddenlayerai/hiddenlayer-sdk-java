@@ -33,7 +33,7 @@ interface UploadServiceAsync {
     fun completeAll(scanId: String): CompletableFuture<UploadCompleteAllResponse> =
         completeAll(scanId, UploadCompleteAllParams.none())
 
-    /** @see [completeAll] */
+    /** @see completeAll */
     fun completeAll(
         scanId: String,
         params: UploadCompleteAllParams = UploadCompleteAllParams.none(),
@@ -41,24 +41,24 @@ interface UploadServiceAsync {
     ): CompletableFuture<UploadCompleteAllResponse> =
         completeAll(params.toBuilder().scanId(scanId).build(), requestOptions)
 
-    /** @see [completeAll] */
+    /** @see completeAll */
     fun completeAll(
         scanId: String,
         params: UploadCompleteAllParams = UploadCompleteAllParams.none(),
     ): CompletableFuture<UploadCompleteAllResponse> =
         completeAll(scanId, params, RequestOptions.none())
 
-    /** @see [completeAll] */
+    /** @see completeAll */
     fun completeAll(
         params: UploadCompleteAllParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<UploadCompleteAllResponse>
 
-    /** @see [completeAll] */
+    /** @see completeAll */
     fun completeAll(params: UploadCompleteAllParams): CompletableFuture<UploadCompleteAllResponse> =
         completeAll(params, RequestOptions.none())
 
-    /** @see [completeAll] */
+    /** @see completeAll */
     fun completeAll(
         scanId: String,
         requestOptions: RequestOptions,
@@ -69,7 +69,7 @@ interface UploadServiceAsync {
     fun start(params: UploadStartParams): CompletableFuture<UploadStartResponse> =
         start(params, RequestOptions.none())
 
-    /** @see [start] */
+    /** @see start */
     fun start(
         params: UploadStartParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -100,7 +100,7 @@ interface UploadServiceAsync {
         ): CompletableFuture<HttpResponseFor<UploadCompleteAllResponse>> =
             completeAll(scanId, UploadCompleteAllParams.none())
 
-        /** @see [completeAll] */
+        /** @see completeAll */
         fun completeAll(
             scanId: String,
             params: UploadCompleteAllParams = UploadCompleteAllParams.none(),
@@ -108,26 +108,26 @@ interface UploadServiceAsync {
         ): CompletableFuture<HttpResponseFor<UploadCompleteAllResponse>> =
             completeAll(params.toBuilder().scanId(scanId).build(), requestOptions)
 
-        /** @see [completeAll] */
+        /** @see completeAll */
         fun completeAll(
             scanId: String,
             params: UploadCompleteAllParams = UploadCompleteAllParams.none(),
         ): CompletableFuture<HttpResponseFor<UploadCompleteAllResponse>> =
             completeAll(scanId, params, RequestOptions.none())
 
-        /** @see [completeAll] */
+        /** @see completeAll */
         fun completeAll(
             params: UploadCompleteAllParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<UploadCompleteAllResponse>>
 
-        /** @see [completeAll] */
+        /** @see completeAll */
         fun completeAll(
             params: UploadCompleteAllParams
         ): CompletableFuture<HttpResponseFor<UploadCompleteAllResponse>> =
             completeAll(params, RequestOptions.none())
 
-        /** @see [completeAll] */
+        /** @see completeAll */
         fun completeAll(
             scanId: String,
             requestOptions: RequestOptions,
@@ -143,7 +143,7 @@ interface UploadServiceAsync {
         ): CompletableFuture<HttpResponseFor<UploadStartResponse>> =
             start(params, RequestOptions.none())
 
-        /** @see [start] */
+        /** @see start */
         fun start(
             params: UploadStartParams,
             requestOptions: RequestOptions = RequestOptions.none(),
