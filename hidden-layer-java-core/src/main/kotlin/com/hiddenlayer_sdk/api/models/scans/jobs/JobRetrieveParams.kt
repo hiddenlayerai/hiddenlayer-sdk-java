@@ -23,8 +23,10 @@ private constructor(
     /** Filter file_results to only those that have detections (and parents) */
     fun hasDetections(): Optional<Boolean> = Optional.ofNullable(hasDetections)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)

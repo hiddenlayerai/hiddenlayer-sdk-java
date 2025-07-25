@@ -81,8 +81,10 @@ private constructor(
     /** Statuses */
     fun status(): Optional<List<String>> = Optional.ofNullable(status)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -469,6 +471,7 @@ private constructor(
 
         fun eq(): Optional<String> = Optional.ofNullable(eq)
 
+        /** Query params to send with the request. */
         fun _additionalProperties(): QueryParams = additionalProperties
 
         fun toBuilder() = Builder().from(this)
@@ -584,6 +587,7 @@ private constructor(
 
         fun eq(): Optional<Eq> = Optional.ofNullable(eq)
 
+        /** Query params to send with the request. */
         fun _additionalProperties(): QueryParams = additionalProperties
 
         fun toBuilder() = Builder().from(this)

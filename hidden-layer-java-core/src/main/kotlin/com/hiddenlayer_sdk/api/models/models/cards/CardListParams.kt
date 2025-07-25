@@ -64,8 +64,10 @@ private constructor(
     /** substring and full match on model source */
     fun source(): Optional<Source> = Optional.ofNullable(source)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -684,6 +686,7 @@ private constructor(
 
         fun lte(): Optional<OffsetDateTime> = Optional.ofNullable(lte)
 
+        /** Query params to send with the request. */
         fun _additionalProperties(): QueryParams = additionalProperties
 
         fun toBuilder() = Builder().from(this)
@@ -805,6 +808,7 @@ private constructor(
 
         fun eq(): Optional<String> = Optional.ofNullable(eq)
 
+        /** Query params to send with the request. */
         fun _additionalProperties(): QueryParams = additionalProperties
 
         fun toBuilder() = Builder().from(this)
@@ -1339,6 +1343,7 @@ private constructor(
 
         fun eq(): Optional<String> = Optional.ofNullable(eq)
 
+        /** Query params to send with the request. */
         fun _additionalProperties(): QueryParams = additionalProperties
 
         fun toBuilder() = Builder().from(this)
