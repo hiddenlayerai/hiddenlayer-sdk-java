@@ -3,6 +3,7 @@
 package com.hiddenlayer_sdk.api.client
 
 import com.hiddenlayer_sdk.api.core.ClientOptions
+import com.hiddenlayer_sdk.api.services.blocking.ModelIntelService
 import com.hiddenlayer_sdk.api.services.blocking.ModelService
 import com.hiddenlayer_sdk.api.services.blocking.PromptAnalyzerService
 import com.hiddenlayer_sdk.api.services.blocking.ScanService
@@ -49,6 +50,8 @@ interface HiddenLayerClient {
 
     fun promptAnalyzer(): PromptAnalyzerService
 
+    fun modelIntel(): ModelIntelService
+
     fun sensors(): SensorService
 
     fun scans(): ScanService
@@ -81,6 +84,8 @@ interface HiddenLayerClient {
         fun models(): ModelService.WithRawResponse
 
         fun promptAnalyzer(): PromptAnalyzerService.WithRawResponse
+
+        fun modelIntel(): ModelIntelService.WithRawResponse
 
         fun sensors(): SensorService.WithRawResponse
 
