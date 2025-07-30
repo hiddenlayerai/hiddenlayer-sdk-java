@@ -221,6 +221,8 @@ The SDK throws custom unchecked exception types:
 
 - [`HiddenLayerIoException`](hidden-layer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/HiddenLayerIoException.kt): I/O networking errors.
 
+- [`HiddenLayerRetryableException`](hidden-layer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/HiddenLayerRetryableException.kt): Generic error indicating a failure that could be retried by the client.
+
 - [`HiddenLayerInvalidDataException`](hidden-layer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/HiddenLayerInvalidDataException.kt): Failure to interpret successfully parsed data. For example, when accessing a property that's supposed to be required, but the API unexpectedly omitted it from the response.
 
 - [`HiddenLayerException`](hidden-layer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/HiddenLayerException.kt): Base class for all exceptions. Most errors will result in one of the previously mentioned ones, but completely generic errors may be thrown using the base class.

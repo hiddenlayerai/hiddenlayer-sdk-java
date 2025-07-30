@@ -3,6 +3,7 @@ package com.hiddenlayer_sdk.api.core.http
 import com.hiddenlayer_sdk.api.core.RequestOptions
 import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.errors.HiddenLayerIoException
+import com.hiddenlayer_sdk.api.errors.HiddenLayerRetryableException
 import java.io.IOException
 import java.time.Clock
 import java.time.Duration
@@ -176,10 +177,10 @@ private constructor(
     }
 
     private fun shouldRetry(throwable: Throwable): Boolean =
-        // Only retry IOException and HiddenLayerIoException, other exceptions are not intended to
-        // be
-        // retried.
-        throwable is IOException || throwable is HiddenLayerIoException
+        // Only retry known retryable exceptions, other exceptions are not intended to be retried.
+        throwable is IOException ||
+            throwable is HiddenLayerIoException ||
+            throwable is HiddenLayerRetryableException
 
     private fun getRetryBackoffDuration(retries: Int, response: HttpResponse?): Duration {
         // About the Retry-After header:
