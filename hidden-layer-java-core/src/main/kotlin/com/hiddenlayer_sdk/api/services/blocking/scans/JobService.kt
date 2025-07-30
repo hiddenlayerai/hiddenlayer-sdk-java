@@ -28,7 +28,7 @@ interface JobService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobService
 
-    /** Get scan results (SARIF / V3) */
+    /** Get scan results */
     fun retrieve(scanId: String): ScanReport = retrieve(scanId, JobRetrieveParams.none())
 
     /** @see retrieve */

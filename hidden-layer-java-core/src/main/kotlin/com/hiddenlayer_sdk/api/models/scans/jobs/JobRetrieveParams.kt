@@ -9,7 +9,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Get scan results (SARIF / V3) */
+/** Get scan results */
 class JobRetrieveParams
 private constructor(
     private val scanId: String?,

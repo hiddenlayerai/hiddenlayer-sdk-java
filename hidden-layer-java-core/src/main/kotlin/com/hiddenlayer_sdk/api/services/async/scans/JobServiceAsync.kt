@@ -28,7 +28,7 @@ interface JobServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobServiceAsync
 
-    /** Get scan results (SARIF / V3) */
+    /** Get scan results */
     fun retrieve(scanId: String): CompletableFuture<ScanReport> =
         retrieve(scanId, JobRetrieveParams.none())
 
