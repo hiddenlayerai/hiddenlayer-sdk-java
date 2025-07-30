@@ -26,7 +26,6 @@ import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.entry
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.parallel.ResourceLock
@@ -59,7 +58,6 @@ internal class ErrorHandlingTest {
                 .build()
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreate400() {
         val sensorService = client.sensors()
@@ -92,7 +90,6 @@ internal class ErrorHandlingTest {
         assertThat(e.body()).isEqualTo(ERROR_JSON)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreate400WithRawResponse() {
         val sensorService = client.sensors().withRawResponse()
@@ -125,7 +122,6 @@ internal class ErrorHandlingTest {
         assertThat(e.body()).isEqualTo(ERROR_JSON)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreate401() {
         val sensorService = client.sensors()
@@ -158,7 +154,6 @@ internal class ErrorHandlingTest {
         assertThat(e.body()).isEqualTo(ERROR_JSON)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreate401WithRawResponse() {
         val sensorService = client.sensors().withRawResponse()
@@ -191,7 +186,6 @@ internal class ErrorHandlingTest {
         assertThat(e.body()).isEqualTo(ERROR_JSON)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreate403() {
         val sensorService = client.sensors()
@@ -224,7 +218,6 @@ internal class ErrorHandlingTest {
         assertThat(e.body()).isEqualTo(ERROR_JSON)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreate403WithRawResponse() {
         val sensorService = client.sensors().withRawResponse()
@@ -257,7 +250,6 @@ internal class ErrorHandlingTest {
         assertThat(e.body()).isEqualTo(ERROR_JSON)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreate404() {
         val sensorService = client.sensors()
@@ -290,7 +282,6 @@ internal class ErrorHandlingTest {
         assertThat(e.body()).isEqualTo(ERROR_JSON)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreate404WithRawResponse() {
         val sensorService = client.sensors().withRawResponse()
@@ -323,7 +314,6 @@ internal class ErrorHandlingTest {
         assertThat(e.body()).isEqualTo(ERROR_JSON)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreate422() {
         val sensorService = client.sensors()
@@ -356,7 +346,6 @@ internal class ErrorHandlingTest {
         assertThat(e.body()).isEqualTo(ERROR_JSON)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreate422WithRawResponse() {
         val sensorService = client.sensors().withRawResponse()
@@ -389,7 +378,6 @@ internal class ErrorHandlingTest {
         assertThat(e.body()).isEqualTo(ERROR_JSON)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreate429() {
         val sensorService = client.sensors()
@@ -422,7 +410,6 @@ internal class ErrorHandlingTest {
         assertThat(e.body()).isEqualTo(ERROR_JSON)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreate429WithRawResponse() {
         val sensorService = client.sensors().withRawResponse()
@@ -455,7 +442,6 @@ internal class ErrorHandlingTest {
         assertThat(e.body()).isEqualTo(ERROR_JSON)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreate500() {
         val sensorService = client.sensors()
@@ -488,7 +474,6 @@ internal class ErrorHandlingTest {
         assertThat(e.body()).isEqualTo(ERROR_JSON)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreate500WithRawResponse() {
         val sensorService = client.sensors().withRawResponse()
@@ -521,7 +506,6 @@ internal class ErrorHandlingTest {
         assertThat(e.body()).isEqualTo(ERROR_JSON)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreate999() {
         val sensorService = client.sensors()
@@ -554,7 +538,6 @@ internal class ErrorHandlingTest {
         assertThat(e.body()).isEqualTo(ERROR_JSON)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreate999WithRawResponse() {
         val sensorService = client.sensors().withRawResponse()
@@ -587,7 +570,6 @@ internal class ErrorHandlingTest {
         assertThat(e.body()).isEqualTo(ERROR_JSON)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun sensorsCreateInvalidJsonBody() {
         val sensorService = client.sensors()

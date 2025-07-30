@@ -4,12 +4,10 @@ package com.hiddenlayer_sdk.api.models.sensors
 
 import com.hiddenlayer_sdk.api.core.JsonValue
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class SensorCreateParamsTest {
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun create() {
         SensorCreateParams.builder()
@@ -25,7 +23,6 @@ internal class SensorCreateParamsTest {
             .build()
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun body() {
         val params =
@@ -55,7 +52,6 @@ internal class SensorCreateParamsTest {
         assertThat(body.version()).contains(0L)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun bodyWithoutOptionalFields() {
         val params = SensorCreateParams.builder().plaintextName("plaintext_name").build()

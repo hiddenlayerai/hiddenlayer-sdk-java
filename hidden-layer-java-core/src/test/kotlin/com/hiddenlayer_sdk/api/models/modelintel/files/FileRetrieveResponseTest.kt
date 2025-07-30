@@ -8,12 +8,10 @@ import com.hiddenlayer_sdk.api.core.jsonMapper
 import java.time.OffsetDateTime
 import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class FileRetrieveResponseTest {
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun create() {
         val fileRetrieveResponse =
@@ -252,7 +250,6 @@ internal class FileRetrieveResponseTest {
         assertThat(fileRetrieveResponse.last()).contains("last")
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()

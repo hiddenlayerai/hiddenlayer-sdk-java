@@ -5,12 +5,10 @@ package com.hiddenlayer_sdk.api.models.scans.upload
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.hiddenlayer_sdk.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class UploadCompleteAllResponseTest {
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun create() {
         val uploadCompleteAllResponse =
@@ -22,7 +20,6 @@ internal class UploadCompleteAllResponseTest {
             .contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()

@@ -3,12 +3,10 @@
 package com.hiddenlayer_sdk.api.models.modelintel.files
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class FileGetMetadataParamsTest {
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun create() {
         FileGetMetadataParams.builder()
@@ -16,7 +14,6 @@ internal class FileGetMetadataParamsTest {
             .build()
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun pathParams() {
         val params =

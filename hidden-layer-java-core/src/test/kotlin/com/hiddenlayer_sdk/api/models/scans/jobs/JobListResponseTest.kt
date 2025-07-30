@@ -7,12 +7,10 @@ import com.hiddenlayer_sdk.api.core.jsonMapper
 import com.hiddenlayer_sdk.api.models.scans.results.ScanReport
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class JobListResponseTest {
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun create() {
         val jobListResponse =
@@ -247,7 +245,6 @@ internal class JobListResponseTest {
         assertThat(jobListResponse.total()).isEqualTo(0.0)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()

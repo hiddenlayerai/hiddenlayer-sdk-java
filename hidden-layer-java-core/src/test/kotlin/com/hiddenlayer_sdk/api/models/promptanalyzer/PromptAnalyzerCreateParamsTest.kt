@@ -4,12 +4,10 @@ package com.hiddenlayer_sdk.api.models.promptanalyzer
 
 import com.hiddenlayer_sdk.api.core.http.Headers
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class PromptAnalyzerCreateParamsTest {
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun create() {
         PromptAnalyzerCreateParams.builder()
@@ -47,7 +45,6 @@ internal class PromptAnalyzerCreateParamsTest {
             .build()
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun headers() {
         val params =
@@ -123,7 +120,6 @@ internal class PromptAnalyzerCreateParamsTest {
             )
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun headersWithoutOptionalFields() {
         val params = PromptAnalyzerCreateParams.builder().prompt("Hello World").build()
@@ -133,7 +129,6 @@ internal class PromptAnalyzerCreateParamsTest {
         assertThat(headers).isEqualTo(Headers.builder().build())
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun body() {
         val params =
@@ -178,7 +173,6 @@ internal class PromptAnalyzerCreateParamsTest {
         assertThat(body.output()).contains("Hello, how can I help you today?")
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun bodyWithoutOptionalFields() {
         val params = PromptAnalyzerCreateParams.builder().prompt("Hello World").build()

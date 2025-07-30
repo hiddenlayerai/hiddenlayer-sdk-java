@@ -5,12 +5,10 @@ package com.hiddenlayer_sdk.api.models.scans.jobs
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class JobListParamsTest {
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun create() {
         JobListParams.builder()
@@ -31,7 +29,6 @@ internal class JobListParamsTest {
             .build()
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun queryParams() {
         val params =
@@ -82,7 +79,6 @@ internal class JobListParamsTest {
             )
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun queryParamsWithoutOptionalFields() {
         val params = JobListParams.builder().build()

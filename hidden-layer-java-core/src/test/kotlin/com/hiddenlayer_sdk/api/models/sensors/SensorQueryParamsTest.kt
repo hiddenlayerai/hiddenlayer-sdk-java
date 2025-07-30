@@ -4,12 +4,10 @@ package com.hiddenlayer_sdk.api.models.sensors
 
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class SensorQueryParamsTest {
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun create() {
         SensorQueryParams.builder()
@@ -30,7 +28,6 @@ internal class SensorQueryParamsTest {
             .build()
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun body() {
         val params =
@@ -70,7 +67,6 @@ internal class SensorQueryParamsTest {
         assertThat(body.pageSize()).contains(0L)
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun bodyWithoutOptionalFields() {
         val params = SensorQueryParams.builder().build()

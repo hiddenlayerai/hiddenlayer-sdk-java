@@ -4,12 +4,10 @@ package com.hiddenlayer_sdk.api.models.modelintel.files
 
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class FileRetrieveParamsTest {
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun create() {
         FileRetrieveParams.builder()
@@ -19,7 +17,6 @@ internal class FileRetrieveParamsTest {
             .build()
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun pathParams() {
         val params =
@@ -33,7 +30,6 @@ internal class FileRetrieveParamsTest {
         assertThat(params._pathParam(1)).isEqualTo("")
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun queryParams() {
         val params =
@@ -49,7 +45,6 @@ internal class FileRetrieveParamsTest {
             .isEqualTo(QueryParams.builder().put("cursor", "cursor").put("page_size", "50").build())
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun queryParamsWithoutOptionalFields() {
         val params =

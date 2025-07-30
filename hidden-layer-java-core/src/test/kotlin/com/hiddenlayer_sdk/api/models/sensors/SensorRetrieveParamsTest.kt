@@ -3,18 +3,15 @@
 package com.hiddenlayer_sdk.api.models.sensors
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 internal class SensorRetrieveParamsTest {
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun create() {
         SensorRetrieveParams.builder().sensorId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
     }
 
-    @Disabled("skipped: tests are disabled for the time being")
     @Test
     fun pathParams() {
         val params =
