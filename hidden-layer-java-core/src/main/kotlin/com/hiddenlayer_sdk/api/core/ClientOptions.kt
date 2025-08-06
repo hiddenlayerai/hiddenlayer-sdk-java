@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.hiddenlayer_sdk.api.core.http.AsyncStreamResponse
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.HttpClient
+import com.hiddenlayer_sdk.api.core.http.OAuth2HttpClient
 import com.hiddenlayer_sdk.api.core.http.PhantomReachableClosingHttpClient
 import com.hiddenlayer_sdk.api.core.http.QueryParams
 import com.hiddenlayer_sdk.api.core.http.RetryingHttpClient
@@ -447,7 +448,23 @@ private constructor(
             return ClientOptions(
                 httpClient,
                 RetryingHttpClient.builder()
-                    .httpClient(httpClient)
+                    .httpClient(
+                        if (clientId != null && clientSecret != null) {
+                            OAuth2HttpClient.builder()
+                                .httpClient(httpClient)
+                                .tokenUrl(
+                                    (baseUrl ?: PROD_US_URL) +
+                                        "https://auth.hiddenlayer.ai/oauth2/token?grant_type=client_credentials"
+                                )
+                                .clientId(clientId!!)
+                                .clientSecret(clientSecret!!)
+                                .jsonMapper(jsonMapper)
+                                .clock(clock)
+                                .build()
+                        } else {
+                            httpClient
+                        }
+                    )
                     .clock(clock)
                     .maxRetries(maxRetries)
                     .build(),
