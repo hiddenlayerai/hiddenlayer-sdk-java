@@ -6,8 +6,6 @@ import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.core.RequestOptions
 import com.hiddenlayer_sdk.api.core.http.HttpResponse
 import com.hiddenlayer_sdk.api.core.http.HttpResponseFor
-import com.hiddenlayer_sdk.api.models.models.ModelCreateParams
-import com.hiddenlayer_sdk.api.models.models.ModelCreateResponse
 import com.hiddenlayer_sdk.api.models.models.ModelDeleteParams
 import com.hiddenlayer_sdk.api.models.models.ModelRetrieveParams
 import com.hiddenlayer_sdk.api.models.models.ModelRetrieveResponse
@@ -30,16 +28,6 @@ interface ModelServiceAsync {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): ModelServiceAsync
 
     fun cards(): CardServiceAsync
-
-    /** Upsert Models */
-    fun create(params: ModelCreateParams): CompletableFuture<ModelCreateResponse> =
-        create(params, RequestOptions.none())
-
-    /** @see create */
-    fun create(
-        params: ModelCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<ModelCreateResponse>
 
     /** Get Model */
     fun retrieve(modelId: String): CompletableFuture<ModelRetrieveResponse> =
@@ -121,21 +109,6 @@ interface ModelServiceAsync {
         ): ModelServiceAsync.WithRawResponse
 
         fun cards(): CardServiceAsync.WithRawResponse
-
-        /**
-         * Returns a raw HTTP response for `put /api/v2/models`, but is otherwise the same as
-         * [ModelServiceAsync.create].
-         */
-        fun create(
-            params: ModelCreateParams
-        ): CompletableFuture<HttpResponseFor<ModelCreateResponse>> =
-            create(params, RequestOptions.none())
-
-        /** @see create */
-        fun create(
-            params: ModelCreateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<ModelCreateResponse>>
 
         /**
          * Returns a raw HTTP response for `get /api/v2/models/{model_id}`, but is otherwise the
