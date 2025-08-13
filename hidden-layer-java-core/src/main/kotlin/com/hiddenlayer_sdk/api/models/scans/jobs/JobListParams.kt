@@ -568,12 +568,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ModelName && contains == other.contains && eq == other.eq && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is ModelName &&
+                contains == other.contains &&
+                eq == other.eq &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(contains, eq, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -785,7 +786,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Eq && value == other.value /* spotless:on */
+                return other is Eq && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -798,12 +799,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Source && eq == other.eq && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Source &&
+                eq == other.eq &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(eq, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -815,10 +816,44 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is JobListParams && detectionCategory == other.detectionCategory && endTime == other.endTime && latestPerModelVersionOnly == other.latestPerModelVersionOnly && limit == other.limit && modelIds == other.modelIds && modelName == other.modelName && modelVersionIds == other.modelVersionIds && offset == other.offset && scannerVersion == other.scannerVersion && severity == other.severity && sort == other.sort && source == other.source && startTime == other.startTime && status == other.status && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is JobListParams &&
+            detectionCategory == other.detectionCategory &&
+            endTime == other.endTime &&
+            latestPerModelVersionOnly == other.latestPerModelVersionOnly &&
+            limit == other.limit &&
+            modelIds == other.modelIds &&
+            modelName == other.modelName &&
+            modelVersionIds == other.modelVersionIds &&
+            offset == other.offset &&
+            scannerVersion == other.scannerVersion &&
+            severity == other.severity &&
+            sort == other.sort &&
+            source == other.source &&
+            startTime == other.startTime &&
+            status == other.status &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(detectionCategory, endTime, latestPerModelVersionOnly, limit, modelIds, modelName, modelVersionIds, offset, scannerVersion, severity, sort, source, startTime, status, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            detectionCategory,
+            endTime,
+            latestPerModelVersionOnly,
+            limit,
+            modelIds,
+            modelName,
+            modelVersionIds,
+            offset,
+            scannerVersion,
+            severity,
+            sort,
+            source,
+            startTime,
+            status,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "JobListParams{detectionCategory=$detectionCategory, endTime=$endTime, latestPerModelVersionOnly=$latestPerModelVersionOnly, limit=$limit, modelIds=$modelIds, modelName=$modelName, modelVersionIds=$modelVersionIds, offset=$offset, scannerVersion=$scannerVersion, severity=$severity, sort=$sort, source=$source, startTime=$startTime, status=$status, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

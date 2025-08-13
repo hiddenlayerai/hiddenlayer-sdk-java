@@ -176,10 +176,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SensorRetrieveParams && sensorId == other.sensorId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is SensorRetrieveParams &&
+            sensorId == other.sensorId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(sensorId, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(sensorId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "SensorRetrieveParams{sensorId=$sensorId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

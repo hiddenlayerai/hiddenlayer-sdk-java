@@ -215,10 +215,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is UploadCompleteAllParams && scanId == other.scanId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return other is UploadCompleteAllParams &&
+            scanId == other.scanId &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams &&
+            additionalBodyProperties == other.additionalBodyProperties
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(scanId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(scanId, additionalHeaders, additionalQueryParams, additionalBodyProperties)
 
     override fun toString() =
         "UploadCompleteAllParams{scanId=$scanId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

@@ -141,12 +141,12 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is UploadStartResponse && scanId == other.scanId && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is UploadStartResponse &&
+            scanId == other.scanId &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(scanId, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

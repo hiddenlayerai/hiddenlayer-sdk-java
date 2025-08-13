@@ -720,7 +720,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is RequestSource && value == other.value /* spotless:on */
+                return other is RequestSource && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -733,12 +733,27 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Inventory && modelName == other.modelName && modelVersion == other.modelVersion && requestedScanLocation == other.requestedScanLocation && requestingEntity == other.requestingEntity && origin == other.origin && requestSource == other.requestSource && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Inventory &&
+                modelName == other.modelName &&
+                modelVersion == other.modelVersion &&
+                requestedScanLocation == other.requestedScanLocation &&
+                requestingEntity == other.requestingEntity &&
+                origin == other.origin &&
+                requestSource == other.requestSource &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(modelName, modelVersion, requestedScanLocation, requestingEntity, origin, requestSource, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                modelName,
+                modelVersion,
+                requestedScanLocation,
+                requestingEntity,
+                origin,
+                requestSource,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -884,7 +899,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+            return other is Status && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -897,12 +912,16 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ScanJob && inventory == other.inventory && scanId == other.scanId && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ScanJob &&
+            inventory == other.inventory &&
+            scanId == other.scanId &&
+            status == other.status &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(inventory, scanId, status, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(inventory, scanId, status, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

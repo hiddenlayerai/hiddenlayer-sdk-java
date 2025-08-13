@@ -1171,12 +1171,16 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && prompt == other.prompt && model == other.model && output == other.output && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                prompt == other.prompt &&
+                model == other.model &&
+                output == other.output &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(prompt, model, output, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(prompt, model, output, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1308,7 +1312,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is XLlmEntityType && value == other.value /* spotless:on */
+            return other is XLlmEntityType && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1446,7 +1450,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is XLlmPromptInjectionScanType && value == other.value /* spotless:on */
+            return other is XLlmPromptInjectionScanType && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1578,7 +1582,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is XLlmRedactType && value == other.value /* spotless:on */
+            return other is XLlmRedactType && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1591,10 +1595,70 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PromptAnalyzerCreateParams && xLlmBlockGuardrailDetection == other.xLlmBlockGuardrailDetection && xLlmBlockInputCodeDetection == other.xLlmBlockInputCodeDetection && xLlmBlockInputDosDetection == other.xLlmBlockInputDosDetection && xLlmBlockInputPii == other.xLlmBlockInputPii && xLlmBlockOutputCodeDetection == other.xLlmBlockOutputCodeDetection && xLlmBlockOutputPii == other.xLlmBlockOutputPii && xLlmBlockPromptInjection == other.xLlmBlockPromptInjection && xLlmBlockUnsafe == other.xLlmBlockUnsafe && xLlmBlockUnsafeInput == other.xLlmBlockUnsafeInput && xLlmBlockUnsafeOutput == other.xLlmBlockUnsafeOutput && xLlmEntityType == other.xLlmEntityType && xLlmInputDosDetectionThreshold == other.xLlmInputDosDetectionThreshold && xLlmPromptInjectionScanType == other.xLlmPromptInjectionScanType && xLlmRedactInputPii == other.xLlmRedactInputPii && xLlmRedactOutputPii == other.xLlmRedactOutputPii && xLlmRedactType == other.xLlmRedactType && xLlmSkipGuardrailDetection == other.xLlmSkipGuardrailDetection && xLlmSkipInputCodeDetection == other.xLlmSkipInputCodeDetection && xLlmSkipInputDosDetection == other.xLlmSkipInputDosDetection && xLlmSkipInputPiiDetection == other.xLlmSkipInputPiiDetection && xLlmSkipInputUrlDetection == other.xLlmSkipInputUrlDetection && xLlmSkipOutputCodeDetection == other.xLlmSkipOutputCodeDetection && xLlmSkipOutputPiiDetection == other.xLlmSkipOutputPiiDetection && xLlmSkipOutputUrlDetection == other.xLlmSkipOutputUrlDetection && xLlmSkipPromptInjectionDetection == other.xLlmSkipPromptInjectionDetection && xRequesterId == other.xRequesterId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is PromptAnalyzerCreateParams &&
+            xLlmBlockGuardrailDetection == other.xLlmBlockGuardrailDetection &&
+            xLlmBlockInputCodeDetection == other.xLlmBlockInputCodeDetection &&
+            xLlmBlockInputDosDetection == other.xLlmBlockInputDosDetection &&
+            xLlmBlockInputPii == other.xLlmBlockInputPii &&
+            xLlmBlockOutputCodeDetection == other.xLlmBlockOutputCodeDetection &&
+            xLlmBlockOutputPii == other.xLlmBlockOutputPii &&
+            xLlmBlockPromptInjection == other.xLlmBlockPromptInjection &&
+            xLlmBlockUnsafe == other.xLlmBlockUnsafe &&
+            xLlmBlockUnsafeInput == other.xLlmBlockUnsafeInput &&
+            xLlmBlockUnsafeOutput == other.xLlmBlockUnsafeOutput &&
+            xLlmEntityType == other.xLlmEntityType &&
+            xLlmInputDosDetectionThreshold == other.xLlmInputDosDetectionThreshold &&
+            xLlmPromptInjectionScanType == other.xLlmPromptInjectionScanType &&
+            xLlmRedactInputPii == other.xLlmRedactInputPii &&
+            xLlmRedactOutputPii == other.xLlmRedactOutputPii &&
+            xLlmRedactType == other.xLlmRedactType &&
+            xLlmSkipGuardrailDetection == other.xLlmSkipGuardrailDetection &&
+            xLlmSkipInputCodeDetection == other.xLlmSkipInputCodeDetection &&
+            xLlmSkipInputDosDetection == other.xLlmSkipInputDosDetection &&
+            xLlmSkipInputPiiDetection == other.xLlmSkipInputPiiDetection &&
+            xLlmSkipInputUrlDetection == other.xLlmSkipInputUrlDetection &&
+            xLlmSkipOutputCodeDetection == other.xLlmSkipOutputCodeDetection &&
+            xLlmSkipOutputPiiDetection == other.xLlmSkipOutputPiiDetection &&
+            xLlmSkipOutputUrlDetection == other.xLlmSkipOutputUrlDetection &&
+            xLlmSkipPromptInjectionDetection == other.xLlmSkipPromptInjectionDetection &&
+            xRequesterId == other.xRequesterId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(xLlmBlockGuardrailDetection, xLlmBlockInputCodeDetection, xLlmBlockInputDosDetection, xLlmBlockInputPii, xLlmBlockOutputCodeDetection, xLlmBlockOutputPii, xLlmBlockPromptInjection, xLlmBlockUnsafe, xLlmBlockUnsafeInput, xLlmBlockUnsafeOutput, xLlmEntityType, xLlmInputDosDetectionThreshold, xLlmPromptInjectionScanType, xLlmRedactInputPii, xLlmRedactOutputPii, xLlmRedactType, xLlmSkipGuardrailDetection, xLlmSkipInputCodeDetection, xLlmSkipInputDosDetection, xLlmSkipInputPiiDetection, xLlmSkipInputUrlDetection, xLlmSkipOutputCodeDetection, xLlmSkipOutputPiiDetection, xLlmSkipOutputUrlDetection, xLlmSkipPromptInjectionDetection, xRequesterId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            xLlmBlockGuardrailDetection,
+            xLlmBlockInputCodeDetection,
+            xLlmBlockInputDosDetection,
+            xLlmBlockInputPii,
+            xLlmBlockOutputCodeDetection,
+            xLlmBlockOutputPii,
+            xLlmBlockPromptInjection,
+            xLlmBlockUnsafe,
+            xLlmBlockUnsafeInput,
+            xLlmBlockUnsafeOutput,
+            xLlmEntityType,
+            xLlmInputDosDetectionThreshold,
+            xLlmPromptInjectionScanType,
+            xLlmRedactInputPii,
+            xLlmRedactOutputPii,
+            xLlmRedactType,
+            xLlmSkipGuardrailDetection,
+            xLlmSkipInputCodeDetection,
+            xLlmSkipInputDosDetection,
+            xLlmSkipInputPiiDetection,
+            xLlmSkipInputUrlDetection,
+            xLlmSkipOutputCodeDetection,
+            xLlmSkipOutputPiiDetection,
+            xLlmSkipOutputUrlDetection,
+            xLlmSkipPromptInjectionDetection,
+            xRequesterId,
+            body,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "PromptAnalyzerCreateParams{xLlmBlockGuardrailDetection=$xLlmBlockGuardrailDetection, xLlmBlockInputCodeDetection=$xLlmBlockInputCodeDetection, xLlmBlockInputDosDetection=$xLlmBlockInputDosDetection, xLlmBlockInputPii=$xLlmBlockInputPii, xLlmBlockOutputCodeDetection=$xLlmBlockOutputCodeDetection, xLlmBlockOutputPii=$xLlmBlockOutputPii, xLlmBlockPromptInjection=$xLlmBlockPromptInjection, xLlmBlockUnsafe=$xLlmBlockUnsafe, xLlmBlockUnsafeInput=$xLlmBlockUnsafeInput, xLlmBlockUnsafeOutput=$xLlmBlockUnsafeOutput, xLlmEntityType=$xLlmEntityType, xLlmInputDosDetectionThreshold=$xLlmInputDosDetectionThreshold, xLlmPromptInjectionScanType=$xLlmPromptInjectionScanType, xLlmRedactInputPii=$xLlmRedactInputPii, xLlmRedactOutputPii=$xLlmRedactOutputPii, xLlmRedactType=$xLlmRedactType, xLlmSkipGuardrailDetection=$xLlmSkipGuardrailDetection, xLlmSkipInputCodeDetection=$xLlmSkipInputCodeDetection, xLlmSkipInputDosDetection=$xLlmSkipInputDosDetection, xLlmSkipInputPiiDetection=$xLlmSkipInputPiiDetection, xLlmSkipInputUrlDetection=$xLlmSkipInputUrlDetection, xLlmSkipOutputCodeDetection=$xLlmSkipOutputCodeDetection, xLlmSkipOutputPiiDetection=$xLlmSkipOutputPiiDetection, xLlmSkipOutputUrlDetection=$xLlmSkipOutputUrlDetection, xLlmSkipPromptInjectionDetection=$xLlmSkipPromptInjectionDetection, xRequesterId=$xRequesterId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

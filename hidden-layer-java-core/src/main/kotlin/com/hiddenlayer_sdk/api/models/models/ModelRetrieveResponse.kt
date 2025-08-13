@@ -829,12 +829,13 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Deployment && active == other.active && path == other.path && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Deployment &&
+                    active == other.active &&
+                    path == other.path &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(active, path, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -934,12 +935,10 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Locations && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Locations && additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -1038,12 +1037,10 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Tags && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Tags && additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -1055,12 +1052,29 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Version && version == other.version && deployments == other.deployments && locations == other.locations && modelVersionId == other.modelVersionId && multiFile == other.multiFile && retrievable == other.retrievable && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Version &&
+                version == other.version &&
+                deployments == other.deployments &&
+                locations == other.locations &&
+                modelVersionId == other.modelVersionId &&
+                multiFile == other.multiFile &&
+                retrievable == other.retrievable &&
+                tags == other.tags &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(version, deployments, locations, modelVersionId, multiFile, retrievable, tags, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                version,
+                deployments,
+                locations,
+                modelVersionId,
+                multiFile,
+                retrievable,
+                tags,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1073,12 +1087,18 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ModelRetrieveResponse && name == other.name && source == other.source && modelId == other.modelId && tenantId == other.tenantId && versions == other.versions && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is ModelRetrieveResponse &&
+            name == other.name &&
+            source == other.source &&
+            modelId == other.modelId &&
+            tenantId == other.tenantId &&
+            versions == other.versions &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(name, source, modelId, tenantId, versions, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(name, source, modelId, tenantId, versions, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

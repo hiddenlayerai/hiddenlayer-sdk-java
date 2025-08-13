@@ -650,7 +650,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AttackMonitoringThreatLevel && value == other.value /* spotless:on */
+            return other is AttackMonitoringThreatLevel && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -796,7 +796,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ModelScanThreatLevel && value == other.value /* spotless:on */
+            return other is ModelScanThreatLevel && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -972,12 +972,15 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is SecurityPosture && attackMonitoring == other.attackMonitoring && modelScan == other.modelScan && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is SecurityPosture &&
+                attackMonitoring == other.attackMonitoring &&
+                modelScan == other.modelScan &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(attackMonitoring, modelScan, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(attackMonitoring, modelScan, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1074,12 +1077,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Tags && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Tags && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -1091,12 +1092,35 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is CardListResponse && createdAt == other.createdAt && modelId == other.modelId && plaintextName == other.plaintextName && source == other.source && activeVersionCount == other.activeVersionCount && attackMonitoringThreatLevel == other.attackMonitoringThreatLevel && hasGenealogy == other.hasGenealogy && modelScanThreatLevel == other.modelScanThreatLevel && securityPosture == other.securityPosture && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is CardListResponse &&
+            createdAt == other.createdAt &&
+            modelId == other.modelId &&
+            plaintextName == other.plaintextName &&
+            source == other.source &&
+            activeVersionCount == other.activeVersionCount &&
+            attackMonitoringThreatLevel == other.attackMonitoringThreatLevel &&
+            hasGenealogy == other.hasGenealogy &&
+            modelScanThreatLevel == other.modelScanThreatLevel &&
+            securityPosture == other.securityPosture &&
+            tags == other.tags &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(createdAt, modelId, plaintextName, source, activeVersionCount, attackMonitoringThreatLevel, hasGenealogy, modelScanThreatLevel, securityPosture, tags, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            createdAt,
+            modelId,
+            plaintextName,
+            source,
+            activeVersionCount,
+            attackMonitoringThreatLevel,
+            hasGenealogy,
+            modelScanThreatLevel,
+            securityPosture,
+            tags,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

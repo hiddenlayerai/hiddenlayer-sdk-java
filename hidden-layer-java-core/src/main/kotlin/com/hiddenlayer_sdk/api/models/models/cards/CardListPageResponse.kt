@@ -275,12 +275,17 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is CardListPageResponse && pageNumber == other.pageNumber && pageSize == other.pageSize && results == other.results && totalCount == other.totalCount && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is CardListPageResponse &&
+            pageNumber == other.pageNumber &&
+            pageSize == other.pageSize &&
+            results == other.results &&
+            totalCount == other.totalCount &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(pageNumber, pageSize, results, totalCount, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(pageNumber, pageSize, results, totalCount, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

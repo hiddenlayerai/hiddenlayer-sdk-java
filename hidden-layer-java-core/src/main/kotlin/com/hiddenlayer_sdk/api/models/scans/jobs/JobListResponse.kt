@@ -284,12 +284,17 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is JobListResponse && items == other.items && limit == other.limit && offset == other.offset && total == other.total && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is JobListResponse &&
+            items == other.items &&
+            limit == other.limit &&
+            offset == other.offset &&
+            total == other.total &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(items, limit, offset, total, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(items, limit, offset, total, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

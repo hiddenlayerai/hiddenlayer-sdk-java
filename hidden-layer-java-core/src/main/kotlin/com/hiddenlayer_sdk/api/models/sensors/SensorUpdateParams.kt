@@ -490,12 +490,16 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && active == other.active && plaintextName == other.plaintextName && tags == other.tags && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                active == other.active &&
+                plaintextName == other.plaintextName &&
+                tags == other.tags &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(active, plaintextName, tags, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(active, plaintextName, tags, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -592,12 +596,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Tags && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Tags && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -609,10 +611,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SensorUpdateParams && sensorId == other.sensorId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is SensorUpdateParams &&
+            sensorId == other.sensorId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(sensorId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(sensorId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "SensorUpdateParams{sensorId=$sensorId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

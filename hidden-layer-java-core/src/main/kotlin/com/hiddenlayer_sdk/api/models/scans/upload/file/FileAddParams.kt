@@ -254,10 +254,24 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is FileAddParams && scanId == other.scanId && fileContentLength == other.fileContentLength && fileName == other.fileName && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return other is FileAddParams &&
+            scanId == other.scanId &&
+            fileContentLength == other.fileContentLength &&
+            fileName == other.fileName &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams &&
+            additionalBodyProperties == other.additionalBodyProperties
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(scanId, fileContentLength, fileName, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            scanId,
+            fileContentLength,
+            fileName,
+            additionalHeaders,
+            additionalQueryParams,
+            additionalBodyProperties,
+        )
 
     override fun toString() =
         "FileAddParams{scanId=$scanId, fileContentLength=$fileContentLength, fileName=$fileName, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

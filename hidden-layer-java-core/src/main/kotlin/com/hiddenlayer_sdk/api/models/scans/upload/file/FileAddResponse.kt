@@ -437,12 +437,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Part && endOffset == other.endOffset && partNumber == other.partNumber && startOffset == other.startOffset && uploadUrl == other.uploadUrl && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Part &&
+                endOffset == other.endOffset &&
+                partNumber == other.partNumber &&
+                startOffset == other.startOffset &&
+                uploadUrl == other.uploadUrl &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(endOffset, partNumber, startOffset, uploadUrl, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(endOffset, partNumber, startOffset, uploadUrl, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -455,12 +460,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is FileAddResponse && parts == other.parts && uploadId == other.uploadId && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is FileAddResponse &&
+            parts == other.parts &&
+            uploadId == other.uploadId &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(parts, uploadId, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

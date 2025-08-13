@@ -207,10 +207,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is JobRetrieveParams && scanId == other.scanId && hasDetections == other.hasDetections && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is JobRetrieveParams &&
+            scanId == other.scanId &&
+            hasDetections == other.hasDetections &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(scanId, hasDetections, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(scanId, hasDetections, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "JobRetrieveParams{scanId=$scanId, hasDetections=$hasDetections, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

@@ -898,12 +898,33 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Categories && guardrail == other.guardrail && inputCode == other.inputCode && inputDos == other.inputDos && inputPii == other.inputPii && outputCode == other.outputCode && outputPii == other.outputPii && promptInjection == other.promptInjection && unsafeInput == other.unsafeInput && unsafeOutput == other.unsafeOutput && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Categories &&
+                guardrail == other.guardrail &&
+                inputCode == other.inputCode &&
+                inputDos == other.inputDos &&
+                inputPii == other.inputPii &&
+                outputCode == other.outputCode &&
+                outputPii == other.outputPii &&
+                promptInjection == other.promptInjection &&
+                unsafeInput == other.unsafeInput &&
+                unsafeOutput == other.unsafeOutput &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(guardrail, inputCode, inputDos, inputPii, outputCode, outputPii, promptInjection, unsafeInput, unsafeOutput, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                guardrail,
+                inputCode,
+                inputDos,
+                inputPii,
+                outputCode,
+                outputPii,
+                promptInjection,
+                unsafeInput,
+                unsafeOutput,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1261,12 +1282,13 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Mitre && label == other.label && name == other.name && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Mitre &&
+                    label == other.label &&
+                    name == other.name &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(label, name, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -1439,12 +1461,13 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Owasp && label == other.label && name == other.name && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Owasp &&
+                    label == other.label &&
+                    name == other.name &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(label, name, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -1457,12 +1480,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Frameworks && mitre == other.mitre && owasp == other.owasp && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Frameworks &&
+                mitre == other.mitre &&
+                owasp == other.owasp &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(mitre, owasp, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -2779,7 +2803,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is EntityType && value == other.value /* spotless:on */
+                return other is EntityType && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -2917,7 +2941,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is PromptInjectionScanType && value == other.value /* spotless:on */
+                return other is PromptInjectionScanType && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -3049,7 +3073,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is RedactType && value == other.value /* spotless:on */
+                return other is RedactType && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -3062,12 +3086,65 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Policy && blockGuardrailDetection == other.blockGuardrailDetection && blockInputCodeDetection == other.blockInputCodeDetection && blockInputDosDetection == other.blockInputDosDetection && blockInputPii == other.blockInputPii && blockOutputCodeDetection == other.blockOutputCodeDetection && blockOutputPii == other.blockOutputPii && blockPromptInjection == other.blockPromptInjection && blockUnsafe == other.blockUnsafe && blockUnsafeInput == other.blockUnsafeInput && blockUnsafeOutput == other.blockUnsafeOutput && entityType == other.entityType && inputDosDetectionThreshold == other.inputDosDetectionThreshold && promptInjectionScanType == other.promptInjectionScanType && redactInputPii == other.redactInputPii && redactOutputPii == other.redactOutputPii && redactType == other.redactType && skipGuardrailDetection == other.skipGuardrailDetection && skipInputCodeDetection == other.skipInputCodeDetection && skipInputDosDetection == other.skipInputDosDetection && skipInputPiiDetection == other.skipInputPiiDetection && skipInputUrlDetection == other.skipInputUrlDetection && skipOutputCodeDetection == other.skipOutputCodeDetection && skipOutputPiiDetection == other.skipOutputPiiDetection && skipOutputUrlDetection == other.skipOutputUrlDetection && skipPromptInjectionDetection == other.skipPromptInjectionDetection && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Policy &&
+                blockGuardrailDetection == other.blockGuardrailDetection &&
+                blockInputCodeDetection == other.blockInputCodeDetection &&
+                blockInputDosDetection == other.blockInputDosDetection &&
+                blockInputPii == other.blockInputPii &&
+                blockOutputCodeDetection == other.blockOutputCodeDetection &&
+                blockOutputPii == other.blockOutputPii &&
+                blockPromptInjection == other.blockPromptInjection &&
+                blockUnsafe == other.blockUnsafe &&
+                blockUnsafeInput == other.blockUnsafeInput &&
+                blockUnsafeOutput == other.blockUnsafeOutput &&
+                entityType == other.entityType &&
+                inputDosDetectionThreshold == other.inputDosDetectionThreshold &&
+                promptInjectionScanType == other.promptInjectionScanType &&
+                redactInputPii == other.redactInputPii &&
+                redactOutputPii == other.redactOutputPii &&
+                redactType == other.redactType &&
+                skipGuardrailDetection == other.skipGuardrailDetection &&
+                skipInputCodeDetection == other.skipInputCodeDetection &&
+                skipInputDosDetection == other.skipInputDosDetection &&
+                skipInputPiiDetection == other.skipInputPiiDetection &&
+                skipInputUrlDetection == other.skipInputUrlDetection &&
+                skipOutputCodeDetection == other.skipOutputCodeDetection &&
+                skipOutputPiiDetection == other.skipOutputPiiDetection &&
+                skipOutputUrlDetection == other.skipOutputUrlDetection &&
+                skipPromptInjectionDetection == other.skipPromptInjectionDetection &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(blockGuardrailDetection, blockInputCodeDetection, blockInputDosDetection, blockInputPii, blockOutputCodeDetection, blockOutputPii, blockPromptInjection, blockUnsafe, blockUnsafeInput, blockUnsafeOutput, entityType, inputDosDetectionThreshold, promptInjectionScanType, redactInputPii, redactOutputPii, redactType, skipGuardrailDetection, skipInputCodeDetection, skipInputDosDetection, skipInputPiiDetection, skipInputUrlDetection, skipOutputCodeDetection, skipOutputPiiDetection, skipOutputUrlDetection, skipPromptInjectionDetection, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                blockGuardrailDetection,
+                blockInputCodeDetection,
+                blockInputDosDetection,
+                blockInputPii,
+                blockOutputCodeDetection,
+                blockOutputPii,
+                blockPromptInjection,
+                blockUnsafe,
+                blockUnsafeInput,
+                blockUnsafeOutput,
+                entityType,
+                inputDosDetectionThreshold,
+                promptInjectionScanType,
+                redactInputPii,
+                redactOutputPii,
+                redactType,
+                skipGuardrailDetection,
+                skipInputCodeDetection,
+                skipInputDosDetection,
+                skipInputPiiDetection,
+                skipInputUrlDetection,
+                skipOutputCodeDetection,
+                skipOutputPiiDetection,
+                skipOutputUrlDetection,
+                skipPromptInjectionDetection,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -3804,12 +3881,15 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is GuardrailResults && elapsedMs == other.elapsedMs && verdict == other.verdict && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is GuardrailResults &&
+                    elapsedMs == other.elapsedMs &&
+                    verdict == other.verdict &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(elapsedMs, verdict, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(elapsedMs, verdict, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -4047,12 +4127,16 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is InputBlockListResults && elapsedMs == other.elapsedMs && matches == other.matches && verdict == other.verdict && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is InputBlockListResults &&
+                    elapsedMs == other.elapsedMs &&
+                    matches == other.matches &&
+                    verdict == other.verdict &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(elapsedMs, matches, verdict, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(elapsedMs, matches, verdict, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -4234,12 +4318,15 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is InputCodeResults && elapsedMs == other.elapsedMs && verdict == other.verdict && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is InputCodeResults &&
+                    elapsedMs == other.elapsedMs &&
+                    verdict == other.verdict &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(elapsedMs, verdict, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(elapsedMs, verdict, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -4421,12 +4508,15 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is InputDosResults && elapsedMs == other.elapsedMs && verdict == other.verdict && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is InputDosResults &&
+                    elapsedMs == other.elapsedMs &&
+                    verdict == other.verdict &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(elapsedMs, verdict, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(elapsedMs, verdict, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -4666,12 +4756,16 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is InputPiiResults && elapsedMs == other.elapsedMs && entities == other.entities && verdict == other.verdict && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is InputPiiResults &&
+                    elapsedMs == other.elapsedMs &&
+                    entities == other.entities &&
+                    verdict == other.verdict &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(elapsedMs, entities, verdict, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(elapsedMs, entities, verdict, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -4868,12 +4962,15 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is InputUrls && elapsedMs == other.elapsedMs && urls == other.urls && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is InputUrls &&
+                    elapsedMs == other.elapsedMs &&
+                    urls == other.urls &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(elapsedMs, urls, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(elapsedMs, urls, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -5057,12 +5154,15 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is OutputCodeResults && elapsedMs == other.elapsedMs && verdict == other.verdict && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is OutputCodeResults &&
+                    elapsedMs == other.elapsedMs &&
+                    verdict == other.verdict &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(elapsedMs, verdict, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(elapsedMs, verdict, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -5302,12 +5402,16 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is OutputPiiResults && elapsedMs == other.elapsedMs && entities == other.entities && verdict == other.verdict && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is OutputPiiResults &&
+                    elapsedMs == other.elapsedMs &&
+                    entities == other.entities &&
+                    verdict == other.verdict &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(elapsedMs, entities, verdict, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(elapsedMs, entities, verdict, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -5504,12 +5608,15 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is OutputUrls && elapsedMs == other.elapsedMs && urls == other.urls && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is OutputUrls &&
+                    elapsedMs == other.elapsedMs &&
+                    urls == other.urls &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(elapsedMs, urls, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(elapsedMs, urls, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -5788,12 +5895,17 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is PromptInjectionClassifierResult && elapsedMs == other.elapsedMs && probabilities == other.probabilities && verdict == other.verdict && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is PromptInjectionClassifierResult &&
+                    elapsedMs == other.elapsedMs &&
+                    probabilities == other.probabilities &&
+                    verdict == other.verdict &&
+                    version == other.version &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(elapsedMs, probabilities, verdict, version, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(elapsedMs, probabilities, verdict, version, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -5806,12 +5918,35 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Results && guardrailResults == other.guardrailResults && inputBlockListResults == other.inputBlockListResults && inputCodeResults == other.inputCodeResults && inputDosResults == other.inputDosResults && inputPiiResults == other.inputPiiResults && inputUrls == other.inputUrls && outputCodeResults == other.outputCodeResults && outputPiiResults == other.outputPiiResults && outputUrls == other.outputUrls && promptInjectionClassifierResults == other.promptInjectionClassifierResults && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Results &&
+                guardrailResults == other.guardrailResults &&
+                inputBlockListResults == other.inputBlockListResults &&
+                inputCodeResults == other.inputCodeResults &&
+                inputDosResults == other.inputDosResults &&
+                inputPiiResults == other.inputPiiResults &&
+                inputUrls == other.inputUrls &&
+                outputCodeResults == other.outputCodeResults &&
+                outputPiiResults == other.outputPiiResults &&
+                outputUrls == other.outputUrls &&
+                promptInjectionClassifierResults == other.promptInjectionClassifierResults &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(guardrailResults, inputBlockListResults, inputCodeResults, inputDosResults, inputPiiResults, inputUrls, outputCodeResults, outputPiiResults, outputUrls, promptInjectionClassifierResults, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                guardrailResults,
+                inputBlockListResults,
+                inputCodeResults,
+                inputDosResults,
+                inputPiiResults,
+                inputUrls,
+                outputCodeResults,
+                outputPiiResults,
+                outputUrls,
+                promptInjectionClassifierResults,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -5824,12 +5959,35 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PromptAnalyzerCreateResponse && categories == other.categories && elapsedMs == other.elapsedMs && frameworks == other.frameworks && model == other.model && policy == other.policy && provider == other.provider && response == other.response && results == other.results && upstreamElapsedMs == other.upstreamElapsedMs && verdict == other.verdict && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is PromptAnalyzerCreateResponse &&
+            categories == other.categories &&
+            elapsedMs == other.elapsedMs &&
+            frameworks == other.frameworks &&
+            model == other.model &&
+            policy == other.policy &&
+            provider == other.provider &&
+            response == other.response &&
+            results == other.results &&
+            upstreamElapsedMs == other.upstreamElapsedMs &&
+            verdict == other.verdict &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(categories, elapsedMs, frameworks, model, policy, provider, response, results, upstreamElapsedMs, verdict, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            categories,
+            elapsedMs,
+            frameworks,
+            model,
+            policy,
+            provider,
+            response,
+            results,
+            upstreamElapsedMs,
+            verdict,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

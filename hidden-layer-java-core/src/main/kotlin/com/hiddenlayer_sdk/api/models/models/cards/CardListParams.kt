@@ -530,7 +530,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AidrSeverity && value == other.value /* spotless:on */
+            return other is AidrSeverity && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -666,7 +666,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is AidrStatus && value == other.value /* spotless:on */
+            return other is AidrStatus && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -783,12 +783,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ModelCreated && gte == other.gte && lte == other.lte && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is ModelCreated &&
+                gte == other.gte &&
+                lte == other.lte &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(gte, lte, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -905,12 +906,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ModelName && contains == other.contains && eq == other.eq && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is ModelName &&
+                contains == other.contains &&
+                eq == other.eq &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(contains, eq, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -1059,7 +1061,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ModscanSeverity && value == other.value /* spotless:on */
+            return other is ModscanSeverity && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1196,7 +1198,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ModscanStatus && value == other.value /* spotless:on */
+            return other is ModscanStatus && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1323,7 +1325,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Provider && value == other.value /* spotless:on */
+            return other is Provider && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1440,12 +1442,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Source && contains == other.contains && eq == other.eq && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Source &&
+                contains == other.contains &&
+                eq == other.eq &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(contains, eq, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -1458,10 +1461,38 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is CardListParams && aidrSeverity == other.aidrSeverity && aidrStatus == other.aidrStatus && limit == other.limit && modelCreated == other.modelCreated && modelName == other.modelName && modscanSeverity == other.modscanSeverity && modscanStatus == other.modscanStatus && offset == other.offset && provider == other.provider && sort == other.sort && source == other.source && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is CardListParams &&
+            aidrSeverity == other.aidrSeverity &&
+            aidrStatus == other.aidrStatus &&
+            limit == other.limit &&
+            modelCreated == other.modelCreated &&
+            modelName == other.modelName &&
+            modscanSeverity == other.modscanSeverity &&
+            modscanStatus == other.modscanStatus &&
+            offset == other.offset &&
+            provider == other.provider &&
+            sort == other.sort &&
+            source == other.source &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(aidrSeverity, aidrStatus, limit, modelCreated, modelName, modscanSeverity, modscanStatus, offset, provider, sort, source, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            aidrSeverity,
+            aidrStatus,
+            limit,
+            modelCreated,
+            modelName,
+            modscanSeverity,
+            modscanStatus,
+            offset,
+            provider,
+            sort,
+            source,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "CardListParams{aidrSeverity=$aidrSeverity, aidrStatus=$aidrStatus, limit=$limit, modelCreated=$modelCreated, modelName=$modelName, modscanSeverity=$modscanSeverity, modscanStatus=$modscanStatus, offset=$offset, provider=$provider, sort=$sort, source=$source, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

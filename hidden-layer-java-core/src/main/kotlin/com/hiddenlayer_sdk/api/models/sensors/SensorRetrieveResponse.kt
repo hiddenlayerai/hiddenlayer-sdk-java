@@ -520,12 +520,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Tags && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Tags && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -537,12 +535,33 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is SensorRetrieveResponse && active == other.active && createdAt == other.createdAt && modelId == other.modelId && plaintextName == other.plaintextName && sensorId == other.sensorId && tags == other.tags && tenantId == other.tenantId && adhoc == other.adhoc && version == other.version && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is SensorRetrieveResponse &&
+            active == other.active &&
+            createdAt == other.createdAt &&
+            modelId == other.modelId &&
+            plaintextName == other.plaintextName &&
+            sensorId == other.sensorId &&
+            tags == other.tags &&
+            tenantId == other.tenantId &&
+            adhoc == other.adhoc &&
+            version == other.version &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(active, createdAt, modelId, plaintextName, sensorId, tags, tenantId, adhoc, version, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            active,
+            createdAt,
+            modelId,
+            plaintextName,
+            sensorId,
+            tags,
+            tenantId,
+            adhoc,
+            version,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 
