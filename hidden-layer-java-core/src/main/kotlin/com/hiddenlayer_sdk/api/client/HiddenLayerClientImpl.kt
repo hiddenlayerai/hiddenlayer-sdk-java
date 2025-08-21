@@ -56,7 +56,7 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
 
     override fun scans(): ScanService = scans
 
-    override fun close() = clientOptions.httpClient.close()
+    override fun close() = clientOptions.close()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         HiddenLayerClient.WithRawResponse {
