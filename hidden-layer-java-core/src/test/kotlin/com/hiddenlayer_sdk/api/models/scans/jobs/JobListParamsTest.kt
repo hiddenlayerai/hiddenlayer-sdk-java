@@ -12,6 +12,7 @@ internal class JobListParamsTest {
     @Test
     fun create() {
         JobListParams.builder()
+            .addComplianceStatus(JobListParams.ComplianceStatus.COMPLIANT)
             .detectionCategory("detection_category")
             .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
             .latestPerModelVersionOnly(true)
@@ -33,6 +34,7 @@ internal class JobListParamsTest {
     fun queryParams() {
         val params =
             JobListParams.builder()
+                .addComplianceStatus(JobListParams.ComplianceStatus.COMPLIANT)
                 .detectionCategory("detection_category")
                 .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .latestPerModelVersionOnly(true)
@@ -54,6 +56,7 @@ internal class JobListParamsTest {
         assertThat(queryParams)
             .isEqualTo(
                 QueryParams.builder()
+                    .put("compliance_status", listOf("COMPLIANT").joinToString(","))
                     .put("detection_category", "detection_category")
                     .put("end_time", "2019-12-27T18:11:19.117Z")
                     .put("latest_per_model_version_only", "true")

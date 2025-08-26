@@ -19,6 +19,7 @@ import kotlin.jvm.optionals.getOrNull
 /** Get scan results (Summaries) */
 class JobListParams
 private constructor(
+    private val complianceStatus: List<ComplianceStatus>?,
     private val detectionCategory: String?,
     private val endTime: OffsetDateTime?,
     private val latestPerModelVersionOnly: Boolean?,
@@ -36,6 +37,9 @@ private constructor(
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
+
+    /** A comma separated list of rule set evaluation statuses to include */
+    fun complianceStatus(): Optional<List<ComplianceStatus>> = Optional.ofNullable(complianceStatus)
 
     /** filter by a single detection category */
     fun detectionCategory(): Optional<String> = Optional.ofNullable(detectionCategory)
@@ -100,6 +104,7 @@ private constructor(
     /** A builder for [JobListParams]. */
     class Builder internal constructor() {
 
+        private var complianceStatus: MutableList<ComplianceStatus>? = null
         private var detectionCategory: String? = null
         private var endTime: OffsetDateTime? = null
         private var latestPerModelVersionOnly: Boolean? = null
@@ -119,6 +124,7 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(jobListParams: JobListParams) = apply {
+            complianceStatus = jobListParams.complianceStatus?.toMutableList()
             detectionCategory = jobListParams.detectionCategory
             endTime = jobListParams.endTime
             latestPerModelVersionOnly = jobListParams.latestPerModelVersionOnly
@@ -135,6 +141,25 @@ private constructor(
             status = jobListParams.status?.toMutableList()
             additionalHeaders = jobListParams.additionalHeaders.toBuilder()
             additionalQueryParams = jobListParams.additionalQueryParams.toBuilder()
+        }
+
+        /** A comma separated list of rule set evaluation statuses to include */
+        fun complianceStatus(complianceStatus: List<ComplianceStatus>?) = apply {
+            this.complianceStatus = complianceStatus?.toMutableList()
+        }
+
+        /** Alias for calling [Builder.complianceStatus] with `complianceStatus.orElse(null)`. */
+        fun complianceStatus(complianceStatus: Optional<List<ComplianceStatus>>) =
+            complianceStatus(complianceStatus.getOrNull())
+
+        /**
+         * Adds a single [ComplianceStatus] to [Builder.complianceStatus].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addComplianceStatus(complianceStatus: ComplianceStatus) = apply {
+            this.complianceStatus =
+                (this.complianceStatus ?: mutableListOf()).apply { add(complianceStatus) }
         }
 
         /** filter by a single detection category */
@@ -398,6 +423,7 @@ private constructor(
          */
         fun build(): JobListParams =
             JobListParams(
+                complianceStatus?.toImmutable(),
                 detectionCategory,
                 endTime,
                 latestPerModelVersionOnly,
@@ -422,6 +448,9 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
+                complianceStatus?.let {
+                    put("compliance_status", it.joinToString(",") { it.toString() })
+                }
                 detectionCategory?.let { put("detection_category", it) }
                 endTime?.let { put("end_time", DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(it)) }
                 latestPerModelVersionOnly?.let {
@@ -458,6 +487,137 @@ private constructor(
                 putAll(additionalQueryParams)
             }
             .build()
+
+    class ComplianceStatus @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val COMPLIANT = of("COMPLIANT")
+
+            @JvmField val NONCOMPLIANT = of("NONCOMPLIANT")
+
+            @JvmStatic fun of(value: String) = ComplianceStatus(JsonField.of(value))
+        }
+
+        /** An enum containing [ComplianceStatus]'s known values. */
+        enum class Known {
+            COMPLIANT,
+            NONCOMPLIANT,
+        }
+
+        /**
+         * An enum containing [ComplianceStatus]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [ComplianceStatus] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            COMPLIANT,
+            NONCOMPLIANT,
+            /**
+             * An enum member indicating that [ComplianceStatus] was instantiated with an unknown
+             * value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                COMPLIANT -> Value.COMPLIANT
+                NONCOMPLIANT -> Value.NONCOMPLIANT
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                COMPLIANT -> Known.COMPLIANT
+                NONCOMPLIANT -> Known.NONCOMPLIANT
+                else -> throw HiddenLayerInvalidDataException("Unknown ComplianceStatus: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                HiddenLayerInvalidDataException("Value is not a String")
+            }
+
+        private var validated: Boolean = false
+
+        fun validate(): ComplianceStatus = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: HiddenLayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is ComplianceStatus && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
 
     /** filter by the model name */
     class ModelName
@@ -817,6 +977,7 @@ private constructor(
         }
 
         return other is JobListParams &&
+            complianceStatus == other.complianceStatus &&
             detectionCategory == other.detectionCategory &&
             endTime == other.endTime &&
             latestPerModelVersionOnly == other.latestPerModelVersionOnly &&
@@ -837,6 +998,7 @@ private constructor(
 
     override fun hashCode(): Int =
         Objects.hash(
+            complianceStatus,
             detectionCategory,
             endTime,
             latestPerModelVersionOnly,
@@ -856,5 +1018,5 @@ private constructor(
         )
 
     override fun toString() =
-        "JobListParams{detectionCategory=$detectionCategory, endTime=$endTime, latestPerModelVersionOnly=$latestPerModelVersionOnly, limit=$limit, modelIds=$modelIds, modelName=$modelName, modelVersionIds=$modelVersionIds, offset=$offset, scannerVersion=$scannerVersion, severity=$severity, sort=$sort, source=$source, startTime=$startTime, status=$status, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "JobListParams{complianceStatus=$complianceStatus, detectionCategory=$detectionCategory, endTime=$endTime, latestPerModelVersionOnly=$latestPerModelVersionOnly, limit=$limit, modelIds=$modelIds, modelName=$modelName, modelVersionIds=$modelVersionIds, offset=$offset, scannerVersion=$scannerVersion, severity=$severity, sort=$sort, source=$source, startTime=$startTime, status=$status, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

@@ -38,6 +38,13 @@ internal class JobListResponseTest {
                         .status(ScanReport.Status.PENDING)
                         .version("version")
                         .schemaVersion("\$schema_version")
+                        .compliance(
+                            ScanReport.Compliance.builder()
+                                .evaluatedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                .addRuleSetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                                .status(ScanReport.Compliance.Status.COMPLIANT)
+                                .build()
+                        )
                         .addDetectionCategory("string")
                         .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .addFileResult(
@@ -154,6 +161,13 @@ internal class JobListResponseTest {
                     .status(ScanReport.Status.PENDING)
                     .version("version")
                     .schemaVersion("\$schema_version")
+                    .compliance(
+                        ScanReport.Compliance.builder()
+                            .evaluatedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                            .addRuleSetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .status(ScanReport.Compliance.Status.COMPLIANT)
+                            .build()
+                    )
                     .addDetectionCategory("string")
                     .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .addFileResult(
@@ -273,6 +287,13 @@ internal class JobListResponseTest {
                         .status(ScanReport.Status.PENDING)
                         .version("version")
                         .schemaVersion("\$schema_version")
+                        .compliance(
+                            ScanReport.Compliance.builder()
+                                .evaluatedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                                .addRuleSetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                                .status(ScanReport.Compliance.Status.COMPLIANT)
+                                .build()
+                        )
                         .addDetectionCategory("string")
                         .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .addFileResult(

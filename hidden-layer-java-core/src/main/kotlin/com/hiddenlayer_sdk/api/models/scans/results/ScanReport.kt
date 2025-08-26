@@ -43,6 +43,7 @@ private constructor(
     private val status: JsonField<Status>,
     private val version: JsonField<String>,
     private val schemaVersion: JsonField<String>,
+    private val compliance: JsonField<Compliance>,
     private val detectionCategories: JsonField<List<String>>,
     private val endTime: JsonField<OffsetDateTime>,
     private val fileResults: JsonField<List<FileResult>>,
@@ -73,6 +74,9 @@ private constructor(
         @JsonProperty("\$schema_version")
         @ExcludeMissing
         schemaVersion: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("compliance")
+        @ExcludeMissing
+        compliance: JsonField<Compliance> = JsonMissing.of(),
         @JsonProperty("detection_categories")
         @ExcludeMissing
         detectionCategories: JsonField<List<String>> = JsonMissing.of(),
@@ -97,6 +101,7 @@ private constructor(
         status,
         version,
         schemaVersion,
+        compliance,
         detectionCategories,
         endTime,
         fileResults,
@@ -178,6 +183,12 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun schemaVersion(): Optional<String> = schemaVersion.getOptional("\$schema_version")
+
+    /**
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun compliance(): Optional<Compliance> = compliance.getOptional("compliance")
 
     /**
      * list of detection categories found
@@ -299,6 +310,15 @@ private constructor(
     fun _schemaVersion(): JsonField<String> = schemaVersion
 
     /**
+     * Returns the raw JSON value of [compliance].
+     *
+     * Unlike [compliance], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("compliance")
+    @ExcludeMissing
+    fun _compliance(): JsonField<Compliance> = compliance
+
+    /**
      * Returns the raw JSON value of [detectionCategories].
      *
      * Unlike [detectionCategories], this method doesn't throw if the JSON field has an unexpected
@@ -391,6 +411,7 @@ private constructor(
         private var status: JsonField<Status>? = null
         private var version: JsonField<String>? = null
         private var schemaVersion: JsonField<String> = JsonMissing.of()
+        private var compliance: JsonField<Compliance> = JsonMissing.of()
         private var detectionCategories: JsonField<MutableList<String>>? = null
         private var endTime: JsonField<OffsetDateTime> = JsonMissing.of()
         private var fileResults: JsonField<MutableList<FileResult>>? = null
@@ -410,6 +431,7 @@ private constructor(
             status = scanReport.status
             version = scanReport.version
             schemaVersion = scanReport.schemaVersion
+            compliance = scanReport.compliance
             detectionCategories = scanReport.detectionCategories.map { it.toMutableList() }
             endTime = scanReport.endTime
             fileResults = scanReport.fileResults.map { it.toMutableList() }
@@ -543,6 +565,17 @@ private constructor(
         fun schemaVersion(schemaVersion: JsonField<String>) = apply {
             this.schemaVersion = schemaVersion
         }
+
+        fun compliance(compliance: Compliance) = compliance(JsonField.of(compliance))
+
+        /**
+         * Sets [Builder.compliance] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.compliance] with a well-typed [Compliance] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun compliance(compliance: JsonField<Compliance>) = apply { this.compliance = compliance }
 
         /** list of detection categories found */
         fun detectionCategories(detectionCategories: List<String>) =
@@ -694,6 +727,7 @@ private constructor(
                 checkRequired("status", status),
                 checkRequired("version", version),
                 schemaVersion,
+                compliance,
                 (detectionCategories ?: JsonMissing.of()).map { it.toImmutable() },
                 endTime,
                 (fileResults ?: JsonMissing.of()).map { it.toImmutable() },
@@ -720,6 +754,7 @@ private constructor(
         status().validate()
         version()
         schemaVersion()
+        compliance().ifPresent { it.validate() }
         detectionCategories()
         endTime()
         fileResults().ifPresent { it.forEach { it.validate() } }
@@ -753,6 +788,7 @@ private constructor(
             (status.asKnown().getOrNull()?.validity() ?: 0) +
             (if (version.asKnown().isPresent) 1 else 0) +
             (if (schemaVersion.asKnown().isPresent) 1 else 0) +
+            (compliance.asKnown().getOrNull()?.validity() ?: 0) +
             (detectionCategories.asKnown().getOrNull()?.size ?: 0) +
             (if (endTime.asKnown().isPresent) 1 else 0) +
             (fileResults.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
@@ -2609,6 +2645,374 @@ private constructor(
         override fun hashCode() = value.hashCode()
 
         override fun toString() = value.toString()
+    }
+
+    class Compliance
+    private constructor(
+        private val evaluatedAt: JsonField<OffsetDateTime>,
+        private val ruleSetIds: JsonField<List<String>>,
+        private val status: JsonField<Status>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("evaluated_at")
+            @ExcludeMissing
+            evaluatedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("rule_set_ids")
+            @ExcludeMissing
+            ruleSetIds: JsonField<List<String>> = JsonMissing.of(),
+            @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+        ) : this(evaluatedAt, ruleSetIds, status, mutableMapOf())
+
+        /**
+         * The datetime when the rule set was evaluated against the scan result
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun evaluatedAt(): Optional<OffsetDateTime> = evaluatedAt.getOptional("evaluated_at")
+
+        /**
+         * A list of non-default rule sets that were used when evaluating the scan result
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun ruleSetIds(): Optional<List<String>> = ruleSetIds.getOptional("rule_set_ids")
+
+        /**
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun status(): Optional<Status> = status.getOptional("status")
+
+        /**
+         * Returns the raw JSON value of [evaluatedAt].
+         *
+         * Unlike [evaluatedAt], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("evaluated_at")
+        @ExcludeMissing
+        fun _evaluatedAt(): JsonField<OffsetDateTime> = evaluatedAt
+
+        /**
+         * Returns the raw JSON value of [ruleSetIds].
+         *
+         * Unlike [ruleSetIds], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("rule_set_ids")
+        @ExcludeMissing
+        fun _ruleSetIds(): JsonField<List<String>> = ruleSetIds
+
+        /**
+         * Returns the raw JSON value of [status].
+         *
+         * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [Compliance]. */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Compliance]. */
+        class Builder internal constructor() {
+
+            private var evaluatedAt: JsonField<OffsetDateTime> = JsonMissing.of()
+            private var ruleSetIds: JsonField<MutableList<String>>? = null
+            private var status: JsonField<Status> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(compliance: Compliance) = apply {
+                evaluatedAt = compliance.evaluatedAt
+                ruleSetIds = compliance.ruleSetIds.map { it.toMutableList() }
+                status = compliance.status
+                additionalProperties = compliance.additionalProperties.toMutableMap()
+            }
+
+            /** The datetime when the rule set was evaluated against the scan result */
+            fun evaluatedAt(evaluatedAt: OffsetDateTime) = evaluatedAt(JsonField.of(evaluatedAt))
+
+            /**
+             * Sets [Builder.evaluatedAt] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.evaluatedAt] with a well-typed [OffsetDateTime]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun evaluatedAt(evaluatedAt: JsonField<OffsetDateTime>) = apply {
+                this.evaluatedAt = evaluatedAt
+            }
+
+            /** A list of non-default rule sets that were used when evaluating the scan result */
+            fun ruleSetIds(ruleSetIds: List<String>) = ruleSetIds(JsonField.of(ruleSetIds))
+
+            /**
+             * Sets [Builder.ruleSetIds] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.ruleSetIds] with a well-typed `List<String>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun ruleSetIds(ruleSetIds: JsonField<List<String>>) = apply {
+                this.ruleSetIds = ruleSetIds.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [String] to [ruleSetIds].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addRuleSetId(ruleSetId: String) = apply {
+                ruleSetIds =
+                    (ruleSetIds ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("ruleSetIds", it).add(ruleSetId)
+                    }
+            }
+
+            fun status(status: Status) = status(JsonField.of(status))
+
+            /**
+             * Sets [Builder.status] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.status] with a well-typed [Status] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun status(status: JsonField<Status>) = apply { this.status = status }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Compliance].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Compliance =
+                Compliance(
+                    evaluatedAt,
+                    (ruleSetIds ?: JsonMissing.of()).map { it.toImmutable() },
+                    status,
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Compliance = apply {
+            if (validated) {
+                return@apply
+            }
+
+            evaluatedAt()
+            ruleSetIds()
+            status().ifPresent { it.validate() }
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: HiddenLayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (evaluatedAt.asKnown().isPresent) 1 else 0) +
+                (ruleSetIds.asKnown().getOrNull()?.size ?: 0) +
+                (status.asKnown().getOrNull()?.validity() ?: 0)
+
+        class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val COMPLIANT = of("COMPLIANT")
+
+                @JvmField val NONCOMPLIANT = of("NONCOMPLIANT")
+
+                @JvmStatic fun of(value: String) = Status(JsonField.of(value))
+            }
+
+            /** An enum containing [Status]'s known values. */
+            enum class Known {
+                COMPLIANT,
+                NONCOMPLIANT,
+            }
+
+            /**
+             * An enum containing [Status]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Status] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                COMPLIANT,
+                NONCOMPLIANT,
+                /**
+                 * An enum member indicating that [Status] was instantiated with an unknown value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    COMPLIANT -> Value.COMPLIANT
+                    NONCOMPLIANT -> Value.NONCOMPLIANT
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value is a not a
+             *   known member.
+             */
+            fun known(): Known =
+                when (this) {
+                    COMPLIANT -> Known.COMPLIANT
+                    NONCOMPLIANT -> Known.NONCOMPLIANT
+                    else -> throw HiddenLayerInvalidDataException("Unknown Status: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value does not have
+             *   the expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    HiddenLayerInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): Status = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: HiddenLayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Status && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Compliance &&
+                evaluatedAt == other.evaluatedAt &&
+                ruleSetIds == other.ruleSetIds &&
+                status == other.status &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy {
+            Objects.hash(evaluatedAt, ruleSetIds, status, additionalProperties)
+        }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Compliance{evaluatedAt=$evaluatedAt, ruleSetIds=$ruleSetIds, status=$status, additionalProperties=$additionalProperties}"
     }
 
     class FileResult
@@ -7851,6 +8255,7 @@ private constructor(
             status == other.status &&
             version == other.version &&
             schemaVersion == other.schemaVersion &&
+            compliance == other.compliance &&
             detectionCategories == other.detectionCategories &&
             endTime == other.endTime &&
             fileResults == other.fileResults &&
@@ -7871,6 +8276,7 @@ private constructor(
             status,
             version,
             schemaVersion,
+            compliance,
             detectionCategories,
             endTime,
             fileResults,
@@ -7884,5 +8290,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ScanReport{detectionCount=$detectionCount, fileCount=$fileCount, filesWithDetectionsCount=$filesWithDetectionsCount, inventory=$inventory, scanId=$scanId, startTime=$startTime, status=$status, version=$version, schemaVersion=$schemaVersion, detectionCategories=$detectionCategories, endTime=$endTime, fileResults=$fileResults, hasGenealogy=$hasGenealogy, severity=$severity, summary=$summary, additionalProperties=$additionalProperties}"
+        "ScanReport{detectionCount=$detectionCount, fileCount=$fileCount, filesWithDetectionsCount=$filesWithDetectionsCount, inventory=$inventory, scanId=$scanId, startTime=$startTime, status=$status, version=$version, schemaVersion=$schemaVersion, compliance=$compliance, detectionCategories=$detectionCategories, endTime=$endTime, fileResults=$fileResults, hasGenealogy=$hasGenealogy, severity=$severity, summary=$summary, additionalProperties=$additionalProperties}"
 }
