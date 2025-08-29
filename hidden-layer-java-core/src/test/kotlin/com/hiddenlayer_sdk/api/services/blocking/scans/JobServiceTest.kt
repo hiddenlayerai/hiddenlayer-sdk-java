@@ -49,6 +49,7 @@ internal class JobServiceTest {
         val jobs =
             jobService.list(
                 JobListParams.builder()
+                    .addComplianceStatus(JobListParams.ComplianceStatus.COMPLIANT)
                     .detectionCategory("detection_category")
                     .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .latestPerModelVersionOnly(true)
