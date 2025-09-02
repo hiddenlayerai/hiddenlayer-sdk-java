@@ -1090,17 +1090,11 @@ private constructor(
 
             @JvmField val DESC = of("desc")
 
-            @JvmField val ASC = of("ASC")
-
-            @JvmField val DESC = of("DESC")
-
             @JvmStatic fun of(value: String) = OrderDir(JsonField.of(value))
         }
 
         /** An enum containing [OrderDir]'s known values. */
         enum class Known {
-            ASC,
-            DESC,
             ASC,
             DESC,
         }
@@ -1115,8 +1109,6 @@ private constructor(
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
-            ASC,
-            DESC,
             ASC,
             DESC,
             /** An enum member indicating that [OrderDir] was instantiated with an unknown value. */
@@ -1134,8 +1126,6 @@ private constructor(
             when (this) {
                 ASC -> Value.ASC
                 DESC -> Value.DESC
-                ASC -> Value.ASC
-                DESC -> Value.DESC
                 else -> Value._UNKNOWN
             }
 
@@ -1150,8 +1140,6 @@ private constructor(
          */
         fun known(): Known =
             when (this) {
-                ASC -> Known.ASC
-                DESC -> Known.DESC
                 ASC -> Known.ASC
                 DESC -> Known.DESC
                 else -> throw HiddenLayerInvalidDataException("Unknown OrderDir: $value")
