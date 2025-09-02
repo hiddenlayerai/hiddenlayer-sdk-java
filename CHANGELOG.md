@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.2 (2025-09-02)
+
+Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/hiddenlayer-engineering/hiddenlayer-sdk-java/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
+
+### Features
+
+* **api:** api update ([23d93db](https://github.com/hiddenlayer-engineering/hiddenlayer-sdk-java/commit/23d93db2d8d3c3db8fffb93af5e846be9609367e))
+
 ## 0.1.0-alpha.1 (2025-08-26)
 
 Full Changelog: [v0.0.1-alpha.1...v0.1.0-alpha.1](https://github.com/hiddenlayer-engineering/hiddenlayer-sdk-java/compare/v0.0.1-alpha.1...v0.1.0-alpha.1)
