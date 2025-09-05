@@ -3,6 +3,8 @@
 package com.hiddenlayer_sdk.api.client
 
 import com.hiddenlayer_sdk.api.core.ClientOptions
+import com.hiddenlayer_sdk.api.lib.CommunityScanner
+import com.hiddenlayer_sdk.api.lib.ModelScanner
 import com.hiddenlayer_sdk.api.services.blocking.ModelService
 import com.hiddenlayer_sdk.api.services.blocking.PromptAnalyzerService
 import com.hiddenlayer_sdk.api.services.blocking.ScanService
@@ -52,6 +54,22 @@ interface HiddenLayerClient {
     fun sensors(): SensorService
 
     fun scans(): ScanService
+
+    /**
+     * Community scanner that provides the communityScan method with polling functionality.
+     *
+     * This extends the generated SDK to provide the same functionality as the old SDK's
+     * communityScan method, which initiates a scan and optionally waits for results.
+     */
+    fun communityScanner(): CommunityScanner
+
+    /**
+     * Model scanner that provides file and folder scanning functionality.
+     *
+     * This extends the generated SDK to provide the same functionality as the old SDK's
+     * ModelScanAPI, including multipart upload functionality for files and folders.
+     */
+    fun modelScanner(): ModelScanner
 
     /**
      * Closes this client, relinquishing any underlying resources.

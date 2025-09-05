@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -eux
+
+# Build and publish the Java SDK packages to JFrog
+echo "Publishing HiddenLayer Java SDK to JFrog..."
+
+# Ensure required environment variables are set
+if [[ -z "${JFROG_USER:-}" || -z "${JFROG_TOKEN:-}" ]]; then
+    echo "ERROR: JFROG_USER and JFROG_TOKEN environment variables must be set"
+    exit 1
+fi
+
+# Clean and build the project
+./gradlew clean
+
+# Publish to JFrog repository
+# Using publishAllPublicationsToJFrogRepository to publish to the JFrog repository we configured
+./gradlew publishAllPublicationsToJFrogRepository
+
+echo "Successfully published to JFrog!"

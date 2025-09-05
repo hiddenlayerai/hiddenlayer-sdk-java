@@ -40,6 +40,18 @@ configure<PublishingExtension> {
             }
         }
     }
+
+    repositories {
+        // JFrog repository for internal publishing
+        maven {
+            name = "JFrog"
+            url = uri("https://hiddenlayer.jfrog.io/artifactory/internal-java-sdk")
+            credentials {
+                username = System.getenv("JFROG_USER")
+                password = System.getenv("JFROG_TOKEN")
+            }
+        }
+    }
 }
 
 signing {

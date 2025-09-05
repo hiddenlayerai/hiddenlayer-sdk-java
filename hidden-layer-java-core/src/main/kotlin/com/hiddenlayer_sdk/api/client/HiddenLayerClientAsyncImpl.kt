@@ -4,6 +4,8 @@ package com.hiddenlayer_sdk.api.client
 
 import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.core.getPackageVersion
+import com.hiddenlayer_sdk.api.lib.AsyncCommunityScanner
+import com.hiddenlayer_sdk.api.lib.AsyncModelScanner
 import com.hiddenlayer_sdk.api.services.async.ModelServiceAsync
 import com.hiddenlayer_sdk.api.services.async.ModelServiceAsyncImpl
 import com.hiddenlayer_sdk.api.services.async.PromptAnalyzerServiceAsync
@@ -46,6 +48,12 @@ class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
 
     private val scans: ScanServiceAsync by lazy { ScanServiceAsyncImpl(clientOptionsWithUserAgent) }
 
+    private val communityScannerInstance: AsyncCommunityScanner by lazy {
+        AsyncCommunityScanner(this)
+    }
+
+    private val modelScannerInstance: AsyncModelScanner by lazy { AsyncModelScanner(this) }
+
     override fun sync(): HiddenLayerClient = sync
 
     override fun withRawResponse(): HiddenLayerClientAsync.WithRawResponse = withRawResponse
@@ -61,7 +69,28 @@ class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
 
     override fun scans(): ScanServiceAsync = scans
 
-    override fun close() = clientOptions.close()
+    override fun communityScanner(): AsyncCommunityScanner = communityScannerInstance
+
+    override fun modelScanner(): AsyncModelScanner = modelScannerInstance
+
+    override fun close() {
+        // Close scanner resources to shut down their executors
+        // Note: close() methods are idempotent, so it's safe to call them
+        try {
+            communityScannerInstance.close()
+        } catch (e: Exception) {
+            // Scanner may not have been initialized, ignore
+        }
+
+        try {
+            modelScannerInstance.close()
+        } catch (e: Exception) {
+            // Scanner may not have been initialized, ignore
+        }
+
+        // Close the client options (which handles HTTP client cleanup)
+        clientOptions.close()
+    }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         HiddenLayerClientAsync.WithRawResponse {

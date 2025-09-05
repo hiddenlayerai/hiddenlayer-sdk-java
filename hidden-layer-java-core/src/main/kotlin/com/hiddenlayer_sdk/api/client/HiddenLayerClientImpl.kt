@@ -4,6 +4,8 @@ package com.hiddenlayer_sdk.api.client
 
 import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.core.getPackageVersion
+import com.hiddenlayer_sdk.api.lib.CommunityScanner
+import com.hiddenlayer_sdk.api.lib.ModelScanner
 import com.hiddenlayer_sdk.api.services.blocking.ModelService
 import com.hiddenlayer_sdk.api.services.blocking.ModelServiceImpl
 import com.hiddenlayer_sdk.api.services.blocking.PromptAnalyzerService
@@ -41,6 +43,10 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
 
     private val scans: ScanService by lazy { ScanServiceImpl(clientOptionsWithUserAgent) }
 
+    private val communityScanner: CommunityScanner by lazy { CommunityScanner(this) }
+
+    private val modelScanner: ModelScanner by lazy { ModelScanner(this) }
+
     override fun async(): HiddenLayerClientAsync = async
 
     override fun withRawResponse(): HiddenLayerClient.WithRawResponse = withRawResponse
@@ -55,6 +61,10 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
     override fun sensors(): SensorService = sensors
 
     override fun scans(): ScanService = scans
+
+    override fun communityScanner(): CommunityScanner = communityScanner
+
+    override fun modelScanner(): ModelScanner = modelScanner
 
     override fun close() = clientOptions.close()
 
