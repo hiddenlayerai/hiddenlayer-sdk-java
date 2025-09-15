@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.1.0-alpha.4 (2025-09-15)
+
+Full Changelog: [v0.1.0-alpha.3...v0.1.0-alpha.4](https://github.com/hiddenlayer-engineering/hiddenlayer-sdk-java/compare/v0.1.0-alpha.3...v0.1.0-alpha.4)
+
+### Features
+
+* **api:** add sarif route ([ae9aab0](https://github.com/hiddenlayer-engineering/hiddenlayer-sdk-java/commit/ae9aab0d77eac97ec3b1efc20f0b04077409330a))
+* **api:** update tokenUrl ([d7052d2](https://github.com/hiddenlayer-engineering/hiddenlayer-sdk-java/commit/d7052d2d4f885f8976c4ccd60879bb656c826559))
+
+
+### Chores
+
+* improve formatter performance ([3df6211](https://github.com/hiddenlayer-engineering/hiddenlayer-sdk-java/commit/3df6211645a81a088afc5f3162d9f87047601ace))
+* **internal:** codegen related update ([bd9f5ea](https://github.com/hiddenlayer-engineering/hiddenlayer-sdk-java/commit/bd9f5eaa148f865331f3cf6c627036e218c934d9))
+* **internal:** codegen related update ([ecafc5b](https://github.com/hiddenlayer-engineering/hiddenlayer-sdk-java/commit/ecafc5b590a6f5e51eaa479fe8ed7488c96ac3e8))
+
 ## 0.1.0-alpha.3 (2025-09-03)
 
 Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/hiddenlayer-engineering/hiddenlayer-sdk-java/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)

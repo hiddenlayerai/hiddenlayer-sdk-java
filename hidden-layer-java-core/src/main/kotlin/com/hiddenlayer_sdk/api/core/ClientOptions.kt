@@ -466,7 +466,7 @@ private constructor(
                                 .httpClient(httpClient)
                                 .tokenUrl(
                                     (baseUrl ?: PROD_US_URL) +
-                                        "https://auth.hiddenlayer.ai/oauth2/token?grant_type=client_credentials"
+                                        "/oauth2/token?grant_type=client_credentials"
                                 )
                                 .clientId(clientId!!)
                                 .clientSecret(clientSecret!!)
