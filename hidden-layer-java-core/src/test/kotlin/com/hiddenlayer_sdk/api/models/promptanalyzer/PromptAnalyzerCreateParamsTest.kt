@@ -11,6 +11,7 @@ internal class PromptAnalyzerCreateParamsTest {
     @Test
     fun create() {
         PromptAnalyzerCreateParams.builder()
+            .hlProjectId("internal-search-chatbot")
             .xLlmBlockGuardrailDetection(true)
             .xLlmBlockInputCodeDetection(true)
             .xLlmBlockInputDosDetection(true)
@@ -49,6 +50,7 @@ internal class PromptAnalyzerCreateParamsTest {
     fun headers() {
         val params =
             PromptAnalyzerCreateParams.builder()
+                .hlProjectId("internal-search-chatbot")
                 .xLlmBlockGuardrailDetection(true)
                 .xLlmBlockInputCodeDetection(true)
                 .xLlmBlockInputDosDetection(true)
@@ -87,6 +89,7 @@ internal class PromptAnalyzerCreateParamsTest {
         assertThat(headers)
             .isEqualTo(
                 Headers.builder()
+                    .put("HL-Project-Id", "internal-search-chatbot")
                     .put("X-LLM-Block-Guardrail-Detection", "true")
                     .put("X-LLM-Block-Input-Code-Detection", "true")
                     .put("X-LLM-Block-Input-DOS-Detection", "true")
@@ -133,6 +136,7 @@ internal class PromptAnalyzerCreateParamsTest {
     fun body() {
         val params =
             PromptAnalyzerCreateParams.builder()
+                .hlProjectId("internal-search-chatbot")
                 .xLlmBlockGuardrailDetection(true)
                 .xLlmBlockInputCodeDetection(true)
                 .xLlmBlockInputDosDetection(true)
