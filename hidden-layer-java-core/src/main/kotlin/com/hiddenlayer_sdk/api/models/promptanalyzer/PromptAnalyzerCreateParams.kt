@@ -24,6 +24,7 @@ import kotlin.jvm.optionals.getOrNull
 /** Analyze LLM Prompt and Response */
 class PromptAnalyzerCreateParams
 private constructor(
+    private val hlProjectId: String?,
     private val xLlmBlockGuardrailDetection: Boolean?,
     private val xLlmBlockInputCodeDetection: Boolean?,
     private val xLlmBlockInputDosDetection: Boolean?,
@@ -54,6 +55,8 @@ private constructor(
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
+
+    fun hlProjectId(): Optional<String> = Optional.ofNullable(hlProjectId)
 
     fun xLlmBlockGuardrailDetection(): Optional<Boolean> =
         Optional.ofNullable(xLlmBlockGuardrailDetection)
@@ -191,6 +194,7 @@ private constructor(
     /** A builder for [PromptAnalyzerCreateParams]. */
     class Builder internal constructor() {
 
+        private var hlProjectId: String? = null
         private var xLlmBlockGuardrailDetection: Boolean? = null
         private var xLlmBlockInputCodeDetection: Boolean? = null
         private var xLlmBlockInputDosDetection: Boolean? = null
@@ -223,6 +227,7 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(promptAnalyzerCreateParams: PromptAnalyzerCreateParams) = apply {
+            hlProjectId = promptAnalyzerCreateParams.hlProjectId
             xLlmBlockGuardrailDetection = promptAnalyzerCreateParams.xLlmBlockGuardrailDetection
             xLlmBlockInputCodeDetection = promptAnalyzerCreateParams.xLlmBlockInputCodeDetection
             xLlmBlockInputDosDetection = promptAnalyzerCreateParams.xLlmBlockInputDosDetection
@@ -255,6 +260,11 @@ private constructor(
             additionalHeaders = promptAnalyzerCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = promptAnalyzerCreateParams.additionalQueryParams.toBuilder()
         }
+
+        fun hlProjectId(hlProjectId: String?) = apply { this.hlProjectId = hlProjectId }
+
+        /** Alias for calling [Builder.hlProjectId] with `hlProjectId.orElse(null)`. */
+        fun hlProjectId(hlProjectId: Optional<String>) = hlProjectId(hlProjectId.getOrNull())
 
         fun xLlmBlockGuardrailDetection(xLlmBlockGuardrailDetection: Boolean?) = apply {
             this.xLlmBlockGuardrailDetection = xLlmBlockGuardrailDetection
@@ -865,6 +875,7 @@ private constructor(
          */
         fun build(): PromptAnalyzerCreateParams =
             PromptAnalyzerCreateParams(
+                hlProjectId,
                 xLlmBlockGuardrailDetection,
                 xLlmBlockInputCodeDetection,
                 xLlmBlockInputDosDetection,
@@ -902,6 +913,7 @@ private constructor(
     override fun _headers(): Headers =
         Headers.builder()
             .apply {
+                hlProjectId?.let { put("HL-Project-Id", it) }
                 xLlmBlockGuardrailDetection?.let {
                     put("X-LLM-Block-Guardrail-Detection", it.toString())
                 }
@@ -1596,6 +1608,7 @@ private constructor(
         }
 
         return other is PromptAnalyzerCreateParams &&
+            hlProjectId == other.hlProjectId &&
             xLlmBlockGuardrailDetection == other.xLlmBlockGuardrailDetection &&
             xLlmBlockInputCodeDetection == other.xLlmBlockInputCodeDetection &&
             xLlmBlockInputDosDetection == other.xLlmBlockInputDosDetection &&
@@ -1629,6 +1642,7 @@ private constructor(
 
     override fun hashCode(): Int =
         Objects.hash(
+            hlProjectId,
             xLlmBlockGuardrailDetection,
             xLlmBlockInputCodeDetection,
             xLlmBlockInputDosDetection,
@@ -1661,5 +1675,5 @@ private constructor(
         )
 
     override fun toString() =
-        "PromptAnalyzerCreateParams{xLlmBlockGuardrailDetection=$xLlmBlockGuardrailDetection, xLlmBlockInputCodeDetection=$xLlmBlockInputCodeDetection, xLlmBlockInputDosDetection=$xLlmBlockInputDosDetection, xLlmBlockInputPii=$xLlmBlockInputPii, xLlmBlockOutputCodeDetection=$xLlmBlockOutputCodeDetection, xLlmBlockOutputPii=$xLlmBlockOutputPii, xLlmBlockPromptInjection=$xLlmBlockPromptInjection, xLlmBlockUnsafe=$xLlmBlockUnsafe, xLlmBlockUnsafeInput=$xLlmBlockUnsafeInput, xLlmBlockUnsafeOutput=$xLlmBlockUnsafeOutput, xLlmEntityType=$xLlmEntityType, xLlmInputDosDetectionThreshold=$xLlmInputDosDetectionThreshold, xLlmPromptInjectionScanType=$xLlmPromptInjectionScanType, xLlmRedactInputPii=$xLlmRedactInputPii, xLlmRedactOutputPii=$xLlmRedactOutputPii, xLlmRedactType=$xLlmRedactType, xLlmSkipGuardrailDetection=$xLlmSkipGuardrailDetection, xLlmSkipInputCodeDetection=$xLlmSkipInputCodeDetection, xLlmSkipInputDosDetection=$xLlmSkipInputDosDetection, xLlmSkipInputPiiDetection=$xLlmSkipInputPiiDetection, xLlmSkipInputUrlDetection=$xLlmSkipInputUrlDetection, xLlmSkipOutputCodeDetection=$xLlmSkipOutputCodeDetection, xLlmSkipOutputPiiDetection=$xLlmSkipOutputPiiDetection, xLlmSkipOutputUrlDetection=$xLlmSkipOutputUrlDetection, xLlmSkipPromptInjectionDetection=$xLlmSkipPromptInjectionDetection, xRequesterId=$xRequesterId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "PromptAnalyzerCreateParams{hlProjectId=$hlProjectId, xLlmBlockGuardrailDetection=$xLlmBlockGuardrailDetection, xLlmBlockInputCodeDetection=$xLlmBlockInputCodeDetection, xLlmBlockInputDosDetection=$xLlmBlockInputDosDetection, xLlmBlockInputPii=$xLlmBlockInputPii, xLlmBlockOutputCodeDetection=$xLlmBlockOutputCodeDetection, xLlmBlockOutputPii=$xLlmBlockOutputPii, xLlmBlockPromptInjection=$xLlmBlockPromptInjection, xLlmBlockUnsafe=$xLlmBlockUnsafe, xLlmBlockUnsafeInput=$xLlmBlockUnsafeInput, xLlmBlockUnsafeOutput=$xLlmBlockUnsafeOutput, xLlmEntityType=$xLlmEntityType, xLlmInputDosDetectionThreshold=$xLlmInputDosDetectionThreshold, xLlmPromptInjectionScanType=$xLlmPromptInjectionScanType, xLlmRedactInputPii=$xLlmRedactInputPii, xLlmRedactOutputPii=$xLlmRedactOutputPii, xLlmRedactType=$xLlmRedactType, xLlmSkipGuardrailDetection=$xLlmSkipGuardrailDetection, xLlmSkipInputCodeDetection=$xLlmSkipInputCodeDetection, xLlmSkipInputDosDetection=$xLlmSkipInputDosDetection, xLlmSkipInputPiiDetection=$xLlmSkipInputPiiDetection, xLlmSkipInputUrlDetection=$xLlmSkipInputUrlDetection, xLlmSkipOutputCodeDetection=$xLlmSkipOutputCodeDetection, xLlmSkipOutputPiiDetection=$xLlmSkipOutputPiiDetection, xLlmSkipOutputUrlDetection=$xLlmSkipOutputUrlDetection, xLlmSkipPromptInjectionDetection=$xLlmSkipPromptInjectionDetection, xRequesterId=$xRequesterId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

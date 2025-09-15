@@ -25,6 +25,7 @@ internal class PromptAnalyzerServiceAsyncTest {
         val promptAnalyzerFuture =
             promptAnalyzerServiceAsync.create(
                 PromptAnalyzerCreateParams.builder()
+                    .hlProjectId("internal-search-chatbot")
                     .xLlmBlockGuardrailDetection(true)
                     .xLlmBlockInputCodeDetection(true)
                     .xLlmBlockInputDosDetection(true)
