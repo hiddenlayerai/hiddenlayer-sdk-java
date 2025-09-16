@@ -6,6 +6,8 @@ import com.hiddenlayer_sdk.api.core.ClientOptions
 import com.hiddenlayer_sdk.api.core.getPackageVersion
 import com.hiddenlayer_sdk.api.lib.AsyncCommunityScanner
 import com.hiddenlayer_sdk.api.lib.AsyncModelScanner
+import com.hiddenlayer_sdk.api.services.async.InteractionServiceAsync
+import com.hiddenlayer_sdk.api.services.async.InteractionServiceAsyncImpl
 import com.hiddenlayer_sdk.api.services.async.ModelServiceAsync
 import com.hiddenlayer_sdk.api.services.async.ModelServiceAsyncImpl
 import com.hiddenlayer_sdk.api.services.async.PromptAnalyzerServiceAsync
@@ -42,6 +44,10 @@ class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
         PromptAnalyzerServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
+    private val interactions: InteractionServiceAsync by lazy {
+        InteractionServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
     private val sensors: SensorServiceAsync by lazy {
         SensorServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -64,6 +70,8 @@ class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
     override fun models(): ModelServiceAsync = models
 
     override fun promptAnalyzer(): PromptAnalyzerServiceAsync = promptAnalyzer
+
+    override fun interactions(): InteractionServiceAsync = interactions
 
     override fun sensors(): SensorServiceAsync = sensors
 
@@ -103,6 +111,10 @@ class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
             PromptAnalyzerServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val interactions: InteractionServiceAsync.WithRawResponse by lazy {
+            InteractionServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
         private val sensors: SensorServiceAsync.WithRawResponse by lazy {
             SensorServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
@@ -121,6 +133,8 @@ class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
         override fun models(): ModelServiceAsync.WithRawResponse = models
 
         override fun promptAnalyzer(): PromptAnalyzerServiceAsync.WithRawResponse = promptAnalyzer
+
+        override fun interactions(): InteractionServiceAsync.WithRawResponse = interactions
 
         override fun sensors(): SensorServiceAsync.WithRawResponse = sensors
 
