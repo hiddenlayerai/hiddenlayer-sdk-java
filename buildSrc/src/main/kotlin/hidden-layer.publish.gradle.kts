@@ -11,7 +11,7 @@ configure<PublishingExtension> {
             pom {
                 name.set("HiddenLayer Platform API")
                 description.set("HiddenLayer Platform API")
-                url.set("https://docs.hiddenlayer-sdk.com")
+                url.set("https://dev.hiddenlayer.ai")
 
                 licenses {
                     license {
