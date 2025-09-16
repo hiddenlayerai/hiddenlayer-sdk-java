@@ -20,22 +20,16 @@ internal class InteractionAnalyzeParamsTest {
                     .build()
             )
             .input(
-                InteractionAnalyzeParams.Input.builder()
+                InteractionsInput.builder()
                     .addMessage(
-                        InteractionAnalyzeParams.Input.Message.builder()
-                            .content("content")
-                            .role("role")
-                            .build()
+                        InteractionsTextContent.builder().content("content").role("role").build()
                     )
                     .build()
             )
             .output(
-                InteractionAnalyzeParams.Output.builder()
+                InteractionsOutput.builder()
                     .addMessage(
-                        InteractionAnalyzeParams.Output.Message.builder()
-                            .content("content")
-                            .role("role")
-                            .build()
+                        InteractionsTextContent.builder().content("content").role("role").build()
                     )
                     .build()
             )
@@ -55,9 +49,9 @@ internal class InteractionAnalyzeParamsTest {
                         .build()
                 )
                 .input(
-                    InteractionAnalyzeParams.Input.builder()
+                    InteractionsInput.builder()
                         .addMessage(
-                            InteractionAnalyzeParams.Input.Message.builder()
+                            InteractionsTextContent.builder()
                                 .content("content")
                                 .role("role")
                                 .build()
@@ -65,9 +59,9 @@ internal class InteractionAnalyzeParamsTest {
                         .build()
                 )
                 .output(
-                    InteractionAnalyzeParams.Output.builder()
+                    InteractionsOutput.builder()
                         .addMessage(
-                            InteractionAnalyzeParams.Output.Message.builder()
+                            InteractionsTextContent.builder()
                                 .content("content")
                                 .role("role")
                                 .build()
@@ -112,9 +106,9 @@ internal class InteractionAnalyzeParamsTest {
                         .build()
                 )
                 .input(
-                    InteractionAnalyzeParams.Input.builder()
+                    InteractionsInput.builder()
                         .addMessage(
-                            InteractionAnalyzeParams.Input.Message.builder()
+                            InteractionsTextContent.builder()
                                 .content("content")
                                 .role("role")
                                 .build()
@@ -122,9 +116,9 @@ internal class InteractionAnalyzeParamsTest {
                         .build()
                 )
                 .output(
-                    InteractionAnalyzeParams.Output.builder()
+                    InteractionsOutput.builder()
                         .addMessage(
-                            InteractionAnalyzeParams.Output.Message.builder()
+                            InteractionsTextContent.builder()
                                 .content("content")
                                 .role("role")
                                 .build()
@@ -145,23 +139,17 @@ internal class InteractionAnalyzeParamsTest {
             )
         assertThat(body.input())
             .contains(
-                InteractionAnalyzeParams.Input.builder()
+                InteractionsInput.builder()
                     .addMessage(
-                        InteractionAnalyzeParams.Input.Message.builder()
-                            .content("content")
-                            .role("role")
-                            .build()
+                        InteractionsTextContent.builder().content("content").role("role").build()
                     )
                     .build()
             )
         assertThat(body.output())
             .contains(
-                InteractionAnalyzeParams.Output.builder()
+                InteractionsOutput.builder()
                     .addMessage(
-                        InteractionAnalyzeParams.Output.Message.builder()
-                            .content("content")
-                            .role("role")
-                            .build()
+                        InteractionsTextContent.builder().content("content").role("role").build()
                     )
                     .build()
             )

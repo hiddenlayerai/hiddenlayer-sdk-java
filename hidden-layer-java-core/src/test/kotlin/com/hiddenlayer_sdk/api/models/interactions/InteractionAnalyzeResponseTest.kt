@@ -48,9 +48,9 @@ internal class InteractionAnalyzeResponseTest {
                 .analyzedData(
                     InteractionAnalyzeResponse.AnalyzedData.builder()
                         .input(
-                            InteractionAnalyzeResponse.AnalyzedData.Input.builder()
+                            InteractionsInput.builder()
                                 .addMessage(
-                                    InteractionAnalyzeResponse.AnalyzedData.Input.Message.builder()
+                                    InteractionsTextContent.builder()
                                         .content("content")
                                         .role("role")
                                         .build()
@@ -58,9 +58,9 @@ internal class InteractionAnalyzeResponseTest {
                                 .build()
                         )
                         .output(
-                            InteractionAnalyzeResponse.AnalyzedData.Output.builder()
+                            InteractionsOutput.builder()
                                 .addMessage(
-                                    InteractionAnalyzeResponse.AnalyzedData.Output.Message.builder()
+                                    InteractionsTextContent.builder()
                                         .content("content")
                                         .role("role")
                                         .build()
@@ -89,9 +89,9 @@ internal class InteractionAnalyzeResponseTest {
                 .modifiedData(
                     InteractionAnalyzeResponse.ModifiedData.builder()
                         .input(
-                            InteractionAnalyzeResponse.ModifiedData.Input.builder()
+                            InteractionsInput.builder()
                                 .addMessage(
-                                    InteractionAnalyzeResponse.ModifiedData.Input.Message.builder()
+                                    InteractionsTextContent.builder()
                                         .content("content")
                                         .role("role")
                                         .build()
@@ -99,9 +99,9 @@ internal class InteractionAnalyzeResponseTest {
                                 .build()
                         )
                         .output(
-                            InteractionAnalyzeResponse.ModifiedData.Output.builder()
+                            InteractionsOutput.builder()
                                 .addMessage(
-                                    InteractionAnalyzeResponse.ModifiedData.Output.Message.builder()
+                                    InteractionsTextContent.builder()
                                         .content("content")
                                         .role("role")
                                         .build()
@@ -146,9 +146,9 @@ internal class InteractionAnalyzeResponseTest {
             .isEqualTo(
                 InteractionAnalyzeResponse.AnalyzedData.builder()
                     .input(
-                        InteractionAnalyzeResponse.AnalyzedData.Input.builder()
+                        InteractionsInput.builder()
                             .addMessage(
-                                InteractionAnalyzeResponse.AnalyzedData.Input.Message.builder()
+                                InteractionsTextContent.builder()
                                     .content("content")
                                     .role("role")
                                     .build()
@@ -156,9 +156,9 @@ internal class InteractionAnalyzeResponseTest {
                             .build()
                     )
                     .output(
-                        InteractionAnalyzeResponse.AnalyzedData.Output.builder()
+                        InteractionsOutput.builder()
                             .addMessage(
-                                InteractionAnalyzeResponse.AnalyzedData.Output.Message.builder()
+                                InteractionsTextContent.builder()
                                     .content("content")
                                     .role("role")
                                     .build()
@@ -189,9 +189,9 @@ internal class InteractionAnalyzeResponseTest {
             .isEqualTo(
                 InteractionAnalyzeResponse.ModifiedData.builder()
                     .input(
-                        InteractionAnalyzeResponse.ModifiedData.Input.builder()
+                        InteractionsInput.builder()
                             .addMessage(
-                                InteractionAnalyzeResponse.ModifiedData.Input.Message.builder()
+                                InteractionsTextContent.builder()
                                     .content("content")
                                     .role("role")
                                     .build()
@@ -199,9 +199,9 @@ internal class InteractionAnalyzeResponseTest {
                             .build()
                     )
                     .output(
-                        InteractionAnalyzeResponse.ModifiedData.Output.builder()
+                        InteractionsOutput.builder()
                             .addMessage(
-                                InteractionAnalyzeResponse.ModifiedData.Output.Message.builder()
+                                InteractionsTextContent.builder()
                                     .content("content")
                                     .role("role")
                                     .build()
@@ -250,9 +250,9 @@ internal class InteractionAnalyzeResponseTest {
                 .analyzedData(
                     InteractionAnalyzeResponse.AnalyzedData.builder()
                         .input(
-                            InteractionAnalyzeResponse.AnalyzedData.Input.builder()
+                            InteractionsInput.builder()
                                 .addMessage(
-                                    InteractionAnalyzeResponse.AnalyzedData.Input.Message.builder()
+                                    InteractionsTextContent.builder()
                                         .content("content")
                                         .role("role")
                                         .build()
@@ -260,9 +260,9 @@ internal class InteractionAnalyzeResponseTest {
                                 .build()
                         )
                         .output(
-                            InteractionAnalyzeResponse.AnalyzedData.Output.builder()
+                            InteractionsOutput.builder()
                                 .addMessage(
-                                    InteractionAnalyzeResponse.AnalyzedData.Output.Message.builder()
+                                    InteractionsTextContent.builder()
                                         .content("content")
                                         .role("role")
                                         .build()
@@ -291,9 +291,9 @@ internal class InteractionAnalyzeResponseTest {
                 .modifiedData(
                     InteractionAnalyzeResponse.ModifiedData.builder()
                         .input(
-                            InteractionAnalyzeResponse.ModifiedData.Input.builder()
+                            InteractionsInput.builder()
                                 .addMessage(
-                                    InteractionAnalyzeResponse.ModifiedData.Input.Message.builder()
+                                    InteractionsTextContent.builder()
                                         .content("content")
                                         .role("role")
                                         .build()
@@ -301,9 +301,9 @@ internal class InteractionAnalyzeResponseTest {
                                 .build()
                         )
                         .output(
-                            InteractionAnalyzeResponse.ModifiedData.Output.builder()
+                            InteractionsOutput.builder()
                                 .addMessage(
-                                    InteractionAnalyzeResponse.ModifiedData.Output.Message.builder()
+                                    InteractionsTextContent.builder()
                                         .content("content")
                                         .role("role")
                                         .build()
