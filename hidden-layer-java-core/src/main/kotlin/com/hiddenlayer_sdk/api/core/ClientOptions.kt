@@ -402,25 +402,24 @@ private constructor(
          *
          * See this table for the available options:
          *
-         * |Setter        |System property                      |Environment variable       |Required|Default value                 |
-         * |--------------|-------------------------------------|---------------------------|--------|------------------------------|
-         * |`bearerToken` |`hiddenlayer.hiddenlayerToken`       |`HIDDENLAYER_TOKEN`        |false   |-                             |
-         * |`clientId`    |`hiddenlayer.hiddenlayerClientId`    |`HIDDENLAYER_CLIENT_ID`    |false   |-                             |
-         * |`clientSecret`|`hiddenlayer.hiddenlayerClientSecret`|`HIDDENLAYER_CLIENT_SECRET`|false   |-                             |
-         * |`baseUrl`     |`hiddenlayer.baseUrl`                |`HIDDEN_LAYER_BASE_URL`    |true    |`"https://api.hiddenlayer.ai"`|
+         * |Setter        |System property           |Environment variable       |Required|Default value                 |
+         * |--------------|--------------------------|---------------------------|--------|------------------------------|
+         * |`bearerToken` |`hiddenlayer.token`       |`HIDDENLAYER_TOKEN`        |false   |-                             |
+         * |`clientId`    |`hiddenlayer.clientId`    |`HIDDENLAYER_CLIENT_ID`    |false   |-                             |
+         * |`clientSecret`|`hiddenlayer.clientSecret`|`HIDDENLAYER_CLIENT_SECRET`|false   |-                             |
+         * |`baseUrl`     |`hiddenlayer.baseUrl`     |`HIDDENLAYER_BASE_URL`     |true    |`"https://api.hiddenlayer.ai"`|
          *
          * System properties take precedence over environment variables.
          */
         fun fromEnv() = apply {
-            (System.getProperty("hiddenlayer.baseUrl") ?: System.getenv("HIDDEN_LAYER_BASE_URL"))
+            (System.getProperty("hiddenlayer.baseUrl") ?: System.getenv("HIDDENLAYER_BASE_URL"))
                 ?.let { baseUrl(it) }
-            (System.getProperty("hiddenlayer.hiddenlayerToken")
-                    ?: System.getenv("HIDDENLAYER_TOKEN"))
-                ?.let { bearerToken(it) }
-            (System.getProperty("hiddenlayer.hiddenlayerClientId")
-                    ?: System.getenv("HIDDENLAYER_CLIENT_ID"))
+            (System.getProperty("hiddenlayer.token") ?: System.getenv("HIDDENLAYER_TOKEN"))?.let {
+                bearerToken(it)
+            }
+            (System.getProperty("hiddenlayer.clientId") ?: System.getenv("HIDDENLAYER_CLIENT_ID"))
                 ?.let { clientId(it) }
-            (System.getProperty("hiddenlayer.hiddenlayerClientSecret")
+            (System.getProperty("hiddenlayer.clientSecret")
                     ?: System.getenv("HIDDENLAYER_CLIENT_SECRET"))
                 ?.let { clientSecret(it) }
         }

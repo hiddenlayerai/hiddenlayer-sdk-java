@@ -78,7 +78,7 @@ class OkHttpClient private constructor(private val okHttpClient: okhttp3.OkHttpC
         val clientBuilder = okHttpClient.newBuilder()
 
         val logLevel =
-            when (System.getenv("HIDDEN_LAYER_LOG")?.lowercase()) {
+            when (System.getenv("HIDDENLAYER_LOG")?.lowercase()) {
                 "info" -> HttpLoggingInterceptor.Level.BASIC
                 "debug" -> HttpLoggingInterceptor.Level.BODY
                 else -> null
