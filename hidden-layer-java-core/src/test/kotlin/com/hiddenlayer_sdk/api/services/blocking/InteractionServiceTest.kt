@@ -5,6 +5,9 @@ package com.hiddenlayer_sdk.api.services.blocking
 import com.hiddenlayer_sdk.api.TestServerExtension
 import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient
 import com.hiddenlayer_sdk.api.models.interactions.InteractionAnalyzeParams
+import com.hiddenlayer_sdk.api.models.interactions.InteractionsInput
+import com.hiddenlayer_sdk.api.models.interactions.InteractionsOutput
+import com.hiddenlayer_sdk.api.models.interactions.InteractionsTextContent
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -34,9 +37,9 @@ internal class InteractionServiceTest {
                             .build()
                     )
                     .input(
-                        InteractionAnalyzeParams.Input.builder()
+                        InteractionsInput.builder()
                             .addMessage(
-                                InteractionAnalyzeParams.Input.Message.builder()
+                                InteractionsTextContent.builder()
                                     .content("content")
                                     .role("role")
                                     .build()
@@ -44,9 +47,9 @@ internal class InteractionServiceTest {
                             .build()
                     )
                     .output(
-                        InteractionAnalyzeParams.Output.builder()
+                        InteractionsOutput.builder()
                             .addMessage(
-                                InteractionAnalyzeParams.Output.Message.builder()
+                                InteractionsTextContent.builder()
                                     .content("content")
                                     .role("role")
                                     .build()

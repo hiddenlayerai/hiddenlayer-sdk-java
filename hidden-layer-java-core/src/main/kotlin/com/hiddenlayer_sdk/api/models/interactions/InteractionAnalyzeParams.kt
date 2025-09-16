@@ -11,11 +11,9 @@ import com.hiddenlayer_sdk.api.core.JsonField
 import com.hiddenlayer_sdk.api.core.JsonMissing
 import com.hiddenlayer_sdk.api.core.JsonValue
 import com.hiddenlayer_sdk.api.core.Params
-import com.hiddenlayer_sdk.api.core.checkKnown
 import com.hiddenlayer_sdk.api.core.checkRequired
 import com.hiddenlayer_sdk.api.core.http.Headers
 import com.hiddenlayer_sdk.api.core.http.QueryParams
-import com.hiddenlayer_sdk.api.core.toImmutable
 import com.hiddenlayer_sdk.api.errors.HiddenLayerInvalidDataException
 import java.util.Collections
 import java.util.Objects
@@ -43,13 +41,13 @@ private constructor(
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun input(): Optional<Input> = body.input()
+    fun input(): Optional<InteractionsInput> = body.input()
 
     /**
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun output(): Optional<Output> = body.output()
+    fun output(): Optional<InteractionsOutput> = body.output()
 
     /**
      * Returns the raw JSON value of [metadata].
@@ -63,14 +61,14 @@ private constructor(
      *
      * Unlike [input], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _input(): JsonField<Input> = body._input()
+    fun _input(): JsonField<InteractionsInput> = body._input()
 
     /**
      * Returns the raw JSON value of [output].
      *
      * Unlike [output], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _output(): JsonField<Output> = body._output()
+    fun _output(): JsonField<InteractionsOutput> = body._output()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -138,25 +136,27 @@ private constructor(
          */
         fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
 
-        fun input(input: Input) = apply { body.input(input) }
+        fun input(input: InteractionsInput) = apply { body.input(input) }
 
         /**
          * Sets [Builder.input] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.input] with a well-typed [Input] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
+         * You should usually call [Builder.input] with a well-typed [InteractionsInput] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
-        fun input(input: JsonField<Input>) = apply { body.input(input) }
+        fun input(input: JsonField<InteractionsInput>) = apply { body.input(input) }
 
-        fun output(output: Output) = apply { body.output(output) }
+        fun output(output: InteractionsOutput) = apply { body.output(output) }
 
         /**
          * Sets [Builder.output] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.output] with a well-typed [Output] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
+         * You should usually call [Builder.output] with a well-typed [InteractionsOutput] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
-        fun output(output: JsonField<Output>) = apply { body.output(output) }
+        fun output(output: JsonField<InteractionsOutput>) = apply { body.output(output) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -311,8 +311,8 @@ private constructor(
     class Body
     private constructor(
         private val metadata: JsonField<Metadata>,
-        private val input: JsonField<Input>,
-        private val output: JsonField<Output>,
+        private val input: JsonField<InteractionsInput>,
+        private val output: JsonField<InteractionsOutput>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -321,8 +321,12 @@ private constructor(
             @JsonProperty("metadata")
             @ExcludeMissing
             metadata: JsonField<Metadata> = JsonMissing.of(),
-            @JsonProperty("input") @ExcludeMissing input: JsonField<Input> = JsonMissing.of(),
-            @JsonProperty("output") @ExcludeMissing output: JsonField<Output> = JsonMissing.of(),
+            @JsonProperty("input")
+            @ExcludeMissing
+            input: JsonField<InteractionsInput> = JsonMissing.of(),
+            @JsonProperty("output")
+            @ExcludeMissing
+            output: JsonField<InteractionsOutput> = JsonMissing.of(),
         ) : this(metadata, input, output, mutableMapOf())
 
         /**
@@ -335,13 +339,13 @@ private constructor(
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun input(): Optional<Input> = input.getOptional("input")
+        fun input(): Optional<InteractionsInput> = input.getOptional("input")
 
         /**
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun output(): Optional<Output> = output.getOptional("output")
+        fun output(): Optional<InteractionsOutput> = output.getOptional("output")
 
         /**
          * Returns the raw JSON value of [metadata].
@@ -355,14 +359,16 @@ private constructor(
          *
          * Unlike [input], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("input") @ExcludeMissing fun _input(): JsonField<Input> = input
+        @JsonProperty("input") @ExcludeMissing fun _input(): JsonField<InteractionsInput> = input
 
         /**
          * Returns the raw JSON value of [output].
          *
          * Unlike [output], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("output") @ExcludeMissing fun _output(): JsonField<Output> = output
+        @JsonProperty("output")
+        @ExcludeMissing
+        fun _output(): JsonField<InteractionsOutput> = output
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -393,8 +399,8 @@ private constructor(
         class Builder internal constructor() {
 
             private var metadata: JsonField<Metadata>? = null
-            private var input: JsonField<Input> = JsonMissing.of()
-            private var output: JsonField<Output> = JsonMissing.of()
+            private var input: JsonField<InteractionsInput> = JsonMissing.of()
+            private var output: JsonField<InteractionsOutput> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -416,27 +422,27 @@ private constructor(
              */
             fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
-            fun input(input: Input) = input(JsonField.of(input))
+            fun input(input: InteractionsInput) = input(JsonField.of(input))
 
             /**
              * Sets [Builder.input] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.input] with a well-typed [Input] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
+             * You should usually call [Builder.input] with a well-typed [InteractionsInput] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
-            fun input(input: JsonField<Input>) = apply { this.input = input }
+            fun input(input: JsonField<InteractionsInput>) = apply { this.input = input }
 
-            fun output(output: Output) = output(JsonField.of(output))
+            fun output(output: InteractionsOutput) = output(JsonField.of(output))
 
             /**
              * Sets [Builder.output] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.output] with a well-typed [Output] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
+             * You should usually call [Builder.output] with a well-typed [InteractionsOutput] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun output(output: JsonField<Output>) = apply { this.output = output }
+            fun output(output: JsonField<InteractionsOutput>) = apply { this.output = output }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -762,718 +768,6 @@ private constructor(
 
         override fun toString() =
             "Metadata{model=$model, requesterId=$requesterId, provider=$provider, additionalProperties=$additionalProperties}"
-    }
-
-    class Input
-    private constructor(
-        private val messages: JsonField<List<Message>>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
-
-        @JsonCreator
-        private constructor(
-            @JsonProperty("messages")
-            @ExcludeMissing
-            messages: JsonField<List<Message>> = JsonMissing.of()
-        ) : this(messages, mutableMapOf())
-
-        /**
-         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun messages(): Optional<List<Message>> = messages.getOptional("messages")
-
-        /**
-         * Returns the raw JSON value of [messages].
-         *
-         * Unlike [messages], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("messages")
-        @ExcludeMissing
-        fun _messages(): JsonField<List<Message>> = messages
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
-        }
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /** Returns a mutable builder for constructing an instance of [Input]. */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Input]. */
-        class Builder internal constructor() {
-
-            private var messages: JsonField<MutableList<Message>>? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(input: Input) = apply {
-                messages = input.messages.map { it.toMutableList() }
-                additionalProperties = input.additionalProperties.toMutableMap()
-            }
-
-            fun messages(messages: List<Message>) = messages(JsonField.of(messages))
-
-            /**
-             * Sets [Builder.messages] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.messages] with a well-typed `List<Message>` value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun messages(messages: JsonField<List<Message>>) = apply {
-                this.messages = messages.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [Message] to [messages].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addMessage(message: Message) = apply {
-                messages =
-                    (messages ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("messages", it).add(message)
-                    }
-            }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Input].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Input =
-                Input(
-                    (messages ?: JsonMissing.of()).map { it.toImmutable() },
-                    additionalProperties.toMutableMap(),
-                )
-        }
-
-        private var validated: Boolean = false
-
-        fun validate(): Input = apply {
-            if (validated) {
-                return@apply
-            }
-
-            messages().ifPresent { it.forEach { it.validate() } }
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: HiddenLayerInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic
-        internal fun validity(): Int =
-            (messages.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
-
-        class Message
-        private constructor(
-            private val content: JsonField<String>,
-            private val role: JsonField<String>,
-            private val additionalProperties: MutableMap<String, JsonValue>,
-        ) {
-
-            @JsonCreator
-            private constructor(
-                @JsonProperty("content")
-                @ExcludeMissing
-                content: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("role") @ExcludeMissing role: JsonField<String> = JsonMissing.of(),
-            ) : this(content, role, mutableMapOf())
-
-            /**
-             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or
-             *   is unexpectedly missing or null (e.g. if the server responded with an unexpected
-             *   value).
-             */
-            fun content(): String = content.getRequired("content")
-
-            /**
-             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
-             *   (e.g. if the server responded with an unexpected value).
-             */
-            fun role(): Optional<String> = role.getOptional("role")
-
-            /**
-             * Returns the raw JSON value of [content].
-             *
-             * Unlike [content], this method doesn't throw if the JSON field has an unexpected type.
-             */
-            @JsonProperty("content") @ExcludeMissing fun _content(): JsonField<String> = content
-
-            /**
-             * Returns the raw JSON value of [role].
-             *
-             * Unlike [role], this method doesn't throw if the JSON field has an unexpected type.
-             */
-            @JsonProperty("role") @ExcludeMissing fun _role(): JsonField<String> = role
-
-            @JsonAnySetter
-            private fun putAdditionalProperty(key: String, value: JsonValue) {
-                additionalProperties.put(key, value)
-            }
-
-            @JsonAnyGetter
-            @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> =
-                Collections.unmodifiableMap(additionalProperties)
-
-            fun toBuilder() = Builder().from(this)
-
-            companion object {
-
-                /**
-                 * Returns a mutable builder for constructing an instance of [Message].
-                 *
-                 * The following fields are required:
-                 * ```java
-                 * .content()
-                 * ```
-                 */
-                @JvmStatic fun builder() = Builder()
-            }
-
-            /** A builder for [Message]. */
-            class Builder internal constructor() {
-
-                private var content: JsonField<String>? = null
-                private var role: JsonField<String> = JsonMissing.of()
-                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                @JvmSynthetic
-                internal fun from(message: Message) = apply {
-                    content = message.content
-                    role = message.role
-                    additionalProperties = message.additionalProperties.toMutableMap()
-                }
-
-                fun content(content: String) = content(JsonField.of(content))
-
-                /**
-                 * Sets [Builder.content] to an arbitrary JSON value.
-                 *
-                 * You should usually call [Builder.content] with a well-typed [String] value
-                 * instead. This method is primarily for setting the field to an undocumented or not
-                 * yet supported value.
-                 */
-                fun content(content: JsonField<String>) = apply { this.content = content }
-
-                fun role(role: String) = role(JsonField.of(role))
-
-                /**
-                 * Sets [Builder.role] to an arbitrary JSON value.
-                 *
-                 * You should usually call [Builder.role] with a well-typed [String] value instead.
-                 * This method is primarily for setting the field to an undocumented or not yet
-                 * supported value.
-                 */
-                fun role(role: JsonField<String>) = apply { this.role = role }
-
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
-
-                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    additionalProperties.put(key, value)
-                }
-
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
-
-                fun removeAdditionalProperty(key: String) = apply {
-                    additionalProperties.remove(key)
-                }
-
-                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
-
-                /**
-                 * Returns an immutable instance of [Message].
-                 *
-                 * Further updates to this [Builder] will not mutate the returned instance.
-                 *
-                 * The following fields are required:
-                 * ```java
-                 * .content()
-                 * ```
-                 *
-                 * @throws IllegalStateException if any required field is unset.
-                 */
-                fun build(): Message =
-                    Message(
-                        checkRequired("content", content),
-                        role,
-                        additionalProperties.toMutableMap(),
-                    )
-            }
-
-            private var validated: Boolean = false
-
-            fun validate(): Message = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                content()
-                role()
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: HiddenLayerInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            @JvmSynthetic
-            internal fun validity(): Int =
-                (if (content.asKnown().isPresent) 1 else 0) +
-                    (if (role.asKnown().isPresent) 1 else 0)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Message &&
-                    content == other.content &&
-                    role == other.role &&
-                    additionalProperties == other.additionalProperties
-            }
-
-            private val hashCode: Int by lazy { Objects.hash(content, role, additionalProperties) }
-
-            override fun hashCode(): Int = hashCode
-
-            override fun toString() =
-                "Message{content=$content, role=$role, additionalProperties=$additionalProperties}"
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Input &&
-                messages == other.messages &&
-                additionalProperties == other.additionalProperties
-        }
-
-        private val hashCode: Int by lazy { Objects.hash(messages, additionalProperties) }
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Input{messages=$messages, additionalProperties=$additionalProperties}"
-    }
-
-    class Output
-    private constructor(
-        private val messages: JsonField<List<Message>>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
-
-        @JsonCreator
-        private constructor(
-            @JsonProperty("messages")
-            @ExcludeMissing
-            messages: JsonField<List<Message>> = JsonMissing.of()
-        ) : this(messages, mutableMapOf())
-
-        /**
-         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun messages(): Optional<List<Message>> = messages.getOptional("messages")
-
-        /**
-         * Returns the raw JSON value of [messages].
-         *
-         * Unlike [messages], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("messages")
-        @ExcludeMissing
-        fun _messages(): JsonField<List<Message>> = messages
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
-        }
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /** Returns a mutable builder for constructing an instance of [Output]. */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Output]. */
-        class Builder internal constructor() {
-
-            private var messages: JsonField<MutableList<Message>>? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(output: Output) = apply {
-                messages = output.messages.map { it.toMutableList() }
-                additionalProperties = output.additionalProperties.toMutableMap()
-            }
-
-            fun messages(messages: List<Message>) = messages(JsonField.of(messages))
-
-            /**
-             * Sets [Builder.messages] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.messages] with a well-typed `List<Message>` value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun messages(messages: JsonField<List<Message>>) = apply {
-                this.messages = messages.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [Message] to [messages].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addMessage(message: Message) = apply {
-                messages =
-                    (messages ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("messages", it).add(message)
-                    }
-            }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Output].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): Output =
-                Output(
-                    (messages ?: JsonMissing.of()).map { it.toImmutable() },
-                    additionalProperties.toMutableMap(),
-                )
-        }
-
-        private var validated: Boolean = false
-
-        fun validate(): Output = apply {
-            if (validated) {
-                return@apply
-            }
-
-            messages().ifPresent { it.forEach { it.validate() } }
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: HiddenLayerInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic
-        internal fun validity(): Int =
-            (messages.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
-
-        class Message
-        private constructor(
-            private val content: JsonField<String>,
-            private val role: JsonField<String>,
-            private val additionalProperties: MutableMap<String, JsonValue>,
-        ) {
-
-            @JsonCreator
-            private constructor(
-                @JsonProperty("content")
-                @ExcludeMissing
-                content: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("role") @ExcludeMissing role: JsonField<String> = JsonMissing.of(),
-            ) : this(content, role, mutableMapOf())
-
-            /**
-             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or
-             *   is unexpectedly missing or null (e.g. if the server responded with an unexpected
-             *   value).
-             */
-            fun content(): String = content.getRequired("content")
-
-            /**
-             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
-             *   (e.g. if the server responded with an unexpected value).
-             */
-            fun role(): Optional<String> = role.getOptional("role")
-
-            /**
-             * Returns the raw JSON value of [content].
-             *
-             * Unlike [content], this method doesn't throw if the JSON field has an unexpected type.
-             */
-            @JsonProperty("content") @ExcludeMissing fun _content(): JsonField<String> = content
-
-            /**
-             * Returns the raw JSON value of [role].
-             *
-             * Unlike [role], this method doesn't throw if the JSON field has an unexpected type.
-             */
-            @JsonProperty("role") @ExcludeMissing fun _role(): JsonField<String> = role
-
-            @JsonAnySetter
-            private fun putAdditionalProperty(key: String, value: JsonValue) {
-                additionalProperties.put(key, value)
-            }
-
-            @JsonAnyGetter
-            @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> =
-                Collections.unmodifiableMap(additionalProperties)
-
-            fun toBuilder() = Builder().from(this)
-
-            companion object {
-
-                /**
-                 * Returns a mutable builder for constructing an instance of [Message].
-                 *
-                 * The following fields are required:
-                 * ```java
-                 * .content()
-                 * ```
-                 */
-                @JvmStatic fun builder() = Builder()
-            }
-
-            /** A builder for [Message]. */
-            class Builder internal constructor() {
-
-                private var content: JsonField<String>? = null
-                private var role: JsonField<String> = JsonMissing.of()
-                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                @JvmSynthetic
-                internal fun from(message: Message) = apply {
-                    content = message.content
-                    role = message.role
-                    additionalProperties = message.additionalProperties.toMutableMap()
-                }
-
-                fun content(content: String) = content(JsonField.of(content))
-
-                /**
-                 * Sets [Builder.content] to an arbitrary JSON value.
-                 *
-                 * You should usually call [Builder.content] with a well-typed [String] value
-                 * instead. This method is primarily for setting the field to an undocumented or not
-                 * yet supported value.
-                 */
-                fun content(content: JsonField<String>) = apply { this.content = content }
-
-                fun role(role: String) = role(JsonField.of(role))
-
-                /**
-                 * Sets [Builder.role] to an arbitrary JSON value.
-                 *
-                 * You should usually call [Builder.role] with a well-typed [String] value instead.
-                 * This method is primarily for setting the field to an undocumented or not yet
-                 * supported value.
-                 */
-                fun role(role: JsonField<String>) = apply { this.role = role }
-
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
-
-                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    additionalProperties.put(key, value)
-                }
-
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
-
-                fun removeAdditionalProperty(key: String) = apply {
-                    additionalProperties.remove(key)
-                }
-
-                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
-
-                /**
-                 * Returns an immutable instance of [Message].
-                 *
-                 * Further updates to this [Builder] will not mutate the returned instance.
-                 *
-                 * The following fields are required:
-                 * ```java
-                 * .content()
-                 * ```
-                 *
-                 * @throws IllegalStateException if any required field is unset.
-                 */
-                fun build(): Message =
-                    Message(
-                        checkRequired("content", content),
-                        role,
-                        additionalProperties.toMutableMap(),
-                    )
-            }
-
-            private var validated: Boolean = false
-
-            fun validate(): Message = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                content()
-                role()
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: HiddenLayerInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            @JvmSynthetic
-            internal fun validity(): Int =
-                (if (content.asKnown().isPresent) 1 else 0) +
-                    (if (role.asKnown().isPresent) 1 else 0)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Message &&
-                    content == other.content &&
-                    role == other.role &&
-                    additionalProperties == other.additionalProperties
-            }
-
-            private val hashCode: Int by lazy { Objects.hash(content, role, additionalProperties) }
-
-            override fun hashCode(): Int = hashCode
-
-            override fun toString() =
-                "Message{content=$content, role=$role, additionalProperties=$additionalProperties}"
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Output &&
-                messages == other.messages &&
-                additionalProperties == other.additionalProperties
-        }
-
-        private val hashCode: Int by lazy { Objects.hash(messages, additionalProperties) }
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Output{messages=$messages, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
