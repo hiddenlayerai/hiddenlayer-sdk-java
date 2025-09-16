@@ -15,7 +15,7 @@ import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
-class InteractionsMetadataProject
+class InteractionsProject
 private constructor(
     private val projectAlias: JsonField<String>,
     private val projectId: JsonField<String>,
@@ -87,13 +87,11 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [InteractionsMetadataProject].
-         */
+        /** Returns a mutable builder for constructing an instance of [InteractionsProject]. */
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [InteractionsMetadataProject]. */
+    /** A builder for [InteractionsProject]. */
     class Builder internal constructor() {
 
         private var projectAlias: JsonField<String> = JsonMissing.of()
@@ -102,11 +100,11 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(interactionsMetadataProject: InteractionsMetadataProject) = apply {
-            projectAlias = interactionsMetadataProject.projectAlias
-            projectId = interactionsMetadataProject.projectId
-            rulesetId = interactionsMetadataProject.rulesetId
-            additionalProperties = interactionsMetadataProject.additionalProperties.toMutableMap()
+        internal fun from(interactionsProject: InteractionsProject) = apply {
+            projectAlias = interactionsProject.projectAlias
+            projectId = interactionsProject.projectId
+            rulesetId = interactionsProject.rulesetId
+            additionalProperties = interactionsProject.additionalProperties.toMutableMap()
         }
 
         fun projectAlias(projectAlias: String) = projectAlias(JsonField.of(projectAlias))
@@ -164,12 +162,12 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [InteractionsMetadataProject].
+         * Returns an immutable instance of [InteractionsProject].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          */
-        fun build(): InteractionsMetadataProject =
-            InteractionsMetadataProject(
+        fun build(): InteractionsProject =
+            InteractionsProject(
                 projectAlias,
                 projectId,
                 rulesetId,
@@ -179,7 +177,7 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): InteractionsMetadataProject = apply {
+    fun validate(): InteractionsProject = apply {
         if (validated) {
             return@apply
         }
@@ -214,7 +212,7 @@ private constructor(
             return true
         }
 
-        return other is InteractionsMetadataProject &&
+        return other is InteractionsProject &&
             projectAlias == other.projectAlias &&
             projectId == other.projectId &&
             rulesetId == other.rulesetId &&
@@ -228,5 +226,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "InteractionsMetadataProject{projectAlias=$projectAlias, projectId=$projectId, rulesetId=$rulesetId, additionalProperties=$additionalProperties}"
+        "InteractionsProject{projectAlias=$projectAlias, projectId=$projectId, rulesetId=$rulesetId, additionalProperties=$additionalProperties}"
 }

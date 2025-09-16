@@ -1294,7 +1294,7 @@ private constructor(
     private constructor(
         private val model: JsonField<String>,
         private val processingTimeMs: JsonField<Double>,
-        private val project: JsonField<InteractionsMetadataProject>,
+        private val project: JsonField<InteractionsProject>,
         private val provider: JsonField<String>,
         private val requesterId: JsonField<String>,
         private val analyzedAt: JsonField<OffsetDateTime>,
@@ -1310,7 +1310,7 @@ private constructor(
             processingTimeMs: JsonField<Double> = JsonMissing.of(),
             @JsonProperty("project")
             @ExcludeMissing
-            project: JsonField<InteractionsMetadataProject> = JsonMissing.of(),
+            project: JsonField<InteractionsProject> = JsonMissing.of(),
             @JsonProperty("provider")
             @ExcludeMissing
             provider: JsonField<String> = JsonMissing.of(),
@@ -1348,7 +1348,7 @@ private constructor(
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun project(): InteractionsMetadataProject = project.getRequired("project")
+        fun project(): InteractionsProject = project.getRequired("project")
 
         /**
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
@@ -1398,7 +1398,7 @@ private constructor(
          */
         @JsonProperty("project")
         @ExcludeMissing
-        fun _project(): JsonField<InteractionsMetadataProject> = project
+        fun _project(): JsonField<InteractionsProject> = project
 
         /**
          * Returns the raw JSON value of [provider].
@@ -1466,7 +1466,7 @@ private constructor(
 
             private var model: JsonField<String>? = null
             private var processingTimeMs: JsonField<Double>? = null
-            private var project: JsonField<InteractionsMetadataProject>? = null
+            private var project: JsonField<InteractionsProject>? = null
             private var provider: JsonField<String>? = null
             private var requesterId: JsonField<String>? = null
             private var analyzedAt: JsonField<OffsetDateTime> = JsonMissing.of()
@@ -1510,18 +1510,16 @@ private constructor(
                 this.processingTimeMs = processingTimeMs
             }
 
-            fun project(project: InteractionsMetadataProject) = project(JsonField.of(project))
+            fun project(project: InteractionsProject) = project(JsonField.of(project))
 
             /**
              * Sets [Builder.project] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.project] with a well-typed
-             * [InteractionsMetadataProject] value instead. This method is primarily for setting the
-             * field to an undocumented or not yet supported value.
+             * You should usually call [Builder.project] with a well-typed [InteractionsProject]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
              */
-            fun project(project: JsonField<InteractionsMetadataProject>) = apply {
-                this.project = project
-            }
+            fun project(project: JsonField<InteractionsProject>) = apply { this.project = project }
 
             fun provider(provider: String) = provider(JsonField.of(provider))
 
