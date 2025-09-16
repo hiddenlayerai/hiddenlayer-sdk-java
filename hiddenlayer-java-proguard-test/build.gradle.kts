@@ -1,5 +1,5 @@
 plugins {
-    id("hidden-layer.kotlin")
+    id("hiddenlayer.kotlin")
     id("com.gradleup.shadow") version "8.3.8"
 }
 
@@ -15,7 +15,7 @@ buildscript {
 }
 
 dependencies {
-    testImplementation(project(":hidden-layer-java"))
+    testImplementation(project(":hiddenlayer-java"))
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
     testImplementation("org.assertj:assertj-core:3.25.3")
@@ -51,7 +51,7 @@ val proguardJar by tasks.registering(proguard.gradle.ProGuardTask::class) {
     }
 
     configuration("./test.pro")
-    configuration("../hidden-layer-java-core/src/main/resources/META-INF/proguard/hidden-layer-java-core.pro")
+    configuration("../hiddenlayer-java-core/src/main/resources/META-INF/proguard/hiddenlayer-java-core.pro")
 }
 
 val testProGuard by tasks.registering(JavaExec::class) {
@@ -78,7 +78,7 @@ val r8Jar by tasks.registering(JavaExec::class) {
         "--output", r8JarPath,
         "--lib", System.getProperty("java.home"),
         "--pg-conf", "./test.pro",
-        "--pg-conf", "../hidden-layer-java-core/src/main/resources/META-INF/proguard/hidden-layer-java-core.pro",
+        "--pg-conf", "../hiddenlayer-java-core/src/main/resources/META-INF/proguard/hiddenlayer-java-core.pro",
         "--pg-map-output", "${layout.buildDirectory.get()}/r8-mapping.txt",
         tasks.shadowJar.get().archiveFile.get().asFile.absolutePath,
     )

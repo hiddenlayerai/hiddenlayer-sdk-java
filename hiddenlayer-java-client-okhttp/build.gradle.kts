@@ -1,10 +1,10 @@
 plugins {
-    id("hidden-layer.kotlin")
-    id("hidden-layer.publish")
+    id("hiddenlayer.kotlin")
+    id("hiddenlayer.publish")
 }
 
 dependencies {
-    api(project(":hidden-layer-java-core"))
+    api(project(":hiddenlayer-java-core"))
 
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")

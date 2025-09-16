@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
-    id("hidden-layer.java")
+    id("hiddenlayer.java")
     kotlin("jvm")
 }
 

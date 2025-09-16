@@ -1,6 +1,6 @@
 plugins {
-    id("hidden-layer.kotlin")
-    id("hidden-layer.publish")
+    id("hiddenlayer.kotlin")
+    id("hiddenlayer.publish")
 }
 
 configurations.all {
@@ -29,7 +29,7 @@ dependencies {
     implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
 
     testImplementation(kotlin("test"))
-    testImplementation(project(":hidden-layer-java-client-okhttp"))
+    testImplementation(project(":hiddenlayer-java-client-okhttp"))
     testImplementation("com.github.tomakehurst:wiremock-jre8:2.35.2")
     testImplementation("org.assertj:assertj-core:3.25.3")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")

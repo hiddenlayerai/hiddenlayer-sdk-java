@@ -3,18 +3,18 @@
 package com.hiddenlayer_sdk.api.client
 
 import com.hiddenlayer_sdk.api.core.ClientOptions
-import com.hiddenlayer_sdk.api.lib.AsyncCommunityScanner
-import com.hiddenlayer_sdk.api.lib.AsyncModelScanner
-import com.hiddenlayer_sdk.api.services.async.InteractionServiceAsync
-import com.hiddenlayer_sdk.api.services.async.ModelServiceAsync
-import com.hiddenlayer_sdk.api.services.async.PromptAnalyzerServiceAsync
-import com.hiddenlayer_sdk.api.services.async.ScanServiceAsync
-import com.hiddenlayer_sdk.api.services.async.SensorServiceAsync
+import com.hiddenlayer_sdk.api.lib.CommunityScanner
+import com.hiddenlayer_sdk.api.lib.ModelScanner
+import com.hiddenlayer_sdk.api.services.blocking.InteractionService
+import com.hiddenlayer_sdk.api.services.blocking.ModelService
+import com.hiddenlayer_sdk.api.services.blocking.PromptAnalyzerService
+import com.hiddenlayer_sdk.api.services.blocking.ScanService
+import com.hiddenlayer_sdk.api.services.blocking.SensorService
 import java.util.function.Consumer
 
 /**
- * A client for interacting with the Hidden Layer REST API asynchronously. You can also switch to
- * synchronous execution via the [sync] method.
+ * A client for interacting with the HiddenLayer REST API synchronously. You can also switch to
+ * asynchronous execution via the [async] method.
  *
  * This client performs best when you create a single instance and reuse it for all interactions
  * with the REST API. This is because each client holds its own connection pool and thread pools.
@@ -26,15 +26,15 @@ import java.util.function.Consumer
  * if you are writing an application that needs to aggressively release unused resources, then you
  * may call [close].
  */
-interface HiddenLayerClientAsync {
+interface HiddenLayerClient {
 
     /**
-     * Returns a version of this client that uses synchronous execution.
+     * Returns a version of this client that uses asynchronous execution.
      *
      * The returned client shares its resources, like its connection pool and thread pools, with
      * this client.
      */
-    fun sync(): HiddenLayerClient
+    fun async(): HiddenLayerClientAsync
 
     /**
      * Returns a view of this service that provides access to raw HTTP responses for each method.
@@ -46,33 +46,33 @@ interface HiddenLayerClientAsync {
      *
      * The original service is not modified.
      */
-    fun withOptions(modifier: Consumer<ClientOptions.Builder>): HiddenLayerClientAsync
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): HiddenLayerClient
 
-    fun models(): ModelServiceAsync
+    fun models(): ModelService
 
-    fun promptAnalyzer(): PromptAnalyzerServiceAsync
+    fun promptAnalyzer(): PromptAnalyzerService
 
-    fun interactions(): InteractionServiceAsync
+    fun interactions(): InteractionService
 
-    fun sensors(): SensorServiceAsync
+    fun sensors(): SensorService
 
-    fun scans(): ScanServiceAsync
+    fun scans(): ScanService
 
     /**
-     * Async community scanner that provides the communityScan method with polling functionality.
+     * Community scanner that provides the communityScan method with polling functionality.
      *
      * This extends the generated SDK to provide the same functionality as the old SDK's
      * communityScan method, which initiates a scan and optionally waits for results.
      */
-    fun communityScanner(): AsyncCommunityScanner
+    fun communityScanner(): CommunityScanner
 
     /**
      * Model scanner that provides file and folder scanning functionality.
      *
-     * This extends the generated SDK to provide async versions of all model scanning functionality
-     * including file and folder scanning with multipart upload functionality.
+     * This extends the generated SDK to provide the same functionality as the old SDK's
+     * ModelScanAPI, including multipart upload functionality for files and folders.
      */
-    fun modelScanner(): AsyncModelScanner
+    fun modelScanner(): ModelScanner
 
     /**
      * Closes this client, relinquishing any underlying resources.
@@ -87,10 +87,7 @@ interface HiddenLayerClientAsync {
      */
     fun close()
 
-    /**
-     * A view of [HiddenLayerClientAsync] that provides access to raw HTTP responses for each
-     * method.
-     */
+    /** A view of [HiddenLayerClient] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
         /**
@@ -100,16 +97,16 @@ interface HiddenLayerClientAsync {
          */
         fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
-        ): HiddenLayerClientAsync.WithRawResponse
+        ): HiddenLayerClient.WithRawResponse
 
-        fun models(): ModelServiceAsync.WithRawResponse
+        fun models(): ModelService.WithRawResponse
 
-        fun promptAnalyzer(): PromptAnalyzerServiceAsync.WithRawResponse
+        fun promptAnalyzer(): PromptAnalyzerService.WithRawResponse
 
-        fun interactions(): InteractionServiceAsync.WithRawResponse
+        fun interactions(): InteractionService.WithRawResponse
 
-        fun sensors(): SensorServiceAsync.WithRawResponse
+        fun sensors(): SensorService.WithRawResponse
 
-        fun scans(): ScanServiceAsync.WithRawResponse
+        fun scans(): ScanService.WithRawResponse
     }
 }

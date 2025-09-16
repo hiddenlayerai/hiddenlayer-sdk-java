@@ -1,10 +1,10 @@
 plugins {
-    id("hidden-layer.kotlin")
-    id("hidden-layer.publish")
+    id("hiddenlayer.kotlin")
+    id("hiddenlayer.publish")
 }
 
 dependencies {
-    api(project(":hidden-layer-java-client-okhttp"))
+    api(project(":hiddenlayer-java-client-okhttp"))
 }
 
 // Redefine `dokkaJavadoc` to:

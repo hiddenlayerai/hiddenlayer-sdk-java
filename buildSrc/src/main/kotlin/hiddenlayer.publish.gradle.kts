@@ -21,7 +21,7 @@ configure<PublishingExtension> {
 
                 developers {
                     developer {
-                        name.set("Hidden Layer")
+                        name.set("HiddenLayer")
                         email.set("dev-feedback@hiddenlayer-sdk.com")
                     }
                 }

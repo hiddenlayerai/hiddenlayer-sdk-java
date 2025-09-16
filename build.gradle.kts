@@ -32,7 +32,7 @@ subprojects {
 // Avoid race conditions between `dokkaJavadocCollector` and `dokkaJavadocJar` tasks
 tasks.named("dokkaJavadocCollector").configure {
     subprojects.flatMap { it.tasks }
-        .filter { it.project.name != "hidden-layer-java" && it.name == "dokkaJavadocJar" }
+        .filter { it.project.name != "hiddenlayer-java" && it.name == "dokkaJavadocJar" }
         .forEach { mustRunAfter(it) }
 }
 
