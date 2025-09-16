@@ -74,7 +74,7 @@ internal class InteractionAnalyzeResponseTest {
                         .model("model")
                         .processingTimeMs(0.0)
                         .project(
-                            InteractionsMetadataProject.builder()
+                            InteractionsProject.builder()
                                 .projectAlias("project_alias")
                                 .projectId("project_id")
                                 .rulesetId("ruleset_id")
@@ -173,7 +173,7 @@ internal class InteractionAnalyzeResponseTest {
                     .model("model")
                     .processingTimeMs(0.0)
                     .project(
-                        InteractionsMetadataProject.builder()
+                        InteractionsProject.builder()
                             .projectAlias("project_alias")
                             .projectId("project_id")
                             .rulesetId("ruleset_id")
@@ -276,7 +276,7 @@ internal class InteractionAnalyzeResponseTest {
                         .model("model")
                         .processingTimeMs(0.0)
                         .project(
-                            InteractionsMetadataProject.builder()
+                            InteractionsProject.builder()
                                 .projectAlias("project_alias")
                                 .projectId("project_id")
                                 .rulesetId("ruleset_id")
