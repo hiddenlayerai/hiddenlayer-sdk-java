@@ -4,10 +4,11 @@ package com.hiddenlayer_sdk.api.services.async
 
 import com.hiddenlayer_sdk.api.TestServerExtension
 import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClientAsync
+import com.hiddenlayer_sdk.api.models.interactions.Input
 import com.hiddenlayer_sdk.api.models.interactions.InteractionAnalyzeParams
-import com.hiddenlayer_sdk.api.models.interactions.InteractionsInput
-import com.hiddenlayer_sdk.api.models.interactions.InteractionsOutput
-import com.hiddenlayer_sdk.api.models.interactions.InteractionsTextContent
+import com.hiddenlayer_sdk.api.models.interactions.Metadata
+import com.hiddenlayer_sdk.api.models.interactions.Output
+import com.hiddenlayer_sdk.api.models.interactions.TextContent
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -30,29 +31,23 @@ internal class InteractionServiceAsyncTest {
                 InteractionAnalyzeParams.builder()
                     .hlProjectId("internal-search-chatbot")
                     .metadata(
-                        InteractionAnalyzeParams.Metadata.builder()
+                        Metadata.builder()
                             .model("model")
                             .requesterId("requester_id")
                             .provider("provider")
                             .build()
                     )
                     .input(
-                        InteractionsInput.builder()
+                        Input.builder()
                             .addMessage(
-                                InteractionsTextContent.builder()
-                                    .content("content")
-                                    .role("role")
-                                    .build()
+                                TextContent.builder().content("content").role("role").build()
                             )
                             .build()
                     )
                     .output(
-                        InteractionsOutput.builder()
+                        Output.builder()
                             .addMessage(
-                                InteractionsTextContent.builder()
-                                    .content("content")
-                                    .role("role")
-                                    .build()
+                                TextContent.builder().content("content").role("role").build()
                             )
                             .build()
                     )

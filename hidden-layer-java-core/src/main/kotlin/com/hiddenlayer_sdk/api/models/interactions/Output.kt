@@ -18,9 +18,9 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-class InteractionsInput
+class Output
 private constructor(
-    private val messages: JsonField<List<InteractionsTextContent>>,
+    private val messages: JsonField<List<TextContent>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -28,14 +28,14 @@ private constructor(
     private constructor(
         @JsonProperty("messages")
         @ExcludeMissing
-        messages: JsonField<List<InteractionsTextContent>> = JsonMissing.of()
+        messages: JsonField<List<TextContent>> = JsonMissing.of()
     ) : this(messages, mutableMapOf())
 
     /**
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun messages(): Optional<List<InteractionsTextContent>> = messages.getOptional("messages")
+    fun messages(): Optional<List<TextContent>> = messages.getOptional("messages")
 
     /**
      * Returns the raw JSON value of [messages].
@@ -44,7 +44,7 @@ private constructor(
      */
     @JsonProperty("messages")
     @ExcludeMissing
-    fun _messages(): JsonField<List<InteractionsTextContent>> = messages
+    fun _messages(): JsonField<List<TextContent>> = messages
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -60,41 +60,41 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [InteractionsInput]. */
+        /** Returns a mutable builder for constructing an instance of [Output]. */
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [InteractionsInput]. */
+    /** A builder for [Output]. */
     class Builder internal constructor() {
 
-        private var messages: JsonField<MutableList<InteractionsTextContent>>? = null
+        private var messages: JsonField<MutableList<TextContent>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(interactionsInput: InteractionsInput) = apply {
-            messages = interactionsInput.messages.map { it.toMutableList() }
-            additionalProperties = interactionsInput.additionalProperties.toMutableMap()
+        internal fun from(output: Output) = apply {
+            messages = output.messages.map { it.toMutableList() }
+            additionalProperties = output.additionalProperties.toMutableMap()
         }
 
-        fun messages(messages: List<InteractionsTextContent>) = messages(JsonField.of(messages))
+        fun messages(messages: List<TextContent>) = messages(JsonField.of(messages))
 
         /**
          * Sets [Builder.messages] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.messages] with a well-typed
-         * `List<InteractionsTextContent>` value instead. This method is primarily for setting the
-         * field to an undocumented or not yet supported value.
+         * You should usually call [Builder.messages] with a well-typed `List<TextContent>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
-        fun messages(messages: JsonField<List<InteractionsTextContent>>) = apply {
+        fun messages(messages: JsonField<List<TextContent>>) = apply {
             this.messages = messages.map { it.toMutableList() }
         }
 
         /**
-         * Adds a single [InteractionsTextContent] to [messages].
+         * Adds a single [TextContent] to [messages].
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
-        fun addMessage(message: InteractionsTextContent) = apply {
+        fun addMessage(message: TextContent) = apply {
             messages =
                 (messages ?: JsonField.of(mutableListOf())).also {
                     checkKnown("messages", it).add(message)
@@ -121,12 +121,12 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [InteractionsInput].
+         * Returns an immutable instance of [Output].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          */
-        fun build(): InteractionsInput =
-            InteractionsInput(
+        fun build(): Output =
+            Output(
                 (messages ?: JsonMissing.of()).map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
             )
@@ -134,7 +134,7 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): InteractionsInput = apply {
+    fun validate(): Output = apply {
         if (validated) {
             return@apply
         }
@@ -165,7 +165,7 @@ private constructor(
             return true
         }
 
-        return other is InteractionsInput &&
+        return other is Output &&
             messages == other.messages &&
             additionalProperties == other.additionalProperties
     }
@@ -175,5 +175,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "InteractionsInput{messages=$messages, additionalProperties=$additionalProperties}"
+        "Output{messages=$messages, additionalProperties=$additionalProperties}"
 }
