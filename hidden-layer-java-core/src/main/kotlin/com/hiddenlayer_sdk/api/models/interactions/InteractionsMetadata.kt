@@ -16,7 +16,7 @@ import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
-class Metadata
+class InteractionsMetadata
 private constructor(
     private val model: JsonField<String>,
     private val requesterId: JsonField<String>,
@@ -89,7 +89,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [Metadata].
+         * Returns a mutable builder for constructing an instance of [InteractionsMetadata].
          *
          * The following fields are required:
          * ```java
@@ -100,7 +100,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [Metadata]. */
+    /** A builder for [InteractionsMetadata]. */
     class Builder internal constructor() {
 
         private var model: JsonField<String>? = null
@@ -109,11 +109,11 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(metadata: Metadata) = apply {
-            model = metadata.model
-            requesterId = metadata.requesterId
-            provider = metadata.provider
-            additionalProperties = metadata.additionalProperties.toMutableMap()
+        internal fun from(interactionsMetadata: InteractionsMetadata) = apply {
+            model = interactionsMetadata.model
+            requesterId = interactionsMetadata.requesterId
+            provider = interactionsMetadata.provider
+            additionalProperties = interactionsMetadata.additionalProperties.toMutableMap()
         }
 
         fun model(model: String) = model(JsonField.of(model))
@@ -167,7 +167,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [Metadata].
+         * Returns an immutable instance of [InteractionsMetadata].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -179,8 +179,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): Metadata =
-            Metadata(
+        fun build(): InteractionsMetadata =
+            InteractionsMetadata(
                 checkRequired("model", model),
                 checkRequired("requesterId", requesterId),
                 provider,
@@ -190,7 +190,7 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): Metadata = apply {
+    fun validate(): InteractionsMetadata = apply {
         if (validated) {
             return@apply
         }
@@ -225,7 +225,7 @@ private constructor(
             return true
         }
 
-        return other is Metadata &&
+        return other is InteractionsMetadata &&
             model == other.model &&
             requesterId == other.requesterId &&
             provider == other.provider &&
@@ -239,5 +239,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Metadata{model=$model, requesterId=$requesterId, provider=$provider, additionalProperties=$additionalProperties}"
+        "InteractionsMetadata{model=$model, requesterId=$requesterId, provider=$provider, additionalProperties=$additionalProperties}"
 }
