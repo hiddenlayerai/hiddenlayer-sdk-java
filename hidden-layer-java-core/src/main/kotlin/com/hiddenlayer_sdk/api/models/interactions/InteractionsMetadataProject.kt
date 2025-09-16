@@ -15,7 +15,7 @@ import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
-class MetadataProject
+class InteractionsMetadataProject
 private constructor(
     private val projectAlias: JsonField<String>,
     private val projectId: JsonField<String>,
@@ -87,11 +87,13 @@ private constructor(
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [MetadataProject]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [InteractionsMetadataProject].
+         */
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [MetadataProject]. */
+    /** A builder for [InteractionsMetadataProject]. */
     class Builder internal constructor() {
 
         private var projectAlias: JsonField<String> = JsonMissing.of()
@@ -100,11 +102,11 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(metadataProject: MetadataProject) = apply {
-            projectAlias = metadataProject.projectAlias
-            projectId = metadataProject.projectId
-            rulesetId = metadataProject.rulesetId
-            additionalProperties = metadataProject.additionalProperties.toMutableMap()
+        internal fun from(interactionsMetadataProject: InteractionsMetadataProject) = apply {
+            projectAlias = interactionsMetadataProject.projectAlias
+            projectId = interactionsMetadataProject.projectId
+            rulesetId = interactionsMetadataProject.rulesetId
+            additionalProperties = interactionsMetadataProject.additionalProperties.toMutableMap()
         }
 
         fun projectAlias(projectAlias: String) = projectAlias(JsonField.of(projectAlias))
@@ -162,17 +164,22 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [MetadataProject].
+         * Returns an immutable instance of [InteractionsMetadataProject].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          */
-        fun build(): MetadataProject =
-            MetadataProject(projectAlias, projectId, rulesetId, additionalProperties.toMutableMap())
+        fun build(): InteractionsMetadataProject =
+            InteractionsMetadataProject(
+                projectAlias,
+                projectId,
+                rulesetId,
+                additionalProperties.toMutableMap(),
+            )
     }
 
     private var validated: Boolean = false
 
-    fun validate(): MetadataProject = apply {
+    fun validate(): InteractionsMetadataProject = apply {
         if (validated) {
             return@apply
         }
@@ -207,7 +214,7 @@ private constructor(
             return true
         }
 
-        return other is MetadataProject &&
+        return other is InteractionsMetadataProject &&
             projectAlias == other.projectAlias &&
             projectId == other.projectId &&
             rulesetId == other.rulesetId &&
@@ -221,5 +228,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "MetadataProject{projectAlias=$projectAlias, projectId=$projectId, rulesetId=$rulesetId, additionalProperties=$additionalProperties}"
+        "InteractionsMetadataProject{projectAlias=$projectAlias, projectId=$projectId, rulesetId=$rulesetId, additionalProperties=$additionalProperties}"
 }

@@ -7,38 +7,38 @@ import com.hiddenlayer_sdk.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class MetadataTest {
+internal class InteractionsMetadataTest {
 
     @Test
     fun create() {
-        val metadata =
-            Metadata.builder()
+        val interactionsMetadata =
+            InteractionsMetadata.builder()
                 .model("model")
                 .requesterId("requester_id")
                 .provider("provider")
                 .build()
 
-        assertThat(metadata.model()).isEqualTo("model")
-        assertThat(metadata.requesterId()).isEqualTo("requester_id")
-        assertThat(metadata.provider()).contains("provider")
+        assertThat(interactionsMetadata.model()).isEqualTo("model")
+        assertThat(interactionsMetadata.requesterId()).isEqualTo("requester_id")
+        assertThat(interactionsMetadata.provider()).contains("provider")
     }
 
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val metadata =
-            Metadata.builder()
+        val interactionsMetadata =
+            InteractionsMetadata.builder()
                 .model("model")
                 .requesterId("requester_id")
                 .provider("provider")
                 .build()
 
-        val roundtrippedMetadata =
+        val roundtrippedInteractionsMetadata =
             jsonMapper.readValue(
-                jsonMapper.writeValueAsString(metadata),
-                jacksonTypeRef<Metadata>(),
+                jsonMapper.writeValueAsString(interactionsMetadata),
+                jacksonTypeRef<InteractionsMetadata>(),
             )
 
-        assertThat(roundtrippedMetadata).isEqualTo(metadata)
+        assertThat(roundtrippedInteractionsMetadata).isEqualTo(interactionsMetadata)
     }
 }

@@ -16,7 +16,7 @@ import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
-class TextContent
+class InteractionsTextContent
 private constructor(
     private val content: JsonField<String>,
     private val role: JsonField<String>,
@@ -70,7 +70,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [TextContent].
+         * Returns a mutable builder for constructing an instance of [InteractionsTextContent].
          *
          * The following fields are required:
          * ```java
@@ -80,7 +80,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [TextContent]. */
+    /** A builder for [InteractionsTextContent]. */
     class Builder internal constructor() {
 
         private var content: JsonField<String>? = null
@@ -88,10 +88,10 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(textContent: TextContent) = apply {
-            content = textContent.content
-            role = textContent.role
-            additionalProperties = textContent.additionalProperties.toMutableMap()
+        internal fun from(interactionsTextContent: InteractionsTextContent) = apply {
+            content = interactionsTextContent.content
+            role = interactionsTextContent.role
+            additionalProperties = interactionsTextContent.additionalProperties.toMutableMap()
         }
 
         fun content(content: String) = content(JsonField.of(content))
@@ -134,7 +134,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [TextContent].
+         * Returns an immutable instance of [InteractionsTextContent].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -145,8 +145,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): TextContent =
-            TextContent(
+        fun build(): InteractionsTextContent =
+            InteractionsTextContent(
                 checkRequired("content", content),
                 role,
                 additionalProperties.toMutableMap(),
@@ -155,7 +155,7 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): TextContent = apply {
+    fun validate(): InteractionsTextContent = apply {
         if (validated) {
             return@apply
         }
@@ -187,7 +187,7 @@ private constructor(
             return true
         }
 
-        return other is TextContent &&
+        return other is InteractionsTextContent &&
             content == other.content &&
             role == other.role &&
             additionalProperties == other.additionalProperties
@@ -198,5 +198,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "TextContent{content=$content, role=$role, additionalProperties=$additionalProperties}"
+        "InteractionsTextContent{content=$content, role=$role, additionalProperties=$additionalProperties}"
 }

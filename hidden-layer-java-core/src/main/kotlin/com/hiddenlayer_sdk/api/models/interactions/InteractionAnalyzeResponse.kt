@@ -1097,42 +1097,48 @@ private constructor(
 
     class AnalyzedData
     private constructor(
-        private val input: JsonField<Input>,
-        private val output: JsonField<Output>,
+        private val input: JsonField<InteractionsInput>,
+        private val output: JsonField<InteractionsOutput>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("input") @ExcludeMissing input: JsonField<Input> = JsonMissing.of(),
-            @JsonProperty("output") @ExcludeMissing output: JsonField<Output> = JsonMissing.of(),
+            @JsonProperty("input")
+            @ExcludeMissing
+            input: JsonField<InteractionsInput> = JsonMissing.of(),
+            @JsonProperty("output")
+            @ExcludeMissing
+            output: JsonField<InteractionsOutput> = JsonMissing.of(),
         ) : this(input, output, mutableMapOf())
 
         /**
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun input(): Input = input.getRequired("input")
+        fun input(): InteractionsInput = input.getRequired("input")
 
         /**
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun output(): Optional<Output> = output.getOptional("output")
+        fun output(): Optional<InteractionsOutput> = output.getOptional("output")
 
         /**
          * Returns the raw JSON value of [input].
          *
          * Unlike [input], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("input") @ExcludeMissing fun _input(): JsonField<Input> = input
+        @JsonProperty("input") @ExcludeMissing fun _input(): JsonField<InteractionsInput> = input
 
         /**
          * Returns the raw JSON value of [output].
          *
          * Unlike [output], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("output") @ExcludeMissing fun _output(): JsonField<Output> = output
+        @JsonProperty("output")
+        @ExcludeMissing
+        fun _output(): JsonField<InteractionsOutput> = output
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -1162,8 +1168,8 @@ private constructor(
         /** A builder for [AnalyzedData]. */
         class Builder internal constructor() {
 
-            private var input: JsonField<Input>? = null
-            private var output: JsonField<Output> = JsonMissing.of()
+            private var input: JsonField<InteractionsInput>? = null
+            private var output: JsonField<InteractionsOutput> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -1173,27 +1179,27 @@ private constructor(
                 additionalProperties = analyzedData.additionalProperties.toMutableMap()
             }
 
-            fun input(input: Input) = input(JsonField.of(input))
+            fun input(input: InteractionsInput) = input(JsonField.of(input))
 
             /**
              * Sets [Builder.input] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.input] with a well-typed [Input] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
+             * You should usually call [Builder.input] with a well-typed [InteractionsInput] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
-            fun input(input: JsonField<Input>) = apply { this.input = input }
+            fun input(input: JsonField<InteractionsInput>) = apply { this.input = input }
 
-            fun output(output: Output) = output(JsonField.of(output))
+            fun output(output: InteractionsOutput) = output(JsonField.of(output))
 
             /**
              * Sets [Builder.output] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.output] with a well-typed [Output] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
+             * You should usually call [Builder.output] with a well-typed [InteractionsOutput] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun output(output: JsonField<Output>) = apply { this.output = output }
+            fun output(output: JsonField<InteractionsOutput>) = apply { this.output = output }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -1288,7 +1294,7 @@ private constructor(
     private constructor(
         private val model: JsonField<String>,
         private val processingTimeMs: JsonField<Double>,
-        private val project: JsonField<MetadataProject>,
+        private val project: JsonField<InteractionsMetadataProject>,
         private val provider: JsonField<String>,
         private val requesterId: JsonField<String>,
         private val analyzedAt: JsonField<OffsetDateTime>,
@@ -1304,7 +1310,7 @@ private constructor(
             processingTimeMs: JsonField<Double> = JsonMissing.of(),
             @JsonProperty("project")
             @ExcludeMissing
-            project: JsonField<MetadataProject> = JsonMissing.of(),
+            project: JsonField<InteractionsMetadataProject> = JsonMissing.of(),
             @JsonProperty("provider")
             @ExcludeMissing
             provider: JsonField<String> = JsonMissing.of(),
@@ -1342,7 +1348,7 @@ private constructor(
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun project(): MetadataProject = project.getRequired("project")
+        fun project(): InteractionsMetadataProject = project.getRequired("project")
 
         /**
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
@@ -1392,7 +1398,7 @@ private constructor(
          */
         @JsonProperty("project")
         @ExcludeMissing
-        fun _project(): JsonField<MetadataProject> = project
+        fun _project(): JsonField<InteractionsMetadataProject> = project
 
         /**
          * Returns the raw JSON value of [provider].
@@ -1460,7 +1466,7 @@ private constructor(
 
             private var model: JsonField<String>? = null
             private var processingTimeMs: JsonField<Double>? = null
-            private var project: JsonField<MetadataProject>? = null
+            private var project: JsonField<InteractionsMetadataProject>? = null
             private var provider: JsonField<String>? = null
             private var requesterId: JsonField<String>? = null
             private var analyzedAt: JsonField<OffsetDateTime> = JsonMissing.of()
@@ -1504,16 +1510,18 @@ private constructor(
                 this.processingTimeMs = processingTimeMs
             }
 
-            fun project(project: MetadataProject) = project(JsonField.of(project))
+            fun project(project: InteractionsMetadataProject) = project(JsonField.of(project))
 
             /**
              * Sets [Builder.project] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.project] with a well-typed [MetadataProject] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
+             * You should usually call [Builder.project] with a well-typed
+             * [InteractionsMetadataProject] value instead. This method is primarily for setting the
+             * field to an undocumented or not yet supported value.
              */
-            fun project(project: JsonField<MetadataProject>) = apply { this.project = project }
+            fun project(project: JsonField<InteractionsMetadataProject>) = apply {
+                this.project = project
+            }
 
             fun provider(provider: String) = provider(JsonField.of(provider))
 
@@ -1689,42 +1697,48 @@ private constructor(
 
     class ModifiedData
     private constructor(
-        private val input: JsonField<Input>,
-        private val output: JsonField<Output>,
+        private val input: JsonField<InteractionsInput>,
+        private val output: JsonField<InteractionsOutput>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("input") @ExcludeMissing input: JsonField<Input> = JsonMissing.of(),
-            @JsonProperty("output") @ExcludeMissing output: JsonField<Output> = JsonMissing.of(),
+            @JsonProperty("input")
+            @ExcludeMissing
+            input: JsonField<InteractionsInput> = JsonMissing.of(),
+            @JsonProperty("output")
+            @ExcludeMissing
+            output: JsonField<InteractionsOutput> = JsonMissing.of(),
         ) : this(input, output, mutableMapOf())
 
         /**
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun input(): Input = input.getRequired("input")
+        fun input(): InteractionsInput = input.getRequired("input")
 
         /**
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun output(): Output = output.getRequired("output")
+        fun output(): InteractionsOutput = output.getRequired("output")
 
         /**
          * Returns the raw JSON value of [input].
          *
          * Unlike [input], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("input") @ExcludeMissing fun _input(): JsonField<Input> = input
+        @JsonProperty("input") @ExcludeMissing fun _input(): JsonField<InteractionsInput> = input
 
         /**
          * Returns the raw JSON value of [output].
          *
          * Unlike [output], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("output") @ExcludeMissing fun _output(): JsonField<Output> = output
+        @JsonProperty("output")
+        @ExcludeMissing
+        fun _output(): JsonField<InteractionsOutput> = output
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -1755,8 +1769,8 @@ private constructor(
         /** A builder for [ModifiedData]. */
         class Builder internal constructor() {
 
-            private var input: JsonField<Input>? = null
-            private var output: JsonField<Output>? = null
+            private var input: JsonField<InteractionsInput>? = null
+            private var output: JsonField<InteractionsOutput>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -1766,27 +1780,27 @@ private constructor(
                 additionalProperties = modifiedData.additionalProperties.toMutableMap()
             }
 
-            fun input(input: Input) = input(JsonField.of(input))
+            fun input(input: InteractionsInput) = input(JsonField.of(input))
 
             /**
              * Sets [Builder.input] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.input] with a well-typed [Input] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
+             * You should usually call [Builder.input] with a well-typed [InteractionsInput] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
-            fun input(input: JsonField<Input>) = apply { this.input = input }
+            fun input(input: JsonField<InteractionsInput>) = apply { this.input = input }
 
-            fun output(output: Output) = output(JsonField.of(output))
+            fun output(output: InteractionsOutput) = output(JsonField.of(output))
 
             /**
              * Sets [Builder.output] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.output] with a well-typed [Output] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
+             * You should usually call [Builder.output] with a well-typed [InteractionsOutput] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun output(output: JsonField<Output>) = apply { this.output = output }
+            fun output(output: JsonField<InteractionsOutput>) = apply { this.output = output }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
