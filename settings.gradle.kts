@@ -1,11 +1,11 @@
-rootProject.name = "hidden-layer-java-root"
+rootProject.name = "hiddenlayer-java-root"
 
 val projectNames = rootDir.listFiles()
     ?.asSequence()
     .orEmpty()
     .filter { file ->
         file.isDirectory &&
-        file.name.startsWith("hidden-layer-java") &&
+        file.name.startsWith("hiddenlayer-java") &&
         file.listFiles()?.asSequence().orEmpty().any { it.name == "build.gradle.kts" }
     }
     .map { it.name }
