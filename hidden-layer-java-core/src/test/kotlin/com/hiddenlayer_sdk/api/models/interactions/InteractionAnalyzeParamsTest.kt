@@ -13,24 +13,20 @@ internal class InteractionAnalyzeParamsTest {
         InteractionAnalyzeParams.builder()
             .hlProjectId("internal-search-chatbot")
             .metadata(
-                InteractionAnalyzeParams.Metadata.builder()
+                Metadata.builder()
                     .model("model")
                     .requesterId("requester_id")
                     .provider("provider")
                     .build()
             )
             .input(
-                InteractionsInput.builder()
-                    .addMessage(
-                        InteractionsTextContent.builder().content("content").role("role").build()
-                    )
+                Input.builder()
+                    .addMessage(TextContent.builder().content("content").role("role").build())
                     .build()
             )
             .output(
-                InteractionsOutput.builder()
-                    .addMessage(
-                        InteractionsTextContent.builder().content("content").role("role").build()
-                    )
+                Output.builder()
+                    .addMessage(TextContent.builder().content("content").role("role").build())
                     .build()
             )
             .build()
@@ -42,30 +38,20 @@ internal class InteractionAnalyzeParamsTest {
             InteractionAnalyzeParams.builder()
                 .hlProjectId("internal-search-chatbot")
                 .metadata(
-                    InteractionAnalyzeParams.Metadata.builder()
+                    Metadata.builder()
                         .model("model")
                         .requesterId("requester_id")
                         .provider("provider")
                         .build()
                 )
                 .input(
-                    InteractionsInput.builder()
-                        .addMessage(
-                            InteractionsTextContent.builder()
-                                .content("content")
-                                .role("role")
-                                .build()
-                        )
+                    Input.builder()
+                        .addMessage(TextContent.builder().content("content").role("role").build())
                         .build()
                 )
                 .output(
-                    InteractionsOutput.builder()
-                        .addMessage(
-                            InteractionsTextContent.builder()
-                                .content("content")
-                                .role("role")
-                                .build()
-                        )
+                    Output.builder()
+                        .addMessage(TextContent.builder().content("content").role("role").build())
                         .build()
                 )
                 .build()
@@ -80,12 +66,7 @@ internal class InteractionAnalyzeParamsTest {
     fun headersWithoutOptionalFields() {
         val params =
             InteractionAnalyzeParams.builder()
-                .metadata(
-                    InteractionAnalyzeParams.Metadata.builder()
-                        .model("model")
-                        .requesterId("requester_id")
-                        .build()
-                )
+                .metadata(Metadata.builder().model("model").requesterId("requester_id").build())
                 .build()
 
         val headers = params._headers()
@@ -99,30 +80,20 @@ internal class InteractionAnalyzeParamsTest {
             InteractionAnalyzeParams.builder()
                 .hlProjectId("internal-search-chatbot")
                 .metadata(
-                    InteractionAnalyzeParams.Metadata.builder()
+                    Metadata.builder()
                         .model("model")
                         .requesterId("requester_id")
                         .provider("provider")
                         .build()
                 )
                 .input(
-                    InteractionsInput.builder()
-                        .addMessage(
-                            InteractionsTextContent.builder()
-                                .content("content")
-                                .role("role")
-                                .build()
-                        )
+                    Input.builder()
+                        .addMessage(TextContent.builder().content("content").role("role").build())
                         .build()
                 )
                 .output(
-                    InteractionsOutput.builder()
-                        .addMessage(
-                            InteractionsTextContent.builder()
-                                .content("content")
-                                .role("role")
-                                .build()
-                        )
+                    Output.builder()
+                        .addMessage(TextContent.builder().content("content").role("role").build())
                         .build()
                 )
                 .build()
@@ -131,7 +102,7 @@ internal class InteractionAnalyzeParamsTest {
 
         assertThat(body.metadata())
             .isEqualTo(
-                InteractionAnalyzeParams.Metadata.builder()
+                Metadata.builder()
                     .model("model")
                     .requesterId("requester_id")
                     .provider("provider")
@@ -139,18 +110,14 @@ internal class InteractionAnalyzeParamsTest {
             )
         assertThat(body.input())
             .contains(
-                InteractionsInput.builder()
-                    .addMessage(
-                        InteractionsTextContent.builder().content("content").role("role").build()
-                    )
+                Input.builder()
+                    .addMessage(TextContent.builder().content("content").role("role").build())
                     .build()
             )
         assertThat(body.output())
             .contains(
-                InteractionsOutput.builder()
-                    .addMessage(
-                        InteractionsTextContent.builder().content("content").role("role").build()
-                    )
+                Output.builder()
+                    .addMessage(TextContent.builder().content("content").role("role").build())
                     .build()
             )
     }
@@ -159,22 +126,12 @@ internal class InteractionAnalyzeParamsTest {
     fun bodyWithoutOptionalFields() {
         val params =
             InteractionAnalyzeParams.builder()
-                .metadata(
-                    InteractionAnalyzeParams.Metadata.builder()
-                        .model("model")
-                        .requesterId("requester_id")
-                        .build()
-                )
+                .metadata(Metadata.builder().model("model").requesterId("requester_id").build())
                 .build()
 
         val body = params._body()
 
         assertThat(body.metadata())
-            .isEqualTo(
-                InteractionAnalyzeParams.Metadata.builder()
-                    .model("model")
-                    .requesterId("requester_id")
-                    .build()
-            )
+            .isEqualTo(Metadata.builder().model("model").requesterId("requester_id").build())
     }
 }
