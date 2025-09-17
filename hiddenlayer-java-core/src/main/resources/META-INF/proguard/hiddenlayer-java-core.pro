@@ -22,11 +22,11 @@
 -keep class * extends com.fasterxml.jackson.core.type.TypeReference { *; }
 
 # Jackson uses reflection to access our class serializers and deserializers.
--keep @com.fasterxml.jackson.databind.annotation.JsonSerialize class com.hiddenlayer_sdk.api.** { *; }
--keep @com.fasterxml.jackson.databind.annotation.JsonDeserialize class com.hiddenlayer_sdk.api.** { *; }
+-keep @com.fasterxml.jackson.databind.annotation.JsonSerialize class com.hiddenlayer.api.** { *; }
+-keep @com.fasterxml.jackson.databind.annotation.JsonDeserialize class com.hiddenlayer.api.** { *; }
 
 # Jackson uses reflection to serialize and deserialize our classes based on their constructors and annotated members.
--keepclassmembers class com.hiddenlayer_sdk.api.** {
+-keepclassmembers class com.hiddenlayer.api.** {
     <init>(...);
     @com.fasterxml.jackson.annotation.* *;
 }
