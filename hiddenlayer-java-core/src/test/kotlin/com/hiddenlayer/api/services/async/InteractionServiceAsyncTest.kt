@@ -5,10 +5,6 @@ package com.hiddenlayer.api.services.async
 import com.hiddenlayer.api.TestServerExtension
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClientAsync
 import com.hiddenlayer.api.models.interactions.InteractionAnalyzeParams
-import com.hiddenlayer.api.models.interactions.InteractionsInput
-import com.hiddenlayer.api.models.interactions.InteractionsMetadata
-import com.hiddenlayer.api.models.interactions.InteractionsOutput
-import com.hiddenlayer.api.models.interactions.InteractionsTextContent
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -31,16 +27,16 @@ internal class InteractionServiceAsyncTest {
                 InteractionAnalyzeParams.builder()
                     .hlProjectId("internal-search-chatbot")
                     .metadata(
-                        InteractionsMetadata.builder()
+                        InteractionAnalyzeParams.Metadata.builder()
                             .model("model")
                             .requesterId("requester_id")
                             .provider("provider")
                             .build()
                     )
                     .input(
-                        InteractionsInput.builder()
+                        InteractionAnalyzeParams.Input.builder()
                             .addMessage(
-                                InteractionsTextContent.builder()
+                                InteractionAnalyzeParams.Input.Message.builder()
                                     .content("content")
                                     .role("role")
                                     .build()
@@ -48,9 +44,9 @@ internal class InteractionServiceAsyncTest {
                             .build()
                     )
                     .output(
-                        InteractionsOutput.builder()
+                        InteractionAnalyzeParams.Output.builder()
                             .addMessage(
-                                InteractionsTextContent.builder()
+                                InteractionAnalyzeParams.Output.Message.builder()
                                     .content("content")
                                     .role("role")
                                     .build()
