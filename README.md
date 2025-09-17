@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.hiddenlayer_sdk.api/hiddenlayer-java)](https://central.sonatype.com/artifact/com.hiddenlayer_sdk.api/hiddenlayer-java/0.1.0-alpha.4)
-[![javadoc](https://javadoc.io/badge2/com.hiddenlayer_sdk.api/hiddenlayer-java/0.1.0-alpha.4/javadoc.svg)](https://javadoc.io/doc/com.hiddenlayer_sdk.api/hiddenlayer-java/0.1.0-alpha.4)
+[![Maven Central](https://img.shields.io/maven-central/v/com.hiddenlayer.api/hiddenlayer-java)](https://central.sonatype.com/artifact/com.hiddenlayer.api/hiddenlayer-java/0.1.0-alpha.4)
+[![javadoc](https://javadoc.io/badge2/com.hiddenlayer.api/hiddenlayer-java/0.1.0-alpha.4/javadoc.svg)](https://javadoc.io/doc/com.hiddenlayer.api/hiddenlayer-java/0.1.0-alpha.4)
 
 <!-- x-release-please-end -->
 
@@ -13,7 +13,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [dev.hiddenlayer.ai](https://dev.hiddenlayer.ai). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.hiddenlayer_sdk.api/hiddenlayer-java/0.1.0-alpha.4).
+The REST API documentation can be found on [dev.hiddenlayer.ai](https://dev.hiddenlayer.ai). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.hiddenlayer.api/hiddenlayer-java/0.1.0-alpha.4).
 
 <!-- x-release-please-end -->
 
@@ -24,14 +24,14 @@ The REST API documentation can be found on [dev.hiddenlayer.ai](https://dev.hidd
 ### Gradle
 
 ```kotlin
-implementation("com.hiddenlayer_sdk.api:hiddenlayer-java:0.1.0-alpha.4")
+implementation("com.hiddenlayer.api:hiddenlayer-java:0.1.0-alpha.4")
 ```
 
 ### Maven
 
 ```xml
 <dependency>
-  <groupId>com.hiddenlayer_sdk.api</groupId>
+  <groupId>com.hiddenlayer.api</groupId>
   <artifactId>hiddenlayer-java</artifactId>
   <version>0.1.0-alpha.4</version>
 </dependency>
@@ -46,10 +46,10 @@ This library requires Java 8 or later.
 ## Usage
 
 ```java
-import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
-import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
+import com.hiddenlayer.api.client.HiddenLayerClient;
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
+import com.hiddenlayer.api.models.sensors.SensorCreateParams;
+import com.hiddenlayer.api.models.sensors.SensorCreateResponse;
 
 // Configures using the `hiddenlayer.token`, `hiddenlayer.clientId`, `hiddenlayer.clientSecret` and `hiddenlayer.baseUrl` system properties
 // Or configures using the `HIDDENLAYER_TOKEN`, `HIDDENLAYER_CLIENT_ID`, `HIDDENLAYER_CLIENT_SECRET` and `HIDDENLAYER_BASE_URL` environment variables
@@ -66,8 +66,8 @@ SensorCreateResponse sensor = client.sensors().create(params);
 Configure the client using system properties or environment variables:
 
 ```java
-import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
-import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
+import com.hiddenlayer.api.client.HiddenLayerClient;
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
 
 // Configures using the `hiddenlayer.token`, `hiddenlayer.clientId`, `hiddenlayer.clientSecret` and `hiddenlayer.baseUrl` system properties
 // Or configures using the `HIDDENLAYER_TOKEN`, `HIDDENLAYER_CLIENT_ID`, `HIDDENLAYER_CLIENT_SECRET` and `HIDDENLAYER_BASE_URL` environment variables
@@ -77,8 +77,8 @@ HiddenLayerClient client = HiddenLayerOkHttpClient.fromEnv();
 Or manually:
 
 ```java
-import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
-import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
+import com.hiddenlayer.api.client.HiddenLayerClient;
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
 
 HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
     .bearerToken("My Bearer Token")
@@ -88,8 +88,8 @@ HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
 Or using a combination of the two approaches:
 
 ```java
-import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
-import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
+import com.hiddenlayer.api.client.HiddenLayerClient;
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
 
 HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
     // Configures using the `hiddenlayer.token`, `hiddenlayer.clientId`, `hiddenlayer.clientSecret` and `hiddenlayer.baseUrl` system properties
@@ -119,7 +119,7 @@ System properties take precedence over environment variables.
 To temporarily use a modified client configuration, while reusing the same connection and thread pools, call `withOptions()` on any client or service:
 
 ```java
-import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
+import com.hiddenlayer.api.client.HiddenLayerClient;
 
 HiddenLayerClient clientWithOptions = client.withOptions(optionsBuilder -> {
     optionsBuilder.baseUrl("https://example.com");
@@ -148,10 +148,10 @@ Because each class is immutable, builder modification will _never_ affect alread
 The default client is synchronous. To switch to asynchronous execution, call the `async()` method:
 
 ```java
-import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
-import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
+import com.hiddenlayer.api.client.HiddenLayerClient;
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
+import com.hiddenlayer.api.models.sensors.SensorCreateParams;
+import com.hiddenlayer.api.models.sensors.SensorCreateResponse;
 import java.util.concurrent.CompletableFuture;
 
 // Configures using the `hiddenlayer.token`, `hiddenlayer.clientId`, `hiddenlayer.clientSecret` and `hiddenlayer.baseUrl` system properties
@@ -167,10 +167,10 @@ CompletableFuture<SensorCreateResponse> sensor = client.async().sensors().create
 Or create an asynchronous client from the beginning:
 
 ```java
-import com.hiddenlayer_sdk.api.client.HiddenLayerClientAsync;
-import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClientAsync;
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
+import com.hiddenlayer.api.client.HiddenLayerClientAsync;
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClientAsync;
+import com.hiddenlayer.api.models.sensors.SensorCreateParams;
+import com.hiddenlayer.api.models.sensors.SensorCreateResponse;
 import java.util.concurrent.CompletableFuture;
 
 // Configures using the `hiddenlayer.token`, `hiddenlayer.clientId`, `hiddenlayer.clientSecret` and `hiddenlayer.baseUrl` system properties
@@ -192,10 +192,10 @@ The SDK defines methods that deserialize responses into instances of Java classe
 To access this data, prefix any HTTP method call on a client or service with `withRawResponse()`:
 
 ```java
-import com.hiddenlayer_sdk.api.core.http.Headers;
-import com.hiddenlayer_sdk.api.core.http.HttpResponseFor;
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
+import com.hiddenlayer.api.core.http.Headers;
+import com.hiddenlayer.api.core.http.HttpResponseFor;
+import com.hiddenlayer.api.models.sensors.SensorCreateParams;
+import com.hiddenlayer.api.models.sensors.SensorCreateResponse;
 
 SensorCreateParams params = SensorCreateParams.builder()
     .plaintextName("REPLACE_ME")
@@ -209,7 +209,7 @@ Headers headers = sensor.headers();
 You can still deserialize the response into an instance of a Java class if needed:
 
 ```java
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
+import com.hiddenlayer.api.models.sensors.SensorCreateResponse;
 
 SensorCreateResponse parsedSensor = sensor.parse();
 ```
@@ -218,26 +218,26 @@ SensorCreateResponse parsedSensor = sensor.parse();
 
 The SDK throws custom unchecked exception types:
 
-- [`HiddenLayerServiceException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/HiddenLayerServiceException.kt): Base class for HTTP errors. See this table for which exception subclass is thrown for each HTTP status code:
+- [`HiddenLayerServiceException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/errors/HiddenLayerServiceException.kt): Base class for HTTP errors. See this table for which exception subclass is thrown for each HTTP status code:
 
-  | Status | Exception                                                                                                                                |
-  | ------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
-  | 400    | [`BadRequestException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/BadRequestException.kt)                     |
-  | 401    | [`UnauthorizedException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/UnauthorizedException.kt)                 |
-  | 403    | [`PermissionDeniedException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/PermissionDeniedException.kt)         |
-  | 404    | [`NotFoundException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/NotFoundException.kt)                         |
-  | 422    | [`UnprocessableEntityException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/UnprocessableEntityException.kt)   |
-  | 429    | [`RateLimitException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/RateLimitException.kt)                       |
-  | 5xx    | [`InternalServerException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/InternalServerException.kt)             |
-  | others | [`UnexpectedStatusCodeException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/UnexpectedStatusCodeException.kt) |
+  | Status | Exception                                                                                                                            |
+  | ------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+  | 400    | [`BadRequestException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/errors/BadRequestException.kt)                     |
+  | 401    | [`UnauthorizedException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/errors/UnauthorizedException.kt)                 |
+  | 403    | [`PermissionDeniedException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/errors/PermissionDeniedException.kt)         |
+  | 404    | [`NotFoundException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/errors/NotFoundException.kt)                         |
+  | 422    | [`UnprocessableEntityException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/errors/UnprocessableEntityException.kt)   |
+  | 429    | [`RateLimitException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/errors/RateLimitException.kt)                       |
+  | 5xx    | [`InternalServerException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/errors/InternalServerException.kt)             |
+  | others | [`UnexpectedStatusCodeException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/errors/UnexpectedStatusCodeException.kt) |
 
-- [`HiddenLayerIoException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/HiddenLayerIoException.kt): I/O networking errors.
+- [`HiddenLayerIoException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/errors/HiddenLayerIoException.kt): I/O networking errors.
 
-- [`HiddenLayerRetryableException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/HiddenLayerRetryableException.kt): Generic error indicating a failure that could be retried by the client.
+- [`HiddenLayerRetryableException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/errors/HiddenLayerRetryableException.kt): Generic error indicating a failure that could be retried by the client.
 
-- [`HiddenLayerInvalidDataException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/HiddenLayerInvalidDataException.kt): Failure to interpret successfully parsed data. For example, when accessing a property that's supposed to be required, but the API unexpectedly omitted it from the response.
+- [`HiddenLayerInvalidDataException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/errors/HiddenLayerInvalidDataException.kt): Failure to interpret successfully parsed data. For example, when accessing a property that's supposed to be required, but the API unexpectedly omitted it from the response.
 
-- [`HiddenLayerException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/HiddenLayerException.kt): Base class for all exceptions. Most errors will result in one of the previously mentioned ones, but completely generic errors may be thrown using the base class.
+- [`HiddenLayerException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/errors/HiddenLayerException.kt): Base class for all exceptions. Most errors will result in one of the previously mentioned ones, but completely generic errors may be thrown using the base class.
 
 ## Logging
 
@@ -267,7 +267,7 @@ The SDK depends on [Jackson](https://github.com/FasterXML/jackson) for JSON seri
 
 The SDK throws an exception if it detects an incompatible Jackson version at runtime (e.g. if the default version was overridden in your Maven or Gradle config).
 
-If the SDK threw an exception, but you're _certain_ the version is compatible, then disable the version check using the `checkJacksonVersionCompatibility` on [`HiddenLayerOkHttpClient`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer_sdk/api/client/okhttp/HiddenLayerOkHttpClient.kt) or [`HiddenLayerOkHttpClientAsync`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer_sdk/api/client/okhttp/HiddenLayerOkHttpClientAsync.kt).
+If the SDK threw an exception, but you're _certain_ the version is compatible, then disable the version check using the `checkJacksonVersionCompatibility` on [`HiddenLayerOkHttpClient`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer/api/client/okhttp/HiddenLayerOkHttpClient.kt) or [`HiddenLayerOkHttpClientAsync`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer/api/client/okhttp/HiddenLayerOkHttpClientAsync.kt).
 
 > [!CAUTION]
 > We make no guarantee that the SDK works correctly when the Jackson version check is disabled.
@@ -291,8 +291,8 @@ The API may also explicitly instruct the SDK to retry or not retry a request.
 To set a custom number of retries, configure the client using the `maxRetries` method:
 
 ```java
-import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
-import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
+import com.hiddenlayer.api.client.HiddenLayerClient;
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
 
 HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
     .fromEnv()
@@ -307,7 +307,7 @@ Requests time out after 1 minute by default.
 To set a custom timeout, configure the method call using the `timeout` method:
 
 ```java
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
+import com.hiddenlayer.api.models.sensors.SensorCreateResponse;
 
 SensorCreateResponse sensor = client.sensors().create(
   params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
@@ -317,8 +317,8 @@ SensorCreateResponse sensor = client.sensors().create(
 Or configure the default for all method calls at the client level:
 
 ```java
-import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
-import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
+import com.hiddenlayer.api.client.HiddenLayerClient;
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
 import java.time.Duration;
 
 HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
@@ -332,8 +332,8 @@ HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
 To route requests through a proxy, configure the client using the `proxy` method:
 
 ```java
-import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
-import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
+import com.hiddenlayer.api.client.HiddenLayerClient;
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
@@ -356,8 +356,8 @@ HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
 To configure how HTTPS connections are secured, configure the client using the `sslSocketFactory`, `trustManager`, and `hostnameVerifier` methods:
 
 ```java
-import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
-import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
+import com.hiddenlayer.api.client.HiddenLayerClient;
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
 
 HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
     .fromEnv()
@@ -373,8 +373,8 @@ HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
 The SDK sends requests to the prod-us by default. To send requests to a different environment, configure the client like so:
 
 ```java
-import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
-import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
+import com.hiddenlayer.api.client.HiddenLayerClient;
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
 
 HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
     .fromEnv()
@@ -389,10 +389,10 @@ The SDK consists of three artifacts:
 - `hiddenlayer-java-core`
   - Contains core SDK logic
   - Does not depend on [OkHttp](https://square.github.io/okhttp)
-  - Exposes [`HiddenLayerClient`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClient.kt), [`HiddenLayerClientAsync`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientAsync.kt), [`HiddenLayerClientImpl`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientImpl.kt), and [`HiddenLayerClientAsyncImpl`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientAsyncImpl.kt), all of which can work with any HTTP client
+  - Exposes [`HiddenLayerClient`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/client/HiddenLayerClient.kt), [`HiddenLayerClientAsync`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/client/HiddenLayerClientAsync.kt), [`HiddenLayerClientImpl`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/client/HiddenLayerClientImpl.kt), and [`HiddenLayerClientAsyncImpl`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/client/HiddenLayerClientAsyncImpl.kt), all of which can work with any HTTP client
 - `hiddenlayer-java-client-okhttp`
   - Depends on [OkHttp](https://square.github.io/okhttp)
-  - Exposes [`HiddenLayerOkHttpClient`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer_sdk/api/client/okhttp/HiddenLayerOkHttpClient.kt) and [`HiddenLayerOkHttpClientAsync`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer_sdk/api/client/okhttp/HiddenLayerOkHttpClientAsync.kt), which provide a way to construct [`HiddenLayerClientImpl`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientImpl.kt) and [`HiddenLayerClientAsyncImpl`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientAsyncImpl.kt), respectively, using OkHttp
+  - Exposes [`HiddenLayerOkHttpClient`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer/api/client/okhttp/HiddenLayerOkHttpClient.kt) and [`HiddenLayerOkHttpClientAsync`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer/api/client/okhttp/HiddenLayerOkHttpClientAsync.kt), which provide a way to construct [`HiddenLayerClientImpl`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/client/HiddenLayerClientImpl.kt) and [`HiddenLayerClientAsyncImpl`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/client/HiddenLayerClientAsyncImpl.kt), respectively, using OkHttp
 - `hiddenlayer-java`
   - Depends on and exposes the APIs of both `hiddenlayer-java-core` and `hiddenlayer-java-client-okhttp`
   - Does not have its own logic
@@ -407,16 +407,16 @@ This structure allows replacing the SDK's default HTTP client without pulling in
 To use a customized `OkHttpClient`:
 
 1. Replace your [`hiddenlayer-java` dependency](#installation) with `hiddenlayer-java-core`
-2. Copy `hiddenlayer-java-client-okhttp`'s [`OkHttpClient`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer_sdk/api/client/okhttp/OkHttpClient.kt) class into your code and customize it
-3. Construct [`HiddenLayerClientImpl`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientImpl.kt) or [`HiddenLayerClientAsyncImpl`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientAsyncImpl.kt), similarly to [`HiddenLayerOkHttpClient`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer_sdk/api/client/okhttp/HiddenLayerOkHttpClient.kt) or [`HiddenLayerOkHttpClientAsync`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer_sdk/api/client/okhttp/HiddenLayerOkHttpClientAsync.kt), using your customized client
+2. Copy `hiddenlayer-java-client-okhttp`'s [`OkHttpClient`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer/api/client/okhttp/OkHttpClient.kt) class into your code and customize it
+3. Construct [`HiddenLayerClientImpl`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/client/HiddenLayerClientImpl.kt) or [`HiddenLayerClientAsyncImpl`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/client/HiddenLayerClientAsyncImpl.kt), similarly to [`HiddenLayerOkHttpClient`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer/api/client/okhttp/HiddenLayerOkHttpClient.kt) or [`HiddenLayerOkHttpClientAsync`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer/api/client/okhttp/HiddenLayerOkHttpClientAsync.kt), using your customized client
 
 ### Completely custom HTTP client
 
 To use a completely custom HTTP client:
 
 1. Replace your [`hiddenlayer-java` dependency](#installation) with `hiddenlayer-java-core`
-2. Write a class that implements the [`HttpClient`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/core/http/HttpClient.kt) interface
-3. Construct [`HiddenLayerClientImpl`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientImpl.kt) or [`HiddenLayerClientAsyncImpl`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/client/HiddenLayerClientAsyncImpl.kt), similarly to [`HiddenLayerOkHttpClient`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer_sdk/api/client/okhttp/HiddenLayerOkHttpClient.kt) or [`HiddenLayerOkHttpClientAsync`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer_sdk/api/client/okhttp/HiddenLayerOkHttpClientAsync.kt), using your new client class
+2. Write a class that implements the [`HttpClient`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/core/http/HttpClient.kt) interface
+3. Construct [`HiddenLayerClientImpl`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/client/HiddenLayerClientImpl.kt) or [`HiddenLayerClientAsyncImpl`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/client/HiddenLayerClientAsyncImpl.kt), similarly to [`HiddenLayerOkHttpClient`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer/api/client/okhttp/HiddenLayerOkHttpClient.kt) or [`HiddenLayerOkHttpClientAsync`](hiddenlayer-java-client-okhttp/src/main/kotlin/com/hiddenlayer/api/client/okhttp/HiddenLayerOkHttpClientAsync.kt), using your new client class
 
 ## Undocumented API functionality
 
@@ -427,8 +427,8 @@ The SDK is typed for convenient usage of the documented API. However, it also su
 To set undocumented parameters, call the `putAdditionalHeader`, `putAdditionalQueryParam`, or `putAdditionalBodyProperty` methods on any `Params` class:
 
 ```java
-import com.hiddenlayer_sdk.api.core.JsonValue;
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
+import com.hiddenlayer.api.core.JsonValue;
+import com.hiddenlayer.api.models.sensors.SensorCreateParams;
 
 SensorCreateParams params = SensorCreateParams.builder()
     .putAdditionalHeader("Secret-Header", "42")
@@ -442,8 +442,8 @@ These can be accessed on the built object later using the `_additionalHeaders()`
 To set undocumented parameters on _nested_ headers, query params, or body classes, call the `putAdditionalProperty` method on the nested class:
 
 ```java
-import com.hiddenlayer_sdk.api.core.JsonValue;
-import com.hiddenlayer_sdk.api.models.models.cards.CardListParams;
+import com.hiddenlayer.api.core.JsonValue;
+import com.hiddenlayer.api.models.models.cards.CardListParams;
 
 CardListParams params = CardListParams.builder()
     .modelCreated(CardListParams.ModelCreated.builder()
@@ -454,21 +454,21 @@ CardListParams params = CardListParams.builder()
 
 These properties can be accessed on the nested built object later using the `_additionalProperties()` method.
 
-To set a documented parameter or property to an undocumented or not yet supported _value_, pass a [`JsonValue`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/core/Values.kt) object to its setter:
+To set a documented parameter or property to an undocumented or not yet supported _value_, pass a [`JsonValue`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/core/Values.kt) object to its setter:
 
 ```java
-import com.hiddenlayer_sdk.api.core.JsonValue;
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
+import com.hiddenlayer.api.core.JsonValue;
+import com.hiddenlayer.api.models.sensors.SensorCreateParams;
 
 SensorCreateParams params = SensorCreateParams.builder()
     .plaintextName(JsonValue.from(42))
     .build();
 ```
 
-The most straightforward way to create a [`JsonValue`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/core/Values.kt) is using its `from(...)` method:
+The most straightforward way to create a [`JsonValue`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/core/Values.kt) is using its `from(...)` method:
 
 ```java
-import com.hiddenlayer_sdk.api.core.JsonValue;
+import com.hiddenlayer.api.core.JsonValue;
 import java.util.List;
 import java.util.Map;
 
@@ -506,11 +506,11 @@ JsonValue complexValue = JsonValue.from(Map.of(
 
 Normally a `Builder` class's `build` method will throw [`IllegalStateException`](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalStateException.html) if any required parameter or property is unset.
 
-To forcibly omit a required parameter or property, pass [`JsonMissing`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/core/Values.kt):
+To forcibly omit a required parameter or property, pass [`JsonMissing`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/core/Values.kt):
 
 ```java
-import com.hiddenlayer_sdk.api.core.JsonMissing;
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateParams;
+import com.hiddenlayer.api.core.JsonMissing;
+import com.hiddenlayer.api.models.sensors.SensorCreateParams;
 
 SensorCreateParams params = SensorCreateParams.builder()
     .plaintextName(JsonMissing.of())
@@ -522,7 +522,7 @@ SensorCreateParams params = SensorCreateParams.builder()
 To access undocumented response properties, call the `_additionalProperties()` method:
 
 ```java
-import com.hiddenlayer_sdk.api.core.JsonValue;
+import com.hiddenlayer.api.core.JsonValue;
 import java.util.Map;
 
 Map<String, JsonValue> additionalProperties = client.sensors().create(params)._additionalProperties();
@@ -552,7 +552,7 @@ String result = secretPropertyValue.accept(new JsonValue.Visitor<>() {
 To access a property's raw JSON value, which may be undocumented, call its `_` prefixed method:
 
 ```java
-import com.hiddenlayer_sdk.api.core.JsonField;
+import com.hiddenlayer.api.core.JsonField;
 import java.util.Optional;
 
 JsonField<String> plaintextName = client.sensors().create(params)._plaintextName();
@@ -575,12 +575,12 @@ if (plaintextName.isMissing()) {
 
 In rare cases, the API may return a response that doesn't match the expected type. For example, the SDK may expect a property to contain a `String`, but the API could return something else.
 
-By default, the SDK will not throw an exception in this case. It will throw [`HiddenLayerInvalidDataException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer_sdk/api/errors/HiddenLayerInvalidDataException.kt) only if you directly access the property.
+By default, the SDK will not throw an exception in this case. It will throw [`HiddenLayerInvalidDataException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/errors/HiddenLayerInvalidDataException.kt) only if you directly access the property.
 
 If you would prefer to check that the response is completely well-typed upfront, then either call `validate()`:
 
 ```java
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
+import com.hiddenlayer.api.models.sensors.SensorCreateResponse;
 
 SensorCreateResponse sensor = client.sensors().create(params).validate();
 ```
@@ -588,7 +588,7 @@ SensorCreateResponse sensor = client.sensors().create(params).validate();
 Or configure the method call to validate the response using the `responseValidation` method:
 
 ```java
-import com.hiddenlayer_sdk.api.models.sensors.SensorCreateResponse;
+import com.hiddenlayer.api.models.sensors.SensorCreateResponse;
 
 SensorCreateResponse sensor = client.sensors().create(
   params, RequestOptions.builder().responseValidation(true).build()
@@ -598,8 +598,8 @@ SensorCreateResponse sensor = client.sensors().create(
 Or configure the default for all method calls at the client level:
 
 ```java
-import com.hiddenlayer_sdk.api.client.HiddenLayerClient;
-import com.hiddenlayer_sdk.api.client.okhttp.HiddenLayerOkHttpClient;
+import com.hiddenlayer.api.client.HiddenLayerClient;
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
 
 HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
     .fromEnv()

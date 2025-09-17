@@ -1,5 +1,5 @@
 # Specify the entrypoint where ProGuard starts to determine what's reachable.
--keep class com.hiddenlayer_sdk.api.proguard.** { *; }
+-keep class com.hiddenlayer.api.proguard.** { *; }
 
 # For the testing framework.
 -keep class org.junit.** { *; }
