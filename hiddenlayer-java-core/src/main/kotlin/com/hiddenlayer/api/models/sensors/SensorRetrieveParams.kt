@@ -13,11 +13,14 @@ import kotlin.jvm.optionals.getOrNull
 class SensorRetrieveParams
 private constructor(
     private val sensorId: String?,
+    private val xCorrelationId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     fun sensorId(): Optional<String> = Optional.ofNullable(sensorId)
+
+    fun xCorrelationId(): Optional<String> = Optional.ofNullable(xCorrelationId)
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -39,12 +42,14 @@ private constructor(
     class Builder internal constructor() {
 
         private var sensorId: String? = null
+        private var xCorrelationId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(sensorRetrieveParams: SensorRetrieveParams) = apply {
             sensorId = sensorRetrieveParams.sensorId
+            xCorrelationId = sensorRetrieveParams.xCorrelationId
             additionalHeaders = sensorRetrieveParams.additionalHeaders.toBuilder()
             additionalQueryParams = sensorRetrieveParams.additionalQueryParams.toBuilder()
         }
@@ -53,6 +58,12 @@ private constructor(
 
         /** Alias for calling [Builder.sensorId] with `sensorId.orElse(null)`. */
         fun sensorId(sensorId: Optional<String>) = sensorId(sensorId.getOrNull())
+
+        fun xCorrelationId(xCorrelationId: String?) = apply { this.xCorrelationId = xCorrelationId }
+
+        /** Alias for calling [Builder.xCorrelationId] with `xCorrelationId.orElse(null)`. */
+        fun xCorrelationId(xCorrelationId: Optional<String>) =
+            xCorrelationId(xCorrelationId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -158,7 +169,12 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          */
         fun build(): SensorRetrieveParams =
-            SensorRetrieveParams(sensorId, additionalHeaders.build(), additionalQueryParams.build())
+            SensorRetrieveParams(
+                sensorId,
+                xCorrelationId,
+                additionalHeaders.build(),
+                additionalQueryParams.build(),
+            )
     }
 
     fun _pathParam(index: Int): String =
@@ -167,7 +183,13 @@ private constructor(
             else -> ""
         }
 
-    override fun _headers(): Headers = additionalHeaders
+    override fun _headers(): Headers =
+        Headers.builder()
+            .apply {
+                xCorrelationId?.let { put("X-Correlation-Id", it) }
+                putAll(additionalHeaders)
+            }
+            .build()
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -178,12 +200,14 @@ private constructor(
 
         return other is SensorRetrieveParams &&
             sensorId == other.sensorId &&
+            xCorrelationId == other.xCorrelationId &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = Objects.hash(sensorId, additionalHeaders, additionalQueryParams)
+    override fun hashCode(): Int =
+        Objects.hash(sensorId, xCorrelationId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "SensorRetrieveParams{sensorId=$sensorId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "SensorRetrieveParams{sensorId=$sensorId, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

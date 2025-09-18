@@ -24,10 +24,13 @@ import kotlin.jvm.optionals.getOrNull
 /** Query Sensors */
 class SensorQueryParams
 private constructor(
+    private val xCorrelationId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
+
+    fun xCorrelationId(): Optional<String> = Optional.ofNullable(xCorrelationId)
 
     /**
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -115,16 +118,24 @@ private constructor(
     /** A builder for [SensorQueryParams]. */
     class Builder internal constructor() {
 
+        private var xCorrelationId: String? = null
         private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(sensorQueryParams: SensorQueryParams) = apply {
+            xCorrelationId = sensorQueryParams.xCorrelationId
             body = sensorQueryParams.body.toBuilder()
             additionalHeaders = sensorQueryParams.additionalHeaders.toBuilder()
             additionalQueryParams = sensorQueryParams.additionalQueryParams.toBuilder()
         }
+
+        fun xCorrelationId(xCorrelationId: String?) = apply { this.xCorrelationId = xCorrelationId }
+
+        /** Alias for calling [Builder.xCorrelationId] with `xCorrelationId.orElse(null)`. */
+        fun xCorrelationId(xCorrelationId: Optional<String>) =
+            xCorrelationId(xCorrelationId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -315,6 +326,7 @@ private constructor(
          */
         fun build(): SensorQueryParams =
             SensorQueryParams(
+                xCorrelationId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -323,7 +335,13 @@ private constructor(
 
     fun _body(): Body = body
 
-    override fun _headers(): Headers = additionalHeaders
+    override fun _headers(): Headers =
+        Headers.builder()
+            .apply {
+                xCorrelationId?.let { put("X-Correlation-Id", it) }
+                putAll(additionalHeaders)
+            }
+            .build()
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -1205,13 +1223,15 @@ private constructor(
         }
 
         return other is SensorQueryParams &&
+            xCorrelationId == other.xCorrelationId &&
             body == other.body &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
+    override fun hashCode(): Int =
+        Objects.hash(xCorrelationId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "SensorQueryParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "SensorQueryParams{xCorrelationId=$xCorrelationId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

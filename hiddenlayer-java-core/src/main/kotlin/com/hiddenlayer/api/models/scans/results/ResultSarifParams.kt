@@ -13,11 +13,14 @@ import kotlin.jvm.optionals.getOrNull
 class ResultSarifParams
 private constructor(
     private val scanId: String?,
+    private val xCorrelationId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     fun scanId(): Optional<String> = Optional.ofNullable(scanId)
+
+    fun xCorrelationId(): Optional<String> = Optional.ofNullable(xCorrelationId)
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -39,12 +42,14 @@ private constructor(
     class Builder internal constructor() {
 
         private var scanId: String? = null
+        private var xCorrelationId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(resultSarifParams: ResultSarifParams) = apply {
             scanId = resultSarifParams.scanId
+            xCorrelationId = resultSarifParams.xCorrelationId
             additionalHeaders = resultSarifParams.additionalHeaders.toBuilder()
             additionalQueryParams = resultSarifParams.additionalQueryParams.toBuilder()
         }
@@ -53,6 +58,12 @@ private constructor(
 
         /** Alias for calling [Builder.scanId] with `scanId.orElse(null)`. */
         fun scanId(scanId: Optional<String>) = scanId(scanId.getOrNull())
+
+        fun xCorrelationId(xCorrelationId: String?) = apply { this.xCorrelationId = xCorrelationId }
+
+        /** Alias for calling [Builder.xCorrelationId] with `xCorrelationId.orElse(null)`. */
+        fun xCorrelationId(xCorrelationId: Optional<String>) =
+            xCorrelationId(xCorrelationId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -158,7 +169,12 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          */
         fun build(): ResultSarifParams =
-            ResultSarifParams(scanId, additionalHeaders.build(), additionalQueryParams.build())
+            ResultSarifParams(
+                scanId,
+                xCorrelationId,
+                additionalHeaders.build(),
+                additionalQueryParams.build(),
+            )
     }
 
     fun _pathParam(index: Int): String =
@@ -167,7 +183,13 @@ private constructor(
             else -> ""
         }
 
-    override fun _headers(): Headers = additionalHeaders
+    override fun _headers(): Headers =
+        Headers.builder()
+            .apply {
+                xCorrelationId?.let { put("X-Correlation-Id", it) }
+                putAll(additionalHeaders)
+            }
+            .build()
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -178,12 +200,14 @@ private constructor(
 
         return other is ResultSarifParams &&
             scanId == other.scanId &&
+            xCorrelationId == other.xCorrelationId &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = Objects.hash(scanId, additionalHeaders, additionalQueryParams)
+    override fun hashCode(): Int =
+        Objects.hash(scanId, xCorrelationId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "ResultSarifParams{scanId=$scanId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "ResultSarifParams{scanId=$scanId, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

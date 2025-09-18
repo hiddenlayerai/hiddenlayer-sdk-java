@@ -4,6 +4,7 @@ package com.hiddenlayer.api.services.blocking.scans
 
 import com.hiddenlayer.api.TestServerExtension
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient
+import com.hiddenlayer.api.models.scans.upload.UploadCompleteAllParams
 import com.hiddenlayer.api.models.scans.upload.UploadStartParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -22,7 +23,13 @@ internal class UploadServiceTest {
                 .build()
         val uploadService = client.scans().upload()
 
-        val response = uploadService.completeAll("00000000-0000-0000-0000-000000000000")
+        val response =
+            uploadService.completeAll(
+                UploadCompleteAllParams.builder()
+                    .scanId("00000000-0000-0000-0000-000000000000")
+                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                    .build()
+            )
 
         response.validate()
     }
@@ -40,6 +47,7 @@ internal class UploadServiceTest {
         val response =
             uploadService.start(
                 UploadStartParams.builder()
+                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
                     .modelName("model_name")
                     .modelVersion("model_version")
                     .requestingEntity("requesting_entity")

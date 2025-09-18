@@ -30,6 +30,7 @@ internal class JobServiceAsyncTest {
                 JobRetrieveParams.builder()
                     .scanId("00000000-0000-0000-0000-000000000000")
                     .hasDetections(true)
+                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
                     .build()
             )
 
@@ -69,6 +70,7 @@ internal class JobServiceAsyncTest {
                     )
                     .startTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .addStatus("string")
+                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
                     .build()
             )
 

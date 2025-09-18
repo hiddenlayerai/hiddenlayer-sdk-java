@@ -24,12 +24,15 @@ import kotlin.jvm.optionals.getOrNull
 class SensorUpdateParams
 private constructor(
     private val sensorId: String?,
+    private val xCorrelationId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     fun sensorId(): Optional<String> = Optional.ofNullable(sensorId)
+
+    fun xCorrelationId(): Optional<String> = Optional.ofNullable(xCorrelationId)
 
     /**
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -92,6 +95,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var sensorId: String? = null
+        private var xCorrelationId: String? = null
         private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
@@ -99,6 +103,7 @@ private constructor(
         @JvmSynthetic
         internal fun from(sensorUpdateParams: SensorUpdateParams) = apply {
             sensorId = sensorUpdateParams.sensorId
+            xCorrelationId = sensorUpdateParams.xCorrelationId
             body = sensorUpdateParams.body.toBuilder()
             additionalHeaders = sensorUpdateParams.additionalHeaders.toBuilder()
             additionalQueryParams = sensorUpdateParams.additionalQueryParams.toBuilder()
@@ -108,6 +113,12 @@ private constructor(
 
         /** Alias for calling [Builder.sensorId] with `sensorId.orElse(null)`. */
         fun sensorId(sensorId: Optional<String>) = sensorId(sensorId.getOrNull())
+
+        fun xCorrelationId(xCorrelationId: String?) = apply { this.xCorrelationId = xCorrelationId }
+
+        /** Alias for calling [Builder.xCorrelationId] with `xCorrelationId.orElse(null)`. */
+        fun xCorrelationId(xCorrelationId: Optional<String>) =
+            xCorrelationId(xCorrelationId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -278,6 +289,7 @@ private constructor(
         fun build(): SensorUpdateParams =
             SensorUpdateParams(
                 sensorId,
+                xCorrelationId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -292,7 +304,13 @@ private constructor(
             else -> ""
         }
 
-    override fun _headers(): Headers = additionalHeaders
+    override fun _headers(): Headers =
+        Headers.builder()
+            .apply {
+                xCorrelationId?.let { put("X-Correlation-Id", it) }
+                putAll(additionalHeaders)
+            }
+            .build()
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -613,14 +631,15 @@ private constructor(
 
         return other is SensorUpdateParams &&
             sensorId == other.sensorId &&
+            xCorrelationId == other.xCorrelationId &&
             body == other.body &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
     override fun hashCode(): Int =
-        Objects.hash(sensorId, body, additionalHeaders, additionalQueryParams)
+        Objects.hash(sensorId, xCorrelationId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "SensorUpdateParams{sensorId=$sensorId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "SensorUpdateParams{sensorId=$sensorId, xCorrelationId=$xCorrelationId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

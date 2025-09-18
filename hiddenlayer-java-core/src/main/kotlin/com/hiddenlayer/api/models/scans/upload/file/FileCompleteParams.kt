@@ -17,6 +17,7 @@ class FileCompleteParams
 private constructor(
     private val scanId: String,
     private val fileId: String?,
+    private val xCorrelationId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
@@ -25,6 +26,8 @@ private constructor(
     fun scanId(): String = scanId
 
     fun fileId(): Optional<String> = Optional.ofNullable(fileId)
+
+    fun xCorrelationId(): Optional<String> = Optional.ofNullable(xCorrelationId)
 
     /** Additional body properties to send with the request. */
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
@@ -55,6 +58,7 @@ private constructor(
 
         private var scanId: String? = null
         private var fileId: String? = null
+        private var xCorrelationId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -63,6 +67,7 @@ private constructor(
         internal fun from(fileCompleteParams: FileCompleteParams) = apply {
             scanId = fileCompleteParams.scanId
             fileId = fileCompleteParams.fileId
+            xCorrelationId = fileCompleteParams.xCorrelationId
             additionalHeaders = fileCompleteParams.additionalHeaders.toBuilder()
             additionalQueryParams = fileCompleteParams.additionalQueryParams.toBuilder()
             additionalBodyProperties = fileCompleteParams.additionalBodyProperties.toMutableMap()
@@ -74,6 +79,12 @@ private constructor(
 
         /** Alias for calling [Builder.fileId] with `fileId.orElse(null)`. */
         fun fileId(fileId: Optional<String>) = fileId(fileId.getOrNull())
+
+        fun xCorrelationId(xCorrelationId: String?) = apply { this.xCorrelationId = xCorrelationId }
+
+        /** Alias for calling [Builder.xCorrelationId] with `xCorrelationId.orElse(null)`. */
+        fun xCorrelationId(xCorrelationId: Optional<String>) =
+            xCorrelationId(xCorrelationId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -211,6 +222,7 @@ private constructor(
             FileCompleteParams(
                 checkRequired("scanId", scanId),
                 fileId,
+                xCorrelationId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -227,7 +239,13 @@ private constructor(
             else -> ""
         }
 
-    override fun _headers(): Headers = additionalHeaders
+    override fun _headers(): Headers =
+        Headers.builder()
+            .apply {
+                xCorrelationId?.let { put("X-Correlation-Id", it) }
+                putAll(additionalHeaders)
+            }
+            .build()
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -239,6 +257,7 @@ private constructor(
         return other is FileCompleteParams &&
             scanId == other.scanId &&
             fileId == other.fileId &&
+            xCorrelationId == other.xCorrelationId &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams &&
             additionalBodyProperties == other.additionalBodyProperties
@@ -248,11 +267,12 @@ private constructor(
         Objects.hash(
             scanId,
             fileId,
+            xCorrelationId,
             additionalHeaders,
             additionalQueryParams,
             additionalBodyProperties,
         )
 
     override fun toString() =
-        "FileCompleteParams{scanId=$scanId, fileId=$fileId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "FileCompleteParams{scanId=$scanId, fileId=$fileId, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
