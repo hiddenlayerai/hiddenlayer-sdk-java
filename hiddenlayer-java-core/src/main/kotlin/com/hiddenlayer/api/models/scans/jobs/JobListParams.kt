@@ -34,6 +34,7 @@ private constructor(
     private val source: Source?,
     private val startTime: OffsetDateTime?,
     private val status: List<String>?,
+    private val xCorrelationId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -85,6 +86,8 @@ private constructor(
     /** Statuses */
     fun status(): Optional<List<String>> = Optional.ofNullable(status)
 
+    fun xCorrelationId(): Optional<String> = Optional.ofNullable(xCorrelationId)
+
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
@@ -119,6 +122,7 @@ private constructor(
         private var source: Source? = null
         private var startTime: OffsetDateTime? = null
         private var status: MutableList<String>? = null
+        private var xCorrelationId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -139,6 +143,7 @@ private constructor(
             source = jobListParams.source
             startTime = jobListParams.startTime
             status = jobListParams.status?.toMutableList()
+            xCorrelationId = jobListParams.xCorrelationId
             additionalHeaders = jobListParams.additionalHeaders.toBuilder()
             additionalQueryParams = jobListParams.additionalQueryParams.toBuilder()
         }
@@ -318,6 +323,12 @@ private constructor(
             this.status = (this.status ?: mutableListOf()).apply { add(status) }
         }
 
+        fun xCorrelationId(xCorrelationId: String?) = apply { this.xCorrelationId = xCorrelationId }
+
+        /** Alias for calling [Builder.xCorrelationId] with `xCorrelationId.orElse(null)`. */
+        fun xCorrelationId(xCorrelationId: Optional<String>) =
+            xCorrelationId(xCorrelationId.getOrNull())
+
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
             putAllAdditionalHeaders(additionalHeaders)
@@ -438,12 +449,19 @@ private constructor(
                 source,
                 startTime,
                 status?.toImmutable(),
+                xCorrelationId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
     }
 
-    override fun _headers(): Headers = additionalHeaders
+    override fun _headers(): Headers =
+        Headers.builder()
+            .apply {
+                xCorrelationId?.let { put("X-Correlation-Id", it) }
+                putAll(additionalHeaders)
+            }
+            .build()
 
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
@@ -992,6 +1010,7 @@ private constructor(
             source == other.source &&
             startTime == other.startTime &&
             status == other.status &&
+            xCorrelationId == other.xCorrelationId &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
@@ -1013,10 +1032,11 @@ private constructor(
             source,
             startTime,
             status,
+            xCorrelationId,
             additionalHeaders,
             additionalQueryParams,
         )
 
     override fun toString() =
-        "JobListParams{complianceStatus=$complianceStatus, detectionCategory=$detectionCategory, endTime=$endTime, latestPerModelVersionOnly=$latestPerModelVersionOnly, limit=$limit, modelIds=$modelIds, modelName=$modelName, modelVersionIds=$modelVersionIds, offset=$offset, scannerVersion=$scannerVersion, severity=$severity, sort=$sort, source=$source, startTime=$startTime, status=$status, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "JobListParams{complianceStatus=$complianceStatus, detectionCategory=$detectionCategory, endTime=$endTime, latestPerModelVersionOnly=$latestPerModelVersionOnly, limit=$limit, modelIds=$modelIds, modelName=$modelName, modelVersionIds=$modelVersionIds, offset=$offset, scannerVersion=$scannerVersion, severity=$severity, sort=$sort, source=$source, startTime=$startTime, status=$status, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

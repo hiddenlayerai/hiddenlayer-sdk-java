@@ -29,6 +29,7 @@ internal class FileServiceAsyncTest {
                     .scanId("00000000-0000-0000-0000-000000000000")
                     .fileContentLength(12345L)
                     .fileName("exampleFile.txt")
+                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
                     .build()
             )
 
@@ -51,6 +52,7 @@ internal class FileServiceAsyncTest {
                 FileCompleteParams.builder()
                     .scanId("00000000-0000-0000-0000-000000000000")
                     .fileId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
                     .build()
             )
 

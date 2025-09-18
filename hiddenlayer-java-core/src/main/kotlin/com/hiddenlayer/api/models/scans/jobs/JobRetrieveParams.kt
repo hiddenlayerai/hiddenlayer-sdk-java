@@ -14,6 +14,7 @@ class JobRetrieveParams
 private constructor(
     private val scanId: String?,
     private val hasDetections: Boolean?,
+    private val xCorrelationId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -22,6 +23,8 @@ private constructor(
 
     /** Filter file_results to only those that have detections (and parents) */
     fun hasDetections(): Optional<Boolean> = Optional.ofNullable(hasDetections)
+
+    fun xCorrelationId(): Optional<String> = Optional.ofNullable(xCorrelationId)
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -44,6 +47,7 @@ private constructor(
 
         private var scanId: String? = null
         private var hasDetections: Boolean? = null
+        private var xCorrelationId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -51,6 +55,7 @@ private constructor(
         internal fun from(jobRetrieveParams: JobRetrieveParams) = apply {
             scanId = jobRetrieveParams.scanId
             hasDetections = jobRetrieveParams.hasDetections
+            xCorrelationId = jobRetrieveParams.xCorrelationId
             additionalHeaders = jobRetrieveParams.additionalHeaders.toBuilder()
             additionalQueryParams = jobRetrieveParams.additionalQueryParams.toBuilder()
         }
@@ -73,6 +78,12 @@ private constructor(
         /** Alias for calling [Builder.hasDetections] with `hasDetections.orElse(null)`. */
         fun hasDetections(hasDetections: Optional<Boolean>) =
             hasDetections(hasDetections.getOrNull())
+
+        fun xCorrelationId(xCorrelationId: String?) = apply { this.xCorrelationId = xCorrelationId }
+
+        /** Alias for calling [Builder.xCorrelationId] with `xCorrelationId.orElse(null)`. */
+        fun xCorrelationId(xCorrelationId: Optional<String>) =
+            xCorrelationId(xCorrelationId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -181,6 +192,7 @@ private constructor(
             JobRetrieveParams(
                 scanId,
                 hasDetections,
+                xCorrelationId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -192,7 +204,13 @@ private constructor(
             else -> ""
         }
 
-    override fun _headers(): Headers = additionalHeaders
+    override fun _headers(): Headers =
+        Headers.builder()
+            .apply {
+                xCorrelationId?.let { put("X-Correlation-Id", it) }
+                putAll(additionalHeaders)
+            }
+            .build()
 
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
@@ -210,13 +228,20 @@ private constructor(
         return other is JobRetrieveParams &&
             scanId == other.scanId &&
             hasDetections == other.hasDetections &&
+            xCorrelationId == other.xCorrelationId &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
     override fun hashCode(): Int =
-        Objects.hash(scanId, hasDetections, additionalHeaders, additionalQueryParams)
+        Objects.hash(
+            scanId,
+            hasDetections,
+            xCorrelationId,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
-        "JobRetrieveParams{scanId=$scanId, hasDetections=$hasDetections, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "JobRetrieveParams{scanId=$scanId, hasDetections=$hasDetections, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

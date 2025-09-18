@@ -4,6 +4,7 @@ package com.hiddenlayer.api.services.blocking.scans
 
 import com.hiddenlayer.api.TestServerExtension
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient
+import com.hiddenlayer.api.models.scans.results.ResultSarifParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -21,6 +22,11 @@ internal class ResultServiceTest {
                 .build()
         val resultService = client.scans().results()
 
-        resultService.sarif("00000000-0000-0000-0000-000000000000")
+        resultService.sarif(
+            ResultSarifParams.builder()
+                .scanId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .build()
+        )
     }
 }
