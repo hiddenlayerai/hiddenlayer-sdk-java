@@ -24,6 +24,7 @@ import kotlin.jvm.optionals.getOrNull
 class PromptAnalyzerCreateParams
 private constructor(
     private val hlProjectId: String?,
+    private val xCorrelationId: String?,
     private val xRequesterId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
@@ -31,6 +32,8 @@ private constructor(
 ) : Params {
 
     fun hlProjectId(): Optional<String> = Optional.ofNullable(hlProjectId)
+
+    fun xCorrelationId(): Optional<String> = Optional.ofNullable(xCorrelationId)
 
     fun xRequesterId(): Optional<String> = Optional.ofNullable(xRequesterId)
 
@@ -100,6 +103,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var hlProjectId: String? = null
+        private var xCorrelationId: String? = null
         private var xRequesterId: String? = null
         private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -108,6 +112,7 @@ private constructor(
         @JvmSynthetic
         internal fun from(promptAnalyzerCreateParams: PromptAnalyzerCreateParams) = apply {
             hlProjectId = promptAnalyzerCreateParams.hlProjectId
+            xCorrelationId = promptAnalyzerCreateParams.xCorrelationId
             xRequesterId = promptAnalyzerCreateParams.xRequesterId
             body = promptAnalyzerCreateParams.body.toBuilder()
             additionalHeaders = promptAnalyzerCreateParams.additionalHeaders.toBuilder()
@@ -118,6 +123,12 @@ private constructor(
 
         /** Alias for calling [Builder.hlProjectId] with `hlProjectId.orElse(null)`. */
         fun hlProjectId(hlProjectId: Optional<String>) = hlProjectId(hlProjectId.getOrNull())
+
+        fun xCorrelationId(xCorrelationId: String?) = apply { this.xCorrelationId = xCorrelationId }
+
+        /** Alias for calling [Builder.xCorrelationId] with `xCorrelationId.orElse(null)`. */
+        fun xCorrelationId(xCorrelationId: Optional<String>) =
+            xCorrelationId(xCorrelationId.getOrNull())
 
         fun xRequesterId(xRequesterId: String?) = apply { this.xRequesterId = xRequesterId }
 
@@ -297,6 +308,7 @@ private constructor(
         fun build(): PromptAnalyzerCreateParams =
             PromptAnalyzerCreateParams(
                 hlProjectId,
+                xCorrelationId,
                 xRequesterId,
                 body.build(),
                 additionalHeaders.build(),
@@ -310,6 +322,7 @@ private constructor(
         Headers.builder()
             .apply {
                 hlProjectId?.let { put("HL-Project-Id", it) }
+                xCorrelationId?.let { put("X-Correlation-Id", it) }
                 xRequesterId?.let { put("X-Requester-Id", it) }
                 putAll(additionalHeaders)
             }
@@ -548,6 +561,7 @@ private constructor(
 
         return other is PromptAnalyzerCreateParams &&
             hlProjectId == other.hlProjectId &&
+            xCorrelationId == other.xCorrelationId &&
             xRequesterId == other.xRequesterId &&
             body == other.body &&
             additionalHeaders == other.additionalHeaders &&
@@ -555,8 +569,15 @@ private constructor(
     }
 
     override fun hashCode(): Int =
-        Objects.hash(hlProjectId, xRequesterId, body, additionalHeaders, additionalQueryParams)
+        Objects.hash(
+            hlProjectId,
+            xCorrelationId,
+            xRequesterId,
+            body,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
-        "PromptAnalyzerCreateParams{hlProjectId=$hlProjectId, xRequesterId=$xRequesterId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "PromptAnalyzerCreateParams{hlProjectId=$hlProjectId, xCorrelationId=$xCorrelationId, xRequesterId=$xRequesterId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
