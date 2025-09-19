@@ -3,7 +3,6 @@
 package com.hiddenlayer.api.models.promptanalyzer
 
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import com.hiddenlayer.api.core.JsonValue
 import com.hiddenlayer.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -19,6 +18,7 @@ internal class PromptAnalyzerCreateResponseTest {
                         .guardrail(true)
                         .inputCode(true)
                         .inputDos(true)
+                        .inputLanguage(true)
                         .inputPii(true)
                         .outputCode(true)
                         .outputPii(true)
@@ -39,6 +39,12 @@ internal class PromptAnalyzerCreateResponseTest {
                         .addOwasp(
                             PromptAnalyzerCreateResponse.Frameworks.Owasp.builder()
                                 .label("LLM01")
+                                .name("Prompt Injection")
+                                .build()
+                        )
+                        .addOwasp2025(
+                            PromptAnalyzerCreateResponse.Frameworks.Owasp2025.builder()
+                                .label("LLM01:2025")
                                 .name("Prompt Injection")
                                 .build()
                         )
@@ -77,12 +83,31 @@ internal class PromptAnalyzerCreateResponseTest {
                         .build()
                 )
                 .provider("provider")
-                .response(JsonValue.from(mapOf<String, Any>()))
+                .response(
+                    PromptAnalyzerCreateResponse.Response.builder()
+                        .model("model")
+                        .output("output")
+                        .prompt("prompt")
+                        .provider("provider")
+                        .unmodifiedOutput("unmodified_output")
+                        .unmodifiedPrompt("unmodified_prompt")
+                        .build()
+                )
                 .results(
                     PromptAnalyzerCreateResponse.Results.builder()
                         .guardrailResults(
                             PromptAnalyzerCreateResponse.Results.GuardrailResults.builder()
                                 .elapsedMs(0.0)
+                                .refusalClassifierResults(
+                                    PromptAnalyzerCreateResponse.Results.GuardrailResults
+                                        .RefusalClassifierResults
+                                        .builder()
+                                        .elapsedMs(0.0)
+                                        .addProbability(0.0)
+                                        .verdict(true)
+                                        .version(0.0)
+                                        .build()
+                                )
                                 .verdict(true)
                                 .build()
                         )
@@ -102,6 +127,14 @@ internal class PromptAnalyzerCreateResponseTest {
                         .inputDosResults(
                             PromptAnalyzerCreateResponse.Results.InputDosResults.builder()
                                 .elapsedMs(0.0)
+                                .embeddingsLength(0.0)
+                                .verdict(true)
+                                .build()
+                        )
+                        .inputLanguageResults(
+                            PromptAnalyzerCreateResponse.Results.InputLanguageResults.builder()
+                                .elapsedMs(0.0)
+                                .language("language")
                                 .verdict(true)
                                 .build()
                         )
@@ -112,8 +145,8 @@ internal class PromptAnalyzerCreateResponseTest {
                                 .verdict(true)
                                 .build()
                         )
-                        .inputUrls(
-                            PromptAnalyzerCreateResponse.Results.InputUrls.builder()
+                        .inputUrlResults(
+                            PromptAnalyzerCreateResponse.Results.InputUrlResults.builder()
                                 .elapsedMs(0.0)
                                 .addUrl("string")
                                 .build()
@@ -131,8 +164,8 @@ internal class PromptAnalyzerCreateResponseTest {
                                 .verdict(true)
                                 .build()
                         )
-                        .outputUrls(
-                            PromptAnalyzerCreateResponse.Results.OutputUrls.builder()
+                        .outputUrlResults(
+                            PromptAnalyzerCreateResponse.Results.OutputUrlResults.builder()
                                 .elapsedMs(0.0)
                                 .addUrl("string")
                                 .build()
@@ -140,6 +173,8 @@ internal class PromptAnalyzerCreateResponseTest {
                         .addPromptInjectionClassifierResult(
                             PromptAnalyzerCreateResponse.Results.PromptInjectionClassifierResult
                                 .builder()
+                                .allowOverride("allow_override")
+                                .blockOverride("block_override")
                                 .elapsedMs(100.0)
                                 .addProbability(1.0)
                                 .verdict(true)
@@ -158,6 +193,7 @@ internal class PromptAnalyzerCreateResponseTest {
                     .guardrail(true)
                     .inputCode(true)
                     .inputDos(true)
+                    .inputLanguage(true)
                     .inputPii(true)
                     .outputCode(true)
                     .outputPii(true)
@@ -179,6 +215,12 @@ internal class PromptAnalyzerCreateResponseTest {
                     .addOwasp(
                         PromptAnalyzerCreateResponse.Frameworks.Owasp.builder()
                             .label("LLM01")
+                            .name("Prompt Injection")
+                            .build()
+                    )
+                    .addOwasp2025(
+                        PromptAnalyzerCreateResponse.Frameworks.Owasp2025.builder()
+                            .label("LLM01:2025")
                             .name("Prompt Injection")
                             .build()
                     )
@@ -218,14 +260,33 @@ internal class PromptAnalyzerCreateResponseTest {
                     .build()
             )
         assertThat(promptAnalyzerCreateResponse.provider()).contains("provider")
-        assertThat(promptAnalyzerCreateResponse._response())
-            .isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(promptAnalyzerCreateResponse.response())
+            .contains(
+                PromptAnalyzerCreateResponse.Response.builder()
+                    .model("model")
+                    .output("output")
+                    .prompt("prompt")
+                    .provider("provider")
+                    .unmodifiedOutput("unmodified_output")
+                    .unmodifiedPrompt("unmodified_prompt")
+                    .build()
+            )
         assertThat(promptAnalyzerCreateResponse.results())
             .contains(
                 PromptAnalyzerCreateResponse.Results.builder()
                     .guardrailResults(
                         PromptAnalyzerCreateResponse.Results.GuardrailResults.builder()
                             .elapsedMs(0.0)
+                            .refusalClassifierResults(
+                                PromptAnalyzerCreateResponse.Results.GuardrailResults
+                                    .RefusalClassifierResults
+                                    .builder()
+                                    .elapsedMs(0.0)
+                                    .addProbability(0.0)
+                                    .verdict(true)
+                                    .version(0.0)
+                                    .build()
+                            )
                             .verdict(true)
                             .build()
                     )
@@ -245,6 +306,14 @@ internal class PromptAnalyzerCreateResponseTest {
                     .inputDosResults(
                         PromptAnalyzerCreateResponse.Results.InputDosResults.builder()
                             .elapsedMs(0.0)
+                            .embeddingsLength(0.0)
+                            .verdict(true)
+                            .build()
+                    )
+                    .inputLanguageResults(
+                        PromptAnalyzerCreateResponse.Results.InputLanguageResults.builder()
+                            .elapsedMs(0.0)
+                            .language("language")
                             .verdict(true)
                             .build()
                     )
@@ -255,8 +324,8 @@ internal class PromptAnalyzerCreateResponseTest {
                             .verdict(true)
                             .build()
                     )
-                    .inputUrls(
-                        PromptAnalyzerCreateResponse.Results.InputUrls.builder()
+                    .inputUrlResults(
+                        PromptAnalyzerCreateResponse.Results.InputUrlResults.builder()
                             .elapsedMs(0.0)
                             .addUrl("string")
                             .build()
@@ -274,8 +343,8 @@ internal class PromptAnalyzerCreateResponseTest {
                             .verdict(true)
                             .build()
                     )
-                    .outputUrls(
-                        PromptAnalyzerCreateResponse.Results.OutputUrls.builder()
+                    .outputUrlResults(
+                        PromptAnalyzerCreateResponse.Results.OutputUrlResults.builder()
                             .elapsedMs(0.0)
                             .addUrl("string")
                             .build()
@@ -283,6 +352,8 @@ internal class PromptAnalyzerCreateResponseTest {
                     .addPromptInjectionClassifierResult(
                         PromptAnalyzerCreateResponse.Results.PromptInjectionClassifierResult
                             .builder()
+                            .allowOverride("allow_override")
+                            .blockOverride("block_override")
                             .elapsedMs(100.0)
                             .addProbability(1.0)
                             .verdict(true)
@@ -305,6 +376,7 @@ internal class PromptAnalyzerCreateResponseTest {
                         .guardrail(true)
                         .inputCode(true)
                         .inputDos(true)
+                        .inputLanguage(true)
                         .inputPii(true)
                         .outputCode(true)
                         .outputPii(true)
@@ -325,6 +397,12 @@ internal class PromptAnalyzerCreateResponseTest {
                         .addOwasp(
                             PromptAnalyzerCreateResponse.Frameworks.Owasp.builder()
                                 .label("LLM01")
+                                .name("Prompt Injection")
+                                .build()
+                        )
+                        .addOwasp2025(
+                            PromptAnalyzerCreateResponse.Frameworks.Owasp2025.builder()
+                                .label("LLM01:2025")
                                 .name("Prompt Injection")
                                 .build()
                         )
@@ -363,12 +441,31 @@ internal class PromptAnalyzerCreateResponseTest {
                         .build()
                 )
                 .provider("provider")
-                .response(JsonValue.from(mapOf<String, Any>()))
+                .response(
+                    PromptAnalyzerCreateResponse.Response.builder()
+                        .model("model")
+                        .output("output")
+                        .prompt("prompt")
+                        .provider("provider")
+                        .unmodifiedOutput("unmodified_output")
+                        .unmodifiedPrompt("unmodified_prompt")
+                        .build()
+                )
                 .results(
                     PromptAnalyzerCreateResponse.Results.builder()
                         .guardrailResults(
                             PromptAnalyzerCreateResponse.Results.GuardrailResults.builder()
                                 .elapsedMs(0.0)
+                                .refusalClassifierResults(
+                                    PromptAnalyzerCreateResponse.Results.GuardrailResults
+                                        .RefusalClassifierResults
+                                        .builder()
+                                        .elapsedMs(0.0)
+                                        .addProbability(0.0)
+                                        .verdict(true)
+                                        .version(0.0)
+                                        .build()
+                                )
                                 .verdict(true)
                                 .build()
                         )
@@ -388,6 +485,14 @@ internal class PromptAnalyzerCreateResponseTest {
                         .inputDosResults(
                             PromptAnalyzerCreateResponse.Results.InputDosResults.builder()
                                 .elapsedMs(0.0)
+                                .embeddingsLength(0.0)
+                                .verdict(true)
+                                .build()
+                        )
+                        .inputLanguageResults(
+                            PromptAnalyzerCreateResponse.Results.InputLanguageResults.builder()
+                                .elapsedMs(0.0)
+                                .language("language")
                                 .verdict(true)
                                 .build()
                         )
@@ -398,8 +503,8 @@ internal class PromptAnalyzerCreateResponseTest {
                                 .verdict(true)
                                 .build()
                         )
-                        .inputUrls(
-                            PromptAnalyzerCreateResponse.Results.InputUrls.builder()
+                        .inputUrlResults(
+                            PromptAnalyzerCreateResponse.Results.InputUrlResults.builder()
                                 .elapsedMs(0.0)
                                 .addUrl("string")
                                 .build()
@@ -417,8 +522,8 @@ internal class PromptAnalyzerCreateResponseTest {
                                 .verdict(true)
                                 .build()
                         )
-                        .outputUrls(
-                            PromptAnalyzerCreateResponse.Results.OutputUrls.builder()
+                        .outputUrlResults(
+                            PromptAnalyzerCreateResponse.Results.OutputUrlResults.builder()
                                 .elapsedMs(0.0)
                                 .addUrl("string")
                                 .build()
@@ -426,6 +531,8 @@ internal class PromptAnalyzerCreateResponseTest {
                         .addPromptInjectionClassifierResult(
                             PromptAnalyzerCreateResponse.Results.PromptInjectionClassifierResult
                                 .builder()
+                                .allowOverride("allow_override")
+                                .blockOverride("block_override")
                                 .elapsedMs(100.0)
                                 .addProbability(1.0)
                                 .verdict(true)

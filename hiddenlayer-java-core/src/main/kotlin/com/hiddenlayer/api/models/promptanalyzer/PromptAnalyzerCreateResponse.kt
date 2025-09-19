@@ -27,7 +27,7 @@ private constructor(
     private val model: JsonField<String>,
     private val policy: JsonField<Policy>,
     private val provider: JsonField<String>,
-    private val response: JsonValue,
+    private val response: JsonField<Response>,
     private val results: JsonField<Results>,
     private val upstreamElapsedMs: JsonField<Double>,
     private val verdict: JsonField<Boolean>,
@@ -46,7 +46,7 @@ private constructor(
         @JsonProperty("model") @ExcludeMissing model: JsonField<String> = JsonMissing.of(),
         @JsonProperty("policy") @ExcludeMissing policy: JsonField<Policy> = JsonMissing.of(),
         @JsonProperty("provider") @ExcludeMissing provider: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("response") @ExcludeMissing response: JsonValue = JsonMissing.of(),
+        @JsonProperty("response") @ExcludeMissing response: JsonField<Response> = JsonMissing.of(),
         @JsonProperty("results") @ExcludeMissing results: JsonField<Results> = JsonMissing.of(),
         @JsonProperty("upstream_elapsed_ms")
         @ExcludeMissing
@@ -110,7 +110,11 @@ private constructor(
      */
     fun provider(): Optional<String> = provider.getOptional("provider")
 
-    @JsonProperty("response") @ExcludeMissing fun _response(): JsonValue = response
+    /**
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun response(): Optional<Response> = response.getOptional("response")
 
     /**
      * The analysis results
@@ -183,6 +187,13 @@ private constructor(
     @JsonProperty("provider") @ExcludeMissing fun _provider(): JsonField<String> = provider
 
     /**
+     * Returns the raw JSON value of [response].
+     *
+     * Unlike [response], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("response") @ExcludeMissing fun _response(): JsonField<Response> = response
+
+    /**
      * Returns the raw JSON value of [results].
      *
      * Unlike [results], this method doesn't throw if the JSON field has an unexpected type.
@@ -235,7 +246,7 @@ private constructor(
         private var model: JsonField<String> = JsonMissing.of()
         private var policy: JsonField<Policy> = JsonMissing.of()
         private var provider: JsonField<String> = JsonMissing.of()
-        private var response: JsonValue = JsonMissing.of()
+        private var response: JsonField<Response> = JsonMissing.of()
         private var results: JsonField<Results> = JsonMissing.of()
         private var upstreamElapsedMs: JsonField<Double> = JsonMissing.of()
         private var verdict: JsonField<Boolean> = JsonMissing.of()
@@ -323,7 +334,16 @@ private constructor(
          */
         fun provider(provider: JsonField<String>) = apply { this.provider = provider }
 
-        fun response(response: JsonValue) = apply { this.response = response }
+        fun response(response: Response) = response(JsonField.of(response))
+
+        /**
+         * Sets [Builder.response] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.response] with a well-typed [Response] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun response(response: JsonField<Response>) = apply { this.response = response }
 
         /** The analysis results */
         fun results(results: Results) = results(JsonField.of(results))
@@ -415,6 +435,7 @@ private constructor(
         model()
         policy().ifPresent { it.validate() }
         provider()
+        response().ifPresent { it.validate() }
         results().ifPresent { it.validate() }
         upstreamElapsedMs()
         verdict()
@@ -442,6 +463,7 @@ private constructor(
             (if (model.asKnown().isPresent) 1 else 0) +
             (policy.asKnown().getOrNull()?.validity() ?: 0) +
             (if (provider.asKnown().isPresent) 1 else 0) +
+            (response.asKnown().getOrNull()?.validity() ?: 0) +
             (results.asKnown().getOrNull()?.validity() ?: 0) +
             (if (upstreamElapsedMs.asKnown().isPresent) 1 else 0) +
             (if (verdict.asKnown().isPresent) 1 else 0)
@@ -452,6 +474,7 @@ private constructor(
         private val guardrail: JsonField<Boolean>,
         private val inputCode: JsonField<Boolean>,
         private val inputDos: JsonField<Boolean>,
+        private val inputLanguage: JsonField<Boolean>,
         private val inputPii: JsonField<Boolean>,
         private val outputCode: JsonField<Boolean>,
         private val outputPii: JsonField<Boolean>,
@@ -472,6 +495,9 @@ private constructor(
             @JsonProperty("input_dos")
             @ExcludeMissing
             inputDos: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("input_language")
+            @ExcludeMissing
+            inputLanguage: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("input_pii")
             @ExcludeMissing
             inputPii: JsonField<Boolean> = JsonMissing.of(),
@@ -494,6 +520,7 @@ private constructor(
             guardrail,
             inputCode,
             inputDos,
+            inputLanguage,
             inputPii,
             outputCode,
             outputPii,
@@ -526,6 +553,14 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun inputDos(): Optional<Boolean> = inputDos.getOptional("input_dos")
+
+        /**
+         * The input contains a disallowed language
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun inputLanguage(): Optional<Boolean> = inputLanguage.getOptional("input_language")
 
         /**
          * The input contains personally identifiable information
@@ -595,6 +630,16 @@ private constructor(
          * Unlike [inputDos], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("input_dos") @ExcludeMissing fun _inputDos(): JsonField<Boolean> = inputDos
+
+        /**
+         * Returns the raw JSON value of [inputLanguage].
+         *
+         * Unlike [inputLanguage], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("input_language")
+        @ExcludeMissing
+        fun _inputLanguage(): JsonField<Boolean> = inputLanguage
 
         /**
          * Returns the raw JSON value of [inputPii].
@@ -672,6 +717,7 @@ private constructor(
             private var guardrail: JsonField<Boolean> = JsonMissing.of()
             private var inputCode: JsonField<Boolean> = JsonMissing.of()
             private var inputDos: JsonField<Boolean> = JsonMissing.of()
+            private var inputLanguage: JsonField<Boolean> = JsonMissing.of()
             private var inputPii: JsonField<Boolean> = JsonMissing.of()
             private var outputCode: JsonField<Boolean> = JsonMissing.of()
             private var outputPii: JsonField<Boolean> = JsonMissing.of()
@@ -685,6 +731,7 @@ private constructor(
                 guardrail = categories.guardrail
                 inputCode = categories.inputCode
                 inputDos = categories.inputDos
+                inputLanguage = categories.inputLanguage
                 inputPii = categories.inputPii
                 outputCode = categories.outputCode
                 outputPii = categories.outputPii
@@ -729,6 +776,20 @@ private constructor(
              * supported value.
              */
             fun inputDos(inputDos: JsonField<Boolean>) = apply { this.inputDos = inputDos }
+
+            /** The input contains a disallowed language */
+            fun inputLanguage(inputLanguage: Boolean) = inputLanguage(JsonField.of(inputLanguage))
+
+            /**
+             * Sets [Builder.inputLanguage] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.inputLanguage] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun inputLanguage(inputLanguage: JsonField<Boolean>) = apply {
+                this.inputLanguage = inputLanguage
+            }
 
             /** The input contains personally identifiable information */
             fun inputPii(inputPii: Boolean) = inputPii(JsonField.of(inputPii))
@@ -838,6 +899,7 @@ private constructor(
                     guardrail,
                     inputCode,
                     inputDos,
+                    inputLanguage,
                     inputPii,
                     outputCode,
                     outputPii,
@@ -858,6 +920,7 @@ private constructor(
             guardrail()
             inputCode()
             inputDos()
+            inputLanguage()
             inputPii()
             outputCode()
             outputPii()
@@ -886,6 +949,7 @@ private constructor(
             (if (guardrail.asKnown().isPresent) 1 else 0) +
                 (if (inputCode.asKnown().isPresent) 1 else 0) +
                 (if (inputDos.asKnown().isPresent) 1 else 0) +
+                (if (inputLanguage.asKnown().isPresent) 1 else 0) +
                 (if (inputPii.asKnown().isPresent) 1 else 0) +
                 (if (outputCode.asKnown().isPresent) 1 else 0) +
                 (if (outputPii.asKnown().isPresent) 1 else 0) +
@@ -902,6 +966,7 @@ private constructor(
                 guardrail == other.guardrail &&
                 inputCode == other.inputCode &&
                 inputDos == other.inputDos &&
+                inputLanguage == other.inputLanguage &&
                 inputPii == other.inputPii &&
                 outputCode == other.outputCode &&
                 outputPii == other.outputPii &&
@@ -916,6 +981,7 @@ private constructor(
                 guardrail,
                 inputCode,
                 inputDos,
+                inputLanguage,
                 inputPii,
                 outputCode,
                 outputPii,
@@ -929,7 +995,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Categories{guardrail=$guardrail, inputCode=$inputCode, inputDos=$inputDos, inputPii=$inputPii, outputCode=$outputCode, outputPii=$outputPii, promptInjection=$promptInjection, unsafeInput=$unsafeInput, unsafeOutput=$unsafeOutput, additionalProperties=$additionalProperties}"
+            "Categories{guardrail=$guardrail, inputCode=$inputCode, inputDos=$inputDos, inputLanguage=$inputLanguage, inputPii=$inputPii, outputCode=$outputCode, outputPii=$outputPii, promptInjection=$promptInjection, unsafeInput=$unsafeInput, unsafeOutput=$unsafeOutput, additionalProperties=$additionalProperties}"
     }
 
     /** The framework labels identified during analysis */
@@ -937,6 +1003,7 @@ private constructor(
     private constructor(
         private val mitre: JsonField<List<Mitre>>,
         private val owasp: JsonField<List<Owasp>>,
+        private val owasp2025: JsonField<List<Owasp2025>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -944,7 +1011,10 @@ private constructor(
         private constructor(
             @JsonProperty("mitre") @ExcludeMissing mitre: JsonField<List<Mitre>> = JsonMissing.of(),
             @JsonProperty("owasp") @ExcludeMissing owasp: JsonField<List<Owasp>> = JsonMissing.of(),
-        ) : this(mitre, owasp, mutableMapOf())
+            @JsonProperty("owasp:2025")
+            @ExcludeMissing
+            owasp2025: JsonField<List<Owasp2025>> = JsonMissing.of(),
+        ) : this(mitre, owasp, owasp2025, mutableMapOf())
 
         /**
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
@@ -959,6 +1029,12 @@ private constructor(
         fun owasp(): Optional<List<Owasp>> = owasp.getOptional("owasp")
 
         /**
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun owasp2025(): Optional<List<Owasp2025>> = owasp2025.getOptional("owasp:2025")
+
+        /**
          * Returns the raw JSON value of [mitre].
          *
          * Unlike [mitre], this method doesn't throw if the JSON field has an unexpected type.
@@ -971,6 +1047,15 @@ private constructor(
          * Unlike [owasp], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("owasp") @ExcludeMissing fun _owasp(): JsonField<List<Owasp>> = owasp
+
+        /**
+         * Returns the raw JSON value of [owasp2025].
+         *
+         * Unlike [owasp2025], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("owasp:2025")
+        @ExcludeMissing
+        fun _owasp2025(): JsonField<List<Owasp2025>> = owasp2025
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -995,12 +1080,14 @@ private constructor(
 
             private var mitre: JsonField<MutableList<Mitre>>? = null
             private var owasp: JsonField<MutableList<Owasp>>? = null
+            private var owasp2025: JsonField<MutableList<Owasp2025>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(frameworks: Frameworks) = apply {
                 mitre = frameworks.mitre.map { it.toMutableList() }
                 owasp = frameworks.owasp.map { it.toMutableList() }
+                owasp2025 = frameworks.owasp2025.map { it.toMutableList() }
                 additionalProperties = frameworks.additionalProperties.toMutableMap()
             }
 
@@ -1054,6 +1141,31 @@ private constructor(
                     }
             }
 
+            fun owasp2025(owasp2025: List<Owasp2025>) = owasp2025(JsonField.of(owasp2025))
+
+            /**
+             * Sets [Builder.owasp2025] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.owasp2025] with a well-typed `List<Owasp2025>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun owasp2025(owasp2025: JsonField<List<Owasp2025>>) = apply {
+                this.owasp2025 = owasp2025.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [Owasp2025] to [Builder.owasp2025].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addOwasp2025(owasp2025: Owasp2025) = apply {
+                this.owasp2025 =
+                    (this.owasp2025 ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("owasp2025", it).add(owasp2025)
+                    }
+            }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -1082,6 +1194,7 @@ private constructor(
                 Frameworks(
                     (mitre ?: JsonMissing.of()).map { it.toImmutable() },
                     (owasp ?: JsonMissing.of()).map { it.toImmutable() },
+                    (owasp2025 ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -1095,6 +1208,7 @@ private constructor(
 
             mitre().ifPresent { it.forEach { it.validate() } }
             owasp().ifPresent { it.forEach { it.validate() } }
+            owasp2025().ifPresent { it.forEach { it.validate() } }
             validated = true
         }
 
@@ -1115,7 +1229,8 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (mitre.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
-                (owasp.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
+                (owasp.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+                (owasp2025.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
         /** The MITRE Atlas framework labels identified during analysis */
         class Mitre
@@ -1475,6 +1590,185 @@ private constructor(
                 "Owasp{label=$label, name=$name, additionalProperties=$additionalProperties}"
         }
 
+        /** The OWASP:2025 framework labels identified during analysis */
+        class Owasp2025
+        private constructor(
+            private val label: JsonField<String>,
+            private val name: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("label") @ExcludeMissing label: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+            ) : this(label, name, mutableMapOf())
+
+            /**
+             * The label of the OWASP:2025 framework label
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun label(): Optional<String> = label.getOptional("label")
+
+            /**
+             * The name of the OWASP:2025 framework label
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun name(): Optional<String> = name.getOptional("name")
+
+            /**
+             * Returns the raw JSON value of [label].
+             *
+             * Unlike [label], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("label") @ExcludeMissing fun _label(): JsonField<String> = label
+
+            /**
+             * Returns the raw JSON value of [name].
+             *
+             * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /** Returns a mutable builder for constructing an instance of [Owasp2025]. */
+                @JvmStatic fun builder() = Builder()
+            }
+
+            /** A builder for [Owasp2025]. */
+            class Builder internal constructor() {
+
+                private var label: JsonField<String> = JsonMissing.of()
+                private var name: JsonField<String> = JsonMissing.of()
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(owasp2025: Owasp2025) = apply {
+                    label = owasp2025.label
+                    name = owasp2025.name
+                    additionalProperties = owasp2025.additionalProperties.toMutableMap()
+                }
+
+                /** The label of the OWASP:2025 framework label */
+                fun label(label: String) = label(JsonField.of(label))
+
+                /**
+                 * Sets [Builder.label] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.label] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun label(label: JsonField<String>) = apply { this.label = label }
+
+                /** The name of the OWASP:2025 framework label */
+                fun name(name: String) = name(JsonField.of(name))
+
+                /**
+                 * Sets [Builder.name] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.name] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun name(name: JsonField<String>) = apply { this.name = name }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [Owasp2025].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
+                fun build(): Owasp2025 = Owasp2025(label, name, additionalProperties.toMutableMap())
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): Owasp2025 = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                label()
+                name()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: HiddenLayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (if (label.asKnown().isPresent) 1 else 0) + (if (name.asKnown().isPresent) 1 else 0)
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Owasp2025 &&
+                    label == other.label &&
+                    name == other.name &&
+                    additionalProperties == other.additionalProperties
+            }
+
+            private val hashCode: Int by lazy { Objects.hash(label, name, additionalProperties) }
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "Owasp2025{label=$label, name=$name, additionalProperties=$additionalProperties}"
+        }
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -1483,15 +1777,18 @@ private constructor(
             return other is Frameworks &&
                 mitre == other.mitre &&
                 owasp == other.owasp &&
+                owasp2025 == other.owasp2025 &&
                 additionalProperties == other.additionalProperties
         }
 
-        private val hashCode: Int by lazy { Objects.hash(mitre, owasp, additionalProperties) }
+        private val hashCode: Int by lazy {
+            Objects.hash(mitre, owasp, owasp2025, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Frameworks{mitre=$mitre, owasp=$owasp, additionalProperties=$additionalProperties}"
+            "Frameworks{mitre=$mitre, owasp=$owasp, owasp2025=$owasp2025, additionalProperties=$additionalProperties}"
     }
 
     /** The policy used during analysis */
@@ -3152,6 +3449,345 @@ private constructor(
             "Policy{blockGuardrailDetection=$blockGuardrailDetection, blockInputCodeDetection=$blockInputCodeDetection, blockInputDosDetection=$blockInputDosDetection, blockInputPii=$blockInputPii, blockOutputCodeDetection=$blockOutputCodeDetection, blockOutputPii=$blockOutputPii, blockPromptInjection=$blockPromptInjection, blockUnsafe=$blockUnsafe, blockUnsafeInput=$blockUnsafeInput, blockUnsafeOutput=$blockUnsafeOutput, entityType=$entityType, inputDosDetectionThreshold=$inputDosDetectionThreshold, promptInjectionScanType=$promptInjectionScanType, redactInputPii=$redactInputPii, redactOutputPii=$redactOutputPii, redactType=$redactType, skipGuardrailDetection=$skipGuardrailDetection, skipInputCodeDetection=$skipInputCodeDetection, skipInputDosDetection=$skipInputDosDetection, skipInputPiiDetection=$skipInputPiiDetection, skipInputUrlDetection=$skipInputUrlDetection, skipOutputCodeDetection=$skipOutputCodeDetection, skipOutputPiiDetection=$skipOutputPiiDetection, skipOutputUrlDetection=$skipOutputUrlDetection, skipPromptInjectionDetection=$skipPromptInjectionDetection, additionalProperties=$additionalProperties}"
     }
 
+    class Response
+    private constructor(
+        private val model: JsonField<String>,
+        private val output: JsonField<String>,
+        private val prompt: JsonField<String>,
+        private val provider: JsonField<String>,
+        private val unmodifiedOutput: JsonField<String>,
+        private val unmodifiedPrompt: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("model") @ExcludeMissing model: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("output") @ExcludeMissing output: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("prompt") @ExcludeMissing prompt: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("provider")
+            @ExcludeMissing
+            provider: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("unmodified_output")
+            @ExcludeMissing
+            unmodifiedOutput: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("unmodified_prompt")
+            @ExcludeMissing
+            unmodifiedPrompt: JsonField<String> = JsonMissing.of(),
+        ) : this(
+            model,
+            output,
+            prompt,
+            provider,
+            unmodifiedOutput,
+            unmodifiedPrompt,
+            mutableMapOf(),
+        )
+
+        /**
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun model(): Optional<String> = model.getOptional("model")
+
+        /**
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun output(): Optional<String> = output.getOptional("output")
+
+        /**
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun prompt(): Optional<String> = prompt.getOptional("prompt")
+
+        /**
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun provider(): Optional<String> = provider.getOptional("provider")
+
+        /**
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun unmodifiedOutput(): Optional<String> = unmodifiedOutput.getOptional("unmodified_output")
+
+        /**
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun unmodifiedPrompt(): Optional<String> = unmodifiedPrompt.getOptional("unmodified_prompt")
+
+        /**
+         * Returns the raw JSON value of [model].
+         *
+         * Unlike [model], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("model") @ExcludeMissing fun _model(): JsonField<String> = model
+
+        /**
+         * Returns the raw JSON value of [output].
+         *
+         * Unlike [output], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("output") @ExcludeMissing fun _output(): JsonField<String> = output
+
+        /**
+         * Returns the raw JSON value of [prompt].
+         *
+         * Unlike [prompt], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("prompt") @ExcludeMissing fun _prompt(): JsonField<String> = prompt
+
+        /**
+         * Returns the raw JSON value of [provider].
+         *
+         * Unlike [provider], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("provider") @ExcludeMissing fun _provider(): JsonField<String> = provider
+
+        /**
+         * Returns the raw JSON value of [unmodifiedOutput].
+         *
+         * Unlike [unmodifiedOutput], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("unmodified_output")
+        @ExcludeMissing
+        fun _unmodifiedOutput(): JsonField<String> = unmodifiedOutput
+
+        /**
+         * Returns the raw JSON value of [unmodifiedPrompt].
+         *
+         * Unlike [unmodifiedPrompt], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("unmodified_prompt")
+        @ExcludeMissing
+        fun _unmodifiedPrompt(): JsonField<String> = unmodifiedPrompt
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [Response]. */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Response]. */
+        class Builder internal constructor() {
+
+            private var model: JsonField<String> = JsonMissing.of()
+            private var output: JsonField<String> = JsonMissing.of()
+            private var prompt: JsonField<String> = JsonMissing.of()
+            private var provider: JsonField<String> = JsonMissing.of()
+            private var unmodifiedOutput: JsonField<String> = JsonMissing.of()
+            private var unmodifiedPrompt: JsonField<String> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(response: Response) = apply {
+                model = response.model
+                output = response.output
+                prompt = response.prompt
+                provider = response.provider
+                unmodifiedOutput = response.unmodifiedOutput
+                unmodifiedPrompt = response.unmodifiedPrompt
+                additionalProperties = response.additionalProperties.toMutableMap()
+            }
+
+            fun model(model: String) = model(JsonField.of(model))
+
+            /**
+             * Sets [Builder.model] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.model] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun model(model: JsonField<String>) = apply { this.model = model }
+
+            fun output(output: String) = output(JsonField.of(output))
+
+            /**
+             * Sets [Builder.output] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.output] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun output(output: JsonField<String>) = apply { this.output = output }
+
+            fun prompt(prompt: String) = prompt(JsonField.of(prompt))
+
+            /**
+             * Sets [Builder.prompt] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.prompt] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun prompt(prompt: JsonField<String>) = apply { this.prompt = prompt }
+
+            fun provider(provider: String) = provider(JsonField.of(provider))
+
+            /**
+             * Sets [Builder.provider] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.provider] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun provider(provider: JsonField<String>) = apply { this.provider = provider }
+
+            fun unmodifiedOutput(unmodifiedOutput: String) =
+                unmodifiedOutput(JsonField.of(unmodifiedOutput))
+
+            /**
+             * Sets [Builder.unmodifiedOutput] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.unmodifiedOutput] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun unmodifiedOutput(unmodifiedOutput: JsonField<String>) = apply {
+                this.unmodifiedOutput = unmodifiedOutput
+            }
+
+            fun unmodifiedPrompt(unmodifiedPrompt: String) =
+                unmodifiedPrompt(JsonField.of(unmodifiedPrompt))
+
+            /**
+             * Sets [Builder.unmodifiedPrompt] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.unmodifiedPrompt] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun unmodifiedPrompt(unmodifiedPrompt: JsonField<String>) = apply {
+                this.unmodifiedPrompt = unmodifiedPrompt
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Response].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Response =
+                Response(
+                    model,
+                    output,
+                    prompt,
+                    provider,
+                    unmodifiedOutput,
+                    unmodifiedPrompt,
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Response = apply {
+            if (validated) {
+                return@apply
+            }
+
+            model()
+            output()
+            prompt()
+            provider()
+            unmodifiedOutput()
+            unmodifiedPrompt()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: HiddenLayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (model.asKnown().isPresent) 1 else 0) +
+                (if (output.asKnown().isPresent) 1 else 0) +
+                (if (prompt.asKnown().isPresent) 1 else 0) +
+                (if (provider.asKnown().isPresent) 1 else 0) +
+                (if (unmodifiedOutput.asKnown().isPresent) 1 else 0) +
+                (if (unmodifiedPrompt.asKnown().isPresent) 1 else 0)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Response &&
+                model == other.model &&
+                output == other.output &&
+                prompt == other.prompt &&
+                provider == other.provider &&
+                unmodifiedOutput == other.unmodifiedOutput &&
+                unmodifiedPrompt == other.unmodifiedPrompt &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                model,
+                output,
+                prompt,
+                provider,
+                unmodifiedOutput,
+                unmodifiedPrompt,
+                additionalProperties,
+            )
+        }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Response{model=$model, output=$output, prompt=$prompt, provider=$provider, unmodifiedOutput=$unmodifiedOutput, unmodifiedPrompt=$unmodifiedPrompt, additionalProperties=$additionalProperties}"
+    }
+
     /** The analysis results */
     class Results
     private constructor(
@@ -3159,11 +3795,12 @@ private constructor(
         private val inputBlockListResults: JsonField<InputBlockListResults>,
         private val inputCodeResults: JsonField<InputCodeResults>,
         private val inputDosResults: JsonField<InputDosResults>,
+        private val inputLanguageResults: JsonField<InputLanguageResults>,
         private val inputPiiResults: JsonField<InputPiiResults>,
-        private val inputUrls: JsonField<InputUrls>,
+        private val inputUrlResults: JsonField<InputUrlResults>,
         private val outputCodeResults: JsonField<OutputCodeResults>,
         private val outputPiiResults: JsonField<OutputPiiResults>,
-        private val outputUrls: JsonField<OutputUrls>,
+        private val outputUrlResults: JsonField<OutputUrlResults>,
         private val promptInjectionClassifierResults:
             JsonField<List<PromptInjectionClassifierResult>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -3183,21 +3820,24 @@ private constructor(
             @JsonProperty("input_dos_results")
             @ExcludeMissing
             inputDosResults: JsonField<InputDosResults> = JsonMissing.of(),
+            @JsonProperty("input_language_results")
+            @ExcludeMissing
+            inputLanguageResults: JsonField<InputLanguageResults> = JsonMissing.of(),
             @JsonProperty("input_pii_results")
             @ExcludeMissing
             inputPiiResults: JsonField<InputPiiResults> = JsonMissing.of(),
-            @JsonProperty("input_urls")
+            @JsonProperty("input_url_results")
             @ExcludeMissing
-            inputUrls: JsonField<InputUrls> = JsonMissing.of(),
+            inputUrlResults: JsonField<InputUrlResults> = JsonMissing.of(),
             @JsonProperty("output_code_results")
             @ExcludeMissing
             outputCodeResults: JsonField<OutputCodeResults> = JsonMissing.of(),
             @JsonProperty("output_pii_results")
             @ExcludeMissing
             outputPiiResults: JsonField<OutputPiiResults> = JsonMissing.of(),
-            @JsonProperty("output_urls")
+            @JsonProperty("output_url_results")
             @ExcludeMissing
-            outputUrls: JsonField<OutputUrls> = JsonMissing.of(),
+            outputUrlResults: JsonField<OutputUrlResults> = JsonMissing.of(),
             @JsonProperty("prompt_injection_classifier_results")
             @ExcludeMissing
             promptInjectionClassifierResults: JsonField<List<PromptInjectionClassifierResult>> =
@@ -3207,11 +3847,12 @@ private constructor(
             inputBlockListResults,
             inputCodeResults,
             inputDosResults,
+            inputLanguageResults,
             inputPiiResults,
-            inputUrls,
+            inputUrlResults,
             outputCodeResults,
             outputPiiResults,
-            outputUrls,
+            outputUrlResults,
             promptInjectionClassifierResults,
             mutableMapOf(),
         )
@@ -3253,6 +3894,15 @@ private constructor(
             inputDosResults.getOptional("input_dos_results")
 
         /**
+         * The input language results
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun inputLanguageResults(): Optional<InputLanguageResults> =
+            inputLanguageResults.getOptional("input_language_results")
+
+        /**
          * The input personally identifiable information results
          *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
@@ -3267,7 +3917,8 @@ private constructor(
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun inputUrls(): Optional<InputUrls> = inputUrls.getOptional("input_urls")
+        fun inputUrlResults(): Optional<InputUrlResults> =
+            inputUrlResults.getOptional("input_url_results")
 
         /**
          * The output code results
@@ -3293,7 +3944,8 @@ private constructor(
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun outputUrls(): Optional<OutputUrls> = outputUrls.getOptional("output_urls")
+        fun outputUrlResults(): Optional<OutputUrlResults> =
+            outputUrlResults.getOptional("output_url_results")
 
         /**
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
@@ -3343,6 +3995,16 @@ private constructor(
         fun _inputDosResults(): JsonField<InputDosResults> = inputDosResults
 
         /**
+         * Returns the raw JSON value of [inputLanguageResults].
+         *
+         * Unlike [inputLanguageResults], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("input_language_results")
+        @ExcludeMissing
+        fun _inputLanguageResults(): JsonField<InputLanguageResults> = inputLanguageResults
+
+        /**
          * Returns the raw JSON value of [inputPiiResults].
          *
          * Unlike [inputPiiResults], this method doesn't throw if the JSON field has an unexpected
@@ -3353,13 +4015,14 @@ private constructor(
         fun _inputPiiResults(): JsonField<InputPiiResults> = inputPiiResults
 
         /**
-         * Returns the raw JSON value of [inputUrls].
+         * Returns the raw JSON value of [inputUrlResults].
          *
-         * Unlike [inputUrls], this method doesn't throw if the JSON field has an unexpected type.
+         * Unlike [inputUrlResults], this method doesn't throw if the JSON field has an unexpected
+         * type.
          */
-        @JsonProperty("input_urls")
+        @JsonProperty("input_url_results")
         @ExcludeMissing
-        fun _inputUrls(): JsonField<InputUrls> = inputUrls
+        fun _inputUrlResults(): JsonField<InputUrlResults> = inputUrlResults
 
         /**
          * Returns the raw JSON value of [outputCodeResults].
@@ -3382,13 +4045,14 @@ private constructor(
         fun _outputPiiResults(): JsonField<OutputPiiResults> = outputPiiResults
 
         /**
-         * Returns the raw JSON value of [outputUrls].
+         * Returns the raw JSON value of [outputUrlResults].
          *
-         * Unlike [outputUrls], this method doesn't throw if the JSON field has an unexpected type.
+         * Unlike [outputUrlResults], this method doesn't throw if the JSON field has an unexpected
+         * type.
          */
-        @JsonProperty("output_urls")
+        @JsonProperty("output_url_results")
         @ExcludeMissing
-        fun _outputUrls(): JsonField<OutputUrls> = outputUrls
+        fun _outputUrlResults(): JsonField<OutputUrlResults> = outputUrlResults
 
         /**
          * Returns the raw JSON value of [promptInjectionClassifierResults].
@@ -3426,11 +4090,12 @@ private constructor(
             private var inputBlockListResults: JsonField<InputBlockListResults> = JsonMissing.of()
             private var inputCodeResults: JsonField<InputCodeResults> = JsonMissing.of()
             private var inputDosResults: JsonField<InputDosResults> = JsonMissing.of()
+            private var inputLanguageResults: JsonField<InputLanguageResults> = JsonMissing.of()
             private var inputPiiResults: JsonField<InputPiiResults> = JsonMissing.of()
-            private var inputUrls: JsonField<InputUrls> = JsonMissing.of()
+            private var inputUrlResults: JsonField<InputUrlResults> = JsonMissing.of()
             private var outputCodeResults: JsonField<OutputCodeResults> = JsonMissing.of()
             private var outputPiiResults: JsonField<OutputPiiResults> = JsonMissing.of()
-            private var outputUrls: JsonField<OutputUrls> = JsonMissing.of()
+            private var outputUrlResults: JsonField<OutputUrlResults> = JsonMissing.of()
             private var promptInjectionClassifierResults:
                 JsonField<MutableList<PromptInjectionClassifierResult>>? =
                 null
@@ -3442,11 +4107,12 @@ private constructor(
                 inputBlockListResults = results.inputBlockListResults
                 inputCodeResults = results.inputCodeResults
                 inputDosResults = results.inputDosResults
+                inputLanguageResults = results.inputLanguageResults
                 inputPiiResults = results.inputPiiResults
-                inputUrls = results.inputUrls
+                inputUrlResults = results.inputUrlResults
                 outputCodeResults = results.outputCodeResults
                 outputPiiResults = results.outputPiiResults
-                outputUrls = results.outputUrls
+                outputUrlResults = results.outputUrlResults
                 promptInjectionClassifierResults =
                     results.promptInjectionClassifierResults.map { it.toMutableList() }
                 additionalProperties = results.additionalProperties.toMutableMap()
@@ -3513,6 +4179,22 @@ private constructor(
                 this.inputDosResults = inputDosResults
             }
 
+            /** The input language results */
+            fun inputLanguageResults(inputLanguageResults: InputLanguageResults) =
+                inputLanguageResults(JsonField.of(inputLanguageResults))
+
+            /**
+             * Sets [Builder.inputLanguageResults] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.inputLanguageResults] with a well-typed
+             * [InputLanguageResults] value instead. This method is primarily for setting the field
+             * to an undocumented or not yet supported value.
+             */
+            fun inputLanguageResults(inputLanguageResults: JsonField<InputLanguageResults>) =
+                apply {
+                    this.inputLanguageResults = inputLanguageResults
+                }
+
             /** The input personally identifiable information results */
             fun inputPiiResults(inputPiiResults: InputPiiResults) =
                 inputPiiResults(JsonField.of(inputPiiResults))
@@ -3529,16 +4211,19 @@ private constructor(
             }
 
             /** The input URL results */
-            fun inputUrls(inputUrls: InputUrls) = inputUrls(JsonField.of(inputUrls))
+            fun inputUrlResults(inputUrlResults: InputUrlResults) =
+                inputUrlResults(JsonField.of(inputUrlResults))
 
             /**
-             * Sets [Builder.inputUrls] to an arbitrary JSON value.
+             * Sets [Builder.inputUrlResults] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.inputUrls] with a well-typed [InputUrls] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
+             * You should usually call [Builder.inputUrlResults] with a well-typed [InputUrlResults]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
              */
-            fun inputUrls(inputUrls: JsonField<InputUrls>) = apply { this.inputUrls = inputUrls }
+            fun inputUrlResults(inputUrlResults: JsonField<InputUrlResults>) = apply {
+                this.inputUrlResults = inputUrlResults
+            }
 
             /** The output code results */
             fun outputCodeResults(outputCodeResults: OutputCodeResults) =
@@ -3571,17 +4256,18 @@ private constructor(
             }
 
             /** The output URL results */
-            fun outputUrls(outputUrls: OutputUrls) = outputUrls(JsonField.of(outputUrls))
+            fun outputUrlResults(outputUrlResults: OutputUrlResults) =
+                outputUrlResults(JsonField.of(outputUrlResults))
 
             /**
-             * Sets [Builder.outputUrls] to an arbitrary JSON value.
+             * Sets [Builder.outputUrlResults] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.outputUrls] with a well-typed [OutputUrls] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
+             * You should usually call [Builder.outputUrlResults] with a well-typed
+             * [OutputUrlResults] value instead. This method is primarily for setting the field to
+             * an undocumented or not yet supported value.
              */
-            fun outputUrls(outputUrls: JsonField<OutputUrls>) = apply {
-                this.outputUrls = outputUrls
+            fun outputUrlResults(outputUrlResults: JsonField<OutputUrlResults>) = apply {
+                this.outputUrlResults = outputUrlResults
             }
 
             fun promptInjectionClassifierResults(
@@ -3648,11 +4334,12 @@ private constructor(
                     inputBlockListResults,
                     inputCodeResults,
                     inputDosResults,
+                    inputLanguageResults,
                     inputPiiResults,
-                    inputUrls,
+                    inputUrlResults,
                     outputCodeResults,
                     outputPiiResults,
-                    outputUrls,
+                    outputUrlResults,
                     (promptInjectionClassifierResults ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
                 )
@@ -3669,11 +4356,12 @@ private constructor(
             inputBlockListResults().ifPresent { it.validate() }
             inputCodeResults().ifPresent { it.validate() }
             inputDosResults().ifPresent { it.validate() }
+            inputLanguageResults().ifPresent { it.validate() }
             inputPiiResults().ifPresent { it.validate() }
-            inputUrls().ifPresent { it.validate() }
+            inputUrlResults().ifPresent { it.validate() }
             outputCodeResults().ifPresent { it.validate() }
             outputPiiResults().ifPresent { it.validate() }
-            outputUrls().ifPresent { it.validate() }
+            outputUrlResults().ifPresent { it.validate() }
             promptInjectionClassifierResults().ifPresent { it.forEach { it.validate() } }
             validated = true
         }
@@ -3698,11 +4386,12 @@ private constructor(
                 (inputBlockListResults.asKnown().getOrNull()?.validity() ?: 0) +
                 (inputCodeResults.asKnown().getOrNull()?.validity() ?: 0) +
                 (inputDosResults.asKnown().getOrNull()?.validity() ?: 0) +
+                (inputLanguageResults.asKnown().getOrNull()?.validity() ?: 0) +
                 (inputPiiResults.asKnown().getOrNull()?.validity() ?: 0) +
-                (inputUrls.asKnown().getOrNull()?.validity() ?: 0) +
+                (inputUrlResults.asKnown().getOrNull()?.validity() ?: 0) +
                 (outputCodeResults.asKnown().getOrNull()?.validity() ?: 0) +
                 (outputPiiResults.asKnown().getOrNull()?.validity() ?: 0) +
-                (outputUrls.asKnown().getOrNull()?.validity() ?: 0) +
+                (outputUrlResults.asKnown().getOrNull()?.validity() ?: 0) +
                 (promptInjectionClassifierResults.asKnown().getOrNull()?.sumOf {
                     it.validity().toInt()
                 } ?: 0)
@@ -3711,6 +4400,7 @@ private constructor(
         class GuardrailResults
         private constructor(
             private val elapsedMs: JsonField<Double>,
+            private val refusalClassifierResults: JsonField<RefusalClassifierResults>,
             private val verdict: JsonField<Boolean>,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
@@ -3720,10 +4410,13 @@ private constructor(
                 @JsonProperty("elapsed_ms")
                 @ExcludeMissing
                 elapsedMs: JsonField<Double> = JsonMissing.of(),
+                @JsonProperty("refusal_classifier_results")
+                @ExcludeMissing
+                refusalClassifierResults: JsonField<RefusalClassifierResults> = JsonMissing.of(),
                 @JsonProperty("verdict")
                 @ExcludeMissing
                 verdict: JsonField<Boolean> = JsonMissing.of(),
-            ) : this(elapsedMs, verdict, mutableMapOf())
+            ) : this(elapsedMs, refusalClassifierResults, verdict, mutableMapOf())
 
             /**
              * The time in milliseconds it took to process the guardrail
@@ -3732,6 +4425,15 @@ private constructor(
              *   (e.g. if the server responded with an unexpected value).
              */
             fun elapsedMs(): Optional<Double> = elapsedMs.getOptional("elapsed_ms")
+
+            /**
+             * The refusal classifier results
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun refusalClassifierResults(): Optional<RefusalClassifierResults> =
+                refusalClassifierResults.getOptional("refusal_classifier_results")
 
             /**
              * The verdict of the guardrail analysis
@@ -3750,6 +4452,17 @@ private constructor(
             @JsonProperty("elapsed_ms")
             @ExcludeMissing
             fun _elapsedMs(): JsonField<Double> = elapsedMs
+
+            /**
+             * Returns the raw JSON value of [refusalClassifierResults].
+             *
+             * Unlike [refusalClassifierResults], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
+            @JsonProperty("refusal_classifier_results")
+            @ExcludeMissing
+            fun _refusalClassifierResults(): JsonField<RefusalClassifierResults> =
+                refusalClassifierResults
 
             /**
              * Returns the raw JSON value of [verdict].
@@ -3780,12 +4493,15 @@ private constructor(
             class Builder internal constructor() {
 
                 private var elapsedMs: JsonField<Double> = JsonMissing.of()
+                private var refusalClassifierResults: JsonField<RefusalClassifierResults> =
+                    JsonMissing.of()
                 private var verdict: JsonField<Boolean> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(guardrailResults: GuardrailResults) = apply {
                     elapsedMs = guardrailResults.elapsedMs
+                    refusalClassifierResults = guardrailResults.refusalClassifierResults
                     verdict = guardrailResults.verdict
                     additionalProperties = guardrailResults.additionalProperties.toMutableMap()
                 }
@@ -3801,6 +4517,21 @@ private constructor(
                  * yet supported value.
                  */
                 fun elapsedMs(elapsedMs: JsonField<Double>) = apply { this.elapsedMs = elapsedMs }
+
+                /** The refusal classifier results */
+                fun refusalClassifierResults(refusalClassifierResults: RefusalClassifierResults) =
+                    refusalClassifierResults(JsonField.of(refusalClassifierResults))
+
+                /**
+                 * Sets [Builder.refusalClassifierResults] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.refusalClassifierResults] with a well-typed
+                 * [RefusalClassifierResults] value instead. This method is primarily for setting
+                 * the field to an undocumented or not yet supported value.
+                 */
+                fun refusalClassifierResults(
+                    refusalClassifierResults: JsonField<RefusalClassifierResults>
+                ) = apply { this.refusalClassifierResults = refusalClassifierResults }
 
                 /** The verdict of the guardrail analysis */
                 fun verdict(verdict: Boolean) = verdict(JsonField.of(verdict))
@@ -3842,7 +4573,12 @@ private constructor(
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
                 fun build(): GuardrailResults =
-                    GuardrailResults(elapsedMs, verdict, additionalProperties.toMutableMap())
+                    GuardrailResults(
+                        elapsedMs,
+                        refusalClassifierResults,
+                        verdict,
+                        additionalProperties.toMutableMap(),
+                    )
             }
 
             private var validated: Boolean = false
@@ -3853,6 +4589,7 @@ private constructor(
                 }
 
                 elapsedMs()
+                refusalClassifierResults().ifPresent { it.validate() }
                 verdict()
                 validated = true
             }
@@ -3874,7 +4611,303 @@ private constructor(
             @JvmSynthetic
             internal fun validity(): Int =
                 (if (elapsedMs.asKnown().isPresent) 1 else 0) +
+                    (refusalClassifierResults.asKnown().getOrNull()?.validity() ?: 0) +
                     (if (verdict.asKnown().isPresent) 1 else 0)
+
+            /** The refusal classifier results */
+            class RefusalClassifierResults
+            private constructor(
+                private val elapsedMs: JsonField<Double>,
+                private val probabilities: JsonField<List<Double>>,
+                private val verdict: JsonField<Boolean>,
+                private val version: JsonField<Double>,
+                private val additionalProperties: MutableMap<String, JsonValue>,
+            ) {
+
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("elapsed_ms")
+                    @ExcludeMissing
+                    elapsedMs: JsonField<Double> = JsonMissing.of(),
+                    @JsonProperty("probabilities")
+                    @ExcludeMissing
+                    probabilities: JsonField<List<Double>> = JsonMissing.of(),
+                    @JsonProperty("verdict")
+                    @ExcludeMissing
+                    verdict: JsonField<Boolean> = JsonMissing.of(),
+                    @JsonProperty("version")
+                    @ExcludeMissing
+                    version: JsonField<Double> = JsonMissing.of(),
+                ) : this(elapsedMs, probabilities, verdict, version, mutableMapOf())
+
+                /**
+                 * The time in milliseconds it took to process the refusal classifier
+                 *
+                 * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun elapsedMs(): Optional<Double> = elapsedMs.getOptional("elapsed_ms")
+
+                /**
+                 * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun probabilities(): Optional<List<Double>> =
+                    probabilities.getOptional("probabilities")
+
+                /**
+                 * The verdict of the refusal classifier
+                 *
+                 * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun verdict(): Optional<Boolean> = verdict.getOptional("verdict")
+
+                /**
+                 * The version of the refusal classifier
+                 *
+                 * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun version(): Optional<Double> = version.getOptional("version")
+
+                /**
+                 * Returns the raw JSON value of [elapsedMs].
+                 *
+                 * Unlike [elapsedMs], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
+                @JsonProperty("elapsed_ms")
+                @ExcludeMissing
+                fun _elapsedMs(): JsonField<Double> = elapsedMs
+
+                /**
+                 * Returns the raw JSON value of [probabilities].
+                 *
+                 * Unlike [probabilities], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("probabilities")
+                @ExcludeMissing
+                fun _probabilities(): JsonField<List<Double>> = probabilities
+
+                /**
+                 * Returns the raw JSON value of [verdict].
+                 *
+                 * Unlike [verdict], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
+                @JsonProperty("verdict")
+                @ExcludeMissing
+                fun _verdict(): JsonField<Boolean> = verdict
+
+                /**
+                 * Returns the raw JSON value of [version].
+                 *
+                 * Unlike [version], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
+                @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<Double> = version
+
+                @JsonAnySetter
+                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                    additionalProperties.put(key, value)
+                }
+
+                @JsonAnyGetter
+                @ExcludeMissing
+                fun _additionalProperties(): Map<String, JsonValue> =
+                    Collections.unmodifiableMap(additionalProperties)
+
+                fun toBuilder() = Builder().from(this)
+
+                companion object {
+
+                    /**
+                     * Returns a mutable builder for constructing an instance of
+                     * [RefusalClassifierResults].
+                     */
+                    @JvmStatic fun builder() = Builder()
+                }
+
+                /** A builder for [RefusalClassifierResults]. */
+                class Builder internal constructor() {
+
+                    private var elapsedMs: JsonField<Double> = JsonMissing.of()
+                    private var probabilities: JsonField<MutableList<Double>>? = null
+                    private var verdict: JsonField<Boolean> = JsonMissing.of()
+                    private var version: JsonField<Double> = JsonMissing.of()
+                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                    @JvmSynthetic
+                    internal fun from(refusalClassifierResults: RefusalClassifierResults) = apply {
+                        elapsedMs = refusalClassifierResults.elapsedMs
+                        probabilities =
+                            refusalClassifierResults.probabilities.map { it.toMutableList() }
+                        verdict = refusalClassifierResults.verdict
+                        version = refusalClassifierResults.version
+                        additionalProperties =
+                            refusalClassifierResults.additionalProperties.toMutableMap()
+                    }
+
+                    /** The time in milliseconds it took to process the refusal classifier */
+                    fun elapsedMs(elapsedMs: Double) = elapsedMs(JsonField.of(elapsedMs))
+
+                    /**
+                     * Sets [Builder.elapsedMs] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.elapsedMs] with a well-typed [Double] value
+                     * instead. This method is primarily for setting the field to an undocumented or
+                     * not yet supported value.
+                     */
+                    fun elapsedMs(elapsedMs: JsonField<Double>) = apply {
+                        this.elapsedMs = elapsedMs
+                    }
+
+                    fun probabilities(probabilities: List<Double>) =
+                        probabilities(JsonField.of(probabilities))
+
+                    /**
+                     * Sets [Builder.probabilities] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.probabilities] with a well-typed
+                     * `List<Double>` value instead. This method is primarily for setting the field
+                     * to an undocumented or not yet supported value.
+                     */
+                    fun probabilities(probabilities: JsonField<List<Double>>) = apply {
+                        this.probabilities = probabilities.map { it.toMutableList() }
+                    }
+
+                    /**
+                     * Adds a single [Double] to [probabilities].
+                     *
+                     * @throws IllegalStateException if the field was previously set to a non-list.
+                     */
+                    fun addProbability(probability: Double) = apply {
+                        probabilities =
+                            (probabilities ?: JsonField.of(mutableListOf())).also {
+                                checkKnown("probabilities", it).add(probability)
+                            }
+                    }
+
+                    /** The verdict of the refusal classifier */
+                    fun verdict(verdict: Boolean) = verdict(JsonField.of(verdict))
+
+                    /**
+                     * Sets [Builder.verdict] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.verdict] with a well-typed [Boolean] value
+                     * instead. This method is primarily for setting the field to an undocumented or
+                     * not yet supported value.
+                     */
+                    fun verdict(verdict: JsonField<Boolean>) = apply { this.verdict = verdict }
+
+                    /** The version of the refusal classifier */
+                    fun version(version: Double) = version(JsonField.of(version))
+
+                    /**
+                     * Sets [Builder.version] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.version] with a well-typed [Double] value
+                     * instead. This method is primarily for setting the field to an undocumented or
+                     * not yet supported value.
+                     */
+                    fun version(version: JsonField<Double>) = apply { this.version = version }
+
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
+
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
+
+                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                        apply {
+                            this.additionalProperties.putAll(additionalProperties)
+                        }
+
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
+                    /**
+                     * Returns an immutable instance of [RefusalClassifierResults].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
+                    fun build(): RefusalClassifierResults =
+                        RefusalClassifierResults(
+                            elapsedMs,
+                            (probabilities ?: JsonMissing.of()).map { it.toImmutable() },
+                            verdict,
+                            version,
+                            additionalProperties.toMutableMap(),
+                        )
+                }
+
+                private var validated: Boolean = false
+
+                fun validate(): RefusalClassifierResults = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    elapsedMs()
+                    probabilities()
+                    verdict()
+                    version()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: HiddenLayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    (if (elapsedMs.asKnown().isPresent) 1 else 0) +
+                        (probabilities.asKnown().getOrNull()?.size ?: 0) +
+                        (if (verdict.asKnown().isPresent) 1 else 0) +
+                        (if (version.asKnown().isPresent) 1 else 0)
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is RefusalClassifierResults &&
+                        elapsedMs == other.elapsedMs &&
+                        probabilities == other.probabilities &&
+                        verdict == other.verdict &&
+                        version == other.version &&
+                        additionalProperties == other.additionalProperties
+                }
+
+                private val hashCode: Int by lazy {
+                    Objects.hash(elapsedMs, probabilities, verdict, version, additionalProperties)
+                }
+
+                override fun hashCode(): Int = hashCode
+
+                override fun toString() =
+                    "RefusalClassifierResults{elapsedMs=$elapsedMs, probabilities=$probabilities, verdict=$verdict, version=$version, additionalProperties=$additionalProperties}"
+            }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -3883,18 +4916,19 @@ private constructor(
 
                 return other is GuardrailResults &&
                     elapsedMs == other.elapsedMs &&
+                    refusalClassifierResults == other.refusalClassifierResults &&
                     verdict == other.verdict &&
                     additionalProperties == other.additionalProperties
             }
 
             private val hashCode: Int by lazy {
-                Objects.hash(elapsedMs, verdict, additionalProperties)
+                Objects.hash(elapsedMs, refusalClassifierResults, verdict, additionalProperties)
             }
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "GuardrailResults{elapsedMs=$elapsedMs, verdict=$verdict, additionalProperties=$additionalProperties}"
+                "GuardrailResults{elapsedMs=$elapsedMs, refusalClassifierResults=$refusalClassifierResults, verdict=$verdict, additionalProperties=$additionalProperties}"
         }
 
         /** The input block list results */
@@ -4338,6 +5372,7 @@ private constructor(
         class InputDosResults
         private constructor(
             private val elapsedMs: JsonField<Double>,
+            private val embeddingsLength: JsonField<Double>,
             private val verdict: JsonField<Boolean>,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
@@ -4347,10 +5382,13 @@ private constructor(
                 @JsonProperty("elapsed_ms")
                 @ExcludeMissing
                 elapsedMs: JsonField<Double> = JsonMissing.of(),
+                @JsonProperty("embeddings_length")
+                @ExcludeMissing
+                embeddingsLength: JsonField<Double> = JsonMissing.of(),
                 @JsonProperty("verdict")
                 @ExcludeMissing
                 verdict: JsonField<Boolean> = JsonMissing.of(),
-            ) : this(elapsedMs, verdict, mutableMapOf())
+            ) : this(elapsedMs, embeddingsLength, verdict, mutableMapOf())
 
             /**
              * The time in milliseconds it took to process the input denial of service
@@ -4359,6 +5397,15 @@ private constructor(
              *   (e.g. if the server responded with an unexpected value).
              */
             fun elapsedMs(): Optional<Double> = elapsedMs.getOptional("elapsed_ms")
+
+            /**
+             * The length of the embeddings analyzed
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun embeddingsLength(): Optional<Double> =
+                embeddingsLength.getOptional("embeddings_length")
 
             /**
              * The verdict of the input denial of service analysis
@@ -4377,6 +5424,16 @@ private constructor(
             @JsonProperty("elapsed_ms")
             @ExcludeMissing
             fun _elapsedMs(): JsonField<Double> = elapsedMs
+
+            /**
+             * Returns the raw JSON value of [embeddingsLength].
+             *
+             * Unlike [embeddingsLength], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
+            @JsonProperty("embeddings_length")
+            @ExcludeMissing
+            fun _embeddingsLength(): JsonField<Double> = embeddingsLength
 
             /**
              * Returns the raw JSON value of [verdict].
@@ -4407,12 +5464,14 @@ private constructor(
             class Builder internal constructor() {
 
                 private var elapsedMs: JsonField<Double> = JsonMissing.of()
+                private var embeddingsLength: JsonField<Double> = JsonMissing.of()
                 private var verdict: JsonField<Boolean> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(inputDosResults: InputDosResults) = apply {
                     elapsedMs = inputDosResults.elapsedMs
+                    embeddingsLength = inputDosResults.embeddingsLength
                     verdict = inputDosResults.verdict
                     additionalProperties = inputDosResults.additionalProperties.toMutableMap()
                 }
@@ -4428,6 +5487,21 @@ private constructor(
                  * yet supported value.
                  */
                 fun elapsedMs(elapsedMs: JsonField<Double>) = apply { this.elapsedMs = elapsedMs }
+
+                /** The length of the embeddings analyzed */
+                fun embeddingsLength(embeddingsLength: Double) =
+                    embeddingsLength(JsonField.of(embeddingsLength))
+
+                /**
+                 * Sets [Builder.embeddingsLength] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.embeddingsLength] with a well-typed [Double]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
+                fun embeddingsLength(embeddingsLength: JsonField<Double>) = apply {
+                    this.embeddingsLength = embeddingsLength
+                }
 
                 /** The verdict of the input denial of service analysis */
                 fun verdict(verdict: Boolean) = verdict(JsonField.of(verdict))
@@ -4469,7 +5543,12 @@ private constructor(
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
                 fun build(): InputDosResults =
-                    InputDosResults(elapsedMs, verdict, additionalProperties.toMutableMap())
+                    InputDosResults(
+                        elapsedMs,
+                        embeddingsLength,
+                        verdict,
+                        additionalProperties.toMutableMap(),
+                    )
             }
 
             private var validated: Boolean = false
@@ -4480,6 +5559,7 @@ private constructor(
                 }
 
                 elapsedMs()
+                embeddingsLength()
                 verdict()
                 validated = true
             }
@@ -4501,6 +5581,7 @@ private constructor(
             @JvmSynthetic
             internal fun validity(): Int =
                 (if (elapsedMs.asKnown().isPresent) 1 else 0) +
+                    (if (embeddingsLength.asKnown().isPresent) 1 else 0) +
                     (if (verdict.asKnown().isPresent) 1 else 0)
 
             override fun equals(other: Any?): Boolean {
@@ -4510,18 +5591,253 @@ private constructor(
 
                 return other is InputDosResults &&
                     elapsedMs == other.elapsedMs &&
+                    embeddingsLength == other.embeddingsLength &&
                     verdict == other.verdict &&
                     additionalProperties == other.additionalProperties
             }
 
             private val hashCode: Int by lazy {
-                Objects.hash(elapsedMs, verdict, additionalProperties)
+                Objects.hash(elapsedMs, embeddingsLength, verdict, additionalProperties)
             }
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "InputDosResults{elapsedMs=$elapsedMs, verdict=$verdict, additionalProperties=$additionalProperties}"
+                "InputDosResults{elapsedMs=$elapsedMs, embeddingsLength=$embeddingsLength, verdict=$verdict, additionalProperties=$additionalProperties}"
+        }
+
+        /** The input language results */
+        class InputLanguageResults
+        private constructor(
+            private val elapsedMs: JsonField<Double>,
+            private val language: JsonField<String>,
+            private val verdict: JsonField<Boolean>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("elapsed_ms")
+                @ExcludeMissing
+                elapsedMs: JsonField<Double> = JsonMissing.of(),
+                @JsonProperty("language")
+                @ExcludeMissing
+                language: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("verdict")
+                @ExcludeMissing
+                verdict: JsonField<Boolean> = JsonMissing.of(),
+            ) : this(elapsedMs, language, verdict, mutableMapOf())
+
+            /**
+             * The time in milliseconds it took to process the input language detection
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun elapsedMs(): Optional<Double> = elapsedMs.getOptional("elapsed_ms")
+
+            /**
+             * Language detected in the input
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun language(): Optional<String> = language.getOptional("language")
+
+            /**
+             * The verdict of the input language analysis
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun verdict(): Optional<Boolean> = verdict.getOptional("verdict")
+
+            /**
+             * Returns the raw JSON value of [elapsedMs].
+             *
+             * Unlike [elapsedMs], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("elapsed_ms")
+            @ExcludeMissing
+            fun _elapsedMs(): JsonField<Double> = elapsedMs
+
+            /**
+             * Returns the raw JSON value of [language].
+             *
+             * Unlike [language], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("language") @ExcludeMissing fun _language(): JsonField<String> = language
+
+            /**
+             * Returns the raw JSON value of [verdict].
+             *
+             * Unlike [verdict], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("verdict") @ExcludeMissing fun _verdict(): JsonField<Boolean> = verdict
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /**
+                 * Returns a mutable builder for constructing an instance of [InputLanguageResults].
+                 */
+                @JvmStatic fun builder() = Builder()
+            }
+
+            /** A builder for [InputLanguageResults]. */
+            class Builder internal constructor() {
+
+                private var elapsedMs: JsonField<Double> = JsonMissing.of()
+                private var language: JsonField<String> = JsonMissing.of()
+                private var verdict: JsonField<Boolean> = JsonMissing.of()
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(inputLanguageResults: InputLanguageResults) = apply {
+                    elapsedMs = inputLanguageResults.elapsedMs
+                    language = inputLanguageResults.language
+                    verdict = inputLanguageResults.verdict
+                    additionalProperties = inputLanguageResults.additionalProperties.toMutableMap()
+                }
+
+                /** The time in milliseconds it took to process the input language detection */
+                fun elapsedMs(elapsedMs: Double) = elapsedMs(JsonField.of(elapsedMs))
+
+                /**
+                 * Sets [Builder.elapsedMs] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.elapsedMs] with a well-typed [Double] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun elapsedMs(elapsedMs: JsonField<Double>) = apply { this.elapsedMs = elapsedMs }
+
+                /** Language detected in the input */
+                fun language(language: String) = language(JsonField.of(language))
+
+                /**
+                 * Sets [Builder.language] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.language] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun language(language: JsonField<String>) = apply { this.language = language }
+
+                /** The verdict of the input language analysis */
+                fun verdict(verdict: Boolean) = verdict(JsonField.of(verdict))
+
+                /**
+                 * Sets [Builder.verdict] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.verdict] with a well-typed [Boolean] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun verdict(verdict: JsonField<Boolean>) = apply { this.verdict = verdict }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [InputLanguageResults].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
+                fun build(): InputLanguageResults =
+                    InputLanguageResults(
+                        elapsedMs,
+                        language,
+                        verdict,
+                        additionalProperties.toMutableMap(),
+                    )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): InputLanguageResults = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                elapsedMs()
+                language()
+                verdict()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: HiddenLayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (if (elapsedMs.asKnown().isPresent) 1 else 0) +
+                    (if (language.asKnown().isPresent) 1 else 0) +
+                    (if (verdict.asKnown().isPresent) 1 else 0)
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is InputLanguageResults &&
+                    elapsedMs == other.elapsedMs &&
+                    language == other.language &&
+                    verdict == other.verdict &&
+                    additionalProperties == other.additionalProperties
+            }
+
+            private val hashCode: Int by lazy {
+                Objects.hash(elapsedMs, language, verdict, additionalProperties)
+            }
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "InputLanguageResults{elapsedMs=$elapsedMs, language=$language, verdict=$verdict, additionalProperties=$additionalProperties}"
         }
 
         /** The input personally identifiable information results */
@@ -4774,7 +6090,7 @@ private constructor(
         }
 
         /** The input URL results */
-        class InputUrls
+        class InputUrlResults
         private constructor(
             private val elapsedMs: JsonField<Double>,
             private val urls: JsonField<List<String>>,
@@ -4836,11 +6152,11 @@ private constructor(
 
             companion object {
 
-                /** Returns a mutable builder for constructing an instance of [InputUrls]. */
+                /** Returns a mutable builder for constructing an instance of [InputUrlResults]. */
                 @JvmStatic fun builder() = Builder()
             }
 
-            /** A builder for [InputUrls]. */
+            /** A builder for [InputUrlResults]. */
             class Builder internal constructor() {
 
                 private var elapsedMs: JsonField<Double> = JsonMissing.of()
@@ -4848,10 +6164,10 @@ private constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
-                internal fun from(inputUrls: InputUrls) = apply {
-                    elapsedMs = inputUrls.elapsedMs
-                    urls = inputUrls.urls.map { it.toMutableList() }
-                    additionalProperties = inputUrls.additionalProperties.toMutableMap()
+                internal fun from(inputUrlResults: InputUrlResults) = apply {
+                    elapsedMs = inputUrlResults.elapsedMs
+                    urls = inputUrlResults.urls.map { it.toMutableList() }
+                    additionalProperties = inputUrlResults.additionalProperties.toMutableMap()
                 }
 
                 /** The time in milliseconds it took to process the guardrail */
@@ -4914,12 +6230,12 @@ private constructor(
                 }
 
                 /**
-                 * Returns an immutable instance of [InputUrls].
+                 * Returns an immutable instance of [InputUrlResults].
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
-                fun build(): InputUrls =
-                    InputUrls(
+                fun build(): InputUrlResults =
+                    InputUrlResults(
                         elapsedMs,
                         (urls ?: JsonMissing.of()).map { it.toImmutable() },
                         additionalProperties.toMutableMap(),
@@ -4928,7 +6244,7 @@ private constructor(
 
             private var validated: Boolean = false
 
-            fun validate(): InputUrls = apply {
+            fun validate(): InputUrlResults = apply {
                 if (validated) {
                     return@apply
                 }
@@ -4962,7 +6278,7 @@ private constructor(
                     return true
                 }
 
-                return other is InputUrls &&
+                return other is InputUrlResults &&
                     elapsedMs == other.elapsedMs &&
                     urls == other.urls &&
                     additionalProperties == other.additionalProperties
@@ -4975,7 +6291,7 @@ private constructor(
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "InputUrls{elapsedMs=$elapsedMs, urls=$urls, additionalProperties=$additionalProperties}"
+                "InputUrlResults{elapsedMs=$elapsedMs, urls=$urls, additionalProperties=$additionalProperties}"
         }
 
         /** The output code results */
@@ -5420,7 +6736,7 @@ private constructor(
         }
 
         /** The output URL results */
-        class OutputUrls
+        class OutputUrlResults
         private constructor(
             private val elapsedMs: JsonField<Double>,
             private val urls: JsonField<List<String>>,
@@ -5482,11 +6798,11 @@ private constructor(
 
             companion object {
 
-                /** Returns a mutable builder for constructing an instance of [OutputUrls]. */
+                /** Returns a mutable builder for constructing an instance of [OutputUrlResults]. */
                 @JvmStatic fun builder() = Builder()
             }
 
-            /** A builder for [OutputUrls]. */
+            /** A builder for [OutputUrlResults]. */
             class Builder internal constructor() {
 
                 private var elapsedMs: JsonField<Double> = JsonMissing.of()
@@ -5494,10 +6810,10 @@ private constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
-                internal fun from(outputUrls: OutputUrls) = apply {
-                    elapsedMs = outputUrls.elapsedMs
-                    urls = outputUrls.urls.map { it.toMutableList() }
-                    additionalProperties = outputUrls.additionalProperties.toMutableMap()
+                internal fun from(outputUrlResults: OutputUrlResults) = apply {
+                    elapsedMs = outputUrlResults.elapsedMs
+                    urls = outputUrlResults.urls.map { it.toMutableList() }
+                    additionalProperties = outputUrlResults.additionalProperties.toMutableMap()
                 }
 
                 /** The time in milliseconds it took to process the guardrail */
@@ -5560,12 +6876,12 @@ private constructor(
                 }
 
                 /**
-                 * Returns an immutable instance of [OutputUrls].
+                 * Returns an immutable instance of [OutputUrlResults].
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
-                fun build(): OutputUrls =
-                    OutputUrls(
+                fun build(): OutputUrlResults =
+                    OutputUrlResults(
                         elapsedMs,
                         (urls ?: JsonMissing.of()).map { it.toImmutable() },
                         additionalProperties.toMutableMap(),
@@ -5574,7 +6890,7 @@ private constructor(
 
             private var validated: Boolean = false
 
-            fun validate(): OutputUrls = apply {
+            fun validate(): OutputUrlResults = apply {
                 if (validated) {
                     return@apply
                 }
@@ -5608,7 +6924,7 @@ private constructor(
                     return true
                 }
 
-                return other is OutputUrls &&
+                return other is OutputUrlResults &&
                     elapsedMs == other.elapsedMs &&
                     urls == other.urls &&
                     additionalProperties == other.additionalProperties
@@ -5621,11 +6937,13 @@ private constructor(
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "OutputUrls{elapsedMs=$elapsedMs, urls=$urls, additionalProperties=$additionalProperties}"
+                "OutputUrlResults{elapsedMs=$elapsedMs, urls=$urls, additionalProperties=$additionalProperties}"
         }
 
         class PromptInjectionClassifierResult
         private constructor(
+            private val allowOverride: JsonField<String>,
+            private val blockOverride: JsonField<String>,
             private val elapsedMs: JsonField<Double>,
             private val probabilities: JsonField<List<Double>>,
             private val verdict: JsonField<Boolean>,
@@ -5635,6 +6953,12 @@ private constructor(
 
             @JsonCreator
             private constructor(
+                @JsonProperty("allow_override")
+                @ExcludeMissing
+                allowOverride: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("block_override")
+                @ExcludeMissing
+                blockOverride: JsonField<String> = JsonMissing.of(),
                 @JsonProperty("elapsed_ms")
                 @ExcludeMissing
                 elapsedMs: JsonField<Double> = JsonMissing.of(),
@@ -5647,7 +6971,31 @@ private constructor(
                 @JsonProperty("version")
                 @ExcludeMissing
                 version: JsonField<Double> = JsonMissing.of(),
-            ) : this(elapsedMs, probabilities, verdict, version, mutableMapOf())
+            ) : this(
+                allowOverride,
+                blockOverride,
+                elapsedMs,
+                probabilities,
+                verdict,
+                version,
+                mutableMapOf(),
+            )
+
+            /**
+             * The allow override applied to the prompt
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun allowOverride(): Optional<String> = allowOverride.getOptional("allow_override")
+
+            /**
+             * The block override applied to the prompt
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun blockOverride(): Optional<String> = blockOverride.getOptional("block_override")
 
             /**
              * The time in milliseconds it took to process the prompt injection classifier
@@ -5678,6 +7026,26 @@ private constructor(
              *   (e.g. if the server responded with an unexpected value).
              */
             fun version(): Optional<Double> = version.getOptional("version")
+
+            /**
+             * Returns the raw JSON value of [allowOverride].
+             *
+             * Unlike [allowOverride], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("allow_override")
+            @ExcludeMissing
+            fun _allowOverride(): JsonField<String> = allowOverride
+
+            /**
+             * Returns the raw JSON value of [blockOverride].
+             *
+             * Unlike [blockOverride], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("block_override")
+            @ExcludeMissing
+            fun _blockOverride(): JsonField<String> = blockOverride
 
             /**
              * Returns the raw JSON value of [elapsedMs].
@@ -5737,6 +7105,8 @@ private constructor(
             /** A builder for [PromptInjectionClassifierResult]. */
             class Builder internal constructor() {
 
+                private var allowOverride: JsonField<String> = JsonMissing.of()
+                private var blockOverride: JsonField<String> = JsonMissing.of()
                 private var elapsedMs: JsonField<Double> = JsonMissing.of()
                 private var probabilities: JsonField<MutableList<Double>>? = null
                 private var verdict: JsonField<Boolean> = JsonMissing.of()
@@ -5747,6 +7117,8 @@ private constructor(
                 internal fun from(
                     promptInjectionClassifierResult: PromptInjectionClassifierResult
                 ) = apply {
+                    allowOverride = promptInjectionClassifierResult.allowOverride
+                    blockOverride = promptInjectionClassifierResult.blockOverride
                     elapsedMs = promptInjectionClassifierResult.elapsedMs
                     probabilities =
                         promptInjectionClassifierResult.probabilities.map { it.toMutableList() }
@@ -5754,6 +7126,36 @@ private constructor(
                     version = promptInjectionClassifierResult.version
                     additionalProperties =
                         promptInjectionClassifierResult.additionalProperties.toMutableMap()
+                }
+
+                /** The allow override applied to the prompt */
+                fun allowOverride(allowOverride: String) =
+                    allowOverride(JsonField.of(allowOverride))
+
+                /**
+                 * Sets [Builder.allowOverride] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.allowOverride] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun allowOverride(allowOverride: JsonField<String>) = apply {
+                    this.allowOverride = allowOverride
+                }
+
+                /** The block override applied to the prompt */
+                fun blockOverride(blockOverride: String) =
+                    blockOverride(JsonField.of(blockOverride))
+
+                /**
+                 * Sets [Builder.blockOverride] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.blockOverride] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun blockOverride(blockOverride: JsonField<String>) = apply {
+                    this.blockOverride = blockOverride
                 }
 
                 /** The time in milliseconds it took to process the prompt injection classifier */
@@ -5847,6 +7249,8 @@ private constructor(
                  */
                 fun build(): PromptInjectionClassifierResult =
                     PromptInjectionClassifierResult(
+                        allowOverride,
+                        blockOverride,
                         elapsedMs,
                         (probabilities ?: JsonMissing.of()).map { it.toImmutable() },
                         verdict,
@@ -5862,6 +7266,8 @@ private constructor(
                     return@apply
                 }
 
+                allowOverride()
+                blockOverride()
                 elapsedMs()
                 probabilities()
                 verdict()
@@ -5885,7 +7291,9 @@ private constructor(
              */
             @JvmSynthetic
             internal fun validity(): Int =
-                (if (elapsedMs.asKnown().isPresent) 1 else 0) +
+                (if (allowOverride.asKnown().isPresent) 1 else 0) +
+                    (if (blockOverride.asKnown().isPresent) 1 else 0) +
+                    (if (elapsedMs.asKnown().isPresent) 1 else 0) +
                     (probabilities.asKnown().getOrNull()?.size ?: 0) +
                     (if (verdict.asKnown().isPresent) 1 else 0) +
                     (if (version.asKnown().isPresent) 1 else 0)
@@ -5896,6 +7304,8 @@ private constructor(
                 }
 
                 return other is PromptInjectionClassifierResult &&
+                    allowOverride == other.allowOverride &&
+                    blockOverride == other.blockOverride &&
                     elapsedMs == other.elapsedMs &&
                     probabilities == other.probabilities &&
                     verdict == other.verdict &&
@@ -5904,13 +7314,21 @@ private constructor(
             }
 
             private val hashCode: Int by lazy {
-                Objects.hash(elapsedMs, probabilities, verdict, version, additionalProperties)
+                Objects.hash(
+                    allowOverride,
+                    blockOverride,
+                    elapsedMs,
+                    probabilities,
+                    verdict,
+                    version,
+                    additionalProperties,
+                )
             }
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "PromptInjectionClassifierResult{elapsedMs=$elapsedMs, probabilities=$probabilities, verdict=$verdict, version=$version, additionalProperties=$additionalProperties}"
+                "PromptInjectionClassifierResult{allowOverride=$allowOverride, blockOverride=$blockOverride, elapsedMs=$elapsedMs, probabilities=$probabilities, verdict=$verdict, version=$version, additionalProperties=$additionalProperties}"
         }
 
         override fun equals(other: Any?): Boolean {
@@ -5923,11 +7341,12 @@ private constructor(
                 inputBlockListResults == other.inputBlockListResults &&
                 inputCodeResults == other.inputCodeResults &&
                 inputDosResults == other.inputDosResults &&
+                inputLanguageResults == other.inputLanguageResults &&
                 inputPiiResults == other.inputPiiResults &&
-                inputUrls == other.inputUrls &&
+                inputUrlResults == other.inputUrlResults &&
                 outputCodeResults == other.outputCodeResults &&
                 outputPiiResults == other.outputPiiResults &&
-                outputUrls == other.outputUrls &&
+                outputUrlResults == other.outputUrlResults &&
                 promptInjectionClassifierResults == other.promptInjectionClassifierResults &&
                 additionalProperties == other.additionalProperties
         }
@@ -5938,11 +7357,12 @@ private constructor(
                 inputBlockListResults,
                 inputCodeResults,
                 inputDosResults,
+                inputLanguageResults,
                 inputPiiResults,
-                inputUrls,
+                inputUrlResults,
                 outputCodeResults,
                 outputPiiResults,
-                outputUrls,
+                outputUrlResults,
                 promptInjectionClassifierResults,
                 additionalProperties,
             )
@@ -5951,7 +7371,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Results{guardrailResults=$guardrailResults, inputBlockListResults=$inputBlockListResults, inputCodeResults=$inputCodeResults, inputDosResults=$inputDosResults, inputPiiResults=$inputPiiResults, inputUrls=$inputUrls, outputCodeResults=$outputCodeResults, outputPiiResults=$outputPiiResults, outputUrls=$outputUrls, promptInjectionClassifierResults=$promptInjectionClassifierResults, additionalProperties=$additionalProperties}"
+            "Results{guardrailResults=$guardrailResults, inputBlockListResults=$inputBlockListResults, inputCodeResults=$inputCodeResults, inputDosResults=$inputDosResults, inputLanguageResults=$inputLanguageResults, inputPiiResults=$inputPiiResults, inputUrlResults=$inputUrlResults, outputCodeResults=$outputCodeResults, outputPiiResults=$outputPiiResults, outputUrlResults=$outputUrlResults, promptInjectionClassifierResults=$promptInjectionClassifierResults, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
