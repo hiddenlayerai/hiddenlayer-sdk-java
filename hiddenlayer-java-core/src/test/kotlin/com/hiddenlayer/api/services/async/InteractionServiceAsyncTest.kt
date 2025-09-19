@@ -26,6 +26,7 @@ internal class InteractionServiceAsyncTest {
             interactionServiceAsync.analyze(
                 InteractionAnalyzeParams.builder()
                     .hlProjectId("internal-search-chatbot")
+                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
                     .metadata(
                         InteractionAnalyzeParams.Metadata.builder()
                             .model("model")

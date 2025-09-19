@@ -12,6 +12,7 @@ internal class InteractionAnalyzeParamsTest {
     fun create() {
         InteractionAnalyzeParams.builder()
             .hlProjectId("internal-search-chatbot")
+            .xCorrelationId("00000000-0000-0000-0000-000000000000")
             .metadata(
                 InteractionAnalyzeParams.Metadata.builder()
                     .model("model")
@@ -47,6 +48,7 @@ internal class InteractionAnalyzeParamsTest {
         val params =
             InteractionAnalyzeParams.builder()
                 .hlProjectId("internal-search-chatbot")
+                .xCorrelationId("00000000-0000-0000-0000-000000000000")
                 .metadata(
                     InteractionAnalyzeParams.Metadata.builder()
                         .model("model")
@@ -79,7 +81,12 @@ internal class InteractionAnalyzeParamsTest {
         val headers = params._headers()
 
         assertThat(headers)
-            .isEqualTo(Headers.builder().put("HL-Project-Id", "internal-search-chatbot").build())
+            .isEqualTo(
+                Headers.builder()
+                    .put("HL-Project-Id", "internal-search-chatbot")
+                    .put("X-Correlation-Id", "00000000-0000-0000-0000-000000000000")
+                    .build()
+            )
     }
 
     @Test
@@ -104,6 +111,7 @@ internal class InteractionAnalyzeParamsTest {
         val params =
             InteractionAnalyzeParams.builder()
                 .hlProjectId("internal-search-chatbot")
+                .xCorrelationId("00000000-0000-0000-0000-000000000000")
                 .metadata(
                     InteractionAnalyzeParams.Metadata.builder()
                         .model("model")

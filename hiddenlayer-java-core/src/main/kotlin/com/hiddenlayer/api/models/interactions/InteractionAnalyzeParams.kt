@@ -26,12 +26,15 @@ import kotlin.jvm.optionals.getOrNull
 class InteractionAnalyzeParams
 private constructor(
     private val hlProjectId: String?,
+    private val xCorrelationId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     fun hlProjectId(): Optional<String> = Optional.ofNullable(hlProjectId)
+
+    fun xCorrelationId(): Optional<String> = Optional.ofNullable(xCorrelationId)
 
     /**
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
@@ -99,6 +102,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var hlProjectId: String? = null
+        private var xCorrelationId: String? = null
         private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
@@ -106,6 +110,7 @@ private constructor(
         @JvmSynthetic
         internal fun from(interactionAnalyzeParams: InteractionAnalyzeParams) = apply {
             hlProjectId = interactionAnalyzeParams.hlProjectId
+            xCorrelationId = interactionAnalyzeParams.xCorrelationId
             body = interactionAnalyzeParams.body.toBuilder()
             additionalHeaders = interactionAnalyzeParams.additionalHeaders.toBuilder()
             additionalQueryParams = interactionAnalyzeParams.additionalQueryParams.toBuilder()
@@ -115,6 +120,12 @@ private constructor(
 
         /** Alias for calling [Builder.hlProjectId] with `hlProjectId.orElse(null)`. */
         fun hlProjectId(hlProjectId: Optional<String>) = hlProjectId(hlProjectId.getOrNull())
+
+        fun xCorrelationId(xCorrelationId: String?) = apply { this.xCorrelationId = xCorrelationId }
+
+        /** Alias for calling [Builder.xCorrelationId] with `xCorrelationId.orElse(null)`. */
+        fun xCorrelationId(xCorrelationId: Optional<String>) =
+            xCorrelationId(xCorrelationId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -290,6 +301,7 @@ private constructor(
         fun build(): InteractionAnalyzeParams =
             InteractionAnalyzeParams(
                 hlProjectId,
+                xCorrelationId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -302,6 +314,7 @@ private constructor(
         Headers.builder()
             .apply {
                 hlProjectId?.let { put("HL-Project-Id", it) }
+                xCorrelationId?.let { put("X-Correlation-Id", it) }
                 putAll(additionalHeaders)
             }
             .build()
@@ -1483,14 +1496,15 @@ private constructor(
 
         return other is InteractionAnalyzeParams &&
             hlProjectId == other.hlProjectId &&
+            xCorrelationId == other.xCorrelationId &&
             body == other.body &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
     override fun hashCode(): Int =
-        Objects.hash(hlProjectId, body, additionalHeaders, additionalQueryParams)
+        Objects.hash(hlProjectId, xCorrelationId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "InteractionAnalyzeParams{hlProjectId=$hlProjectId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "InteractionAnalyzeParams{hlProjectId=$hlProjectId, xCorrelationId=$xCorrelationId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
