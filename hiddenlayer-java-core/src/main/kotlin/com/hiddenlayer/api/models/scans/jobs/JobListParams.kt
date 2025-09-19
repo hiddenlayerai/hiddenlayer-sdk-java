@@ -28,6 +28,7 @@ private constructor(
     private val modelName: ModelName?,
     private val modelVersionIds: List<String>?,
     private val offset: Long?,
+    private val requestSource: List<RequestSource>?,
     private val scannerVersion: String?,
     private val severity: List<String>?,
     private val sort: String?,
@@ -64,6 +65,9 @@ private constructor(
     fun modelVersionIds(): Optional<List<String>> = Optional.ofNullable(modelVersionIds)
 
     fun offset(): Optional<Long> = Optional.ofNullable(offset)
+
+    /** Filter by request source using a comma-separated list */
+    fun requestSource(): Optional<List<RequestSource>> = Optional.ofNullable(requestSource)
 
     /** filter by version of the scanner */
     fun scannerVersion(): Optional<String> = Optional.ofNullable(scannerVersion)
@@ -116,6 +120,7 @@ private constructor(
         private var modelName: ModelName? = null
         private var modelVersionIds: MutableList<String>? = null
         private var offset: Long? = null
+        private var requestSource: MutableList<RequestSource>? = null
         private var scannerVersion: String? = null
         private var severity: MutableList<String>? = null
         private var sort: String? = null
@@ -137,6 +142,7 @@ private constructor(
             modelName = jobListParams.modelName
             modelVersionIds = jobListParams.modelVersionIds?.toMutableList()
             offset = jobListParams.offset
+            requestSource = jobListParams.requestSource?.toMutableList()
             scannerVersion = jobListParams.scannerVersion
             severity = jobListParams.severity?.toMutableList()
             sort = jobListParams.sort
@@ -264,6 +270,25 @@ private constructor(
 
         /** Alias for calling [Builder.offset] with `offset.orElse(null)`. */
         fun offset(offset: Optional<Long>) = offset(offset.getOrNull())
+
+        /** Filter by request source using a comma-separated list */
+        fun requestSource(requestSource: List<RequestSource>?) = apply {
+            this.requestSource = requestSource?.toMutableList()
+        }
+
+        /** Alias for calling [Builder.requestSource] with `requestSource.orElse(null)`. */
+        fun requestSource(requestSource: Optional<List<RequestSource>>) =
+            requestSource(requestSource.getOrNull())
+
+        /**
+         * Adds a single [RequestSource] to [Builder.requestSource].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addRequestSource(requestSource: RequestSource) = apply {
+            this.requestSource =
+                (this.requestSource ?: mutableListOf()).apply { add(requestSource) }
+        }
 
         /** filter by version of the scanner */
         fun scannerVersion(scannerVersion: String?) = apply { this.scannerVersion = scannerVersion }
@@ -443,6 +468,7 @@ private constructor(
                 modelName,
                 modelVersionIds?.toImmutable(),
                 offset,
+                requestSource?.toImmutable(),
                 scannerVersion,
                 severity?.toImmutable(),
                 sort,
@@ -487,6 +513,7 @@ private constructor(
                 }
                 modelVersionIds?.let { put("model_version_ids", it.joinToString(",")) }
                 offset?.let { put("offset", it.toString()) }
+                requestSource?.let { put("request_source", it.joinToString(",") { it.toString() }) }
                 scannerVersion?.let { put("scanner_version", it) }
                 severity?.let { put("severity", it.joinToString(",")) }
                 sort?.let { put("sort", it) }
@@ -760,6 +787,149 @@ private constructor(
             "ModelName{contains=$contains, eq=$eq, additionalProperties=$additionalProperties}"
     }
 
+    class RequestSource @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val HYBRID_UPLOAD = of("Hybrid Upload")
+
+            @JvmField val API_UPLOAD = of("API Upload")
+
+            @JvmField val INTEGRATION = of("Integration")
+
+            @JvmField val UI_UPLOAD = of("UI Upload")
+
+            @JvmStatic fun of(value: String) = RequestSource(JsonField.of(value))
+        }
+
+        /** An enum containing [RequestSource]'s known values. */
+        enum class Known {
+            HYBRID_UPLOAD,
+            API_UPLOAD,
+            INTEGRATION,
+            UI_UPLOAD,
+        }
+
+        /**
+         * An enum containing [RequestSource]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [RequestSource] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            HYBRID_UPLOAD,
+            API_UPLOAD,
+            INTEGRATION,
+            UI_UPLOAD,
+            /**
+             * An enum member indicating that [RequestSource] was instantiated with an unknown
+             * value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                HYBRID_UPLOAD -> Value.HYBRID_UPLOAD
+                API_UPLOAD -> Value.API_UPLOAD
+                INTEGRATION -> Value.INTEGRATION
+                UI_UPLOAD -> Value.UI_UPLOAD
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                HYBRID_UPLOAD -> Known.HYBRID_UPLOAD
+                API_UPLOAD -> Known.API_UPLOAD
+                INTEGRATION -> Known.INTEGRATION
+                UI_UPLOAD -> Known.UI_UPLOAD
+                else -> throw HiddenLayerInvalidDataException("Unknown RequestSource: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                HiddenLayerInvalidDataException("Value is not a String")
+            }
+
+        private var validated: Boolean = false
+
+        fun validate(): RequestSource = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: HiddenLayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is RequestSource && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
     /** source of model related to scans */
     class Source
     private constructor(private val eq: Eq?, private val additionalProperties: QueryParams) {
@@ -1004,6 +1174,7 @@ private constructor(
             modelName == other.modelName &&
             modelVersionIds == other.modelVersionIds &&
             offset == other.offset &&
+            requestSource == other.requestSource &&
             scannerVersion == other.scannerVersion &&
             severity == other.severity &&
             sort == other.sort &&
@@ -1026,6 +1197,7 @@ private constructor(
             modelName,
             modelVersionIds,
             offset,
+            requestSource,
             scannerVersion,
             severity,
             sort,
@@ -1038,5 +1210,5 @@ private constructor(
         )
 
     override fun toString() =
-        "JobListParams{complianceStatus=$complianceStatus, detectionCategory=$detectionCategory, endTime=$endTime, latestPerModelVersionOnly=$latestPerModelVersionOnly, limit=$limit, modelIds=$modelIds, modelName=$modelName, modelVersionIds=$modelVersionIds, offset=$offset, scannerVersion=$scannerVersion, severity=$severity, sort=$sort, source=$source, startTime=$startTime, status=$status, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "JobListParams{complianceStatus=$complianceStatus, detectionCategory=$detectionCategory, endTime=$endTime, latestPerModelVersionOnly=$latestPerModelVersionOnly, limit=$limit, modelIds=$modelIds, modelName=$modelName, modelVersionIds=$modelVersionIds, offset=$offset, requestSource=$requestSource, scannerVersion=$scannerVersion, severity=$severity, sort=$sort, source=$source, startTime=$startTime, status=$status, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
