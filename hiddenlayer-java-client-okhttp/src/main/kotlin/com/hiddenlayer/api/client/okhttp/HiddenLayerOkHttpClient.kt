@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.hiddenlayer.api.client.HiddenLayerClient
 import com.hiddenlayer.api.client.HiddenLayerClientImpl
 import com.hiddenlayer.api.core.ClientOptions
+import com.hiddenlayer.api.core.Sleeper
 import com.hiddenlayer.api.core.Timeout
 import com.hiddenlayer.api.core.http.AsyncStreamResponse
 import com.hiddenlayer.api.core.http.Headers
@@ -132,6 +133,17 @@ class HiddenLayerOkHttpClient private constructor() {
         fun streamHandlerExecutor(streamHandlerExecutor: Executor) = apply {
             clientOptions.streamHandlerExecutor(streamHandlerExecutor)
         }
+
+        /**
+         * The interface to use for delaying execution, like during retries.
+         *
+         * This is primarily useful for using fake delays in tests.
+         *
+         * Defaults to real execution delays.
+         *
+         * This class takes ownership of the sleeper and closes it when closed.
+         */
+        fun sleeper(sleeper: Sleeper) = apply { clientOptions.sleeper(sleeper) }
 
         /**
          * The clock to use for operations that require timing, like retries.
