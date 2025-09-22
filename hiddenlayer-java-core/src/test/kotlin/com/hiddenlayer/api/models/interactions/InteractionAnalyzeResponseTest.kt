@@ -17,10 +17,13 @@ internal class InteractionAnalyzeResponseTest {
             InteractionAnalyzeResponse.builder()
                 .addAnalysis(
                     InteractionAnalyzeResponse.Analysis.builder()
-                        .id("id")
+                        .id("prompt_injection.5.input")
                         .configuration(
                             InteractionAnalyzeResponse.Analysis.Configuration.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .putAdditionalProperty("enabled", JsonValue.from("bar"))
+                                .putAdditionalProperty("scan_type", JsonValue.from("bar"))
+                                .putAdditionalProperty("allow_overrides", JsonValue.from("bar"))
+                                .putAdditionalProperty("block_overrides", JsonValue.from("bar"))
                                 .build()
                         )
                         .detected(true)
@@ -30,18 +33,45 @@ internal class InteractionAnalyzeResponseTest {
                                     InteractionAnalyzeResponse.Analysis.Findings.Frameworks
                                         .builder()
                                         .putAdditionalProperty(
-                                            "foo",
+                                            "mitre",
                                             JsonValue.from(
-                                                listOf(mapOf("label" to "label", "name" to "name"))
+                                                listOf(
+                                                    mapOf(
+                                                        "label" to "AML.T0051",
+                                                        "name" to "LLM Prompt Injection",
+                                                    )
+                                                )
+                                            ),
+                                        )
+                                        .putAdditionalProperty(
+                                            "owasp",
+                                            JsonValue.from(
+                                                listOf(
+                                                    mapOf(
+                                                        "label" to "LLM01",
+                                                        "name" to "Prompt Injection",
+                                                    )
+                                                )
+                                            ),
+                                        )
+                                        .putAdditionalProperty(
+                                            "owasp:2025",
+                                            JsonValue.from(
+                                                listOf(
+                                                    mapOf(
+                                                        "label" to "LLM01:2025",
+                                                        "name" to "Prompt Injection",
+                                                    )
+                                                )
                                             ),
                                         )
                                         .build()
                                 )
                                 .build()
                         )
-                        .name("name")
-                        .phase("phase")
-                        .processingTimeMs(0.0)
+                        .name("prompt_injection")
+                        .phase("input")
+                        .processingTimeMs(7.01)
                         .version("version")
                         .build()
                 )
@@ -51,8 +81,8 @@ internal class InteractionAnalyzeResponseTest {
                             InteractionAnalyzeResponse.AnalyzedData.Input.builder()
                                 .addMessage(
                                     InteractionAnalyzeResponse.AnalyzedData.Input.Message.builder()
-                                        .content("content")
-                                        .role("role")
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
                                         .build()
                                 )
                                 .build()
@@ -61,8 +91,8 @@ internal class InteractionAnalyzeResponseTest {
                             InteractionAnalyzeResponse.AnalyzedData.Output.builder()
                                 .addMessage(
                                     InteractionAnalyzeResponse.AnalyzedData.Output.Message.builder()
-                                        .content("content")
-                                        .role("role")
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
                                         .build()
                                 )
                                 .build()
@@ -71,19 +101,19 @@ internal class InteractionAnalyzeResponseTest {
                 )
                 .metadata(
                     InteractionAnalyzeResponse.Metadata.builder()
-                        .model("model")
-                        .processingTimeMs(0.0)
+                        .model("gpt-5")
+                        .processingTimeMs(15.34)
                         .project(
                             InteractionAnalyzeResponse.Metadata.Project.builder()
-                                .projectAlias("project_alias")
-                                .projectId("project_id")
-                                .rulesetId("ruleset_id")
+                                .projectAlias("enterprise-search")
+                                .projectId("ca87b009-90bd-4724-91c2-f23326acd51a")
+                                .rulesetId("b5d7d261-b7be-451a-b943-0d408ab88aab")
                                 .build()
                         )
-                        .provider("provider")
-                        .requesterId("requester_id")
-                        .analyzedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                        .eventId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .provider("openai")
+                        .requesterId("user-1234")
+                        .analyzedAt(OffsetDateTime.parse("2023-10-10T14:48:00.000Z"))
+                        .eventId("d290f1ee-6c54-4b01-90e6-d701748f0851")
                         .build()
                 )
                 .modifiedData(
@@ -92,8 +122,8 @@ internal class InteractionAnalyzeResponseTest {
                             InteractionAnalyzeResponse.ModifiedData.Input.builder()
                                 .addMessage(
                                     InteractionAnalyzeResponse.ModifiedData.Input.Message.builder()
-                                        .content("content")
-                                        .role("role")
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
                                         .build()
                                 )
                                 .build()
@@ -102,8 +132,8 @@ internal class InteractionAnalyzeResponseTest {
                             InteractionAnalyzeResponse.ModifiedData.Output.builder()
                                 .addMessage(
                                     InteractionAnalyzeResponse.ModifiedData.Output.Message.builder()
-                                        .content("content")
-                                        .role("role")
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
                                         .build()
                                 )
                                 .build()
@@ -115,10 +145,13 @@ internal class InteractionAnalyzeResponseTest {
         assertThat(interactionAnalyzeResponse.analysis())
             .containsExactly(
                 InteractionAnalyzeResponse.Analysis.builder()
-                    .id("id")
+                    .id("prompt_injection.5.input")
                     .configuration(
                         InteractionAnalyzeResponse.Analysis.Configuration.builder()
-                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .putAdditionalProperty("enabled", JsonValue.from("bar"))
+                            .putAdditionalProperty("scan_type", JsonValue.from("bar"))
+                            .putAdditionalProperty("allow_overrides", JsonValue.from("bar"))
+                            .putAdditionalProperty("block_overrides", JsonValue.from("bar"))
                             .build()
                     )
                     .detected(true)
@@ -127,18 +160,45 @@ internal class InteractionAnalyzeResponseTest {
                             .frameworks(
                                 InteractionAnalyzeResponse.Analysis.Findings.Frameworks.builder()
                                     .putAdditionalProperty(
-                                        "foo",
+                                        "mitre",
                                         JsonValue.from(
-                                            listOf(mapOf("label" to "label", "name" to "name"))
+                                            listOf(
+                                                mapOf(
+                                                    "label" to "AML.T0051",
+                                                    "name" to "LLM Prompt Injection",
+                                                )
+                                            )
+                                        ),
+                                    )
+                                    .putAdditionalProperty(
+                                        "owasp",
+                                        JsonValue.from(
+                                            listOf(
+                                                mapOf(
+                                                    "label" to "LLM01",
+                                                    "name" to "Prompt Injection",
+                                                )
+                                            )
+                                        ),
+                                    )
+                                    .putAdditionalProperty(
+                                        "owasp:2025",
+                                        JsonValue.from(
+                                            listOf(
+                                                mapOf(
+                                                    "label" to "LLM01:2025",
+                                                    "name" to "Prompt Injection",
+                                                )
+                                            )
                                         ),
                                     )
                                     .build()
                             )
                             .build()
                     )
-                    .name("name")
-                    .phase("phase")
-                    .processingTimeMs(0.0)
+                    .name("prompt_injection")
+                    .phase("input")
+                    .processingTimeMs(7.01)
                     .version("version")
                     .build()
             )
@@ -149,8 +209,8 @@ internal class InteractionAnalyzeResponseTest {
                         InteractionAnalyzeResponse.AnalyzedData.Input.builder()
                             .addMessage(
                                 InteractionAnalyzeResponse.AnalyzedData.Input.Message.builder()
-                                    .content("content")
-                                    .role("role")
+                                    .content("What the largest moon of jupiter?")
+                                    .role("user")
                                     .build()
                             )
                             .build()
@@ -159,8 +219,8 @@ internal class InteractionAnalyzeResponseTest {
                         InteractionAnalyzeResponse.AnalyzedData.Output.builder()
                             .addMessage(
                                 InteractionAnalyzeResponse.AnalyzedData.Output.Message.builder()
-                                    .content("content")
-                                    .role("role")
+                                    .content("The largest moon of Jupiter is Ganymede.")
+                                    .role("assistant")
                                     .build()
                             )
                             .build()
@@ -170,19 +230,19 @@ internal class InteractionAnalyzeResponseTest {
         assertThat(interactionAnalyzeResponse.metadata())
             .isEqualTo(
                 InteractionAnalyzeResponse.Metadata.builder()
-                    .model("model")
-                    .processingTimeMs(0.0)
+                    .model("gpt-5")
+                    .processingTimeMs(15.34)
                     .project(
                         InteractionAnalyzeResponse.Metadata.Project.builder()
-                            .projectAlias("project_alias")
-                            .projectId("project_id")
-                            .rulesetId("ruleset_id")
+                            .projectAlias("enterprise-search")
+                            .projectId("ca87b009-90bd-4724-91c2-f23326acd51a")
+                            .rulesetId("b5d7d261-b7be-451a-b943-0d408ab88aab")
                             .build()
                     )
-                    .provider("provider")
-                    .requesterId("requester_id")
-                    .analyzedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                    .eventId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .provider("openai")
+                    .requesterId("user-1234")
+                    .analyzedAt(OffsetDateTime.parse("2023-10-10T14:48:00.000Z"))
+                    .eventId("d290f1ee-6c54-4b01-90e6-d701748f0851")
                     .build()
             )
         assertThat(interactionAnalyzeResponse.modifiedData())
@@ -192,8 +252,8 @@ internal class InteractionAnalyzeResponseTest {
                         InteractionAnalyzeResponse.ModifiedData.Input.builder()
                             .addMessage(
                                 InteractionAnalyzeResponse.ModifiedData.Input.Message.builder()
-                                    .content("content")
-                                    .role("role")
+                                    .content("What the largest moon of jupiter?")
+                                    .role("user")
                                     .build()
                             )
                             .build()
@@ -202,8 +262,8 @@ internal class InteractionAnalyzeResponseTest {
                         InteractionAnalyzeResponse.ModifiedData.Output.builder()
                             .addMessage(
                                 InteractionAnalyzeResponse.ModifiedData.Output.Message.builder()
-                                    .content("content")
-                                    .role("role")
+                                    .content("The largest moon of Jupiter is Ganymede.")
+                                    .role("assistant")
                                     .build()
                             )
                             .build()
@@ -219,10 +279,13 @@ internal class InteractionAnalyzeResponseTest {
             InteractionAnalyzeResponse.builder()
                 .addAnalysis(
                     InteractionAnalyzeResponse.Analysis.builder()
-                        .id("id")
+                        .id("prompt_injection.5.input")
                         .configuration(
                             InteractionAnalyzeResponse.Analysis.Configuration.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .putAdditionalProperty("enabled", JsonValue.from("bar"))
+                                .putAdditionalProperty("scan_type", JsonValue.from("bar"))
+                                .putAdditionalProperty("allow_overrides", JsonValue.from("bar"))
+                                .putAdditionalProperty("block_overrides", JsonValue.from("bar"))
                                 .build()
                         )
                         .detected(true)
@@ -232,18 +295,45 @@ internal class InteractionAnalyzeResponseTest {
                                     InteractionAnalyzeResponse.Analysis.Findings.Frameworks
                                         .builder()
                                         .putAdditionalProperty(
-                                            "foo",
+                                            "mitre",
                                             JsonValue.from(
-                                                listOf(mapOf("label" to "label", "name" to "name"))
+                                                listOf(
+                                                    mapOf(
+                                                        "label" to "AML.T0051",
+                                                        "name" to "LLM Prompt Injection",
+                                                    )
+                                                )
+                                            ),
+                                        )
+                                        .putAdditionalProperty(
+                                            "owasp",
+                                            JsonValue.from(
+                                                listOf(
+                                                    mapOf(
+                                                        "label" to "LLM01",
+                                                        "name" to "Prompt Injection",
+                                                    )
+                                                )
+                                            ),
+                                        )
+                                        .putAdditionalProperty(
+                                            "owasp:2025",
+                                            JsonValue.from(
+                                                listOf(
+                                                    mapOf(
+                                                        "label" to "LLM01:2025",
+                                                        "name" to "Prompt Injection",
+                                                    )
+                                                )
                                             ),
                                         )
                                         .build()
                                 )
                                 .build()
                         )
-                        .name("name")
-                        .phase("phase")
-                        .processingTimeMs(0.0)
+                        .name("prompt_injection")
+                        .phase("input")
+                        .processingTimeMs(7.01)
                         .version("version")
                         .build()
                 )
@@ -253,8 +343,8 @@ internal class InteractionAnalyzeResponseTest {
                             InteractionAnalyzeResponse.AnalyzedData.Input.builder()
                                 .addMessage(
                                     InteractionAnalyzeResponse.AnalyzedData.Input.Message.builder()
-                                        .content("content")
-                                        .role("role")
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
                                         .build()
                                 )
                                 .build()
@@ -263,8 +353,8 @@ internal class InteractionAnalyzeResponseTest {
                             InteractionAnalyzeResponse.AnalyzedData.Output.builder()
                                 .addMessage(
                                     InteractionAnalyzeResponse.AnalyzedData.Output.Message.builder()
-                                        .content("content")
-                                        .role("role")
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
                                         .build()
                                 )
                                 .build()
@@ -273,19 +363,19 @@ internal class InteractionAnalyzeResponseTest {
                 )
                 .metadata(
                     InteractionAnalyzeResponse.Metadata.builder()
-                        .model("model")
-                        .processingTimeMs(0.0)
+                        .model("gpt-5")
+                        .processingTimeMs(15.34)
                         .project(
                             InteractionAnalyzeResponse.Metadata.Project.builder()
-                                .projectAlias("project_alias")
-                                .projectId("project_id")
-                                .rulesetId("ruleset_id")
+                                .projectAlias("enterprise-search")
+                                .projectId("ca87b009-90bd-4724-91c2-f23326acd51a")
+                                .rulesetId("b5d7d261-b7be-451a-b943-0d408ab88aab")
                                 .build()
                         )
-                        .provider("provider")
-                        .requesterId("requester_id")
-                        .analyzedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                        .eventId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .provider("openai")
+                        .requesterId("user-1234")
+                        .analyzedAt(OffsetDateTime.parse("2023-10-10T14:48:00.000Z"))
+                        .eventId("d290f1ee-6c54-4b01-90e6-d701748f0851")
                         .build()
                 )
                 .modifiedData(
@@ -294,8 +384,8 @@ internal class InteractionAnalyzeResponseTest {
                             InteractionAnalyzeResponse.ModifiedData.Input.builder()
                                 .addMessage(
                                     InteractionAnalyzeResponse.ModifiedData.Input.Message.builder()
-                                        .content("content")
-                                        .role("role")
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
                                         .build()
                                 )
                                 .build()
@@ -304,8 +394,8 @@ internal class InteractionAnalyzeResponseTest {
                             InteractionAnalyzeResponse.ModifiedData.Output.builder()
                                 .addMessage(
                                     InteractionAnalyzeResponse.ModifiedData.Output.Message.builder()
-                                        .content("content")
-                                        .role("role")
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
                                         .build()
                                 )
                                 .build()

@@ -564,18 +564,24 @@ private constructor(
         ) : this(model, requesterId, provider, mutableMapOf())
 
         /**
+         * The language model for the interactions.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun model(): String = model.getRequired("model")
 
         /**
+         * The identifier for the entity making the interactions.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun requesterId(): String = requesterId.getRequired("requester_id")
 
         /**
+         * The provider of the language model.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
@@ -646,6 +652,7 @@ private constructor(
                 additionalProperties = metadata.additionalProperties.toMutableMap()
             }
 
+            /** The language model for the interactions. */
             fun model(model: String) = model(JsonField.of(model))
 
             /**
@@ -657,6 +664,7 @@ private constructor(
              */
             fun model(model: JsonField<String>) = apply { this.model = model }
 
+            /** The identifier for the entity making the interactions. */
             fun requesterId(requesterId: String) = requesterId(JsonField.of(requesterId))
 
             /**
@@ -670,6 +678,7 @@ private constructor(
                 this.requesterId = requesterId
             }
 
+            /** The provider of the language model. */
             fun provider(provider: String) = provider(JsonField.of(provider))
 
             /**
@@ -791,6 +800,8 @@ private constructor(
         ) : this(messages, mutableMapOf())
 
         /**
+         * The list of messages as input to a language model.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
@@ -835,6 +846,7 @@ private constructor(
                 additionalProperties = input.additionalProperties.toMutableMap()
             }
 
+            /** The list of messages as input to a language model. */
             fun messages(messages: List<Message>) = messages(JsonField.of(messages))
 
             /**
@@ -936,6 +948,8 @@ private constructor(
             ) : this(content, role, mutableMapOf())
 
             /**
+             * The textual content of the message.
+             *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or
              *   is unexpectedly missing or null (e.g. if the server responded with an unexpected
              *   value).
@@ -943,6 +957,8 @@ private constructor(
             fun content(): String = content.getRequired("content")
 
             /**
+             * The role of the message sender (e.g., user, assistant, system).
+             *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
              *   (e.g. if the server responded with an unexpected value).
              */
@@ -1001,6 +1017,7 @@ private constructor(
                     additionalProperties = message.additionalProperties.toMutableMap()
                 }
 
+                /** The textual content of the message. */
                 fun content(content: String) = content(JsonField.of(content))
 
                 /**
@@ -1012,6 +1029,7 @@ private constructor(
                  */
                 fun content(content: JsonField<String>) = apply { this.content = content }
 
+                /** The role of the message sender (e.g., user, assistant, system). */
                 fun role(role: String) = role(JsonField.of(role))
 
                 /**
@@ -1147,6 +1165,8 @@ private constructor(
         ) : this(messages, mutableMapOf())
 
         /**
+         * The list of messages as output from a language model.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
@@ -1191,6 +1211,7 @@ private constructor(
                 additionalProperties = output.additionalProperties.toMutableMap()
             }
 
+            /** The list of messages as output from a language model. */
             fun messages(messages: List<Message>) = messages(JsonField.of(messages))
 
             /**
@@ -1292,6 +1313,8 @@ private constructor(
             ) : this(content, role, mutableMapOf())
 
             /**
+             * The textual content of the message.
+             *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or
              *   is unexpectedly missing or null (e.g. if the server responded with an unexpected
              *   value).
@@ -1299,6 +1322,8 @@ private constructor(
             fun content(): String = content.getRequired("content")
 
             /**
+             * The role of the message sender (e.g., user, assistant, system).
+             *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
              *   (e.g. if the server responded with an unexpected value).
              */
@@ -1357,6 +1382,7 @@ private constructor(
                     additionalProperties = message.additionalProperties.toMutableMap()
                 }
 
+                /** The textual content of the message. */
                 fun content(content: String) = content(JsonField.of(content))
 
                 /**
@@ -1368,6 +1394,7 @@ private constructor(
                  */
                 fun content(content: JsonField<String>) = apply { this.content = content }
 
+                /** The role of the message sender (e.g., user, assistant, system). */
                 fun role(role: String) = role(JsonField.of(role))
 
                 /**
