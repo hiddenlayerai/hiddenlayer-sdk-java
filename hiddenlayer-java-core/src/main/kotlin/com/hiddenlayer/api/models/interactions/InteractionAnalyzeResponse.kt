@@ -50,6 +50,8 @@ private constructor(
     fun analysis(): List<Analysis> = analysis.getRequired("analysis")
 
     /**
+     * The language model input and/or output that was analyzed.
+     *
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
@@ -62,6 +64,9 @@ private constructor(
     fun metadata(): Metadata = metadata.getRequired("metadata")
 
     /**
+     * The potentially modified language model input and output after applying any redactions or
+     * modifications based on the analysis.
+     *
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
@@ -170,6 +175,7 @@ private constructor(
                 }
         }
 
+        /** The language model input and/or output that was analyzed. */
         fun analyzedData(analyzedData: AnalyzedData) = analyzedData(JsonField.of(analyzedData))
 
         /**
@@ -194,6 +200,10 @@ private constructor(
          */
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
+        /**
+         * The potentially modified language model input and output after applying any redactions or
+         * modifications based on the analysis.
+         */
         fun modifiedData(modifiedData: ModifiedData) = modifiedData(JsonField.of(modifiedData))
 
         /**
@@ -329,48 +339,64 @@ private constructor(
         )
 
         /**
+         * The unique identifier for the analyzer.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun id(): String = id.getRequired("id")
 
         /**
+         * The configuration settings used for the analyzer.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun configuration(): Configuration = configuration.getRequired("configuration")
 
         /**
+         * Indicates the analysis resulted in a detection.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun detected(): Boolean = detected.getRequired("detected")
 
         /**
+         * The frameworks and associated findings for the analysis.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun findings(): Findings = findings.getRequired("findings")
 
         /**
+         * The name of the analysis performed.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun name(): String = name.getRequired("name")
 
         /**
+         * The phase of the analysis (i.e. input or output).
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun phase(): String = phase.getRequired("phase")
 
         /**
+         * The time taken to perform this specific analysis.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun processingTimeMs(): Double = processingTimeMs.getRequired("processing_time_ms")
 
         /**
+         * The version of the analysis performed.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
@@ -496,6 +522,7 @@ private constructor(
                 additionalProperties = analysis.additionalProperties.toMutableMap()
             }
 
+            /** The unique identifier for the analyzer. */
             fun id(id: String) = id(JsonField.of(id))
 
             /**
@@ -507,6 +534,7 @@ private constructor(
              */
             fun id(id: JsonField<String>) = apply { this.id = id }
 
+            /** The configuration settings used for the analyzer. */
             fun configuration(configuration: Configuration) =
                 configuration(JsonField.of(configuration))
 
@@ -521,6 +549,7 @@ private constructor(
                 this.configuration = configuration
             }
 
+            /** Indicates the analysis resulted in a detection. */
             fun detected(detected: Boolean) = detected(JsonField.of(detected))
 
             /**
@@ -532,6 +561,7 @@ private constructor(
              */
             fun detected(detected: JsonField<Boolean>) = apply { this.detected = detected }
 
+            /** The frameworks and associated findings for the analysis. */
             fun findings(findings: Findings) = findings(JsonField.of(findings))
 
             /**
@@ -543,6 +573,7 @@ private constructor(
              */
             fun findings(findings: JsonField<Findings>) = apply { this.findings = findings }
 
+            /** The name of the analysis performed. */
             fun name(name: String) = name(JsonField.of(name))
 
             /**
@@ -554,6 +585,7 @@ private constructor(
              */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
+            /** The phase of the analysis (i.e. input or output). */
             fun phase(phase: String) = phase(JsonField.of(phase))
 
             /**
@@ -565,6 +597,7 @@ private constructor(
              */
             fun phase(phase: JsonField<String>) = apply { this.phase = phase }
 
+            /** The time taken to perform this specific analysis. */
             fun processingTimeMs(processingTimeMs: Double) =
                 processingTimeMs(JsonField.of(processingTimeMs))
 
@@ -579,6 +612,7 @@ private constructor(
                 this.processingTimeMs = processingTimeMs
             }
 
+            /** The version of the analysis performed. */
             fun version(version: String) = version(JsonField.of(version))
 
             /**
@@ -685,6 +719,7 @@ private constructor(
                 (if (processingTimeMs.asKnown().isPresent) 1 else 0) +
                 (if (version.asKnown().isPresent) 1 else 0)
 
+        /** The configuration settings used for the analyzer. */
         class Configuration
         @JsonCreator
         private constructor(
@@ -787,6 +822,7 @@ private constructor(
             override fun toString() = "Configuration{additionalProperties=$additionalProperties}"
         }
 
+        /** The frameworks and associated findings for the analysis. */
         class Findings
         private constructor(
             private val frameworks: JsonField<Frameworks>,
@@ -801,6 +837,8 @@ private constructor(
             ) : this(frameworks, mutableMapOf())
 
             /**
+             * The taxonomies for the detections.
+             *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or
              *   is unexpectedly missing or null (e.g. if the server responded with an unexpected
              *   value).
@@ -854,6 +892,7 @@ private constructor(
                     additionalProperties = findings.additionalProperties.toMutableMap()
                 }
 
+                /** The taxonomies for the detections. */
                 fun frameworks(frameworks: Frameworks) = frameworks(JsonField.of(frameworks))
 
                 /**
@@ -936,6 +975,7 @@ private constructor(
             @JvmSynthetic
             internal fun validity(): Int = (frameworks.asKnown().getOrNull()?.validity() ?: 0)
 
+            /** The taxonomies for the detections. */
             class Frameworks
             @JsonCreator
             private constructor(
@@ -1095,6 +1135,7 @@ private constructor(
             "Analysis{id=$id, configuration=$configuration, detected=$detected, findings=$findings, name=$name, phase=$phase, processingTimeMs=$processingTimeMs, version=$version, additionalProperties=$additionalProperties}"
     }
 
+    /** The language model input and/or output that was analyzed. */
     class AnalyzedData
     private constructor(
         private val input: JsonField<Input>,
@@ -1279,6 +1320,8 @@ private constructor(
             ) : this(messages, mutableMapOf())
 
             /**
+             * The list of messages as input to a language model.
+             *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
              *   (e.g. if the server responded with an unexpected value).
              */
@@ -1324,6 +1367,7 @@ private constructor(
                     additionalProperties = input.additionalProperties.toMutableMap()
                 }
 
+                /** The list of messages as input to a language model. */
                 fun messages(messages: List<Message>) = messages(JsonField.of(messages))
 
                 /**
@@ -1428,6 +1472,8 @@ private constructor(
                 ) : this(content, role, mutableMapOf())
 
                 /**
+                 * The textual content of the message.
+                 *
                  * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
                  *   or is unexpectedly missing or null (e.g. if the server responded with an
                  *   unexpected value).
@@ -1435,6 +1481,8 @@ private constructor(
                 fun content(): String = content.getRequired("content")
 
                 /**
+                 * The role of the message sender (e.g., user, assistant, system).
+                 *
                  * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
@@ -1495,6 +1543,7 @@ private constructor(
                         additionalProperties = message.additionalProperties.toMutableMap()
                     }
 
+                    /** The textual content of the message. */
                     fun content(content: String) = content(JsonField.of(content))
 
                     /**
@@ -1506,6 +1555,7 @@ private constructor(
                      */
                     fun content(content: JsonField<String>) = apply { this.content = content }
 
+                    /** The role of the message sender (e.g., user, assistant, system). */
                     fun role(role: String) = role(JsonField.of(role))
 
                     /**
@@ -1643,6 +1693,8 @@ private constructor(
             ) : this(messages, mutableMapOf())
 
             /**
+             * The list of messages as output from a language model.
+             *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
              *   (e.g. if the server responded with an unexpected value).
              */
@@ -1688,6 +1740,7 @@ private constructor(
                     additionalProperties = output.additionalProperties.toMutableMap()
                 }
 
+                /** The list of messages as output from a language model. */
                 fun messages(messages: List<Message>) = messages(JsonField.of(messages))
 
                 /**
@@ -1792,6 +1845,8 @@ private constructor(
                 ) : this(content, role, mutableMapOf())
 
                 /**
+                 * The textual content of the message.
+                 *
                  * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
                  *   or is unexpectedly missing or null (e.g. if the server responded with an
                  *   unexpected value).
@@ -1799,6 +1854,8 @@ private constructor(
                 fun content(): String = content.getRequired("content")
 
                 /**
+                 * The role of the message sender (e.g., user, assistant, system).
+                 *
                  * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
@@ -1859,6 +1916,7 @@ private constructor(
                         additionalProperties = message.additionalProperties.toMutableMap()
                     }
 
+                    /** The textual content of the message. */
                     fun content(content: String) = content(JsonField.of(content))
 
                     /**
@@ -1870,6 +1928,7 @@ private constructor(
                      */
                     fun content(content: JsonField<String>) = apply { this.content = content }
 
+                    /** The role of the message sender (e.g., user, assistant, system). */
                     fun role(role: String) = role(JsonField.of(role))
 
                     /**
@@ -2053,12 +2112,16 @@ private constructor(
         )
 
         /**
+         * The language model from the request.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun model(): String = model.getRequired("model")
 
         /**
+         * The total time taken to perform the analysis.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
@@ -2071,24 +2134,32 @@ private constructor(
         fun project(): Project = project.getRequired("project")
 
         /**
+         * The provider of the language model from the request.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun provider(): String = provider.getRequired("provider")
 
         /**
+         * The identifier for the entity from the request.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun requesterId(): String = requesterId.getRequired("requester_id")
 
         /**
+         * The timestamp when the analysis was performed.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
         fun analyzedAt(): Optional<OffsetDateTime> = analyzedAt.getOptional("analyzed_at")
 
         /**
+         * The unique identifier for the analysis event.
+         *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
@@ -2203,6 +2274,7 @@ private constructor(
                 additionalProperties = metadata.additionalProperties.toMutableMap()
             }
 
+            /** The language model from the request. */
             fun model(model: String) = model(JsonField.of(model))
 
             /**
@@ -2214,6 +2286,7 @@ private constructor(
              */
             fun model(model: JsonField<String>) = apply { this.model = model }
 
+            /** The total time taken to perform the analysis. */
             fun processingTimeMs(processingTimeMs: Double) =
                 processingTimeMs(JsonField.of(processingTimeMs))
 
@@ -2239,6 +2312,7 @@ private constructor(
              */
             fun project(project: JsonField<Project>) = apply { this.project = project }
 
+            /** The provider of the language model from the request. */
             fun provider(provider: String) = provider(JsonField.of(provider))
 
             /**
@@ -2250,6 +2324,7 @@ private constructor(
              */
             fun provider(provider: JsonField<String>) = apply { this.provider = provider }
 
+            /** The identifier for the entity from the request. */
             fun requesterId(requesterId: String) = requesterId(JsonField.of(requesterId))
 
             /**
@@ -2263,6 +2338,7 @@ private constructor(
                 this.requesterId = requesterId
             }
 
+            /** The timestamp when the analysis was performed. */
             fun analyzedAt(analyzedAt: OffsetDateTime) = analyzedAt(JsonField.of(analyzedAt))
 
             /**
@@ -2276,6 +2352,7 @@ private constructor(
                 this.analyzedAt = analyzedAt
             }
 
+            /** The unique identifier for the analysis event. */
             fun eventId(eventId: String) = eventId(JsonField.of(eventId))
 
             /**
@@ -2398,18 +2475,24 @@ private constructor(
             ) : this(projectAlias, projectId, rulesetId, mutableMapOf())
 
             /**
+             * A custom alias for the Project.
+             *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
              *   (e.g. if the server responded with an unexpected value).
              */
             fun projectAlias(): Optional<String> = projectAlias.getOptional("project_alias")
 
             /**
+             * The unique identifier for the Project.
+             *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
              *   (e.g. if the server responded with an unexpected value).
              */
             fun projectId(): Optional<String> = projectId.getOptional("project_id")
 
             /**
+             * The unique identifier for the Ruleset associated with the Project.
+             *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
              *   (e.g. if the server responded with an unexpected value).
              */
@@ -2479,6 +2562,7 @@ private constructor(
                     additionalProperties = project.additionalProperties.toMutableMap()
                 }
 
+                /** A custom alias for the Project. */
                 fun projectAlias(projectAlias: String) = projectAlias(JsonField.of(projectAlias))
 
                 /**
@@ -2492,6 +2576,7 @@ private constructor(
                     this.projectAlias = projectAlias
                 }
 
+                /** The unique identifier for the Project. */
                 fun projectId(projectId: String) = projectId(JsonField.of(projectId))
 
                 /**
@@ -2503,6 +2588,7 @@ private constructor(
                  */
                 fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
 
+                /** The unique identifier for the Ruleset associated with the Project. */
                 fun rulesetId(rulesetId: String) = rulesetId(JsonField.of(rulesetId))
 
                 /**
@@ -2635,6 +2721,10 @@ private constructor(
             "Metadata{model=$model, processingTimeMs=$processingTimeMs, project=$project, provider=$provider, requesterId=$requesterId, analyzedAt=$analyzedAt, eventId=$eventId, additionalProperties=$additionalProperties}"
     }
 
+    /**
+     * The potentially modified language model input and output after applying any redactions or
+     * modifications based on the analysis.
+     */
     class ModifiedData
     private constructor(
         private val input: JsonField<Input>,
@@ -2821,6 +2911,8 @@ private constructor(
             ) : this(messages, mutableMapOf())
 
             /**
+             * The list of messages as input to a language model.
+             *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
              *   (e.g. if the server responded with an unexpected value).
              */
@@ -2866,6 +2958,7 @@ private constructor(
                     additionalProperties = input.additionalProperties.toMutableMap()
                 }
 
+                /** The list of messages as input to a language model. */
                 fun messages(messages: List<Message>) = messages(JsonField.of(messages))
 
                 /**
@@ -2970,6 +3063,8 @@ private constructor(
                 ) : this(content, role, mutableMapOf())
 
                 /**
+                 * The textual content of the message.
+                 *
                  * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
                  *   or is unexpectedly missing or null (e.g. if the server responded with an
                  *   unexpected value).
@@ -2977,6 +3072,8 @@ private constructor(
                 fun content(): String = content.getRequired("content")
 
                 /**
+                 * The role of the message sender (e.g., user, assistant, system).
+                 *
                  * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
@@ -3037,6 +3134,7 @@ private constructor(
                         additionalProperties = message.additionalProperties.toMutableMap()
                     }
 
+                    /** The textual content of the message. */
                     fun content(content: String) = content(JsonField.of(content))
 
                     /**
@@ -3048,6 +3146,7 @@ private constructor(
                      */
                     fun content(content: JsonField<String>) = apply { this.content = content }
 
+                    /** The role of the message sender (e.g., user, assistant, system). */
                     fun role(role: String) = role(JsonField.of(role))
 
                     /**
@@ -3185,6 +3284,8 @@ private constructor(
             ) : this(messages, mutableMapOf())
 
             /**
+             * The list of messages as output from a language model.
+             *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
              *   (e.g. if the server responded with an unexpected value).
              */
@@ -3230,6 +3331,7 @@ private constructor(
                     additionalProperties = output.additionalProperties.toMutableMap()
                 }
 
+                /** The list of messages as output from a language model. */
                 fun messages(messages: List<Message>) = messages(JsonField.of(messages))
 
                 /**
@@ -3334,6 +3436,8 @@ private constructor(
                 ) : this(content, role, mutableMapOf())
 
                 /**
+                 * The textual content of the message.
+                 *
                  * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
                  *   or is unexpectedly missing or null (e.g. if the server responded with an
                  *   unexpected value).
@@ -3341,6 +3445,8 @@ private constructor(
                 fun content(): String = content.getRequired("content")
 
                 /**
+                 * The role of the message sender (e.g., user, assistant, system).
+                 *
                  * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
@@ -3401,6 +3507,7 @@ private constructor(
                         additionalProperties = message.additionalProperties.toMutableMap()
                     }
 
+                    /** The textual content of the message. */
                     fun content(content: String) = content(JsonField.of(content))
 
                     /**
@@ -3412,6 +3519,7 @@ private constructor(
                      */
                     fun content(content: JsonField<String>) = apply { this.content = content }
 
+                    /** The role of the message sender (e.g., user, assistant, system). */
                     fun role(role: String) = role(JsonField.of(role))
 
                     /**

@@ -29,17 +29,17 @@ internal class InteractionServiceTest {
                     .xCorrelationId("00000000-0000-0000-0000-000000000000")
                     .metadata(
                         InteractionAnalyzeParams.Metadata.builder()
-                            .model("model")
-                            .requesterId("requester_id")
-                            .provider("provider")
+                            .model("gpt-5")
+                            .requesterId("user-1234")
+                            .provider("openai")
                             .build()
                     )
                     .input(
                         InteractionAnalyzeParams.Input.builder()
                             .addMessage(
                                 InteractionAnalyzeParams.Input.Message.builder()
-                                    .content("content")
-                                    .role("role")
+                                    .content("What the largest moon of jupiter?")
+                                    .role("user")
                                     .build()
                             )
                             .build()
@@ -48,8 +48,8 @@ internal class InteractionServiceTest {
                         InteractionAnalyzeParams.Output.builder()
                             .addMessage(
                                 InteractionAnalyzeParams.Output.Message.builder()
-                                    .content("content")
-                                    .role("role")
+                                    .content("The largest moon of Jupiter is Ganymede.")
+                                    .role("assistant")
                                     .build()
                             )
                             .build()
