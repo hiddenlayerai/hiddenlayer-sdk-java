@@ -61,7 +61,7 @@ internal class JobServiceTest {
                     )
                     .addModelVersionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .offset(0L)
-                    .addRequestSource(JobListParams.RequestSource.HYBRID_UPLOAD)
+                    .addRequestSource(JobListParams.RequestSource.API_UPLOAD)
                     .scannerVersion("891.0.97194")
                     .addSeverity("string")
                     .sort("-start_time")

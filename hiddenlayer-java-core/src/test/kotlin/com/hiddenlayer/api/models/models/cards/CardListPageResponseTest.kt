@@ -18,16 +18,16 @@ internal class CardListPageResponseTest {
                 .pageSize(0L)
                 .addResult(
                     CardListResponse.builder()
-                        .createdAt(0L)
-                        .modelId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .plaintextName("Resnet-50")
-                        .source("azure:datascience-workspace")
                         .activeVersionCount(0L)
                         .attackMonitoringThreatLevel(
                             CardListResponse.AttackMonitoringThreatLevel.SAFE
                         )
+                        .createdAt(0L)
                         .hasGenealogy(true)
+                        .modelId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .modelScanThreatLevel(CardListResponse.ModelScanThreatLevel.SAFE)
+                        .plaintextName("Resnet-50")
+                        .source("azure:datascience-workspace")
                         .securityPosture(
                             CardListResponse.SecurityPosture.builder()
                                 .attackMonitoring(true)
@@ -49,14 +49,14 @@ internal class CardListPageResponseTest {
         assertThat(cardListPageResponse.results())
             .containsExactly(
                 CardListResponse.builder()
-                    .createdAt(0L)
-                    .modelId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .plaintextName("Resnet-50")
-                    .source("azure:datascience-workspace")
                     .activeVersionCount(0L)
                     .attackMonitoringThreatLevel(CardListResponse.AttackMonitoringThreatLevel.SAFE)
+                    .createdAt(0L)
                     .hasGenealogy(true)
+                    .modelId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .modelScanThreatLevel(CardListResponse.ModelScanThreatLevel.SAFE)
+                    .plaintextName("Resnet-50")
+                    .source("azure:datascience-workspace")
                     .securityPosture(
                         CardListResponse.SecurityPosture.builder()
                             .attackMonitoring(true)
@@ -82,16 +82,16 @@ internal class CardListPageResponseTest {
                 .pageSize(0L)
                 .addResult(
                     CardListResponse.builder()
-                        .createdAt(0L)
-                        .modelId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .plaintextName("Resnet-50")
-                        .source("azure:datascience-workspace")
                         .activeVersionCount(0L)
                         .attackMonitoringThreatLevel(
                             CardListResponse.AttackMonitoringThreatLevel.SAFE
                         )
+                        .createdAt(0L)
                         .hasGenealogy(true)
+                        .modelId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .modelScanThreatLevel(CardListResponse.ModelScanThreatLevel.SAFE)
+                        .plaintextName("Resnet-50")
+                        .source("azure:datascience-workspace")
                         .securityPosture(
                             CardListResponse.SecurityPosture.builder()
                                 .attackMonitoring(true)

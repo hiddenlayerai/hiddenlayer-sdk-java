@@ -787,6 +787,7 @@ private constructor(
             "ModelName{contains=$contains, eq=$eq, additionalProperties=$additionalProperties}"
     }
 
+    /** Identifies the system that requested the scan */
     class RequestSource @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
 
