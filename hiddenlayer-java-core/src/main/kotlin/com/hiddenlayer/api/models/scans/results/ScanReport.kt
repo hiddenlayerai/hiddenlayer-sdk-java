@@ -222,12 +222,13 @@ private constructor(
     fun hasGenealogy(): Optional<Boolean> = hasGenealogy.getOptional("has_genealogy")
 
     /**
-     * detection severity
+     * The severity of the detection. Use ScanDetectionSeverity (without safe) or
+     * ScanDetectionSeverityWithNone instead.
      *
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun severity(): Optional<Severity> = severity.getOptional("severity")
+    @Deprecated("deprecated") fun severity(): Optional<Severity> = severity.getOptional("severity")
 
     /**
      * aggregated summary statistics for the scan
@@ -358,7 +359,10 @@ private constructor(
      *
      * Unlike [severity], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("severity") @ExcludeMissing fun _severity(): JsonField<Severity> = severity
+    @Deprecated("deprecated")
+    @JsonProperty("severity")
+    @ExcludeMissing
+    fun _severity(): JsonField<Severity> = severity
 
     /**
      * Returns the raw JSON value of [summary].
@@ -655,7 +659,11 @@ private constructor(
             this.hasGenealogy = hasGenealogy
         }
 
-        /** detection severity */
+        /**
+         * The severity of the detection. Use ScanDetectionSeverity (without safe) or
+         * ScanDetectionSeverityWithNone instead.
+         */
+        @Deprecated("deprecated")
         fun severity(severity: Severity) = severity(JsonField.of(severity))
 
         /**
@@ -665,6 +673,7 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
+        @Deprecated("deprecated")
         fun severity(severity: JsonField<Severity>) = apply { this.severity = severity }
 
         /** aggregated summary statistics for the scan */
@@ -5754,7 +5763,7 @@ private constructor(
             fun ruleId(): String = ruleId.getRequired("rule_id")
 
             /**
-             * detection severity
+             * The severity of the detection.
              *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or
              *   is unexpectedly missing or null (e.g. if the server responded with an unexpected
@@ -6192,7 +6201,7 @@ private constructor(
                  */
                 fun ruleId(ruleId: JsonField<String>) = apply { this.ruleId = ruleId }
 
-                /** detection severity */
+                /** The severity of the detection. */
                 fun severity(severity: Severity) = severity(JsonField.of(severity))
 
                 /**
@@ -6724,7 +6733,7 @@ private constructor(
                 override fun toString() = value.toString()
             }
 
-            /** detection severity */
+            /** The severity of the detection. */
             class Severity @JsonCreator private constructor(private val value: JsonField<String>) :
                 Enum {
 
@@ -6740,23 +6749,23 @@ private constructor(
 
                 companion object {
 
-                    @JvmField val LOW = of("low")
-
-                    @JvmField val MEDIUM = of("medium")
+                    @JvmField val CRITICAL = of("critical")
 
                     @JvmField val HIGH = of("high")
 
-                    @JvmField val CRITICAL = of("critical")
+                    @JvmField val MEDIUM = of("medium")
+
+                    @JvmField val LOW = of("low")
 
                     @JvmStatic fun of(value: String) = Severity(JsonField.of(value))
                 }
 
                 /** An enum containing [Severity]'s known values. */
                 enum class Known {
-                    LOW,
-                    MEDIUM,
-                    HIGH,
                     CRITICAL,
+                    HIGH,
+                    MEDIUM,
+                    LOW,
                 }
 
                 /**
@@ -6769,10 +6778,10 @@ private constructor(
                  * - It was constructed with an arbitrary value using the [of] method.
                  */
                 enum class Value {
-                    LOW,
-                    MEDIUM,
-                    HIGH,
                     CRITICAL,
+                    HIGH,
+                    MEDIUM,
+                    LOW,
                     /**
                      * An enum member indicating that [Severity] was instantiated with an unknown
                      * value.
@@ -6789,10 +6798,10 @@ private constructor(
                  */
                 fun value(): Value =
                     when (this) {
-                        LOW -> Value.LOW
-                        MEDIUM -> Value.MEDIUM
-                        HIGH -> Value.HIGH
                         CRITICAL -> Value.CRITICAL
+                        HIGH -> Value.HIGH
+                        MEDIUM -> Value.MEDIUM
+                        LOW -> Value.LOW
                         else -> Value._UNKNOWN
                     }
 
@@ -6807,10 +6816,10 @@ private constructor(
                  */
                 fun known(): Known =
                     when (this) {
-                        LOW -> Known.LOW
-                        MEDIUM -> Known.MEDIUM
-                        HIGH -> Known.HIGH
                         CRITICAL -> Known.CRITICAL
+                        HIGH -> Known.HIGH
+                        MEDIUM -> Known.MEDIUM
+                        LOW -> Known.LOW
                         else -> throw HiddenLayerInvalidDataException("Unknown Severity: $value")
                     }
 
@@ -7499,7 +7508,11 @@ private constructor(
             "FileResult{details=$details, detections=$detections, endTime=$endTime, fileInstanceId=$fileInstanceId, fileLocation=$fileLocation, seen=$seen, startTime=$startTime, status=$status, fileError=$fileError, additionalProperties=$additionalProperties}"
     }
 
-    /** detection severity */
+    /**
+     * The severity of the detection. Use ScanDetectionSeverity (without safe) or
+     * ScanDetectionSeverityWithNone instead.
+     */
+    @Deprecated("deprecated")
     class Severity @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
@@ -7514,13 +7527,13 @@ private constructor(
 
         companion object {
 
-            @JvmField val LOW = of("low")
-
-            @JvmField val MEDIUM = of("medium")
+            @JvmField val CRITICAL = of("critical")
 
             @JvmField val HIGH = of("high")
 
-            @JvmField val CRITICAL = of("critical")
+            @JvmField val MEDIUM = of("medium")
+
+            @JvmField val LOW = of("low")
 
             @JvmField val SAFE = of("safe")
 
@@ -7531,10 +7544,10 @@ private constructor(
 
         /** An enum containing [Severity]'s known values. */
         enum class Known {
-            LOW,
-            MEDIUM,
-            HIGH,
             CRITICAL,
+            HIGH,
+            MEDIUM,
+            LOW,
             SAFE,
             UNKNOWN,
         }
@@ -7549,10 +7562,10 @@ private constructor(
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
-            LOW,
-            MEDIUM,
-            HIGH,
             CRITICAL,
+            HIGH,
+            MEDIUM,
+            LOW,
             SAFE,
             UNKNOWN,
             /** An enum member indicating that [Severity] was instantiated with an unknown value. */
@@ -7568,10 +7581,10 @@ private constructor(
          */
         fun value(): Value =
             when (this) {
-                LOW -> Value.LOW
-                MEDIUM -> Value.MEDIUM
-                HIGH -> Value.HIGH
                 CRITICAL -> Value.CRITICAL
+                HIGH -> Value.HIGH
+                MEDIUM -> Value.MEDIUM
+                LOW -> Value.LOW
                 SAFE -> Value.SAFE
                 UNKNOWN -> Value.UNKNOWN
                 else -> Value._UNKNOWN
@@ -7588,10 +7601,10 @@ private constructor(
          */
         fun known(): Known =
             when (this) {
-                LOW -> Known.LOW
-                MEDIUM -> Known.MEDIUM
-                HIGH -> Known.HIGH
                 CRITICAL -> Known.CRITICAL
+                HIGH -> Known.HIGH
+                MEDIUM -> Known.MEDIUM
+                LOW -> Known.LOW
                 SAFE -> Known.SAFE
                 UNKNOWN -> Known.UNKNOWN
                 else -> throw HiddenLayerInvalidDataException("Unknown Severity: $value")
@@ -7742,11 +7755,13 @@ private constructor(
             filesWithDetectionsCount.getOptional("files_with_detections_count")
 
         /**
-         * highest severity level found across all detections
+         * The severity of the detection. Use ScanDetectionSeverity (without safe) or
+         * ScanDetectionSeverityWithNone instead.
          *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
+        @Deprecated("deprecated")
         fun severity(): Optional<Severity> = severity.getOptional("severity")
 
         /**
@@ -7809,7 +7824,10 @@ private constructor(
          *
          * Unlike [severity], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("severity") @ExcludeMissing fun _severity(): JsonField<Severity> = severity
+        @Deprecated("deprecated")
+        @JsonProperty("severity")
+        @ExcludeMissing
+        fun _severity(): JsonField<Severity> = severity
 
         /**
          * Returns the raw JSON value of [unknownFiles].
@@ -7946,7 +7964,11 @@ private constructor(
                 this.filesWithDetectionsCount = filesWithDetectionsCount
             }
 
-            /** highest severity level found across all detections */
+            /**
+             * The severity of the detection. Use ScanDetectionSeverity (without safe) or
+             * ScanDetectionSeverityWithNone instead.
+             */
+            @Deprecated("deprecated")
             fun severity(severity: Severity) = severity(JsonField.of(severity))
 
             /**
@@ -7956,6 +7978,7 @@ private constructor(
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
+            @Deprecated("deprecated")
             fun severity(severity: JsonField<Severity>) = apply { this.severity = severity }
 
             /** number of files with unknown file type */
@@ -8050,7 +8073,11 @@ private constructor(
                 (severity.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (unknownFiles.asKnown().isPresent) 1 else 0)
 
-        /** highest severity level found across all detections */
+        /**
+         * The severity of the detection. Use ScanDetectionSeverity (without safe) or
+         * ScanDetectionSeverityWithNone instead.
+         */
+        @Deprecated("deprecated")
         class Severity @JsonCreator private constructor(private val value: JsonField<String>) :
             Enum {
 
@@ -8066,13 +8093,13 @@ private constructor(
 
             companion object {
 
-                @JvmField val LOW = of("low")
-
-                @JvmField val MEDIUM = of("medium")
+                @JvmField val CRITICAL = of("critical")
 
                 @JvmField val HIGH = of("high")
 
-                @JvmField val CRITICAL = of("critical")
+                @JvmField val MEDIUM = of("medium")
+
+                @JvmField val LOW = of("low")
 
                 @JvmField val SAFE = of("safe")
 
@@ -8083,10 +8110,10 @@ private constructor(
 
             /** An enum containing [Severity]'s known values. */
             enum class Known {
-                LOW,
-                MEDIUM,
-                HIGH,
                 CRITICAL,
+                HIGH,
+                MEDIUM,
+                LOW,
                 SAFE,
                 UNKNOWN,
             }
@@ -8101,10 +8128,10 @@ private constructor(
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
-                LOW,
-                MEDIUM,
-                HIGH,
                 CRITICAL,
+                HIGH,
+                MEDIUM,
+                LOW,
                 SAFE,
                 UNKNOWN,
                 /**
@@ -8122,10 +8149,10 @@ private constructor(
              */
             fun value(): Value =
                 when (this) {
-                    LOW -> Value.LOW
-                    MEDIUM -> Value.MEDIUM
-                    HIGH -> Value.HIGH
                     CRITICAL -> Value.CRITICAL
+                    HIGH -> Value.HIGH
+                    MEDIUM -> Value.MEDIUM
+                    LOW -> Value.LOW
                     SAFE -> Value.SAFE
                     UNKNOWN -> Value.UNKNOWN
                     else -> Value._UNKNOWN
@@ -8142,10 +8169,10 @@ private constructor(
              */
             fun known(): Known =
                 when (this) {
-                    LOW -> Known.LOW
-                    MEDIUM -> Known.MEDIUM
-                    HIGH -> Known.HIGH
                     CRITICAL -> Known.CRITICAL
+                    HIGH -> Known.HIGH
+                    MEDIUM -> Known.MEDIUM
+                    LOW -> Known.LOW
                     SAFE -> Known.SAFE
                     UNKNOWN -> Known.UNKNOWN
                     else -> throw HiddenLayerInvalidDataException("Unknown Severity: $value")

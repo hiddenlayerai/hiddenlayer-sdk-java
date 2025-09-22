@@ -58,7 +58,7 @@ internal class FileScanReportTest {
                                 .addOwasp("LLM21")
                                 .risk(FileScanReport.FileResult.Detection.Risk.MALICIOUS)
                                 .ruleId("PICKLE_0055_202408")
-                                .severity(FileScanReport.FileResult.Detection.Severity.LOW)
+                                .severity(FileScanReport.FileResult.Detection.Severity.CRITICAL)
                                 .addRuleDetail(
                                     FileScanReport.FileResult.Detection.RuleDetail.builder()
                                         .description("description")
@@ -127,7 +127,7 @@ internal class FileScanReportTest {
                             .addOwasp("LLM21")
                             .risk(FileScanReport.FileResult.Detection.Risk.MALICIOUS)
                             .ruleId("PICKLE_0055_202408")
-                            .severity(FileScanReport.FileResult.Detection.Severity.LOW)
+                            .severity(FileScanReport.FileResult.Detection.Severity.CRITICAL)
                             .addRuleDetail(
                                 FileScanReport.FileResult.Detection.RuleDetail.builder()
                                     .description("description")
@@ -201,7 +201,7 @@ internal class FileScanReportTest {
                                 .addOwasp("LLM21")
                                 .risk(FileScanReport.FileResult.Detection.Risk.MALICIOUS)
                                 .ruleId("PICKLE_0055_202408")
-                                .severity(FileScanReport.FileResult.Detection.Severity.LOW)
+                                .severity(FileScanReport.FileResult.Detection.Severity.CRITICAL)
                                 .addRuleDetail(
                                     FileScanReport.FileResult.Detection.RuleDetail.builder()
                                         .description("description")

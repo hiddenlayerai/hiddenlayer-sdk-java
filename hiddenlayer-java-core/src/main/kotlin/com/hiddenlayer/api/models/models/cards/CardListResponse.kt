@@ -21,14 +21,14 @@ import kotlin.jvm.optionals.getOrNull
 
 class CardListResponse
 private constructor(
-    private val createdAt: JsonField<Long>,
-    private val modelId: JsonField<String>,
-    private val plaintextName: JsonField<String>,
-    private val source: JsonField<String>,
     private val activeVersionCount: JsonField<Long>,
     private val attackMonitoringThreatLevel: JsonField<AttackMonitoringThreatLevel>,
+    private val createdAt: JsonField<Long>,
     private val hasGenealogy: JsonField<Boolean>,
+    private val modelId: JsonField<String>,
     private val modelScanThreatLevel: JsonField<ModelScanThreatLevel>,
+    private val plaintextName: JsonField<String>,
+    private val source: JsonField<String>,
     private val securityPosture: JsonField<SecurityPosture>,
     private val tags: JsonField<Tags>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -36,41 +36,54 @@ private constructor(
 
     @JsonCreator
     private constructor(
-        @JsonProperty("created_at") @ExcludeMissing createdAt: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("model_id") @ExcludeMissing modelId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("plaintext_name")
-        @ExcludeMissing
-        plaintextName: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("source") @ExcludeMissing source: JsonField<String> = JsonMissing.of(),
         @JsonProperty("active_version_count")
         @ExcludeMissing
         activeVersionCount: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("attack_monitoring_threat_level")
         @ExcludeMissing
         attackMonitoringThreatLevel: JsonField<AttackMonitoringThreatLevel> = JsonMissing.of(),
+        @JsonProperty("created_at") @ExcludeMissing createdAt: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("has_genealogy")
         @ExcludeMissing
         hasGenealogy: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("model_id") @ExcludeMissing modelId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("model_scan_threat_level")
         @ExcludeMissing
         modelScanThreatLevel: JsonField<ModelScanThreatLevel> = JsonMissing.of(),
+        @JsonProperty("plaintext_name")
+        @ExcludeMissing
+        plaintextName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("source") @ExcludeMissing source: JsonField<String> = JsonMissing.of(),
         @JsonProperty("security_posture")
         @ExcludeMissing
         securityPosture: JsonField<SecurityPosture> = JsonMissing.of(),
         @JsonProperty("tags") @ExcludeMissing tags: JsonField<Tags> = JsonMissing.of(),
     ) : this(
-        createdAt,
-        modelId,
-        plaintextName,
-        source,
         activeVersionCount,
         attackMonitoringThreatLevel,
+        createdAt,
         hasGenealogy,
+        modelId,
         modelScanThreatLevel,
+        plaintextName,
+        source,
         securityPosture,
         tags,
         mutableMapOf(),
     )
+
+    /**
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun activeVersionCount(): Long = activeVersionCount.getRequired("active_version_count")
+
+    /**
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun attackMonitoringThreatLevel(): AttackMonitoringThreatLevel =
+        attackMonitoringThreatLevel.getRequired("attack_monitoring_threat_level")
 
     /**
      * Unix Nano Epoch Timestamp
@@ -81,10 +94,26 @@ private constructor(
     fun createdAt(): Long = createdAt.getRequired("created_at")
 
     /**
+     * A value of `true` indicates that one or more versions of this model have associated model
+     * genealogy information.
+     *
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun hasGenealogy(): Boolean = hasGenealogy.getRequired("has_genealogy")
+
+    /**
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun modelId(): String = modelId.getRequired("model_id")
+
+    /**
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun modelScanThreatLevel(): ModelScanThreatLevel =
+        modelScanThreatLevel.getRequired("model_scan_threat_level")
 
     /**
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
@@ -102,36 +131,6 @@ private constructor(
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun activeVersionCount(): Optional<Long> =
-        activeVersionCount.getOptional("active_version_count")
-
-    /**
-     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun attackMonitoringThreatLevel(): Optional<AttackMonitoringThreatLevel> =
-        attackMonitoringThreatLevel.getOptional("attack_monitoring_threat_level")
-
-    /**
-     * A value of `true` indicates that one or more versions of this model have associated model
-     * genealogy information.
-     *
-     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun hasGenealogy(): Optional<Boolean> = hasGenealogy.getOptional("has_genealogy")
-
-    /**
-     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun modelScanThreatLevel(): Optional<ModelScanThreatLevel> =
-        modelScanThreatLevel.getOptional("model_scan_threat_level")
-
-    /**
-     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
     fun securityPosture(): Optional<SecurityPosture> =
         securityPosture.getOptional("security_posture")
 
@@ -140,36 +139,6 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun tags(): Optional<Tags> = tags.getOptional("tags")
-
-    /**
-     * Returns the raw JSON value of [createdAt].
-     *
-     * Unlike [createdAt], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("created_at") @ExcludeMissing fun _createdAt(): JsonField<Long> = createdAt
-
-    /**
-     * Returns the raw JSON value of [modelId].
-     *
-     * Unlike [modelId], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("model_id") @ExcludeMissing fun _modelId(): JsonField<String> = modelId
-
-    /**
-     * Returns the raw JSON value of [plaintextName].
-     *
-     * Unlike [plaintextName], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("plaintext_name")
-    @ExcludeMissing
-    fun _plaintextName(): JsonField<String> = plaintextName
-
-    /**
-     * Returns the raw JSON value of [source].
-     *
-     * Unlike [source], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("source") @ExcludeMissing fun _source(): JsonField<String> = source
 
     /**
      * Returns the raw JSON value of [activeVersionCount].
@@ -193,6 +162,13 @@ private constructor(
         attackMonitoringThreatLevel
 
     /**
+     * Returns the raw JSON value of [createdAt].
+     *
+     * Unlike [createdAt], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("created_at") @ExcludeMissing fun _createdAt(): JsonField<Long> = createdAt
+
+    /**
      * Returns the raw JSON value of [hasGenealogy].
      *
      * Unlike [hasGenealogy], this method doesn't throw if the JSON field has an unexpected type.
@@ -200,6 +176,13 @@ private constructor(
     @JsonProperty("has_genealogy")
     @ExcludeMissing
     fun _hasGenealogy(): JsonField<Boolean> = hasGenealogy
+
+    /**
+     * Returns the raw JSON value of [modelId].
+     *
+     * Unlike [modelId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("model_id") @ExcludeMissing fun _modelId(): JsonField<String> = modelId
 
     /**
      * Returns the raw JSON value of [modelScanThreatLevel].
@@ -210,6 +193,22 @@ private constructor(
     @JsonProperty("model_scan_threat_level")
     @ExcludeMissing
     fun _modelScanThreatLevel(): JsonField<ModelScanThreatLevel> = modelScanThreatLevel
+
+    /**
+     * Returns the raw JSON value of [plaintextName].
+     *
+     * Unlike [plaintextName], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("plaintext_name")
+    @ExcludeMissing
+    fun _plaintextName(): JsonField<String> = plaintextName
+
+    /**
+     * Returns the raw JSON value of [source].
+     *
+     * Unlike [source], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("source") @ExcludeMissing fun _source(): JsonField<String> = source
 
     /**
      * Returns the raw JSON value of [securityPosture].
@@ -246,8 +245,12 @@ private constructor(
          *
          * The following fields are required:
          * ```java
+         * .activeVersionCount()
+         * .attackMonitoringThreatLevel()
          * .createdAt()
+         * .hasGenealogy()
          * .modelId()
+         * .modelScanThreatLevel()
          * .plaintextName()
          * .source()
          * ```
@@ -258,77 +261,32 @@ private constructor(
     /** A builder for [CardListResponse]. */
     class Builder internal constructor() {
 
+        private var activeVersionCount: JsonField<Long>? = null
+        private var attackMonitoringThreatLevel: JsonField<AttackMonitoringThreatLevel>? = null
         private var createdAt: JsonField<Long>? = null
+        private var hasGenealogy: JsonField<Boolean>? = null
         private var modelId: JsonField<String>? = null
+        private var modelScanThreatLevel: JsonField<ModelScanThreatLevel>? = null
         private var plaintextName: JsonField<String>? = null
         private var source: JsonField<String>? = null
-        private var activeVersionCount: JsonField<Long> = JsonMissing.of()
-        private var attackMonitoringThreatLevel: JsonField<AttackMonitoringThreatLevel> =
-            JsonMissing.of()
-        private var hasGenealogy: JsonField<Boolean> = JsonMissing.of()
-        private var modelScanThreatLevel: JsonField<ModelScanThreatLevel> = JsonMissing.of()
         private var securityPosture: JsonField<SecurityPosture> = JsonMissing.of()
         private var tags: JsonField<Tags> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(cardListResponse: CardListResponse) = apply {
-            createdAt = cardListResponse.createdAt
-            modelId = cardListResponse.modelId
-            plaintextName = cardListResponse.plaintextName
-            source = cardListResponse.source
             activeVersionCount = cardListResponse.activeVersionCount
             attackMonitoringThreatLevel = cardListResponse.attackMonitoringThreatLevel
+            createdAt = cardListResponse.createdAt
             hasGenealogy = cardListResponse.hasGenealogy
+            modelId = cardListResponse.modelId
             modelScanThreatLevel = cardListResponse.modelScanThreatLevel
+            plaintextName = cardListResponse.plaintextName
+            source = cardListResponse.source
             securityPosture = cardListResponse.securityPosture
             tags = cardListResponse.tags
             additionalProperties = cardListResponse.additionalProperties.toMutableMap()
         }
-
-        /** Unix Nano Epoch Timestamp */
-        fun createdAt(createdAt: Long) = createdAt(JsonField.of(createdAt))
-
-        /**
-         * Sets [Builder.createdAt] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.createdAt] with a well-typed [Long] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun createdAt(createdAt: JsonField<Long>) = apply { this.createdAt = createdAt }
-
-        fun modelId(modelId: String) = modelId(JsonField.of(modelId))
-
-        /**
-         * Sets [Builder.modelId] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.modelId] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun modelId(modelId: JsonField<String>) = apply { this.modelId = modelId }
-
-        fun plaintextName(plaintextName: String) = plaintextName(JsonField.of(plaintextName))
-
-        /**
-         * Sets [Builder.plaintextName] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.plaintextName] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun plaintextName(plaintextName: JsonField<String>) = apply {
-            this.plaintextName = plaintextName
-        }
-
-        fun source(source: String) = source(JsonField.of(source))
-
-        /**
-         * Sets [Builder.source] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.source] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun source(source: JsonField<String>) = apply { this.source = source }
 
         fun activeVersionCount(activeVersionCount: Long) =
             activeVersionCount(JsonField.of(activeVersionCount))
@@ -358,6 +316,17 @@ private constructor(
             attackMonitoringThreatLevel: JsonField<AttackMonitoringThreatLevel>
         ) = apply { this.attackMonitoringThreatLevel = attackMonitoringThreatLevel }
 
+        /** Unix Nano Epoch Timestamp */
+        fun createdAt(createdAt: Long) = createdAt(JsonField.of(createdAt))
+
+        /**
+         * Sets [Builder.createdAt] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.createdAt] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun createdAt(createdAt: JsonField<Long>) = apply { this.createdAt = createdAt }
+
         /**
          * A value of `true` indicates that one or more versions of this model have associated model
          * genealogy information.
@@ -375,6 +344,16 @@ private constructor(
             this.hasGenealogy = hasGenealogy
         }
 
+        fun modelId(modelId: String) = modelId(JsonField.of(modelId))
+
+        /**
+         * Sets [Builder.modelId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.modelId] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun modelId(modelId: JsonField<String>) = apply { this.modelId = modelId }
+
         fun modelScanThreatLevel(modelScanThreatLevel: ModelScanThreatLevel) =
             modelScanThreatLevel(JsonField.of(modelScanThreatLevel))
 
@@ -388,6 +367,29 @@ private constructor(
         fun modelScanThreatLevel(modelScanThreatLevel: JsonField<ModelScanThreatLevel>) = apply {
             this.modelScanThreatLevel = modelScanThreatLevel
         }
+
+        fun plaintextName(plaintextName: String) = plaintextName(JsonField.of(plaintextName))
+
+        /**
+         * Sets [Builder.plaintextName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.plaintextName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun plaintextName(plaintextName: JsonField<String>) = apply {
+            this.plaintextName = plaintextName
+        }
+
+        fun source(source: String) = source(JsonField.of(source))
+
+        /**
+         * Sets [Builder.source] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.source] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun source(source: JsonField<String>) = apply { this.source = source }
 
         fun securityPosture(securityPosture: SecurityPosture) =
             securityPosture(JsonField.of(securityPosture))
@@ -439,8 +441,12 @@ private constructor(
          *
          * The following fields are required:
          * ```java
+         * .activeVersionCount()
+         * .attackMonitoringThreatLevel()
          * .createdAt()
+         * .hasGenealogy()
          * .modelId()
+         * .modelScanThreatLevel()
          * .plaintextName()
          * .source()
          * ```
@@ -449,14 +455,14 @@ private constructor(
          */
         fun build(): CardListResponse =
             CardListResponse(
+                checkRequired("activeVersionCount", activeVersionCount),
+                checkRequired("attackMonitoringThreatLevel", attackMonitoringThreatLevel),
                 checkRequired("createdAt", createdAt),
+                checkRequired("hasGenealogy", hasGenealogy),
                 checkRequired("modelId", modelId),
+                checkRequired("modelScanThreatLevel", modelScanThreatLevel),
                 checkRequired("plaintextName", plaintextName),
                 checkRequired("source", source),
-                activeVersionCount,
-                attackMonitoringThreatLevel,
-                hasGenealogy,
-                modelScanThreatLevel,
                 securityPosture,
                 tags,
                 additionalProperties.toMutableMap(),
@@ -470,14 +476,14 @@ private constructor(
             return@apply
         }
 
+        activeVersionCount()
+        attackMonitoringThreatLevel().validate()
         createdAt()
+        hasGenealogy()
         modelId()
+        modelScanThreatLevel().validate()
         plaintextName()
         source()
-        activeVersionCount()
-        attackMonitoringThreatLevel().ifPresent { it.validate() }
-        hasGenealogy()
-        modelScanThreatLevel().ifPresent { it.validate() }
         securityPosture().ifPresent { it.validate() }
         tags().ifPresent { it.validate() }
         validated = true
@@ -498,14 +504,14 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (createdAt.asKnown().isPresent) 1 else 0) +
+        (if (activeVersionCount.asKnown().isPresent) 1 else 0) +
+            (attackMonitoringThreatLevel.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (createdAt.asKnown().isPresent) 1 else 0) +
+            (if (hasGenealogy.asKnown().isPresent) 1 else 0) +
             (if (modelId.asKnown().isPresent) 1 else 0) +
+            (modelScanThreatLevel.asKnown().getOrNull()?.validity() ?: 0) +
             (if (plaintextName.asKnown().isPresent) 1 else 0) +
             (if (source.asKnown().isPresent) 1 else 0) +
-            (if (activeVersionCount.asKnown().isPresent) 1 else 0) +
-            (attackMonitoringThreatLevel.asKnown().getOrNull()?.validity() ?: 0) +
-            (if (hasGenealogy.asKnown().isPresent) 1 else 0) +
-            (modelScanThreatLevel.asKnown().getOrNull()?.validity() ?: 0) +
             (securityPosture.asKnown().getOrNull()?.validity() ?: 0) +
             (tags.asKnown().getOrNull()?.validity() ?: 0)
 
@@ -1093,14 +1099,14 @@ private constructor(
         }
 
         return other is CardListResponse &&
-            createdAt == other.createdAt &&
-            modelId == other.modelId &&
-            plaintextName == other.plaintextName &&
-            source == other.source &&
             activeVersionCount == other.activeVersionCount &&
             attackMonitoringThreatLevel == other.attackMonitoringThreatLevel &&
+            createdAt == other.createdAt &&
             hasGenealogy == other.hasGenealogy &&
+            modelId == other.modelId &&
             modelScanThreatLevel == other.modelScanThreatLevel &&
+            plaintextName == other.plaintextName &&
+            source == other.source &&
             securityPosture == other.securityPosture &&
             tags == other.tags &&
             additionalProperties == other.additionalProperties
@@ -1108,14 +1114,14 @@ private constructor(
 
     private val hashCode: Int by lazy {
         Objects.hash(
-            createdAt,
-            modelId,
-            plaintextName,
-            source,
             activeVersionCount,
             attackMonitoringThreatLevel,
+            createdAt,
             hasGenealogy,
+            modelId,
             modelScanThreatLevel,
+            plaintextName,
+            source,
             securityPosture,
             tags,
             additionalProperties,
@@ -1125,5 +1131,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "CardListResponse{createdAt=$createdAt, modelId=$modelId, plaintextName=$plaintextName, source=$source, activeVersionCount=$activeVersionCount, attackMonitoringThreatLevel=$attackMonitoringThreatLevel, hasGenealogy=$hasGenealogy, modelScanThreatLevel=$modelScanThreatLevel, securityPosture=$securityPosture, tags=$tags, additionalProperties=$additionalProperties}"
+        "CardListResponse{activeVersionCount=$activeVersionCount, attackMonitoringThreatLevel=$attackMonitoringThreatLevel, createdAt=$createdAt, hasGenealogy=$hasGenealogy, modelId=$modelId, modelScanThreatLevel=$modelScanThreatLevel, plaintextName=$plaintextName, source=$source, securityPosture=$securityPosture, tags=$tags, additionalProperties=$additionalProperties}"
 }

@@ -40,6 +40,7 @@ private constructor(
     /** filter by aidr enabled */
     fun aidrStatus(): Optional<AidrStatus> = Optional.ofNullable(aidrStatus)
 
+    /** Limit the number of items returned */
     fun limit(): Optional<Long> = Optional.ofNullable(limit)
 
     /** match on models created between dates */
@@ -52,6 +53,7 @@ private constructor(
 
     fun modscanStatus(): Optional<ModscanStatus> = Optional.ofNullable(modscanStatus)
 
+    /** Begin returning the results from this offset */
     fun offset(): Optional<Long> = Optional.ofNullable(offset)
 
     fun provider(): Optional<List<Provider>> = Optional.ofNullable(provider)
@@ -142,6 +144,7 @@ private constructor(
         /** Alias for calling [Builder.aidrStatus] with `aidrStatus.orElse(null)`. */
         fun aidrStatus(aidrStatus: Optional<AidrStatus>) = aidrStatus(aidrStatus.getOrNull())
 
+        /** Limit the number of items returned */
         fun limit(limit: Long?) = apply { this.limit = limit }
 
         /**
@@ -193,6 +196,7 @@ private constructor(
         fun modscanStatus(modscanStatus: Optional<ModscanStatus>) =
             modscanStatus(modscanStatus.getOrNull())
 
+        /** Begin returning the results from this offset */
         fun offset(offset: Long?) = apply { this.offset = offset }
 
         /**
