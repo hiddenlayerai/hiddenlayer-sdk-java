@@ -22,7 +22,7 @@ import com.hiddenlayer.api.errors.RateLimitException
 import com.hiddenlayer.api.errors.UnauthorizedException
 import com.hiddenlayer.api.errors.UnexpectedStatusCodeException
 import com.hiddenlayer.api.errors.UnprocessableEntityException
-import com.hiddenlayer.api.models.sensors.SensorCreateParams
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeParams
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.entry
 import org.junit.jupiter.api.BeforeEach
@@ -59,8 +59,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreate400() {
-        val sensorService = client.sensors()
+    fun interactionsAnalyze400() {
+        val interactionService = client.interactions()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -70,18 +70,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<BadRequestException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }
@@ -92,8 +111,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreate400WithRawResponse() {
-        val sensorService = client.sensors().withRawResponse()
+    fun interactionsAnalyze400WithRawResponse() {
+        val interactionService = client.interactions().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -103,18 +122,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<BadRequestException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }
@@ -125,8 +163,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreate401() {
-        val sensorService = client.sensors()
+    fun interactionsAnalyze401() {
+        val interactionService = client.interactions()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -136,18 +174,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<UnauthorizedException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }
@@ -158,8 +215,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreate401WithRawResponse() {
-        val sensorService = client.sensors().withRawResponse()
+    fun interactionsAnalyze401WithRawResponse() {
+        val interactionService = client.interactions().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -169,18 +226,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<UnauthorizedException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }
@@ -191,8 +267,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreate403() {
-        val sensorService = client.sensors()
+    fun interactionsAnalyze403() {
+        val interactionService = client.interactions()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -202,18 +278,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<PermissionDeniedException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }
@@ -224,8 +319,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreate403WithRawResponse() {
-        val sensorService = client.sensors().withRawResponse()
+    fun interactionsAnalyze403WithRawResponse() {
+        val interactionService = client.interactions().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -235,18 +330,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<PermissionDeniedException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }
@@ -257,8 +371,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreate404() {
-        val sensorService = client.sensors()
+    fun interactionsAnalyze404() {
+        val interactionService = client.interactions()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -268,18 +382,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<NotFoundException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }
@@ -290,8 +423,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreate404WithRawResponse() {
-        val sensorService = client.sensors().withRawResponse()
+    fun interactionsAnalyze404WithRawResponse() {
+        val interactionService = client.interactions().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -301,18 +434,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<NotFoundException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }
@@ -323,8 +475,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreate422() {
-        val sensorService = client.sensors()
+    fun interactionsAnalyze422() {
+        val interactionService = client.interactions()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -334,18 +486,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<UnprocessableEntityException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }
@@ -356,8 +527,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreate422WithRawResponse() {
-        val sensorService = client.sensors().withRawResponse()
+    fun interactionsAnalyze422WithRawResponse() {
+        val interactionService = client.interactions().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -367,18 +538,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<UnprocessableEntityException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }
@@ -389,8 +579,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreate429() {
-        val sensorService = client.sensors()
+    fun interactionsAnalyze429() {
+        val interactionService = client.interactions()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -400,18 +590,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<RateLimitException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }
@@ -422,8 +631,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreate429WithRawResponse() {
-        val sensorService = client.sensors().withRawResponse()
+    fun interactionsAnalyze429WithRawResponse() {
+        val interactionService = client.interactions().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -433,18 +642,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<RateLimitException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }
@@ -455,8 +683,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreate500() {
-        val sensorService = client.sensors()
+    fun interactionsAnalyze500() {
+        val interactionService = client.interactions()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -466,18 +694,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<InternalServerException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }
@@ -488,8 +735,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreate500WithRawResponse() {
-        val sensorService = client.sensors().withRawResponse()
+    fun interactionsAnalyze500WithRawResponse() {
+        val interactionService = client.interactions().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -499,18 +746,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<InternalServerException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }
@@ -521,8 +787,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreate999() {
-        val sensorService = client.sensors()
+    fun interactionsAnalyze999() {
+        val interactionService = client.interactions()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -532,18 +798,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<UnexpectedStatusCodeException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }
@@ -554,8 +839,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreate999WithRawResponse() {
-        val sensorService = client.sensors().withRawResponse()
+    fun interactionsAnalyze999WithRawResponse() {
+        val interactionService = client.interactions().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -565,18 +850,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<UnexpectedStatusCodeException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }
@@ -587,8 +891,8 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun sensorsCreateInvalidJsonBody() {
-        val sensorService = client.sensors()
+    fun interactionsAnalyzeInvalidJsonBody() {
+        val interactionService = client.interactions()
         stubFor(
             post(anyUrl())
                 .willReturn(status(200).withHeader(HEADER_NAME, HEADER_VALUE).withBody(NOT_JSON))
@@ -596,18 +900,37 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<HiddenLayerException> {
-                sensorService.create(
-                    SensorCreateParams.builder()
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
                         .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                        .plaintextName("plaintext_name")
-                        .active(true)
-                        .adhoc(true)
-                        .tags(
-                            SensorCreateParams.Tags.builder()
-                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
                                 .build()
                         )
-                        .version(0L)
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
             }

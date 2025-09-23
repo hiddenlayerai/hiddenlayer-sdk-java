@@ -15,7 +15,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import com.hiddenlayer.api.client.HiddenLayerClient
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient
 import com.hiddenlayer.api.core.JsonValue
-import com.hiddenlayer.api.models.sensors.SensorCreateParams
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeParams
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -38,22 +38,41 @@ internal class ServiceParamsTest {
 
     @Disabled("Prism tests are disabled")
     @Test
-    fun create() {
-        val sensorService = client.sensors()
+    fun analyze() {
+        val interactionService = client.interactions()
         stubFor(post(anyUrl()).willReturn(ok("{}")))
 
-        sensorService.create(
-            SensorCreateParams.builder()
+        interactionService.analyze(
+            InteractionAnalyzeParams.builder()
+                .hlProjectId("internal-search-chatbot")
                 .xCorrelationId("00000000-0000-0000-0000-000000000000")
-                .plaintextName("plaintext_name")
-                .active(true)
-                .adhoc(true)
-                .tags(
-                    SensorCreateParams.Tags.builder()
-                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                .metadata(
+                    InteractionAnalyzeParams.Metadata.builder()
+                        .model("gpt-5")
+                        .requesterId("user-1234")
+                        .provider("openai")
                         .build()
                 )
-                .version(0L)
+                .input(
+                    InteractionAnalyzeParams.Input.builder()
+                        .addMessage(
+                            InteractionAnalyzeParams.Input.Message.builder()
+                                .content("What the largest moon of jupiter?")
+                                .role("user")
+                                .build()
+                        )
+                        .build()
+                )
+                .output(
+                    InteractionAnalyzeParams.Output.builder()
+                        .addMessage(
+                            InteractionAnalyzeParams.Output.Message.builder()
+                                .content("The largest moon of Jupiter is Ganymede.")
+                                .role("assistant")
+                                .build()
+                        )
+                        .build()
+                )
                 .putAdditionalHeader("Secret-Header", "42")
                 .putAdditionalQueryParam("secret_query_param", "42")
                 .putAdditionalBodyProperty("secretProperty", JsonValue.from("42"))
