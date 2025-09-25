@@ -332,6 +332,7 @@ private constructor(
 
     /** The request to the prompt analyzer endpoint */
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val prompt: JsonField<String>,
         private val model: JsonField<String>,

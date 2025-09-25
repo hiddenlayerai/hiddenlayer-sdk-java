@@ -33,6 +33,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class FileScanReport
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val fileResults: JsonField<List<FileResult>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -175,6 +176,7 @@ private constructor(
         (fileResults.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
     class FileResult
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val details: JsonField<Details>,
         private val detections: JsonField<List<Detection>>,
@@ -671,6 +673,7 @@ private constructor(
                 (fileError.asKnown().getOrNull()?.size ?: 0)
 
         class Details
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val estimatedTime: JsonField<String>,
             private val fileType: JsonField<String>,
@@ -1407,6 +1410,7 @@ private constructor(
                 }
 
                 class GgufFileAttributes
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val subtype: JsonField<List<String>>,
                     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1592,6 +1596,7 @@ private constructor(
                 }
 
                 class KerasFileAttributes
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val pickleModules: JsonField<List<String>>,
                     private val subtype: JsonField<List<String>>,
@@ -2018,6 +2023,7 @@ private constructor(
                 }
 
                 class NumpyFileAttributes
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val numpyArrays: JsonField<String>,
                     private val numpyShape: JsonField<List<String>>,
@@ -2303,6 +2309,7 @@ private constructor(
                 }
 
                 class RdsFileAttributes
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val rdsEncoding: JsonField<String>,
                     private val rdsMinReaderVersion: JsonField<String>,
@@ -2726,6 +2733,7 @@ private constructor(
         }
 
         class Detection
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val category: JsonField<String>,
             private val cve: JsonField<List<String>>,
@@ -3561,6 +3569,7 @@ private constructor(
                     (technicalBlogHrefs.asKnown().getOrNull()?.size ?: 0)
 
             class MitreAtlas
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val tactic: JsonField<String>,
                 private val technique: JsonField<String>,
@@ -4028,6 +4037,7 @@ private constructor(
             }
 
             class RuleDetail
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val description: JsonField<String>,
                 private val status: JsonField<Status>,

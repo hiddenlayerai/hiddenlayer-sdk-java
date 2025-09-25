@@ -20,6 +20,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class FileAddResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val parts: JsonField<List<Part>>,
     private val uploadId: JsonField<String>,
@@ -205,6 +206,7 @@ private constructor(
             (if (uploadId.asKnown().isPresent) 1 else 0)
 
     class Part
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val endOffset: JsonField<Long>,
         private val partNumber: JsonField<Long>,

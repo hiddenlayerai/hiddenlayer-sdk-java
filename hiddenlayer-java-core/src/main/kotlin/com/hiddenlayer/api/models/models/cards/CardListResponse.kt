@@ -20,6 +20,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class CardListResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val activeVersionCount: JsonField<Long>,
     private val attackMonitoringThreatLevel: JsonField<AttackMonitoringThreatLevel>,
@@ -811,6 +812,7 @@ private constructor(
     }
 
     class SecurityPosture
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val attackMonitoring: JsonField<Boolean>,
         private val modelScan: JsonField<Boolean>,

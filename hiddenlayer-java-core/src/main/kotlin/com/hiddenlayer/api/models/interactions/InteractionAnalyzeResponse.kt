@@ -21,6 +21,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class InteractionAnalyzeResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val analysis: JsonField<List<Analysis>>,
     private val analyzedData: JsonField<AnalyzedData>,
@@ -296,6 +297,7 @@ private constructor(
             (modifiedData.asKnown().getOrNull()?.validity() ?: 0)
 
     class Analysis
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
         private val configuration: JsonField<Configuration>,
@@ -824,6 +826,7 @@ private constructor(
 
         /** The frameworks and associated findings for the analysis. */
         class Findings
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val frameworks: JsonField<Frameworks>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1137,6 +1140,7 @@ private constructor(
 
     /** The language model input and/or output that was analyzed. */
     class AnalyzedData
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val input: JsonField<Input>,
         private val output: JsonField<Output>,
@@ -1307,6 +1311,7 @@ private constructor(
                 (output.asKnown().getOrNull()?.validity() ?: 0)
 
         class Input
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val messages: JsonField<List<Message>>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1457,6 +1462,7 @@ private constructor(
                 (messages.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
             class Message
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val content: JsonField<String>,
                 private val role: JsonField<String>,
@@ -1680,6 +1686,7 @@ private constructor(
         }
 
         class Output
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val messages: JsonField<List<Message>>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1830,6 +1837,7 @@ private constructor(
                 (messages.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
             class Message
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val content: JsonField<String>,
                 private val role: JsonField<String>,
@@ -2072,6 +2080,7 @@ private constructor(
     }
 
     class Metadata
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val model: JsonField<String>,
         private val processingTimeMs: JsonField<Double>,
@@ -2454,6 +2463,7 @@ private constructor(
                 (if (eventId.asKnown().isPresent) 1 else 0)
 
         class Project
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val projectAlias: JsonField<String>,
             private val projectId: JsonField<String>,
@@ -2726,6 +2736,7 @@ private constructor(
      * modifications based on the analysis.
      */
     class ModifiedData
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val input: JsonField<Input>,
         private val output: JsonField<Output>,
@@ -2898,6 +2909,7 @@ private constructor(
                 (output.asKnown().getOrNull()?.validity() ?: 0)
 
         class Input
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val messages: JsonField<List<Message>>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -3048,6 +3060,7 @@ private constructor(
                 (messages.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
             class Message
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val content: JsonField<String>,
                 private val role: JsonField<String>,
@@ -3271,6 +3284,7 @@ private constructor(
         }
 
         class Output
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val messages: JsonField<List<Message>>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -3421,6 +3435,7 @@ private constructor(
                 (messages.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
             class Message
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val content: JsonField<String>,
                 private val role: JsonField<String>,

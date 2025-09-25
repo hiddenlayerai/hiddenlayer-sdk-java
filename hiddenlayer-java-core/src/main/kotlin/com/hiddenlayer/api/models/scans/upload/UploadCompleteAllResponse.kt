@@ -16,6 +16,7 @@ import java.util.Objects
 import java.util.Optional
 
 class UploadCompleteAllResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val scanId: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,

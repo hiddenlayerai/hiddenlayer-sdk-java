@@ -20,6 +20,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class PromptAnalyzerCreateResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val categories: JsonField<Categories>,
     private val elapsedMs: JsonField<Double>,
@@ -470,6 +471,7 @@ private constructor(
 
     /** The analysis detection categories */
     class Categories
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val guardrail: JsonField<Boolean>,
         private val inputCode: JsonField<Boolean>,
@@ -1000,6 +1002,7 @@ private constructor(
 
     /** The framework labels identified during analysis */
     class Frameworks
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val mitre: JsonField<List<Mitre>>,
         private val owasp: JsonField<List<Owasp>>,
@@ -1234,6 +1237,7 @@ private constructor(
 
         /** The MITRE Atlas framework labels identified during analysis */
         class Mitre
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val label: JsonField<String>,
             private val name: JsonField<String>,
@@ -1413,6 +1417,7 @@ private constructor(
 
         /** The OWASP framework labels identified during analysis */
         class Owasp
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val label: JsonField<String>,
             private val name: JsonField<String>,
@@ -1592,6 +1597,7 @@ private constructor(
 
         /** The OWASP:2025 framework labels identified during analysis */
         class Owasp2025
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val label: JsonField<String>,
             private val name: JsonField<String>,
@@ -1793,6 +1799,7 @@ private constructor(
 
     /** The policy used during analysis */
     class Policy
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val blockGuardrailDetection: JsonField<Boolean>,
         private val blockInputCodeDetection: JsonField<Boolean>,
@@ -3450,6 +3457,7 @@ private constructor(
     }
 
     class Response
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val model: JsonField<String>,
         private val output: JsonField<String>,
@@ -3790,6 +3798,7 @@ private constructor(
 
     /** The analysis results */
     class Results
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val guardrailResults: JsonField<GuardrailResults>,
         private val inputBlockListResults: JsonField<InputBlockListResults>,
@@ -4398,6 +4407,7 @@ private constructor(
 
         /** The guardrail results */
         class GuardrailResults
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val elapsedMs: JsonField<Double>,
             private val refusalClassifierResults: JsonField<RefusalClassifierResults>,
@@ -4616,6 +4626,7 @@ private constructor(
 
             /** The refusal classifier results */
             class RefusalClassifierResults
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val elapsedMs: JsonField<Double>,
                 private val probabilities: JsonField<List<Double>>,
@@ -4933,6 +4944,7 @@ private constructor(
 
         /** The input block list results */
         class InputBlockListResults
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val elapsedMs: JsonField<Double>,
             private val matches: JsonField<List<String>>,
@@ -5180,6 +5192,7 @@ private constructor(
 
         /** The input code results */
         class InputCodeResults
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val elapsedMs: JsonField<Double>,
             private val verdict: JsonField<Boolean>,
@@ -5370,6 +5383,7 @@ private constructor(
 
         /** The input denial of service results */
         class InputDosResults
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val elapsedMs: JsonField<Double>,
             private val embeddingsLength: JsonField<Double>,
@@ -5608,6 +5622,7 @@ private constructor(
 
         /** The input language results */
         class InputLanguageResults
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val elapsedMs: JsonField<Double>,
             private val language: JsonField<String>,
@@ -5842,6 +5857,7 @@ private constructor(
 
         /** The input personally identifiable information results */
         class InputPiiResults
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val elapsedMs: JsonField<Double>,
             private val entities: JsonField<List<String>>,
@@ -6091,6 +6107,7 @@ private constructor(
 
         /** The input URL results */
         class InputUrlResults
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val elapsedMs: JsonField<Double>,
             private val urls: JsonField<List<String>>,
@@ -6296,6 +6313,7 @@ private constructor(
 
         /** The output code results */
         class OutputCodeResults
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val elapsedMs: JsonField<Double>,
             private val verdict: JsonField<Boolean>,
@@ -6488,6 +6506,7 @@ private constructor(
 
         /** The output personally identifiable information results */
         class OutputPiiResults
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val elapsedMs: JsonField<Double>,
             private val entities: JsonField<List<String>>,
@@ -6737,6 +6756,7 @@ private constructor(
 
         /** The output URL results */
         class OutputUrlResults
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val elapsedMs: JsonField<Double>,
             private val urls: JsonField<List<String>>,
@@ -6941,6 +6961,7 @@ private constructor(
         }
 
         class PromptInjectionClassifierResult
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val allowOverride: JsonField<String>,
             private val blockOverride: JsonField<String>,

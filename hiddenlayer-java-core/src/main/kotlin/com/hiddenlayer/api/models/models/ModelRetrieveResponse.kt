@@ -20,6 +20,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class ModelRetrieveResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val name: JsonField<String>,
     private val source: JsonField<String>,
@@ -296,6 +297,7 @@ private constructor(
             (versions.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
     class Version
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val version: JsonField<String>,
         private val deployments: JsonField<List<Deployment>>,
@@ -668,6 +670,7 @@ private constructor(
                 (tags.asKnown().getOrNull()?.validity() ?: 0)
 
         class Deployment
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val active: JsonField<Boolean>,
             private val path: JsonField<String>,
