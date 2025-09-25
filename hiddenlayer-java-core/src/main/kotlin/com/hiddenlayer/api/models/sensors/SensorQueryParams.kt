@@ -346,6 +346,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val filter: JsonField<Filter>,
         private val orderBy: JsonField<String>,
@@ -623,6 +624,7 @@ private constructor(
     }
 
     class Filter
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val active: JsonField<Boolean>,
         private val createdAtStart: JsonField<OffsetDateTime>,

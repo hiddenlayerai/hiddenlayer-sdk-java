@@ -19,6 +19,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class ScanJob
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val inventory: JsonField<Inventory>,
     private val scanId: JsonField<String>,
@@ -225,6 +226,7 @@ private constructor(
             (status.asKnown().getOrNull()?.validity() ?: 0)
 
     class Inventory
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val modelName: JsonField<String>,
         private val modelVersion: JsonField<String>,

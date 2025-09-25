@@ -21,6 +21,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class SensorQueryResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val pageNumber: JsonField<Long>,
     private val pageSize: JsonField<Long>,
@@ -271,6 +272,7 @@ private constructor(
             (if (totalCount.asKnown().isPresent) 1 else 0)
 
     class Result
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val active: JsonField<Boolean>,
         private val createdAt: JsonField<OffsetDateTime>,

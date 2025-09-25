@@ -322,6 +322,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val metadata: JsonField<Metadata>,
         private val input: JsonField<Input>,
@@ -547,6 +548,7 @@ private constructor(
     }
 
     class Metadata
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val model: JsonField<String>,
         private val requesterId: JsonField<String>,
@@ -787,6 +789,7 @@ private constructor(
     }
 
     class Input
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val messages: JsonField<List<Message>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -933,6 +936,7 @@ private constructor(
             (messages.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
         class Message
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val content: JsonField<String>,
             private val role: JsonField<String>,
@@ -1152,6 +1156,7 @@ private constructor(
     }
 
     class Output
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val messages: JsonField<List<Message>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1298,6 +1303,7 @@ private constructor(
             (messages.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
         class Message
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val content: JsonField<String>,
             private val role: JsonField<String>,
