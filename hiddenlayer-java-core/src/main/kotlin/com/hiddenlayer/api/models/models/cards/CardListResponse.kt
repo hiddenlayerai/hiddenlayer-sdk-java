@@ -27,6 +27,7 @@ private constructor(
     private val createdAt: JsonField<Long>,
     private val hasGenealogy: JsonField<Boolean>,
     private val modelId: JsonField<String>,
+    private val modelScanSeverity: JsonField<ModelScanSeverity>,
     private val modelScanThreatLevel: JsonField<ModelScanThreatLevel>,
     private val plaintextName: JsonField<String>,
     private val source: JsonField<String>,
@@ -48,6 +49,9 @@ private constructor(
         @ExcludeMissing
         hasGenealogy: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("model_id") @ExcludeMissing modelId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("model_scan_severity")
+        @ExcludeMissing
+        modelScanSeverity: JsonField<ModelScanSeverity> = JsonMissing.of(),
         @JsonProperty("model_scan_threat_level")
         @ExcludeMissing
         modelScanThreatLevel: JsonField<ModelScanThreatLevel> = JsonMissing.of(),
@@ -65,6 +69,7 @@ private constructor(
         createdAt,
         hasGenealogy,
         modelId,
+        modelScanSeverity,
         modelScanThreatLevel,
         plaintextName,
         source,
@@ -110,9 +115,19 @@ private constructor(
     fun modelId(): String = modelId.getRequired("model_id")
 
     /**
+     * The highest severity of any detections on the scan.
+     *
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
+    fun modelScanSeverity(): ModelScanSeverity =
+        modelScanSeverity.getRequired("model_scan_severity")
+
+    /**
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    @Deprecated("deprecated")
     fun modelScanThreatLevel(): ModelScanThreatLevel =
         modelScanThreatLevel.getRequired("model_scan_threat_level")
 
@@ -186,11 +201,22 @@ private constructor(
     @JsonProperty("model_id") @ExcludeMissing fun _modelId(): JsonField<String> = modelId
 
     /**
+     * Returns the raw JSON value of [modelScanSeverity].
+     *
+     * Unlike [modelScanSeverity], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    @JsonProperty("model_scan_severity")
+    @ExcludeMissing
+    fun _modelScanSeverity(): JsonField<ModelScanSeverity> = modelScanSeverity
+
+    /**
      * Returns the raw JSON value of [modelScanThreatLevel].
      *
      * Unlike [modelScanThreatLevel], this method doesn't throw if the JSON field has an unexpected
      * type.
      */
+    @Deprecated("deprecated")
     @JsonProperty("model_scan_threat_level")
     @ExcludeMissing
     fun _modelScanThreatLevel(): JsonField<ModelScanThreatLevel> = modelScanThreatLevel
@@ -251,6 +277,7 @@ private constructor(
          * .createdAt()
          * .hasGenealogy()
          * .modelId()
+         * .modelScanSeverity()
          * .modelScanThreatLevel()
          * .plaintextName()
          * .source()
@@ -267,6 +294,7 @@ private constructor(
         private var createdAt: JsonField<Long>? = null
         private var hasGenealogy: JsonField<Boolean>? = null
         private var modelId: JsonField<String>? = null
+        private var modelScanSeverity: JsonField<ModelScanSeverity>? = null
         private var modelScanThreatLevel: JsonField<ModelScanThreatLevel>? = null
         private var plaintextName: JsonField<String>? = null
         private var source: JsonField<String>? = null
@@ -281,6 +309,7 @@ private constructor(
             createdAt = cardListResponse.createdAt
             hasGenealogy = cardListResponse.hasGenealogy
             modelId = cardListResponse.modelId
+            modelScanSeverity = cardListResponse.modelScanSeverity
             modelScanThreatLevel = cardListResponse.modelScanThreatLevel
             plaintextName = cardListResponse.plaintextName
             source = cardListResponse.source
@@ -355,6 +384,22 @@ private constructor(
          */
         fun modelId(modelId: JsonField<String>) = apply { this.modelId = modelId }
 
+        /** The highest severity of any detections on the scan. */
+        fun modelScanSeverity(modelScanSeverity: ModelScanSeverity) =
+            modelScanSeverity(JsonField.of(modelScanSeverity))
+
+        /**
+         * Sets [Builder.modelScanSeverity] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.modelScanSeverity] with a well-typed [ModelScanSeverity]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
+        fun modelScanSeverity(modelScanSeverity: JsonField<ModelScanSeverity>) = apply {
+            this.modelScanSeverity = modelScanSeverity
+        }
+
+        @Deprecated("deprecated")
         fun modelScanThreatLevel(modelScanThreatLevel: ModelScanThreatLevel) =
             modelScanThreatLevel(JsonField.of(modelScanThreatLevel))
 
@@ -365,6 +410,7 @@ private constructor(
          * [ModelScanThreatLevel] value instead. This method is primarily for setting the field to
          * an undocumented or not yet supported value.
          */
+        @Deprecated("deprecated")
         fun modelScanThreatLevel(modelScanThreatLevel: JsonField<ModelScanThreatLevel>) = apply {
             this.modelScanThreatLevel = modelScanThreatLevel
         }
@@ -447,6 +493,7 @@ private constructor(
          * .createdAt()
          * .hasGenealogy()
          * .modelId()
+         * .modelScanSeverity()
          * .modelScanThreatLevel()
          * .plaintextName()
          * .source()
@@ -461,6 +508,7 @@ private constructor(
                 checkRequired("createdAt", createdAt),
                 checkRequired("hasGenealogy", hasGenealogy),
                 checkRequired("modelId", modelId),
+                checkRequired("modelScanSeverity", modelScanSeverity),
                 checkRequired("modelScanThreatLevel", modelScanThreatLevel),
                 checkRequired("plaintextName", plaintextName),
                 checkRequired("source", source),
@@ -482,6 +530,7 @@ private constructor(
         createdAt()
         hasGenealogy()
         modelId()
+        modelScanSeverity().validate()
         modelScanThreatLevel().validate()
         plaintextName()
         source()
@@ -510,6 +559,7 @@ private constructor(
             (if (createdAt.asKnown().isPresent) 1 else 0) +
             (if (hasGenealogy.asKnown().isPresent) 1 else 0) +
             (if (modelId.asKnown().isPresent) 1 else 0) +
+            (modelScanSeverity.asKnown().getOrNull()?.validity() ?: 0) +
             (modelScanThreatLevel.asKnown().getOrNull()?.validity() ?: 0) +
             (if (plaintextName.asKnown().isPresent) 1 else 0) +
             (if (source.asKnown().isPresent) 1 else 0) +
@@ -665,6 +715,163 @@ private constructor(
         override fun toString() = value.toString()
     }
 
+    /** The highest severity of any detections on the scan. */
+    class ModelScanSeverity @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val CRITICAL = of("critical")
+
+            @JvmField val HIGH = of("high")
+
+            @JvmField val MEDIUM = of("medium")
+
+            @JvmField val LOW = of("low")
+
+            @JvmField val NONE = of("none")
+
+            @JvmField val NOT_AVAILABLE = of("not available")
+
+            @JvmStatic fun of(value: String) = ModelScanSeverity(JsonField.of(value))
+        }
+
+        /** An enum containing [ModelScanSeverity]'s known values. */
+        enum class Known {
+            CRITICAL,
+            HIGH,
+            MEDIUM,
+            LOW,
+            NONE,
+            NOT_AVAILABLE,
+        }
+
+        /**
+         * An enum containing [ModelScanSeverity]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [ModelScanSeverity] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            CRITICAL,
+            HIGH,
+            MEDIUM,
+            LOW,
+            NONE,
+            NOT_AVAILABLE,
+            /**
+             * An enum member indicating that [ModelScanSeverity] was instantiated with an unknown
+             * value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                CRITICAL -> Value.CRITICAL
+                HIGH -> Value.HIGH
+                MEDIUM -> Value.MEDIUM
+                LOW -> Value.LOW
+                NONE -> Value.NONE
+                NOT_AVAILABLE -> Value.NOT_AVAILABLE
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                CRITICAL -> Known.CRITICAL
+                HIGH -> Known.HIGH
+                MEDIUM -> Known.MEDIUM
+                LOW -> Known.LOW
+                NONE -> Known.NONE
+                NOT_AVAILABLE -> Known.NOT_AVAILABLE
+                else -> throw HiddenLayerInvalidDataException("Unknown ModelScanSeverity: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                HiddenLayerInvalidDataException("Value is not a String")
+            }
+
+        private var validated: Boolean = false
+
+        fun validate(): ModelScanSeverity = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: HiddenLayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is ModelScanSeverity && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
+    @Deprecated("deprecated")
     class ModelScanThreatLevel
     @JsonCreator
     private constructor(private val value: JsonField<String>) : Enum {
@@ -1106,6 +1313,7 @@ private constructor(
             createdAt == other.createdAt &&
             hasGenealogy == other.hasGenealogy &&
             modelId == other.modelId &&
+            modelScanSeverity == other.modelScanSeverity &&
             modelScanThreatLevel == other.modelScanThreatLevel &&
             plaintextName == other.plaintextName &&
             source == other.source &&
@@ -1121,6 +1329,7 @@ private constructor(
             createdAt,
             hasGenealogy,
             modelId,
+            modelScanSeverity,
             modelScanThreatLevel,
             plaintextName,
             source,
@@ -1133,5 +1342,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "CardListResponse{activeVersionCount=$activeVersionCount, attackMonitoringThreatLevel=$attackMonitoringThreatLevel, createdAt=$createdAt, hasGenealogy=$hasGenealogy, modelId=$modelId, modelScanThreatLevel=$modelScanThreatLevel, plaintextName=$plaintextName, source=$source, securityPosture=$securityPosture, tags=$tags, additionalProperties=$additionalProperties}"
+        "CardListResponse{activeVersionCount=$activeVersionCount, attackMonitoringThreatLevel=$attackMonitoringThreatLevel, createdAt=$createdAt, hasGenealogy=$hasGenealogy, modelId=$modelId, modelScanSeverity=$modelScanSeverity, modelScanThreatLevel=$modelScanThreatLevel, plaintextName=$plaintextName, source=$source, securityPosture=$securityPosture, tags=$tags, additionalProperties=$additionalProperties}"
 }

@@ -112,6 +112,7 @@ internal class ScanReportTest {
                         .build()
                 )
                 .hasGenealogy(true)
+                .highestSeverity(ScanReport.HighestSeverity.CRITICAL)
                 .severity(ScanReport.Severity.CRITICAL)
                 .summary(
                     ScanReport.Summary.builder()
@@ -120,6 +121,7 @@ internal class ScanReportTest {
                         .fileCount(0L)
                         .filesFailedToScan(0L)
                         .filesWithDetectionsCount(0L)
+                        .highestSeverity(ScanReport.Summary.HighestSeverity.CRITICAL)
                         .severity(ScanReport.Summary.Severity.CRITICAL)
                         .unknownFiles(0L)
                         .build()
@@ -228,6 +230,7 @@ internal class ScanReportTest {
                     .build()
             )
         assertThat(scanReport.hasGenealogy()).contains(true)
+        assertThat(scanReport.highestSeverity()).contains(ScanReport.HighestSeverity.CRITICAL)
         assertThat(scanReport.severity()).contains(ScanReport.Severity.CRITICAL)
         assertThat(scanReport.summary())
             .contains(
@@ -237,6 +240,7 @@ internal class ScanReportTest {
                     .fileCount(0L)
                     .filesFailedToScan(0L)
                     .filesWithDetectionsCount(0L)
+                    .highestSeverity(ScanReport.Summary.HighestSeverity.CRITICAL)
                     .severity(ScanReport.Summary.Severity.CRITICAL)
                     .unknownFiles(0L)
                     .build()
@@ -345,6 +349,7 @@ internal class ScanReportTest {
                         .build()
                 )
                 .hasGenealogy(true)
+                .highestSeverity(ScanReport.HighestSeverity.CRITICAL)
                 .severity(ScanReport.Severity.CRITICAL)
                 .summary(
                     ScanReport.Summary.builder()
@@ -353,6 +358,7 @@ internal class ScanReportTest {
                         .fileCount(0L)
                         .filesFailedToScan(0L)
                         .filesWithDetectionsCount(0L)
+                        .highestSeverity(ScanReport.Summary.HighestSeverity.CRITICAL)
                         .severity(ScanReport.Summary.Severity.CRITICAL)
                         .unknownFiles(0L)
                         .build()

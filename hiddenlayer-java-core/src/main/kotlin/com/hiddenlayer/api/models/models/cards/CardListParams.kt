@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.hiddenlayer.api.core.Enum
 import com.hiddenlayer.api.core.JsonField
 import com.hiddenlayer.api.core.Params
+import com.hiddenlayer.api.core.getOrThrow
 import com.hiddenlayer.api.core.http.Headers
 import com.hiddenlayer.api.core.http.QueryParams
 import com.hiddenlayer.api.core.toImmutable
@@ -187,6 +188,28 @@ private constructor(
             this.modscanSeverity =
                 (this.modscanSeverity ?: mutableListOf()).apply { add(modscanSeverity) }
         }
+
+        /**
+         * Alias for calling [addModscanSeverity] with
+         * `ModscanSeverity.ofModelCardScanSafeUnsafe(modelCardScanSafeUnsafe)`.
+         */
+        @Deprecated("deprecated")
+        fun addModscanSeverity(modelCardScanSafeUnsafe: ModscanSeverity.ModelCardScanSafeUnsafe) =
+            addModscanSeverity(ModscanSeverity.ofModelCardScanSafeUnsafe(modelCardScanSafeUnsafe))
+
+        /**
+         * Alias for calling [addModscanSeverity] with
+         * `ModscanSeverity.ofScanDetection(scanDetection)`.
+         */
+        fun addModscanSeverity(scanDetection: ModscanSeverity.ScanDetectionSeverity) =
+            addModscanSeverity(ModscanSeverity.ofScanDetection(scanDetection))
+
+        /**
+         * Alias for calling [addModscanSeverity] with
+         * `ModscanSeverity.ofUnionMember2(unionMember2)`.
+         */
+        fun addModscanSeverity(unionMember2: ModscanSeverity.UnionMember2) =
+            addModscanSeverity(ModscanSeverity.ofUnionMember2(unionMember2))
 
         fun modscanStatus(modscanStatus: ModscanStatus?) = apply {
             this.modscanStatus = modscanStatus
@@ -404,9 +427,7 @@ private constructor(
                         }
                     }
                 }
-                modscanSeverity?.let {
-                    put("modscan_severity", it.joinToString(",") { it.toString() })
-                }
+                modscanSeverity?.let { put("modscan_severity", it.joinToString(",")) }
                 modscanStatus?.let { put("modscan_status", it.toString()) }
                 offset?.let { put("offset", it.toString()) }
                 provider?.let { put("provider", it.joinToString(",") { it.toString() }) }
@@ -942,153 +963,544 @@ private constructor(
             "ModelName{contains=$contains, eq=$eq, additionalProperties=$additionalProperties}"
     }
 
-    class ModscanSeverity @JsonCreator private constructor(private val value: JsonField<String>) :
-        Enum {
+    /** Use ScanDetectionsV3.yaml#/ScanDetectionSeverity instead. */
+    class ModscanSeverity
+    private constructor(
+        private val modelCardScanSafeUnsafe: ModelCardScanSafeUnsafe? = null,
+        private val scanDetection: ScanDetectionSeverity? = null,
+        private val unionMember2: UnionMember2? = null,
+    ) {
 
-        /**
-         * Returns this class instance's raw value.
-         *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
-         */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+        /** Use ScanDetectionsV3.yaml#/ScanDetectionSeverity instead. */
+        @Deprecated("deprecated")
+        fun modelCardScanSafeUnsafe(): Optional<ModelCardScanSafeUnsafe> =
+            Optional.ofNullable(modelCardScanSafeUnsafe)
 
-        companion object {
+        /** The severity of the detection. */
+        fun scanDetection(): Optional<ScanDetectionSeverity> = Optional.ofNullable(scanDetection)
 
-            @JvmField val SAFE = of("SAFE")
+        fun unionMember2(): Optional<UnionMember2> = Optional.ofNullable(unionMember2)
 
-            @JvmField val UNSAFE = of("UNSAFE")
+        @Deprecated("deprecated")
+        fun isModelCardScanSafeUnsafe(): Boolean = modelCardScanSafeUnsafe != null
 
-            @JvmField val SUSPICIOUS = of("SUSPICIOUS")
+        fun isScanDetection(): Boolean = scanDetection != null
 
-            @JvmField val UNKNOWN = of("UNKNOWN")
+        fun isUnionMember2(): Boolean = unionMember2 != null
 
-            @JvmField val ERROR = of("ERROR")
+        /** Use ScanDetectionsV3.yaml#/ScanDetectionSeverity instead. */
+        @Deprecated("deprecated")
+        fun asModelCardScanSafeUnsafe(): ModelCardScanSafeUnsafe =
+            modelCardScanSafeUnsafe.getOrThrow("modelCardScanSafeUnsafe")
 
-            @JvmStatic fun of(value: String) = ModscanSeverity(JsonField.of(value))
-        }
+        /** The severity of the detection. */
+        fun asScanDetection(): ScanDetectionSeverity = scanDetection.getOrThrow("scanDetection")
 
-        /** An enum containing [ModscanSeverity]'s known values. */
-        enum class Known {
-            SAFE,
-            UNSAFE,
-            SUSPICIOUS,
-            UNKNOWN,
-            ERROR,
-        }
+        fun asUnionMember2(): UnionMember2 = unionMember2.getOrThrow("unionMember2")
 
-        /**
-         * An enum containing [ModscanSeverity]'s known values, as well as an [_UNKNOWN] member.
-         *
-         * An instance of [ModscanSeverity] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
-         * - It was constructed with an arbitrary value using the [of] method.
-         */
-        enum class Value {
-            SAFE,
-            UNSAFE,
-            SUSPICIOUS,
-            UNKNOWN,
-            ERROR,
-            /**
-             * An enum member indicating that [ModscanSeverity] was instantiated with an unknown
-             * value.
-             */
-            _UNKNOWN,
-        }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
-         *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
-         */
-        fun value(): Value =
-            when (this) {
-                SAFE -> Value.SAFE
-                UNSAFE -> Value.UNSAFE
-                SUSPICIOUS -> Value.SUSPICIOUS
-                UNKNOWN -> Value.UNKNOWN
-                ERROR -> Value.ERROR
-                else -> Value._UNKNOWN
+        fun <T> accept(visitor: Visitor<T>): T =
+            when {
+                modelCardScanSafeUnsafe != null ->
+                    visitor.visitModelCardScanSafeUnsafe(modelCardScanSafeUnsafe)
+                scanDetection != null -> visitor.visitScanDetection(scanDetection)
+                unionMember2 != null -> visitor.visitUnionMember2(unionMember2)
+                else -> throw IllegalStateException("Invalid ModscanSeverity")
             }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value.
-         *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
-         *
-         * @throws HiddenLayerInvalidDataException if this class instance's value is a not a known
-         *   member.
-         */
-        fun known(): Known =
-            when (this) {
-                SAFE -> Known.SAFE
-                UNSAFE -> Known.UNSAFE
-                SUSPICIOUS -> Known.SUSPICIOUS
-                UNKNOWN -> Known.UNKNOWN
-                ERROR -> Known.ERROR
-                else -> throw HiddenLayerInvalidDataException("Unknown ModscanSeverity: $value")
-            }
-
-        /**
-         * Returns this class instance's primitive wire representation.
-         *
-         * This differs from the [toString] method because that method is primarily for debugging
-         * and generally doesn't throw.
-         *
-         * @throws HiddenLayerInvalidDataException if this class instance's value does not have the
-         *   expected primitive type.
-         */
-        fun asString(): String =
-            _value().asString().orElseThrow {
-                HiddenLayerInvalidDataException("Value is not a String")
-            }
-
-        private var validated: Boolean = false
-
-        fun validate(): ModscanSeverity = apply {
-            if (validated) {
-                return@apply
-            }
-
-            known()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: HiddenLayerInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
             }
 
-            return other is ModscanSeverity && value == other.value
+            return other is ModscanSeverity &&
+                modelCardScanSafeUnsafe == other.modelCardScanSafeUnsafe &&
+                scanDetection == other.scanDetection &&
+                unionMember2 == other.unionMember2
         }
 
-        override fun hashCode() = value.hashCode()
+        override fun hashCode(): Int =
+            Objects.hash(modelCardScanSafeUnsafe, scanDetection, unionMember2)
 
-        override fun toString() = value.toString()
+        override fun toString(): String =
+            when {
+                modelCardScanSafeUnsafe != null ->
+                    "ModscanSeverity{modelCardScanSafeUnsafe=$modelCardScanSafeUnsafe}"
+                scanDetection != null -> "ModscanSeverity{scanDetection=$scanDetection}"
+                unionMember2 != null -> "ModscanSeverity{unionMember2=$unionMember2}"
+                else -> throw IllegalStateException("Invalid ModscanSeverity")
+            }
+
+        companion object {
+
+            /** Use ScanDetectionsV3.yaml#/ScanDetectionSeverity instead. */
+            @Deprecated("deprecated")
+            @JvmStatic
+            fun ofModelCardScanSafeUnsafe(modelCardScanSafeUnsafe: ModelCardScanSafeUnsafe) =
+                ModscanSeverity(modelCardScanSafeUnsafe = modelCardScanSafeUnsafe)
+
+            /** The severity of the detection. */
+            @JvmStatic
+            fun ofScanDetection(scanDetection: ScanDetectionSeverity) =
+                ModscanSeverity(scanDetection = scanDetection)
+
+            @JvmStatic
+            fun ofUnionMember2(unionMember2: UnionMember2) =
+                ModscanSeverity(unionMember2 = unionMember2)
+        }
+
+        /**
+         * An interface that defines how to map each variant of [ModscanSeverity] to a value of type
+         * [T].
+         */
+        interface Visitor<out T> {
+
+            /** Use ScanDetectionsV3.yaml#/ScanDetectionSeverity instead. */
+            @Deprecated("deprecated")
+            fun visitModelCardScanSafeUnsafe(modelCardScanSafeUnsafe: ModelCardScanSafeUnsafe): T
+
+            /** The severity of the detection. */
+            fun visitScanDetection(scanDetection: ScanDetectionSeverity): T
+
+            fun visitUnionMember2(unionMember2: UnionMember2): T
+        }
+
+        /** Use ScanDetectionsV3.yaml#/ScanDetectionSeverity instead. */
+        @Deprecated("deprecated")
+        class ModelCardScanSafeUnsafe
+        @JsonCreator
+        private constructor(private val value: JsonField<String>) : Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val SAFE = of("SAFE")
+
+                @JvmField val UNSAFE = of("UNSAFE")
+
+                @JvmField val SUSPICIOUS = of("SUSPICIOUS")
+
+                @JvmField val UNKNOWN = of("UNKNOWN")
+
+                @JvmField val ERROR = of("ERROR")
+
+                @JvmStatic fun of(value: String) = ModelCardScanSafeUnsafe(JsonField.of(value))
+            }
+
+            /** An enum containing [ModelCardScanSafeUnsafe]'s known values. */
+            enum class Known {
+                SAFE,
+                UNSAFE,
+                SUSPICIOUS,
+                UNKNOWN,
+                ERROR,
+            }
+
+            /**
+             * An enum containing [ModelCardScanSafeUnsafe]'s known values, as well as an [_UNKNOWN]
+             * member.
+             *
+             * An instance of [ModelCardScanSafeUnsafe] can contain an unknown value in a couple of
+             * cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                SAFE,
+                UNSAFE,
+                SUSPICIOUS,
+                UNKNOWN,
+                ERROR,
+                /**
+                 * An enum member indicating that [ModelCardScanSafeUnsafe] was instantiated with an
+                 * unknown value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    SAFE -> Value.SAFE
+                    UNSAFE -> Value.UNSAFE
+                    SUSPICIOUS -> Value.SUSPICIOUS
+                    UNKNOWN -> Value.UNKNOWN
+                    ERROR -> Value.ERROR
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value is a not a
+             *   known member.
+             */
+            fun known(): Known =
+                when (this) {
+                    SAFE -> Known.SAFE
+                    UNSAFE -> Known.UNSAFE
+                    SUSPICIOUS -> Known.SUSPICIOUS
+                    UNKNOWN -> Known.UNKNOWN
+                    ERROR -> Known.ERROR
+                    else ->
+                        throw HiddenLayerInvalidDataException(
+                            "Unknown ModelCardScanSafeUnsafe: $value"
+                        )
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value does not have
+             *   the expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    HiddenLayerInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): ModelCardScanSafeUnsafe = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: HiddenLayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is ModelCardScanSafeUnsafe && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
+        /** The severity of the detection. */
+        class ScanDetectionSeverity
+        @JsonCreator
+        private constructor(private val value: JsonField<String>) : Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val CRITICAL = of("critical")
+
+                @JvmField val HIGH = of("high")
+
+                @JvmField val MEDIUM = of("medium")
+
+                @JvmField val LOW = of("low")
+
+                @JvmStatic fun of(value: String) = ScanDetectionSeverity(JsonField.of(value))
+            }
+
+            /** An enum containing [ScanDetectionSeverity]'s known values. */
+            enum class Known {
+                CRITICAL,
+                HIGH,
+                MEDIUM,
+                LOW,
+            }
+
+            /**
+             * An enum containing [ScanDetectionSeverity]'s known values, as well as an [_UNKNOWN]
+             * member.
+             *
+             * An instance of [ScanDetectionSeverity] can contain an unknown value in a couple of
+             * cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                CRITICAL,
+                HIGH,
+                MEDIUM,
+                LOW,
+                /**
+                 * An enum member indicating that [ScanDetectionSeverity] was instantiated with an
+                 * unknown value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    CRITICAL -> Value.CRITICAL
+                    HIGH -> Value.HIGH
+                    MEDIUM -> Value.MEDIUM
+                    LOW -> Value.LOW
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value is a not a
+             *   known member.
+             */
+            fun known(): Known =
+                when (this) {
+                    CRITICAL -> Known.CRITICAL
+                    HIGH -> Known.HIGH
+                    MEDIUM -> Known.MEDIUM
+                    LOW -> Known.LOW
+                    else ->
+                        throw HiddenLayerInvalidDataException(
+                            "Unknown ScanDetectionSeverity: $value"
+                        )
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value does not have
+             *   the expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    HiddenLayerInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): ScanDetectionSeverity = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: HiddenLayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is ScanDetectionSeverity && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
+        class UnionMember2 @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val NONE = of("none")
+
+                @JvmField val NOT_AVAILABLE = of("not available")
+
+                @JvmStatic fun of(value: String) = UnionMember2(JsonField.of(value))
+            }
+
+            /** An enum containing [UnionMember2]'s known values. */
+            enum class Known {
+                NONE,
+                NOT_AVAILABLE,
+            }
+
+            /**
+             * An enum containing [UnionMember2]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [UnionMember2] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                NONE,
+                NOT_AVAILABLE,
+                /**
+                 * An enum member indicating that [UnionMember2] was instantiated with an unknown
+                 * value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    NONE -> Value.NONE
+                    NOT_AVAILABLE -> Value.NOT_AVAILABLE
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value is a not a
+             *   known member.
+             */
+            fun known(): Known =
+                when (this) {
+                    NONE -> Known.NONE
+                    NOT_AVAILABLE -> Known.NOT_AVAILABLE
+                    else -> throw HiddenLayerInvalidDataException("Unknown UnionMember2: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value does not have
+             *   the expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    HiddenLayerInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): UnionMember2 = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: HiddenLayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is UnionMember2 && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
     }
 
     class ModscanStatus @JsonCreator private constructor(private val value: JsonField<String>) :
