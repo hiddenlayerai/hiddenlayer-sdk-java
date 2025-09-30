@@ -49,6 +49,7 @@ private constructor(
     private val endTime: JsonField<OffsetDateTime>,
     private val fileResults: JsonField<List<FileResult>>,
     private val hasGenealogy: JsonField<Boolean>,
+    private val highestSeverity: JsonField<HighestSeverity>,
     private val severity: JsonField<Severity>,
     private val summary: JsonField<Summary>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -90,6 +91,9 @@ private constructor(
         @JsonProperty("has_genealogy")
         @ExcludeMissing
         hasGenealogy: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("highest_severity")
+        @ExcludeMissing
+        highestSeverity: JsonField<HighestSeverity> = JsonMissing.of(),
         @JsonProperty("severity") @ExcludeMissing severity: JsonField<Severity> = JsonMissing.of(),
         @JsonProperty("summary") @ExcludeMissing summary: JsonField<Summary> = JsonMissing.of(),
     ) : this(
@@ -107,6 +111,7 @@ private constructor(
         endTime,
         fileResults,
         hasGenealogy,
+        highestSeverity,
         severity,
         summary,
         mutableMapOf(),
@@ -223,8 +228,16 @@ private constructor(
     fun hasGenealogy(): Optional<Boolean> = hasGenealogy.getOptional("has_genealogy")
 
     /**
-     * The severity of the detection. Use ScanDetectionSeverity (without safe) or
-     * ScanDetectionSeverityWithNone instead.
+     * The highest severity of any detections on the scan.
+     *
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun highestSeverity(): Optional<HighestSeverity> =
+        highestSeverity.getOptional("highest_severity")
+
+    /**
+     * The highest severity of any detections on the scan. Use ScanHighestDetectionSeverity instead.
      *
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -356,6 +369,15 @@ private constructor(
     fun _hasGenealogy(): JsonField<Boolean> = hasGenealogy
 
     /**
+     * Returns the raw JSON value of [highestSeverity].
+     *
+     * Unlike [highestSeverity], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("highest_severity")
+    @ExcludeMissing
+    fun _highestSeverity(): JsonField<HighestSeverity> = highestSeverity
+
+    /**
      * Returns the raw JSON value of [severity].
      *
      * Unlike [severity], this method doesn't throw if the JSON field has an unexpected type.
@@ -421,6 +443,7 @@ private constructor(
         private var endTime: JsonField<OffsetDateTime> = JsonMissing.of()
         private var fileResults: JsonField<MutableList<FileResult>>? = null
         private var hasGenealogy: JsonField<Boolean> = JsonMissing.of()
+        private var highestSeverity: JsonField<HighestSeverity> = JsonMissing.of()
         private var severity: JsonField<Severity> = JsonMissing.of()
         private var summary: JsonField<Summary> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -441,6 +464,7 @@ private constructor(
             endTime = scanReport.endTime
             fileResults = scanReport.fileResults.map { it.toMutableList() }
             hasGenealogy = scanReport.hasGenealogy
+            highestSeverity = scanReport.highestSeverity
             severity = scanReport.severity
             summary = scanReport.summary
             additionalProperties = scanReport.additionalProperties.toMutableMap()
@@ -660,9 +684,24 @@ private constructor(
             this.hasGenealogy = hasGenealogy
         }
 
+        /** The highest severity of any detections on the scan. */
+        fun highestSeverity(highestSeverity: HighestSeverity) =
+            highestSeverity(JsonField.of(highestSeverity))
+
         /**
-         * The severity of the detection. Use ScanDetectionSeverity (without safe) or
-         * ScanDetectionSeverityWithNone instead.
+         * Sets [Builder.highestSeverity] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.highestSeverity] with a well-typed [HighestSeverity]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
+        fun highestSeverity(highestSeverity: JsonField<HighestSeverity>) = apply {
+            this.highestSeverity = highestSeverity
+        }
+
+        /**
+         * The highest severity of any detections on the scan. Use ScanHighestDetectionSeverity
+         * instead.
          */
         @Deprecated("deprecated")
         fun severity(severity: Severity) = severity(JsonField.of(severity))
@@ -742,6 +781,7 @@ private constructor(
                 endTime,
                 (fileResults ?: JsonMissing.of()).map { it.toImmutable() },
                 hasGenealogy,
+                highestSeverity,
                 severity,
                 summary,
                 additionalProperties.toMutableMap(),
@@ -769,6 +809,7 @@ private constructor(
         endTime()
         fileResults().ifPresent { it.forEach { it.validate() } }
         hasGenealogy()
+        highestSeverity().ifPresent { it.validate() }
         severity().ifPresent { it.validate() }
         summary().ifPresent { it.validate() }
         validated = true
@@ -803,6 +844,7 @@ private constructor(
             (if (endTime.asKnown().isPresent) 1 else 0) +
             (fileResults.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (if (hasGenealogy.asKnown().isPresent) 1 else 0) +
+            (highestSeverity.asKnown().getOrNull()?.validity() ?: 0) +
             (severity.asKnown().getOrNull()?.validity() ?: 0) +
             (summary.asKnown().getOrNull()?.validity() ?: 0)
 
@@ -7522,9 +7564,164 @@ private constructor(
             "FileResult{details=$details, detections=$detections, endTime=$endTime, fileInstanceId=$fileInstanceId, fileLocation=$fileLocation, seen=$seen, startTime=$startTime, status=$status, fileError=$fileError, additionalProperties=$additionalProperties}"
     }
 
+    /** The highest severity of any detections on the scan. */
+    class HighestSeverity @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val CRITICAL = of("critical")
+
+            @JvmField val HIGH = of("high")
+
+            @JvmField val MEDIUM = of("medium")
+
+            @JvmField val LOW = of("low")
+
+            @JvmField val NONE = of("none")
+
+            @JvmField val NOT_AVAILABLE = of("not available")
+
+            @JvmStatic fun of(value: String) = HighestSeverity(JsonField.of(value))
+        }
+
+        /** An enum containing [HighestSeverity]'s known values. */
+        enum class Known {
+            CRITICAL,
+            HIGH,
+            MEDIUM,
+            LOW,
+            NONE,
+            NOT_AVAILABLE,
+        }
+
+        /**
+         * An enum containing [HighestSeverity]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [HighestSeverity] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            CRITICAL,
+            HIGH,
+            MEDIUM,
+            LOW,
+            NONE,
+            NOT_AVAILABLE,
+            /**
+             * An enum member indicating that [HighestSeverity] was instantiated with an unknown
+             * value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                CRITICAL -> Value.CRITICAL
+                HIGH -> Value.HIGH
+                MEDIUM -> Value.MEDIUM
+                LOW -> Value.LOW
+                NONE -> Value.NONE
+                NOT_AVAILABLE -> Value.NOT_AVAILABLE
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                CRITICAL -> Known.CRITICAL
+                HIGH -> Known.HIGH
+                MEDIUM -> Known.MEDIUM
+                LOW -> Known.LOW
+                NONE -> Known.NONE
+                NOT_AVAILABLE -> Known.NOT_AVAILABLE
+                else -> throw HiddenLayerInvalidDataException("Unknown HighestSeverity: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                HiddenLayerInvalidDataException("Value is not a String")
+            }
+
+        private var validated: Boolean = false
+
+        fun validate(): HighestSeverity = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: HiddenLayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is HighestSeverity && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
     /**
-     * The severity of the detection. Use ScanDetectionSeverity (without safe) or
-     * ScanDetectionSeverityWithNone instead.
+     * The highest severity of any detections on the scan. Use ScanHighestDetectionSeverity instead.
      */
     @Deprecated("deprecated")
     class Severity @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -7687,6 +7884,7 @@ private constructor(
         private val fileCount: JsonField<Long>,
         private val filesFailedToScan: JsonField<Long>,
         private val filesWithDetectionsCount: JsonField<Long>,
+        private val highestSeverity: JsonField<HighestSeverity>,
         private val severity: JsonField<Severity>,
         private val unknownFiles: JsonField<Long>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -7709,6 +7907,9 @@ private constructor(
             @JsonProperty("files_with_detections_count")
             @ExcludeMissing
             filesWithDetectionsCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("highest_severity")
+            @ExcludeMissing
+            highestSeverity: JsonField<HighestSeverity> = JsonMissing.of(),
             @JsonProperty("severity")
             @ExcludeMissing
             severity: JsonField<Severity> = JsonMissing.of(),
@@ -7721,6 +7922,7 @@ private constructor(
             fileCount,
             filesFailedToScan,
             filesWithDetectionsCount,
+            highestSeverity,
             severity,
             unknownFiles,
             mutableMapOf(),
@@ -7770,8 +7972,17 @@ private constructor(
             filesWithDetectionsCount.getOptional("files_with_detections_count")
 
         /**
-         * The severity of the detection. Use ScanDetectionSeverity (without safe) or
-         * ScanDetectionSeverityWithNone instead.
+         * The highest severity of any detections on the scan.
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun highestSeverity(): Optional<HighestSeverity> =
+            highestSeverity.getOptional("highest_severity")
+
+        /**
+         * The highest severity of any detections on the scan. Use ScanHighestDetectionSeverity
+         * instead.
          *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -7835,6 +8046,16 @@ private constructor(
         fun _filesWithDetectionsCount(): JsonField<Long> = filesWithDetectionsCount
 
         /**
+         * Returns the raw JSON value of [highestSeverity].
+         *
+         * Unlike [highestSeverity], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("highest_severity")
+        @ExcludeMissing
+        fun _highestSeverity(): JsonField<HighestSeverity> = highestSeverity
+
+        /**
          * Returns the raw JSON value of [severity].
          *
          * Unlike [severity], this method doesn't throw if the JSON field has an unexpected type.
@@ -7880,6 +8101,7 @@ private constructor(
             private var fileCount: JsonField<Long> = JsonMissing.of()
             private var filesFailedToScan: JsonField<Long> = JsonMissing.of()
             private var filesWithDetectionsCount: JsonField<Long> = JsonMissing.of()
+            private var highestSeverity: JsonField<HighestSeverity> = JsonMissing.of()
             private var severity: JsonField<Severity> = JsonMissing.of()
             private var unknownFiles: JsonField<Long> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -7891,6 +8113,7 @@ private constructor(
                 fileCount = summary.fileCount
                 filesFailedToScan = summary.filesFailedToScan
                 filesWithDetectionsCount = summary.filesWithDetectionsCount
+                highestSeverity = summary.highestSeverity
                 severity = summary.severity
                 unknownFiles = summary.unknownFiles
                 additionalProperties = summary.additionalProperties.toMutableMap()
@@ -7979,9 +8202,24 @@ private constructor(
                 this.filesWithDetectionsCount = filesWithDetectionsCount
             }
 
+            /** The highest severity of any detections on the scan. */
+            fun highestSeverity(highestSeverity: HighestSeverity) =
+                highestSeverity(JsonField.of(highestSeverity))
+
             /**
-             * The severity of the detection. Use ScanDetectionSeverity (without safe) or
-             * ScanDetectionSeverityWithNone instead.
+             * Sets [Builder.highestSeverity] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.highestSeverity] with a well-typed [HighestSeverity]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun highestSeverity(highestSeverity: JsonField<HighestSeverity>) = apply {
+                this.highestSeverity = highestSeverity
+            }
+
+            /**
+             * The highest severity of any detections on the scan. Use ScanHighestDetectionSeverity
+             * instead.
              */
             @Deprecated("deprecated")
             fun severity(severity: Severity) = severity(JsonField.of(severity))
@@ -8041,6 +8279,7 @@ private constructor(
                     fileCount,
                     filesFailedToScan,
                     filesWithDetectionsCount,
+                    highestSeverity,
                     severity,
                     unknownFiles,
                     additionalProperties.toMutableMap(),
@@ -8059,6 +8298,7 @@ private constructor(
             fileCount()
             filesFailedToScan()
             filesWithDetectionsCount()
+            highestSeverity().ifPresent { it.validate() }
             severity().ifPresent { it.validate() }
             unknownFiles()
             validated = true
@@ -8085,12 +8325,170 @@ private constructor(
                 (if (fileCount.asKnown().isPresent) 1 else 0) +
                 (if (filesFailedToScan.asKnown().isPresent) 1 else 0) +
                 (if (filesWithDetectionsCount.asKnown().isPresent) 1 else 0) +
+                (highestSeverity.asKnown().getOrNull()?.validity() ?: 0) +
                 (severity.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (unknownFiles.asKnown().isPresent) 1 else 0)
 
+        /** The highest severity of any detections on the scan. */
+        class HighestSeverity
+        @JsonCreator
+        private constructor(private val value: JsonField<String>) : Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val CRITICAL = of("critical")
+
+                @JvmField val HIGH = of("high")
+
+                @JvmField val MEDIUM = of("medium")
+
+                @JvmField val LOW = of("low")
+
+                @JvmField val NONE = of("none")
+
+                @JvmField val NOT_AVAILABLE = of("not available")
+
+                @JvmStatic fun of(value: String) = HighestSeverity(JsonField.of(value))
+            }
+
+            /** An enum containing [HighestSeverity]'s known values. */
+            enum class Known {
+                CRITICAL,
+                HIGH,
+                MEDIUM,
+                LOW,
+                NONE,
+                NOT_AVAILABLE,
+            }
+
+            /**
+             * An enum containing [HighestSeverity]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [HighestSeverity] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                CRITICAL,
+                HIGH,
+                MEDIUM,
+                LOW,
+                NONE,
+                NOT_AVAILABLE,
+                /**
+                 * An enum member indicating that [HighestSeverity] was instantiated with an unknown
+                 * value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    CRITICAL -> Value.CRITICAL
+                    HIGH -> Value.HIGH
+                    MEDIUM -> Value.MEDIUM
+                    LOW -> Value.LOW
+                    NONE -> Value.NONE
+                    NOT_AVAILABLE -> Value.NOT_AVAILABLE
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value is a not a
+             *   known member.
+             */
+            fun known(): Known =
+                when (this) {
+                    CRITICAL -> Known.CRITICAL
+                    HIGH -> Known.HIGH
+                    MEDIUM -> Known.MEDIUM
+                    LOW -> Known.LOW
+                    NONE -> Known.NONE
+                    NOT_AVAILABLE -> Known.NOT_AVAILABLE
+                    else -> throw HiddenLayerInvalidDataException("Unknown HighestSeverity: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value does not have
+             *   the expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    HiddenLayerInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): HighestSeverity = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: HiddenLayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is HighestSeverity && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
         /**
-         * The severity of the detection. Use ScanDetectionSeverity (without safe) or
-         * ScanDetectionSeverityWithNone instead.
+         * The highest severity of any detections on the scan. Use ScanHighestDetectionSeverity
+         * instead.
          */
         @Deprecated("deprecated")
         class Severity @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -8258,6 +8656,7 @@ private constructor(
                 fileCount == other.fileCount &&
                 filesFailedToScan == other.filesFailedToScan &&
                 filesWithDetectionsCount == other.filesWithDetectionsCount &&
+                highestSeverity == other.highestSeverity &&
                 severity == other.severity &&
                 unknownFiles == other.unknownFiles &&
                 additionalProperties == other.additionalProperties
@@ -8270,6 +8669,7 @@ private constructor(
                 fileCount,
                 filesFailedToScan,
                 filesWithDetectionsCount,
+                highestSeverity,
                 severity,
                 unknownFiles,
                 additionalProperties,
@@ -8279,7 +8679,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Summary{detectionCategories=$detectionCategories, detectionCount=$detectionCount, fileCount=$fileCount, filesFailedToScan=$filesFailedToScan, filesWithDetectionsCount=$filesWithDetectionsCount, severity=$severity, unknownFiles=$unknownFiles, additionalProperties=$additionalProperties}"
+            "Summary{detectionCategories=$detectionCategories, detectionCount=$detectionCount, fileCount=$fileCount, filesFailedToScan=$filesFailedToScan, filesWithDetectionsCount=$filesWithDetectionsCount, highestSeverity=$highestSeverity, severity=$severity, unknownFiles=$unknownFiles, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -8302,6 +8702,7 @@ private constructor(
             endTime == other.endTime &&
             fileResults == other.fileResults &&
             hasGenealogy == other.hasGenealogy &&
+            highestSeverity == other.highestSeverity &&
             severity == other.severity &&
             summary == other.summary &&
             additionalProperties == other.additionalProperties
@@ -8323,6 +8724,7 @@ private constructor(
             endTime,
             fileResults,
             hasGenealogy,
+            highestSeverity,
             severity,
             summary,
             additionalProperties,
@@ -8332,5 +8734,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ScanReport{detectionCount=$detectionCount, fileCount=$fileCount, filesWithDetectionsCount=$filesWithDetectionsCount, inventory=$inventory, scanId=$scanId, startTime=$startTime, status=$status, version=$version, schemaVersion=$schemaVersion, compliance=$compliance, detectionCategories=$detectionCategories, endTime=$endTime, fileResults=$fileResults, hasGenealogy=$hasGenealogy, severity=$severity, summary=$summary, additionalProperties=$additionalProperties}"
+        "ScanReport{detectionCount=$detectionCount, fileCount=$fileCount, filesWithDetectionsCount=$filesWithDetectionsCount, inventory=$inventory, scanId=$scanId, startTime=$startTime, status=$status, version=$version, schemaVersion=$schemaVersion, compliance=$compliance, detectionCategories=$detectionCategories, endTime=$endTime, fileResults=$fileResults, hasGenealogy=$hasGenealogy, highestSeverity=$highestSeverity, severity=$severity, summary=$summary, additionalProperties=$additionalProperties}"
 }

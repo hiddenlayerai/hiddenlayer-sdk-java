@@ -63,7 +63,7 @@ internal class JobServiceTest {
                     .offset(0L)
                     .addRequestSource(JobListParams.RequestSource.API_UPLOAD)
                     .scannerVersion("891.0.97194")
-                    .addSeverity("string")
+                    .severity(JobListParams.Severity.CRITICAL)
                     .sort("-start_time")
                     .source(
                         JobListParams.Source.builder().eq(JobListParams.Source.Eq.ADHOC).build()

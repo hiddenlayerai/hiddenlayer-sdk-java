@@ -30,7 +30,7 @@ private constructor(
     private val offset: Long?,
     private val requestSource: List<RequestSource>?,
     private val scannerVersion: String?,
-    private val severity: List<String>?,
+    private val severity: Severity?,
     private val sort: String?,
     private val source: Source?,
     private val startTime: OffsetDateTime?,
@@ -73,7 +73,7 @@ private constructor(
     fun scannerVersion(): Optional<String> = Optional.ofNullable(scannerVersion)
 
     /** Severities */
-    fun severity(): Optional<List<String>> = Optional.ofNullable(severity)
+    fun severity(): Optional<Severity> = Optional.ofNullable(severity)
 
     /**
      * allow sorting by model name, status, severity or created at, ascending (+) or the default
@@ -122,7 +122,7 @@ private constructor(
         private var offset: Long? = null
         private var requestSource: MutableList<RequestSource>? = null
         private var scannerVersion: String? = null
-        private var severity: MutableList<String>? = null
+        private var severity: Severity? = null
         private var sort: String? = null
         private var source: Source? = null
         private var startTime: OffsetDateTime? = null
@@ -144,7 +144,7 @@ private constructor(
             offset = jobListParams.offset
             requestSource = jobListParams.requestSource?.toMutableList()
             scannerVersion = jobListParams.scannerVersion
-            severity = jobListParams.severity?.toMutableList()
+            severity = jobListParams.severity
             sort = jobListParams.sort
             source = jobListParams.source
             startTime = jobListParams.startTime
@@ -298,19 +298,10 @@ private constructor(
             scannerVersion(scannerVersion.getOrNull())
 
         /** Severities */
-        fun severity(severity: List<String>?) = apply { this.severity = severity?.toMutableList() }
+        fun severity(severity: Severity?) = apply { this.severity = severity }
 
         /** Alias for calling [Builder.severity] with `severity.orElse(null)`. */
-        fun severity(severity: Optional<List<String>>) = severity(severity.getOrNull())
-
-        /**
-         * Adds a single [String] to [Builder.severity].
-         *
-         * @throws IllegalStateException if the field was previously set to a non-list.
-         */
-        fun addSeverity(severity: String) = apply {
-            this.severity = (this.severity ?: mutableListOf()).apply { add(severity) }
-        }
+        fun severity(severity: Optional<Severity>) = severity(severity.getOrNull())
 
         /**
          * allow sorting by model name, status, severity or created at, ascending (+) or the default
@@ -470,7 +461,7 @@ private constructor(
                 offset,
                 requestSource?.toImmutable(),
                 scannerVersion,
-                severity?.toImmutable(),
+                severity,
                 sort,
                 source,
                 startTime,
@@ -515,7 +506,7 @@ private constructor(
                 offset?.let { put("offset", it.toString()) }
                 requestSource?.let { put("request_source", it.joinToString(",") { it.toString() }) }
                 scannerVersion?.let { put("scanner_version", it) }
-                severity?.let { put("severity", it.joinToString(",")) }
+                severity?.let { put("severity", it.toString()) }
                 sort?.let { put("sort", it) }
                 source?.let {
                     it.eq().ifPresent { put("source[eq]", it.toString()) }
@@ -924,6 +915,170 @@ private constructor(
             }
 
             return other is RequestSource && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
+    /** Severities */
+    class Severity @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val CRITICAL = of("critical")
+
+            @JvmField val HIGH = of("high")
+
+            @JvmField val MEDIUM = of("medium")
+
+            @JvmField val LOW = of("low")
+
+            @JvmField val NONE = of("none")
+
+            @JvmField val NOT_AVAILABLE = of("not available")
+
+            @JvmField val SAFE = of("safe")
+
+            @JvmField val UNKNOWN = of("unknown")
+
+            @JvmStatic fun of(value: String) = Severity(JsonField.of(value))
+        }
+
+        /** An enum containing [Severity]'s known values. */
+        enum class Known {
+            CRITICAL,
+            HIGH,
+            MEDIUM,
+            LOW,
+            NONE,
+            NOT_AVAILABLE,
+            SAFE,
+            UNKNOWN,
+        }
+
+        /**
+         * An enum containing [Severity]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [Severity] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            CRITICAL,
+            HIGH,
+            MEDIUM,
+            LOW,
+            NONE,
+            NOT_AVAILABLE,
+            SAFE,
+            UNKNOWN,
+            /** An enum member indicating that [Severity] was instantiated with an unknown value. */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                CRITICAL -> Value.CRITICAL
+                HIGH -> Value.HIGH
+                MEDIUM -> Value.MEDIUM
+                LOW -> Value.LOW
+                NONE -> Value.NONE
+                NOT_AVAILABLE -> Value.NOT_AVAILABLE
+                SAFE -> Value.SAFE
+                UNKNOWN -> Value.UNKNOWN
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                CRITICAL -> Known.CRITICAL
+                HIGH -> Known.HIGH
+                MEDIUM -> Known.MEDIUM
+                LOW -> Known.LOW
+                NONE -> Known.NONE
+                NOT_AVAILABLE -> Known.NOT_AVAILABLE
+                SAFE -> Known.SAFE
+                UNKNOWN -> Known.UNKNOWN
+                else -> throw HiddenLayerInvalidDataException("Unknown Severity: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                HiddenLayerInvalidDataException("Value is not a String")
+            }
+
+        private var validated: Boolean = false
+
+        fun validate(): Severity = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: HiddenLayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Severity && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
