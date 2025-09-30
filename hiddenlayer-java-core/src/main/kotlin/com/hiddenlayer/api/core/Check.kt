@@ -77,7 +77,7 @@ This can happen if you are either:
 
 Double-check that you are depending on compatible Jackson versions.
 
-See https://www.github.com/hiddenlayer-engineering/hiddenlayer-sdk-java#jackson for more information.
+See https://www.github.com/hiddenlayerai/hiddenlayer-sdk-java#jackson for more information.
         """
             .trimIndent()
     }
