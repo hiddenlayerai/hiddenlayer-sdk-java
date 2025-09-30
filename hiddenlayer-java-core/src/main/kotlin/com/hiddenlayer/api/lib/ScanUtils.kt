@@ -92,10 +92,8 @@ fun waitForScanResults(client: HiddenLayerClient, scanId: String): ScanReport {
             val status = scanResults.status()
             if (
                 status == com.hiddenlayer.api.models.scans.results.ScanReport.Status.DONE ||
-                    status ==
-                        com.hiddenlayer.api.models.scans.results.ScanReport.Status.FAILED ||
-                    status ==
-                        com.hiddenlayer.api.models.scans.results.ScanReport.Status.CANCELED
+                    status == com.hiddenlayer.api.models.scans.results.ScanReport.Status.FAILED ||
+                    status == com.hiddenlayer.api.models.scans.results.ScanReport.Status.CANCELED
             ) {
                 break
             }
@@ -234,14 +232,11 @@ private fun waitForScanResultsAsyncInternal(
                 result != null -> {
                     val status = result.status()
                     if (
-                        status ==
-                            com.hiddenlayer.api.models.scans.results.ScanReport.Status.DONE ||
+                        status == com.hiddenlayer.api.models.scans.results.ScanReport.Status.DONE ||
                             status ==
-                                com.hiddenlayer.api.models.scans.results.ScanReport.Status
-                                    .FAILED ||
+                                com.hiddenlayer.api.models.scans.results.ScanReport.Status.FAILED ||
                             status ==
-                                com.hiddenlayer.api.models.scans.results.ScanReport.Status
-                                    .CANCELED
+                                com.hiddenlayer.api.models.scans.results.ScanReport.Status.CANCELED
                     ) {
                         CompletableFuture.completedFuture(result)
                     } else {
