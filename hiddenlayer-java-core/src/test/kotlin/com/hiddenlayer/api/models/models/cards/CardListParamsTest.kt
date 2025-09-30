@@ -103,17 +103,17 @@ internal class CardListParamsTest {
         assertThat(queryParams)
             .isEqualTo(
                 QueryParams.builder()
-                    .put(
-                        "aidr_severity",
-                        listOf(CardListParams.ModscanSeverity.ModelCardScanSafeUnsafe.SAFE),
-                    )
+                    .put("aidr_severity", listOf("SAFE").joinToString(","))
                     .put("aidr_status", "ENABLED")
                     .put("limit", "50")
                     .put("model_created[gte]", "2019-12-27T18:11:19.117Z")
                     .put("model_created[lte]", "2019-12-27T18:11:19.117Z")
                     .put("model_name[contains]", "contains")
                     .put("model_name[eq]", "eq")
-                    .put("modscan_severity", listOf("SAFE").joinToString(","))
+                    .put(
+                        "modscan_severity",
+                        listOf("ModscanSeverity{modelCardScanSafeUnsafe=SAFE}").joinToString(","),
+                    )
                     .put("modscan_status", "ENABLED")
                     .put("offset", "250")
                     .put("provider", listOf("AZURE").joinToString(","))
