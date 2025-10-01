@@ -63,6 +63,7 @@ internal class ProGuardCompatibilityTest {
             InteractionAnalyzeResponse.builder()
                 .addAnalysis(
                     InteractionAnalyzeResponse.Analysis.builder()
+                        .id("id")
                         .configuration(
                             InteractionAnalyzeResponse.Analysis.Configuration.builder()
                                 .putAdditionalProperty("enabled", JsonValue.from("bar"))
