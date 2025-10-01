@@ -505,10 +505,7 @@ private constructor(
                         if (clientId != null && clientSecret != null) {
                             OAuth2HttpClient.builder()
                                 .httpClient(httpClient)
-                                .tokenUrl(
-                                    (baseUrl ?: PROD_US_URL) +
-                                        "/oauth2/token?grant_type=client_credentials"
-                                )
+                                .tokenUrl((baseUrl ?: PROD_US_URL) + "/oauth2/token")
                                 .clientId(clientId!!)
                                 .clientSecret(clientSecret!!)
                                 .jsonMapper(jsonMapper)

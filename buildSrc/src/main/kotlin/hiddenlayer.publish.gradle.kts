@@ -27,9 +27,9 @@ configure<PublishingExtension> {
                 }
 
                 scm {
-                    connection.set("scm:git:git://github.com/hiddenlayer-engineering/hiddenlayer-sdk-java.git")
-                    developerConnection.set("scm:git:git://github.com/hiddenlayer-engineering/hiddenlayer-sdk-java.git")
-                    url.set("https://github.com/hiddenlayer-engineering/hiddenlayer-sdk-java")
+                    connection.set("scm:git:git://github.com/hiddenlayerai/hiddenlayer-sdk-java.git")
+                    developerConnection.set("scm:git:git://github.com/hiddenlayerai/hiddenlayer-sdk-java.git")
+                    url.set("https://github.com/hiddenlayerai/hiddenlayer-sdk-java")
                 }
 
                 versionMapping {

@@ -693,8 +693,7 @@ class AsyncModelScanner(private val client: HiddenLayerClientAsync) : AutoClosea
                                 .upload()
                                 .file()
                                 .complete(
-                                    com.hiddenlayer.api.models.scans.upload.file
-                                        .FileCompleteParams
+                                    com.hiddenlayer.api.models.scans.upload.file.FileCompleteParams
                                         .builder()
                                         .fileId(upload.uploadId())
                                         .scanId(scanId)
