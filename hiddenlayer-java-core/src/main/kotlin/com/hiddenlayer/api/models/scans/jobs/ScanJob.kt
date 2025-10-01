@@ -610,6 +610,8 @@ private constructor(
 
                 @JvmField val UI_UPLOAD = of("UI Upload")
 
+                @JvmField val AI_ASSET_DISCOVERY = of("AI Asset Discovery")
+
                 @JvmStatic fun of(value: String) = RequestSource(JsonField.of(value))
             }
 
@@ -619,6 +621,7 @@ private constructor(
                 API_UPLOAD,
                 INTEGRATION,
                 UI_UPLOAD,
+                AI_ASSET_DISCOVERY,
             }
 
             /**
@@ -635,6 +638,7 @@ private constructor(
                 API_UPLOAD,
                 INTEGRATION,
                 UI_UPLOAD,
+                AI_ASSET_DISCOVERY,
                 /**
                  * An enum member indicating that [RequestSource] was instantiated with an unknown
                  * value.
@@ -655,6 +659,7 @@ private constructor(
                     API_UPLOAD -> Value.API_UPLOAD
                     INTEGRATION -> Value.INTEGRATION
                     UI_UPLOAD -> Value.UI_UPLOAD
+                    AI_ASSET_DISCOVERY -> Value.AI_ASSET_DISCOVERY
                     else -> Value._UNKNOWN
                 }
 
@@ -673,6 +678,7 @@ private constructor(
                     API_UPLOAD -> Known.API_UPLOAD
                     INTEGRATION -> Known.INTEGRATION
                     UI_UPLOAD -> Known.UI_UPLOAD
+                    AI_ASSET_DISCOVERY -> Known.AI_ASSET_DISCOVERY
                     else -> throw HiddenLayerInvalidDataException("Unknown RequestSource: $value")
                 }
 
