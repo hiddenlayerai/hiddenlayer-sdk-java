@@ -9,7 +9,7 @@ repositories {
 
 allprojects {
     group = "com.hiddenlayer.api"
-    version = "0.1.0-alpha.4" // x-release-please-version
+    version = "1.0.0-alpha.1" // x-release-please-version
 }
 
 subprojects {
