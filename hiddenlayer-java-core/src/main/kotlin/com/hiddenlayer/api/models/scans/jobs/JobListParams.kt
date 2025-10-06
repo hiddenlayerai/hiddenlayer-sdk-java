@@ -802,6 +802,8 @@ private constructor(
 
             @JvmField val UI_UPLOAD = of("UI Upload")
 
+            @JvmField val AI_ASSET_DISCOVERY = of("AI Asset Discovery")
+
             @JvmStatic fun of(value: String) = RequestSource(JsonField.of(value))
         }
 
@@ -811,6 +813,7 @@ private constructor(
             API_UPLOAD,
             INTEGRATION,
             UI_UPLOAD,
+            AI_ASSET_DISCOVERY,
         }
 
         /**
@@ -827,6 +830,7 @@ private constructor(
             API_UPLOAD,
             INTEGRATION,
             UI_UPLOAD,
+            AI_ASSET_DISCOVERY,
             /**
              * An enum member indicating that [RequestSource] was instantiated with an unknown
              * value.
@@ -847,6 +851,7 @@ private constructor(
                 API_UPLOAD -> Value.API_UPLOAD
                 INTEGRATION -> Value.INTEGRATION
                 UI_UPLOAD -> Value.UI_UPLOAD
+                AI_ASSET_DISCOVERY -> Value.AI_ASSET_DISCOVERY
                 else -> Value._UNKNOWN
             }
 
@@ -865,6 +870,7 @@ private constructor(
                 API_UPLOAD -> Known.API_UPLOAD
                 INTEGRATION -> Known.INTEGRATION
                 UI_UPLOAD -> Known.UI_UPLOAD
+                AI_ASSET_DISCOVERY -> Known.AI_ASSET_DISCOVERY
                 else -> throw HiddenLayerInvalidDataException("Unknown RequestSource: $value")
             }
 
@@ -937,6 +943,8 @@ private constructor(
 
         companion object {
 
+            @JvmField val NOT_AVAILABLE = of("not available")
+
             @JvmField val CRITICAL = of("critical")
 
             @JvmField val HIGH = of("high")
@@ -945,27 +953,25 @@ private constructor(
 
             @JvmField val LOW = of("low")
 
+            @JvmField val UNKNOWN = of("unknown")
+
             @JvmField val NONE = of("none")
 
-            @JvmField val NOT_AVAILABLE = of("not available")
-
             @JvmField val SAFE = of("safe")
-
-            @JvmField val UNKNOWN = of("unknown")
 
             @JvmStatic fun of(value: String) = Severity(JsonField.of(value))
         }
 
         /** An enum containing [Severity]'s known values. */
         enum class Known {
+            NOT_AVAILABLE,
             CRITICAL,
             HIGH,
             MEDIUM,
             LOW,
-            NONE,
-            NOT_AVAILABLE,
-            SAFE,
             UNKNOWN,
+            NONE,
+            SAFE,
         }
 
         /**
@@ -978,14 +984,14 @@ private constructor(
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
+            NOT_AVAILABLE,
             CRITICAL,
             HIGH,
             MEDIUM,
             LOW,
-            NONE,
-            NOT_AVAILABLE,
-            SAFE,
             UNKNOWN,
+            NONE,
+            SAFE,
             /** An enum member indicating that [Severity] was instantiated with an unknown value. */
             _UNKNOWN,
         }
@@ -999,14 +1005,14 @@ private constructor(
          */
         fun value(): Value =
             when (this) {
+                NOT_AVAILABLE -> Value.NOT_AVAILABLE
                 CRITICAL -> Value.CRITICAL
                 HIGH -> Value.HIGH
                 MEDIUM -> Value.MEDIUM
                 LOW -> Value.LOW
-                NONE -> Value.NONE
-                NOT_AVAILABLE -> Value.NOT_AVAILABLE
-                SAFE -> Value.SAFE
                 UNKNOWN -> Value.UNKNOWN
+                NONE -> Value.NONE
+                SAFE -> Value.SAFE
                 else -> Value._UNKNOWN
             }
 
@@ -1021,14 +1027,14 @@ private constructor(
          */
         fun known(): Known =
             when (this) {
+                NOT_AVAILABLE -> Known.NOT_AVAILABLE
                 CRITICAL -> Known.CRITICAL
                 HIGH -> Known.HIGH
                 MEDIUM -> Known.MEDIUM
                 LOW -> Known.LOW
-                NONE -> Known.NONE
-                NOT_AVAILABLE -> Known.NOT_AVAILABLE
-                SAFE -> Known.SAFE
                 UNKNOWN -> Known.UNKNOWN
+                NONE -> Known.NONE
+                SAFE -> Known.SAFE
                 else -> throw HiddenLayerInvalidDataException("Unknown Severity: $value")
             }
 
