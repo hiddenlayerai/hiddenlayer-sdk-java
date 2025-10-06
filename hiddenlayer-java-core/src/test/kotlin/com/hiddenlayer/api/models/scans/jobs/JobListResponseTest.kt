@@ -28,7 +28,8 @@ internal class JobListResponseTest {
                                 .modelVersion("1.0.0")
                                 .origin("Hugging Face")
                                 .requestSource(
-                                    ScanReport.Inventory.ScanModelDetailsV3.RequestSource.API_UPLOAD
+                                    ScanReport.Inventory.ScanModelDetailsV3.RequestSource
+                                        .HYBRID_UPLOAD
                                 )
                                 .requestingEntity("requesting_entity")
                                 .build()
@@ -118,8 +119,7 @@ internal class JobListResponseTest {
                                 .build()
                         )
                         .hasGenealogy(true)
-                        .highestSeverity(ScanReport.HighestSeverity.CRITICAL)
-                        .severity(ScanReport.Severity.CRITICAL)
+                        .severity(ScanReport.Severity.NOT_AVAILABLE)
                         .summary(
                             ScanReport.Summary.builder()
                                 .addDetectionCategory("string")
@@ -127,8 +127,8 @@ internal class JobListResponseTest {
                                 .fileCount(0L)
                                 .filesFailedToScan(0L)
                                 .filesWithDetectionsCount(0L)
-                                .highestSeverity(ScanReport.Summary.HighestSeverity.CRITICAL)
-                                .severity(ScanReport.Summary.Severity.CRITICAL)
+                                .highestSeverity(ScanReport.Summary.HighestSeverity.NOT_AVAILABLE)
+                                .severity(ScanReport.Summary.Severity.NOT_AVAILABLE)
                                 .unknownFiles(0L)
                                 .build()
                         )
@@ -153,7 +153,7 @@ internal class JobListResponseTest {
                             .modelVersion("1.0.0")
                             .origin("Hugging Face")
                             .requestSource(
-                                ScanReport.Inventory.ScanModelDetailsV3.RequestSource.API_UPLOAD
+                                ScanReport.Inventory.ScanModelDetailsV3.RequestSource.HYBRID_UPLOAD
                             )
                             .requestingEntity("requesting_entity")
                             .build()
@@ -242,8 +242,7 @@ internal class JobListResponseTest {
                             .build()
                     )
                     .hasGenealogy(true)
-                    .highestSeverity(ScanReport.HighestSeverity.CRITICAL)
-                    .severity(ScanReport.Severity.CRITICAL)
+                    .severity(ScanReport.Severity.NOT_AVAILABLE)
                     .summary(
                         ScanReport.Summary.builder()
                             .addDetectionCategory("string")
@@ -251,8 +250,8 @@ internal class JobListResponseTest {
                             .fileCount(0L)
                             .filesFailedToScan(0L)
                             .filesWithDetectionsCount(0L)
-                            .highestSeverity(ScanReport.Summary.HighestSeverity.CRITICAL)
-                            .severity(ScanReport.Summary.Severity.CRITICAL)
+                            .highestSeverity(ScanReport.Summary.HighestSeverity.NOT_AVAILABLE)
+                            .severity(ScanReport.Summary.Severity.NOT_AVAILABLE)
                             .unknownFiles(0L)
                             .build()
                     )
@@ -281,7 +280,8 @@ internal class JobListResponseTest {
                                 .modelVersion("1.0.0")
                                 .origin("Hugging Face")
                                 .requestSource(
-                                    ScanReport.Inventory.ScanModelDetailsV3.RequestSource.API_UPLOAD
+                                    ScanReport.Inventory.ScanModelDetailsV3.RequestSource
+                                        .HYBRID_UPLOAD
                                 )
                                 .requestingEntity("requesting_entity")
                                 .build()
@@ -371,8 +371,7 @@ internal class JobListResponseTest {
                                 .build()
                         )
                         .hasGenealogy(true)
-                        .highestSeverity(ScanReport.HighestSeverity.CRITICAL)
-                        .severity(ScanReport.Severity.CRITICAL)
+                        .severity(ScanReport.Severity.NOT_AVAILABLE)
                         .summary(
                             ScanReport.Summary.builder()
                                 .addDetectionCategory("string")
@@ -380,8 +379,8 @@ internal class JobListResponseTest {
                                 .fileCount(0L)
                                 .filesFailedToScan(0L)
                                 .filesWithDetectionsCount(0L)
-                                .highestSeverity(ScanReport.Summary.HighestSeverity.CRITICAL)
-                                .severity(ScanReport.Summary.Severity.CRITICAL)
+                                .highestSeverity(ScanReport.Summary.HighestSeverity.NOT_AVAILABLE)
+                                .severity(ScanReport.Summary.Severity.NOT_AVAILABLE)
                                 .unknownFiles(0L)
                                 .build()
                         )

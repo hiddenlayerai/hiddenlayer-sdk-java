@@ -26,7 +26,7 @@ internal class ScanReportTest {
                         .modelVersion("1.0.0")
                         .origin("Hugging Face")
                         .requestSource(
-                            ScanReport.Inventory.ScanModelDetailsV3.RequestSource.API_UPLOAD
+                            ScanReport.Inventory.ScanModelDetailsV3.RequestSource.HYBRID_UPLOAD
                         )
                         .requestingEntity("requesting_entity")
                         .build()
@@ -112,8 +112,7 @@ internal class ScanReportTest {
                         .build()
                 )
                 .hasGenealogy(true)
-                .highestSeverity(ScanReport.HighestSeverity.CRITICAL)
-                .severity(ScanReport.Severity.CRITICAL)
+                .severity(ScanReport.Severity.NOT_AVAILABLE)
                 .summary(
                     ScanReport.Summary.builder()
                         .addDetectionCategory("string")
@@ -121,8 +120,8 @@ internal class ScanReportTest {
                         .fileCount(0L)
                         .filesFailedToScan(0L)
                         .filesWithDetectionsCount(0L)
-                        .highestSeverity(ScanReport.Summary.HighestSeverity.CRITICAL)
-                        .severity(ScanReport.Summary.Severity.CRITICAL)
+                        .highestSeverity(ScanReport.Summary.HighestSeverity.NOT_AVAILABLE)
+                        .severity(ScanReport.Summary.Severity.NOT_AVAILABLE)
                         .unknownFiles(0L)
                         .build()
                 )
@@ -141,7 +140,7 @@ internal class ScanReportTest {
                         .modelVersion("1.0.0")
                         .origin("Hugging Face")
                         .requestSource(
-                            ScanReport.Inventory.ScanModelDetailsV3.RequestSource.API_UPLOAD
+                            ScanReport.Inventory.ScanModelDetailsV3.RequestSource.HYBRID_UPLOAD
                         )
                         .requestingEntity("requesting_entity")
                         .build()
@@ -230,8 +229,7 @@ internal class ScanReportTest {
                     .build()
             )
         assertThat(scanReport.hasGenealogy()).contains(true)
-        assertThat(scanReport.highestSeverity()).contains(ScanReport.HighestSeverity.CRITICAL)
-        assertThat(scanReport.severity()).contains(ScanReport.Severity.CRITICAL)
+        assertThat(scanReport.severity()).contains(ScanReport.Severity.NOT_AVAILABLE)
         assertThat(scanReport.summary())
             .contains(
                 ScanReport.Summary.builder()
@@ -240,8 +238,8 @@ internal class ScanReportTest {
                     .fileCount(0L)
                     .filesFailedToScan(0L)
                     .filesWithDetectionsCount(0L)
-                    .highestSeverity(ScanReport.Summary.HighestSeverity.CRITICAL)
-                    .severity(ScanReport.Summary.Severity.CRITICAL)
+                    .highestSeverity(ScanReport.Summary.HighestSeverity.NOT_AVAILABLE)
+                    .severity(ScanReport.Summary.Severity.NOT_AVAILABLE)
                     .unknownFiles(0L)
                     .build()
             )
@@ -263,7 +261,7 @@ internal class ScanReportTest {
                         .modelVersion("1.0.0")
                         .origin("Hugging Face")
                         .requestSource(
-                            ScanReport.Inventory.ScanModelDetailsV3.RequestSource.API_UPLOAD
+                            ScanReport.Inventory.ScanModelDetailsV3.RequestSource.HYBRID_UPLOAD
                         )
                         .requestingEntity("requesting_entity")
                         .build()
@@ -349,8 +347,7 @@ internal class ScanReportTest {
                         .build()
                 )
                 .hasGenealogy(true)
-                .highestSeverity(ScanReport.HighestSeverity.CRITICAL)
-                .severity(ScanReport.Severity.CRITICAL)
+                .severity(ScanReport.Severity.NOT_AVAILABLE)
                 .summary(
                     ScanReport.Summary.builder()
                         .addDetectionCategory("string")
@@ -358,8 +355,8 @@ internal class ScanReportTest {
                         .fileCount(0L)
                         .filesFailedToScan(0L)
                         .filesWithDetectionsCount(0L)
-                        .highestSeverity(ScanReport.Summary.HighestSeverity.CRITICAL)
-                        .severity(ScanReport.Summary.Severity.CRITICAL)
+                        .highestSeverity(ScanReport.Summary.HighestSeverity.NOT_AVAILABLE)
+                        .severity(ScanReport.Summary.Severity.NOT_AVAILABLE)
                         .unknownFiles(0L)
                         .build()
                 )

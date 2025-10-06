@@ -49,7 +49,6 @@ private constructor(
     private val endTime: JsonField<OffsetDateTime>,
     private val fileResults: JsonField<List<FileResult>>,
     private val hasGenealogy: JsonField<Boolean>,
-    private val highestSeverity: JsonField<HighestSeverity>,
     private val severity: JsonField<Severity>,
     private val summary: JsonField<Summary>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -91,9 +90,6 @@ private constructor(
         @JsonProperty("has_genealogy")
         @ExcludeMissing
         hasGenealogy: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("highest_severity")
-        @ExcludeMissing
-        highestSeverity: JsonField<HighestSeverity> = JsonMissing.of(),
         @JsonProperty("severity") @ExcludeMissing severity: JsonField<Severity> = JsonMissing.of(),
         @JsonProperty("summary") @ExcludeMissing summary: JsonField<Summary> = JsonMissing.of(),
     ) : this(
@@ -111,40 +107,39 @@ private constructor(
         endTime,
         fileResults,
         hasGenealogy,
-        highestSeverity,
         severity,
         summary,
         mutableMapOf(),
     )
 
     /**
-     * number of detections found
+     * number of detections found; use `.summary.detection_count` instead
      *
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
+    @Deprecated("deprecated")
     fun detectionCount(): Long = detectionCount.getRequired("detection_count")
 
     /**
-     * number of files scanned
+     * number of files scanned; use `.summary.file_count` instead
      *
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun fileCount(): Long = fileCount.getRequired("file_count")
+    @Deprecated("deprecated") fun fileCount(): Long = fileCount.getRequired("file_count")
 
     /**
-     * number of files with detections found
+     * number of files with detections found; use `.summary.files_with_detections_count` instead
      *
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
+    @Deprecated("deprecated")
     fun filesWithDetectionsCount(): Long =
         filesWithDetectionsCount.getRequired("files_with_detections_count")
 
     /**
-     * information about model and version that this scan relates to
-     *
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
@@ -197,11 +192,12 @@ private constructor(
     fun compliance(): Optional<Compliance> = compliance.getOptional("compliance")
 
     /**
-     * list of detection categories found
+     * list of detection categories found; use `.summary.detection_categories` instead
      *
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
+    @Deprecated("deprecated")
     fun detectionCategories(): Optional<List<String>> =
         detectionCategories.getOptional("detection_categories")
 
@@ -228,16 +224,8 @@ private constructor(
     fun hasGenealogy(): Optional<Boolean> = hasGenealogy.getOptional("has_genealogy")
 
     /**
-     * The highest severity of any detections on the scan.
-     *
-     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun highestSeverity(): Optional<HighestSeverity> =
-        highestSeverity.getOptional("highest_severity")
-
-    /**
-     * The highest severity of any detections on the scan. Use ScanHighestDetectionSeverity instead.
+     * The highest severity of any detections on the scan, including "safe". Use
+     * `.summary.highest_severity` instead.
      *
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -257,6 +245,7 @@ private constructor(
      *
      * Unlike [detectionCount], this method doesn't throw if the JSON field has an unexpected type.
      */
+    @Deprecated("deprecated")
     @JsonProperty("detection_count")
     @ExcludeMissing
     fun _detectionCount(): JsonField<Long> = detectionCount
@@ -266,7 +255,10 @@ private constructor(
      *
      * Unlike [fileCount], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("file_count") @ExcludeMissing fun _fileCount(): JsonField<Long> = fileCount
+    @Deprecated("deprecated")
+    @JsonProperty("file_count")
+    @ExcludeMissing
+    fun _fileCount(): JsonField<Long> = fileCount
 
     /**
      * Returns the raw JSON value of [filesWithDetectionsCount].
@@ -274,6 +266,7 @@ private constructor(
      * Unlike [filesWithDetectionsCount], this method doesn't throw if the JSON field has an
      * unexpected type.
      */
+    @Deprecated("deprecated")
     @JsonProperty("files_with_detections_count")
     @ExcludeMissing
     fun _filesWithDetectionsCount(): JsonField<Long> = filesWithDetectionsCount
@@ -339,6 +332,7 @@ private constructor(
      * Unlike [detectionCategories], this method doesn't throw if the JSON field has an unexpected
      * type.
      */
+    @Deprecated("deprecated")
     @JsonProperty("detection_categories")
     @ExcludeMissing
     fun _detectionCategories(): JsonField<List<String>> = detectionCategories
@@ -367,15 +361,6 @@ private constructor(
     @JsonProperty("has_genealogy")
     @ExcludeMissing
     fun _hasGenealogy(): JsonField<Boolean> = hasGenealogy
-
-    /**
-     * Returns the raw JSON value of [highestSeverity].
-     *
-     * Unlike [highestSeverity], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("highest_severity")
-    @ExcludeMissing
-    fun _highestSeverity(): JsonField<HighestSeverity> = highestSeverity
 
     /**
      * Returns the raw JSON value of [severity].
@@ -443,7 +428,6 @@ private constructor(
         private var endTime: JsonField<OffsetDateTime> = JsonMissing.of()
         private var fileResults: JsonField<MutableList<FileResult>>? = null
         private var hasGenealogy: JsonField<Boolean> = JsonMissing.of()
-        private var highestSeverity: JsonField<HighestSeverity> = JsonMissing.of()
         private var severity: JsonField<Severity> = JsonMissing.of()
         private var summary: JsonField<Summary> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -464,13 +448,13 @@ private constructor(
             endTime = scanReport.endTime
             fileResults = scanReport.fileResults.map { it.toMutableList() }
             hasGenealogy = scanReport.hasGenealogy
-            highestSeverity = scanReport.highestSeverity
             severity = scanReport.severity
             summary = scanReport.summary
             additionalProperties = scanReport.additionalProperties.toMutableMap()
         }
 
-        /** number of detections found */
+        /** number of detections found; use `.summary.detection_count` instead */
+        @Deprecated("deprecated")
         fun detectionCount(detectionCount: Long) = detectionCount(JsonField.of(detectionCount))
 
         /**
@@ -480,11 +464,13 @@ private constructor(
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
+        @Deprecated("deprecated")
         fun detectionCount(detectionCount: JsonField<Long>) = apply {
             this.detectionCount = detectionCount
         }
 
-        /** number of files scanned */
+        /** number of files scanned; use `.summary.file_count` instead */
+        @Deprecated("deprecated")
         fun fileCount(fileCount: Long) = fileCount(JsonField.of(fileCount))
 
         /**
@@ -493,9 +479,13 @@ private constructor(
          * You should usually call [Builder.fileCount] with a well-typed [Long] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
+        @Deprecated("deprecated")
         fun fileCount(fileCount: JsonField<Long>) = apply { this.fileCount = fileCount }
 
-        /** number of files with detections found */
+        /**
+         * number of files with detections found; use `.summary.files_with_detections_count` instead
+         */
+        @Deprecated("deprecated")
         fun filesWithDetectionsCount(filesWithDetectionsCount: Long) =
             filesWithDetectionsCount(JsonField.of(filesWithDetectionsCount))
 
@@ -506,11 +496,11 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
+        @Deprecated("deprecated")
         fun filesWithDetectionsCount(filesWithDetectionsCount: JsonField<Long>) = apply {
             this.filesWithDetectionsCount = filesWithDetectionsCount
         }
 
-        /** information about model and version that this scan relates to */
         fun inventory(inventory: Inventory) = inventory(JsonField.of(inventory))
 
         /**
@@ -531,10 +521,6 @@ private constructor(
         /** Alias for calling [inventory] with `Inventory.ofScanModelIdsV3(scanModelIdsV3)`. */
         fun inventory(scanModelIdsV3: Inventory.ScanModelIdsV3) =
             inventory(Inventory.ofScanModelIdsV3(scanModelIdsV3))
-
-        /** Alias for calling [inventory] with `Inventory.ofScanModelComboV3(scanModelComboV3)`. */
-        fun inventory(scanModelComboV3: Inventory.ScanModelComboV3) =
-            inventory(Inventory.ofScanModelComboV3(scanModelComboV3))
 
         /** unique identifier for the scan */
         fun scanId(scanId: String) = scanId(JsonField.of(scanId))
@@ -606,7 +592,8 @@ private constructor(
          */
         fun compliance(compliance: JsonField<Compliance>) = apply { this.compliance = compliance }
 
-        /** list of detection categories found */
+        /** list of detection categories found; use `.summary.detection_categories` instead */
+        @Deprecated("deprecated")
         fun detectionCategories(detectionCategories: List<String>) =
             detectionCategories(JsonField.of(detectionCategories))
 
@@ -617,6 +604,7 @@ private constructor(
          * value instead. This method is primarily for setting the field to an undocumented or not
          * yet supported value.
          */
+        @Deprecated("deprecated")
         fun detectionCategories(detectionCategories: JsonField<List<String>>) = apply {
             this.detectionCategories = detectionCategories.map { it.toMutableList() }
         }
@@ -626,6 +614,7 @@ private constructor(
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
+        @Deprecated("deprecated")
         fun addDetectionCategory(detectionCategory: String) = apply {
             detectionCategories =
                 (detectionCategories ?: JsonField.of(mutableListOf())).also {
@@ -684,24 +673,9 @@ private constructor(
             this.hasGenealogy = hasGenealogy
         }
 
-        /** The highest severity of any detections on the scan. */
-        fun highestSeverity(highestSeverity: HighestSeverity) =
-            highestSeverity(JsonField.of(highestSeverity))
-
         /**
-         * Sets [Builder.highestSeverity] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.highestSeverity] with a well-typed [HighestSeverity]
-         * value instead. This method is primarily for setting the field to an undocumented or not
-         * yet supported value.
-         */
-        fun highestSeverity(highestSeverity: JsonField<HighestSeverity>) = apply {
-            this.highestSeverity = highestSeverity
-        }
-
-        /**
-         * The highest severity of any detections on the scan. Use ScanHighestDetectionSeverity
-         * instead.
+         * The highest severity of any detections on the scan, including "safe". Use
+         * `.summary.highest_severity` instead.
          */
         @Deprecated("deprecated")
         fun severity(severity: Severity) = severity(JsonField.of(severity))
@@ -781,7 +755,6 @@ private constructor(
                 endTime,
                 (fileResults ?: JsonMissing.of()).map { it.toImmutable() },
                 hasGenealogy,
-                highestSeverity,
                 severity,
                 summary,
                 additionalProperties.toMutableMap(),
@@ -809,7 +782,6 @@ private constructor(
         endTime()
         fileResults().ifPresent { it.forEach { it.validate() } }
         hasGenealogy()
-        highestSeverity().ifPresent { it.validate() }
         severity().ifPresent { it.validate() }
         summary().ifPresent { it.validate() }
         validated = true
@@ -844,18 +816,15 @@ private constructor(
             (if (endTime.asKnown().isPresent) 1 else 0) +
             (fileResults.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (if (hasGenealogy.asKnown().isPresent) 1 else 0) +
-            (highestSeverity.asKnown().getOrNull()?.validity() ?: 0) +
             (severity.asKnown().getOrNull()?.validity() ?: 0) +
             (summary.asKnown().getOrNull()?.validity() ?: 0)
 
-    /** information about model and version that this scan relates to */
     @JsonDeserialize(using = Inventory.Deserializer::class)
     @JsonSerialize(using = Inventory.Serializer::class)
     class Inventory
     private constructor(
         private val scanModelDetailsV3: ScanModelDetailsV3? = null,
         private val scanModelIdsV3: ScanModelIdsV3? = null,
-        private val scanModelComboV3: ScanModelComboV3? = null,
         private val _json: JsonValue? = null,
     ) {
 
@@ -864,20 +833,14 @@ private constructor(
 
         fun scanModelIdsV3(): Optional<ScanModelIdsV3> = Optional.ofNullable(scanModelIdsV3)
 
-        fun scanModelComboV3(): Optional<ScanModelComboV3> = Optional.ofNullable(scanModelComboV3)
-
         fun isScanModelDetailsV3(): Boolean = scanModelDetailsV3 != null
 
         fun isScanModelIdsV3(): Boolean = scanModelIdsV3 != null
-
-        fun isScanModelComboV3(): Boolean = scanModelComboV3 != null
 
         fun asScanModelDetailsV3(): ScanModelDetailsV3 =
             scanModelDetailsV3.getOrThrow("scanModelDetailsV3")
 
         fun asScanModelIdsV3(): ScanModelIdsV3 = scanModelIdsV3.getOrThrow("scanModelIdsV3")
-
-        fun asScanModelComboV3(): ScanModelComboV3 = scanModelComboV3.getOrThrow("scanModelComboV3")
 
         fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
@@ -885,7 +848,6 @@ private constructor(
             when {
                 scanModelDetailsV3 != null -> visitor.visitScanModelDetailsV3(scanModelDetailsV3)
                 scanModelIdsV3 != null -> visitor.visitScanModelIdsV3(scanModelIdsV3)
-                scanModelComboV3 != null -> visitor.visitScanModelComboV3(scanModelComboV3)
                 else -> visitor.unknown(_json)
             }
 
@@ -904,10 +866,6 @@ private constructor(
 
                     override fun visitScanModelIdsV3(scanModelIdsV3: ScanModelIdsV3) {
                         scanModelIdsV3.validate()
-                    }
-
-                    override fun visitScanModelComboV3(scanModelComboV3: ScanModelComboV3) {
-                        scanModelComboV3.validate()
                     }
                 }
             )
@@ -938,9 +896,6 @@ private constructor(
                     override fun visitScanModelIdsV3(scanModelIdsV3: ScanModelIdsV3) =
                         scanModelIdsV3.validity()
 
-                    override fun visitScanModelComboV3(scanModelComboV3: ScanModelComboV3) =
-                        scanModelComboV3.validity()
-
                     override fun unknown(json: JsonValue?) = 0
                 }
             )
@@ -952,18 +907,15 @@ private constructor(
 
             return other is Inventory &&
                 scanModelDetailsV3 == other.scanModelDetailsV3 &&
-                scanModelIdsV3 == other.scanModelIdsV3 &&
-                scanModelComboV3 == other.scanModelComboV3
+                scanModelIdsV3 == other.scanModelIdsV3
         }
 
-        override fun hashCode(): Int =
-            Objects.hash(scanModelDetailsV3, scanModelIdsV3, scanModelComboV3)
+        override fun hashCode(): Int = Objects.hash(scanModelDetailsV3, scanModelIdsV3)
 
         override fun toString(): String =
             when {
                 scanModelDetailsV3 != null -> "Inventory{scanModelDetailsV3=$scanModelDetailsV3}"
                 scanModelIdsV3 != null -> "Inventory{scanModelIdsV3=$scanModelIdsV3}"
-                scanModelComboV3 != null -> "Inventory{scanModelComboV3=$scanModelComboV3}"
                 _json != null -> "Inventory{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Inventory")
             }
@@ -977,10 +929,6 @@ private constructor(
             @JvmStatic
             fun ofScanModelIdsV3(scanModelIdsV3: ScanModelIdsV3) =
                 Inventory(scanModelIdsV3 = scanModelIdsV3)
-
-            @JvmStatic
-            fun ofScanModelComboV3(scanModelComboV3: ScanModelComboV3) =
-                Inventory(scanModelComboV3 = scanModelComboV3)
         }
 
         /**
@@ -991,8 +939,6 @@ private constructor(
             fun visitScanModelDetailsV3(scanModelDetailsV3: ScanModelDetailsV3): T
 
             fun visitScanModelIdsV3(scanModelIdsV3: ScanModelIdsV3): T
-
-            fun visitScanModelComboV3(scanModelComboV3: ScanModelComboV3): T
 
             /**
              * Maps an unknown variant of [Inventory] to a value of type [T].
@@ -1022,9 +968,6 @@ private constructor(
                             tryDeserialize(node, jacksonTypeRef<ScanModelIdsV3>())?.let {
                                 Inventory(scanModelIdsV3 = it, _json = json)
                             },
-                            tryDeserialize(node, jacksonTypeRef<ScanModelComboV3>())?.let {
-                                Inventory(scanModelComboV3 = it, _json = json)
-                            },
                         )
                         .filterNotNull()
                         .allMaxBy { it.validity() }
@@ -1053,7 +996,6 @@ private constructor(
                     value.scanModelDetailsV3 != null ->
                         generator.writeObject(value.scanModelDetailsV3)
                     value.scanModelIdsV3 != null -> generator.writeObject(value.scanModelIdsV3)
-                    value.scanModelComboV3 != null -> generator.writeObject(value.scanModelComboV3)
                     value._json != null -> generator.writeObject(value._json)
                     else -> throw IllegalStateException("Invalid Inventory")
                 }
@@ -1498,6 +1440,8 @@ private constructor(
 
                     @JvmField val UI_UPLOAD = of("UI Upload")
 
+                    @JvmField val AI_ASSET_DISCOVERY = of("AI Asset Discovery")
+
                     @JvmStatic fun of(value: String) = RequestSource(JsonField.of(value))
                 }
 
@@ -1507,6 +1451,7 @@ private constructor(
                     API_UPLOAD,
                     INTEGRATION,
                     UI_UPLOAD,
+                    AI_ASSET_DISCOVERY,
                 }
 
                 /**
@@ -1524,6 +1469,7 @@ private constructor(
                     API_UPLOAD,
                     INTEGRATION,
                     UI_UPLOAD,
+                    AI_ASSET_DISCOVERY,
                     /**
                      * An enum member indicating that [RequestSource] was instantiated with an
                      * unknown value.
@@ -1544,6 +1490,7 @@ private constructor(
                         API_UPLOAD -> Value.API_UPLOAD
                         INTEGRATION -> Value.INTEGRATION
                         UI_UPLOAD -> Value.UI_UPLOAD
+                        AI_ASSET_DISCOVERY -> Value.AI_ASSET_DISCOVERY
                         else -> Value._UNKNOWN
                     }
 
@@ -1562,6 +1509,7 @@ private constructor(
                         API_UPLOAD -> Known.API_UPLOAD
                         INTEGRATION -> Known.INTEGRATION
                         UI_UPLOAD -> Known.UI_UPLOAD
+                        AI_ASSET_DISCOVERY -> Known.AI_ASSET_DISCOVERY
                         else ->
                             throw HiddenLayerInvalidDataException("Unknown RequestSource: $value")
                     }
@@ -1868,691 +1816,6 @@ private constructor(
 
             override fun toString() =
                 "ScanModelIdsV3{modelId=$modelId, modelVersionId=$modelVersionId, additionalProperties=$additionalProperties}"
-        }
-
-        class ScanModelComboV3
-        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
-        private constructor(
-            private val modelId: JsonField<String>,
-            private val modelName: JsonField<String>,
-            private val modelVersionId: JsonField<String>,
-            private val requestedScanLocation: JsonField<String>,
-            private val modelSource: JsonField<String>,
-            private val modelVersion: JsonField<String>,
-            private val origin: JsonField<String>,
-            private val requestSource: JsonField<RequestSource>,
-            private val requestingEntity: JsonField<String>,
-            private val additionalProperties: MutableMap<String, JsonValue>,
-        ) {
-
-            @JsonCreator
-            private constructor(
-                @JsonProperty("model_id")
-                @ExcludeMissing
-                modelId: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("model_name")
-                @ExcludeMissing
-                modelName: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("model_version_id")
-                @ExcludeMissing
-                modelVersionId: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("requested_scan_location")
-                @ExcludeMissing
-                requestedScanLocation: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("model_source")
-                @ExcludeMissing
-                modelSource: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("model_version")
-                @ExcludeMissing
-                modelVersion: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("origin")
-                @ExcludeMissing
-                origin: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("request_source")
-                @ExcludeMissing
-                requestSource: JsonField<RequestSource> = JsonMissing.of(),
-                @JsonProperty("requesting_entity")
-                @ExcludeMissing
-                requestingEntity: JsonField<String> = JsonMissing.of(),
-            ) : this(
-                modelId,
-                modelName,
-                modelVersionId,
-                requestedScanLocation,
-                modelSource,
-                modelVersion,
-                origin,
-                requestSource,
-                requestingEntity,
-                mutableMapOf(),
-            )
-
-            /**
-             * Unique identifier for the model
-             *
-             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or
-             *   is unexpectedly missing or null (e.g. if the server responded with an unexpected
-             *   value).
-             */
-            fun modelId(): String = modelId.getRequired("model_id")
-
-            /**
-             * name of the model
-             *
-             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or
-             *   is unexpectedly missing or null (e.g. if the server responded with an unexpected
-             *   value).
-             */
-            fun modelName(): String = modelName.getRequired("model_name")
-
-            /**
-             * unique identifier for the model version
-             *
-             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or
-             *   is unexpectedly missing or null (e.g. if the server responded with an unexpected
-             *   value).
-             */
-            fun modelVersionId(): String = modelVersionId.getRequired("model_version_id")
-
-            /**
-             * Location to be scanned
-             *
-             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or
-             *   is unexpectedly missing or null (e.g. if the server responded with an unexpected
-             *   value).
-             */
-            fun requestedScanLocation(): String =
-                requestedScanLocation.getRequired("requested_scan_location")
-
-            /**
-             * source (provider) info
-             *
-             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
-             *   (e.g. if the server responded with an unexpected value).
-             */
-            fun modelSource(): Optional<String> = modelSource.getOptional("model_source")
-
-            /**
-             * version of the model
-             *
-             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
-             *   (e.g. if the server responded with an unexpected value).
-             */
-            fun modelVersion(): Optional<String> = modelVersion.getOptional("model_version")
-
-            /**
-             * Specifies the platform or service where the model originated before being scanned
-             *
-             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
-             *   (e.g. if the server responded with an unexpected value).
-             */
-            fun origin(): Optional<String> = origin.getOptional("origin")
-
-            /**
-             * Identifies the system that requested the scan
-             *
-             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
-             *   (e.g. if the server responded with an unexpected value).
-             */
-            fun requestSource(): Optional<RequestSource> =
-                requestSource.getOptional("request_source")
-
-            /**
-             * Entity that requested the scan
-             *
-             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
-             *   (e.g. if the server responded with an unexpected value).
-             */
-            fun requestingEntity(): Optional<String> =
-                requestingEntity.getOptional("requesting_entity")
-
-            /**
-             * Returns the raw JSON value of [modelId].
-             *
-             * Unlike [modelId], this method doesn't throw if the JSON field has an unexpected type.
-             */
-            @JsonProperty("model_id") @ExcludeMissing fun _modelId(): JsonField<String> = modelId
-
-            /**
-             * Returns the raw JSON value of [modelName].
-             *
-             * Unlike [modelName], this method doesn't throw if the JSON field has an unexpected
-             * type.
-             */
-            @JsonProperty("model_name")
-            @ExcludeMissing
-            fun _modelName(): JsonField<String> = modelName
-
-            /**
-             * Returns the raw JSON value of [modelVersionId].
-             *
-             * Unlike [modelVersionId], this method doesn't throw if the JSON field has an
-             * unexpected type.
-             */
-            @JsonProperty("model_version_id")
-            @ExcludeMissing
-            fun _modelVersionId(): JsonField<String> = modelVersionId
-
-            /**
-             * Returns the raw JSON value of [requestedScanLocation].
-             *
-             * Unlike [requestedScanLocation], this method doesn't throw if the JSON field has an
-             * unexpected type.
-             */
-            @JsonProperty("requested_scan_location")
-            @ExcludeMissing
-            fun _requestedScanLocation(): JsonField<String> = requestedScanLocation
-
-            /**
-             * Returns the raw JSON value of [modelSource].
-             *
-             * Unlike [modelSource], this method doesn't throw if the JSON field has an unexpected
-             * type.
-             */
-            @JsonProperty("model_source")
-            @ExcludeMissing
-            fun _modelSource(): JsonField<String> = modelSource
-
-            /**
-             * Returns the raw JSON value of [modelVersion].
-             *
-             * Unlike [modelVersion], this method doesn't throw if the JSON field has an unexpected
-             * type.
-             */
-            @JsonProperty("model_version")
-            @ExcludeMissing
-            fun _modelVersion(): JsonField<String> = modelVersion
-
-            /**
-             * Returns the raw JSON value of [origin].
-             *
-             * Unlike [origin], this method doesn't throw if the JSON field has an unexpected type.
-             */
-            @JsonProperty("origin") @ExcludeMissing fun _origin(): JsonField<String> = origin
-
-            /**
-             * Returns the raw JSON value of [requestSource].
-             *
-             * Unlike [requestSource], this method doesn't throw if the JSON field has an unexpected
-             * type.
-             */
-            @JsonProperty("request_source")
-            @ExcludeMissing
-            fun _requestSource(): JsonField<RequestSource> = requestSource
-
-            /**
-             * Returns the raw JSON value of [requestingEntity].
-             *
-             * Unlike [requestingEntity], this method doesn't throw if the JSON field has an
-             * unexpected type.
-             */
-            @JsonProperty("requesting_entity")
-            @ExcludeMissing
-            fun _requestingEntity(): JsonField<String> = requestingEntity
-
-            @JsonAnySetter
-            private fun putAdditionalProperty(key: String, value: JsonValue) {
-                additionalProperties.put(key, value)
-            }
-
-            @JsonAnyGetter
-            @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> =
-                Collections.unmodifiableMap(additionalProperties)
-
-            fun toBuilder() = Builder().from(this)
-
-            companion object {
-
-                /**
-                 * Returns a mutable builder for constructing an instance of [ScanModelComboV3].
-                 *
-                 * The following fields are required:
-                 * ```java
-                 * .modelId()
-                 * .modelName()
-                 * .modelVersionId()
-                 * .requestedScanLocation()
-                 * ```
-                 */
-                @JvmStatic fun builder() = Builder()
-            }
-
-            /** A builder for [ScanModelComboV3]. */
-            class Builder internal constructor() {
-
-                private var modelId: JsonField<String>? = null
-                private var modelName: JsonField<String>? = null
-                private var modelVersionId: JsonField<String>? = null
-                private var requestedScanLocation: JsonField<String>? = null
-                private var modelSource: JsonField<String> = JsonMissing.of()
-                private var modelVersion: JsonField<String> = JsonMissing.of()
-                private var origin: JsonField<String> = JsonMissing.of()
-                private var requestSource: JsonField<RequestSource> = JsonMissing.of()
-                private var requestingEntity: JsonField<String> = JsonMissing.of()
-                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                @JvmSynthetic
-                internal fun from(scanModelComboV3: ScanModelComboV3) = apply {
-                    modelId = scanModelComboV3.modelId
-                    modelName = scanModelComboV3.modelName
-                    modelVersionId = scanModelComboV3.modelVersionId
-                    requestedScanLocation = scanModelComboV3.requestedScanLocation
-                    modelSource = scanModelComboV3.modelSource
-                    modelVersion = scanModelComboV3.modelVersion
-                    origin = scanModelComboV3.origin
-                    requestSource = scanModelComboV3.requestSource
-                    requestingEntity = scanModelComboV3.requestingEntity
-                    additionalProperties = scanModelComboV3.additionalProperties.toMutableMap()
-                }
-
-                /** Unique identifier for the model */
-                fun modelId(modelId: String) = modelId(JsonField.of(modelId))
-
-                /**
-                 * Sets [Builder.modelId] to an arbitrary JSON value.
-                 *
-                 * You should usually call [Builder.modelId] with a well-typed [String] value
-                 * instead. This method is primarily for setting the field to an undocumented or not
-                 * yet supported value.
-                 */
-                fun modelId(modelId: JsonField<String>) = apply { this.modelId = modelId }
-
-                /** name of the model */
-                fun modelName(modelName: String) = modelName(JsonField.of(modelName))
-
-                /**
-                 * Sets [Builder.modelName] to an arbitrary JSON value.
-                 *
-                 * You should usually call [Builder.modelName] with a well-typed [String] value
-                 * instead. This method is primarily for setting the field to an undocumented or not
-                 * yet supported value.
-                 */
-                fun modelName(modelName: JsonField<String>) = apply { this.modelName = modelName }
-
-                /** unique identifier for the model version */
-                fun modelVersionId(modelVersionId: String) =
-                    modelVersionId(JsonField.of(modelVersionId))
-
-                /**
-                 * Sets [Builder.modelVersionId] to an arbitrary JSON value.
-                 *
-                 * You should usually call [Builder.modelVersionId] with a well-typed [String] value
-                 * instead. This method is primarily for setting the field to an undocumented or not
-                 * yet supported value.
-                 */
-                fun modelVersionId(modelVersionId: JsonField<String>) = apply {
-                    this.modelVersionId = modelVersionId
-                }
-
-                /** Location to be scanned */
-                fun requestedScanLocation(requestedScanLocation: String) =
-                    requestedScanLocation(JsonField.of(requestedScanLocation))
-
-                /**
-                 * Sets [Builder.requestedScanLocation] to an arbitrary JSON value.
-                 *
-                 * You should usually call [Builder.requestedScanLocation] with a well-typed
-                 * [String] value instead. This method is primarily for setting the field to an
-                 * undocumented or not yet supported value.
-                 */
-                fun requestedScanLocation(requestedScanLocation: JsonField<String>) = apply {
-                    this.requestedScanLocation = requestedScanLocation
-                }
-
-                /** source (provider) info */
-                fun modelSource(modelSource: String) = modelSource(JsonField.of(modelSource))
-
-                /**
-                 * Sets [Builder.modelSource] to an arbitrary JSON value.
-                 *
-                 * You should usually call [Builder.modelSource] with a well-typed [String] value
-                 * instead. This method is primarily for setting the field to an undocumented or not
-                 * yet supported value.
-                 */
-                fun modelSource(modelSource: JsonField<String>) = apply {
-                    this.modelSource = modelSource
-                }
-
-                /** version of the model */
-                fun modelVersion(modelVersion: String) = modelVersion(JsonField.of(modelVersion))
-
-                /**
-                 * Sets [Builder.modelVersion] to an arbitrary JSON value.
-                 *
-                 * You should usually call [Builder.modelVersion] with a well-typed [String] value
-                 * instead. This method is primarily for setting the field to an undocumented or not
-                 * yet supported value.
-                 */
-                fun modelVersion(modelVersion: JsonField<String>) = apply {
-                    this.modelVersion = modelVersion
-                }
-
-                /**
-                 * Specifies the platform or service where the model originated before being scanned
-                 */
-                fun origin(origin: String) = origin(JsonField.of(origin))
-
-                /**
-                 * Sets [Builder.origin] to an arbitrary JSON value.
-                 *
-                 * You should usually call [Builder.origin] with a well-typed [String] value
-                 * instead. This method is primarily for setting the field to an undocumented or not
-                 * yet supported value.
-                 */
-                fun origin(origin: JsonField<String>) = apply { this.origin = origin }
-
-                /** Identifies the system that requested the scan */
-                fun requestSource(requestSource: RequestSource) =
-                    requestSource(JsonField.of(requestSource))
-
-                /**
-                 * Sets [Builder.requestSource] to an arbitrary JSON value.
-                 *
-                 * You should usually call [Builder.requestSource] with a well-typed [RequestSource]
-                 * value instead. This method is primarily for setting the field to an undocumented
-                 * or not yet supported value.
-                 */
-                fun requestSource(requestSource: JsonField<RequestSource>) = apply {
-                    this.requestSource = requestSource
-                }
-
-                /** Entity that requested the scan */
-                fun requestingEntity(requestingEntity: String) =
-                    requestingEntity(JsonField.of(requestingEntity))
-
-                /**
-                 * Sets [Builder.requestingEntity] to an arbitrary JSON value.
-                 *
-                 * You should usually call [Builder.requestingEntity] with a well-typed [String]
-                 * value instead. This method is primarily for setting the field to an undocumented
-                 * or not yet supported value.
-                 */
-                fun requestingEntity(requestingEntity: JsonField<String>) = apply {
-                    this.requestingEntity = requestingEntity
-                }
-
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
-
-                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    additionalProperties.put(key, value)
-                }
-
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
-
-                fun removeAdditionalProperty(key: String) = apply {
-                    additionalProperties.remove(key)
-                }
-
-                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
-
-                /**
-                 * Returns an immutable instance of [ScanModelComboV3].
-                 *
-                 * Further updates to this [Builder] will not mutate the returned instance.
-                 *
-                 * The following fields are required:
-                 * ```java
-                 * .modelId()
-                 * .modelName()
-                 * .modelVersionId()
-                 * .requestedScanLocation()
-                 * ```
-                 *
-                 * @throws IllegalStateException if any required field is unset.
-                 */
-                fun build(): ScanModelComboV3 =
-                    ScanModelComboV3(
-                        checkRequired("modelId", modelId),
-                        checkRequired("modelName", modelName),
-                        checkRequired("modelVersionId", modelVersionId),
-                        checkRequired("requestedScanLocation", requestedScanLocation),
-                        modelSource,
-                        modelVersion,
-                        origin,
-                        requestSource,
-                        requestingEntity,
-                        additionalProperties.toMutableMap(),
-                    )
-            }
-
-            private var validated: Boolean = false
-
-            fun validate(): ScanModelComboV3 = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                modelId()
-                modelName()
-                modelVersionId()
-                requestedScanLocation()
-                modelSource()
-                modelVersion()
-                origin()
-                requestSource().ifPresent { it.validate() }
-                requestingEntity()
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: HiddenLayerInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            @JvmSynthetic
-            internal fun validity(): Int =
-                (if (modelId.asKnown().isPresent) 1 else 0) +
-                    (if (modelName.asKnown().isPresent) 1 else 0) +
-                    (if (modelVersionId.asKnown().isPresent) 1 else 0) +
-                    (if (requestedScanLocation.asKnown().isPresent) 1 else 0) +
-                    (if (modelSource.asKnown().isPresent) 1 else 0) +
-                    (if (modelVersion.asKnown().isPresent) 1 else 0) +
-                    (if (origin.asKnown().isPresent) 1 else 0) +
-                    (requestSource.asKnown().getOrNull()?.validity() ?: 0) +
-                    (if (requestingEntity.asKnown().isPresent) 1 else 0)
-
-            /** Identifies the system that requested the scan */
-            class RequestSource
-            @JsonCreator
-            private constructor(private val value: JsonField<String>) : Enum {
-
-                /**
-                 * Returns this class instance's raw value.
-                 *
-                 * This is usually only useful if this instance was deserialized from data that
-                 * doesn't match any known member, and you want to know that value. For example, if
-                 * the SDK is on an older version than the API, then the API may respond with new
-                 * members that the SDK is unaware of.
-                 */
-                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-                companion object {
-
-                    @JvmField val HYBRID_UPLOAD = of("Hybrid Upload")
-
-                    @JvmField val API_UPLOAD = of("API Upload")
-
-                    @JvmField val INTEGRATION = of("Integration")
-
-                    @JvmField val UI_UPLOAD = of("UI Upload")
-
-                    @JvmStatic fun of(value: String) = RequestSource(JsonField.of(value))
-                }
-
-                /** An enum containing [RequestSource]'s known values. */
-                enum class Known {
-                    HYBRID_UPLOAD,
-                    API_UPLOAD,
-                    INTEGRATION,
-                    UI_UPLOAD,
-                }
-
-                /**
-                 * An enum containing [RequestSource]'s known values, as well as an [_UNKNOWN]
-                 * member.
-                 *
-                 * An instance of [RequestSource] can contain an unknown value in a couple of cases:
-                 * - It was deserialized from data that doesn't match any known member. For example,
-                 *   if the SDK is on an older version than the API, then the API may respond with
-                 *   new members that the SDK is unaware of.
-                 * - It was constructed with an arbitrary value using the [of] method.
-                 */
-                enum class Value {
-                    HYBRID_UPLOAD,
-                    API_UPLOAD,
-                    INTEGRATION,
-                    UI_UPLOAD,
-                    /**
-                     * An enum member indicating that [RequestSource] was instantiated with an
-                     * unknown value.
-                     */
-                    _UNKNOWN,
-                }
-
-                /**
-                 * Returns an enum member corresponding to this class instance's value, or
-                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-                 *
-                 * Use the [known] method instead if you're certain the value is always known or if
-                 * you want to throw for the unknown case.
-                 */
-                fun value(): Value =
-                    when (this) {
-                        HYBRID_UPLOAD -> Value.HYBRID_UPLOAD
-                        API_UPLOAD -> Value.API_UPLOAD
-                        INTEGRATION -> Value.INTEGRATION
-                        UI_UPLOAD -> Value.UI_UPLOAD
-                        else -> Value._UNKNOWN
-                    }
-
-                /**
-                 * Returns an enum member corresponding to this class instance's value.
-                 *
-                 * Use the [value] method instead if you're uncertain the value is always known and
-                 * don't want to throw for the unknown case.
-                 *
-                 * @throws HiddenLayerInvalidDataException if this class instance's value is a not a
-                 *   known member.
-                 */
-                fun known(): Known =
-                    when (this) {
-                        HYBRID_UPLOAD -> Known.HYBRID_UPLOAD
-                        API_UPLOAD -> Known.API_UPLOAD
-                        INTEGRATION -> Known.INTEGRATION
-                        UI_UPLOAD -> Known.UI_UPLOAD
-                        else ->
-                            throw HiddenLayerInvalidDataException("Unknown RequestSource: $value")
-                    }
-
-                /**
-                 * Returns this class instance's primitive wire representation.
-                 *
-                 * This differs from the [toString] method because that method is primarily for
-                 * debugging and generally doesn't throw.
-                 *
-                 * @throws HiddenLayerInvalidDataException if this class instance's value does not
-                 *   have the expected primitive type.
-                 */
-                fun asString(): String =
-                    _value().asString().orElseThrow {
-                        HiddenLayerInvalidDataException("Value is not a String")
-                    }
-
-                private var validated: Boolean = false
-
-                fun validate(): RequestSource = apply {
-                    if (validated) {
-                        return@apply
-                    }
-
-                    known()
-                    validated = true
-                }
-
-                fun isValid(): Boolean =
-                    try {
-                        validate()
-                        true
-                    } catch (e: HiddenLayerInvalidDataException) {
-                        false
-                    }
-
-                /**
-                 * Returns a score indicating how many valid values are contained in this object
-                 * recursively.
-                 *
-                 * Used for best match union deserialization.
-                 */
-                @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return other is RequestSource && value == other.value
-                }
-
-                override fun hashCode() = value.hashCode()
-
-                override fun toString() = value.toString()
-            }
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is ScanModelComboV3 &&
-                    modelId == other.modelId &&
-                    modelName == other.modelName &&
-                    modelVersionId == other.modelVersionId &&
-                    requestedScanLocation == other.requestedScanLocation &&
-                    modelSource == other.modelSource &&
-                    modelVersion == other.modelVersion &&
-                    origin == other.origin &&
-                    requestSource == other.requestSource &&
-                    requestingEntity == other.requestingEntity &&
-                    additionalProperties == other.additionalProperties
-            }
-
-            private val hashCode: Int by lazy {
-                Objects.hash(
-                    modelId,
-                    modelName,
-                    modelVersionId,
-                    requestedScanLocation,
-                    modelSource,
-                    modelVersion,
-                    origin,
-                    requestSource,
-                    requestingEntity,
-                    additionalProperties,
-                )
-            }
-
-            override fun hashCode(): Int = hashCode
-
-            override fun toString() =
-                "ScanModelComboV3{modelId=$modelId, modelName=$modelName, modelVersionId=$modelVersionId, requestedScanLocation=$requestedScanLocation, modelSource=$modelSource, modelVersion=$modelVersion, origin=$origin, requestSource=$requestSource, requestingEntity=$requestingEntity, additionalProperties=$additionalProperties}"
         }
     }
 
@@ -7564,164 +6827,9 @@ private constructor(
             "FileResult{details=$details, detections=$detections, endTime=$endTime, fileInstanceId=$fileInstanceId, fileLocation=$fileLocation, seen=$seen, startTime=$startTime, status=$status, fileError=$fileError, additionalProperties=$additionalProperties}"
     }
 
-    /** The highest severity of any detections on the scan. */
-    class HighestSeverity @JsonCreator private constructor(private val value: JsonField<String>) :
-        Enum {
-
-        /**
-         * Returns this class instance's raw value.
-         *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
-         */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        companion object {
-
-            @JvmField val CRITICAL = of("critical")
-
-            @JvmField val HIGH = of("high")
-
-            @JvmField val MEDIUM = of("medium")
-
-            @JvmField val LOW = of("low")
-
-            @JvmField val NONE = of("none")
-
-            @JvmField val NOT_AVAILABLE = of("not available")
-
-            @JvmStatic fun of(value: String) = HighestSeverity(JsonField.of(value))
-        }
-
-        /** An enum containing [HighestSeverity]'s known values. */
-        enum class Known {
-            CRITICAL,
-            HIGH,
-            MEDIUM,
-            LOW,
-            NONE,
-            NOT_AVAILABLE,
-        }
-
-        /**
-         * An enum containing [HighestSeverity]'s known values, as well as an [_UNKNOWN] member.
-         *
-         * An instance of [HighestSeverity] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
-         * - It was constructed with an arbitrary value using the [of] method.
-         */
-        enum class Value {
-            CRITICAL,
-            HIGH,
-            MEDIUM,
-            LOW,
-            NONE,
-            NOT_AVAILABLE,
-            /**
-             * An enum member indicating that [HighestSeverity] was instantiated with an unknown
-             * value.
-             */
-            _UNKNOWN,
-        }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
-         *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
-         */
-        fun value(): Value =
-            when (this) {
-                CRITICAL -> Value.CRITICAL
-                HIGH -> Value.HIGH
-                MEDIUM -> Value.MEDIUM
-                LOW -> Value.LOW
-                NONE -> Value.NONE
-                NOT_AVAILABLE -> Value.NOT_AVAILABLE
-                else -> Value._UNKNOWN
-            }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value.
-         *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
-         *
-         * @throws HiddenLayerInvalidDataException if this class instance's value is a not a known
-         *   member.
-         */
-        fun known(): Known =
-            when (this) {
-                CRITICAL -> Known.CRITICAL
-                HIGH -> Known.HIGH
-                MEDIUM -> Known.MEDIUM
-                LOW -> Known.LOW
-                NONE -> Known.NONE
-                NOT_AVAILABLE -> Known.NOT_AVAILABLE
-                else -> throw HiddenLayerInvalidDataException("Unknown HighestSeverity: $value")
-            }
-
-        /**
-         * Returns this class instance's primitive wire representation.
-         *
-         * This differs from the [toString] method because that method is primarily for debugging
-         * and generally doesn't throw.
-         *
-         * @throws HiddenLayerInvalidDataException if this class instance's value does not have the
-         *   expected primitive type.
-         */
-        fun asString(): String =
-            _value().asString().orElseThrow {
-                HiddenLayerInvalidDataException("Value is not a String")
-            }
-
-        private var validated: Boolean = false
-
-        fun validate(): HighestSeverity = apply {
-            if (validated) {
-                return@apply
-            }
-
-            known()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: HiddenLayerInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is HighestSeverity && value == other.value
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-    }
-
     /**
-     * The highest severity of any detections on the scan. Use ScanHighestDetectionSeverity instead.
+     * The highest severity of any detections on the scan, including "safe". Use
+     * `.summary.highest_severity` instead.
      */
     @Deprecated("deprecated")
     class Severity @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -7738,6 +6846,8 @@ private constructor(
 
         companion object {
 
+            @JvmField val NOT_AVAILABLE = of("not available")
+
             @JvmField val CRITICAL = of("critical")
 
             @JvmField val HIGH = of("high")
@@ -7746,21 +6856,22 @@ private constructor(
 
             @JvmField val LOW = of("low")
 
-            @JvmField val SAFE = of("safe")
-
             @JvmField val UNKNOWN = of("unknown")
+
+            @JvmField val SAFE = of("safe")
 
             @JvmStatic fun of(value: String) = Severity(JsonField.of(value))
         }
 
         /** An enum containing [Severity]'s known values. */
         enum class Known {
+            NOT_AVAILABLE,
             CRITICAL,
             HIGH,
             MEDIUM,
             LOW,
-            SAFE,
             UNKNOWN,
+            SAFE,
         }
 
         /**
@@ -7773,12 +6884,13 @@ private constructor(
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
+            NOT_AVAILABLE,
             CRITICAL,
             HIGH,
             MEDIUM,
             LOW,
-            SAFE,
             UNKNOWN,
+            SAFE,
             /** An enum member indicating that [Severity] was instantiated with an unknown value. */
             _UNKNOWN,
         }
@@ -7792,12 +6904,13 @@ private constructor(
          */
         fun value(): Value =
             when (this) {
+                NOT_AVAILABLE -> Value.NOT_AVAILABLE
                 CRITICAL -> Value.CRITICAL
                 HIGH -> Value.HIGH
                 MEDIUM -> Value.MEDIUM
                 LOW -> Value.LOW
-                SAFE -> Value.SAFE
                 UNKNOWN -> Value.UNKNOWN
+                SAFE -> Value.SAFE
                 else -> Value._UNKNOWN
             }
 
@@ -7812,12 +6925,13 @@ private constructor(
          */
         fun known(): Known =
             when (this) {
+                NOT_AVAILABLE -> Known.NOT_AVAILABLE
                 CRITICAL -> Known.CRITICAL
                 HIGH -> Known.HIGH
                 MEDIUM -> Known.MEDIUM
                 LOW -> Known.LOW
-                SAFE -> Known.SAFE
                 UNKNOWN -> Known.UNKNOWN
+                SAFE -> Known.SAFE
                 else -> throw HiddenLayerInvalidDataException("Unknown Severity: $value")
             }
 
@@ -7981,8 +7095,8 @@ private constructor(
             highestSeverity.getOptional("highest_severity")
 
         /**
-         * The highest severity of any detections on the scan. Use ScanHighestDetectionSeverity
-         * instead.
+         * The highest severity of any detections on the scan, including "safe". Use
+         * `.summary.highest_severity` instead.
          *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -8218,8 +7332,8 @@ private constructor(
             }
 
             /**
-             * The highest severity of any detections on the scan. Use ScanHighestDetectionSeverity
-             * instead.
+             * The highest severity of any detections on the scan, including "safe". Use
+             * `.summary.highest_severity` instead.
              */
             @Deprecated("deprecated")
             fun severity(severity: Severity) = severity(JsonField.of(severity))
@@ -8346,6 +7460,8 @@ private constructor(
 
             companion object {
 
+                @JvmField val NOT_AVAILABLE = of("not available")
+
                 @JvmField val CRITICAL = of("critical")
 
                 @JvmField val HIGH = of("high")
@@ -8354,21 +7470,22 @@ private constructor(
 
                 @JvmField val LOW = of("low")
 
-                @JvmField val NONE = of("none")
+                @JvmField val UNKNOWN = of("unknown")
 
-                @JvmField val NOT_AVAILABLE = of("not available")
+                @JvmField val NONE = of("none")
 
                 @JvmStatic fun of(value: String) = HighestSeverity(JsonField.of(value))
             }
 
             /** An enum containing [HighestSeverity]'s known values. */
             enum class Known {
+                NOT_AVAILABLE,
                 CRITICAL,
                 HIGH,
                 MEDIUM,
                 LOW,
+                UNKNOWN,
                 NONE,
-                NOT_AVAILABLE,
             }
 
             /**
@@ -8381,12 +7498,13 @@ private constructor(
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
+                NOT_AVAILABLE,
                 CRITICAL,
                 HIGH,
                 MEDIUM,
                 LOW,
+                UNKNOWN,
                 NONE,
-                NOT_AVAILABLE,
                 /**
                  * An enum member indicating that [HighestSeverity] was instantiated with an unknown
                  * value.
@@ -8403,12 +7521,13 @@ private constructor(
              */
             fun value(): Value =
                 when (this) {
+                    NOT_AVAILABLE -> Value.NOT_AVAILABLE
                     CRITICAL -> Value.CRITICAL
                     HIGH -> Value.HIGH
                     MEDIUM -> Value.MEDIUM
                     LOW -> Value.LOW
+                    UNKNOWN -> Value.UNKNOWN
                     NONE -> Value.NONE
-                    NOT_AVAILABLE -> Value.NOT_AVAILABLE
                     else -> Value._UNKNOWN
                 }
 
@@ -8423,12 +7542,13 @@ private constructor(
              */
             fun known(): Known =
                 when (this) {
+                    NOT_AVAILABLE -> Known.NOT_AVAILABLE
                     CRITICAL -> Known.CRITICAL
                     HIGH -> Known.HIGH
                     MEDIUM -> Known.MEDIUM
                     LOW -> Known.LOW
+                    UNKNOWN -> Known.UNKNOWN
                     NONE -> Known.NONE
-                    NOT_AVAILABLE -> Known.NOT_AVAILABLE
                     else -> throw HiddenLayerInvalidDataException("Unknown HighestSeverity: $value")
                 }
 
@@ -8487,8 +7607,8 @@ private constructor(
         }
 
         /**
-         * The highest severity of any detections on the scan. Use ScanHighestDetectionSeverity
-         * instead.
+         * The highest severity of any detections on the scan, including "safe". Use
+         * `.summary.highest_severity` instead.
          */
         @Deprecated("deprecated")
         class Severity @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -8506,6 +7626,8 @@ private constructor(
 
             companion object {
 
+                @JvmField val NOT_AVAILABLE = of("not available")
+
                 @JvmField val CRITICAL = of("critical")
 
                 @JvmField val HIGH = of("high")
@@ -8514,21 +7636,22 @@ private constructor(
 
                 @JvmField val LOW = of("low")
 
-                @JvmField val SAFE = of("safe")
-
                 @JvmField val UNKNOWN = of("unknown")
+
+                @JvmField val SAFE = of("safe")
 
                 @JvmStatic fun of(value: String) = Severity(JsonField.of(value))
             }
 
             /** An enum containing [Severity]'s known values. */
             enum class Known {
+                NOT_AVAILABLE,
                 CRITICAL,
                 HIGH,
                 MEDIUM,
                 LOW,
-                SAFE,
                 UNKNOWN,
+                SAFE,
             }
 
             /**
@@ -8541,12 +7664,13 @@ private constructor(
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
+                NOT_AVAILABLE,
                 CRITICAL,
                 HIGH,
                 MEDIUM,
                 LOW,
-                SAFE,
                 UNKNOWN,
+                SAFE,
                 /**
                  * An enum member indicating that [Severity] was instantiated with an unknown value.
                  */
@@ -8562,12 +7686,13 @@ private constructor(
              */
             fun value(): Value =
                 when (this) {
+                    NOT_AVAILABLE -> Value.NOT_AVAILABLE
                     CRITICAL -> Value.CRITICAL
                     HIGH -> Value.HIGH
                     MEDIUM -> Value.MEDIUM
                     LOW -> Value.LOW
-                    SAFE -> Value.SAFE
                     UNKNOWN -> Value.UNKNOWN
+                    SAFE -> Value.SAFE
                     else -> Value._UNKNOWN
                 }
 
@@ -8582,12 +7707,13 @@ private constructor(
              */
             fun known(): Known =
                 when (this) {
+                    NOT_AVAILABLE -> Known.NOT_AVAILABLE
                     CRITICAL -> Known.CRITICAL
                     HIGH -> Known.HIGH
                     MEDIUM -> Known.MEDIUM
                     LOW -> Known.LOW
-                    SAFE -> Known.SAFE
                     UNKNOWN -> Known.UNKNOWN
+                    SAFE -> Known.SAFE
                     else -> throw HiddenLayerInvalidDataException("Unknown Severity: $value")
                 }
 
@@ -8702,7 +7828,6 @@ private constructor(
             endTime == other.endTime &&
             fileResults == other.fileResults &&
             hasGenealogy == other.hasGenealogy &&
-            highestSeverity == other.highestSeverity &&
             severity == other.severity &&
             summary == other.summary &&
             additionalProperties == other.additionalProperties
@@ -8724,7 +7849,6 @@ private constructor(
             endTime,
             fileResults,
             hasGenealogy,
-            highestSeverity,
             severity,
             summary,
             additionalProperties,
@@ -8734,5 +7858,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ScanReport{detectionCount=$detectionCount, fileCount=$fileCount, filesWithDetectionsCount=$filesWithDetectionsCount, inventory=$inventory, scanId=$scanId, startTime=$startTime, status=$status, version=$version, schemaVersion=$schemaVersion, compliance=$compliance, detectionCategories=$detectionCategories, endTime=$endTime, fileResults=$fileResults, hasGenealogy=$hasGenealogy, highestSeverity=$highestSeverity, severity=$severity, summary=$summary, additionalProperties=$additionalProperties}"
+        "ScanReport{detectionCount=$detectionCount, fileCount=$fileCount, filesWithDetectionsCount=$filesWithDetectionsCount, inventory=$inventory, scanId=$scanId, startTime=$startTime, status=$status, version=$version, schemaVersion=$schemaVersion, compliance=$compliance, detectionCategories=$detectionCategories, endTime=$endTime, fileResults=$fileResults, hasGenealogy=$hasGenealogy, severity=$severity, summary=$summary, additionalProperties=$additionalProperties}"
 }
