@@ -20,8 +20,8 @@ import com.hiddenlayer.api.models.scans.jobs.JobListParams
 import com.hiddenlayer.api.models.scans.jobs.JobListResponse
 import com.hiddenlayer.api.models.scans.jobs.JobRequestParams
 import com.hiddenlayer.api.models.scans.jobs.JobRetrieveParams
+import com.hiddenlayer.api.models.scans.jobs.JobRetrieveResponse
 import com.hiddenlayer.api.models.scans.jobs.ScanJob
-import com.hiddenlayer.api.models.scans.results.ScanReport
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
@@ -41,7 +41,7 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
     override fun retrieve(
         params: JobRetrieveParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<ScanReport> =
+    ): CompletableFuture<JobRetrieveResponse> =
         // get /scan/v3/results/{scan_id}
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
@@ -72,13 +72,13 @@ class JobServiceAsyncImpl internal constructor(private val clientOptions: Client
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val retrieveHandler: Handler<ScanReport> =
-            jsonHandler<ScanReport>(clientOptions.jsonMapper)
+        private val retrieveHandler: Handler<JobRetrieveResponse> =
+            jsonHandler<JobRetrieveResponse>(clientOptions.jsonMapper)
 
         override fun retrieve(
             params: JobRetrieveParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<ScanReport>> {
+        ): CompletableFuture<HttpResponseFor<JobRetrieveResponse>> {
             // We check here instead of in the params builder because this can be specified
             // positionally or in the params class.
             checkRequired("scanId", params.scanId().getOrNull())
