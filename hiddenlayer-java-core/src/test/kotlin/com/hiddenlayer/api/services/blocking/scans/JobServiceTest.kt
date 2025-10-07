@@ -25,7 +25,7 @@ internal class JobServiceTest {
                 .build()
         val jobService = client.scans().jobs()
 
-        val scanReport =
+        val job =
             jobService.retrieve(
                 JobRetrieveParams.builder()
                     .scanId("00000000-0000-0000-0000-000000000000")
@@ -34,7 +34,7 @@ internal class JobServiceTest {
                     .build()
             )
 
-        scanReport.validate()
+        job.validate()
     }
 
     @Disabled("Prism tests are disabled")
@@ -61,9 +61,9 @@ internal class JobServiceTest {
                     )
                     .addModelVersionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .offset(0L)
-                    .addRequestSource(JobListParams.RequestSource.API_UPLOAD)
+                    .addRequestSource(JobListParams.RequestSource.HYBRID_UPLOAD)
                     .scannerVersion("891.0.97194")
-                    .severity(JobListParams.Severity.CRITICAL)
+                    .severity(JobListParams.Severity.NOT_AVAILABLE)
                     .sort("-start_time")
                     .source(
                         JobListParams.Source.builder().eq(JobListParams.Source.Eq.ADHOC).build()
@@ -102,7 +102,7 @@ internal class JobServiceTest {
                             .requestedScanLocation("owner/repo")
                             .requestingEntity("some-user@example.com")
                             .origin("Hugging Face")
-                            .requestSource(JobRequestParams.Inventory.RequestSource.API_UPLOAD)
+                            .requestSource(JobRequestParams.Inventory.RequestSource.HYBRID_UPLOAD)
                             .build()
                     )
                     .scanId("00000000-0000-0000-0000-000000000000")

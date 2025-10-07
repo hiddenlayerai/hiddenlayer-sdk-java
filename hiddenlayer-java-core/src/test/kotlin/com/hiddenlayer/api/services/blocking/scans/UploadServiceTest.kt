@@ -53,7 +53,7 @@ internal class UploadServiceTest {
                     .requestingEntity("requesting_entity")
                     .locationAlias("location_alias")
                     .origin("Hugging Face")
-                    .requestSource(UploadStartParams.RequestSource.API_UPLOAD)
+                    .requestSource(UploadStartParams.RequestSource.HYBRID_UPLOAD)
                     .build()
             )
 

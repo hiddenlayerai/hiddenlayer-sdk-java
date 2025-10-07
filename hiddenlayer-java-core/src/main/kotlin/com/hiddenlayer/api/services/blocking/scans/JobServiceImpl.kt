@@ -20,8 +20,8 @@ import com.hiddenlayer.api.models.scans.jobs.JobListParams
 import com.hiddenlayer.api.models.scans.jobs.JobListResponse
 import com.hiddenlayer.api.models.scans.jobs.JobRequestParams
 import com.hiddenlayer.api.models.scans.jobs.JobRetrieveParams
+import com.hiddenlayer.api.models.scans.jobs.JobRetrieveResponse
 import com.hiddenlayer.api.models.scans.jobs.ScanJob
-import com.hiddenlayer.api.models.scans.results.ScanReport
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
@@ -36,7 +36,10 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobService =
         JobServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
-    override fun retrieve(params: JobRetrieveParams, requestOptions: RequestOptions): ScanReport =
+    override fun retrieve(
+        params: JobRetrieveParams,
+        requestOptions: RequestOptions,
+    ): JobRetrieveResponse =
         // get /scan/v3/results/{scan_id}
         withRawResponse().retrieve(params, requestOptions).parse()
 
@@ -61,13 +64,13 @@ class JobServiceImpl internal constructor(private val clientOptions: ClientOptio
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val retrieveHandler: Handler<ScanReport> =
-            jsonHandler<ScanReport>(clientOptions.jsonMapper)
+        private val retrieveHandler: Handler<JobRetrieveResponse> =
+            jsonHandler<JobRetrieveResponse>(clientOptions.jsonMapper)
 
         override fun retrieve(
             params: JobRetrieveParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<ScanReport> {
+        ): HttpResponseFor<JobRetrieveResponse> {
             // We check here instead of in the params builder because this can be specified
             // positionally or in the params class.
             checkRequired("scanId", params.scanId().getOrNull())
