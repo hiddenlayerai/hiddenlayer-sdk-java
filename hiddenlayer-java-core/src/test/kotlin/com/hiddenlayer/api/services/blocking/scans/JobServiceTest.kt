@@ -25,7 +25,7 @@ internal class JobServiceTest {
                 .build()
         val jobService = client.scans().jobs()
 
-        val scanReport =
+        val job =
             jobService.retrieve(
                 JobRetrieveParams.builder()
                     .scanId("00000000-0000-0000-0000-000000000000")
@@ -34,7 +34,7 @@ internal class JobServiceTest {
                     .build()
             )
 
-        scanReport.validate()
+        job.validate()
     }
 
     @Disabled("Prism tests are disabled")
