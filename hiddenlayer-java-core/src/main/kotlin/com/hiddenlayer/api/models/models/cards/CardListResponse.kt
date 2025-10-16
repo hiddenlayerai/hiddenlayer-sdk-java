@@ -31,6 +31,7 @@ private constructor(
     private val modelScanThreatLevel: JsonField<ModelScanThreatLevel>,
     private val plaintextName: JsonField<String>,
     private val source: JsonField<String>,
+    private val modelScanHasError: JsonField<Boolean>,
     private val securityPosture: JsonField<SecurityPosture>,
     private val tags: JsonField<Tags>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -59,6 +60,9 @@ private constructor(
         @ExcludeMissing
         plaintextName: JsonField<String> = JsonMissing.of(),
         @JsonProperty("source") @ExcludeMissing source: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("model_scan_has_error")
+        @ExcludeMissing
+        modelScanHasError: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("security_posture")
         @ExcludeMissing
         securityPosture: JsonField<SecurityPosture> = JsonMissing.of(),
@@ -73,6 +77,7 @@ private constructor(
         modelScanThreatLevel,
         plaintextName,
         source,
+        modelScanHasError,
         securityPosture,
         tags,
         mutableMapOf(),
@@ -115,7 +120,7 @@ private constructor(
     fun modelId(): String = modelId.getRequired("model_id")
 
     /**
-     * The highest severity of any detections on the scan.
+     * The severity of the model's latest scan
      *
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -142,6 +147,15 @@ private constructor(
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun source(): String = source.getRequired("source")
+
+    /**
+     * True if the model's latest scan has an error
+     *
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun modelScanHasError(): Optional<Boolean> =
+        modelScanHasError.getOptional("model_scan_has_error")
 
     /**
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -238,6 +252,16 @@ private constructor(
     @JsonProperty("source") @ExcludeMissing fun _source(): JsonField<String> = source
 
     /**
+     * Returns the raw JSON value of [modelScanHasError].
+     *
+     * Unlike [modelScanHasError], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    @JsonProperty("model_scan_has_error")
+    @ExcludeMissing
+    fun _modelScanHasError(): JsonField<Boolean> = modelScanHasError
+
+    /**
      * Returns the raw JSON value of [securityPosture].
      *
      * Unlike [securityPosture], this method doesn't throw if the JSON field has an unexpected type.
@@ -298,6 +322,7 @@ private constructor(
         private var modelScanThreatLevel: JsonField<ModelScanThreatLevel>? = null
         private var plaintextName: JsonField<String>? = null
         private var source: JsonField<String>? = null
+        private var modelScanHasError: JsonField<Boolean> = JsonMissing.of()
         private var securityPosture: JsonField<SecurityPosture> = JsonMissing.of()
         private var tags: JsonField<Tags> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -313,6 +338,7 @@ private constructor(
             modelScanThreatLevel = cardListResponse.modelScanThreatLevel
             plaintextName = cardListResponse.plaintextName
             source = cardListResponse.source
+            modelScanHasError = cardListResponse.modelScanHasError
             securityPosture = cardListResponse.securityPosture
             tags = cardListResponse.tags
             additionalProperties = cardListResponse.additionalProperties.toMutableMap()
@@ -384,7 +410,7 @@ private constructor(
          */
         fun modelId(modelId: JsonField<String>) = apply { this.modelId = modelId }
 
-        /** The highest severity of any detections on the scan. */
+        /** The severity of the model's latest scan */
         fun modelScanSeverity(modelScanSeverity: ModelScanSeverity) =
             modelScanSeverity(JsonField.of(modelScanSeverity))
 
@@ -437,6 +463,21 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun source(source: JsonField<String>) = apply { this.source = source }
+
+        /** True if the model's latest scan has an error */
+        fun modelScanHasError(modelScanHasError: Boolean) =
+            modelScanHasError(JsonField.of(modelScanHasError))
+
+        /**
+         * Sets [Builder.modelScanHasError] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.modelScanHasError] with a well-typed [Boolean] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun modelScanHasError(modelScanHasError: JsonField<Boolean>) = apply {
+            this.modelScanHasError = modelScanHasError
+        }
 
         fun securityPosture(securityPosture: SecurityPosture) =
             securityPosture(JsonField.of(securityPosture))
@@ -512,6 +553,7 @@ private constructor(
                 checkRequired("modelScanThreatLevel", modelScanThreatLevel),
                 checkRequired("plaintextName", plaintextName),
                 checkRequired("source", source),
+                modelScanHasError,
                 securityPosture,
                 tags,
                 additionalProperties.toMutableMap(),
@@ -534,6 +576,7 @@ private constructor(
         modelScanThreatLevel().validate()
         plaintextName()
         source()
+        modelScanHasError()
         securityPosture().ifPresent { it.validate() }
         tags().ifPresent { it.validate() }
         validated = true
@@ -563,6 +606,7 @@ private constructor(
             (modelScanThreatLevel.asKnown().getOrNull()?.validity() ?: 0) +
             (if (plaintextName.asKnown().isPresent) 1 else 0) +
             (if (source.asKnown().isPresent) 1 else 0) +
+            (if (modelScanHasError.asKnown().isPresent) 1 else 0) +
             (securityPosture.asKnown().getOrNull()?.validity() ?: 0) +
             (tags.asKnown().getOrNull()?.validity() ?: 0)
 
@@ -715,7 +759,7 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    /** The highest severity of any detections on the scan. */
+    /** The severity of the model's latest scan */
     class ModelScanSeverity @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
 
@@ -741,9 +785,9 @@ private constructor(
 
             @JvmField val LOW = of("low")
 
-            @JvmField val UNKNOWN = of("unknown")
-
             @JvmField val NONE = of("none")
+
+            @JvmField val UNKNOWN = of("unknown")
 
             @JvmStatic fun of(value: String) = ModelScanSeverity(JsonField.of(value))
         }
@@ -755,8 +799,8 @@ private constructor(
             HIGH,
             MEDIUM,
             LOW,
-            UNKNOWN,
             NONE,
+            UNKNOWN,
         }
 
         /**
@@ -774,8 +818,8 @@ private constructor(
             HIGH,
             MEDIUM,
             LOW,
-            UNKNOWN,
             NONE,
+            UNKNOWN,
             /**
              * An enum member indicating that [ModelScanSeverity] was instantiated with an unknown
              * value.
@@ -797,8 +841,8 @@ private constructor(
                 HIGH -> Value.HIGH
                 MEDIUM -> Value.MEDIUM
                 LOW -> Value.LOW
-                UNKNOWN -> Value.UNKNOWN
                 NONE -> Value.NONE
+                UNKNOWN -> Value.UNKNOWN
                 else -> Value._UNKNOWN
             }
 
@@ -818,8 +862,8 @@ private constructor(
                 HIGH -> Known.HIGH
                 MEDIUM -> Known.MEDIUM
                 LOW -> Known.LOW
-                UNKNOWN -> Known.UNKNOWN
                 NONE -> Known.NONE
+                UNKNOWN -> Known.UNKNOWN
                 else -> throw HiddenLayerInvalidDataException("Unknown ModelScanSeverity: $value")
             }
 
@@ -1323,6 +1367,7 @@ private constructor(
             modelScanThreatLevel == other.modelScanThreatLevel &&
             plaintextName == other.plaintextName &&
             source == other.source &&
+            modelScanHasError == other.modelScanHasError &&
             securityPosture == other.securityPosture &&
             tags == other.tags &&
             additionalProperties == other.additionalProperties
@@ -1339,6 +1384,7 @@ private constructor(
             modelScanThreatLevel,
             plaintextName,
             source,
+            modelScanHasError,
             securityPosture,
             tags,
             additionalProperties,
@@ -1348,5 +1394,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "CardListResponse{activeVersionCount=$activeVersionCount, attackMonitoringThreatLevel=$attackMonitoringThreatLevel, createdAt=$createdAt, hasGenealogy=$hasGenealogy, modelId=$modelId, modelScanSeverity=$modelScanSeverity, modelScanThreatLevel=$modelScanThreatLevel, plaintextName=$plaintextName, source=$source, securityPosture=$securityPosture, tags=$tags, additionalProperties=$additionalProperties}"
+        "CardListResponse{activeVersionCount=$activeVersionCount, attackMonitoringThreatLevel=$attackMonitoringThreatLevel, createdAt=$createdAt, hasGenealogy=$hasGenealogy, modelId=$modelId, modelScanSeverity=$modelScanSeverity, modelScanThreatLevel=$modelScanThreatLevel, plaintextName=$plaintextName, source=$source, modelScanHasError=$modelScanHasError, securityPosture=$securityPosture, tags=$tags, additionalProperties=$additionalProperties}"
 }

@@ -41,8 +41,8 @@ internal class JobRetrieveResponseTest {
                         .fileCount(0L)
                         .filesFailedToScan(0L)
                         .filesWithDetectionsCount(0L)
-                        .highestSeverity(JobRetrieveResponse.Summary.HighestSeverity.NOT_AVAILABLE)
-                        .severity(JobRetrieveResponse.Summary.Severity.NOT_AVAILABLE)
+                        .highestSeverity(JobRetrieveResponse.Summary.HighestSeverity.CRITICAL)
+                        .severity(JobRetrieveResponse.Summary.Severity.CRITICAL)
                         .unknownFiles(0L)
                         .build()
                 )
@@ -128,7 +128,7 @@ internal class JobRetrieveResponseTest {
                         .build()
                 )
                 .hasGenealogy(true)
-                .severity(JobRetrieveResponse.Severity.NOT_AVAILABLE)
+                .severity(JobRetrieveResponse.Severity.CRITICAL)
                 .build()
 
         assertThat(jobRetrieveResponse.detectionCount()).isEqualTo(0L)
@@ -160,8 +160,8 @@ internal class JobRetrieveResponseTest {
                     .fileCount(0L)
                     .filesFailedToScan(0L)
                     .filesWithDetectionsCount(0L)
-                    .highestSeverity(JobRetrieveResponse.Summary.HighestSeverity.NOT_AVAILABLE)
-                    .severity(JobRetrieveResponse.Summary.Severity.NOT_AVAILABLE)
+                    .highestSeverity(JobRetrieveResponse.Summary.HighestSeverity.CRITICAL)
+                    .severity(JobRetrieveResponse.Summary.Severity.CRITICAL)
                     .unknownFiles(0L)
                     .build()
             )
@@ -247,8 +247,7 @@ internal class JobRetrieveResponseTest {
                     .build()
             )
         assertThat(jobRetrieveResponse.hasGenealogy()).contains(true)
-        assertThat(jobRetrieveResponse.severity())
-            .contains(JobRetrieveResponse.Severity.NOT_AVAILABLE)
+        assertThat(jobRetrieveResponse.severity()).contains(JobRetrieveResponse.Severity.CRITICAL)
     }
 
     @Test
@@ -282,8 +281,8 @@ internal class JobRetrieveResponseTest {
                         .fileCount(0L)
                         .filesFailedToScan(0L)
                         .filesWithDetectionsCount(0L)
-                        .highestSeverity(JobRetrieveResponse.Summary.HighestSeverity.NOT_AVAILABLE)
-                        .severity(JobRetrieveResponse.Summary.Severity.NOT_AVAILABLE)
+                        .highestSeverity(JobRetrieveResponse.Summary.HighestSeverity.CRITICAL)
+                        .severity(JobRetrieveResponse.Summary.Severity.CRITICAL)
                         .unknownFiles(0L)
                         .build()
                 )
@@ -369,7 +368,7 @@ internal class JobRetrieveResponseTest {
                         .build()
                 )
                 .hasGenealogy(true)
-                .severity(JobRetrieveResponse.Severity.NOT_AVAILABLE)
+                .severity(JobRetrieveResponse.Severity.CRITICAL)
                 .build()
 
         val roundtrippedJobRetrieveResponse =

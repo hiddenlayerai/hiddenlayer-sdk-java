@@ -943,8 +943,6 @@ private constructor(
 
         companion object {
 
-            @JvmField val NOT_AVAILABLE = of("not available")
-
             @JvmField val CRITICAL = of("critical")
 
             @JvmField val HIGH = of("high")
@@ -953,9 +951,9 @@ private constructor(
 
             @JvmField val LOW = of("low")
 
-            @JvmField val UNKNOWN = of("unknown")
-
             @JvmField val NONE = of("none")
+
+            @JvmField val UNKNOWN = of("unknown")
 
             @JvmField val SAFE = of("safe")
 
@@ -964,13 +962,12 @@ private constructor(
 
         /** An enum containing [Severity]'s known values. */
         enum class Known {
-            NOT_AVAILABLE,
             CRITICAL,
             HIGH,
             MEDIUM,
             LOW,
-            UNKNOWN,
             NONE,
+            UNKNOWN,
             SAFE,
         }
 
@@ -984,13 +981,12 @@ private constructor(
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
-            NOT_AVAILABLE,
             CRITICAL,
             HIGH,
             MEDIUM,
             LOW,
-            UNKNOWN,
             NONE,
+            UNKNOWN,
             SAFE,
             /** An enum member indicating that [Severity] was instantiated with an unknown value. */
             _UNKNOWN,
@@ -1005,13 +1001,12 @@ private constructor(
          */
         fun value(): Value =
             when (this) {
-                NOT_AVAILABLE -> Value.NOT_AVAILABLE
                 CRITICAL -> Value.CRITICAL
                 HIGH -> Value.HIGH
                 MEDIUM -> Value.MEDIUM
                 LOW -> Value.LOW
-                UNKNOWN -> Value.UNKNOWN
                 NONE -> Value.NONE
+                UNKNOWN -> Value.UNKNOWN
                 SAFE -> Value.SAFE
                 else -> Value._UNKNOWN
             }
@@ -1027,13 +1022,12 @@ private constructor(
          */
         fun known(): Known =
             when (this) {
-                NOT_AVAILABLE -> Known.NOT_AVAILABLE
                 CRITICAL -> Known.CRITICAL
                 HIGH -> Known.HIGH
                 MEDIUM -> Known.MEDIUM
                 LOW -> Known.LOW
-                UNKNOWN -> Known.UNKNOWN
                 NONE -> Known.NONE
+                UNKNOWN -> Known.UNKNOWN
                 SAFE -> Known.SAFE
                 else -> throw HiddenLayerInvalidDataException("Unknown Severity: $value")
             }
