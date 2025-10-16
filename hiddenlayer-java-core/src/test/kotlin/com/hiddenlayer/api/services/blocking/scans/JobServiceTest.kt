@@ -25,7 +25,7 @@ internal class JobServiceTest {
                 .build()
         val jobService = client.scans().jobs()
 
-        val scanReport =
+        val job =
             jobService.retrieve(
                 JobRetrieveParams.builder()
                     .scanId("00000000-0000-0000-0000-000000000000")
@@ -34,7 +34,7 @@ internal class JobServiceTest {
                     .build()
             )
 
-        scanReport.validate()
+        job.validate()
     }
 
     @Disabled("Prism tests are disabled")
@@ -61,7 +61,7 @@ internal class JobServiceTest {
                     )
                     .addModelVersionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .offset(0L)
-                    .addRequestSource(JobListParams.RequestSource.API_UPLOAD)
+                    .addRequestSource(JobListParams.RequestSource.HYBRID_UPLOAD)
                     .scannerVersion("891.0.97194")
                     .severity(JobListParams.Severity.CRITICAL)
                     .sort("-start_time")
@@ -99,10 +99,29 @@ internal class JobServiceTest {
                         JobRequestParams.Inventory.builder()
                             .modelName("some-model")
                             .modelVersion("")
-                            .requestedScanLocation("owner/repo")
                             .requestingEntity("some-user@example.com")
                             .origin("Hugging Face")
-                            .requestSource(JobRequestParams.Inventory.RequestSource.API_UPLOAD)
+                            .requestSource(JobRequestParams.Inventory.RequestSource.HYBRID_UPLOAD)
+                            .requestedScanLocation("owner/repo")
+                            .scanTarget(
+                                JobRequestParams.Inventory.ScanTarget.builder()
+                                    .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
+                                    .providerModel(
+                                        JobRequestParams.Inventory.ScanTarget.ProviderModel
+                                            .builder()
+                                            .modelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
+                                            .provider(
+                                                JobRequestParams.Inventory.ScanTarget.ProviderModel
+                                                    .Provider
+                                                    .AWS_BEDROCK
+                                            )
+                                            .modelArn(
+                                                "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
+                                            )
+                                            .build()
+                                    )
+                                    .build()
+                            )
                             .build()
                     )
                     .scanId("00000000-0000-0000-0000-000000000000")
