@@ -23,6 +23,7 @@ internal class CardListResponseTest {
                 .modelScanThreatLevel(CardListResponse.ModelScanThreatLevel.SAFE)
                 .plaintextName("Resnet-50")
                 .source("azure:datascience-workspace")
+                .modelScanHasError(true)
                 .securityPosture(
                     CardListResponse.SecurityPosture.builder()
                         .attackMonitoring(true)
@@ -48,6 +49,7 @@ internal class CardListResponseTest {
             .isEqualTo(CardListResponse.ModelScanThreatLevel.SAFE)
         assertThat(cardListResponse.plaintextName()).isEqualTo("Resnet-50")
         assertThat(cardListResponse.source()).isEqualTo("azure:datascience-workspace")
+        assertThat(cardListResponse.modelScanHasError()).contains(true)
         assertThat(cardListResponse.securityPosture())
             .contains(
                 CardListResponse.SecurityPosture.builder()
@@ -77,6 +79,7 @@ internal class CardListResponseTest {
                 .modelScanThreatLevel(CardListResponse.ModelScanThreatLevel.SAFE)
                 .plaintextName("Resnet-50")
                 .source("azure:datascience-workspace")
+                .modelScanHasError(true)
                 .securityPosture(
                     CardListResponse.SecurityPosture.builder()
                         .attackMonitoring(true)
