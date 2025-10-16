@@ -45,9 +45,9 @@ internal class JobListResponseTest {
                                 .filesFailedToScan(0L)
                                 .filesWithDetectionsCount(0L)
                                 .highestSeverity(
-                                    JobListResponse.Item.Summary.HighestSeverity.NOT_AVAILABLE
+                                    JobListResponse.Item.Summary.HighestSeverity.CRITICAL
                                 )
-                                .severity(JobListResponse.Item.Summary.Severity.NOT_AVAILABLE)
+                                .severity(JobListResponse.Item.Summary.Severity.CRITICAL)
                                 .unknownFiles(0L)
                                 .build()
                         )
@@ -63,7 +63,7 @@ internal class JobListResponseTest {
                         .addDetectionCategory("string")
                         .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .hasGenealogy(true)
-                        .severity(JobListResponse.Item.Severity.NOT_AVAILABLE)
+                        .severity(JobListResponse.Item.Severity.CRITICAL)
                         .build()
                 )
                 .limit(50L)
@@ -102,10 +102,8 @@ internal class JobListResponseTest {
                             .fileCount(0L)
                             .filesFailedToScan(0L)
                             .filesWithDetectionsCount(0L)
-                            .highestSeverity(
-                                JobListResponse.Item.Summary.HighestSeverity.NOT_AVAILABLE
-                            )
-                            .severity(JobListResponse.Item.Summary.Severity.NOT_AVAILABLE)
+                            .highestSeverity(JobListResponse.Item.Summary.HighestSeverity.CRITICAL)
+                            .severity(JobListResponse.Item.Summary.Severity.CRITICAL)
                             .unknownFiles(0L)
                             .build()
                     )
@@ -121,7 +119,7 @@ internal class JobListResponseTest {
                     .addDetectionCategory("string")
                     .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .hasGenealogy(true)
-                    .severity(JobListResponse.Item.Severity.NOT_AVAILABLE)
+                    .severity(JobListResponse.Item.Severity.CRITICAL)
                     .build()
             )
         assertThat(jobListResponse.limit()).isEqualTo(50L)
@@ -165,9 +163,9 @@ internal class JobListResponseTest {
                                 .filesFailedToScan(0L)
                                 .filesWithDetectionsCount(0L)
                                 .highestSeverity(
-                                    JobListResponse.Item.Summary.HighestSeverity.NOT_AVAILABLE
+                                    JobListResponse.Item.Summary.HighestSeverity.CRITICAL
                                 )
-                                .severity(JobListResponse.Item.Summary.Severity.NOT_AVAILABLE)
+                                .severity(JobListResponse.Item.Summary.Severity.CRITICAL)
                                 .unknownFiles(0L)
                                 .build()
                         )
@@ -183,7 +181,7 @@ internal class JobListResponseTest {
                         .addDetectionCategory("string")
                         .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .hasGenealogy(true)
-                        .severity(JobListResponse.Item.Severity.NOT_AVAILABLE)
+                        .severity(JobListResponse.Item.Severity.CRITICAL)
                         .build()
                 )
                 .limit(50L)
