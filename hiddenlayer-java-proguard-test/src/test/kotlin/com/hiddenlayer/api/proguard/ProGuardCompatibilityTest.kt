@@ -144,6 +144,13 @@ internal class ProGuardCompatibilityTest {
                         )
                         .build()
                 )
+                .evaluation(
+                    InteractionAnalyzeResponse.Evaluation.builder()
+                        .action(InteractionAnalyzeResponse.Evaluation.Action.ALLOW)
+                        .hasDetections(true)
+                        .threatLevel(InteractionAnalyzeResponse.Evaluation.ThreatLevel.NONE)
+                        .build()
+                )
                 .metadata(
                     InteractionAnalyzeResponse.Metadata.builder()
                         .model("gpt-5")

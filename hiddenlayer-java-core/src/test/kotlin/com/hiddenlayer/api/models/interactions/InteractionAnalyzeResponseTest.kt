@@ -99,6 +99,13 @@ internal class InteractionAnalyzeResponseTest {
                         )
                         .build()
                 )
+                .evaluation(
+                    InteractionAnalyzeResponse.Evaluation.builder()
+                        .action(InteractionAnalyzeResponse.Evaluation.Action.ALLOW)
+                        .hasDetections(true)
+                        .threatLevel(InteractionAnalyzeResponse.Evaluation.ThreatLevel.NONE)
+                        .build()
+                )
                 .metadata(
                     InteractionAnalyzeResponse.Metadata.builder()
                         .model("gpt-5")
@@ -225,6 +232,14 @@ internal class InteractionAnalyzeResponseTest {
                             )
                             .build()
                     )
+                    .build()
+            )
+        assertThat(interactionAnalyzeResponse.evaluation())
+            .isEqualTo(
+                InteractionAnalyzeResponse.Evaluation.builder()
+                    .action(InteractionAnalyzeResponse.Evaluation.Action.ALLOW)
+                    .hasDetections(true)
+                    .threatLevel(InteractionAnalyzeResponse.Evaluation.ThreatLevel.NONE)
                     .build()
             )
         assertThat(interactionAnalyzeResponse.metadata())
@@ -359,6 +374,13 @@ internal class InteractionAnalyzeResponseTest {
                                 )
                                 .build()
                         )
+                        .build()
+                )
+                .evaluation(
+                    InteractionAnalyzeResponse.Evaluation.builder()
+                        .action(InteractionAnalyzeResponse.Evaluation.Action.ALLOW)
+                        .hasDetections(true)
+                        .threatLevel(InteractionAnalyzeResponse.Evaluation.ThreatLevel.NONE)
                         .build()
                 )
                 .metadata(
