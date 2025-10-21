@@ -26,9 +26,9 @@ class InteractionAnalyzeResponse
 private constructor(
     private val analysis: JsonField<List<Analysis>>,
     private val analyzedData: JsonField<AnalyzedData>,
-    private val evaluation: JsonField<Evaluation>,
     private val metadata: JsonField<Metadata>,
     private val modifiedData: JsonField<ModifiedData>,
+    private val evaluation: JsonField<Evaluation>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -40,14 +40,14 @@ private constructor(
         @JsonProperty("analyzed_data")
         @ExcludeMissing
         analyzedData: JsonField<AnalyzedData> = JsonMissing.of(),
-        @JsonProperty("evaluation")
-        @ExcludeMissing
-        evaluation: JsonField<Evaluation> = JsonMissing.of(),
         @JsonProperty("metadata") @ExcludeMissing metadata: JsonField<Metadata> = JsonMissing.of(),
         @JsonProperty("modified_data")
         @ExcludeMissing
         modifiedData: JsonField<ModifiedData> = JsonMissing.of(),
-    ) : this(analysis, analyzedData, evaluation, metadata, modifiedData, mutableMapOf())
+        @JsonProperty("evaluation")
+        @ExcludeMissing
+        evaluation: JsonField<Evaluation> = JsonMissing.of(),
+    ) : this(analysis, analyzedData, metadata, modifiedData, evaluation, mutableMapOf())
 
     /**
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
@@ -64,14 +64,6 @@ private constructor(
     fun analyzedData(): AnalyzedData = analyzedData.getRequired("analyzed_data")
 
     /**
-     * The evaluation of the analysis results.
-     *
-     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun evaluation(): Evaluation = evaluation.getRequired("evaluation")
-
-    /**
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
@@ -85,6 +77,14 @@ private constructor(
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun modifiedData(): ModifiedData = modifiedData.getRequired("modified_data")
+
+    /**
+     * The evaluation of the analysis results.
+     *
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun evaluation(): Optional<Evaluation> = evaluation.getOptional("evaluation")
 
     /**
      * Returns the raw JSON value of [analysis].
@@ -103,15 +103,6 @@ private constructor(
     fun _analyzedData(): JsonField<AnalyzedData> = analyzedData
 
     /**
-     * Returns the raw JSON value of [evaluation].
-     *
-     * Unlike [evaluation], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("evaluation")
-    @ExcludeMissing
-    fun _evaluation(): JsonField<Evaluation> = evaluation
-
-    /**
      * Returns the raw JSON value of [metadata].
      *
      * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
@@ -126,6 +117,15 @@ private constructor(
     @JsonProperty("modified_data")
     @ExcludeMissing
     fun _modifiedData(): JsonField<ModifiedData> = modifiedData
+
+    /**
+     * Returns the raw JSON value of [evaluation].
+     *
+     * Unlike [evaluation], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("evaluation")
+    @ExcludeMissing
+    fun _evaluation(): JsonField<Evaluation> = evaluation
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -148,7 +148,6 @@ private constructor(
          * ```java
          * .analysis()
          * .analyzedData()
-         * .evaluation()
          * .metadata()
          * .modifiedData()
          * ```
@@ -161,18 +160,18 @@ private constructor(
 
         private var analysis: JsonField<MutableList<Analysis>>? = null
         private var analyzedData: JsonField<AnalyzedData>? = null
-        private var evaluation: JsonField<Evaluation>? = null
         private var metadata: JsonField<Metadata>? = null
         private var modifiedData: JsonField<ModifiedData>? = null
+        private var evaluation: JsonField<Evaluation> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(interactionAnalyzeResponse: InteractionAnalyzeResponse) = apply {
             analysis = interactionAnalyzeResponse.analysis.map { it.toMutableList() }
             analyzedData = interactionAnalyzeResponse.analyzedData
-            evaluation = interactionAnalyzeResponse.evaluation
             metadata = interactionAnalyzeResponse.metadata
             modifiedData = interactionAnalyzeResponse.modifiedData
+            evaluation = interactionAnalyzeResponse.evaluation
             additionalProperties = interactionAnalyzeResponse.additionalProperties.toMutableMap()
         }
 
@@ -215,18 +214,6 @@ private constructor(
             this.analyzedData = analyzedData
         }
 
-        /** The evaluation of the analysis results. */
-        fun evaluation(evaluation: Evaluation) = evaluation(JsonField.of(evaluation))
-
-        /**
-         * Sets [Builder.evaluation] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.evaluation] with a well-typed [Evaluation] value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
-         */
-        fun evaluation(evaluation: JsonField<Evaluation>) = apply { this.evaluation = evaluation }
-
         fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
         /**
@@ -254,6 +241,18 @@ private constructor(
         fun modifiedData(modifiedData: JsonField<ModifiedData>) = apply {
             this.modifiedData = modifiedData
         }
+
+        /** The evaluation of the analysis results. */
+        fun evaluation(evaluation: Evaluation) = evaluation(JsonField.of(evaluation))
+
+        /**
+         * Sets [Builder.evaluation] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.evaluation] with a well-typed [Evaluation] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun evaluation(evaluation: JsonField<Evaluation>) = apply { this.evaluation = evaluation }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -283,7 +282,6 @@ private constructor(
          * ```java
          * .analysis()
          * .analyzedData()
-         * .evaluation()
          * .metadata()
          * .modifiedData()
          * ```
@@ -294,9 +292,9 @@ private constructor(
             InteractionAnalyzeResponse(
                 checkRequired("analysis", analysis).map { it.toImmutable() },
                 checkRequired("analyzedData", analyzedData),
-                checkRequired("evaluation", evaluation),
                 checkRequired("metadata", metadata),
                 checkRequired("modifiedData", modifiedData),
+                evaluation,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -310,9 +308,9 @@ private constructor(
 
         analysis().forEach { it.validate() }
         analyzedData().validate()
-        evaluation().validate()
         metadata().validate()
         modifiedData().validate()
+        evaluation().ifPresent { it.validate() }
         validated = true
     }
 
@@ -333,9 +331,9 @@ private constructor(
     internal fun validity(): Int =
         (analysis.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (analyzedData.asKnown().getOrNull()?.validity() ?: 0) +
-            (evaluation.asKnown().getOrNull()?.validity() ?: 0) +
             (metadata.asKnown().getOrNull()?.validity() ?: 0) +
-            (modifiedData.asKnown().getOrNull()?.validity() ?: 0)
+            (modifiedData.asKnown().getOrNull()?.validity() ?: 0) +
+            (evaluation.asKnown().getOrNull()?.validity() ?: 0)
 
     class Analysis
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -2120,551 +2118,6 @@ private constructor(
             "AnalyzedData{input=$input, output=$output, additionalProperties=$additionalProperties}"
     }
 
-    /** The evaluation of the analysis results. */
-    class Evaluation
-    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
-    private constructor(
-        private val action: JsonField<Action>,
-        private val hasDetections: JsonField<Boolean>,
-        private val threatLevel: JsonField<ThreatLevel>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
-
-        @JsonCreator
-        private constructor(
-            @JsonProperty("action") @ExcludeMissing action: JsonField<Action> = JsonMissing.of(),
-            @JsonProperty("has_detections")
-            @ExcludeMissing
-            hasDetections: JsonField<Boolean> = JsonMissing.of(),
-            @JsonProperty("threat_level")
-            @ExcludeMissing
-            threatLevel: JsonField<ThreatLevel> = JsonMissing.of(),
-        ) : this(action, hasDetections, threatLevel, mutableMapOf())
-
-        /**
-         * The action based on interaction analysis and configured tenant security rules.
-         *
-         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun action(): Action = action.getRequired("action")
-
-        /**
-         * Indicates if any detections were found during the analysis.
-         *
-         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun hasDetections(): Boolean = hasDetections.getRequired("has_detections")
-
-        /**
-         * The threat level based on interaction analysis and configured tenant security rules.
-         *
-         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun threatLevel(): ThreatLevel = threatLevel.getRequired("threat_level")
-
-        /**
-         * Returns the raw JSON value of [action].
-         *
-         * Unlike [action], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("action") @ExcludeMissing fun _action(): JsonField<Action> = action
-
-        /**
-         * Returns the raw JSON value of [hasDetections].
-         *
-         * Unlike [hasDetections], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("has_detections")
-        @ExcludeMissing
-        fun _hasDetections(): JsonField<Boolean> = hasDetections
-
-        /**
-         * Returns the raw JSON value of [threatLevel].
-         *
-         * Unlike [threatLevel], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("threat_level")
-        @ExcludeMissing
-        fun _threatLevel(): JsonField<ThreatLevel> = threatLevel
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
-        }
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of [Evaluation].
-             *
-             * The following fields are required:
-             * ```java
-             * .action()
-             * .hasDetections()
-             * .threatLevel()
-             * ```
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Evaluation]. */
-        class Builder internal constructor() {
-
-            private var action: JsonField<Action>? = null
-            private var hasDetections: JsonField<Boolean>? = null
-            private var threatLevel: JsonField<ThreatLevel>? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(evaluation: Evaluation) = apply {
-                action = evaluation.action
-                hasDetections = evaluation.hasDetections
-                threatLevel = evaluation.threatLevel
-                additionalProperties = evaluation.additionalProperties.toMutableMap()
-            }
-
-            /** The action based on interaction analysis and configured tenant security rules. */
-            fun action(action: Action) = action(JsonField.of(action))
-
-            /**
-             * Sets [Builder.action] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.action] with a well-typed [Action] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun action(action: JsonField<Action>) = apply { this.action = action }
-
-            /** Indicates if any detections were found during the analysis. */
-            fun hasDetections(hasDetections: Boolean) = hasDetections(JsonField.of(hasDetections))
-
-            /**
-             * Sets [Builder.hasDetections] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.hasDetections] with a well-typed [Boolean] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun hasDetections(hasDetections: JsonField<Boolean>) = apply {
-                this.hasDetections = hasDetections
-            }
-
-            /**
-             * The threat level based on interaction analysis and configured tenant security rules.
-             */
-            fun threatLevel(threatLevel: ThreatLevel) = threatLevel(JsonField.of(threatLevel))
-
-            /**
-             * Sets [Builder.threatLevel] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.threatLevel] with a well-typed [ThreatLevel] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun threatLevel(threatLevel: JsonField<ThreatLevel>) = apply {
-                this.threatLevel = threatLevel
-            }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Evaluation].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             *
-             * The following fields are required:
-             * ```java
-             * .action()
-             * .hasDetections()
-             * .threatLevel()
-             * ```
-             *
-             * @throws IllegalStateException if any required field is unset.
-             */
-            fun build(): Evaluation =
-                Evaluation(
-                    checkRequired("action", action),
-                    checkRequired("hasDetections", hasDetections),
-                    checkRequired("threatLevel", threatLevel),
-                    additionalProperties.toMutableMap(),
-                )
-        }
-
-        private var validated: Boolean = false
-
-        fun validate(): Evaluation = apply {
-            if (validated) {
-                return@apply
-            }
-
-            action().validate()
-            hasDetections()
-            threatLevel().validate()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: HiddenLayerInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic
-        internal fun validity(): Int =
-            (action.asKnown().getOrNull()?.validity() ?: 0) +
-                (if (hasDetections.asKnown().isPresent) 1 else 0) +
-                (threatLevel.asKnown().getOrNull()?.validity() ?: 0)
-
-        /** The action based on interaction analysis and configured tenant security rules. */
-        class Action @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-            /**
-             * Returns this class instance's raw value.
-             *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
-             */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            companion object {
-
-                @JvmField val ALLOW = of("Allow")
-
-                @JvmField val ALERT = of("Alert")
-
-                @JvmField val REDACT = of("Redact")
-
-                @JvmField val BLOCK = of("Block")
-
-                @JvmStatic fun of(value: String) = Action(JsonField.of(value))
-            }
-
-            /** An enum containing [Action]'s known values. */
-            enum class Known {
-                ALLOW,
-                ALERT,
-                REDACT,
-                BLOCK,
-            }
-
-            /**
-             * An enum containing [Action]'s known values, as well as an [_UNKNOWN] member.
-             *
-             * An instance of [Action] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
-             * - It was constructed with an arbitrary value using the [of] method.
-             */
-            enum class Value {
-                ALLOW,
-                ALERT,
-                REDACT,
-                BLOCK,
-                /**
-                 * An enum member indicating that [Action] was instantiated with an unknown value.
-                 */
-                _UNKNOWN,
-            }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value, or
-             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-             *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
-             */
-            fun value(): Value =
-                when (this) {
-                    ALLOW -> Value.ALLOW
-                    ALERT -> Value.ALERT
-                    REDACT -> Value.REDACT
-                    BLOCK -> Value.BLOCK
-                    else -> Value._UNKNOWN
-                }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value.
-             *
-             * Use the [value] method instead if you're uncertain the value is always known and
-             * don't want to throw for the unknown case.
-             *
-             * @throws HiddenLayerInvalidDataException if this class instance's value is a not a
-             *   known member.
-             */
-            fun known(): Known =
-                when (this) {
-                    ALLOW -> Known.ALLOW
-                    ALERT -> Known.ALERT
-                    REDACT -> Known.REDACT
-                    BLOCK -> Known.BLOCK
-                    else -> throw HiddenLayerInvalidDataException("Unknown Action: $value")
-                }
-
-            /**
-             * Returns this class instance's primitive wire representation.
-             *
-             * This differs from the [toString] method because that method is primarily for
-             * debugging and generally doesn't throw.
-             *
-             * @throws HiddenLayerInvalidDataException if this class instance's value does not have
-             *   the expected primitive type.
-             */
-            fun asString(): String =
-                _value().asString().orElseThrow {
-                    HiddenLayerInvalidDataException("Value is not a String")
-                }
-
-            private var validated: Boolean = false
-
-            fun validate(): Action = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                known()
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: HiddenLayerInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Action && value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-        }
-
-        /** The threat level based on interaction analysis and configured tenant security rules. */
-        class ThreatLevel @JsonCreator private constructor(private val value: JsonField<String>) :
-            Enum {
-
-            /**
-             * Returns this class instance's raw value.
-             *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
-             */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            companion object {
-
-                @JvmField val NONE = of("None")
-
-                @JvmField val LOW = of("Low")
-
-                @JvmField val MEDIUM = of("Medium")
-
-                @JvmField val HIGH = of("High")
-
-                @JvmField val CRITICAL = of("Critical")
-
-                @JvmStatic fun of(value: String) = ThreatLevel(JsonField.of(value))
-            }
-
-            /** An enum containing [ThreatLevel]'s known values. */
-            enum class Known {
-                NONE,
-                LOW,
-                MEDIUM,
-                HIGH,
-                CRITICAL,
-            }
-
-            /**
-             * An enum containing [ThreatLevel]'s known values, as well as an [_UNKNOWN] member.
-             *
-             * An instance of [ThreatLevel] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
-             * - It was constructed with an arbitrary value using the [of] method.
-             */
-            enum class Value {
-                NONE,
-                LOW,
-                MEDIUM,
-                HIGH,
-                CRITICAL,
-                /**
-                 * An enum member indicating that [ThreatLevel] was instantiated with an unknown
-                 * value.
-                 */
-                _UNKNOWN,
-            }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value, or
-             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-             *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
-             */
-            fun value(): Value =
-                when (this) {
-                    NONE -> Value.NONE
-                    LOW -> Value.LOW
-                    MEDIUM -> Value.MEDIUM
-                    HIGH -> Value.HIGH
-                    CRITICAL -> Value.CRITICAL
-                    else -> Value._UNKNOWN
-                }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value.
-             *
-             * Use the [value] method instead if you're uncertain the value is always known and
-             * don't want to throw for the unknown case.
-             *
-             * @throws HiddenLayerInvalidDataException if this class instance's value is a not a
-             *   known member.
-             */
-            fun known(): Known =
-                when (this) {
-                    NONE -> Known.NONE
-                    LOW -> Known.LOW
-                    MEDIUM -> Known.MEDIUM
-                    HIGH -> Known.HIGH
-                    CRITICAL -> Known.CRITICAL
-                    else -> throw HiddenLayerInvalidDataException("Unknown ThreatLevel: $value")
-                }
-
-            /**
-             * Returns this class instance's primitive wire representation.
-             *
-             * This differs from the [toString] method because that method is primarily for
-             * debugging and generally doesn't throw.
-             *
-             * @throws HiddenLayerInvalidDataException if this class instance's value does not have
-             *   the expected primitive type.
-             */
-            fun asString(): String =
-                _value().asString().orElseThrow {
-                    HiddenLayerInvalidDataException("Value is not a String")
-                }
-
-            private var validated: Boolean = false
-
-            fun validate(): ThreatLevel = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                known()
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: HiddenLayerInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is ThreatLevel && value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Evaluation &&
-                action == other.action &&
-                hasDetections == other.hasDetections &&
-                threatLevel == other.threatLevel &&
-                additionalProperties == other.additionalProperties
-        }
-
-        private val hashCode: Int by lazy {
-            Objects.hash(action, hasDetections, threatLevel, additionalProperties)
-        }
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Evaluation{action=$action, hasDetections=$hasDetections, threatLevel=$threatLevel, additionalProperties=$additionalProperties}"
-    }
-
     class Metadata
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
@@ -4263,6 +3716,551 @@ private constructor(
             "ModifiedData{input=$input, output=$output, additionalProperties=$additionalProperties}"
     }
 
+    /** The evaluation of the analysis results. */
+    class Evaluation
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val action: JsonField<Action>,
+        private val hasDetections: JsonField<Boolean>,
+        private val threatLevel: JsonField<ThreatLevel>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("action") @ExcludeMissing action: JsonField<Action> = JsonMissing.of(),
+            @JsonProperty("has_detections")
+            @ExcludeMissing
+            hasDetections: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("threat_level")
+            @ExcludeMissing
+            threatLevel: JsonField<ThreatLevel> = JsonMissing.of(),
+        ) : this(action, hasDetections, threatLevel, mutableMapOf())
+
+        /**
+         * The action based on interaction analysis and configured tenant security rules.
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun action(): Action = action.getRequired("action")
+
+        /**
+         * Indicates if any detections were found during the analysis.
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun hasDetections(): Boolean = hasDetections.getRequired("has_detections")
+
+        /**
+         * The threat level based on interaction analysis and configured tenant security rules.
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun threatLevel(): ThreatLevel = threatLevel.getRequired("threat_level")
+
+        /**
+         * Returns the raw JSON value of [action].
+         *
+         * Unlike [action], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("action") @ExcludeMissing fun _action(): JsonField<Action> = action
+
+        /**
+         * Returns the raw JSON value of [hasDetections].
+         *
+         * Unlike [hasDetections], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("has_detections")
+        @ExcludeMissing
+        fun _hasDetections(): JsonField<Boolean> = hasDetections
+
+        /**
+         * Returns the raw JSON value of [threatLevel].
+         *
+         * Unlike [threatLevel], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("threat_level")
+        @ExcludeMissing
+        fun _threatLevel(): JsonField<ThreatLevel> = threatLevel
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Evaluation].
+             *
+             * The following fields are required:
+             * ```java
+             * .action()
+             * .hasDetections()
+             * .threatLevel()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Evaluation]. */
+        class Builder internal constructor() {
+
+            private var action: JsonField<Action>? = null
+            private var hasDetections: JsonField<Boolean>? = null
+            private var threatLevel: JsonField<ThreatLevel>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(evaluation: Evaluation) = apply {
+                action = evaluation.action
+                hasDetections = evaluation.hasDetections
+                threatLevel = evaluation.threatLevel
+                additionalProperties = evaluation.additionalProperties.toMutableMap()
+            }
+
+            /** The action based on interaction analysis and configured tenant security rules. */
+            fun action(action: Action) = action(JsonField.of(action))
+
+            /**
+             * Sets [Builder.action] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.action] with a well-typed [Action] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun action(action: JsonField<Action>) = apply { this.action = action }
+
+            /** Indicates if any detections were found during the analysis. */
+            fun hasDetections(hasDetections: Boolean) = hasDetections(JsonField.of(hasDetections))
+
+            /**
+             * Sets [Builder.hasDetections] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.hasDetections] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun hasDetections(hasDetections: JsonField<Boolean>) = apply {
+                this.hasDetections = hasDetections
+            }
+
+            /**
+             * The threat level based on interaction analysis and configured tenant security rules.
+             */
+            fun threatLevel(threatLevel: ThreatLevel) = threatLevel(JsonField.of(threatLevel))
+
+            /**
+             * Sets [Builder.threatLevel] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.threatLevel] with a well-typed [ThreatLevel] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun threatLevel(threatLevel: JsonField<ThreatLevel>) = apply {
+                this.threatLevel = threatLevel
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Evaluation].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .action()
+             * .hasDetections()
+             * .threatLevel()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Evaluation =
+                Evaluation(
+                    checkRequired("action", action),
+                    checkRequired("hasDetections", hasDetections),
+                    checkRequired("threatLevel", threatLevel),
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Evaluation = apply {
+            if (validated) {
+                return@apply
+            }
+
+            action().validate()
+            hasDetections()
+            threatLevel().validate()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: HiddenLayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (action.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (hasDetections.asKnown().isPresent) 1 else 0) +
+                (threatLevel.asKnown().getOrNull()?.validity() ?: 0)
+
+        /** The action based on interaction analysis and configured tenant security rules. */
+        class Action @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val ALLOW = of("Allow")
+
+                @JvmField val ALERT = of("Alert")
+
+                @JvmField val REDACT = of("Redact")
+
+                @JvmField val BLOCK = of("Block")
+
+                @JvmStatic fun of(value: String) = Action(JsonField.of(value))
+            }
+
+            /** An enum containing [Action]'s known values. */
+            enum class Known {
+                ALLOW,
+                ALERT,
+                REDACT,
+                BLOCK,
+            }
+
+            /**
+             * An enum containing [Action]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Action] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                ALLOW,
+                ALERT,
+                REDACT,
+                BLOCK,
+                /**
+                 * An enum member indicating that [Action] was instantiated with an unknown value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    ALLOW -> Value.ALLOW
+                    ALERT -> Value.ALERT
+                    REDACT -> Value.REDACT
+                    BLOCK -> Value.BLOCK
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value is a not a
+             *   known member.
+             */
+            fun known(): Known =
+                when (this) {
+                    ALLOW -> Known.ALLOW
+                    ALERT -> Known.ALERT
+                    REDACT -> Known.REDACT
+                    BLOCK -> Known.BLOCK
+                    else -> throw HiddenLayerInvalidDataException("Unknown Action: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value does not have
+             *   the expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    HiddenLayerInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): Action = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: HiddenLayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Action && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
+        /** The threat level based on interaction analysis and configured tenant security rules. */
+        class ThreatLevel @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val NONE = of("None")
+
+                @JvmField val LOW = of("Low")
+
+                @JvmField val MEDIUM = of("Medium")
+
+                @JvmField val HIGH = of("High")
+
+                @JvmField val CRITICAL = of("Critical")
+
+                @JvmStatic fun of(value: String) = ThreatLevel(JsonField.of(value))
+            }
+
+            /** An enum containing [ThreatLevel]'s known values. */
+            enum class Known {
+                NONE,
+                LOW,
+                MEDIUM,
+                HIGH,
+                CRITICAL,
+            }
+
+            /**
+             * An enum containing [ThreatLevel]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [ThreatLevel] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                NONE,
+                LOW,
+                MEDIUM,
+                HIGH,
+                CRITICAL,
+                /**
+                 * An enum member indicating that [ThreatLevel] was instantiated with an unknown
+                 * value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    NONE -> Value.NONE
+                    LOW -> Value.LOW
+                    MEDIUM -> Value.MEDIUM
+                    HIGH -> Value.HIGH
+                    CRITICAL -> Value.CRITICAL
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value is a not a
+             *   known member.
+             */
+            fun known(): Known =
+                when (this) {
+                    NONE -> Known.NONE
+                    LOW -> Known.LOW
+                    MEDIUM -> Known.MEDIUM
+                    HIGH -> Known.HIGH
+                    CRITICAL -> Known.CRITICAL
+                    else -> throw HiddenLayerInvalidDataException("Unknown ThreatLevel: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws HiddenLayerInvalidDataException if this class instance's value does not have
+             *   the expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    HiddenLayerInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): ThreatLevel = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: HiddenLayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is ThreatLevel && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Evaluation &&
+                action == other.action &&
+                hasDetections == other.hasDetections &&
+                threatLevel == other.threatLevel &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy {
+            Objects.hash(action, hasDetections, threatLevel, additionalProperties)
+        }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Evaluation{action=$action, hasDetections=$hasDetections, threatLevel=$threatLevel, additionalProperties=$additionalProperties}"
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
@@ -4271,9 +4269,9 @@ private constructor(
         return other is InteractionAnalyzeResponse &&
             analysis == other.analysis &&
             analyzedData == other.analyzedData &&
-            evaluation == other.evaluation &&
             metadata == other.metadata &&
             modifiedData == other.modifiedData &&
+            evaluation == other.evaluation &&
             additionalProperties == other.additionalProperties
     }
 
@@ -4281,9 +4279,9 @@ private constructor(
         Objects.hash(
             analysis,
             analyzedData,
-            evaluation,
             metadata,
             modifiedData,
+            evaluation,
             additionalProperties,
         )
     }
@@ -4291,5 +4289,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "InteractionAnalyzeResponse{analysis=$analysis, analyzedData=$analyzedData, evaluation=$evaluation, metadata=$metadata, modifiedData=$modifiedData, additionalProperties=$additionalProperties}"
+        "InteractionAnalyzeResponse{analysis=$analysis, analyzedData=$analyzedData, metadata=$metadata, modifiedData=$modifiedData, evaluation=$evaluation, additionalProperties=$additionalProperties}"
 }
