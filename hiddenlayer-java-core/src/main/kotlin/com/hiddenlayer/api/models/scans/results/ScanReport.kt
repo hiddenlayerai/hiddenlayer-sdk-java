@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.hiddenlayer.api.models.scans.jobs
+package com.hiddenlayer.api.models.scans.results
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -33,7 +33,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** A scan report with all of its details. */
-class JobRetrieveResponse
+class ScanReport
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val detectionCount: JsonField<Long>,
@@ -393,7 +393,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [JobRetrieveResponse].
+         * Returns a mutable builder for constructing an instance of [ScanReport].
          *
          * The following fields are required:
          * ```java
@@ -411,7 +411,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [JobRetrieveResponse]. */
+    /** A builder for [ScanReport]. */
     class Builder internal constructor() {
 
         private var detectionCount: JsonField<Long>? = null
@@ -433,24 +433,24 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(jobRetrieveResponse: JobRetrieveResponse) = apply {
-            detectionCount = jobRetrieveResponse.detectionCount
-            fileCount = jobRetrieveResponse.fileCount
-            filesWithDetectionsCount = jobRetrieveResponse.filesWithDetectionsCount
-            inventory = jobRetrieveResponse.inventory
-            scanId = jobRetrieveResponse.scanId
-            startTime = jobRetrieveResponse.startTime
-            status = jobRetrieveResponse.status
-            summary = jobRetrieveResponse.summary
-            version = jobRetrieveResponse.version
-            schemaVersion = jobRetrieveResponse.schemaVersion
-            compliance = jobRetrieveResponse.compliance
-            detectionCategories = jobRetrieveResponse.detectionCategories.map { it.toMutableList() }
-            endTime = jobRetrieveResponse.endTime
-            fileResults = jobRetrieveResponse.fileResults.map { it.toMutableList() }
-            hasGenealogy = jobRetrieveResponse.hasGenealogy
-            severity = jobRetrieveResponse.severity
-            additionalProperties = jobRetrieveResponse.additionalProperties.toMutableMap()
+        internal fun from(scanReport: ScanReport) = apply {
+            detectionCount = scanReport.detectionCount
+            fileCount = scanReport.fileCount
+            filesWithDetectionsCount = scanReport.filesWithDetectionsCount
+            inventory = scanReport.inventory
+            scanId = scanReport.scanId
+            startTime = scanReport.startTime
+            status = scanReport.status
+            summary = scanReport.summary
+            version = scanReport.version
+            schemaVersion = scanReport.schemaVersion
+            compliance = scanReport.compliance
+            detectionCategories = scanReport.detectionCategories.map { it.toMutableList() }
+            endTime = scanReport.endTime
+            fileResults = scanReport.fileResults.map { it.toMutableList() }
+            hasGenealogy = scanReport.hasGenealogy
+            severity = scanReport.severity
+            additionalProperties = scanReport.additionalProperties.toMutableMap()
         }
 
         /** number of detections found; use `.summary.detection_count` instead */
@@ -710,7 +710,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [JobRetrieveResponse].
+         * Returns an immutable instance of [ScanReport].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -729,8 +729,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): JobRetrieveResponse =
-            JobRetrieveResponse(
+        fun build(): ScanReport =
+            ScanReport(
                 checkRequired("detectionCount", detectionCount),
                 checkRequired("fileCount", fileCount),
                 checkRequired("filesWithDetectionsCount", filesWithDetectionsCount),
@@ -753,7 +753,7 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): JobRetrieveResponse = apply {
+    fun validate(): ScanReport = apply {
         if (validated) {
             return@apply
         }
@@ -7453,7 +7453,7 @@ private constructor(
             return true
         }
 
-        return other is JobRetrieveResponse &&
+        return other is ScanReport &&
             detectionCount == other.detectionCount &&
             fileCount == other.fileCount &&
             filesWithDetectionsCount == other.filesWithDetectionsCount &&
@@ -7498,5 +7498,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "JobRetrieveResponse{detectionCount=$detectionCount, fileCount=$fileCount, filesWithDetectionsCount=$filesWithDetectionsCount, inventory=$inventory, scanId=$scanId, startTime=$startTime, status=$status, summary=$summary, version=$version, schemaVersion=$schemaVersion, compliance=$compliance, detectionCategories=$detectionCategories, endTime=$endTime, fileResults=$fileResults, hasGenealogy=$hasGenealogy, severity=$severity, additionalProperties=$additionalProperties}"
+        "ScanReport{detectionCount=$detectionCount, fileCount=$fileCount, filesWithDetectionsCount=$filesWithDetectionsCount, inventory=$inventory, scanId=$scanId, startTime=$startTime, status=$status, summary=$summary, version=$version, schemaVersion=$schemaVersion, compliance=$compliance, detectionCategories=$detectionCategories, endTime=$endTime, fileResults=$fileResults, hasGenealogy=$hasGenealogy, severity=$severity, additionalProperties=$additionalProperties}"
 }

@@ -10,8 +10,8 @@ import com.hiddenlayer.api.models.scans.jobs.JobListParams
 import com.hiddenlayer.api.models.scans.jobs.JobListResponse
 import com.hiddenlayer.api.models.scans.jobs.JobRequestParams
 import com.hiddenlayer.api.models.scans.jobs.JobRetrieveParams
-import com.hiddenlayer.api.models.scans.jobs.JobRetrieveResponse
 import com.hiddenlayer.api.models.scans.jobs.ScanJob
+import com.hiddenlayer.api.models.scans.results.ScanReport
 import java.util.function.Consumer
 
 interface JobService {
@@ -29,33 +29,30 @@ interface JobService {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): JobService
 
     /** Get scan results */
-    fun retrieve(scanId: String): JobRetrieveResponse = retrieve(scanId, JobRetrieveParams.none())
+    fun retrieve(scanId: String): ScanReport = retrieve(scanId, JobRetrieveParams.none())
 
     /** @see retrieve */
     fun retrieve(
         scanId: String,
         params: JobRetrieveParams = JobRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): JobRetrieveResponse = retrieve(params.toBuilder().scanId(scanId).build(), requestOptions)
+    ): ScanReport = retrieve(params.toBuilder().scanId(scanId).build(), requestOptions)
 
     /** @see retrieve */
-    fun retrieve(
-        scanId: String,
-        params: JobRetrieveParams = JobRetrieveParams.none(),
-    ): JobRetrieveResponse = retrieve(scanId, params, RequestOptions.none())
+    fun retrieve(scanId: String, params: JobRetrieveParams = JobRetrieveParams.none()): ScanReport =
+        retrieve(scanId, params, RequestOptions.none())
 
     /** @see retrieve */
     fun retrieve(
         params: JobRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): JobRetrieveResponse
+    ): ScanReport
 
     /** @see retrieve */
-    fun retrieve(params: JobRetrieveParams): JobRetrieveResponse =
-        retrieve(params, RequestOptions.none())
+    fun retrieve(params: JobRetrieveParams): ScanReport = retrieve(params, RequestOptions.none())
 
     /** @see retrieve */
-    fun retrieve(scanId: String, requestOptions: RequestOptions): JobRetrieveResponse =
+    fun retrieve(scanId: String, requestOptions: RequestOptions): ScanReport =
         retrieve(scanId, JobRetrieveParams.none(), requestOptions)
 
     /** Get scan results (Summaries) */
@@ -99,7 +96,7 @@ interface JobService {
          * same as [JobService.retrieve].
          */
         @MustBeClosed
-        fun retrieve(scanId: String): HttpResponseFor<JobRetrieveResponse> =
+        fun retrieve(scanId: String): HttpResponseFor<ScanReport> =
             retrieve(scanId, JobRetrieveParams.none())
 
         /** @see retrieve */
@@ -108,7 +105,7 @@ interface JobService {
             scanId: String,
             params: JobRetrieveParams = JobRetrieveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<JobRetrieveResponse> =
+        ): HttpResponseFor<ScanReport> =
             retrieve(params.toBuilder().scanId(scanId).build(), requestOptions)
 
         /** @see retrieve */
@@ -116,26 +113,23 @@ interface JobService {
         fun retrieve(
             scanId: String,
             params: JobRetrieveParams = JobRetrieveParams.none(),
-        ): HttpResponseFor<JobRetrieveResponse> = retrieve(scanId, params, RequestOptions.none())
+        ): HttpResponseFor<ScanReport> = retrieve(scanId, params, RequestOptions.none())
 
         /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: JobRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<JobRetrieveResponse>
+        ): HttpResponseFor<ScanReport>
 
         /** @see retrieve */
         @MustBeClosed
-        fun retrieve(params: JobRetrieveParams): HttpResponseFor<JobRetrieveResponse> =
+        fun retrieve(params: JobRetrieveParams): HttpResponseFor<ScanReport> =
             retrieve(params, RequestOptions.none())
 
         /** @see retrieve */
         @MustBeClosed
-        fun retrieve(
-            scanId: String,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<JobRetrieveResponse> =
+        fun retrieve(scanId: String, requestOptions: RequestOptions): HttpResponseFor<ScanReport> =
             retrieve(scanId, JobRetrieveParams.none(), requestOptions)
 
         /**
