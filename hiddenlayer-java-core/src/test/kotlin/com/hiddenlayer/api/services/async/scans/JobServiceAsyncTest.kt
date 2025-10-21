@@ -25,7 +25,7 @@ internal class JobServiceAsyncTest {
                 .build()
         val jobServiceAsync = client.scans().jobs()
 
-        val jobFuture =
+        val scanReportFuture =
             jobServiceAsync.retrieve(
                 JobRetrieveParams.builder()
                     .scanId("00000000-0000-0000-0000-000000000000")
@@ -34,8 +34,8 @@ internal class JobServiceAsyncTest {
                     .build()
             )
 
-        val job = jobFuture.get()
-        job.validate()
+        val scanReport = scanReportFuture.get()
+        scanReport.validate()
     }
 
     @Disabled("Prism tests are disabled")
