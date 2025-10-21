@@ -42,7 +42,7 @@ configure<MavenPublishBaseExtension> {
         developers {
             developer {
                 name.set("HiddenLayer")
-                email.set("contact@example.com")
+                email.set("sdks@hiddenlayer.com")
             }
         }
 
