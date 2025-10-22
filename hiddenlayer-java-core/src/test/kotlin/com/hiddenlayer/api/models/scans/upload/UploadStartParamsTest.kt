@@ -11,7 +11,7 @@ internal class UploadStartParamsTest {
     @Test
     fun create() {
         UploadStartParams.builder()
-            .xCorrelationId("00000000-0000-0000-0000-000000000000")
+            .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
             .modelName("model_name")
             .modelVersion("model_version")
             .requestingEntity("requesting_entity")
@@ -25,7 +25,7 @@ internal class UploadStartParamsTest {
     fun headers() {
         val params =
             UploadStartParams.builder()
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .modelName("model_name")
                 .modelVersion("model_version")
                 .requestingEntity("requesting_entity")
@@ -39,7 +39,7 @@ internal class UploadStartParamsTest {
         assertThat(headers)
             .isEqualTo(
                 Headers.builder()
-                    .put("X-Correlation-Id", "00000000-0000-0000-0000-000000000000")
+                    .put("X-Correlation-Id", "6f22d397-6ca2-4359-8074-3318ab471fdf")
                     .build()
             )
     }
@@ -62,7 +62,7 @@ internal class UploadStartParamsTest {
     fun body() {
         val params =
             UploadStartParams.builder()
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .modelName("model_name")
                 .modelVersion("model_version")
                 .requestingEntity("requesting_entity")
