@@ -14,7 +14,7 @@ internal class JobRetrieveParamsTest {
         JobRetrieveParams.builder()
             .scanId("00000000-0000-0000-0000-000000000000")
             .hasDetections(true)
-            .xCorrelationId("00000000-0000-0000-0000-000000000000")
+            .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
             .build()
     }
 
@@ -34,7 +34,7 @@ internal class JobRetrieveParamsTest {
             JobRetrieveParams.builder()
                 .scanId("00000000-0000-0000-0000-000000000000")
                 .hasDetections(true)
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .build()
 
         val headers = params._headers()
@@ -42,7 +42,7 @@ internal class JobRetrieveParamsTest {
         assertThat(headers)
             .isEqualTo(
                 Headers.builder()
-                    .put("X-Correlation-Id", "00000000-0000-0000-0000-000000000000")
+                    .put("X-Correlation-Id", "6f22d397-6ca2-4359-8074-3318ab471fdf")
                     .build()
             )
     }
@@ -63,7 +63,7 @@ internal class JobRetrieveParamsTest {
             JobRetrieveParams.builder()
                 .scanId("00000000-0000-0000-0000-000000000000")
                 .hasDetections(true)
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .build()
 
         val queryParams = params._queryParams()

@@ -12,7 +12,7 @@ internal class SensorCreateParamsTest {
     @Test
     fun create() {
         SensorCreateParams.builder()
-            .xCorrelationId("00000000-0000-0000-0000-000000000000")
+            .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
             .plaintextName("plaintext_name")
             .active(true)
             .adhoc(true)
@@ -29,7 +29,7 @@ internal class SensorCreateParamsTest {
     fun headers() {
         val params =
             SensorCreateParams.builder()
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .plaintextName("plaintext_name")
                 .active(true)
                 .adhoc(true)
@@ -46,7 +46,7 @@ internal class SensorCreateParamsTest {
         assertThat(headers)
             .isEqualTo(
                 Headers.builder()
-                    .put("X-Correlation-Id", "00000000-0000-0000-0000-000000000000")
+                    .put("X-Correlation-Id", "6f22d397-6ca2-4359-8074-3318ab471fdf")
                     .build()
             )
     }
@@ -64,7 +64,7 @@ internal class SensorCreateParamsTest {
     fun body() {
         val params =
             SensorCreateParams.builder()
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .plaintextName("plaintext_name")
                 .active(true)
                 .adhoc(true)

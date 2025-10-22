@@ -13,7 +13,7 @@ internal class FileCompleteParamsTest {
         FileCompleteParams.builder()
             .scanId("00000000-0000-0000-0000-000000000000")
             .fileId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .xCorrelationId("00000000-0000-0000-0000-000000000000")
+            .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
             .build()
     }
 
@@ -37,7 +37,7 @@ internal class FileCompleteParamsTest {
             FileCompleteParams.builder()
                 .scanId("00000000-0000-0000-0000-000000000000")
                 .fileId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .build()
 
         val headers = params._headers()
@@ -45,7 +45,7 @@ internal class FileCompleteParamsTest {
         assertThat(headers)
             .isEqualTo(
                 Headers.builder()
-                    .put("X-Correlation-Id", "00000000-0000-0000-0000-000000000000")
+                    .put("X-Correlation-Id", "6f22d397-6ca2-4359-8074-3318ab471fdf")
                     .build()
             )
     }

@@ -31,7 +31,7 @@ internal class SensorServiceTest {
         val sensor =
             sensorService.create(
                 SensorCreateParams.builder()
-                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                    .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                     .plaintextName("plaintext_name")
                     .active(true)
                     .adhoc(true)
@@ -61,7 +61,7 @@ internal class SensorServiceTest {
             sensorService.retrieve(
                 SensorRetrieveParams.builder()
                     .sensorId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                    .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                     .build()
             )
 
@@ -82,7 +82,7 @@ internal class SensorServiceTest {
             sensorService.update(
                 SensorUpdateParams.builder()
                     .sensorId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                    .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                     .active(true)
                     .plaintextName("plaintext_name")
                     .tags(
@@ -109,7 +109,7 @@ internal class SensorServiceTest {
         sensorService.delete(
             SensorDeleteParams.builder()
                 .sensorId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .build()
         )
     }
@@ -127,7 +127,7 @@ internal class SensorServiceTest {
         val response =
             sensorService.query(
                 SensorQueryParams.builder()
-                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                    .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                     .filter(
                         SensorQueryParams.Filter.builder()
                             .active(true)

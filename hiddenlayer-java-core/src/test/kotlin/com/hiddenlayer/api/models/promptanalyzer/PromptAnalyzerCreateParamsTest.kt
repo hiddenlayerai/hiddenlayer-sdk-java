@@ -12,7 +12,7 @@ internal class PromptAnalyzerCreateParamsTest {
     fun create() {
         PromptAnalyzerCreateParams.builder()
             .hlProjectId("internal-search-chatbot")
-            .xCorrelationId("00000000-0000-0000-0000-000000000000")
+            .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
             .xRequesterId("X-Requester-Id")
             .prompt("Hello World")
             .model("mistral-tiny")
@@ -25,7 +25,7 @@ internal class PromptAnalyzerCreateParamsTest {
         val params =
             PromptAnalyzerCreateParams.builder()
                 .hlProjectId("internal-search-chatbot")
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .xRequesterId("X-Requester-Id")
                 .prompt("Hello World")
                 .model("mistral-tiny")
@@ -38,7 +38,7 @@ internal class PromptAnalyzerCreateParamsTest {
             .isEqualTo(
                 Headers.builder()
                     .put("HL-Project-Id", "internal-search-chatbot")
-                    .put("X-Correlation-Id", "00000000-0000-0000-0000-000000000000")
+                    .put("X-Correlation-Id", "6f22d397-6ca2-4359-8074-3318ab471fdf")
                     .put("X-Requester-Id", "X-Requester-Id")
                     .build()
             )
@@ -58,7 +58,7 @@ internal class PromptAnalyzerCreateParamsTest {
         val params =
             PromptAnalyzerCreateParams.builder()
                 .hlProjectId("internal-search-chatbot")
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .xRequesterId("X-Requester-Id")
                 .prompt("Hello World")
                 .model("mistral-tiny")

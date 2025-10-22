@@ -26,7 +26,7 @@ internal class PromptAnalyzerServiceAsyncTest {
             promptAnalyzerServiceAsync.create(
                 PromptAnalyzerCreateParams.builder()
                     .hlProjectId("internal-search-chatbot")
-                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                    .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                     .xRequesterId("X-Requester-Id")
                     .prompt("Hello World")
                     .model("mistral-tiny")
