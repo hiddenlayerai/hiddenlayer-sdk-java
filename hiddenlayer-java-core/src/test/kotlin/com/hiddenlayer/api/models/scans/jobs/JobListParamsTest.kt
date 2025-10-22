@@ -29,7 +29,7 @@ internal class JobListParamsTest {
             .source(JobListParams.Source.builder().eq(JobListParams.Source.Eq.ADHOC).build())
             .startTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
             .addStatus("string")
-            .xCorrelationId("00000000-0000-0000-0000-000000000000")
+            .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
             .build()
     }
 
@@ -53,7 +53,7 @@ internal class JobListParamsTest {
                 .source(JobListParams.Source.builder().eq(JobListParams.Source.Eq.ADHOC).build())
                 .startTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .addStatus("string")
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .build()
 
         val headers = params._headers()
@@ -61,7 +61,7 @@ internal class JobListParamsTest {
         assertThat(headers)
             .isEqualTo(
                 Headers.builder()
-                    .put("X-Correlation-Id", "00000000-0000-0000-0000-000000000000")
+                    .put("X-Correlation-Id", "6f22d397-6ca2-4359-8074-3318ab471fdf")
                     .build()
             )
     }
@@ -95,7 +95,7 @@ internal class JobListParamsTest {
                 .source(JobListParams.Source.builder().eq(JobListParams.Source.Eq.ADHOC).build())
                 .startTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .addStatus("string")
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .build()
 
         val queryParams = params._queryParams()

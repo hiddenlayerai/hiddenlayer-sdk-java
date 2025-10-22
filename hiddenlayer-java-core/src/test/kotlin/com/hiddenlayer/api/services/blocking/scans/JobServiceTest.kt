@@ -30,7 +30,7 @@ internal class JobServiceTest {
                 JobRetrieveParams.builder()
                     .scanId("00000000-0000-0000-0000-000000000000")
                     .hasDetections(true)
-                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                    .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                     .build()
             )
 
@@ -70,7 +70,7 @@ internal class JobServiceTest {
                     )
                     .startTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .addStatus("string")
-                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                    .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                     .build()
             )
 
