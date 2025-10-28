@@ -12,9 +12,11 @@ import com.hiddenlayer.api.core.JsonField
 import com.hiddenlayer.api.core.JsonMissing
 import com.hiddenlayer.api.core.JsonValue
 import com.hiddenlayer.api.core.Params
+import com.hiddenlayer.api.core.checkKnown
 import com.hiddenlayer.api.core.checkRequired
 import com.hiddenlayer.api.core.http.Headers
 import com.hiddenlayer.api.core.http.QueryParams
+import com.hiddenlayer.api.core.toImmutable
 import com.hiddenlayer.api.errors.HiddenLayerInvalidDataException
 import java.util.Collections
 import java.util.Objects
@@ -1000,8 +1002,8 @@ private constructor(
             requestedScanLocation.getOptional("requested_scan_location")
 
         /**
-         * Specifies what to scan. Must provide at least one of: file_location, provider_model, or
-         * both.
+         * Specifies what to scan. Must provide at least one of: deep_scan with file location
+         * details, provider_model, or both.
          *
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -1213,8 +1215,8 @@ private constructor(
             }
 
             /**
-             * Specifies what to scan. Must provide at least one of: file_location, provider_model,
-             * or both.
+             * Specifies what to scan. Must provide at least one of: deep_scan with file location
+             * details, provider_model, or both.
              */
             fun scanTarget(scanTarget: ScanTarget) = scanTarget(JsonField.of(scanTarget))
 
@@ -1467,34 +1469,32 @@ private constructor(
         }
 
         /**
-         * Specifies what to scan. Must provide at least one of: file_location, provider_model, or
-         * both.
+         * Specifies what to scan. Must provide at least one of: deep_scan with file location
+         * details, provider_model, or both.
          */
         class ScanTarget
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
-            private val fileLocation: JsonField<String>,
+            private val deepScan: JsonField<DeepScan>,
             private val providerModel: JsonField<ProviderModel>,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
 
             @JsonCreator
             private constructor(
-                @JsonProperty("file_location")
+                @JsonProperty("deep_scan")
                 @ExcludeMissing
-                fileLocation: JsonField<String> = JsonMissing.of(),
+                deepScan: JsonField<DeepScan> = JsonMissing.of(),
                 @JsonProperty("provider_model")
                 @ExcludeMissing
                 providerModel: JsonField<ProviderModel> = JsonMissing.of(),
-            ) : this(fileLocation, providerModel, mutableMapOf())
+            ) : this(deepScan, providerModel, mutableMapOf())
 
             /**
-             * URL or path to the model files
-             *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
              *   (e.g. if the server responded with an unexpected value).
              */
-            fun fileLocation(): Optional<String> = fileLocation.getOptional("file_location")
+            fun deepScan(): Optional<DeepScan> = deepScan.getOptional("deep_scan")
 
             /**
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
@@ -1504,14 +1504,14 @@ private constructor(
                 providerModel.getOptional("provider_model")
 
             /**
-             * Returns the raw JSON value of [fileLocation].
+             * Returns the raw JSON value of [deepScan].
              *
-             * Unlike [fileLocation], this method doesn't throw if the JSON field has an unexpected
+             * Unlike [deepScan], this method doesn't throw if the JSON field has an unexpected
              * type.
              */
-            @JsonProperty("file_location")
+            @JsonProperty("deep_scan")
             @ExcludeMissing
-            fun _fileLocation(): JsonField<String> = fileLocation
+            fun _deepScan(): JsonField<DeepScan> = deepScan
 
             /**
              * Returns the raw JSON value of [providerModel].
@@ -1544,30 +1544,27 @@ private constructor(
             /** A builder for [ScanTarget]. */
             class Builder internal constructor() {
 
-                private var fileLocation: JsonField<String> = JsonMissing.of()
+                private var deepScan: JsonField<DeepScan> = JsonMissing.of()
                 private var providerModel: JsonField<ProviderModel> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(scanTarget: ScanTarget) = apply {
-                    fileLocation = scanTarget.fileLocation
+                    deepScan = scanTarget.deepScan
                     providerModel = scanTarget.providerModel
                     additionalProperties = scanTarget.additionalProperties.toMutableMap()
                 }
 
-                /** URL or path to the model files */
-                fun fileLocation(fileLocation: String) = fileLocation(JsonField.of(fileLocation))
+                fun deepScan(deepScan: DeepScan) = deepScan(JsonField.of(deepScan))
 
                 /**
-                 * Sets [Builder.fileLocation] to an arbitrary JSON value.
+                 * Sets [Builder.deepScan] to an arbitrary JSON value.
                  *
-                 * You should usually call [Builder.fileLocation] with a well-typed [String] value
+                 * You should usually call [Builder.deepScan] with a well-typed [DeepScan] value
                  * instead. This method is primarily for setting the field to an undocumented or not
                  * yet supported value.
                  */
-                fun fileLocation(fileLocation: JsonField<String>) = apply {
-                    this.fileLocation = fileLocation
-                }
+                fun deepScan(deepScan: JsonField<DeepScan>) = apply { this.deepScan = deepScan }
 
                 fun providerModel(providerModel: ProviderModel) =
                     providerModel(JsonField.of(providerModel))
@@ -1611,7 +1608,7 @@ private constructor(
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
                 fun build(): ScanTarget =
-                    ScanTarget(fileLocation, providerModel, additionalProperties.toMutableMap())
+                    ScanTarget(deepScan, providerModel, additionalProperties.toMutableMap())
             }
 
             private var validated: Boolean = false
@@ -1621,7 +1618,7 @@ private constructor(
                     return@apply
                 }
 
-                fileLocation()
+                deepScan().ifPresent { it.validate() }
                 providerModel().ifPresent { it.validate() }
                 validated = true
             }
@@ -1642,8 +1639,440 @@ private constructor(
              */
             @JvmSynthetic
             internal fun validity(): Int =
-                (if (fileLocation.asKnown().isPresent) 1 else 0) +
+                (deepScan.asKnown().getOrNull()?.validity() ?: 0) +
                     (providerModel.asKnown().getOrNull()?.validity() ?: 0)
+
+            class DeepScan
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+            private constructor(
+                private val fileLocation: JsonField<String>,
+                private val files: JsonField<List<File>>,
+                private val additionalProperties: MutableMap<String, JsonValue>,
+            ) {
+
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("file_location")
+                    @ExcludeMissing
+                    fileLocation: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("files")
+                    @ExcludeMissing
+                    files: JsonField<List<File>> = JsonMissing.of(),
+                ) : this(fileLocation, files, mutableMapOf())
+
+                /**
+                 * URL or path to the model files
+                 *
+                 * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun fileLocation(): Optional<String> = fileLocation.getOptional("file_location")
+
+                /**
+                 * List of specific files to scan
+                 *
+                 * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun files(): Optional<List<File>> = files.getOptional("files")
+
+                /**
+                 * Returns the raw JSON value of [fileLocation].
+                 *
+                 * Unlike [fileLocation], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("file_location")
+                @ExcludeMissing
+                fun _fileLocation(): JsonField<String> = fileLocation
+
+                /**
+                 * Returns the raw JSON value of [files].
+                 *
+                 * Unlike [files], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
+                @JsonProperty("files") @ExcludeMissing fun _files(): JsonField<List<File>> = files
+
+                @JsonAnySetter
+                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                    additionalProperties.put(key, value)
+                }
+
+                @JsonAnyGetter
+                @ExcludeMissing
+                fun _additionalProperties(): Map<String, JsonValue> =
+                    Collections.unmodifiableMap(additionalProperties)
+
+                fun toBuilder() = Builder().from(this)
+
+                companion object {
+
+                    /** Returns a mutable builder for constructing an instance of [DeepScan]. */
+                    @JvmStatic fun builder() = Builder()
+                }
+
+                /** A builder for [DeepScan]. */
+                class Builder internal constructor() {
+
+                    private var fileLocation: JsonField<String> = JsonMissing.of()
+                    private var files: JsonField<MutableList<File>>? = null
+                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                    @JvmSynthetic
+                    internal fun from(deepScan: DeepScan) = apply {
+                        fileLocation = deepScan.fileLocation
+                        files = deepScan.files.map { it.toMutableList() }
+                        additionalProperties = deepScan.additionalProperties.toMutableMap()
+                    }
+
+                    /** URL or path to the model files */
+                    fun fileLocation(fileLocation: String) =
+                        fileLocation(JsonField.of(fileLocation))
+
+                    /**
+                     * Sets [Builder.fileLocation] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.fileLocation] with a well-typed [String]
+                     * value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun fileLocation(fileLocation: JsonField<String>) = apply {
+                        this.fileLocation = fileLocation
+                    }
+
+                    /** List of specific files to scan */
+                    fun files(files: List<File>) = files(JsonField.of(files))
+
+                    /**
+                     * Sets [Builder.files] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.files] with a well-typed `List<File>` value
+                     * instead. This method is primarily for setting the field to an undocumented or
+                     * not yet supported value.
+                     */
+                    fun files(files: JsonField<List<File>>) = apply {
+                        this.files = files.map { it.toMutableList() }
+                    }
+
+                    /**
+                     * Adds a single [File] to [files].
+                     *
+                     * @throws IllegalStateException if the field was previously set to a non-list.
+                     */
+                    fun addFile(file: File) = apply {
+                        files =
+                            (files ?: JsonField.of(mutableListOf())).also {
+                                checkKnown("files", it).add(file)
+                            }
+                    }
+
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
+
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
+
+                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                        apply {
+                            this.additionalProperties.putAll(additionalProperties)
+                        }
+
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
+                    /**
+                     * Returns an immutable instance of [DeepScan].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
+                    fun build(): DeepScan =
+                        DeepScan(
+                            fileLocation,
+                            (files ?: JsonMissing.of()).map { it.toImmutable() },
+                            additionalProperties.toMutableMap(),
+                        )
+                }
+
+                private var validated: Boolean = false
+
+                fun validate(): DeepScan = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    fileLocation()
+                    files().ifPresent { it.forEach { it.validate() } }
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: HiddenLayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    (if (fileLocation.asKnown().isPresent) 1 else 0) +
+                        (files.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
+
+                class File
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                private constructor(
+                    private val fileLocation: JsonField<String>,
+                    private val fileNameAlias: JsonField<String>,
+                    private val additionalProperties: MutableMap<String, JsonValue>,
+                ) {
+
+                    @JsonCreator
+                    private constructor(
+                        @JsonProperty("file_location")
+                        @ExcludeMissing
+                        fileLocation: JsonField<String> = JsonMissing.of(),
+                        @JsonProperty("file_name_alias")
+                        @ExcludeMissing
+                        fileNameAlias: JsonField<String> = JsonMissing.of(),
+                    ) : this(fileLocation, fileNameAlias, mutableMapOf())
+
+                    /**
+                     * URL or path to the specific file
+                     *
+                     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected
+                     *   type or is unexpectedly missing or null (e.g. if the server responded with
+                     *   an unexpected value).
+                     */
+                    fun fileLocation(): String = fileLocation.getRequired("file_location")
+
+                    /**
+                     * Optional alias for the file name
+                     *
+                     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected
+                     *   type (e.g. if the server responded with an unexpected value).
+                     */
+                    fun fileNameAlias(): Optional<String> =
+                        fileNameAlias.getOptional("file_name_alias")
+
+                    /**
+                     * Returns the raw JSON value of [fileLocation].
+                     *
+                     * Unlike [fileLocation], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("file_location")
+                    @ExcludeMissing
+                    fun _fileLocation(): JsonField<String> = fileLocation
+
+                    /**
+                     * Returns the raw JSON value of [fileNameAlias].
+                     *
+                     * Unlike [fileNameAlias], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("file_name_alias")
+                    @ExcludeMissing
+                    fun _fileNameAlias(): JsonField<String> = fileNameAlias
+
+                    @JsonAnySetter
+                    private fun putAdditionalProperty(key: String, value: JsonValue) {
+                        additionalProperties.put(key, value)
+                    }
+
+                    @JsonAnyGetter
+                    @ExcludeMissing
+                    fun _additionalProperties(): Map<String, JsonValue> =
+                        Collections.unmodifiableMap(additionalProperties)
+
+                    fun toBuilder() = Builder().from(this)
+
+                    companion object {
+
+                        /**
+                         * Returns a mutable builder for constructing an instance of [File].
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .fileLocation()
+                         * ```
+                         */
+                        @JvmStatic fun builder() = Builder()
+                    }
+
+                    /** A builder for [File]. */
+                    class Builder internal constructor() {
+
+                        private var fileLocation: JsonField<String>? = null
+                        private var fileNameAlias: JsonField<String> = JsonMissing.of()
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
+
+                        @JvmSynthetic
+                        internal fun from(file: File) = apply {
+                            fileLocation = file.fileLocation
+                            fileNameAlias = file.fileNameAlias
+                            additionalProperties = file.additionalProperties.toMutableMap()
+                        }
+
+                        /** URL or path to the specific file */
+                        fun fileLocation(fileLocation: String) =
+                            fileLocation(JsonField.of(fileLocation))
+
+                        /**
+                         * Sets [Builder.fileLocation] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.fileLocation] with a well-typed [String]
+                         * value instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun fileLocation(fileLocation: JsonField<String>) = apply {
+                            this.fileLocation = fileLocation
+                        }
+
+                        /** Optional alias for the file name */
+                        fun fileNameAlias(fileNameAlias: String) =
+                            fileNameAlias(JsonField.of(fileNameAlias))
+
+                        /**
+                         * Sets [Builder.fileNameAlias] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.fileNameAlias] with a well-typed
+                         * [String] value instead. This method is primarily for setting the field to
+                         * an undocumented or not yet supported value.
+                         */
+                        fun fileNameAlias(fileNameAlias: JsonField<String>) = apply {
+                            this.fileNameAlias = fileNameAlias
+                        }
+
+                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                            apply {
+                                this.additionalProperties.clear()
+                                putAllAdditionalProperties(additionalProperties)
+                            }
+
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            additionalProperties.put(key, value)
+                        }
+
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                        fun removeAdditionalProperty(key: String) = apply {
+                            additionalProperties.remove(key)
+                        }
+
+                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                            keys.forEach(::removeAdditionalProperty)
+                        }
+
+                        /**
+                         * Returns an immutable instance of [File].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .fileLocation()
+                         * ```
+                         *
+                         * @throws IllegalStateException if any required field is unset.
+                         */
+                        fun build(): File =
+                            File(
+                                checkRequired("fileLocation", fileLocation),
+                                fileNameAlias,
+                                additionalProperties.toMutableMap(),
+                            )
+                    }
+
+                    private var validated: Boolean = false
+
+                    fun validate(): File = apply {
+                        if (validated) {
+                            return@apply
+                        }
+
+                        fileLocation()
+                        fileNameAlias()
+                        validated = true
+                    }
+
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: HiddenLayerInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        (if (fileLocation.asKnown().isPresent) 1 else 0) +
+                            (if (fileNameAlias.asKnown().isPresent) 1 else 0)
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return other is File &&
+                            fileLocation == other.fileLocation &&
+                            fileNameAlias == other.fileNameAlias &&
+                            additionalProperties == other.additionalProperties
+                    }
+
+                    private val hashCode: Int by lazy {
+                        Objects.hash(fileLocation, fileNameAlias, additionalProperties)
+                    }
+
+                    override fun hashCode(): Int = hashCode
+
+                    override fun toString() =
+                        "File{fileLocation=$fileLocation, fileNameAlias=$fileNameAlias, additionalProperties=$additionalProperties}"
+                }
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is DeepScan &&
+                        fileLocation == other.fileLocation &&
+                        files == other.files &&
+                        additionalProperties == other.additionalProperties
+                }
+
+                private val hashCode: Int by lazy {
+                    Objects.hash(fileLocation, files, additionalProperties)
+                }
+
+                override fun hashCode(): Int = hashCode
+
+                override fun toString() =
+                    "DeepScan{fileLocation=$fileLocation, files=$files, additionalProperties=$additionalProperties}"
+            }
 
             class ProviderModel
             @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -2055,19 +2484,19 @@ private constructor(
                 }
 
                 return other is ScanTarget &&
-                    fileLocation == other.fileLocation &&
+                    deepScan == other.deepScan &&
                     providerModel == other.providerModel &&
                     additionalProperties == other.additionalProperties
             }
 
             private val hashCode: Int by lazy {
-                Objects.hash(fileLocation, providerModel, additionalProperties)
+                Objects.hash(deepScan, providerModel, additionalProperties)
             }
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "ScanTarget{fileLocation=$fileLocation, providerModel=$providerModel, additionalProperties=$additionalProperties}"
+                "ScanTarget{deepScan=$deepScan, providerModel=$providerModel, additionalProperties=$additionalProperties}"
         }
 
         override fun equals(other: Any?): Boolean {

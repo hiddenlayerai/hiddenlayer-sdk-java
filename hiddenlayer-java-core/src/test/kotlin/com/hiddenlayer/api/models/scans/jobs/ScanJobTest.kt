@@ -23,7 +23,21 @@ internal class ScanJobTest {
                         .requestedScanLocation("/files-to-scan")
                         .scanTarget(
                             ScanJob.Inventory.ScanTarget.builder()
-                                .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
+                                .deepScan(
+                                    ScanJob.Inventory.ScanTarget.DeepScan.builder()
+                                        .fileLocation(
+                                            "https://huggingface.co/meta-llama/Llama-3.1-8B"
+                                        )
+                                        .addFile(
+                                            ScanJob.Inventory.ScanTarget.DeepScan.File.builder()
+                                                .fileLocation(
+                                                    "https://huggingface.co/meta-llama/Llama-3.1-8B/resolve/main/config.json"
+                                                )
+                                                .fileNameAlias("model-config.json")
+                                                .build()
+                                        )
+                                        .build()
+                                )
                                 .providerModel(
                                     ScanJob.Inventory.ScanTarget.ProviderModel.builder()
                                         .modelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
@@ -55,7 +69,19 @@ internal class ScanJobTest {
                     .requestedScanLocation("/files-to-scan")
                     .scanTarget(
                         ScanJob.Inventory.ScanTarget.builder()
-                            .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
+                            .deepScan(
+                                ScanJob.Inventory.ScanTarget.DeepScan.builder()
+                                    .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
+                                    .addFile(
+                                        ScanJob.Inventory.ScanTarget.DeepScan.File.builder()
+                                            .fileLocation(
+                                                "https://huggingface.co/meta-llama/Llama-3.1-8B/resolve/main/config.json"
+                                            )
+                                            .fileNameAlias("model-config.json")
+                                            .build()
+                                    )
+                                    .build()
+                            )
                             .providerModel(
                                 ScanJob.Inventory.ScanTarget.ProviderModel.builder()
                                     .modelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
@@ -91,7 +117,21 @@ internal class ScanJobTest {
                         .requestedScanLocation("/files-to-scan")
                         .scanTarget(
                             ScanJob.Inventory.ScanTarget.builder()
-                                .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
+                                .deepScan(
+                                    ScanJob.Inventory.ScanTarget.DeepScan.builder()
+                                        .fileLocation(
+                                            "https://huggingface.co/meta-llama/Llama-3.1-8B"
+                                        )
+                                        .addFile(
+                                            ScanJob.Inventory.ScanTarget.DeepScan.File.builder()
+                                                .fileLocation(
+                                                    "https://huggingface.co/meta-llama/Llama-3.1-8B/resolve/main/config.json"
+                                                )
+                                                .fileNameAlias("model-config.json")
+                                                .build()
+                                        )
+                                        .build()
+                                )
                                 .providerModel(
                                     ScanJob.Inventory.ScanTarget.ProviderModel.builder()
                                         .modelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
