@@ -25,7 +25,20 @@ internal class JobRequestParamsTest {
                     .requestedScanLocation("owner/repo")
                     .scanTarget(
                         JobRequestParams.Inventory.ScanTarget.builder()
-                            .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
+                            .deepScan(
+                                JobRequestParams.Inventory.ScanTarget.DeepScan.builder()
+                                    .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
+                                    .addFile(
+                                        JobRequestParams.Inventory.ScanTarget.DeepScan.File
+                                            .builder()
+                                            .fileLocation(
+                                                "https://huggingface.co/meta-llama/Llama-3.1-8B/resolve/main/config.json"
+                                            )
+                                            .fileNameAlias("model-config.json")
+                                            .build()
+                                    )
+                                    .build()
+                            )
                             .providerModel(
                                 JobRequestParams.Inventory.ScanTarget.ProviderModel.builder()
                                     .modelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
@@ -66,7 +79,22 @@ internal class JobRequestParamsTest {
                         .requestedScanLocation("owner/repo")
                         .scanTarget(
                             JobRequestParams.Inventory.ScanTarget.builder()
-                                .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
+                                .deepScan(
+                                    JobRequestParams.Inventory.ScanTarget.DeepScan.builder()
+                                        .fileLocation(
+                                            "https://huggingface.co/meta-llama/Llama-3.1-8B"
+                                        )
+                                        .addFile(
+                                            JobRequestParams.Inventory.ScanTarget.DeepScan.File
+                                                .builder()
+                                                .fileLocation(
+                                                    "https://huggingface.co/meta-llama/Llama-3.1-8B/resolve/main/config.json"
+                                                )
+                                                .fileNameAlias("model-config.json")
+                                                .build()
+                                        )
+                                        .build()
+                                )
                                 .providerModel(
                                     JobRequestParams.Inventory.ScanTarget.ProviderModel.builder()
                                         .modelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
@@ -107,7 +135,20 @@ internal class JobRequestParamsTest {
                     .requestedScanLocation("owner/repo")
                     .scanTarget(
                         JobRequestParams.Inventory.ScanTarget.builder()
-                            .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
+                            .deepScan(
+                                JobRequestParams.Inventory.ScanTarget.DeepScan.builder()
+                                    .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
+                                    .addFile(
+                                        JobRequestParams.Inventory.ScanTarget.DeepScan.File
+                                            .builder()
+                                            .fileLocation(
+                                                "https://huggingface.co/meta-llama/Llama-3.1-8B/resolve/main/config.json"
+                                            )
+                                            .fileNameAlias("model-config.json")
+                                            .build()
+                                    )
+                                    .build()
+                            )
                             .providerModel(
                                 JobRequestParams.Inventory.ScanTarget.ProviderModel.builder()
                                     .modelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
