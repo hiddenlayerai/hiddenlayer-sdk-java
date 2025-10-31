@@ -112,7 +112,7 @@ internal class CardListParamsTest {
                     .put("model_name[eq]", "eq")
                     .put(
                         "modscan_severity",
-                        listOf("ModscanSeverity{modelCardScanSafeUnsafe=SAFE}").joinToString(","),
+                        listOf("SAFE").joinToString(","),
                     )
                     .put("modscan_status", "ENABLED")
                     .put("offset", "250")
