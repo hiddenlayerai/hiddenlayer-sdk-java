@@ -30,7 +30,6 @@ private constructor(
     private val provider: List<Provider>?,
     private val sort: String?,
     private val source: Source?,
-    private val xCorrelationId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -67,8 +66,6 @@ private constructor(
     /** substring and full match on model source */
     fun source(): Optional<Source> = Optional.ofNullable(source)
 
-    fun xCorrelationId(): Optional<String> = Optional.ofNullable(xCorrelationId)
-
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
@@ -99,7 +96,6 @@ private constructor(
         private var provider: MutableList<Provider>? = null
         private var sort: String? = null
         private var source: Source? = null
-        private var xCorrelationId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -116,7 +112,6 @@ private constructor(
             provider = cardListParams.provider?.toMutableList()
             sort = cardListParams.sort
             source = cardListParams.source
-            xCorrelationId = cardListParams.xCorrelationId
             additionalHeaders = cardListParams.additionalHeaders.toBuilder()
             additionalQueryParams = cardListParams.additionalQueryParams.toBuilder()
         }
@@ -240,12 +235,6 @@ private constructor(
         /** Alias for calling [Builder.source] with `source.orElse(null)`. */
         fun source(source: Optional<Source>) = source(source.getOrNull())
 
-        fun xCorrelationId(xCorrelationId: String?) = apply { this.xCorrelationId = xCorrelationId }
-
-        /** Alias for calling [Builder.xCorrelationId] with `xCorrelationId.orElse(null)`. */
-        fun xCorrelationId(xCorrelationId: Optional<String>) =
-            xCorrelationId(xCorrelationId.getOrNull())
-
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
             putAllAdditionalHeaders(additionalHeaders)
@@ -362,19 +351,12 @@ private constructor(
                 provider?.toImmutable(),
                 sort,
                 source,
-                xCorrelationId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
     }
 
-    override fun _headers(): Headers =
-        Headers.builder()
-            .apply {
-                xCorrelationId?.let { put("X-Correlation-Id", it) }
-                putAll(additionalHeaders)
-            }
-            .build()
+    override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
@@ -1525,7 +1507,6 @@ private constructor(
             provider == other.provider &&
             sort == other.sort &&
             source == other.source &&
-            xCorrelationId == other.xCorrelationId &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
@@ -1543,11 +1524,10 @@ private constructor(
             provider,
             sort,
             source,
-            xCorrelationId,
             additionalHeaders,
             additionalQueryParams,
         )
 
     override fun toString() =
-        "CardListParams{aidrSeverity=$aidrSeverity, aidrStatus=$aidrStatus, limit=$limit, modelCreated=$modelCreated, modelName=$modelName, modscanSeverity=$modscanSeverity, modscanStatus=$modscanStatus, offset=$offset, provider=$provider, sort=$sort, source=$source, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "CardListParams{aidrSeverity=$aidrSeverity, aidrStatus=$aidrStatus, limit=$limit, modelCreated=$modelCreated, modelName=$modelName, modscanSeverity=$modscanSeverity, modscanStatus=$modscanStatus, offset=$offset, provider=$provider, sort=$sort, source=$source, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

@@ -13,14 +13,11 @@ import kotlin.jvm.optionals.getOrNull
 class ModelRetrieveParams
 private constructor(
     private val modelId: String?,
-    private val xCorrelationId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     fun modelId(): Optional<String> = Optional.ofNullable(modelId)
-
-    fun xCorrelationId(): Optional<String> = Optional.ofNullable(xCorrelationId)
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -42,14 +39,12 @@ private constructor(
     class Builder internal constructor() {
 
         private var modelId: String? = null
-        private var xCorrelationId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(modelRetrieveParams: ModelRetrieveParams) = apply {
             modelId = modelRetrieveParams.modelId
-            xCorrelationId = modelRetrieveParams.xCorrelationId
             additionalHeaders = modelRetrieveParams.additionalHeaders.toBuilder()
             additionalQueryParams = modelRetrieveParams.additionalQueryParams.toBuilder()
         }
@@ -58,12 +53,6 @@ private constructor(
 
         /** Alias for calling [Builder.modelId] with `modelId.orElse(null)`. */
         fun modelId(modelId: Optional<String>) = modelId(modelId.getOrNull())
-
-        fun xCorrelationId(xCorrelationId: String?) = apply { this.xCorrelationId = xCorrelationId }
-
-        /** Alias for calling [Builder.xCorrelationId] with `xCorrelationId.orElse(null)`. */
-        fun xCorrelationId(xCorrelationId: Optional<String>) =
-            xCorrelationId(xCorrelationId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -169,12 +158,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          */
         fun build(): ModelRetrieveParams =
-            ModelRetrieveParams(
-                modelId,
-                xCorrelationId,
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
-            )
+            ModelRetrieveParams(modelId, additionalHeaders.build(), additionalQueryParams.build())
     }
 
     fun _pathParam(index: Int): String =
@@ -183,13 +167,7 @@ private constructor(
             else -> ""
         }
 
-    override fun _headers(): Headers =
-        Headers.builder()
-            .apply {
-                xCorrelationId?.let { put("X-Correlation-Id", it) }
-                putAll(additionalHeaders)
-            }
-            .build()
+    override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -200,14 +178,12 @@ private constructor(
 
         return other is ModelRetrieveParams &&
             modelId == other.modelId &&
-            xCorrelationId == other.xCorrelationId &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int =
-        Objects.hash(modelId, xCorrelationId, additionalHeaders, additionalQueryParams)
+    override fun hashCode(): Int = Objects.hash(modelId, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "ModelRetrieveParams{modelId=$modelId, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "ModelRetrieveParams{modelId=$modelId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
