@@ -2,7 +2,6 @@
 
 package com.hiddenlayer.api.models.sensors
 
-import com.hiddenlayer.api.core.http.Headers
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -12,7 +11,6 @@ internal class SensorQueryParamsTest {
     @Test
     fun create() {
         SensorQueryParams.builder()
-            .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
             .filter(
                 SensorQueryParams.Filter.builder()
                     .active(true)
@@ -31,50 +29,9 @@ internal class SensorQueryParamsTest {
     }
 
     @Test
-    fun headers() {
-        val params =
-            SensorQueryParams.builder()
-                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
-                .filter(
-                    SensorQueryParams.Filter.builder()
-                        .active(true)
-                        .createdAtStart(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                        .createdAtStop(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                        .plaintextName("plaintext_name")
-                        .source(SensorQueryParams.Filter.Source.ADHOC)
-                        .version(0L)
-                        .build()
-                )
-                .orderBy("order_by")
-                .orderDir(SensorQueryParams.OrderDir.ASC)
-                .pageNumber(0L)
-                .pageSize(0L)
-                .build()
-
-        val headers = params._headers()
-
-        assertThat(headers)
-            .isEqualTo(
-                Headers.builder()
-                    .put("X-Correlation-Id", "6f22d397-6ca2-4359-8074-3318ab471fdf")
-                    .build()
-            )
-    }
-
-    @Test
-    fun headersWithoutOptionalFields() {
-        val params = SensorQueryParams.builder().build()
-
-        val headers = params._headers()
-
-        assertThat(headers).isEqualTo(Headers.builder().build())
-    }
-
-    @Test
     fun body() {
         val params =
             SensorQueryParams.builder()
-                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .filter(
                     SensorQueryParams.Filter.builder()
                         .active(true)

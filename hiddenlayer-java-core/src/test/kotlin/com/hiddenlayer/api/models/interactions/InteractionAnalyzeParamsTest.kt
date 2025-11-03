@@ -12,7 +12,6 @@ internal class InteractionAnalyzeParamsTest {
     fun create() {
         InteractionAnalyzeParams.builder()
             .hlProjectId("internal-search-chatbot")
-            .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
             .metadata(
                 InteractionAnalyzeParams.Metadata.builder()
                     .model("gpt-5")
@@ -48,7 +47,6 @@ internal class InteractionAnalyzeParamsTest {
         val params =
             InteractionAnalyzeParams.builder()
                 .hlProjectId("internal-search-chatbot")
-                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .metadata(
                     InteractionAnalyzeParams.Metadata.builder()
                         .model("gpt-5")
@@ -81,12 +79,7 @@ internal class InteractionAnalyzeParamsTest {
         val headers = params._headers()
 
         assertThat(headers)
-            .isEqualTo(
-                Headers.builder()
-                    .put("HL-Project-Id", "internal-search-chatbot")
-                    .put("X-Correlation-Id", "6f22d397-6ca2-4359-8074-3318ab471fdf")
-                    .build()
-            )
+            .isEqualTo(Headers.builder().put("HL-Project-Id", "internal-search-chatbot").build())
     }
 
     @Test
@@ -111,7 +104,6 @@ internal class InteractionAnalyzeParamsTest {
         val params =
             InteractionAnalyzeParams.builder()
                 .hlProjectId("internal-search-chatbot")
-                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .metadata(
                     InteractionAnalyzeParams.Metadata.builder()
                         .model("gpt-5")

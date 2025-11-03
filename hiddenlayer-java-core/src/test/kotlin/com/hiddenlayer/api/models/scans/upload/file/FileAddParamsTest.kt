@@ -14,7 +14,6 @@ internal class FileAddParamsTest {
             .scanId("00000000-0000-0000-0000-000000000000")
             .fileContentLength(12345L)
             .fileName("exampleFile.txt")
-            .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
             .build()
     }
 
@@ -34,28 +33,6 @@ internal class FileAddParamsTest {
 
     @Test
     fun headers() {
-        val params =
-            FileAddParams.builder()
-                .scanId("00000000-0000-0000-0000-000000000000")
-                .fileContentLength(12345L)
-                .fileName("exampleFile.txt")
-                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
-                .build()
-
-        val headers = params._headers()
-
-        assertThat(headers)
-            .isEqualTo(
-                Headers.builder()
-                    .put("file-content-length", "12345")
-                    .put("file-name", "exampleFile.txt")
-                    .put("X-Correlation-Id", "6f22d397-6ca2-4359-8074-3318ab471fdf")
-                    .build()
-            )
-    }
-
-    @Test
-    fun headersWithoutOptionalFields() {
         val params =
             FileAddParams.builder()
                 .scanId("00000000-0000-0000-0000-000000000000")

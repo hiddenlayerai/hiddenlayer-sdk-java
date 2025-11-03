@@ -15,15 +15,12 @@ import kotlin.jvm.optionals.getOrNull
 class UploadCompleteAllParams
 private constructor(
     private val scanId: String?,
-    private val xCorrelationId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
     fun scanId(): Optional<String> = Optional.ofNullable(scanId)
-
-    fun xCorrelationId(): Optional<String> = Optional.ofNullable(xCorrelationId)
 
     /** Additional body properties to send with the request. */
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
@@ -48,7 +45,6 @@ private constructor(
     class Builder internal constructor() {
 
         private var scanId: String? = null
-        private var xCorrelationId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -56,7 +52,6 @@ private constructor(
         @JvmSynthetic
         internal fun from(uploadCompleteAllParams: UploadCompleteAllParams) = apply {
             scanId = uploadCompleteAllParams.scanId
-            xCorrelationId = uploadCompleteAllParams.xCorrelationId
             additionalHeaders = uploadCompleteAllParams.additionalHeaders.toBuilder()
             additionalQueryParams = uploadCompleteAllParams.additionalQueryParams.toBuilder()
             additionalBodyProperties =
@@ -67,12 +62,6 @@ private constructor(
 
         /** Alias for calling [Builder.scanId] with `scanId.orElse(null)`. */
         fun scanId(scanId: Optional<String>) = scanId(scanId.getOrNull())
-
-        fun xCorrelationId(xCorrelationId: String?) = apply { this.xCorrelationId = xCorrelationId }
-
-        /** Alias for calling [Builder.xCorrelationId] with `xCorrelationId.orElse(null)`. */
-        fun xCorrelationId(xCorrelationId: Optional<String>) =
-            xCorrelationId(xCorrelationId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -202,7 +191,6 @@ private constructor(
         fun build(): UploadCompleteAllParams =
             UploadCompleteAllParams(
                 scanId,
-                xCorrelationId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -218,13 +206,7 @@ private constructor(
             else -> ""
         }
 
-    override fun _headers(): Headers =
-        Headers.builder()
-            .apply {
-                xCorrelationId?.let { put("X-Correlation-Id", it) }
-                putAll(additionalHeaders)
-            }
-            .build()
+    override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -235,21 +217,14 @@ private constructor(
 
         return other is UploadCompleteAllParams &&
             scanId == other.scanId &&
-            xCorrelationId == other.xCorrelationId &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams &&
             additionalBodyProperties == other.additionalBodyProperties
     }
 
     override fun hashCode(): Int =
-        Objects.hash(
-            scanId,
-            xCorrelationId,
-            additionalHeaders,
-            additionalQueryParams,
-            additionalBodyProperties,
-        )
+        Objects.hash(scanId, additionalHeaders, additionalQueryParams, additionalBodyProperties)
 
     override fun toString() =
-        "UploadCompleteAllParams{scanId=$scanId, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "UploadCompleteAllParams{scanId=$scanId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

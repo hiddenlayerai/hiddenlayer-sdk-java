@@ -18,7 +18,6 @@ private constructor(
     private val scanId: String?,
     private val fileContentLength: Long,
     private val fileName: String,
-    private val xCorrelationId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
@@ -29,8 +28,6 @@ private constructor(
     fun fileContentLength(): Long = fileContentLength
 
     fun fileName(): String = fileName
-
-    fun xCorrelationId(): Optional<String> = Optional.ofNullable(xCorrelationId)
 
     /** Additional body properties to send with the request. */
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
@@ -63,7 +60,6 @@ private constructor(
         private var scanId: String? = null
         private var fileContentLength: Long? = null
         private var fileName: String? = null
-        private var xCorrelationId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -73,7 +69,6 @@ private constructor(
             scanId = fileAddParams.scanId
             fileContentLength = fileAddParams.fileContentLength
             fileName = fileAddParams.fileName
-            xCorrelationId = fileAddParams.xCorrelationId
             additionalHeaders = fileAddParams.additionalHeaders.toBuilder()
             additionalQueryParams = fileAddParams.additionalQueryParams.toBuilder()
             additionalBodyProperties = fileAddParams.additionalBodyProperties.toMutableMap()
@@ -89,12 +84,6 @@ private constructor(
         }
 
         fun fileName(fileName: String) = apply { this.fileName = fileName }
-
-        fun xCorrelationId(xCorrelationId: String?) = apply { this.xCorrelationId = xCorrelationId }
-
-        /** Alias for calling [Builder.xCorrelationId] with `xCorrelationId.orElse(null)`. */
-        fun xCorrelationId(xCorrelationId: Optional<String>) =
-            xCorrelationId(xCorrelationId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -234,7 +223,6 @@ private constructor(
                 scanId,
                 checkRequired("fileContentLength", fileContentLength),
                 checkRequired("fileName", fileName),
-                xCorrelationId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -255,7 +243,6 @@ private constructor(
             .apply {
                 put("file-content-length", fileContentLength.toString())
                 put("file-name", fileName)
-                xCorrelationId?.let { put("X-Correlation-Id", it) }
                 putAll(additionalHeaders)
             }
             .build()
@@ -271,7 +258,6 @@ private constructor(
             scanId == other.scanId &&
             fileContentLength == other.fileContentLength &&
             fileName == other.fileName &&
-            xCorrelationId == other.xCorrelationId &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams &&
             additionalBodyProperties == other.additionalBodyProperties
@@ -282,12 +268,11 @@ private constructor(
             scanId,
             fileContentLength,
             fileName,
-            xCorrelationId,
             additionalHeaders,
             additionalQueryParams,
             additionalBodyProperties,
         )
 
     override fun toString() =
-        "FileAddParams{scanId=$scanId, fileContentLength=$fileContentLength, fileName=$fileName, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "FileAddParams{scanId=$scanId, fileContentLength=$fileContentLength, fileName=$fileName, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
