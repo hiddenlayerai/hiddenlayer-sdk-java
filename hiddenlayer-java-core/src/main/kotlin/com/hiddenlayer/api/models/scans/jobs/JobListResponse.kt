@@ -1037,9 +1037,11 @@ private constructor(
             private val modelName: JsonField<String>,
             private val modelVersionId: JsonField<String>,
             private val requestedScanLocation: JsonField<String>,
+            private val fileLocation: JsonField<String>,
             private val modelSource: JsonField<String>,
             private val modelVersion: JsonField<String>,
             private val origin: JsonField<String>,
+            private val providerDetails: JsonField<ProviderDetails>,
             private val requestSource: JsonField<RequestSource>,
             private val requestingEntity: JsonField<String>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1059,6 +1061,9 @@ private constructor(
                 @JsonProperty("requested_scan_location")
                 @ExcludeMissing
                 requestedScanLocation: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("file_location")
+                @ExcludeMissing
+                fileLocation: JsonField<String> = JsonMissing.of(),
                 @JsonProperty("model_source")
                 @ExcludeMissing
                 modelSource: JsonField<String> = JsonMissing.of(),
@@ -1068,6 +1073,9 @@ private constructor(
                 @JsonProperty("origin")
                 @ExcludeMissing
                 origin: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("provider_details")
+                @ExcludeMissing
+                providerDetails: JsonField<ProviderDetails> = JsonMissing.of(),
                 @JsonProperty("request_source")
                 @ExcludeMissing
                 requestSource: JsonField<RequestSource> = JsonMissing.of(),
@@ -1079,9 +1087,11 @@ private constructor(
                 modelName,
                 modelVersionId,
                 requestedScanLocation,
+                fileLocation,
                 modelSource,
                 modelVersion,
                 origin,
+                providerDetails,
                 requestSource,
                 requestingEntity,
                 mutableMapOf(),
@@ -1125,6 +1135,14 @@ private constructor(
                 requestedScanLocation.getRequired("requested_scan_location")
 
             /**
+             * URL or path to the model files, if available
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun fileLocation(): Optional<String> = fileLocation.getOptional("file_location")
+
+            /**
              * source (provider) info
              *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
@@ -1147,6 +1165,13 @@ private constructor(
              *   (e.g. if the server responded with an unexpected value).
              */
             fun origin(): Optional<String> = origin.getOptional("origin")
+
+            /**
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun providerDetails(): Optional<ProviderDetails> =
+                providerDetails.getOptional("provider_details")
 
             /**
              * Identifies the system that requested the scan
@@ -1204,6 +1229,16 @@ private constructor(
             fun _requestedScanLocation(): JsonField<String> = requestedScanLocation
 
             /**
+             * Returns the raw JSON value of [fileLocation].
+             *
+             * Unlike [fileLocation], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("file_location")
+            @ExcludeMissing
+            fun _fileLocation(): JsonField<String> = fileLocation
+
+            /**
              * Returns the raw JSON value of [modelSource].
              *
              * Unlike [modelSource], this method doesn't throw if the JSON field has an unexpected
@@ -1229,6 +1264,16 @@ private constructor(
              * Unlike [origin], this method doesn't throw if the JSON field has an unexpected type.
              */
             @JsonProperty("origin") @ExcludeMissing fun _origin(): JsonField<String> = origin
+
+            /**
+             * Returns the raw JSON value of [providerDetails].
+             *
+             * Unlike [providerDetails], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
+            @JsonProperty("provider_details")
+            @ExcludeMissing
+            fun _providerDetails(): JsonField<ProviderDetails> = providerDetails
 
             /**
              * Returns the raw JSON value of [requestSource].
@@ -1285,9 +1330,11 @@ private constructor(
                 private var modelName: JsonField<String>? = null
                 private var modelVersionId: JsonField<String>? = null
                 private var requestedScanLocation: JsonField<String>? = null
+                private var fileLocation: JsonField<String> = JsonMissing.of()
                 private var modelSource: JsonField<String> = JsonMissing.of()
                 private var modelVersion: JsonField<String> = JsonMissing.of()
                 private var origin: JsonField<String> = JsonMissing.of()
+                private var providerDetails: JsonField<ProviderDetails> = JsonMissing.of()
                 private var requestSource: JsonField<RequestSource> = JsonMissing.of()
                 private var requestingEntity: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -1298,9 +1345,11 @@ private constructor(
                     modelName = inventory.modelName
                     modelVersionId = inventory.modelVersionId
                     requestedScanLocation = inventory.requestedScanLocation
+                    fileLocation = inventory.fileLocation
                     modelSource = inventory.modelSource
                     modelVersion = inventory.modelVersion
                     origin = inventory.origin
+                    providerDetails = inventory.providerDetails
                     requestSource = inventory.requestSource
                     requestingEntity = inventory.requestingEntity
                     additionalProperties = inventory.additionalProperties.toMutableMap()
@@ -1360,6 +1409,20 @@ private constructor(
                     this.requestedScanLocation = requestedScanLocation
                 }
 
+                /** URL or path to the model files, if available */
+                fun fileLocation(fileLocation: String) = fileLocation(JsonField.of(fileLocation))
+
+                /**
+                 * Sets [Builder.fileLocation] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.fileLocation] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun fileLocation(fileLocation: JsonField<String>) = apply {
+                    this.fileLocation = fileLocation
+                }
+
                 /** source (provider) info */
                 fun modelSource(modelSource: String) = modelSource(JsonField.of(modelSource))
 
@@ -1401,6 +1464,20 @@ private constructor(
                  * yet supported value.
                  */
                 fun origin(origin: JsonField<String>) = apply { this.origin = origin }
+
+                fun providerDetails(providerDetails: ProviderDetails) =
+                    providerDetails(JsonField.of(providerDetails))
+
+                /**
+                 * Sets [Builder.providerDetails] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.providerDetails] with a well-typed
+                 * [ProviderDetails] value instead. This method is primarily for setting the field
+                 * to an undocumented or not yet supported value.
+                 */
+                fun providerDetails(providerDetails: JsonField<ProviderDetails>) = apply {
+                    this.providerDetails = providerDetails
+                }
 
                 /** Identifies the system that requested the scan */
                 fun requestSource(requestSource: RequestSource) =
@@ -1475,9 +1552,11 @@ private constructor(
                         checkRequired("modelName", modelName),
                         checkRequired("modelVersionId", modelVersionId),
                         checkRequired("requestedScanLocation", requestedScanLocation),
+                        fileLocation,
                         modelSource,
                         modelVersion,
                         origin,
+                        providerDetails,
                         requestSource,
                         requestingEntity,
                         additionalProperties.toMutableMap(),
@@ -1495,9 +1574,11 @@ private constructor(
                 modelName()
                 modelVersionId()
                 requestedScanLocation()
+                fileLocation()
                 modelSource()
                 modelVersion()
                 origin()
+                providerDetails().ifPresent { it.validate() }
                 requestSource().ifPresent { it.validate() }
                 requestingEntity()
                 validated = true
@@ -1523,11 +1604,420 @@ private constructor(
                     (if (modelName.asKnown().isPresent) 1 else 0) +
                     (if (modelVersionId.asKnown().isPresent) 1 else 0) +
                     (if (requestedScanLocation.asKnown().isPresent) 1 else 0) +
+                    (if (fileLocation.asKnown().isPresent) 1 else 0) +
                     (if (modelSource.asKnown().isPresent) 1 else 0) +
                     (if (modelVersion.asKnown().isPresent) 1 else 0) +
                     (if (origin.asKnown().isPresent) 1 else 0) +
+                    (providerDetails.asKnown().getOrNull()?.validity() ?: 0) +
                     (requestSource.asKnown().getOrNull()?.validity() ?: 0) +
                     (if (requestingEntity.asKnown().isPresent) 1 else 0)
+
+            class ProviderDetails
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+            private constructor(
+                private val provider: JsonField<Provider>,
+                private val providerModelId: JsonField<String>,
+                private val modelArn: JsonField<String>,
+                private val additionalProperties: MutableMap<String, JsonValue>,
+            ) {
+
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("provider")
+                    @ExcludeMissing
+                    provider: JsonField<Provider> = JsonMissing.of(),
+                    @JsonProperty("provider_model_id")
+                    @ExcludeMissing
+                    providerModelId: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("model_arn")
+                    @ExcludeMissing
+                    modelArn: JsonField<String> = JsonMissing.of(),
+                ) : this(provider, providerModelId, modelArn, mutableMapOf())
+
+                /**
+                 * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+                 *   or is unexpectedly missing or null (e.g. if the server responded with an
+                 *   unexpected value).
+                 */
+                fun provider(): Provider = provider.getRequired("provider")
+
+                /**
+                 * The provider's unique identifier for the model. Examples:
+                 * - AWS Bedrock: "anthropic.claude-3-5-sonnet-20241022-v2:0"
+                 * - Azure AI Foundry: "Claude-3-5-Sonnet"
+                 *
+                 * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+                 *   or is unexpectedly missing or null (e.g. if the server responded with an
+                 *   unexpected value).
+                 */
+                fun providerModelId(): String = providerModelId.getRequired("provider_model_id")
+
+                /**
+                 * Optional full ARN or resource identifier for the model. Used for provisioned
+                 * models, custom deployments, or cross-account access.
+                 *
+                 * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun modelArn(): Optional<String> = modelArn.getOptional("model_arn")
+
+                /**
+                 * Returns the raw JSON value of [provider].
+                 *
+                 * Unlike [provider], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
+                @JsonProperty("provider")
+                @ExcludeMissing
+                fun _provider(): JsonField<Provider> = provider
+
+                /**
+                 * Returns the raw JSON value of [providerModelId].
+                 *
+                 * Unlike [providerModelId], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("provider_model_id")
+                @ExcludeMissing
+                fun _providerModelId(): JsonField<String> = providerModelId
+
+                /**
+                 * Returns the raw JSON value of [modelArn].
+                 *
+                 * Unlike [modelArn], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
+                @JsonProperty("model_arn")
+                @ExcludeMissing
+                fun _modelArn(): JsonField<String> = modelArn
+
+                @JsonAnySetter
+                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                    additionalProperties.put(key, value)
+                }
+
+                @JsonAnyGetter
+                @ExcludeMissing
+                fun _additionalProperties(): Map<String, JsonValue> =
+                    Collections.unmodifiableMap(additionalProperties)
+
+                fun toBuilder() = Builder().from(this)
+
+                companion object {
+
+                    /**
+                     * Returns a mutable builder for constructing an instance of [ProviderDetails].
+                     *
+                     * The following fields are required:
+                     * ```java
+                     * .provider()
+                     * .providerModelId()
+                     * ```
+                     */
+                    @JvmStatic fun builder() = Builder()
+                }
+
+                /** A builder for [ProviderDetails]. */
+                class Builder internal constructor() {
+
+                    private var provider: JsonField<Provider>? = null
+                    private var providerModelId: JsonField<String>? = null
+                    private var modelArn: JsonField<String> = JsonMissing.of()
+                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                    @JvmSynthetic
+                    internal fun from(providerDetails: ProviderDetails) = apply {
+                        provider = providerDetails.provider
+                        providerModelId = providerDetails.providerModelId
+                        modelArn = providerDetails.modelArn
+                        additionalProperties = providerDetails.additionalProperties.toMutableMap()
+                    }
+
+                    fun provider(provider: Provider) = provider(JsonField.of(provider))
+
+                    /**
+                     * Sets [Builder.provider] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.provider] with a well-typed [Provider] value
+                     * instead. This method is primarily for setting the field to an undocumented or
+                     * not yet supported value.
+                     */
+                    fun provider(provider: JsonField<Provider>) = apply { this.provider = provider }
+
+                    /**
+                     * The provider's unique identifier for the model. Examples:
+                     * - AWS Bedrock: "anthropic.claude-3-5-sonnet-20241022-v2:0"
+                     * - Azure AI Foundry: "Claude-3-5-Sonnet"
+                     */
+                    fun providerModelId(providerModelId: String) =
+                        providerModelId(JsonField.of(providerModelId))
+
+                    /**
+                     * Sets [Builder.providerModelId] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.providerModelId] with a well-typed [String]
+                     * value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun providerModelId(providerModelId: JsonField<String>) = apply {
+                        this.providerModelId = providerModelId
+                    }
+
+                    /**
+                     * Optional full ARN or resource identifier for the model. Used for provisioned
+                     * models, custom deployments, or cross-account access.
+                     */
+                    fun modelArn(modelArn: String) = modelArn(JsonField.of(modelArn))
+
+                    /**
+                     * Sets [Builder.modelArn] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.modelArn] with a well-typed [String] value
+                     * instead. This method is primarily for setting the field to an undocumented or
+                     * not yet supported value.
+                     */
+                    fun modelArn(modelArn: JsonField<String>) = apply { this.modelArn = modelArn }
+
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
+
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
+
+                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                        apply {
+                            this.additionalProperties.putAll(additionalProperties)
+                        }
+
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
+                    /**
+                     * Returns an immutable instance of [ProviderDetails].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     *
+                     * The following fields are required:
+                     * ```java
+                     * .provider()
+                     * .providerModelId()
+                     * ```
+                     *
+                     * @throws IllegalStateException if any required field is unset.
+                     */
+                    fun build(): ProviderDetails =
+                        ProviderDetails(
+                            checkRequired("provider", provider),
+                            checkRequired("providerModelId", providerModelId),
+                            modelArn,
+                            additionalProperties.toMutableMap(),
+                        )
+                }
+
+                private var validated: Boolean = false
+
+                fun validate(): ProviderDetails = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    provider().validate()
+                    providerModelId()
+                    modelArn()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: HiddenLayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    (provider.asKnown().getOrNull()?.validity() ?: 0) +
+                        (if (providerModelId.asKnown().isPresent) 1 else 0) +
+                        (if (modelArn.asKnown().isPresent) 1 else 0)
+
+                class Provider
+                @JsonCreator
+                private constructor(private val value: JsonField<String>) : Enum {
+
+                    /**
+                     * Returns this class instance's raw value.
+                     *
+                     * This is usually only useful if this instance was deserialized from data that
+                     * doesn't match any known member, and you want to know that value. For example,
+                     * if the SDK is on an older version than the API, then the API may respond with
+                     * new members that the SDK is unaware of.
+                     */
+                    @com.fasterxml.jackson.annotation.JsonValue
+                    fun _value(): JsonField<String> = value
+
+                    companion object {
+
+                        @JvmField val AWS_BEDROCK = of("AWS_BEDROCK")
+
+                        @JvmField val AZURE_AI_FOUNDRY = of("AZURE_AI_FOUNDRY")
+
+                        @JvmField val AWS_SAGEMAKER = of("AWS_SAGEMAKER")
+
+                        @JvmStatic fun of(value: String) = Provider(JsonField.of(value))
+                    }
+
+                    /** An enum containing [Provider]'s known values. */
+                    enum class Known {
+                        AWS_BEDROCK,
+                        AZURE_AI_FOUNDRY,
+                        AWS_SAGEMAKER,
+                    }
+
+                    /**
+                     * An enum containing [Provider]'s known values, as well as an [_UNKNOWN]
+                     * member.
+                     *
+                     * An instance of [Provider] can contain an unknown value in a couple of cases:
+                     * - It was deserialized from data that doesn't match any known member. For
+                     *   example, if the SDK is on an older version than the API, then the API may
+                     *   respond with new members that the SDK is unaware of.
+                     * - It was constructed with an arbitrary value using the [of] method.
+                     */
+                    enum class Value {
+                        AWS_BEDROCK,
+                        AZURE_AI_FOUNDRY,
+                        AWS_SAGEMAKER,
+                        /**
+                         * An enum member indicating that [Provider] was instantiated with an
+                         * unknown value.
+                         */
+                        _UNKNOWN,
+                    }
+
+                    /**
+                     * Returns an enum member corresponding to this class instance's value, or
+                     * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                     *
+                     * Use the [known] method instead if you're certain the value is always known or
+                     * if you want to throw for the unknown case.
+                     */
+                    fun value(): Value =
+                        when (this) {
+                            AWS_BEDROCK -> Value.AWS_BEDROCK
+                            AZURE_AI_FOUNDRY -> Value.AZURE_AI_FOUNDRY
+                            AWS_SAGEMAKER -> Value.AWS_SAGEMAKER
+                            else -> Value._UNKNOWN
+                        }
+
+                    /**
+                     * Returns an enum member corresponding to this class instance's value.
+                     *
+                     * Use the [value] method instead if you're uncertain the value is always known
+                     * and don't want to throw for the unknown case.
+                     *
+                     * @throws HiddenLayerInvalidDataException if this class instance's value is a
+                     *   not a known member.
+                     */
+                    fun known(): Known =
+                        when (this) {
+                            AWS_BEDROCK -> Known.AWS_BEDROCK
+                            AZURE_AI_FOUNDRY -> Known.AZURE_AI_FOUNDRY
+                            AWS_SAGEMAKER -> Known.AWS_SAGEMAKER
+                            else ->
+                                throw HiddenLayerInvalidDataException("Unknown Provider: $value")
+                        }
+
+                    /**
+                     * Returns this class instance's primitive wire representation.
+                     *
+                     * This differs from the [toString] method because that method is primarily for
+                     * debugging and generally doesn't throw.
+                     *
+                     * @throws HiddenLayerInvalidDataException if this class instance's value does
+                     *   not have the expected primitive type.
+                     */
+                    fun asString(): String =
+                        _value().asString().orElseThrow {
+                            HiddenLayerInvalidDataException("Value is not a String")
+                        }
+
+                    private var validated: Boolean = false
+
+                    fun validate(): Provider = apply {
+                        if (validated) {
+                            return@apply
+                        }
+
+                        known()
+                        validated = true
+                    }
+
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: HiddenLayerInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return other is Provider && value == other.value
+                    }
+
+                    override fun hashCode() = value.hashCode()
+
+                    override fun toString() = value.toString()
+                }
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is ProviderDetails &&
+                        provider == other.provider &&
+                        providerModelId == other.providerModelId &&
+                        modelArn == other.modelArn &&
+                        additionalProperties == other.additionalProperties
+                }
+
+                private val hashCode: Int by lazy {
+                    Objects.hash(provider, providerModelId, modelArn, additionalProperties)
+                }
+
+                override fun hashCode(): Int = hashCode
+
+                override fun toString() =
+                    "ProviderDetails{provider=$provider, providerModelId=$providerModelId, modelArn=$modelArn, additionalProperties=$additionalProperties}"
+            }
 
             /** Identifies the system that requested the scan */
             class RequestSource
@@ -1692,9 +2182,11 @@ private constructor(
                     modelName == other.modelName &&
                     modelVersionId == other.modelVersionId &&
                     requestedScanLocation == other.requestedScanLocation &&
+                    fileLocation == other.fileLocation &&
                     modelSource == other.modelSource &&
                     modelVersion == other.modelVersion &&
                     origin == other.origin &&
+                    providerDetails == other.providerDetails &&
                     requestSource == other.requestSource &&
                     requestingEntity == other.requestingEntity &&
                     additionalProperties == other.additionalProperties
@@ -1706,9 +2198,11 @@ private constructor(
                     modelName,
                     modelVersionId,
                     requestedScanLocation,
+                    fileLocation,
                     modelSource,
                     modelVersion,
                     origin,
+                    providerDetails,
                     requestSource,
                     requestingEntity,
                     additionalProperties,
@@ -1718,7 +2212,7 @@ private constructor(
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "Inventory{modelId=$modelId, modelName=$modelName, modelVersionId=$modelVersionId, requestedScanLocation=$requestedScanLocation, modelSource=$modelSource, modelVersion=$modelVersion, origin=$origin, requestSource=$requestSource, requestingEntity=$requestingEntity, additionalProperties=$additionalProperties}"
+                "Inventory{modelId=$modelId, modelName=$modelName, modelVersionId=$modelVersionId, requestedScanLocation=$requestedScanLocation, fileLocation=$fileLocation, modelSource=$modelSource, modelVersion=$modelVersion, origin=$origin, providerDetails=$providerDetails, requestSource=$requestSource, requestingEntity=$requestingEntity, additionalProperties=$additionalProperties}"
         }
 
         /** status of the scan */

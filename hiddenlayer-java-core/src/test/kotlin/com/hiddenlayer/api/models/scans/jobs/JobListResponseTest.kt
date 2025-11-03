@@ -25,9 +25,24 @@ internal class JobListResponseTest {
                                 .modelName("keras-tf-2025-05-27")
                                 .modelVersionId("00000000-0000-0000-0000-000000000000")
                                 .requestedScanLocation("/files-to-scan")
+                                .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
                                 .modelSource("adhoc")
                                 .modelVersion("1.0.0")
                                 .origin("Hugging Face")
+                                .providerDetails(
+                                    JobListResponse.Item.Inventory.ProviderDetails.builder()
+                                        .provider(
+                                            JobListResponse.Item.Inventory.ProviderDetails.Provider
+                                                .AWS_BEDROCK
+                                        )
+                                        .providerModelId(
+                                            "anthropic.claude-3-5-sonnet-20241022-v2:0"
+                                        )
+                                        .modelArn(
+                                            "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
+                                        )
+                                        .build()
+                                )
                                 .requestSource(
                                     JobListResponse.Item.Inventory.RequestSource.HYBRID_UPLOAD
                                 )
@@ -83,9 +98,22 @@ internal class JobListResponseTest {
                             .modelName("keras-tf-2025-05-27")
                             .modelVersionId("00000000-0000-0000-0000-000000000000")
                             .requestedScanLocation("/files-to-scan")
+                            .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
                             .modelSource("adhoc")
                             .modelVersion("1.0.0")
                             .origin("Hugging Face")
+                            .providerDetails(
+                                JobListResponse.Item.Inventory.ProviderDetails.builder()
+                                    .provider(
+                                        JobListResponse.Item.Inventory.ProviderDetails.Provider
+                                            .AWS_BEDROCK
+                                    )
+                                    .providerModelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
+                                    .modelArn(
+                                        "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
+                                    )
+                                    .build()
+                            )
                             .requestSource(
                                 JobListResponse.Item.Inventory.RequestSource.HYBRID_UPLOAD
                             )
@@ -143,9 +171,24 @@ internal class JobListResponseTest {
                                 .modelName("keras-tf-2025-05-27")
                                 .modelVersionId("00000000-0000-0000-0000-000000000000")
                                 .requestedScanLocation("/files-to-scan")
+                                .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
                                 .modelSource("adhoc")
                                 .modelVersion("1.0.0")
                                 .origin("Hugging Face")
+                                .providerDetails(
+                                    JobListResponse.Item.Inventory.ProviderDetails.builder()
+                                        .provider(
+                                            JobListResponse.Item.Inventory.ProviderDetails.Provider
+                                                .AWS_BEDROCK
+                                        )
+                                        .providerModelId(
+                                            "anthropic.claude-3-5-sonnet-20241022-v2:0"
+                                        )
+                                        .modelArn(
+                                            "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
+                                        )
+                                        .build()
+                                )
                                 .requestSource(
                                     JobListResponse.Item.Inventory.RequestSource.HYBRID_UPLOAD
                                 )

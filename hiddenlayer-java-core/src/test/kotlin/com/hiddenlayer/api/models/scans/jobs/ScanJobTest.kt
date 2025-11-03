@@ -38,12 +38,14 @@ internal class ScanJobTest {
                                         )
                                         .build()
                                 )
-                                .providerModel(
-                                    ScanJob.Inventory.ScanTarget.ProviderModel.builder()
-                                        .modelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
+                                .providerDetails(
+                                    ScanJob.Inventory.ScanTarget.ProviderDetails.builder()
                                         .provider(
-                                            ScanJob.Inventory.ScanTarget.ProviderModel.Provider
+                                            ScanJob.Inventory.ScanTarget.ProviderDetails.Provider
                                                 .AWS_BEDROCK
+                                        )
+                                        .providerModelId(
+                                            "anthropic.claude-3-5-sonnet-20241022-v2:0"
                                         )
                                         .modelArn(
                                             "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
@@ -82,13 +84,13 @@ internal class ScanJobTest {
                                     )
                                     .build()
                             )
-                            .providerModel(
-                                ScanJob.Inventory.ScanTarget.ProviderModel.builder()
-                                    .modelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
+                            .providerDetails(
+                                ScanJob.Inventory.ScanTarget.ProviderDetails.builder()
                                     .provider(
-                                        ScanJob.Inventory.ScanTarget.ProviderModel.Provider
+                                        ScanJob.Inventory.ScanTarget.ProviderDetails.Provider
                                             .AWS_BEDROCK
                                     )
+                                    .providerModelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
                                     .modelArn(
                                         "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
                                     )
@@ -132,12 +134,14 @@ internal class ScanJobTest {
                                         )
                                         .build()
                                 )
-                                .providerModel(
-                                    ScanJob.Inventory.ScanTarget.ProviderModel.builder()
-                                        .modelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
+                                .providerDetails(
+                                    ScanJob.Inventory.ScanTarget.ProviderDetails.builder()
                                         .provider(
-                                            ScanJob.Inventory.ScanTarget.ProviderModel.Provider
+                                            ScanJob.Inventory.ScanTarget.ProviderDetails.Provider
                                                 .AWS_BEDROCK
+                                        )
+                                        .providerModelId(
+                                            "anthropic.claude-3-5-sonnet-20241022-v2:0"
                                         )
                                         .modelArn(
                                             "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
