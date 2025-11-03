@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.1.0 (2025-11-03)
+
+Full Changelog: [v1.0.0...v1.1.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v1.0.0...v1.1.0)
+
+### Features
+
+* **api:** api update ([32a8ff1](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/32a8ff1834548c53033f2278d62f66cf5597eeec))
+* **api:** api update ([781155c](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/781155c1b3697f7348921e114925b589fb8c8dd9))
+* **api:** api update ([95f3619](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/95f3619fd35a9e72e4639fcc1622559ca3e8545a))
+* **api:** api update ([6654d38](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/6654d38018691c4b7f12ee978be54e41810e88b2))
+* **api:** api update ([64914cb](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/64914cb426417f1465987f6de4b4e50eea8d2f91))
+* **api:** api update ([6af3320](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/6af3320bff4af54e72c57ba98bcd300e09d46984))
+* **api:** api update ([d8ca8cb](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/d8ca8cb6db4252b8ddbee6e8a92e80593ff1cc9f))
+* **api:** api update ([bacd1de](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/bacd1de3bee5148867f8309232d35490b5c76dfa))
+* **api:** api update ([9b6590e](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/9b6590eb3cbf941e4e0ac3a12715d4c240c88ced))
+* **api:** manual updates ([fc05f3f](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/fc05f3f4ee9a4bbe74e9df2e7c9ca017da4d3d69))
+* **api:** restore ScanReport ([0271b7b](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/0271b7b216500c72da0fdfcd0b3d7a30a055eb28))
+
+
+### Bug Fixes
+
+* fixes build errors due to OpenAPI elements that define the same enum wi… ([#8](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/8)) ([1d21622](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/1d216226ea41e988eb4f9b2071f225a22e322172))
+* fixes build errors due to OpenAPI elements that define the same enum wi… ([#99](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/99)) ([6629692](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/662969271720d2ce34cac18bc7f107bcce4baede))
+
 ## 1.0.0 (2025-10-01)
 
 Full Changelog: [v1.0.0-alpha.1...v1.0.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v1.0.0-alpha.1...v1.0.0)
