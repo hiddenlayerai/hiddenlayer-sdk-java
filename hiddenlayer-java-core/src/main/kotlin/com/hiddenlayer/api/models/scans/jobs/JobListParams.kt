@@ -20,6 +20,7 @@ import kotlin.jvm.optionals.getOrNull
 class JobListParams
 private constructor(
     private val complianceStatus: List<ComplianceStatus>?,
+    private val deepScan: Boolean?,
     private val detectionCategory: String?,
     private val endTime: OffsetDateTime?,
     private val latestPerModelVersionOnly: Boolean?,
@@ -42,6 +43,12 @@ private constructor(
 
     /** A comma separated list of rule set evaluation statuses to include */
     fun complianceStatus(): Optional<List<ComplianceStatus>> = Optional.ofNullable(complianceStatus)
+
+    /**
+     * When true, returns only scans that with files. When false, returns only scans without files.
+     * When not provided, returns all scans.
+     */
+    fun deepScan(): Optional<Boolean> = Optional.ofNullable(deepScan)
 
     /** filter by a single detection category */
     fun detectionCategory(): Optional<String> = Optional.ofNullable(detectionCategory)
@@ -112,6 +119,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var complianceStatus: MutableList<ComplianceStatus>? = null
+        private var deepScan: Boolean? = null
         private var detectionCategory: String? = null
         private var endTime: OffsetDateTime? = null
         private var latestPerModelVersionOnly: Boolean? = null
@@ -134,6 +142,7 @@ private constructor(
         @JvmSynthetic
         internal fun from(jobListParams: JobListParams) = apply {
             complianceStatus = jobListParams.complianceStatus?.toMutableList()
+            deepScan = jobListParams.deepScan
             detectionCategory = jobListParams.detectionCategory
             endTime = jobListParams.endTime
             latestPerModelVersionOnly = jobListParams.latestPerModelVersionOnly
@@ -172,6 +181,22 @@ private constructor(
             this.complianceStatus =
                 (this.complianceStatus ?: mutableListOf()).apply { add(complianceStatus) }
         }
+
+        /**
+         * When true, returns only scans that with files. When false, returns only scans without
+         * files. When not provided, returns all scans.
+         */
+        fun deepScan(deepScan: Boolean?) = apply { this.deepScan = deepScan }
+
+        /**
+         * Alias for [Builder.deepScan].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun deepScan(deepScan: Boolean) = deepScan(deepScan as Boolean?)
+
+        /** Alias for calling [Builder.deepScan] with `deepScan.orElse(null)`. */
+        fun deepScan(deepScan: Optional<Boolean>) = deepScan(deepScan.getOrNull())
 
         /** filter by a single detection category */
         fun detectionCategory(detectionCategory: String?) = apply {
@@ -451,6 +476,7 @@ private constructor(
         fun build(): JobListParams =
             JobListParams(
                 complianceStatus?.toImmutable(),
+                deepScan,
                 detectionCategory,
                 endTime,
                 latestPerModelVersionOnly,
@@ -486,6 +512,7 @@ private constructor(
                 complianceStatus?.let {
                     put("compliance_status", it.joinToString(",") { it.toString() })
                 }
+                deepScan?.let { put("deep_scan", it.toString()) }
                 detectionCategory?.let { put("detection_category", it) }
                 endTime?.let { put("end_time", DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(it)) }
                 latestPerModelVersionOnly?.let {
@@ -1322,6 +1349,7 @@ private constructor(
 
         return other is JobListParams &&
             complianceStatus == other.complianceStatus &&
+            deepScan == other.deepScan &&
             detectionCategory == other.detectionCategory &&
             endTime == other.endTime &&
             latestPerModelVersionOnly == other.latestPerModelVersionOnly &&
@@ -1345,6 +1373,7 @@ private constructor(
     override fun hashCode(): Int =
         Objects.hash(
             complianceStatus,
+            deepScan,
             detectionCategory,
             endTime,
             latestPerModelVersionOnly,
@@ -1366,5 +1395,5 @@ private constructor(
         )
 
     override fun toString() =
-        "JobListParams{complianceStatus=$complianceStatus, detectionCategory=$detectionCategory, endTime=$endTime, latestPerModelVersionOnly=$latestPerModelVersionOnly, limit=$limit, modelIds=$modelIds, modelName=$modelName, modelVersionIds=$modelVersionIds, offset=$offset, requestSource=$requestSource, scannerVersion=$scannerVersion, severity=$severity, sort=$sort, source=$source, startTime=$startTime, status=$status, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "JobListParams{complianceStatus=$complianceStatus, deepScan=$deepScan, detectionCategory=$detectionCategory, endTime=$endTime, latestPerModelVersionOnly=$latestPerModelVersionOnly, limit=$limit, modelIds=$modelIds, modelName=$modelName, modelVersionIds=$modelVersionIds, offset=$offset, requestSource=$requestSource, scannerVersion=$scannerVersion, severity=$severity, sort=$sort, source=$source, startTime=$startTime, status=$status, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

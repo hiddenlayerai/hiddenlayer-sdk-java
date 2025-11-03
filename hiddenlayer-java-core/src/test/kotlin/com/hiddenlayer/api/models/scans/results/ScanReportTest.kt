@@ -24,9 +24,19 @@ internal class ScanReportTest {
                         .modelName("keras-tf-2025-05-27")
                         .modelVersionId("00000000-0000-0000-0000-000000000000")
                         .requestedScanLocation("/files-to-scan")
+                        .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
                         .modelSource("adhoc")
                         .modelVersion("1.0.0")
                         .origin("Hugging Face")
+                        .providerDetails(
+                            ScanReport.Inventory.ProviderDetails.builder()
+                                .provider(ScanReport.Inventory.ProviderDetails.Provider.AWS_BEDROCK)
+                                .providerModelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
+                                .modelArn(
+                                    "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
+                                )
+                                .build()
+                        )
                         .requestSource(ScanReport.Inventory.RequestSource.HYBRID_UPLOAD)
                         .requestingEntity("requesting_entity")
                         .build()
@@ -137,9 +147,19 @@ internal class ScanReportTest {
                     .modelName("keras-tf-2025-05-27")
                     .modelVersionId("00000000-0000-0000-0000-000000000000")
                     .requestedScanLocation("/files-to-scan")
+                    .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
                     .modelSource("adhoc")
                     .modelVersion("1.0.0")
                     .origin("Hugging Face")
+                    .providerDetails(
+                        ScanReport.Inventory.ProviderDetails.builder()
+                            .provider(ScanReport.Inventory.ProviderDetails.Provider.AWS_BEDROCK)
+                            .providerModelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
+                            .modelArn(
+                                "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
+                            )
+                            .build()
+                    )
                     .requestSource(ScanReport.Inventory.RequestSource.HYBRID_UPLOAD)
                     .requestingEntity("requesting_entity")
                     .build()
@@ -257,9 +277,19 @@ internal class ScanReportTest {
                         .modelName("keras-tf-2025-05-27")
                         .modelVersionId("00000000-0000-0000-0000-000000000000")
                         .requestedScanLocation("/files-to-scan")
+                        .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
                         .modelSource("adhoc")
                         .modelVersion("1.0.0")
                         .origin("Hugging Face")
+                        .providerDetails(
+                            ScanReport.Inventory.ProviderDetails.builder()
+                                .provider(ScanReport.Inventory.ProviderDetails.Provider.AWS_BEDROCK)
+                                .providerModelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
+                                .modelArn(
+                                    "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
+                                )
+                                .build()
+                        )
                         .requestSource(ScanReport.Inventory.RequestSource.HYBRID_UPLOAD)
                         .requestingEntity("requesting_entity")
                         .build()

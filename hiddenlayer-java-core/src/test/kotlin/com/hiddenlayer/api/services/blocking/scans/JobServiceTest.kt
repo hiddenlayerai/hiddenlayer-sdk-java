@@ -51,6 +51,7 @@ internal class JobServiceTest {
             jobService.list(
                 JobListParams.builder()
                     .addComplianceStatus(JobListParams.ComplianceStatus.COMPLIANT)
+                    .deepScan(true)
                     .detectionCategory("detection_category")
                     .endTime(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .latestPerModelVersionOnly(true)
@@ -121,14 +122,17 @@ internal class JobServiceTest {
                                             )
                                             .build()
                                     )
-                                    .providerModel(
-                                        JobRequestParams.Inventory.ScanTarget.ProviderModel
+                                    .providerDetails(
+                                        JobRequestParams.Inventory.ScanTarget.ProviderDetails
                                             .builder()
-                                            .modelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
                                             .provider(
-                                                JobRequestParams.Inventory.ScanTarget.ProviderModel
+                                                JobRequestParams.Inventory.ScanTarget
+                                                    .ProviderDetails
                                                     .Provider
                                                     .AWS_BEDROCK
+                                            )
+                                            .providerModelId(
+                                                "anthropic.claude-3-5-sonnet-20241022-v2:0"
                                             )
                                             .modelArn(
                                                 "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
