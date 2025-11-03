@@ -953,11 +953,9 @@ private constructor(
 
             @JvmField val NONE = of("none")
 
-            @JvmField val NOT_AVAILABLE = of("not available")
+            @JvmField val UNKNOWN = of("unknown")
 
             @JvmField val SAFE = of("safe")
-
-            @JvmField val UNKNOWN = of("unknown")
 
             @JvmStatic fun of(value: String) = Severity(JsonField.of(value))
         }
@@ -969,9 +967,8 @@ private constructor(
             MEDIUM,
             LOW,
             NONE,
-            NOT_AVAILABLE,
-            SAFE,
             UNKNOWN,
+            SAFE,
         }
 
         /**
@@ -989,9 +986,8 @@ private constructor(
             MEDIUM,
             LOW,
             NONE,
-            NOT_AVAILABLE,
-            SAFE,
             UNKNOWN,
+            SAFE,
             /** An enum member indicating that [Severity] was instantiated with an unknown value. */
             _UNKNOWN,
         }
@@ -1010,9 +1006,8 @@ private constructor(
                 MEDIUM -> Value.MEDIUM
                 LOW -> Value.LOW
                 NONE -> Value.NONE
-                NOT_AVAILABLE -> Value.NOT_AVAILABLE
-                SAFE -> Value.SAFE
                 UNKNOWN -> Value.UNKNOWN
+                SAFE -> Value.SAFE
                 else -> Value._UNKNOWN
             }
 
@@ -1032,9 +1027,8 @@ private constructor(
                 MEDIUM -> Known.MEDIUM
                 LOW -> Known.LOW
                 NONE -> Known.NONE
-                NOT_AVAILABLE -> Known.NOT_AVAILABLE
-                SAFE -> Known.SAFE
                 UNKNOWN -> Known.UNKNOWN
+                SAFE -> Known.SAFE
                 else -> throw HiddenLayerInvalidDataException("Unknown Severity: $value")
             }
 

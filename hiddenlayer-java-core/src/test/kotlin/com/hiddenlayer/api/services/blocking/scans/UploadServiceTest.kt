@@ -27,7 +27,7 @@ internal class UploadServiceTest {
             uploadService.completeAll(
                 UploadCompleteAllParams.builder()
                     .scanId("00000000-0000-0000-0000-000000000000")
-                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                    .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                     .build()
             )
 
@@ -47,13 +47,13 @@ internal class UploadServiceTest {
         val response =
             uploadService.start(
                 UploadStartParams.builder()
-                    .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                    .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                     .modelName("model_name")
                     .modelVersion("model_version")
                     .requestingEntity("requesting_entity")
                     .locationAlias("location_alias")
                     .origin("Hugging Face")
-                    .requestSource(UploadStartParams.RequestSource.API_UPLOAD)
+                    .requestSource(UploadStartParams.RequestSource.HYBRID_UPLOAD)
                     .build()
             )
 

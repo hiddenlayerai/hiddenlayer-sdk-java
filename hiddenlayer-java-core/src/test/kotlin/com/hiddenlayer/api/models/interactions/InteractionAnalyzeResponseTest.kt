@@ -140,6 +140,13 @@ internal class InteractionAnalyzeResponseTest {
                         )
                         .build()
                 )
+                .evaluation(
+                    InteractionAnalyzeResponse.Evaluation.builder()
+                        .action(InteractionAnalyzeResponse.Evaluation.Action.ALLOW)
+                        .hasDetections(true)
+                        .threatLevel(InteractionAnalyzeResponse.Evaluation.ThreatLevel.NONE)
+                        .build()
+                )
                 .build()
 
         assertThat(interactionAnalyzeResponse.analysis())
@@ -268,6 +275,14 @@ internal class InteractionAnalyzeResponseTest {
                             )
                             .build()
                     )
+                    .build()
+            )
+        assertThat(interactionAnalyzeResponse.evaluation())
+            .contains(
+                InteractionAnalyzeResponse.Evaluation.builder()
+                    .action(InteractionAnalyzeResponse.Evaluation.Action.ALLOW)
+                    .hasDetections(true)
+                    .threatLevel(InteractionAnalyzeResponse.Evaluation.ThreatLevel.NONE)
                     .build()
             )
     }
@@ -400,6 +415,13 @@ internal class InteractionAnalyzeResponseTest {
                                 )
                                 .build()
                         )
+                        .build()
+                )
+                .evaluation(
+                    InteractionAnalyzeResponse.Evaluation.builder()
+                        .action(InteractionAnalyzeResponse.Evaluation.Action.ALLOW)
+                        .hasDetections(true)
+                        .threatLevel(InteractionAnalyzeResponse.Evaluation.ThreatLevel.NONE)
                         .build()
                 )
                 .build()

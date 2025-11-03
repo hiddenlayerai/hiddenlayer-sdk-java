@@ -92,10 +92,7 @@ class ModelScanner(private val client: HiddenLayerClient) {
                 .build()
 
         val uploadStart = client.scans().upload().start(uploadStartParams)
-        val scanId: String =
-            uploadStart.scanId().orElseThrow {
-                RuntimeException("Upload start did not return scan ID")
-            }
+        val scanId: String = uploadStart.scanId()
 
         try {
             // Upload the file
@@ -190,10 +187,7 @@ class ModelScanner(private val client: HiddenLayerClient) {
                 .build()
 
         val uploadStart = client.scans().upload().start(uploadStartParams)
-        val scanId: String =
-            uploadStart.scanId().orElseThrow {
-                RuntimeException("Upload start did not return scan ID")
-            }
+        val scanId: String = uploadStart.scanId()
 
         try {
             // Upload each file
@@ -440,10 +434,7 @@ class AsyncModelScanner(private val client: HiddenLayerClientAsync) : AutoClosea
                         .build()
 
                 client.scans().upload().start(uploadStartParams).thenCompose { uploadStart ->
-                    val scanId: String =
-                        uploadStart.scanId().orElseThrow {
-                            RuntimeException("Upload start did not return scan ID")
-                        }
+                    val scanId: String = uploadStart.scanId()
 
                     // Upload the file async
                     uploadFileAsync(scanId, file.toPath()).thenCompose {
@@ -554,10 +545,7 @@ class AsyncModelScanner(private val client: HiddenLayerClientAsync) : AutoClosea
                         .build()
 
                 client.scans().upload().start(uploadStartParams).thenCompose { uploadStart ->
-                    val scanId: String =
-                        uploadStart.scanId().orElseThrow {
-                            RuntimeException("Upload start did not return scan ID")
-                        }
+                    val scanId: String = uploadStart.scanId()
 
                     // Upload each file async
                     val uploadFutures = files.map { file -> uploadFileAsync(scanId, file) }

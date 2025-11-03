@@ -10,10 +10,10 @@ import com.hiddenlayer.api.core.ExcludeMissing
 import com.hiddenlayer.api.core.JsonField
 import com.hiddenlayer.api.core.JsonMissing
 import com.hiddenlayer.api.core.JsonValue
+import com.hiddenlayer.api.core.checkRequired
 import com.hiddenlayer.api.errors.HiddenLayerInvalidDataException
 import java.util.Collections
 import java.util.Objects
-import java.util.Optional
 
 class UploadCompleteAllResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -30,10 +30,10 @@ private constructor(
     /**
      * Request to resource is successful
      *
-     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun scanId(): Optional<String> = scanId.getOptional("scan_id")
+    fun scanId(): String = scanId.getRequired("scan_id")
 
     /**
      * Returns the raw JSON value of [scanId].
@@ -58,6 +58,11 @@ private constructor(
 
         /**
          * Returns a mutable builder for constructing an instance of [UploadCompleteAllResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .scanId()
+         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -65,7 +70,7 @@ private constructor(
     /** A builder for [UploadCompleteAllResponse]. */
     class Builder internal constructor() {
 
-        private var scanId: JsonField<String> = JsonMissing.of()
+        private var scanId: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -108,9 +113,19 @@ private constructor(
          * Returns an immutable instance of [UploadCompleteAllResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .scanId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): UploadCompleteAllResponse =
-            UploadCompleteAllResponse(scanId, additionalProperties.toMutableMap())
+            UploadCompleteAllResponse(
+                checkRequired("scanId", scanId),
+                additionalProperties.toMutableMap(),
+            )
     }
 
     private var validated: Boolean = false

@@ -19,10 +19,40 @@ internal class JobRequestParamsTest {
                 JobRequestParams.Inventory.builder()
                     .modelName("some-model")
                     .modelVersion("")
-                    .requestedScanLocation("owner/repo")
                     .requestingEntity("some-user@example.com")
                     .origin("Hugging Face")
-                    .requestSource(JobRequestParams.Inventory.RequestSource.API_UPLOAD)
+                    .requestSource(JobRequestParams.Inventory.RequestSource.HYBRID_UPLOAD)
+                    .requestedScanLocation("owner/repo")
+                    .scanTarget(
+                        JobRequestParams.Inventory.ScanTarget.builder()
+                            .deepScan(
+                                JobRequestParams.Inventory.ScanTarget.DeepScan.builder()
+                                    .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
+                                    .addFile(
+                                        JobRequestParams.Inventory.ScanTarget.DeepScan.File
+                                            .builder()
+                                            .fileLocation(
+                                                "https://huggingface.co/meta-llama/Llama-3.1-8B/resolve/main/config.json"
+                                            )
+                                            .fileNameAlias("model-config.json")
+                                            .build()
+                                    )
+                                    .build()
+                            )
+                            .providerModel(
+                                JobRequestParams.Inventory.ScanTarget.ProviderModel.builder()
+                                    .modelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
+                                    .provider(
+                                        JobRequestParams.Inventory.ScanTarget.ProviderModel.Provider
+                                            .AWS_BEDROCK
+                                    )
+                                    .modelArn(
+                                        "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
+                                    )
+                                    .build()
+                            )
+                            .build()
+                    )
                     .build()
             )
             .scanId("00000000-0000-0000-0000-000000000000")
@@ -43,10 +73,43 @@ internal class JobRequestParamsTest {
                     JobRequestParams.Inventory.builder()
                         .modelName("some-model")
                         .modelVersion("")
-                        .requestedScanLocation("owner/repo")
                         .requestingEntity("some-user@example.com")
                         .origin("Hugging Face")
-                        .requestSource(JobRequestParams.Inventory.RequestSource.API_UPLOAD)
+                        .requestSource(JobRequestParams.Inventory.RequestSource.HYBRID_UPLOAD)
+                        .requestedScanLocation("owner/repo")
+                        .scanTarget(
+                            JobRequestParams.Inventory.ScanTarget.builder()
+                                .deepScan(
+                                    JobRequestParams.Inventory.ScanTarget.DeepScan.builder()
+                                        .fileLocation(
+                                            "https://huggingface.co/meta-llama/Llama-3.1-8B"
+                                        )
+                                        .addFile(
+                                            JobRequestParams.Inventory.ScanTarget.DeepScan.File
+                                                .builder()
+                                                .fileLocation(
+                                                    "https://huggingface.co/meta-llama/Llama-3.1-8B/resolve/main/config.json"
+                                                )
+                                                .fileNameAlias("model-config.json")
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .providerModel(
+                                    JobRequestParams.Inventory.ScanTarget.ProviderModel.builder()
+                                        .modelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
+                                        .provider(
+                                            JobRequestParams.Inventory.ScanTarget.ProviderModel
+                                                .Provider
+                                                .AWS_BEDROCK
+                                        )
+                                        .modelArn(
+                                            "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
+                                        )
+                                        .build()
+                                )
+                                .build()
+                        )
                         .build()
                 )
                 .scanId("00000000-0000-0000-0000-000000000000")
@@ -66,10 +129,40 @@ internal class JobRequestParamsTest {
                 JobRequestParams.Inventory.builder()
                     .modelName("some-model")
                     .modelVersion("")
-                    .requestedScanLocation("owner/repo")
                     .requestingEntity("some-user@example.com")
                     .origin("Hugging Face")
-                    .requestSource(JobRequestParams.Inventory.RequestSource.API_UPLOAD)
+                    .requestSource(JobRequestParams.Inventory.RequestSource.HYBRID_UPLOAD)
+                    .requestedScanLocation("owner/repo")
+                    .scanTarget(
+                        JobRequestParams.Inventory.ScanTarget.builder()
+                            .deepScan(
+                                JobRequestParams.Inventory.ScanTarget.DeepScan.builder()
+                                    .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
+                                    .addFile(
+                                        JobRequestParams.Inventory.ScanTarget.DeepScan.File
+                                            .builder()
+                                            .fileLocation(
+                                                "https://huggingface.co/meta-llama/Llama-3.1-8B/resolve/main/config.json"
+                                            )
+                                            .fileNameAlias("model-config.json")
+                                            .build()
+                                    )
+                                    .build()
+                            )
+                            .providerModel(
+                                JobRequestParams.Inventory.ScanTarget.ProviderModel.builder()
+                                    .modelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
+                                    .provider(
+                                        JobRequestParams.Inventory.ScanTarget.ProviderModel.Provider
+                                            .AWS_BEDROCK
+                                    )
+                                    .modelArn(
+                                        "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
+                                    )
+                                    .build()
+                            )
+                            .build()
+                    )
                     .build()
             )
         assertThat(body.scanId()).contains("00000000-0000-0000-0000-000000000000")
@@ -85,7 +178,6 @@ internal class JobRequestParamsTest {
                     JobRequestParams.Inventory.builder()
                         .modelName("some-model")
                         .modelVersion("")
-                        .requestedScanLocation("owner/repo")
                         .requestingEntity("some-user@example.com")
                         .build()
                 )
@@ -99,7 +191,6 @@ internal class JobRequestParamsTest {
                 JobRequestParams.Inventory.builder()
                     .modelName("some-model")
                     .modelVersion("")
-                    .requestedScanLocation("owner/repo")
                     .requestingEntity("some-user@example.com")
                     .build()
             )

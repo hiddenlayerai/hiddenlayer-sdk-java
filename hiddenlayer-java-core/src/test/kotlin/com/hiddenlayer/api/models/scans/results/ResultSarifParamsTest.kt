@@ -12,7 +12,7 @@ internal class ResultSarifParamsTest {
     fun create() {
         ResultSarifParams.builder()
             .scanId("00000000-0000-0000-0000-000000000000")
-            .xCorrelationId("00000000-0000-0000-0000-000000000000")
+            .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
             .build()
     }
 
@@ -31,7 +31,7 @@ internal class ResultSarifParamsTest {
         val params =
             ResultSarifParams.builder()
                 .scanId("00000000-0000-0000-0000-000000000000")
-                .xCorrelationId("00000000-0000-0000-0000-000000000000")
+                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .build()
 
         val headers = params._headers()
@@ -39,7 +39,7 @@ internal class ResultSarifParamsTest {
         assertThat(headers)
             .isEqualTo(
                 Headers.builder()
-                    .put("X-Correlation-Id", "00000000-0000-0000-0000-000000000000")
+                    .put("X-Correlation-Id", "6f22d397-6ca2-4359-8074-3318ab471fdf")
                     .build()
             )
     }
