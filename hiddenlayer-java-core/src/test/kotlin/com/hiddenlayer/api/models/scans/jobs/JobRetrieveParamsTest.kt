@@ -2,7 +2,6 @@
 
 package com.hiddenlayer.api.models.scans.jobs
 
-import com.hiddenlayer.api.core.http.Headers
 import com.hiddenlayer.api.core.http.QueryParams
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -14,7 +13,6 @@ internal class JobRetrieveParamsTest {
         JobRetrieveParams.builder()
             .scanId("00000000-0000-0000-0000-000000000000")
             .hasDetections(true)
-            .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
             .build()
     }
 
@@ -29,41 +27,11 @@ internal class JobRetrieveParamsTest {
     }
 
     @Test
-    fun headers() {
-        val params =
-            JobRetrieveParams.builder()
-                .scanId("00000000-0000-0000-0000-000000000000")
-                .hasDetections(true)
-                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
-                .build()
-
-        val headers = params._headers()
-
-        assertThat(headers)
-            .isEqualTo(
-                Headers.builder()
-                    .put("X-Correlation-Id", "6f22d397-6ca2-4359-8074-3318ab471fdf")
-                    .build()
-            )
-    }
-
-    @Test
-    fun headersWithoutOptionalFields() {
-        val params =
-            JobRetrieveParams.builder().scanId("00000000-0000-0000-0000-000000000000").build()
-
-        val headers = params._headers()
-
-        assertThat(headers).isEqualTo(Headers.builder().build())
-    }
-
-    @Test
     fun queryParams() {
         val params =
             JobRetrieveParams.builder()
                 .scanId("00000000-0000-0000-0000-000000000000")
                 .hasDetections(true)
-                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .build()
 
         val queryParams = params._queryParams()

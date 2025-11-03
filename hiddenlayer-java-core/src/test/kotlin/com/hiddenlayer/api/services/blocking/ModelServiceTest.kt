@@ -4,8 +4,6 @@ package com.hiddenlayer.api.services.blocking
 
 import com.hiddenlayer.api.TestServerExtension
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient
-import com.hiddenlayer.api.models.models.ModelDeleteParams
-import com.hiddenlayer.api.models.models.ModelRetrieveParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -23,13 +21,7 @@ internal class ModelServiceTest {
                 .build()
         val modelService = client.models()
 
-        val model =
-            modelService.retrieve(
-                ModelRetrieveParams.builder()
-                    .modelId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
-                    .build()
-            )
+        val model = modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         model.validate()
     }
@@ -44,11 +36,6 @@ internal class ModelServiceTest {
                 .build()
         val modelService = client.models()
 
-        modelService.delete(
-            ModelDeleteParams.builder()
-                .modelId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
-                .build()
-        )
+        modelService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
     }
 }

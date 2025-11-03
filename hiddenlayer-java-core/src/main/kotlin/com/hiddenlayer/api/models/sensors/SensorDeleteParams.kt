@@ -15,15 +15,12 @@ import kotlin.jvm.optionals.getOrNull
 class SensorDeleteParams
 private constructor(
     private val sensorId: String?,
-    private val xCorrelationId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
     fun sensorId(): Optional<String> = Optional.ofNullable(sensorId)
-
-    fun xCorrelationId(): Optional<String> = Optional.ofNullable(xCorrelationId)
 
     /** Additional body properties to send with the request. */
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
@@ -48,7 +45,6 @@ private constructor(
     class Builder internal constructor() {
 
         private var sensorId: String? = null
-        private var xCorrelationId: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -56,7 +52,6 @@ private constructor(
         @JvmSynthetic
         internal fun from(sensorDeleteParams: SensorDeleteParams) = apply {
             sensorId = sensorDeleteParams.sensorId
-            xCorrelationId = sensorDeleteParams.xCorrelationId
             additionalHeaders = sensorDeleteParams.additionalHeaders.toBuilder()
             additionalQueryParams = sensorDeleteParams.additionalQueryParams.toBuilder()
             additionalBodyProperties = sensorDeleteParams.additionalBodyProperties.toMutableMap()
@@ -66,12 +61,6 @@ private constructor(
 
         /** Alias for calling [Builder.sensorId] with `sensorId.orElse(null)`. */
         fun sensorId(sensorId: Optional<String>) = sensorId(sensorId.getOrNull())
-
-        fun xCorrelationId(xCorrelationId: String?) = apply { this.xCorrelationId = xCorrelationId }
-
-        /** Alias for calling [Builder.xCorrelationId] with `xCorrelationId.orElse(null)`. */
-        fun xCorrelationId(xCorrelationId: Optional<String>) =
-            xCorrelationId(xCorrelationId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -201,7 +190,6 @@ private constructor(
         fun build(): SensorDeleteParams =
             SensorDeleteParams(
                 sensorId,
-                xCorrelationId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -217,13 +205,7 @@ private constructor(
             else -> ""
         }
 
-    override fun _headers(): Headers =
-        Headers.builder()
-            .apply {
-                xCorrelationId?.let { put("X-Correlation-Id", it) }
-                putAll(additionalHeaders)
-            }
-            .build()
+    override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
@@ -234,21 +216,14 @@ private constructor(
 
         return other is SensorDeleteParams &&
             sensorId == other.sensorId &&
-            xCorrelationId == other.xCorrelationId &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams &&
             additionalBodyProperties == other.additionalBodyProperties
     }
 
     override fun hashCode(): Int =
-        Objects.hash(
-            sensorId,
-            xCorrelationId,
-            additionalHeaders,
-            additionalQueryParams,
-            additionalBodyProperties,
-        )
+        Objects.hash(sensorId, additionalHeaders, additionalQueryParams, additionalBodyProperties)
 
     override fun toString() =
-        "SensorDeleteParams{sensorId=$sensorId, xCorrelationId=$xCorrelationId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "SensorDeleteParams{sensorId=$sensorId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

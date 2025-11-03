@@ -3,7 +3,6 @@
 package com.hiddenlayer.api.models.sensors
 
 import com.hiddenlayer.api.core.JsonValue
-import com.hiddenlayer.api.core.http.Headers
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -13,7 +12,6 @@ internal class SensorUpdateParamsTest {
     fun create() {
         SensorUpdateParams.builder()
             .sensorId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
             .active(true)
             .plaintextName("plaintext_name")
             .tags(
@@ -35,46 +33,10 @@ internal class SensorUpdateParamsTest {
     }
 
     @Test
-    fun headers() {
-        val params =
-            SensorUpdateParams.builder()
-                .sensorId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
-                .active(true)
-                .plaintextName("plaintext_name")
-                .tags(
-                    SensorUpdateParams.Tags.builder()
-                        .putAdditionalProperty("foo", JsonValue.from("bar"))
-                        .build()
-                )
-                .build()
-
-        val headers = params._headers()
-
-        assertThat(headers)
-            .isEqualTo(
-                Headers.builder()
-                    .put("X-Correlation-Id", "6f22d397-6ca2-4359-8074-3318ab471fdf")
-                    .build()
-            )
-    }
-
-    @Test
-    fun headersWithoutOptionalFields() {
-        val params =
-            SensorUpdateParams.builder().sensorId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
-
-        val headers = params._headers()
-
-        assertThat(headers).isEqualTo(Headers.builder().build())
-    }
-
-    @Test
     fun body() {
         val params =
             SensorUpdateParams.builder()
                 .sensorId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .xCorrelationId("6f22d397-6ca2-4359-8074-3318ab471fdf")
                 .active(true)
                 .plaintextName("plaintext_name")
                 .tags(
