@@ -798,6 +798,7 @@ private constructor(
         class ScanTarget
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
+            private val assetRegion: JsonField<String>,
             private val deepScan: JsonField<DeepScan>,
             private val providerDetails: JsonField<ProviderDetails>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -805,13 +806,24 @@ private constructor(
 
             @JsonCreator
             private constructor(
+                @JsonProperty("asset_region")
+                @ExcludeMissing
+                assetRegion: JsonField<String> = JsonMissing.of(),
                 @JsonProperty("deep_scan")
                 @ExcludeMissing
                 deepScan: JsonField<DeepScan> = JsonMissing.of(),
                 @JsonProperty("provider_details")
                 @ExcludeMissing
                 providerDetails: JsonField<ProviderDetails> = JsonMissing.of(),
-            ) : this(deepScan, providerDetails, mutableMapOf())
+            ) : this(assetRegion, deepScan, providerDetails, mutableMapOf())
+
+            /**
+             * region of the discovered asset
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun assetRegion(): Optional<String> = assetRegion.getOptional("asset_region")
 
             /**
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
@@ -825,6 +837,16 @@ private constructor(
              */
             fun providerDetails(): Optional<ProviderDetails> =
                 providerDetails.getOptional("provider_details")
+
+            /**
+             * Returns the raw JSON value of [assetRegion].
+             *
+             * Unlike [assetRegion], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("asset_region")
+            @ExcludeMissing
+            fun _assetRegion(): JsonField<String> = assetRegion
 
             /**
              * Returns the raw JSON value of [deepScan].
@@ -867,15 +889,31 @@ private constructor(
             /** A builder for [ScanTarget]. */
             class Builder internal constructor() {
 
+                private var assetRegion: JsonField<String> = JsonMissing.of()
                 private var deepScan: JsonField<DeepScan> = JsonMissing.of()
                 private var providerDetails: JsonField<ProviderDetails> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(scanTarget: ScanTarget) = apply {
+                    assetRegion = scanTarget.assetRegion
                     deepScan = scanTarget.deepScan
                     providerDetails = scanTarget.providerDetails
                     additionalProperties = scanTarget.additionalProperties.toMutableMap()
+                }
+
+                /** region of the discovered asset */
+                fun assetRegion(assetRegion: String) = assetRegion(JsonField.of(assetRegion))
+
+                /**
+                 * Sets [Builder.assetRegion] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.assetRegion] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun assetRegion(assetRegion: JsonField<String>) = apply {
+                    this.assetRegion = assetRegion
                 }
 
                 fun deepScan(deepScan: DeepScan) = deepScan(JsonField.of(deepScan))
@@ -931,7 +969,12 @@ private constructor(
                  * Further updates to this [Builder] will not mutate the returned instance.
                  */
                 fun build(): ScanTarget =
-                    ScanTarget(deepScan, providerDetails, additionalProperties.toMutableMap())
+                    ScanTarget(
+                        assetRegion,
+                        deepScan,
+                        providerDetails,
+                        additionalProperties.toMutableMap(),
+                    )
             }
 
             private var validated: Boolean = false
@@ -941,6 +984,7 @@ private constructor(
                     return@apply
                 }
 
+                assetRegion()
                 deepScan().ifPresent { it.validate() }
                 providerDetails().ifPresent { it.validate() }
                 validated = true
@@ -962,7 +1006,8 @@ private constructor(
              */
             @JvmSynthetic
             internal fun validity(): Int =
-                (deepScan.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (assetRegion.asKnown().isPresent) 1 else 0) +
+                    (deepScan.asKnown().getOrNull()?.validity() ?: 0) +
                     (providerDetails.asKnown().getOrNull()?.validity() ?: 0)
 
             class DeepScan
@@ -1810,19 +1855,20 @@ private constructor(
                 }
 
                 return other is ScanTarget &&
+                    assetRegion == other.assetRegion &&
                     deepScan == other.deepScan &&
                     providerDetails == other.providerDetails &&
                     additionalProperties == other.additionalProperties
             }
 
             private val hashCode: Int by lazy {
-                Objects.hash(deepScan, providerDetails, additionalProperties)
+                Objects.hash(assetRegion, deepScan, providerDetails, additionalProperties)
             }
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "ScanTarget{deepScan=$deepScan, providerDetails=$providerDetails, additionalProperties=$additionalProperties}"
+                "ScanTarget{assetRegion=$assetRegion, deepScan=$deepScan, providerDetails=$providerDetails, additionalProperties=$additionalProperties}"
         }
 
         override fun equals(other: Any?): Boolean {
