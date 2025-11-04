@@ -816,6 +816,7 @@ private constructor(
         private val modelName: JsonField<String>,
         private val modelVersionId: JsonField<String>,
         private val requestedScanLocation: JsonField<String>,
+        private val assetRegion: JsonField<String>,
         private val fileLocation: JsonField<String>,
         private val modelSource: JsonField<String>,
         private val modelVersion: JsonField<String>,
@@ -838,6 +839,9 @@ private constructor(
             @JsonProperty("requested_scan_location")
             @ExcludeMissing
             requestedScanLocation: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("asset_region")
+            @ExcludeMissing
+            assetRegion: JsonField<String> = JsonMissing.of(),
             @JsonProperty("file_location")
             @ExcludeMissing
             fileLocation: JsonField<String> = JsonMissing.of(),
@@ -862,6 +866,7 @@ private constructor(
             modelName,
             modelVersionId,
             requestedScanLocation,
+            assetRegion,
             fileLocation,
             modelSource,
             modelVersion,
@@ -904,6 +909,14 @@ private constructor(
          */
         fun requestedScanLocation(): String =
             requestedScanLocation.getRequired("requested_scan_location")
+
+        /**
+         * Region of discovered asset
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun assetRegion(): Optional<String> = assetRegion.getOptional("asset_region")
 
         /**
          * URL or path to the model files, if available
@@ -993,6 +1006,15 @@ private constructor(
         @JsonProperty("requested_scan_location")
         @ExcludeMissing
         fun _requestedScanLocation(): JsonField<String> = requestedScanLocation
+
+        /**
+         * Returns the raw JSON value of [assetRegion].
+         *
+         * Unlike [assetRegion], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("asset_region")
+        @ExcludeMissing
+        fun _assetRegion(): JsonField<String> = assetRegion
 
         /**
          * Returns the raw JSON value of [fileLocation].
@@ -1095,6 +1117,7 @@ private constructor(
             private var modelName: JsonField<String>? = null
             private var modelVersionId: JsonField<String>? = null
             private var requestedScanLocation: JsonField<String>? = null
+            private var assetRegion: JsonField<String> = JsonMissing.of()
             private var fileLocation: JsonField<String> = JsonMissing.of()
             private var modelSource: JsonField<String> = JsonMissing.of()
             private var modelVersion: JsonField<String> = JsonMissing.of()
@@ -1110,6 +1133,7 @@ private constructor(
                 modelName = inventory.modelName
                 modelVersionId = inventory.modelVersionId
                 requestedScanLocation = inventory.requestedScanLocation
+                assetRegion = inventory.assetRegion
                 fileLocation = inventory.fileLocation
                 modelSource = inventory.modelSource
                 modelVersion = inventory.modelVersion
@@ -1172,6 +1196,20 @@ private constructor(
              */
             fun requestedScanLocation(requestedScanLocation: JsonField<String>) = apply {
                 this.requestedScanLocation = requestedScanLocation
+            }
+
+            /** Region of discovered asset */
+            fun assetRegion(assetRegion: String) = assetRegion(JsonField.of(assetRegion))
+
+            /**
+             * Sets [Builder.assetRegion] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.assetRegion] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun assetRegion(assetRegion: JsonField<String>) = apply {
+                this.assetRegion = assetRegion
             }
 
             /** URL or path to the model files, if available */
@@ -1312,6 +1350,7 @@ private constructor(
                     checkRequired("modelName", modelName),
                     checkRequired("modelVersionId", modelVersionId),
                     checkRequired("requestedScanLocation", requestedScanLocation),
+                    assetRegion,
                     fileLocation,
                     modelSource,
                     modelVersion,
@@ -1334,6 +1373,7 @@ private constructor(
             modelName()
             modelVersionId()
             requestedScanLocation()
+            assetRegion()
             fileLocation()
             modelSource()
             modelVersion()
@@ -1364,6 +1404,7 @@ private constructor(
                 (if (modelName.asKnown().isPresent) 1 else 0) +
                 (if (modelVersionId.asKnown().isPresent) 1 else 0) +
                 (if (requestedScanLocation.asKnown().isPresent) 1 else 0) +
+                (if (assetRegion.asKnown().isPresent) 1 else 0) +
                 (if (fileLocation.asKnown().isPresent) 1 else 0) +
                 (if (modelSource.asKnown().isPresent) 1 else 0) +
                 (if (modelVersion.asKnown().isPresent) 1 else 0) +
@@ -1932,6 +1973,7 @@ private constructor(
                 modelName == other.modelName &&
                 modelVersionId == other.modelVersionId &&
                 requestedScanLocation == other.requestedScanLocation &&
+                assetRegion == other.assetRegion &&
                 fileLocation == other.fileLocation &&
                 modelSource == other.modelSource &&
                 modelVersion == other.modelVersion &&
@@ -1948,6 +1990,7 @@ private constructor(
                 modelName,
                 modelVersionId,
                 requestedScanLocation,
+                assetRegion,
                 fileLocation,
                 modelSource,
                 modelVersion,
@@ -1962,7 +2005,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Inventory{modelId=$modelId, modelName=$modelName, modelVersionId=$modelVersionId, requestedScanLocation=$requestedScanLocation, fileLocation=$fileLocation, modelSource=$modelSource, modelVersion=$modelVersion, origin=$origin, providerDetails=$providerDetails, requestSource=$requestSource, requestingEntity=$requestingEntity, additionalProperties=$additionalProperties}"
+            "Inventory{modelId=$modelId, modelName=$modelName, modelVersionId=$modelVersionId, requestedScanLocation=$requestedScanLocation, assetRegion=$assetRegion, fileLocation=$fileLocation, modelSource=$modelSource, modelVersion=$modelVersion, origin=$origin, providerDetails=$providerDetails, requestSource=$requestSource, requestingEntity=$requestingEntity, additionalProperties=$additionalProperties}"
     }
 
     /** status of the scan */

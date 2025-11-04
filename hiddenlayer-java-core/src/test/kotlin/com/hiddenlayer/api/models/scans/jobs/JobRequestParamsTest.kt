@@ -25,6 +25,7 @@ internal class JobRequestParamsTest {
                     .requestedScanLocation("owner/repo")
                     .scanTarget(
                         JobRequestParams.Inventory.ScanTarget.builder()
+                            .assetRegion("us-east-1")
                             .deepScan(
                                 JobRequestParams.Inventory.ScanTarget.DeepScan.builder()
                                     .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")
@@ -80,6 +81,7 @@ internal class JobRequestParamsTest {
                         .requestedScanLocation("owner/repo")
                         .scanTarget(
                             JobRequestParams.Inventory.ScanTarget.builder()
+                                .assetRegion("us-east-1")
                                 .deepScan(
                                     JobRequestParams.Inventory.ScanTarget.DeepScan.builder()
                                         .fileLocation(
@@ -138,6 +140,7 @@ internal class JobRequestParamsTest {
                     .requestedScanLocation("owner/repo")
                     .scanTarget(
                         JobRequestParams.Inventory.ScanTarget.builder()
+                            .assetRegion("us-east-1")
                             .deepScan(
                                 JobRequestParams.Inventory.ScanTarget.DeepScan.builder()
                                     .fileLocation("https://huggingface.co/meta-llama/Llama-3.1-8B")

@@ -104,6 +104,7 @@ internal class JobServiceTest {
                             .requestedScanLocation("owner/repo")
                             .scanTarget(
                                 JobRequestParams.Inventory.ScanTarget.builder()
+                                    .assetRegion("us-east-1")
                                     .deepScan(
                                         JobRequestParams.Inventory.ScanTarget.DeepScan.builder()
                                             .fileLocation(
