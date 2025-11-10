@@ -31,6 +31,7 @@ private constructor(
     private val modelScanThreatLevel: JsonField<ModelScanThreatLevel>,
     private val plaintextName: JsonField<String>,
     private val source: JsonField<String>,
+    private val aidrThreatLevel: JsonField<AidrThreatLevel>,
     private val modelScanHasError: JsonField<Boolean>,
     private val securityPosture: JsonField<SecurityPosture>,
     private val tags: JsonField<Tags>,
@@ -60,6 +61,9 @@ private constructor(
         @ExcludeMissing
         plaintextName: JsonField<String> = JsonMissing.of(),
         @JsonProperty("source") @ExcludeMissing source: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("aidr_threat_level")
+        @ExcludeMissing
+        aidrThreatLevel: JsonField<AidrThreatLevel> = JsonMissing.of(),
         @JsonProperty("model_scan_has_error")
         @ExcludeMissing
         modelScanHasError: JsonField<Boolean> = JsonMissing.of(),
@@ -77,6 +81,7 @@ private constructor(
         modelScanThreatLevel,
         plaintextName,
         source,
+        aidrThreatLevel,
         modelScanHasError,
         securityPosture,
         tags,
@@ -147,6 +152,13 @@ private constructor(
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun source(): String = source.getRequired("source")
+
+    /**
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun aidrThreatLevel(): Optional<AidrThreatLevel> =
+        aidrThreatLevel.getOptional("aidr_threat_level")
 
     /**
      * True if the model's latest scan has an error
@@ -252,6 +264,15 @@ private constructor(
     @JsonProperty("source") @ExcludeMissing fun _source(): JsonField<String> = source
 
     /**
+     * Returns the raw JSON value of [aidrThreatLevel].
+     *
+     * Unlike [aidrThreatLevel], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("aidr_threat_level")
+    @ExcludeMissing
+    fun _aidrThreatLevel(): JsonField<AidrThreatLevel> = aidrThreatLevel
+
+    /**
      * Returns the raw JSON value of [modelScanHasError].
      *
      * Unlike [modelScanHasError], this method doesn't throw if the JSON field has an unexpected
@@ -322,6 +343,7 @@ private constructor(
         private var modelScanThreatLevel: JsonField<ModelScanThreatLevel>? = null
         private var plaintextName: JsonField<String>? = null
         private var source: JsonField<String>? = null
+        private var aidrThreatLevel: JsonField<AidrThreatLevel> = JsonMissing.of()
         private var modelScanHasError: JsonField<Boolean> = JsonMissing.of()
         private var securityPosture: JsonField<SecurityPosture> = JsonMissing.of()
         private var tags: JsonField<Tags> = JsonMissing.of()
@@ -338,6 +360,7 @@ private constructor(
             modelScanThreatLevel = cardListResponse.modelScanThreatLevel
             plaintextName = cardListResponse.plaintextName
             source = cardListResponse.source
+            aidrThreatLevel = cardListResponse.aidrThreatLevel
             modelScanHasError = cardListResponse.modelScanHasError
             securityPosture = cardListResponse.securityPosture
             tags = cardListResponse.tags
@@ -464,6 +487,20 @@ private constructor(
          */
         fun source(source: JsonField<String>) = apply { this.source = source }
 
+        fun aidrThreatLevel(aidrThreatLevel: AidrThreatLevel) =
+            aidrThreatLevel(JsonField.of(aidrThreatLevel))
+
+        /**
+         * Sets [Builder.aidrThreatLevel] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.aidrThreatLevel] with a well-typed [AidrThreatLevel]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
+        fun aidrThreatLevel(aidrThreatLevel: JsonField<AidrThreatLevel>) = apply {
+            this.aidrThreatLevel = aidrThreatLevel
+        }
+
         /** True if the model's latest scan has an error */
         fun modelScanHasError(modelScanHasError: Boolean) =
             modelScanHasError(JsonField.of(modelScanHasError))
@@ -553,6 +590,7 @@ private constructor(
                 checkRequired("modelScanThreatLevel", modelScanThreatLevel),
                 checkRequired("plaintextName", plaintextName),
                 checkRequired("source", source),
+                aidrThreatLevel,
                 modelScanHasError,
                 securityPosture,
                 tags,
@@ -576,6 +614,7 @@ private constructor(
         modelScanThreatLevel().validate()
         plaintextName()
         source()
+        aidrThreatLevel().ifPresent { it.validate() }
         modelScanHasError()
         securityPosture().ifPresent { it.validate() }
         tags().ifPresent { it.validate() }
@@ -606,6 +645,7 @@ private constructor(
             (modelScanThreatLevel.asKnown().getOrNull()?.validity() ?: 0) +
             (if (plaintextName.asKnown().isPresent) 1 else 0) +
             (if (source.asKnown().isPresent) 1 else 0) +
+            (aidrThreatLevel.asKnown().getOrNull()?.validity() ?: 0) +
             (if (modelScanHasError.asKnown().isPresent) 1 else 0) +
             (securityPosture.asKnown().getOrNull()?.validity() ?: 0) +
             (tags.asKnown().getOrNull()?.validity() ?: 0)
@@ -1068,6 +1108,155 @@ private constructor(
         override fun toString() = value.toString()
     }
 
+    class AidrThreatLevel @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val HIGH = of("high")
+
+            @JvmField val MEDIUM = of("medium")
+
+            @JvmField val LOW = of("low")
+
+            @JvmField val NONE = of("none")
+
+            @JvmField val NOT_AVAILABLE = of("not available")
+
+            @JvmStatic fun of(value: String) = AidrThreatLevel(JsonField.of(value))
+        }
+
+        /** An enum containing [AidrThreatLevel]'s known values. */
+        enum class Known {
+            HIGH,
+            MEDIUM,
+            LOW,
+            NONE,
+            NOT_AVAILABLE,
+        }
+
+        /**
+         * An enum containing [AidrThreatLevel]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [AidrThreatLevel] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            HIGH,
+            MEDIUM,
+            LOW,
+            NONE,
+            NOT_AVAILABLE,
+            /**
+             * An enum member indicating that [AidrThreatLevel] was instantiated with an unknown
+             * value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                HIGH -> Value.HIGH
+                MEDIUM -> Value.MEDIUM
+                LOW -> Value.LOW
+                NONE -> Value.NONE
+                NOT_AVAILABLE -> Value.NOT_AVAILABLE
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                HIGH -> Known.HIGH
+                MEDIUM -> Known.MEDIUM
+                LOW -> Known.LOW
+                NONE -> Known.NONE
+                NOT_AVAILABLE -> Known.NOT_AVAILABLE
+                else -> throw HiddenLayerInvalidDataException("Unknown AidrThreatLevel: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                HiddenLayerInvalidDataException("Value is not a String")
+            }
+
+        private var validated: Boolean = false
+
+        fun validate(): AidrThreatLevel = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: HiddenLayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is AidrThreatLevel && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
     class SecurityPosture
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
@@ -1367,6 +1556,7 @@ private constructor(
             modelScanThreatLevel == other.modelScanThreatLevel &&
             plaintextName == other.plaintextName &&
             source == other.source &&
+            aidrThreatLevel == other.aidrThreatLevel &&
             modelScanHasError == other.modelScanHasError &&
             securityPosture == other.securityPosture &&
             tags == other.tags &&
@@ -1384,6 +1574,7 @@ private constructor(
             modelScanThreatLevel,
             plaintextName,
             source,
+            aidrThreatLevel,
             modelScanHasError,
             securityPosture,
             tags,
@@ -1394,5 +1585,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "CardListResponse{activeVersionCount=$activeVersionCount, attackMonitoringThreatLevel=$attackMonitoringThreatLevel, createdAt=$createdAt, hasGenealogy=$hasGenealogy, modelId=$modelId, modelScanSeverity=$modelScanSeverity, modelScanThreatLevel=$modelScanThreatLevel, plaintextName=$plaintextName, source=$source, modelScanHasError=$modelScanHasError, securityPosture=$securityPosture, tags=$tags, additionalProperties=$additionalProperties}"
+        "CardListResponse{activeVersionCount=$activeVersionCount, attackMonitoringThreatLevel=$attackMonitoringThreatLevel, createdAt=$createdAt, hasGenealogy=$hasGenealogy, modelId=$modelId, modelScanSeverity=$modelScanSeverity, modelScanThreatLevel=$modelScanThreatLevel, plaintextName=$plaintextName, source=$source, aidrThreatLevel=$aidrThreatLevel, modelScanHasError=$modelScanHasError, securityPosture=$securityPosture, tags=$tags, additionalProperties=$additionalProperties}"
 }

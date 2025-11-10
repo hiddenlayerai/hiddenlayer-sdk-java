@@ -29,6 +29,7 @@ internal class CardListPageResponseTest {
                         .modelScanThreatLevel(CardListResponse.ModelScanThreatLevel.SAFE)
                         .plaintextName("Resnet-50")
                         .source("azure:datascience-workspace")
+                        .aidrThreatLevel(CardListResponse.AidrThreatLevel.HIGH)
                         .modelScanHasError(true)
                         .securityPosture(
                             CardListResponse.SecurityPosture.builder()
@@ -60,6 +61,7 @@ internal class CardListPageResponseTest {
                     .modelScanThreatLevel(CardListResponse.ModelScanThreatLevel.SAFE)
                     .plaintextName("Resnet-50")
                     .source("azure:datascience-workspace")
+                    .aidrThreatLevel(CardListResponse.AidrThreatLevel.HIGH)
                     .modelScanHasError(true)
                     .securityPosture(
                         CardListResponse.SecurityPosture.builder()
@@ -97,6 +99,7 @@ internal class CardListPageResponseTest {
                         .modelScanThreatLevel(CardListResponse.ModelScanThreatLevel.SAFE)
                         .plaintextName("Resnet-50")
                         .source("azure:datascience-workspace")
+                        .aidrThreatLevel(CardListResponse.AidrThreatLevel.HIGH)
                         .modelScanHasError(true)
                         .securityPosture(
                             CardListResponse.SecurityPosture.builder()
