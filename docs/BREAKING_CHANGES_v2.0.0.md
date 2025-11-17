@@ -252,51 +252,6 @@ Multiple parameter classes now support additional query parameters. These are ad
 
 Changes are primarily internal query parameter handling improvements.
 
-
-## Recommendations
-
-### Immediate Actions Required
-
-1. **Update ScanReport processing (CRITICAL):**
-   - **Breaking:** Remove Optional unwrapping for `summary()` - it's now always present
-   - Change `report.summary().ifPresent(...)` to direct access: `report.summary()`
-   - Migrate from deprecated fields to new `summary()` structure
-
-2. **Update JobListResponse handling:**
-   - Change code expecting `List<ScanReport>` to handle `List<JobListResponse.Item>`
-   - Migrate from deprecated top-level statistics to `summary()` object
-
-3. **Update JobRequestParams usage:**
-   - Ensure code handles `requestedScanLocation()` as Optional
-   - Consider migrating to new `scanTarget` structure for better flexibility
-
-4. **Update Upload Response handling:**
-   - Remove Optional unwrapping for `scanId()` in:
-     - `UploadStartResponse.scanId()`
-     - `UploadCompleteAllResponse.scanId()`
-     - `FileCompleteResponse.scanId()`
-   - This simplifies code as the field is always present
-
-5. **Update InteractionAnalyzeResponse handling:**
-   - Add support for new `evaluation()` field if using prompt analysis
-
-### Migration Timeline
-
-- **Deprecated fields** are still available but marked with `@Deprecated`
-- Plan to remove deprecated fields in a future major version (likely v3.0.0)
-- New code should use `summary()` structure instead of deprecated fields
-
-### Validation
-
-After upgrading, verify:
-1. **Critical:** All `ScanReport.summary()` calls are updated to access directly (not as Optional)
-2. All scan job list processing works correctly with new `Item` type
-3. Scan job creation requests still function with Optional `requestedScanLocation()`
-4. Statistics and detection counts are retrieved from correct location (within `summary()`)
-5. Upload workflows work with required `scanId()` fields
-6. Interaction analysis responses are properly handled
-7. All tests pass
-
 ## Version Information
 
 - **Old Version:** v1.1.1
