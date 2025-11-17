@@ -252,30 +252,6 @@ Multiple parameter classes now support additional query parameters. These are ad
 
 Changes are primarily internal query parameter handling improvements.
 
-## Non-Breaking Changes
-
-### Additive Changes (Non-Breaking)
-- New optional fields added to existing models (backward compatible)
-- New enum values for extensibility
-- Improved documentation strings
-
-### Internal Changes
-- Enhanced JSON field validation
-- Better support for unknown/future enum values
-- Improved builder patterns with validation
-
-## Testing Changes
-
-The test suite has been updated significantly:
-- 80 files changed
-- 12,615 insertions
-- 8,188 deletions
-
-Key test updates include:
-- Updated test fixtures for new model structures
-- Added tests for new `evaluation` field in interaction responses
-- Updated tests for deprecated field handling
-- New tests for `scanTarget` structure
 
 ## Recommendations
 
