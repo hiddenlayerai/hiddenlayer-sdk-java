@@ -1,6 +1,6 @@
 # Breaking Changes: v1.1.1 to v2.0.0
 
-This document outlines the breaking changes introduced in version 2.0.0 of the HiddenLayer Java SDK, comparing the release-please branch (`release-please--branches--main--changes--next`) with tag `v1.1.1`.
+This document outlines the breaking changes introduced in version 2.0.0 of the HiddenLayer Java SDK.
 
 ## Overview
 
