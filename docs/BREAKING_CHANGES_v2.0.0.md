@@ -171,7 +171,7 @@ long count = summary.detectionCount().orElse(0L);
 
 ### 4. InteractionAnalyzeResponse Model Changes
 
-**Impact:** MEDIUM - Affects prompt analyzer integration
+**Impact:** MEDIUM - Affects Interactions responses
 
 #### New Fields
 - **NEW:** `evaluation()` - Optional `Evaluation` object containing:
