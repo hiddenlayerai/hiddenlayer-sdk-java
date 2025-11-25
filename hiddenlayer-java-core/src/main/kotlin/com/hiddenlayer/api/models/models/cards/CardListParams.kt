@@ -34,6 +34,7 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
+    /** Deprecated - use ModelCardAIDRThreatLevel(aidr_threat_level) instead */
     fun aidrSeverity(): Optional<List<AidrSeverity>> = Optional.ofNullable(aidrSeverity)
 
     /** filter by aidr enabled */
@@ -116,6 +117,7 @@ private constructor(
             additionalQueryParams = cardListParams.additionalQueryParams.toBuilder()
         }
 
+        /** Deprecated - use ModelCardAIDRThreatLevel(aidr_threat_level) instead */
         fun aidrSeverity(aidrSeverity: List<AidrSeverity>?) = apply {
             this.aidrSeverity = aidrSeverity?.toMutableList()
         }
