@@ -29,6 +29,8 @@ private constructor(
     private val modelName: ModelName?,
     private val modelVersionIds: List<String>?,
     private val offset: Long?,
+    private val provider: List<String>?,
+    private val region: List<String>?,
     private val requestSource: List<RequestSource>?,
     private val scannerVersion: String?,
     private val severity: Severity?,
@@ -72,6 +74,12 @@ private constructor(
 
     fun offset(): Optional<Long> = Optional.ofNullable(offset)
 
+    /** Filter by model provider name */
+    fun provider(): Optional<List<String>> = Optional.ofNullable(provider)
+
+    /** Filter by region of the discovered asset */
+    fun region(): Optional<List<String>> = Optional.ofNullable(region)
+
     /** Filter by request source using a comma-separated list */
     fun requestSource(): Optional<List<RequestSource>> = Optional.ofNullable(requestSource)
 
@@ -82,8 +90,8 @@ private constructor(
     fun severity(): Optional<Severity> = Optional.ofNullable(severity)
 
     /**
-     * allow sorting by model name, status, severity or created at, ascending (+) or the default
-     * descending (-)
+     * allow sorting by model name, status, severity, scan start time, asset region, or model
+     * provider ascending (+) or the default descending (-)
      */
     fun sort(): Optional<String> = Optional.ofNullable(sort)
 
@@ -125,6 +133,8 @@ private constructor(
         private var modelName: ModelName? = null
         private var modelVersionIds: MutableList<String>? = null
         private var offset: Long? = null
+        private var provider: MutableList<String>? = null
+        private var region: MutableList<String>? = null
         private var requestSource: MutableList<RequestSource>? = null
         private var scannerVersion: String? = null
         private var severity: Severity? = null
@@ -147,6 +157,8 @@ private constructor(
             modelName = jobListParams.modelName
             modelVersionIds = jobListParams.modelVersionIds?.toMutableList()
             offset = jobListParams.offset
+            provider = jobListParams.provider?.toMutableList()
+            region = jobListParams.region?.toMutableList()
             requestSource = jobListParams.requestSource?.toMutableList()
             scannerVersion = jobListParams.scannerVersion
             severity = jobListParams.severity
@@ -291,6 +303,36 @@ private constructor(
         /** Alias for calling [Builder.offset] with `offset.orElse(null)`. */
         fun offset(offset: Optional<Long>) = offset(offset.getOrNull())
 
+        /** Filter by model provider name */
+        fun provider(provider: List<String>?) = apply { this.provider = provider?.toMutableList() }
+
+        /** Alias for calling [Builder.provider] with `provider.orElse(null)`. */
+        fun provider(provider: Optional<List<String>>) = provider(provider.getOrNull())
+
+        /**
+         * Adds a single [String] to [Builder.provider].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addProvider(provider: String) = apply {
+            this.provider = (this.provider ?: mutableListOf()).apply { add(provider) }
+        }
+
+        /** Filter by region of the discovered asset */
+        fun region(region: List<String>?) = apply { this.region = region?.toMutableList() }
+
+        /** Alias for calling [Builder.region] with `region.orElse(null)`. */
+        fun region(region: Optional<List<String>>) = region(region.getOrNull())
+
+        /**
+         * Adds a single [String] to [Builder.region].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addRegion(region: String) = apply {
+            this.region = (this.region ?: mutableListOf()).apply { add(region) }
+        }
+
         /** Filter by request source using a comma-separated list */
         fun requestSource(requestSource: List<RequestSource>?) = apply {
             this.requestSource = requestSource?.toMutableList()
@@ -324,8 +366,8 @@ private constructor(
         fun severity(severity: Optional<Severity>) = severity(severity.getOrNull())
 
         /**
-         * allow sorting by model name, status, severity or created at, ascending (+) or the default
-         * descending (-)
+         * allow sorting by model name, status, severity, scan start time, asset region, or model
+         * provider ascending (+) or the default descending (-)
          */
         fun sort(sort: String?) = apply { this.sort = sort }
 
@@ -474,6 +516,8 @@ private constructor(
                 modelName,
                 modelVersionIds?.toImmutable(),
                 offset,
+                provider?.toImmutable(),
+                region?.toImmutable(),
                 requestSource?.toImmutable(),
                 scannerVersion,
                 severity,
@@ -513,6 +557,8 @@ private constructor(
                 }
                 modelVersionIds?.let { put("model_version_ids", it.joinToString(",")) }
                 offset?.let { put("offset", it.toString()) }
+                provider?.let { put("provider", it.joinToString(",")) }
+                region?.let { put("region", it.joinToString(",")) }
                 requestSource?.let { put("request_source", it.joinToString(",") { it.toString() }) }
                 scannerVersion?.let { put("scanner_version", it) }
                 severity?.let { put("severity", it.toString()) }
@@ -1340,6 +1386,8 @@ private constructor(
             modelName == other.modelName &&
             modelVersionIds == other.modelVersionIds &&
             offset == other.offset &&
+            provider == other.provider &&
+            region == other.region &&
             requestSource == other.requestSource &&
             scannerVersion == other.scannerVersion &&
             severity == other.severity &&
@@ -1363,6 +1411,8 @@ private constructor(
             modelName,
             modelVersionIds,
             offset,
+            provider,
+            region,
             requestSource,
             scannerVersion,
             severity,
@@ -1375,5 +1425,5 @@ private constructor(
         )
 
     override fun toString() =
-        "JobListParams{complianceStatus=$complianceStatus, deepScan=$deepScan, detectionCategory=$detectionCategory, endTime=$endTime, latestPerModelVersionOnly=$latestPerModelVersionOnly, limit=$limit, modelIds=$modelIds, modelName=$modelName, modelVersionIds=$modelVersionIds, offset=$offset, requestSource=$requestSource, scannerVersion=$scannerVersion, severity=$severity, sort=$sort, source=$source, startTime=$startTime, status=$status, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "JobListParams{complianceStatus=$complianceStatus, deepScan=$deepScan, detectionCategory=$detectionCategory, endTime=$endTime, latestPerModelVersionOnly=$latestPerModelVersionOnly, limit=$limit, modelIds=$modelIds, modelName=$modelName, modelVersionIds=$modelVersionIds, offset=$offset, provider=$provider, region=$region, requestSource=$requestSource, scannerVersion=$scannerVersion, severity=$severity, sort=$sort, source=$source, startTime=$startTime, status=$status, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

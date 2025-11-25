@@ -62,10 +62,12 @@ internal class JobServiceAsyncTest {
                     )
                     .addModelVersionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .offset(0L)
+                    .addProvider("string")
+                    .addRegion("string")
                     .addRequestSource(JobListParams.RequestSource.HYBRID_UPLOAD)
                     .scannerVersion("891.0.97194")
                     .severity(JobListParams.Severity.CRITICAL)
-                    .sort("-start_time")
+                    .sort("-region")
                     .source(
                         JobListParams.Source.builder().eq(JobListParams.Source.Eq.ADHOC).build()
                     )
