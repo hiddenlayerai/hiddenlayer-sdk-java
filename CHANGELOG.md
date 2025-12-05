@@ -1,5 +1,28 @@
 # Changelog
 
+## 2.0.0 (2025-12-05)
+
+Full Changelog: [v1.1.0...v2.0.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v1.1.0...v2.0.0)
+
+### Features
+
+* **api:** api update ([1dab531](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/1dab53161c9a7a27dbc8f6bf9ab96f4dc956c916))
+* **api:** api update ([0a0f80f](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/0a0f80f7238639557a5fb586e65371a753f03c32))
+* **api:** api update ([c2dfd94](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/c2dfd94ac20854b063eb22eafc0fc1d7e56d78a0))
+* **api:** api update ([8475858](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/847585894a13fff1ef9f174de084e368773431f5))
+* **api:** api update ([9fc8083](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/9fc808388bc4f2a4859f7d71fa01e55a3c868e59))
+
+
+### Bug Fixes
+
+* **client:** cancel okhttp call when future cancelled ([ecc144a](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/ecc144aa232ef6889979a42ad0e5565124f0e7b2))
+* **client:** multi-value header serialization ([3acc753](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/3acc75329168576f87aa128758dc30246ee91ba8))
+
+
+### Documentation
+
+* remove `$` for better copy-pasteabality ([9eacae5](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/9eacae5c7383354a535e27c5c1c78a1270ac154f))
+
 ## 1.1.0 (2025-11-03)
 
 Full Changelog: [v1.0.0...v1.1.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v1.0.0...v1.1.0)
