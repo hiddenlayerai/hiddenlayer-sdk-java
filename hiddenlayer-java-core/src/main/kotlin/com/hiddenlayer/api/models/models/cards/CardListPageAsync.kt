@@ -59,8 +59,8 @@ private constructor(
         }
 
         val offset = params.offset().getOrDefault(0)
-        val totalCount = totalCount().getOrDefault(Long.MAX_VALUE)
-        return offset + items().size < totalCount
+        val totalCount = totalCount().getOrNull()
+        return totalCount == null || offset + items().size < totalCount
     }
 
     fun nextPageParams(): CardListParams {
