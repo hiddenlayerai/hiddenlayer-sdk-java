@@ -20,7 +20,8 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Update Sensor */
+/** ⚠️ **DEPRECATED**: This endpoint will be removed after April 13, 2026. */
+@Deprecated("deprecated")
 class SensorUpdateParams
 private constructor(
     private val sensorId: String?,
