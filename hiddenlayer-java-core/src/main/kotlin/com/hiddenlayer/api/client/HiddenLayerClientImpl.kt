@@ -6,6 +6,8 @@ import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.core.getPackageVersion
 import com.hiddenlayer.api.lib.CommunityScanner
 import com.hiddenlayer.api.lib.ModelScanner
+import com.hiddenlayer.api.services.blocking.EvaluationService
+import com.hiddenlayer.api.services.blocking.EvaluationServiceImpl
 import com.hiddenlayer.api.services.blocking.InteractionService
 import com.hiddenlayer.api.services.blocking.InteractionServiceImpl
 import com.hiddenlayer.api.services.blocking.ModelService
@@ -37,6 +39,10 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
 
     private val models: ModelService by lazy { ModelServiceImpl(clientOptionsWithUserAgent) }
 
+    private val evaluations: EvaluationService by lazy {
+        EvaluationServiceImpl(clientOptionsWithUserAgent)
+    }
+
     private val promptAnalyzer: PromptAnalyzerService by lazy {
         PromptAnalyzerServiceImpl(clientOptionsWithUserAgent)
     }
@@ -62,6 +68,8 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
 
     override fun models(): ModelService = models
 
+    override fun evaluations(): EvaluationService = evaluations
+
     override fun promptAnalyzer(): PromptAnalyzerService = promptAnalyzer
 
     override fun interactions(): InteractionService = interactions
@@ -81,6 +89,10 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
 
         private val models: ModelService.WithRawResponse by lazy {
             ModelServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val evaluations: EvaluationService.WithRawResponse by lazy {
+            EvaluationServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val promptAnalyzer: PromptAnalyzerService.WithRawResponse by lazy {
@@ -107,6 +119,8 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
             )
 
         override fun models(): ModelService.WithRawResponse = models
+
+        override fun evaluations(): EvaluationService.WithRawResponse = evaluations
 
         override fun promptAnalyzer(): PromptAnalyzerService.WithRawResponse = promptAnalyzer
 
