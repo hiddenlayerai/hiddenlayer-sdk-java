@@ -4,6 +4,8 @@ package com.hiddenlayer.api.client
 
 import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.core.getPackageVersion
+import com.hiddenlayer.api.services.async.EvaluationServiceAsync
+import com.hiddenlayer.api.services.async.EvaluationServiceAsyncImpl
 import com.hiddenlayer.api.services.async.InteractionServiceAsync
 import com.hiddenlayer.api.services.async.InteractionServiceAsyncImpl
 import com.hiddenlayer.api.services.async.ModelServiceAsync
@@ -38,6 +40,10 @@ class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
         ModelServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
+    private val evaluations: EvaluationServiceAsync by lazy {
+        EvaluationServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
     private val promptAnalyzer: PromptAnalyzerServiceAsync by lazy {
         PromptAnalyzerServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -61,6 +67,8 @@ class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
 
     override fun models(): ModelServiceAsync = models
 
+    override fun evaluations(): EvaluationServiceAsync = evaluations
+
     override fun promptAnalyzer(): PromptAnalyzerServiceAsync = promptAnalyzer
 
     override fun interactions(): InteractionServiceAsync = interactions
@@ -76,6 +84,10 @@ class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
 
         private val models: ModelServiceAsync.WithRawResponse by lazy {
             ModelServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val evaluations: EvaluationServiceAsync.WithRawResponse by lazy {
+            EvaluationServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val promptAnalyzer: PromptAnalyzerServiceAsync.WithRawResponse by lazy {
@@ -102,6 +114,8 @@ class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
             )
 
         override fun models(): ModelServiceAsync.WithRawResponse = models
+
+        override fun evaluations(): EvaluationServiceAsync.WithRawResponse = evaluations
 
         override fun promptAnalyzer(): PromptAnalyzerServiceAsync.WithRawResponse = promptAnalyzer
 
