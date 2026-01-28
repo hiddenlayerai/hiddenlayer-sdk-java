@@ -64,6 +64,7 @@ internal class ProGuardCompatibilityTest {
             InteractionAnalyzeResponse.builder()
                 .addAnalysis(
                     InteractionAnalyzeResponse.Analysis.builder()
+                        .id("prompt_injection.5.input")
                         .configuration(
                             InteractionAnalyzeResponse.Analysis.Configuration.builder()
                                 .putAdditionalProperty("enabled", JsonValue.from("bar"))
