@@ -5,6 +5,7 @@ package com.hiddenlayer.api.services.blocking.evaluations
 import com.google.errorprone.annotations.MustBeClosed
 import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.core.RequestOptions
+import com.hiddenlayer.api.core.http.HttpResponse
 import com.hiddenlayer.api.core.http.HttpResponseFor
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamCreateParams
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamCreateResponse
@@ -15,7 +16,6 @@ import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveStatusRespo
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamSubmitTargetResponseParams
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamSubmitTargetResponseResponse
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamTerminateParams
-import java.util.Optional
 import java.util.function.Consumer
 
 interface RedTeamService {
@@ -157,34 +157,32 @@ interface RedTeamService {
     ): RedTeamSubmitTargetResponseResponse
 
     /** Terminate a running workflow. */
-    fun terminate(workflowId: String): Optional<Void> =
-        terminate(workflowId, RedTeamTerminateParams.none())
+    fun terminate(workflowId: String) = terminate(workflowId, RedTeamTerminateParams.none())
 
     /** @see terminate */
     fun terminate(
         workflowId: String,
         params: RedTeamTerminateParams = RedTeamTerminateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): Optional<Void> = terminate(params.toBuilder().workflowId(workflowId).build(), requestOptions)
+    ) = terminate(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
     /** @see terminate */
     fun terminate(
         workflowId: String,
         params: RedTeamTerminateParams = RedTeamTerminateParams.none(),
-    ): Optional<Void> = terminate(workflowId, params, RequestOptions.none())
+    ) = terminate(workflowId, params, RequestOptions.none())
 
     /** @see terminate */
     fun terminate(
         params: RedTeamTerminateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): Optional<Void>
+    )
 
     /** @see terminate */
-    fun terminate(params: RedTeamTerminateParams): Optional<Void> =
-        terminate(params, RequestOptions.none())
+    fun terminate(params: RedTeamTerminateParams) = terminate(params, RequestOptions.none())
 
     /** @see terminate */
-    fun terminate(workflowId: String, requestOptions: RequestOptions): Optional<Void> =
+    fun terminate(workflowId: String, requestOptions: RequestOptions) =
         terminate(workflowId, RedTeamTerminateParams.none(), requestOptions)
 
     /** A view of [RedTeamService] that provides access to raw HTTP responses for each method. */
@@ -350,7 +348,7 @@ interface RedTeamService {
          * [RedTeamService.terminate].
          */
         @MustBeClosed
-        fun terminate(workflowId: String): HttpResponseFor<Optional<Void>> =
+        fun terminate(workflowId: String): HttpResponse =
             terminate(workflowId, RedTeamTerminateParams.none())
 
         /** @see terminate */
@@ -359,7 +357,7 @@ interface RedTeamService {
             workflowId: String,
             params: RedTeamTerminateParams = RedTeamTerminateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Optional<Void>> =
+        ): HttpResponse =
             terminate(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
         /** @see terminate */
@@ -367,26 +365,23 @@ interface RedTeamService {
         fun terminate(
             workflowId: String,
             params: RedTeamTerminateParams = RedTeamTerminateParams.none(),
-        ): HttpResponseFor<Optional<Void>> = terminate(workflowId, params, RequestOptions.none())
+        ): HttpResponse = terminate(workflowId, params, RequestOptions.none())
 
         /** @see terminate */
         @MustBeClosed
         fun terminate(
             params: RedTeamTerminateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Optional<Void>>
+        ): HttpResponse
 
         /** @see terminate */
         @MustBeClosed
-        fun terminate(params: RedTeamTerminateParams): HttpResponseFor<Optional<Void>> =
+        fun terminate(params: RedTeamTerminateParams): HttpResponse =
             terminate(params, RequestOptions.none())
 
         /** @see terminate */
         @MustBeClosed
-        fun terminate(
-            workflowId: String,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<Optional<Void>> =
+        fun terminate(workflowId: String, requestOptions: RequestOptions): HttpResponse =
             terminate(workflowId, RedTeamTerminateParams.none(), requestOptions)
     }
 }

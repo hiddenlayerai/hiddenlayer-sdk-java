@@ -4,6 +4,7 @@ package com.hiddenlayer.api.services.async.evaluations
 
 import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.core.RequestOptions
+import com.hiddenlayer.api.core.http.HttpResponse
 import com.hiddenlayer.api.core.http.HttpResponseFor
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamCreateParams
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamCreateResponse
@@ -14,7 +15,6 @@ import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveStatusRespo
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamSubmitTargetResponseParams
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamSubmitTargetResponseResponse
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamTerminateParams
-import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -164,7 +164,7 @@ interface RedTeamServiceAsync {
     ): CompletableFuture<RedTeamSubmitTargetResponseResponse>
 
     /** Terminate a running workflow. */
-    fun terminate(workflowId: String): CompletableFuture<Optional<Void>> =
+    fun terminate(workflowId: String): CompletableFuture<Void?> =
         terminate(workflowId, RedTeamTerminateParams.none())
 
     /** @see terminate */
@@ -172,30 +172,27 @@ interface RedTeamServiceAsync {
         workflowId: String,
         params: RedTeamTerminateParams = RedTeamTerminateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<Optional<Void>> =
+    ): CompletableFuture<Void?> =
         terminate(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
     /** @see terminate */
     fun terminate(
         workflowId: String,
         params: RedTeamTerminateParams = RedTeamTerminateParams.none(),
-    ): CompletableFuture<Optional<Void>> = terminate(workflowId, params, RequestOptions.none())
+    ): CompletableFuture<Void?> = terminate(workflowId, params, RequestOptions.none())
 
     /** @see terminate */
     fun terminate(
         params: RedTeamTerminateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<Optional<Void>>
+    ): CompletableFuture<Void?>
 
     /** @see terminate */
-    fun terminate(params: RedTeamTerminateParams): CompletableFuture<Optional<Void>> =
+    fun terminate(params: RedTeamTerminateParams): CompletableFuture<Void?> =
         terminate(params, RequestOptions.none())
 
     /** @see terminate */
-    fun terminate(
-        workflowId: String,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<Optional<Void>> =
+    fun terminate(workflowId: String, requestOptions: RequestOptions): CompletableFuture<Void?> =
         terminate(workflowId, RedTeamTerminateParams.none(), requestOptions)
 
     /**
@@ -350,7 +347,7 @@ interface RedTeamServiceAsync {
          * /evaluations/v1-beta/red-team/terminations/{workflow_id}`, but is otherwise the same as
          * [RedTeamServiceAsync.terminate].
          */
-        fun terminate(workflowId: String): CompletableFuture<HttpResponseFor<Optional<Void>>> =
+        fun terminate(workflowId: String): CompletableFuture<HttpResponse> =
             terminate(workflowId, RedTeamTerminateParams.none())
 
         /** @see terminate */
@@ -358,33 +355,30 @@ interface RedTeamServiceAsync {
             workflowId: String,
             params: RedTeamTerminateParams = RedTeamTerminateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Optional<Void>>> =
+        ): CompletableFuture<HttpResponse> =
             terminate(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
         /** @see terminate */
         fun terminate(
             workflowId: String,
             params: RedTeamTerminateParams = RedTeamTerminateParams.none(),
-        ): CompletableFuture<HttpResponseFor<Optional<Void>>> =
-            terminate(workflowId, params, RequestOptions.none())
+        ): CompletableFuture<HttpResponse> = terminate(workflowId, params, RequestOptions.none())
 
         /** @see terminate */
         fun terminate(
             params: RedTeamTerminateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Optional<Void>>>
+        ): CompletableFuture<HttpResponse>
 
         /** @see terminate */
-        fun terminate(
-            params: RedTeamTerminateParams
-        ): CompletableFuture<HttpResponseFor<Optional<Void>>> =
+        fun terminate(params: RedTeamTerminateParams): CompletableFuture<HttpResponse> =
             terminate(params, RequestOptions.none())
 
         /** @see terminate */
         fun terminate(
             workflowId: String,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<Optional<Void>>> =
+        ): CompletableFuture<HttpResponse> =
             terminate(workflowId, RedTeamTerminateParams.none(), requestOptions)
     }
 }

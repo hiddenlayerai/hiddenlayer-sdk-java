@@ -6,7 +6,6 @@ import com.hiddenlayer.api.TestServerExtension
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamCreateParams
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamSubmitTargetResponseParams
-import kotlin.jvm.optionals.getOrNull
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -111,8 +110,6 @@ internal class RedTeamServiceTest {
                 .build()
         val redTeamService = client.evaluations().redTeam()
 
-        val response = redTeamService.terminate("workflow_id")
-
-        val unwrappedResponse = response.getOrNull()
+        redTeamService.terminate("workflow_id")
     }
 }
