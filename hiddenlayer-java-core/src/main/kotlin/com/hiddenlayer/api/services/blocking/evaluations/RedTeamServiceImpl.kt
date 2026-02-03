@@ -5,6 +5,7 @@ package com.hiddenlayer.api.services.blocking.evaluations
 import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.core.RequestOptions
 import com.hiddenlayer.api.core.checkRequired
+import com.hiddenlayer.api.core.handlers.emptyHandler
 import com.hiddenlayer.api.core.handlers.errorBodyHandler
 import com.hiddenlayer.api.core.handlers.errorHandler
 import com.hiddenlayer.api.core.handlers.jsonHandler
@@ -25,7 +26,6 @@ import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveStatusRespo
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamSubmitTargetResponseParams
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamSubmitTargetResponseResponse
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamTerminateParams
-import java.util.Optional
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
@@ -69,12 +69,10 @@ class RedTeamServiceImpl internal constructor(private val clientOptions: ClientO
         // post /evaluations/v1-beta/red-team/{workflow_id}/target-response
         withRawResponse().submitTargetResponse(params, requestOptions).parse()
 
-    override fun terminate(
-        params: RedTeamTerminateParams,
-        requestOptions: RequestOptions,
-    ): Optional<Void> =
+    override fun terminate(params: RedTeamTerminateParams, requestOptions: RequestOptions) {
         // post /evaluations/v1-beta/red-team/terminations/{workflow_id}
-        withRawResponse().terminate(params, requestOptions).parse()
+        withRawResponse().terminate(params, requestOptions)
+    }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         RedTeamService.WithRawResponse {
@@ -226,13 +224,12 @@ class RedTeamServiceImpl internal constructor(private val clientOptions: ClientO
             }
         }
 
-        private val terminateHandler: Handler<Optional<Void>> =
-            jsonHandler<Optional<Void>>(clientOptions.jsonMapper)
+        private val terminateHandler: Handler<Void?> = emptyHandler()
 
         override fun terminate(
             params: RedTeamTerminateParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<Optional<Void>> {
+        ): HttpResponse {
             // We check here instead of in the params builder because this can be specified
             // positionally or in the params class.
             checkRequired("workflowId", params.workflowId().getOrNull())

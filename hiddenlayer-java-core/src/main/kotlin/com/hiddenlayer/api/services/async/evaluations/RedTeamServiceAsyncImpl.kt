@@ -5,6 +5,7 @@ package com.hiddenlayer.api.services.async.evaluations
 import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.core.RequestOptions
 import com.hiddenlayer.api.core.checkRequired
+import com.hiddenlayer.api.core.handlers.emptyHandler
 import com.hiddenlayer.api.core.handlers.errorBodyHandler
 import com.hiddenlayer.api.core.handlers.errorHandler
 import com.hiddenlayer.api.core.handlers.jsonHandler
@@ -25,7 +26,6 @@ import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveStatusRespo
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamSubmitTargetResponseParams
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamSubmitTargetResponseResponse
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamTerminateParams
-import java.util.Optional
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
@@ -73,9 +73,9 @@ class RedTeamServiceAsyncImpl internal constructor(private val clientOptions: Cl
     override fun terminate(
         params: RedTeamTerminateParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<Optional<Void>> =
+    ): CompletableFuture<Void?> =
         // post /evaluations/v1-beta/red-team/terminations/{workflow_id}
-        withRawResponse().terminate(params, requestOptions).thenApply { it.parse() }
+        withRawResponse().terminate(params, requestOptions).thenAccept {}
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         RedTeamServiceAsync.WithRawResponse {
@@ -239,13 +239,12 @@ class RedTeamServiceAsyncImpl internal constructor(private val clientOptions: Cl
                 }
         }
 
-        private val terminateHandler: Handler<Optional<Void>> =
-            jsonHandler<Optional<Void>>(clientOptions.jsonMapper)
+        private val terminateHandler: Handler<Void?> = emptyHandler()
 
         override fun terminate(
             params: RedTeamTerminateParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<Optional<Void>>> {
+        ): CompletableFuture<HttpResponse> {
             // We check here instead of in the params builder because this can be specified
             // positionally or in the params class.
             checkRequired("workflowId", params.workflowId().getOrNull())
