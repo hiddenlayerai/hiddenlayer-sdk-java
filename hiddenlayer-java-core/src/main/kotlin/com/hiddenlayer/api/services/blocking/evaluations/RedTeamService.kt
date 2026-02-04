@@ -9,6 +9,8 @@ import com.hiddenlayer.api.core.http.HttpResponse
 import com.hiddenlayer.api.core.http.HttpResponseFor
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamCreateParams
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamCreateResponse
+import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveEvaluationResultsParams
+import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveEvaluationResultsResponse
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveNextActionParams
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveNextActionResponse
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveStatusParams
@@ -44,6 +46,50 @@ interface RedTeamService {
         params: RedTeamCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RedTeamCreateResponse
+
+    /** Get the complete result of a red team workflow. */
+    fun retrieveEvaluationResults(workflowId: String): RedTeamRetrieveEvaluationResultsResponse =
+        retrieveEvaluationResults(workflowId, RedTeamRetrieveEvaluationResultsParams.none())
+
+    /** @see retrieveEvaluationResults */
+    fun retrieveEvaluationResults(
+        workflowId: String,
+        params: RedTeamRetrieveEvaluationResultsParams =
+            RedTeamRetrieveEvaluationResultsParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): RedTeamRetrieveEvaluationResultsResponse =
+        retrieveEvaluationResults(params.toBuilder().workflowId(workflowId).build(), requestOptions)
+
+    /** @see retrieveEvaluationResults */
+    fun retrieveEvaluationResults(
+        workflowId: String,
+        params: RedTeamRetrieveEvaluationResultsParams =
+            RedTeamRetrieveEvaluationResultsParams.none(),
+    ): RedTeamRetrieveEvaluationResultsResponse =
+        retrieveEvaluationResults(workflowId, params, RequestOptions.none())
+
+    /** @see retrieveEvaluationResults */
+    fun retrieveEvaluationResults(
+        params: RedTeamRetrieveEvaluationResultsParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): RedTeamRetrieveEvaluationResultsResponse
+
+    /** @see retrieveEvaluationResults */
+    fun retrieveEvaluationResults(
+        params: RedTeamRetrieveEvaluationResultsParams
+    ): RedTeamRetrieveEvaluationResultsResponse =
+        retrieveEvaluationResults(params, RequestOptions.none())
+
+    /** @see retrieveEvaluationResults */
+    fun retrieveEvaluationResults(
+        workflowId: String,
+        requestOptions: RequestOptions,
+    ): RedTeamRetrieveEvaluationResultsResponse =
+        retrieveEvaluationResults(
+            workflowId,
+            RedTeamRetrieveEvaluationResultsParams.none(),
+            requestOptions,
+        )
 
     /**
      * Poll for next action - CLIENT'S MAIN POLLING ENDPOINT.
@@ -209,6 +255,64 @@ interface RedTeamService {
             params: RedTeamCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<RedTeamCreateResponse>
+
+        /**
+         * Returns a raw HTTP response for `get /evaluations/v1-beta/red-team/{workflow_id}`, but is
+         * otherwise the same as [RedTeamService.retrieveEvaluationResults].
+         */
+        @MustBeClosed
+        fun retrieveEvaluationResults(
+            workflowId: String
+        ): HttpResponseFor<RedTeamRetrieveEvaluationResultsResponse> =
+            retrieveEvaluationResults(workflowId, RedTeamRetrieveEvaluationResultsParams.none())
+
+        /** @see retrieveEvaluationResults */
+        @MustBeClosed
+        fun retrieveEvaluationResults(
+            workflowId: String,
+            params: RedTeamRetrieveEvaluationResultsParams =
+                RedTeamRetrieveEvaluationResultsParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<RedTeamRetrieveEvaluationResultsResponse> =
+            retrieveEvaluationResults(
+                params.toBuilder().workflowId(workflowId).build(),
+                requestOptions,
+            )
+
+        /** @see retrieveEvaluationResults */
+        @MustBeClosed
+        fun retrieveEvaluationResults(
+            workflowId: String,
+            params: RedTeamRetrieveEvaluationResultsParams =
+                RedTeamRetrieveEvaluationResultsParams.none(),
+        ): HttpResponseFor<RedTeamRetrieveEvaluationResultsResponse> =
+            retrieveEvaluationResults(workflowId, params, RequestOptions.none())
+
+        /** @see retrieveEvaluationResults */
+        @MustBeClosed
+        fun retrieveEvaluationResults(
+            params: RedTeamRetrieveEvaluationResultsParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<RedTeamRetrieveEvaluationResultsResponse>
+
+        /** @see retrieveEvaluationResults */
+        @MustBeClosed
+        fun retrieveEvaluationResults(
+            params: RedTeamRetrieveEvaluationResultsParams
+        ): HttpResponseFor<RedTeamRetrieveEvaluationResultsResponse> =
+            retrieveEvaluationResults(params, RequestOptions.none())
+
+        /** @see retrieveEvaluationResults */
+        @MustBeClosed
+        fun retrieveEvaluationResults(
+            workflowId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<RedTeamRetrieveEvaluationResultsResponse> =
+            retrieveEvaluationResults(
+                workflowId,
+                RedTeamRetrieveEvaluationResultsParams.none(),
+                requestOptions,
+            )
 
         /**
          * Returns a raw HTTP response for `get

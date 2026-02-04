@@ -50,6 +50,21 @@ internal class RedTeamServiceTest {
 
     @Disabled("Prism tests are disabled")
     @Test
+    fun retrieveEvaluationResults() {
+        val client =
+            HiddenLayerOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .bearerToken("My Bearer Token")
+                .build()
+        val redTeamService = client.evaluations().redTeam()
+
+        val response = redTeamService.retrieveEvaluationResults("workflow_id")
+
+        response.validate()
+    }
+
+    @Disabled("Prism tests are disabled")
+    @Test
     fun retrieveNextAction() {
         val client =
             HiddenLayerOkHttpClient.builder()

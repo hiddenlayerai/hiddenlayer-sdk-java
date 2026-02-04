@@ -19,6 +19,8 @@ import com.hiddenlayer.api.core.http.parseable
 import com.hiddenlayer.api.core.prepare
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamCreateParams
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamCreateResponse
+import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveEvaluationResultsParams
+import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveEvaluationResultsResponse
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveNextActionParams
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveNextActionResponse
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveStatusParams
@@ -47,6 +49,13 @@ class RedTeamServiceImpl internal constructor(private val clientOptions: ClientO
     ): RedTeamCreateResponse =
         // post /evaluations/v1-beta/red-team
         withRawResponse().create(params, requestOptions).parse()
+
+    override fun retrieveEvaluationResults(
+        params: RedTeamRetrieveEvaluationResultsParams,
+        requestOptions: RequestOptions,
+    ): RedTeamRetrieveEvaluationResultsResponse =
+        // get /evaluations/v1-beta/red-team/{workflow_id}
+        withRawResponse().retrieveEvaluationResults(params, requestOptions).parse()
 
     override fun retrieveNextAction(
         params: RedTeamRetrieveNextActionParams,
@@ -107,6 +116,37 @@ class RedTeamServiceImpl internal constructor(private val clientOptions: ClientO
             return errorHandler.handle(response).parseable {
                 response
                     .use { createHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val retrieveEvaluationResultsHandler:
+            Handler<RedTeamRetrieveEvaluationResultsResponse> =
+            jsonHandler<RedTeamRetrieveEvaluationResultsResponse>(clientOptions.jsonMapper)
+
+        override fun retrieveEvaluationResults(
+            params: RedTeamRetrieveEvaluationResultsParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<RedTeamRetrieveEvaluationResultsResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("workflowId", params.workflowId().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("evaluations", "v1-beta", "red-team", params._pathParam(0))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { retrieveEvaluationResultsHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()
