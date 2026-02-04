@@ -8,6 +8,8 @@ import com.hiddenlayer.api.core.http.HttpResponse
 import com.hiddenlayer.api.core.http.HttpResponseFor
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamCreateParams
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamCreateResponse
+import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveEvaluationResultsParams
+import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveEvaluationResultsResponse
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveNextActionParams
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveNextActionResponse
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveStatusParams
@@ -44,6 +46,52 @@ interface RedTeamServiceAsync {
         params: RedTeamCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RedTeamCreateResponse>
+
+    /** Get the complete result of a red team workflow. */
+    fun retrieveEvaluationResults(
+        workflowId: String
+    ): CompletableFuture<RedTeamRetrieveEvaluationResultsResponse> =
+        retrieveEvaluationResults(workflowId, RedTeamRetrieveEvaluationResultsParams.none())
+
+    /** @see retrieveEvaluationResults */
+    fun retrieveEvaluationResults(
+        workflowId: String,
+        params: RedTeamRetrieveEvaluationResultsParams =
+            RedTeamRetrieveEvaluationResultsParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<RedTeamRetrieveEvaluationResultsResponse> =
+        retrieveEvaluationResults(params.toBuilder().workflowId(workflowId).build(), requestOptions)
+
+    /** @see retrieveEvaluationResults */
+    fun retrieveEvaluationResults(
+        workflowId: String,
+        params: RedTeamRetrieveEvaluationResultsParams =
+            RedTeamRetrieveEvaluationResultsParams.none(),
+    ): CompletableFuture<RedTeamRetrieveEvaluationResultsResponse> =
+        retrieveEvaluationResults(workflowId, params, RequestOptions.none())
+
+    /** @see retrieveEvaluationResults */
+    fun retrieveEvaluationResults(
+        params: RedTeamRetrieveEvaluationResultsParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<RedTeamRetrieveEvaluationResultsResponse>
+
+    /** @see retrieveEvaluationResults */
+    fun retrieveEvaluationResults(
+        params: RedTeamRetrieveEvaluationResultsParams
+    ): CompletableFuture<RedTeamRetrieveEvaluationResultsResponse> =
+        retrieveEvaluationResults(params, RequestOptions.none())
+
+    /** @see retrieveEvaluationResults */
+    fun retrieveEvaluationResults(
+        workflowId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<RedTeamRetrieveEvaluationResultsResponse> =
+        retrieveEvaluationResults(
+            workflowId,
+            RedTeamRetrieveEvaluationResultsParams.none(),
+            requestOptions,
+        )
 
     /**
      * Poll for next action - CLIENT'S MAIN POLLING ENDPOINT.
@@ -223,6 +271,58 @@ interface RedTeamServiceAsync {
             params: RedTeamCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<RedTeamCreateResponse>>
+
+        /**
+         * Returns a raw HTTP response for `get /evaluations/v1-beta/red-team/{workflow_id}`, but is
+         * otherwise the same as [RedTeamServiceAsync.retrieveEvaluationResults].
+         */
+        fun retrieveEvaluationResults(
+            workflowId: String
+        ): CompletableFuture<HttpResponseFor<RedTeamRetrieveEvaluationResultsResponse>> =
+            retrieveEvaluationResults(workflowId, RedTeamRetrieveEvaluationResultsParams.none())
+
+        /** @see retrieveEvaluationResults */
+        fun retrieveEvaluationResults(
+            workflowId: String,
+            params: RedTeamRetrieveEvaluationResultsParams =
+                RedTeamRetrieveEvaluationResultsParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<RedTeamRetrieveEvaluationResultsResponse>> =
+            retrieveEvaluationResults(
+                params.toBuilder().workflowId(workflowId).build(),
+                requestOptions,
+            )
+
+        /** @see retrieveEvaluationResults */
+        fun retrieveEvaluationResults(
+            workflowId: String,
+            params: RedTeamRetrieveEvaluationResultsParams =
+                RedTeamRetrieveEvaluationResultsParams.none(),
+        ): CompletableFuture<HttpResponseFor<RedTeamRetrieveEvaluationResultsResponse>> =
+            retrieveEvaluationResults(workflowId, params, RequestOptions.none())
+
+        /** @see retrieveEvaluationResults */
+        fun retrieveEvaluationResults(
+            params: RedTeamRetrieveEvaluationResultsParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<RedTeamRetrieveEvaluationResultsResponse>>
+
+        /** @see retrieveEvaluationResults */
+        fun retrieveEvaluationResults(
+            params: RedTeamRetrieveEvaluationResultsParams
+        ): CompletableFuture<HttpResponseFor<RedTeamRetrieveEvaluationResultsResponse>> =
+            retrieveEvaluationResults(params, RequestOptions.none())
+
+        /** @see retrieveEvaluationResults */
+        fun retrieveEvaluationResults(
+            workflowId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<RedTeamRetrieveEvaluationResultsResponse>> =
+            retrieveEvaluationResults(
+                workflowId,
+                RedTeamRetrieveEvaluationResultsParams.none(),
+                requestOptions,
+            )
 
         /**
          * Returns a raw HTTP response for `get
