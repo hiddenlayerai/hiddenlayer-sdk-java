@@ -48,6 +48,7 @@ internal class ScanJobTest {
                                         .providerModelId(
                                             "anthropic.claude-3-5-sonnet-20241022-v2:0"
                                         )
+                                        .country("US")
                                         .modelArn(
                                             "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
                                         )
@@ -93,6 +94,7 @@ internal class ScanJobTest {
                                             .AWS_BEDROCK
                                     )
                                     .providerModelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
+                                    .country("US")
                                     .modelArn(
                                         "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
                                     )
@@ -146,6 +148,7 @@ internal class ScanJobTest {
                                         .providerModelId(
                                             "anthropic.claude-3-5-sonnet-20241022-v2:0"
                                         )
+                                        .country("US")
                                         .modelArn(
                                             "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
                                         )
