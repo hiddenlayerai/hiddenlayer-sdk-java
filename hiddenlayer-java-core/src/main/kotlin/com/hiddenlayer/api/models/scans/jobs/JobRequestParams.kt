@@ -2124,6 +2124,7 @@ private constructor(
             private constructor(
                 private val provider: JsonField<Provider>,
                 private val providerModelId: JsonField<String>,
+                private val country: JsonField<String>,
                 private val modelArn: JsonField<String>,
                 private val additionalProperties: MutableMap<String, JsonValue>,
             ) {
@@ -2136,10 +2137,13 @@ private constructor(
                     @JsonProperty("provider_model_id")
                     @ExcludeMissing
                     providerModelId: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("country")
+                    @ExcludeMissing
+                    country: JsonField<String> = JsonMissing.of(),
                     @JsonProperty("model_arn")
                     @ExcludeMissing
                     modelArn: JsonField<String> = JsonMissing.of(),
-                ) : this(provider, providerModelId, modelArn, mutableMapOf())
+                ) : this(provider, providerModelId, country, modelArn, mutableMapOf())
 
                 /**
                  * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
@@ -2158,6 +2162,15 @@ private constructor(
                  *   unexpected value).
                  */
                 fun providerModelId(): String = providerModelId.getRequired("provider_model_id")
+
+                /**
+                 * Optional country code (ISO 3166-1 alpha-2) for the location where the model
+                 * provider is primarily based.
+                 *
+                 * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun country(): Optional<String> = country.getOptional("country")
 
                 /**
                  * Optional full ARN or resource identifier for the model. Used for provisioned
@@ -2187,6 +2200,14 @@ private constructor(
                 @JsonProperty("provider_model_id")
                 @ExcludeMissing
                 fun _providerModelId(): JsonField<String> = providerModelId
+
+                /**
+                 * Returns the raw JSON value of [country].
+                 *
+                 * Unlike [country], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
+                @JsonProperty("country") @ExcludeMissing fun _country(): JsonField<String> = country
 
                 /**
                  * Returns the raw JSON value of [modelArn].
@@ -2229,6 +2250,7 @@ private constructor(
 
                     private var provider: JsonField<Provider>? = null
                     private var providerModelId: JsonField<String>? = null
+                    private var country: JsonField<String> = JsonMissing.of()
                     private var modelArn: JsonField<String> = JsonMissing.of()
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -2236,6 +2258,7 @@ private constructor(
                     internal fun from(providerDetails: ProviderDetails) = apply {
                         provider = providerDetails.provider
                         providerModelId = providerDetails.providerModelId
+                        country = providerDetails.country
                         modelArn = providerDetails.modelArn
                         additionalProperties = providerDetails.additionalProperties.toMutableMap()
                     }
@@ -2269,6 +2292,21 @@ private constructor(
                     fun providerModelId(providerModelId: JsonField<String>) = apply {
                         this.providerModelId = providerModelId
                     }
+
+                    /**
+                     * Optional country code (ISO 3166-1 alpha-2) for the location where the model
+                     * provider is primarily based.
+                     */
+                    fun country(country: String) = country(JsonField.of(country))
+
+                    /**
+                     * Sets [Builder.country] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.country] with a well-typed [String] value
+                     * instead. This method is primarily for setting the field to an undocumented or
+                     * not yet supported value.
+                     */
+                    fun country(country: JsonField<String>) = apply { this.country = country }
 
                     /**
                      * Optional full ARN or resource identifier for the model. Used for provisioned
@@ -2324,6 +2362,7 @@ private constructor(
                         ProviderDetails(
                             checkRequired("provider", provider),
                             checkRequired("providerModelId", providerModelId),
+                            country,
                             modelArn,
                             additionalProperties.toMutableMap(),
                         )
@@ -2338,6 +2377,7 @@ private constructor(
 
                     provider().validate()
                     providerModelId()
+                    country()
                     modelArn()
                     validated = true
                 }
@@ -2360,6 +2400,7 @@ private constructor(
                 internal fun validity(): Int =
                     (provider.asKnown().getOrNull()?.validity() ?: 0) +
                         (if (providerModelId.asKnown().isPresent) 1 else 0) +
+                        (if (country.asKnown().isPresent) 1 else 0) +
                         (if (modelArn.asKnown().isPresent) 1 else 0)
 
                 class Provider
@@ -2512,18 +2553,19 @@ private constructor(
                     return other is ProviderDetails &&
                         provider == other.provider &&
                         providerModelId == other.providerModelId &&
+                        country == other.country &&
                         modelArn == other.modelArn &&
                         additionalProperties == other.additionalProperties
                 }
 
                 private val hashCode: Int by lazy {
-                    Objects.hash(provider, providerModelId, modelArn, additionalProperties)
+                    Objects.hash(provider, providerModelId, country, modelArn, additionalProperties)
                 }
 
                 override fun hashCode(): Int = hashCode
 
                 override fun toString() =
-                    "ProviderDetails{provider=$provider, providerModelId=$providerModelId, modelArn=$modelArn, additionalProperties=$additionalProperties}"
+                    "ProviderDetails{provider=$provider, providerModelId=$providerModelId, country=$country, modelArn=$modelArn, additionalProperties=$additionalProperties}"
             }
 
             override fun equals(other: Any?): Boolean {

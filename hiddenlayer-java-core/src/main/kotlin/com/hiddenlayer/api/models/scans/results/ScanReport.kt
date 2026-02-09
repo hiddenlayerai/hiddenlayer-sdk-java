@@ -51,6 +51,7 @@ private constructor(
     private val endTime: JsonField<OffsetDateTime>,
     private val fileResults: JsonField<List<FileResult>>,
     private val hasGenealogy: JsonField<Boolean>,
+    private val intelligence: JsonField<Intelligence>,
     private val severity: JsonField<Severity>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -92,6 +93,9 @@ private constructor(
         @JsonProperty("has_genealogy")
         @ExcludeMissing
         hasGenealogy: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("intelligence")
+        @ExcludeMissing
+        intelligence: JsonField<Intelligence> = JsonMissing.of(),
         @JsonProperty("severity") @ExcludeMissing severity: JsonField<Severity> = JsonMissing.of(),
     ) : this(
         detectionCount,
@@ -109,6 +113,7 @@ private constructor(
         endTime,
         fileResults,
         hasGenealogy,
+        intelligence,
         severity,
         mutableMapOf(),
     )
@@ -229,6 +234,14 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun hasGenealogy(): Optional<Boolean> = hasGenealogy.getOptional("has_genealogy")
+
+    /**
+     * Intelligence metadata about a model including origin, licensing, and usage policies
+     *
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun intelligence(): Optional<Intelligence> = intelligence.getOptional("intelligence")
 
     /**
      * The highest severity of any detections on the scan, including "safe". Use
@@ -369,6 +382,15 @@ private constructor(
     fun _hasGenealogy(): JsonField<Boolean> = hasGenealogy
 
     /**
+     * Returns the raw JSON value of [intelligence].
+     *
+     * Unlike [intelligence], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("intelligence")
+    @ExcludeMissing
+    fun _intelligence(): JsonField<Intelligence> = intelligence
+
+    /**
      * Returns the raw JSON value of [severity].
      *
      * Unlike [severity], this method doesn't throw if the JSON field has an unexpected type.
@@ -429,6 +451,7 @@ private constructor(
         private var endTime: JsonField<OffsetDateTime> = JsonMissing.of()
         private var fileResults: JsonField<MutableList<FileResult>>? = null
         private var hasGenealogy: JsonField<Boolean> = JsonMissing.of()
+        private var intelligence: JsonField<Intelligence> = JsonMissing.of()
         private var severity: JsonField<Severity> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -449,6 +472,7 @@ private constructor(
             endTime = scanReport.endTime
             fileResults = scanReport.fileResults.map { it.toMutableList() }
             hasGenealogy = scanReport.hasGenealogy
+            intelligence = scanReport.intelligence
             severity = scanReport.severity
             additionalProperties = scanReport.additionalProperties.toMutableMap()
         }
@@ -673,6 +697,20 @@ private constructor(
             this.hasGenealogy = hasGenealogy
         }
 
+        /** Intelligence metadata about a model including origin, licensing, and usage policies */
+        fun intelligence(intelligence: Intelligence) = intelligence(JsonField.of(intelligence))
+
+        /**
+         * Sets [Builder.intelligence] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.intelligence] with a well-typed [Intelligence] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun intelligence(intelligence: JsonField<Intelligence>) = apply {
+            this.intelligence = intelligence
+        }
+
         /**
          * The highest severity of any detections on the scan, including "safe". Use
          * `.summary.highest_severity` instead.
@@ -746,6 +784,7 @@ private constructor(
                 endTime,
                 (fileResults ?: JsonMissing.of()).map { it.toImmutable() },
                 hasGenealogy,
+                intelligence,
                 severity,
                 additionalProperties.toMutableMap(),
             )
@@ -773,6 +812,7 @@ private constructor(
         endTime()
         fileResults().ifPresent { it.forEach { it.validate() } }
         hasGenealogy()
+        intelligence().ifPresent { it.validate() }
         severity().ifPresent { it.validate() }
         validated = true
     }
@@ -807,6 +847,7 @@ private constructor(
             (if (endTime.asKnown().isPresent) 1 else 0) +
             (fileResults.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (if (hasGenealogy.asKnown().isPresent) 1 else 0) +
+            (intelligence.asKnown().getOrNull()?.validity() ?: 0) +
             (severity.asKnown().getOrNull()?.validity() ?: 0)
 
     class Inventory
@@ -1418,6 +1459,7 @@ private constructor(
         private constructor(
             private val provider: JsonField<Provider>,
             private val providerModelId: JsonField<String>,
+            private val country: JsonField<String>,
             private val modelArn: JsonField<String>,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
@@ -1430,10 +1472,13 @@ private constructor(
                 @JsonProperty("provider_model_id")
                 @ExcludeMissing
                 providerModelId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("country")
+                @ExcludeMissing
+                country: JsonField<String> = JsonMissing.of(),
                 @JsonProperty("model_arn")
                 @ExcludeMissing
                 modelArn: JsonField<String> = JsonMissing.of(),
-            ) : this(provider, providerModelId, modelArn, mutableMapOf())
+            ) : this(provider, providerModelId, country, modelArn, mutableMapOf())
 
             /**
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or
@@ -1452,6 +1497,15 @@ private constructor(
              *   value).
              */
             fun providerModelId(): String = providerModelId.getRequired("provider_model_id")
+
+            /**
+             * Optional country code (ISO 3166-1 alpha-2) for the location where the model provider
+             * is primarily based.
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun country(): Optional<String> = country.getOptional("country")
 
             /**
              * Optional full ARN or resource identifier for the model. Used for provisioned models,
@@ -1481,6 +1535,13 @@ private constructor(
             @JsonProperty("provider_model_id")
             @ExcludeMissing
             fun _providerModelId(): JsonField<String> = providerModelId
+
+            /**
+             * Returns the raw JSON value of [country].
+             *
+             * Unlike [country], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("country") @ExcludeMissing fun _country(): JsonField<String> = country
 
             /**
              * Returns the raw JSON value of [modelArn].
@@ -1521,6 +1582,7 @@ private constructor(
 
                 private var provider: JsonField<Provider>? = null
                 private var providerModelId: JsonField<String>? = null
+                private var country: JsonField<String> = JsonMissing.of()
                 private var modelArn: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -1528,6 +1590,7 @@ private constructor(
                 internal fun from(providerDetails: ProviderDetails) = apply {
                     provider = providerDetails.provider
                     providerModelId = providerDetails.providerModelId
+                    country = providerDetails.country
                     modelArn = providerDetails.modelArn
                     additionalProperties = providerDetails.additionalProperties.toMutableMap()
                 }
@@ -1561,6 +1624,21 @@ private constructor(
                 fun providerModelId(providerModelId: JsonField<String>) = apply {
                     this.providerModelId = providerModelId
                 }
+
+                /**
+                 * Optional country code (ISO 3166-1 alpha-2) for the location where the model
+                 * provider is primarily based.
+                 */
+                fun country(country: String) = country(JsonField.of(country))
+
+                /**
+                 * Sets [Builder.country] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.country] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun country(country: JsonField<String>) = apply { this.country = country }
 
                 /**
                  * Optional full ARN or resource identifier for the model. Used for provisioned
@@ -1616,6 +1694,7 @@ private constructor(
                     ProviderDetails(
                         checkRequired("provider", provider),
                         checkRequired("providerModelId", providerModelId),
+                        country,
                         modelArn,
                         additionalProperties.toMutableMap(),
                     )
@@ -1630,6 +1709,7 @@ private constructor(
 
                 provider().validate()
                 providerModelId()
+                country()
                 modelArn()
                 validated = true
             }
@@ -1652,6 +1732,7 @@ private constructor(
             internal fun validity(): Int =
                 (provider.asKnown().getOrNull()?.validity() ?: 0) +
                     (if (providerModelId.asKnown().isPresent) 1 else 0) +
+                    (if (country.asKnown().isPresent) 1 else 0) +
                     (if (modelArn.asKnown().isPresent) 1 else 0)
 
             class Provider @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -1799,18 +1880,19 @@ private constructor(
                 return other is ProviderDetails &&
                     provider == other.provider &&
                     providerModelId == other.providerModelId &&
+                    country == other.country &&
                     modelArn == other.modelArn &&
                     additionalProperties == other.additionalProperties
             }
 
             private val hashCode: Int by lazy {
-                Objects.hash(provider, providerModelId, modelArn, additionalProperties)
+                Objects.hash(provider, providerModelId, country, modelArn, additionalProperties)
             }
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "ProviderDetails{provider=$provider, providerModelId=$providerModelId, modelArn=$modelArn, additionalProperties=$additionalProperties}"
+                "ProviderDetails{provider=$provider, providerModelId=$providerModelId, country=$country, modelArn=$modelArn, additionalProperties=$additionalProperties}"
         }
 
         /** Identifies the system that requested the scan */
@@ -7822,6 +7904,744 @@ private constructor(
             "FileResult{details=$details, detections=$detections, endTime=$endTime, fileInstanceId=$fileInstanceId, fileLocation=$fileLocation, seen=$seen, startTime=$startTime, status=$status, fileError=$fileError, additionalProperties=$additionalProperties}"
     }
 
+    /** Intelligence metadata about a model including origin, licensing, and usage policies */
+    class Intelligence
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val contributorTrustLevel: JsonField<String>,
+        private val countryOfOrigin: JsonField<List<String>>,
+        private val licenses: JsonField<List<License>>,
+        private val usagePolicies: JsonField<List<UsagePolicy>>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("contributor_trust_level")
+            @ExcludeMissing
+            contributorTrustLevel: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("country_of_origin")
+            @ExcludeMissing
+            countryOfOrigin: JsonField<List<String>> = JsonMissing.of(),
+            @JsonProperty("licenses")
+            @ExcludeMissing
+            licenses: JsonField<List<License>> = JsonMissing.of(),
+            @JsonProperty("usage_policies")
+            @ExcludeMissing
+            usagePolicies: JsonField<List<UsagePolicy>> = JsonMissing.of(),
+        ) : this(contributorTrustLevel, countryOfOrigin, licenses, usagePolicies, mutableMapOf())
+
+        /**
+         * Trust level of the model contributor
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun contributorTrustLevel(): Optional<String> =
+            contributorTrustLevel.getOptional("contributor_trust_level")
+
+        /**
+         * List of countries where the model originated
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun countryOfOrigin(): Optional<List<String>> =
+            countryOfOrigin.getOptional("country_of_origin")
+
+        /**
+         * List of licenses associated with the model
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun licenses(): Optional<List<License>> = licenses.getOptional("licenses")
+
+        /**
+         * List of usage policies associated with the model
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun usagePolicies(): Optional<List<UsagePolicy>> =
+            usagePolicies.getOptional("usage_policies")
+
+        /**
+         * Returns the raw JSON value of [contributorTrustLevel].
+         *
+         * Unlike [contributorTrustLevel], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("contributor_trust_level")
+        @ExcludeMissing
+        fun _contributorTrustLevel(): JsonField<String> = contributorTrustLevel
+
+        /**
+         * Returns the raw JSON value of [countryOfOrigin].
+         *
+         * Unlike [countryOfOrigin], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("country_of_origin")
+        @ExcludeMissing
+        fun _countryOfOrigin(): JsonField<List<String>> = countryOfOrigin
+
+        /**
+         * Returns the raw JSON value of [licenses].
+         *
+         * Unlike [licenses], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("licenses")
+        @ExcludeMissing
+        fun _licenses(): JsonField<List<License>> = licenses
+
+        /**
+         * Returns the raw JSON value of [usagePolicies].
+         *
+         * Unlike [usagePolicies], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("usage_policies")
+        @ExcludeMissing
+        fun _usagePolicies(): JsonField<List<UsagePolicy>> = usagePolicies
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [Intelligence]. */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Intelligence]. */
+        class Builder internal constructor() {
+
+            private var contributorTrustLevel: JsonField<String> = JsonMissing.of()
+            private var countryOfOrigin: JsonField<MutableList<String>>? = null
+            private var licenses: JsonField<MutableList<License>>? = null
+            private var usagePolicies: JsonField<MutableList<UsagePolicy>>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(intelligence: Intelligence) = apply {
+                contributorTrustLevel = intelligence.contributorTrustLevel
+                countryOfOrigin = intelligence.countryOfOrigin.map { it.toMutableList() }
+                licenses = intelligence.licenses.map { it.toMutableList() }
+                usagePolicies = intelligence.usagePolicies.map { it.toMutableList() }
+                additionalProperties = intelligence.additionalProperties.toMutableMap()
+            }
+
+            /** Trust level of the model contributor */
+            fun contributorTrustLevel(contributorTrustLevel: String) =
+                contributorTrustLevel(JsonField.of(contributorTrustLevel))
+
+            /**
+             * Sets [Builder.contributorTrustLevel] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.contributorTrustLevel] with a well-typed [String]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun contributorTrustLevel(contributorTrustLevel: JsonField<String>) = apply {
+                this.contributorTrustLevel = contributorTrustLevel
+            }
+
+            /** List of countries where the model originated */
+            fun countryOfOrigin(countryOfOrigin: List<String>) =
+                countryOfOrigin(JsonField.of(countryOfOrigin))
+
+            /**
+             * Sets [Builder.countryOfOrigin] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.countryOfOrigin] with a well-typed `List<String>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun countryOfOrigin(countryOfOrigin: JsonField<List<String>>) = apply {
+                this.countryOfOrigin = countryOfOrigin.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [String] to [Builder.countryOfOrigin].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addCountryOfOrigin(countryOfOrigin: String) = apply {
+                this.countryOfOrigin =
+                    (this.countryOfOrigin ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("countryOfOrigin", it).add(countryOfOrigin)
+                    }
+            }
+
+            /** List of licenses associated with the model */
+            fun licenses(licenses: List<License>) = licenses(JsonField.of(licenses))
+
+            /**
+             * Sets [Builder.licenses] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.licenses] with a well-typed `List<License>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun licenses(licenses: JsonField<List<License>>) = apply {
+                this.licenses = licenses.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [License] to [licenses].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addLicense(license: License) = apply {
+                licenses =
+                    (licenses ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("licenses", it).add(license)
+                    }
+            }
+
+            /** List of usage policies associated with the model */
+            fun usagePolicies(usagePolicies: List<UsagePolicy>) =
+                usagePolicies(JsonField.of(usagePolicies))
+
+            /**
+             * Sets [Builder.usagePolicies] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.usagePolicies] with a well-typed `List<UsagePolicy>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun usagePolicies(usagePolicies: JsonField<List<UsagePolicy>>) = apply {
+                this.usagePolicies = usagePolicies.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [UsagePolicy] to [usagePolicies].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addUsagePolicy(usagePolicy: UsagePolicy) = apply {
+                usagePolicies =
+                    (usagePolicies ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("usagePolicies", it).add(usagePolicy)
+                    }
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Intelligence].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Intelligence =
+                Intelligence(
+                    contributorTrustLevel,
+                    (countryOfOrigin ?: JsonMissing.of()).map { it.toImmutable() },
+                    (licenses ?: JsonMissing.of()).map { it.toImmutable() },
+                    (usagePolicies ?: JsonMissing.of()).map { it.toImmutable() },
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Intelligence = apply {
+            if (validated) {
+                return@apply
+            }
+
+            contributorTrustLevel()
+            countryOfOrigin()
+            licenses().ifPresent { it.forEach { it.validate() } }
+            usagePolicies().ifPresent { it.forEach { it.validate() } }
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: HiddenLayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (contributorTrustLevel.asKnown().isPresent) 1 else 0) +
+                (countryOfOrigin.asKnown().getOrNull()?.size ?: 0) +
+                (licenses.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+                (usagePolicies.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
+
+        /** License information for a model */
+        class License
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+        private constructor(
+            private val name: JsonField<String>,
+            private val sha256: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("sha256") @ExcludeMissing sha256: JsonField<String> = JsonMissing.of(),
+            ) : this(name, sha256, mutableMapOf())
+
+            /**
+             * Name of the license
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or
+             *   is unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun name(): String = name.getRequired("name")
+
+            /**
+             * SHA256 hash of the license file
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or
+             *   is unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun sha256(): String = sha256.getRequired("sha256")
+
+            /**
+             * Returns the raw JSON value of [name].
+             *
+             * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+            /**
+             * Returns the raw JSON value of [sha256].
+             *
+             * Unlike [sha256], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("sha256") @ExcludeMissing fun _sha256(): JsonField<String> = sha256
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /**
+                 * Returns a mutable builder for constructing an instance of [License].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .name()
+                 * .sha256()
+                 * ```
+                 */
+                @JvmStatic fun builder() = Builder()
+            }
+
+            /** A builder for [License]. */
+            class Builder internal constructor() {
+
+                private var name: JsonField<String>? = null
+                private var sha256: JsonField<String>? = null
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(license: License) = apply {
+                    name = license.name
+                    sha256 = license.sha256
+                    additionalProperties = license.additionalProperties.toMutableMap()
+                }
+
+                /** Name of the license */
+                fun name(name: String) = name(JsonField.of(name))
+
+                /**
+                 * Sets [Builder.name] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.name] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun name(name: JsonField<String>) = apply { this.name = name }
+
+                /** SHA256 hash of the license file */
+                fun sha256(sha256: String) = sha256(JsonField.of(sha256))
+
+                /**
+                 * Sets [Builder.sha256] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.sha256] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun sha256(sha256: JsonField<String>) = apply { this.sha256 = sha256 }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [License].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .name()
+                 * .sha256()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
+                fun build(): License =
+                    License(
+                        checkRequired("name", name),
+                        checkRequired("sha256", sha256),
+                        additionalProperties.toMutableMap(),
+                    )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): License = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                name()
+                sha256()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: HiddenLayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (if (name.asKnown().isPresent) 1 else 0) +
+                    (if (sha256.asKnown().isPresent) 1 else 0)
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is License &&
+                    name == other.name &&
+                    sha256 == other.sha256 &&
+                    additionalProperties == other.additionalProperties
+            }
+
+            private val hashCode: Int by lazy { Objects.hash(name, sha256, additionalProperties) }
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "License{name=$name, sha256=$sha256, additionalProperties=$additionalProperties}"
+        }
+
+        /** Usage policy information for a model */
+        class UsagePolicy
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+        private constructor(
+            private val name: JsonField<String>,
+            private val sha256: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("sha256") @ExcludeMissing sha256: JsonField<String> = JsonMissing.of(),
+            ) : this(name, sha256, mutableMapOf())
+
+            /**
+             * Name of the usage policy
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or
+             *   is unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun name(): String = name.getRequired("name")
+
+            /**
+             * SHA256 hash of the policy document
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or
+             *   is unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun sha256(): String = sha256.getRequired("sha256")
+
+            /**
+             * Returns the raw JSON value of [name].
+             *
+             * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+            /**
+             * Returns the raw JSON value of [sha256].
+             *
+             * Unlike [sha256], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("sha256") @ExcludeMissing fun _sha256(): JsonField<String> = sha256
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /**
+                 * Returns a mutable builder for constructing an instance of [UsagePolicy].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .name()
+                 * .sha256()
+                 * ```
+                 */
+                @JvmStatic fun builder() = Builder()
+            }
+
+            /** A builder for [UsagePolicy]. */
+            class Builder internal constructor() {
+
+                private var name: JsonField<String>? = null
+                private var sha256: JsonField<String>? = null
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(usagePolicy: UsagePolicy) = apply {
+                    name = usagePolicy.name
+                    sha256 = usagePolicy.sha256
+                    additionalProperties = usagePolicy.additionalProperties.toMutableMap()
+                }
+
+                /** Name of the usage policy */
+                fun name(name: String) = name(JsonField.of(name))
+
+                /**
+                 * Sets [Builder.name] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.name] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun name(name: JsonField<String>) = apply { this.name = name }
+
+                /** SHA256 hash of the policy document */
+                fun sha256(sha256: String) = sha256(JsonField.of(sha256))
+
+                /**
+                 * Sets [Builder.sha256] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.sha256] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun sha256(sha256: JsonField<String>) = apply { this.sha256 = sha256 }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [UsagePolicy].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .name()
+                 * .sha256()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
+                fun build(): UsagePolicy =
+                    UsagePolicy(
+                        checkRequired("name", name),
+                        checkRequired("sha256", sha256),
+                        additionalProperties.toMutableMap(),
+                    )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): UsagePolicy = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                name()
+                sha256()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: HiddenLayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (if (name.asKnown().isPresent) 1 else 0) +
+                    (if (sha256.asKnown().isPresent) 1 else 0)
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is UsagePolicy &&
+                    name == other.name &&
+                    sha256 == other.sha256 &&
+                    additionalProperties == other.additionalProperties
+            }
+
+            private val hashCode: Int by lazy { Objects.hash(name, sha256, additionalProperties) }
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "UsagePolicy{name=$name, sha256=$sha256, additionalProperties=$additionalProperties}"
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Intelligence &&
+                contributorTrustLevel == other.contributorTrustLevel &&
+                countryOfOrigin == other.countryOfOrigin &&
+                licenses == other.licenses &&
+                usagePolicies == other.usagePolicies &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                contributorTrustLevel,
+                countryOfOrigin,
+                licenses,
+                usagePolicies,
+                additionalProperties,
+            )
+        }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Intelligence{contributorTrustLevel=$contributorTrustLevel, countryOfOrigin=$countryOfOrigin, licenses=$licenses, usagePolicies=$usagePolicies, additionalProperties=$additionalProperties}"
+    }
+
     /**
      * The highest severity of any detections on the scan, including "safe". Use
      * `.summary.highest_severity` instead.
@@ -7999,6 +8819,7 @@ private constructor(
             endTime == other.endTime &&
             fileResults == other.fileResults &&
             hasGenealogy == other.hasGenealogy &&
+            intelligence == other.intelligence &&
             severity == other.severity &&
             additionalProperties == other.additionalProperties
     }
@@ -8020,6 +8841,7 @@ private constructor(
             endTime,
             fileResults,
             hasGenealogy,
+            intelligence,
             severity,
             additionalProperties,
         )
@@ -8028,5 +8850,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ScanReport{detectionCount=$detectionCount, fileCount=$fileCount, filesWithDetectionsCount=$filesWithDetectionsCount, inventory=$inventory, scanId=$scanId, startTime=$startTime, status=$status, summary=$summary, version=$version, schemaVersion=$schemaVersion, compliance=$compliance, detectionCategories=$detectionCategories, endTime=$endTime, fileResults=$fileResults, hasGenealogy=$hasGenealogy, severity=$severity, additionalProperties=$additionalProperties}"
+        "ScanReport{detectionCount=$detectionCount, fileCount=$fileCount, filesWithDetectionsCount=$filesWithDetectionsCount, inventory=$inventory, scanId=$scanId, startTime=$startTime, status=$status, summary=$summary, version=$version, schemaVersion=$schemaVersion, compliance=$compliance, detectionCategories=$detectionCategories, endTime=$endTime, fileResults=$fileResults, hasGenealogy=$hasGenealogy, intelligence=$intelligence, severity=$severity, additionalProperties=$additionalProperties}"
 }
