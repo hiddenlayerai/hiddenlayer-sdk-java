@@ -27,6 +27,7 @@ private constructor(
     private val modscanSeverity: List<ModscanSeverity>?,
     private val modscanStatus: ModscanStatus?,
     private val offset: Long?,
+    private val policyStatus: List<PolicyStatus>?,
     private val provider: List<Provider>?,
     private val sort: String?,
     private val source: Source?,
@@ -55,6 +56,8 @@ private constructor(
 
     /** Begin returning the results from this offset */
     fun offset(): Optional<Long> = Optional.ofNullable(offset)
+
+    fun policyStatus(): Optional<List<PolicyStatus>> = Optional.ofNullable(policyStatus)
 
     fun provider(): Optional<List<Provider>> = Optional.ofNullable(provider)
 
@@ -94,6 +97,7 @@ private constructor(
         private var modscanSeverity: MutableList<ModscanSeverity>? = null
         private var modscanStatus: ModscanStatus? = null
         private var offset: Long? = null
+        private var policyStatus: MutableList<PolicyStatus>? = null
         private var provider: MutableList<Provider>? = null
         private var sort: String? = null
         private var source: Source? = null
@@ -110,6 +114,7 @@ private constructor(
             modscanSeverity = cardListParams.modscanSeverity?.toMutableList()
             modscanStatus = cardListParams.modscanStatus
             offset = cardListParams.offset
+            policyStatus = cardListParams.policyStatus?.toMutableList()
             provider = cardListParams.provider?.toMutableList()
             sort = cardListParams.sort
             source = cardListParams.source
@@ -205,6 +210,23 @@ private constructor(
 
         /** Alias for calling [Builder.offset] with `offset.orElse(null)`. */
         fun offset(offset: Optional<Long>) = offset(offset.getOrNull())
+
+        fun policyStatus(policyStatus: List<PolicyStatus>?) = apply {
+            this.policyStatus = policyStatus?.toMutableList()
+        }
+
+        /** Alias for calling [Builder.policyStatus] with `policyStatus.orElse(null)`. */
+        fun policyStatus(policyStatus: Optional<List<PolicyStatus>>) =
+            policyStatus(policyStatus.getOrNull())
+
+        /**
+         * Adds a single [PolicyStatus] to [Builder.policyStatus].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addPolicyStatus(policyStatus: PolicyStatus) = apply {
+            this.policyStatus = (this.policyStatus ?: mutableListOf()).apply { add(policyStatus) }
+        }
 
         fun provider(provider: List<Provider>?) = apply {
             this.provider = provider?.toMutableList()
@@ -350,6 +372,7 @@ private constructor(
                 modscanSeverity?.toImmutable(),
                 modscanStatus,
                 offset,
+                policyStatus?.toImmutable(),
                 provider?.toImmutable(),
                 sort,
                 source,
@@ -393,6 +416,7 @@ private constructor(
                 }
                 modscanStatus?.let { put("modscan_status", it.toString()) }
                 offset?.let { put("offset", it.toString()) }
+                policyStatus?.let { put("policy_status", it.joinToString(",") { it.toString() }) }
                 provider?.let { put("provider", it.joinToString(",") { it.toString() }) }
                 sort?.let { put("sort", it) }
                 source?.let {
@@ -1248,6 +1272,136 @@ private constructor(
         override fun toString() = value.toString()
     }
 
+    class PolicyStatus @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val COMPLIANT = of("COMPLIANT")
+
+            @JvmField val NONCOMPLIANT = of("NONCOMPLIANT")
+
+            @JvmStatic fun of(value: String) = PolicyStatus(JsonField.of(value))
+        }
+
+        /** An enum containing [PolicyStatus]'s known values. */
+        enum class Known {
+            COMPLIANT,
+            NONCOMPLIANT,
+        }
+
+        /**
+         * An enum containing [PolicyStatus]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [PolicyStatus] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            COMPLIANT,
+            NONCOMPLIANT,
+            /**
+             * An enum member indicating that [PolicyStatus] was instantiated with an unknown value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                COMPLIANT -> Value.COMPLIANT
+                NONCOMPLIANT -> Value.NONCOMPLIANT
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                COMPLIANT -> Known.COMPLIANT
+                NONCOMPLIANT -> Known.NONCOMPLIANT
+                else -> throw HiddenLayerInvalidDataException("Unknown PolicyStatus: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                HiddenLayerInvalidDataException("Value is not a String")
+            }
+
+        private var validated: Boolean = false
+
+        fun validate(): PolicyStatus = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: HiddenLayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is PolicyStatus && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
     class Provider @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
@@ -1512,6 +1666,7 @@ private constructor(
             modscanSeverity == other.modscanSeverity &&
             modscanStatus == other.modscanStatus &&
             offset == other.offset &&
+            policyStatus == other.policyStatus &&
             provider == other.provider &&
             sort == other.sort &&
             source == other.source &&
@@ -1529,6 +1684,7 @@ private constructor(
             modscanSeverity,
             modscanStatus,
             offset,
+            policyStatus,
             provider,
             sort,
             source,
@@ -1537,5 +1693,5 @@ private constructor(
         )
 
     override fun toString() =
-        "CardListParams{aidrSeverity=$aidrSeverity, aidrStatus=$aidrStatus, limit=$limit, modelCreated=$modelCreated, modelName=$modelName, modscanSeverity=$modscanSeverity, modscanStatus=$modscanStatus, offset=$offset, provider=$provider, sort=$sort, source=$source, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "CardListParams{aidrSeverity=$aidrSeverity, aidrStatus=$aidrStatus, limit=$limit, modelCreated=$modelCreated, modelName=$modelName, modscanSeverity=$modscanSeverity, modscanStatus=$modscanStatus, offset=$offset, policyStatus=$policyStatus, provider=$provider, sort=$sort, source=$source, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
