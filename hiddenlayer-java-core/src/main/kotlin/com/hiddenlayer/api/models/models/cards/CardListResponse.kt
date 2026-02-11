@@ -33,6 +33,7 @@ private constructor(
     private val source: JsonField<String>,
     private val aidrThreatLevel: JsonField<AidrThreatLevel>,
     private val modelScanHasError: JsonField<Boolean>,
+    private val policyStatus: JsonField<PolicyStatus>,
     private val securityPosture: JsonField<SecurityPosture>,
     private val tags: JsonField<Tags>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -67,6 +68,9 @@ private constructor(
         @JsonProperty("model_scan_has_error")
         @ExcludeMissing
         modelScanHasError: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("policy_status")
+        @ExcludeMissing
+        policyStatus: JsonField<PolicyStatus> = JsonMissing.of(),
         @JsonProperty("security_posture")
         @ExcludeMissing
         securityPosture: JsonField<SecurityPosture> = JsonMissing.of(),
@@ -83,6 +87,7 @@ private constructor(
         source,
         aidrThreatLevel,
         modelScanHasError,
+        policyStatus,
         securityPosture,
         tags,
         mutableMapOf(),
@@ -168,6 +173,15 @@ private constructor(
      */
     fun modelScanHasError(): Optional<Boolean> =
         modelScanHasError.getOptional("model_scan_has_error")
+
+    /**
+     * The status of the model's compliance with regard to any policies. A trailing asterisk
+     * indicates the model's status has been overridden.
+     *
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun policyStatus(): Optional<PolicyStatus> = policyStatus.getOptional("policy_status")
 
     /**
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -283,6 +297,15 @@ private constructor(
     fun _modelScanHasError(): JsonField<Boolean> = modelScanHasError
 
     /**
+     * Returns the raw JSON value of [policyStatus].
+     *
+     * Unlike [policyStatus], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("policy_status")
+    @ExcludeMissing
+    fun _policyStatus(): JsonField<PolicyStatus> = policyStatus
+
+    /**
      * Returns the raw JSON value of [securityPosture].
      *
      * Unlike [securityPosture], this method doesn't throw if the JSON field has an unexpected type.
@@ -345,6 +368,7 @@ private constructor(
         private var source: JsonField<String>? = null
         private var aidrThreatLevel: JsonField<AidrThreatLevel> = JsonMissing.of()
         private var modelScanHasError: JsonField<Boolean> = JsonMissing.of()
+        private var policyStatus: JsonField<PolicyStatus> = JsonMissing.of()
         private var securityPosture: JsonField<SecurityPosture> = JsonMissing.of()
         private var tags: JsonField<Tags> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -362,6 +386,7 @@ private constructor(
             source = cardListResponse.source
             aidrThreatLevel = cardListResponse.aidrThreatLevel
             modelScanHasError = cardListResponse.modelScanHasError
+            policyStatus = cardListResponse.policyStatus
             securityPosture = cardListResponse.securityPosture
             tags = cardListResponse.tags
             additionalProperties = cardListResponse.additionalProperties.toMutableMap()
@@ -516,6 +541,23 @@ private constructor(
             this.modelScanHasError = modelScanHasError
         }
 
+        /**
+         * The status of the model's compliance with regard to any policies. A trailing asterisk
+         * indicates the model's status has been overridden.
+         */
+        fun policyStatus(policyStatus: PolicyStatus) = policyStatus(JsonField.of(policyStatus))
+
+        /**
+         * Sets [Builder.policyStatus] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.policyStatus] with a well-typed [PolicyStatus] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun policyStatus(policyStatus: JsonField<PolicyStatus>) = apply {
+            this.policyStatus = policyStatus
+        }
+
         fun securityPosture(securityPosture: SecurityPosture) =
             securityPosture(JsonField.of(securityPosture))
 
@@ -592,6 +634,7 @@ private constructor(
                 checkRequired("source", source),
                 aidrThreatLevel,
                 modelScanHasError,
+                policyStatus,
                 securityPosture,
                 tags,
                 additionalProperties.toMutableMap(),
@@ -616,6 +659,7 @@ private constructor(
         source()
         aidrThreatLevel().ifPresent { it.validate() }
         modelScanHasError()
+        policyStatus().ifPresent { it.validate() }
         securityPosture().ifPresent { it.validate() }
         tags().ifPresent { it.validate() }
         validated = true
@@ -647,6 +691,7 @@ private constructor(
             (if (source.asKnown().isPresent) 1 else 0) +
             (aidrThreatLevel.asKnown().getOrNull()?.validity() ?: 0) +
             (if (modelScanHasError.asKnown().isPresent) 1 else 0) +
+            (policyStatus.asKnown().getOrNull()?.validity() ?: 0) +
             (securityPosture.asKnown().getOrNull()?.validity() ?: 0) +
             (tags.asKnown().getOrNull()?.validity() ?: 0)
 
@@ -1257,6 +1302,152 @@ private constructor(
         override fun toString() = value.toString()
     }
 
+    /**
+     * The status of the model's compliance with regard to any policies. A trailing asterisk
+     * indicates the model's status has been overridden.
+     */
+    class PolicyStatus @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val COMPLIANT = of("COMPLIANT")
+
+            @JvmField val COMPLIANT = of("COMPLIANT*")
+
+            @JvmField val NONCOMPLIANT = of("NONCOMPLIANT")
+
+            @JvmField val NONCOMPLIANT = of("NONCOMPLIANT*")
+
+            @JvmStatic fun of(value: String) = PolicyStatus(JsonField.of(value))
+        }
+
+        /** An enum containing [PolicyStatus]'s known values. */
+        enum class Known {
+            COMPLIANT,
+            COMPLIANT,
+            NONCOMPLIANT,
+            NONCOMPLIANT,
+        }
+
+        /**
+         * An enum containing [PolicyStatus]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [PolicyStatus] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            COMPLIANT,
+            COMPLIANT,
+            NONCOMPLIANT,
+            NONCOMPLIANT,
+            /**
+             * An enum member indicating that [PolicyStatus] was instantiated with an unknown value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                COMPLIANT -> Value.COMPLIANT
+                COMPLIANT -> Value.COMPLIANT
+                NONCOMPLIANT -> Value.NONCOMPLIANT
+                NONCOMPLIANT -> Value.NONCOMPLIANT
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                COMPLIANT -> Known.COMPLIANT
+                COMPLIANT -> Known.COMPLIANT
+                NONCOMPLIANT -> Known.NONCOMPLIANT
+                NONCOMPLIANT -> Known.NONCOMPLIANT
+                else -> throw HiddenLayerInvalidDataException("Unknown PolicyStatus: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws HiddenLayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                HiddenLayerInvalidDataException("Value is not a String")
+            }
+
+        private var validated: Boolean = false
+
+        fun validate(): PolicyStatus = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: HiddenLayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is PolicyStatus && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
     class SecurityPosture
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
@@ -1558,6 +1749,7 @@ private constructor(
             source == other.source &&
             aidrThreatLevel == other.aidrThreatLevel &&
             modelScanHasError == other.modelScanHasError &&
+            policyStatus == other.policyStatus &&
             securityPosture == other.securityPosture &&
             tags == other.tags &&
             additionalProperties == other.additionalProperties
@@ -1576,6 +1768,7 @@ private constructor(
             source,
             aidrThreatLevel,
             modelScanHasError,
+            policyStatus,
             securityPosture,
             tags,
             additionalProperties,
@@ -1585,5 +1778,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "CardListResponse{activeVersionCount=$activeVersionCount, attackMonitoringThreatLevel=$attackMonitoringThreatLevel, createdAt=$createdAt, hasGenealogy=$hasGenealogy, modelId=$modelId, modelScanSeverity=$modelScanSeverity, modelScanThreatLevel=$modelScanThreatLevel, plaintextName=$plaintextName, source=$source, aidrThreatLevel=$aidrThreatLevel, modelScanHasError=$modelScanHasError, securityPosture=$securityPosture, tags=$tags, additionalProperties=$additionalProperties}"
+        "CardListResponse{activeVersionCount=$activeVersionCount, attackMonitoringThreatLevel=$attackMonitoringThreatLevel, createdAt=$createdAt, hasGenealogy=$hasGenealogy, modelId=$modelId, modelScanSeverity=$modelScanSeverity, modelScanThreatLevel=$modelScanThreatLevel, plaintextName=$plaintextName, source=$source, aidrThreatLevel=$aidrThreatLevel, modelScanHasError=$modelScanHasError, policyStatus=$policyStatus, securityPosture=$securityPosture, tags=$tags, additionalProperties=$additionalProperties}"
 }

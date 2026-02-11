@@ -25,6 +25,7 @@ internal class CardListResponseTest {
                 .source("azure:datascience-workspace")
                 .aidrThreatLevel(CardListResponse.AidrThreatLevel.HIGH)
                 .modelScanHasError(true)
+                .policyStatus(CardListResponse.PolicyStatus.COMPLIANT)
                 .securityPosture(
                     CardListResponse.SecurityPosture.builder()
                         .attackMonitoring(true)
@@ -53,6 +54,8 @@ internal class CardListResponseTest {
         assertThat(cardListResponse.aidrThreatLevel())
             .contains(CardListResponse.AidrThreatLevel.HIGH)
         assertThat(cardListResponse.modelScanHasError()).contains(true)
+        assertThat(cardListResponse.policyStatus())
+            .contains(CardListResponse.PolicyStatus.COMPLIANT)
         assertThat(cardListResponse.securityPosture())
             .contains(
                 CardListResponse.SecurityPosture.builder()
@@ -84,6 +87,7 @@ internal class CardListResponseTest {
                 .source("azure:datascience-workspace")
                 .aidrThreatLevel(CardListResponse.AidrThreatLevel.HIGH)
                 .modelScanHasError(true)
+                .policyStatus(CardListResponse.PolicyStatus.COMPLIANT)
                 .securityPosture(
                     CardListResponse.SecurityPosture.builder()
                         .attackMonitoring(true)
