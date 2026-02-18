@@ -14,6 +14,7 @@ internal class FileAddParamsTest {
             .scanId("00000000-0000-0000-0000-000000000000")
             .fileContentLength(12345L)
             .fileName("exampleFile.txt")
+            .fileNameBase64("file-name-base64")
             .build()
     }
 
@@ -23,7 +24,6 @@ internal class FileAddParamsTest {
             FileAddParams.builder()
                 .scanId("00000000-0000-0000-0000-000000000000")
                 .fileContentLength(12345L)
-                .fileName("exampleFile.txt")
                 .build()
 
         assertThat(params._pathParam(0)).isEqualTo("00000000-0000-0000-0000-000000000000")
@@ -38,6 +38,7 @@ internal class FileAddParamsTest {
                 .scanId("00000000-0000-0000-0000-000000000000")
                 .fileContentLength(12345L)
                 .fileName("exampleFile.txt")
+                .fileNameBase64("file-name-base64")
                 .build()
 
         val headers = params._headers()
@@ -47,7 +48,21 @@ internal class FileAddParamsTest {
                 Headers.builder()
                     .put("file-content-length", "12345")
                     .put("file-name", "exampleFile.txt")
+                    .put("file-name-base64", "file-name-base64")
                     .build()
             )
+    }
+
+    @Test
+    fun headersWithoutOptionalFields() {
+        val params =
+            FileAddParams.builder()
+                .scanId("00000000-0000-0000-0000-000000000000")
+                .fileContentLength(12345L)
+                .build()
+
+        val headers = params._headers()
+
+        assertThat(headers).isEqualTo(Headers.builder().put("file-content-length", "12345").build())
     }
 }
