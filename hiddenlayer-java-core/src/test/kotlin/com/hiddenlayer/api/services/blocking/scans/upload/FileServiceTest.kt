@@ -29,6 +29,7 @@ internal class FileServiceTest {
                     .scanId("00000000-0000-0000-0000-000000000000")
                     .fileContentLength(12345L)
                     .fileName("exampleFile.txt")
+                    .fileNameBase64("file-name-base64")
                     .build()
             )
 
