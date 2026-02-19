@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 
 internal class UploadServiceTest {
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun completeAll() {
         val client = HiddenLayerOkHttpClient.builder().bearerToken("My Bearer Token").build()
@@ -20,7 +20,7 @@ internal class UploadServiceTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun start() {
         val client = HiddenLayerOkHttpClient.builder().bearerToken("My Bearer Token").build()

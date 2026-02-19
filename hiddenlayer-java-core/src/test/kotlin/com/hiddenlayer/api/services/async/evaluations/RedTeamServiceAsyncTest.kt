@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 
 internal class RedTeamServiceAsyncTest {
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun create() {
         val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
@@ -42,7 +42,7 @@ internal class RedTeamServiceAsyncTest {
         redTeam.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun retrieveEvaluationResults() {
         val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
@@ -54,7 +54,7 @@ internal class RedTeamServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun retrieveNextAction() {
         val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
@@ -66,7 +66,7 @@ internal class RedTeamServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun retrieveStatus() {
         val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
@@ -78,7 +78,7 @@ internal class RedTeamServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun submitTargetResponse() {
         val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
@@ -97,7 +97,7 @@ internal class RedTeamServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun terminate() {
         val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
