@@ -2,7 +2,6 @@
 
 package com.hiddenlayer.api.services.async
 
-import com.hiddenlayer.api.TestServerExtension
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClientAsync
 import com.hiddenlayer.api.core.JsonValue
 import com.hiddenlayer.api.models.sensors.SensorCreateParams
@@ -11,19 +10,13 @@ import com.hiddenlayer.api.models.sensors.SensorUpdateParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class SensorServiceAsyncTest {
 
     @Disabled("Prism tests are disabled")
     @Test
     fun create() {
-        val client =
-            HiddenLayerOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
         val sensorServiceAsync = client.sensors()
 
         val sensorFuture =
@@ -48,11 +41,7 @@ internal class SensorServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun retrieve() {
-        val client =
-            HiddenLayerOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
         val sensorServiceAsync = client.sensors()
 
         val sensorFuture = sensorServiceAsync.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -64,11 +53,7 @@ internal class SensorServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun update() {
-        val client =
-            HiddenLayerOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
         val sensorServiceAsync = client.sensors()
 
         val sensorFuture =
@@ -92,11 +77,7 @@ internal class SensorServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun delete() {
-        val client =
-            HiddenLayerOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
         val sensorServiceAsync = client.sensors()
 
         val future = sensorServiceAsync.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -107,11 +88,7 @@ internal class SensorServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun query() {
-        val client =
-            HiddenLayerOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
         val sensorServiceAsync = client.sensors()
 
         val responseFuture =

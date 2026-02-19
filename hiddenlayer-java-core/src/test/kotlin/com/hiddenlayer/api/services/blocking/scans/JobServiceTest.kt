@@ -2,7 +2,6 @@
 
 package com.hiddenlayer.api.services.blocking.scans
 
-import com.hiddenlayer.api.TestServerExtension
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient
 import com.hiddenlayer.api.models.scans.jobs.JobListParams
 import com.hiddenlayer.api.models.scans.jobs.JobRequestParams
@@ -10,19 +9,13 @@ import com.hiddenlayer.api.models.scans.jobs.JobRetrieveParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class JobServiceTest {
 
     @Disabled("Prism tests are disabled")
     @Test
     fun retrieve() {
-        val client =
-            HiddenLayerOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
+        val client = HiddenLayerOkHttpClient.builder().bearerToken("My Bearer Token").build()
         val jobService = client.scans().jobs()
 
         val scanReport =
@@ -39,11 +32,7 @@ internal class JobServiceTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun list() {
-        val client =
-            HiddenLayerOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
+        val client = HiddenLayerOkHttpClient.builder().bearerToken("My Bearer Token").build()
         val jobService = client.scans().jobs()
 
         val jobs =
@@ -81,11 +70,7 @@ internal class JobServiceTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun request() {
-        val client =
-            HiddenLayerOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
+        val client = HiddenLayerOkHttpClient.builder().bearerToken("My Bearer Token").build()
         val jobService = client.scans().jobs()
 
         val scanJob =

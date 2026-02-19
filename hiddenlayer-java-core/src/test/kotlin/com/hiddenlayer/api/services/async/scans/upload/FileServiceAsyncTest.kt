@@ -2,25 +2,18 @@
 
 package com.hiddenlayer.api.services.async.scans.upload
 
-import com.hiddenlayer.api.TestServerExtension
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClientAsync
 import com.hiddenlayer.api.models.scans.upload.file.FileAddParams
 import com.hiddenlayer.api.models.scans.upload.file.FileCompleteParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class FileServiceAsyncTest {
 
     @Disabled("Prism tests are disabled")
     @Test
     fun add() {
-        val client =
-            HiddenLayerOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
         val fileServiceAsync = client.scans().upload().file()
 
         val responseFuture =
@@ -40,11 +33,7 @@ internal class FileServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun complete() {
-        val client =
-            HiddenLayerOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
         val fileServiceAsync = client.scans().upload().file()
 
         val responseFuture =
