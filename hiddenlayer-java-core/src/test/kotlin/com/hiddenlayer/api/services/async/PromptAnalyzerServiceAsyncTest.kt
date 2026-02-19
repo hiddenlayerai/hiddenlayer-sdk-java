@@ -2,24 +2,17 @@
 
 package com.hiddenlayer.api.services.async
 
-import com.hiddenlayer.api.TestServerExtension
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClientAsync
 import com.hiddenlayer.api.models.promptanalyzer.PromptAnalyzerCreateParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class PromptAnalyzerServiceAsyncTest {
 
     @Disabled("Prism tests are disabled")
     @Test
     fun create() {
-        val client =
-            HiddenLayerOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
         val promptAnalyzerServiceAsync = client.promptAnalyzer()
 
         val promptAnalyzerFuture =
