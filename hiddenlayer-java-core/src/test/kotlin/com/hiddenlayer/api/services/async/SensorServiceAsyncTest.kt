@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
 
 internal class SensorServiceAsyncTest {
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun create() {
         val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
@@ -38,7 +38,7 @@ internal class SensorServiceAsyncTest {
         sensor.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun retrieve() {
         val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
@@ -50,7 +50,7 @@ internal class SensorServiceAsyncTest {
         sensor.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun update() {
         val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
@@ -74,7 +74,7 @@ internal class SensorServiceAsyncTest {
         sensor.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun delete() {
         val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
@@ -85,7 +85,7 @@ internal class SensorServiceAsyncTest {
         val response = future.get()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun query() {
         val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()

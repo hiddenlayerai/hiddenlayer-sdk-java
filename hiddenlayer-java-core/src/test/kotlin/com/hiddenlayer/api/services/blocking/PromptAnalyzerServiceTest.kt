@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 
 internal class PromptAnalyzerServiceTest {
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun create() {
         val client = HiddenLayerOkHttpClient.builder().bearerToken("My Bearer Token").build()
