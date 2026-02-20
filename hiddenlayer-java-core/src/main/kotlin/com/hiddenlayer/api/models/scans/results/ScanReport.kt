@@ -7909,7 +7909,7 @@ private constructor(
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val contributorTrustLevel: JsonField<String>,
-        private val countryOfOrigin: JsonField<List<String>>,
+        private val geographicFootprint: JsonField<List<String>>,
         private val licenses: JsonField<List<License>>,
         private val usagePolicies: JsonField<List<UsagePolicy>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -7920,16 +7920,22 @@ private constructor(
             @JsonProperty("contributor_trust_level")
             @ExcludeMissing
             contributorTrustLevel: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("country_of_origin")
+            @JsonProperty("geographic_footprint")
             @ExcludeMissing
-            countryOfOrigin: JsonField<List<String>> = JsonMissing.of(),
+            geographicFootprint: JsonField<List<String>> = JsonMissing.of(),
             @JsonProperty("licenses")
             @ExcludeMissing
             licenses: JsonField<List<License>> = JsonMissing.of(),
             @JsonProperty("usage_policies")
             @ExcludeMissing
             usagePolicies: JsonField<List<UsagePolicy>> = JsonMissing.of(),
-        ) : this(contributorTrustLevel, countryOfOrigin, licenses, usagePolicies, mutableMapOf())
+        ) : this(
+            contributorTrustLevel,
+            geographicFootprint,
+            licenses,
+            usagePolicies,
+            mutableMapOf(),
+        )
 
         /**
          * Trust level of the model contributor
@@ -7946,8 +7952,8 @@ private constructor(
          * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun countryOfOrigin(): Optional<List<String>> =
-            countryOfOrigin.getOptional("country_of_origin")
+        fun geographicFootprint(): Optional<List<String>> =
+            geographicFootprint.getOptional("geographic_footprint")
 
         /**
          * List of licenses associated with the model
@@ -7977,14 +7983,14 @@ private constructor(
         fun _contributorTrustLevel(): JsonField<String> = contributorTrustLevel
 
         /**
-         * Returns the raw JSON value of [countryOfOrigin].
+         * Returns the raw JSON value of [geographicFootprint].
          *
-         * Unlike [countryOfOrigin], this method doesn't throw if the JSON field has an unexpected
-         * type.
+         * Unlike [geographicFootprint], this method doesn't throw if the JSON field has an
+         * unexpected type.
          */
-        @JsonProperty("country_of_origin")
+        @JsonProperty("geographic_footprint")
         @ExcludeMissing
-        fun _countryOfOrigin(): JsonField<List<String>> = countryOfOrigin
+        fun _geographicFootprint(): JsonField<List<String>> = geographicFootprint
 
         /**
          * Returns the raw JSON value of [licenses].
@@ -8027,7 +8033,7 @@ private constructor(
         class Builder internal constructor() {
 
             private var contributorTrustLevel: JsonField<String> = JsonMissing.of()
-            private var countryOfOrigin: JsonField<MutableList<String>>? = null
+            private var geographicFootprint: JsonField<MutableList<String>>? = null
             private var licenses: JsonField<MutableList<License>>? = null
             private var usagePolicies: JsonField<MutableList<UsagePolicy>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -8035,7 +8041,7 @@ private constructor(
             @JvmSynthetic
             internal fun from(intelligence: Intelligence) = apply {
                 contributorTrustLevel = intelligence.contributorTrustLevel
-                countryOfOrigin = intelligence.countryOfOrigin.map { it.toMutableList() }
+                geographicFootprint = intelligence.geographicFootprint.map { it.toMutableList() }
                 licenses = intelligence.licenses.map { it.toMutableList() }
                 usagePolicies = intelligence.usagePolicies.map { it.toMutableList() }
                 additionalProperties = intelligence.additionalProperties.toMutableMap()
@@ -8057,29 +8063,29 @@ private constructor(
             }
 
             /** List of countries where the model originated */
-            fun countryOfOrigin(countryOfOrigin: List<String>) =
-                countryOfOrigin(JsonField.of(countryOfOrigin))
+            fun geographicFootprint(geographicFootprint: List<String>) =
+                geographicFootprint(JsonField.of(geographicFootprint))
 
             /**
-             * Sets [Builder.countryOfOrigin] to an arbitrary JSON value.
+             * Sets [Builder.geographicFootprint] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.countryOfOrigin] with a well-typed `List<String>`
-             * value instead. This method is primarily for setting the field to an undocumented or
-             * not yet supported value.
+             * You should usually call [Builder.geographicFootprint] with a well-typed
+             * `List<String>` value instead. This method is primarily for setting the field to an
+             * undocumented or not yet supported value.
              */
-            fun countryOfOrigin(countryOfOrigin: JsonField<List<String>>) = apply {
-                this.countryOfOrigin = countryOfOrigin.map { it.toMutableList() }
+            fun geographicFootprint(geographicFootprint: JsonField<List<String>>) = apply {
+                this.geographicFootprint = geographicFootprint.map { it.toMutableList() }
             }
 
             /**
-             * Adds a single [String] to [Builder.countryOfOrigin].
+             * Adds a single [String] to [Builder.geographicFootprint].
              *
              * @throws IllegalStateException if the field was previously set to a non-list.
              */
-            fun addCountryOfOrigin(countryOfOrigin: String) = apply {
-                this.countryOfOrigin =
-                    (this.countryOfOrigin ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("countryOfOrigin", it).add(countryOfOrigin)
+            fun addGeographicFootprint(geographicFootprint: String) = apply {
+                this.geographicFootprint =
+                    (this.geographicFootprint ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("geographicFootprint", it).add(geographicFootprint)
                     }
             }
 
@@ -8163,7 +8169,7 @@ private constructor(
             fun build(): Intelligence =
                 Intelligence(
                     contributorTrustLevel,
-                    (countryOfOrigin ?: JsonMissing.of()).map { it.toImmutable() },
+                    (geographicFootprint ?: JsonMissing.of()).map { it.toImmutable() },
                     (licenses ?: JsonMissing.of()).map { it.toImmutable() },
                     (usagePolicies ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
@@ -8178,7 +8184,7 @@ private constructor(
             }
 
             contributorTrustLevel()
-            countryOfOrigin()
+            geographicFootprint()
             licenses().ifPresent { it.forEach { it.validate() } }
             usagePolicies().ifPresent { it.forEach { it.validate() } }
             validated = true
@@ -8201,7 +8207,7 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (contributorTrustLevel.asKnown().isPresent) 1 else 0) +
-                (countryOfOrigin.asKnown().getOrNull()?.size ?: 0) +
+                (geographicFootprint.asKnown().getOrNull()?.size ?: 0) +
                 (licenses.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                 (usagePolicies.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
@@ -8620,7 +8626,7 @@ private constructor(
 
             return other is Intelligence &&
                 contributorTrustLevel == other.contributorTrustLevel &&
-                countryOfOrigin == other.countryOfOrigin &&
+                geographicFootprint == other.geographicFootprint &&
                 licenses == other.licenses &&
                 usagePolicies == other.usagePolicies &&
                 additionalProperties == other.additionalProperties
@@ -8629,7 +8635,7 @@ private constructor(
         private val hashCode: Int by lazy {
             Objects.hash(
                 contributorTrustLevel,
-                countryOfOrigin,
+                geographicFootprint,
                 licenses,
                 usagePolicies,
                 additionalProperties,
@@ -8639,7 +8645,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Intelligence{contributorTrustLevel=$contributorTrustLevel, countryOfOrigin=$countryOfOrigin, licenses=$licenses, usagePolicies=$usagePolicies, additionalProperties=$additionalProperties}"
+            "Intelligence{contributorTrustLevel=$contributorTrustLevel, geographicFootprint=$geographicFootprint, licenses=$licenses, usagePolicies=$usagePolicies, additionalProperties=$additionalProperties}"
     }
 
     /**

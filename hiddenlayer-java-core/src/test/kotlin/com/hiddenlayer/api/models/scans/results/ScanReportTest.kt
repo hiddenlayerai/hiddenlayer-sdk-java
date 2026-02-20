@@ -139,8 +139,8 @@ internal class ScanReportTest {
                 .intelligence(
                     ScanReport.Intelligence.builder()
                         .contributorTrustLevel("high")
-                        .addCountryOfOrigin("US")
-                        .addCountryOfOrigin("GB")
+                        .addGeographicFootprint("US")
+                        .addGeographicFootprint("GB")
                         .addLicense(
                             ScanReport.Intelligence.License.builder()
                                 .name("Apache-2.0")
@@ -287,8 +287,8 @@ internal class ScanReportTest {
             .contains(
                 ScanReport.Intelligence.builder()
                     .contributorTrustLevel("high")
-                    .addCountryOfOrigin("US")
-                    .addCountryOfOrigin("GB")
+                    .addGeographicFootprint("US")
+                    .addGeographicFootprint("GB")
                     .addLicense(
                         ScanReport.Intelligence.License.builder()
                             .name("Apache-2.0")
@@ -435,8 +435,8 @@ internal class ScanReportTest {
                 .intelligence(
                     ScanReport.Intelligence.builder()
                         .contributorTrustLevel("high")
-                        .addCountryOfOrigin("US")
-                        .addCountryOfOrigin("GB")
+                        .addGeographicFootprint("US")
+                        .addGeographicFootprint("GB")
                         .addLicense(
                             ScanReport.Intelligence.License.builder()
                                 .name("Apache-2.0")
