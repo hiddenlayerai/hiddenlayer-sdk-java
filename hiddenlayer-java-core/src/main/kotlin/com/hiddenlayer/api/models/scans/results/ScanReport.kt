@@ -7909,6 +7909,7 @@ private constructor(
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val contributorTrustLevel: JsonField<String>,
+        private val countryOfOrigin: JsonField<String>,
         private val geographicFootprint: JsonField<List<String>>,
         private val licenses: JsonField<List<License>>,
         private val usagePolicies: JsonField<List<UsagePolicy>>,
@@ -7920,6 +7921,9 @@ private constructor(
             @JsonProperty("contributor_trust_level")
             @ExcludeMissing
             contributorTrustLevel: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("country_of_origin")
+            @ExcludeMissing
+            countryOfOrigin: JsonField<String> = JsonMissing.of(),
             @JsonProperty("geographic_footprint")
             @ExcludeMissing
             geographicFootprint: JsonField<List<String>> = JsonMissing.of(),
@@ -7931,6 +7935,7 @@ private constructor(
             usagePolicies: JsonField<List<UsagePolicy>> = JsonMissing.of(),
         ) : this(
             contributorTrustLevel,
+            countryOfOrigin,
             geographicFootprint,
             licenses,
             usagePolicies,
@@ -7945,6 +7950,14 @@ private constructor(
          */
         fun contributorTrustLevel(): Optional<String> =
             contributorTrustLevel.getOptional("contributor_trust_level")
+
+        /**
+         * ISO 3166-1 alpha-2 country code of the model's primary origin
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun countryOfOrigin(): Optional<String> = countryOfOrigin.getOptional("country_of_origin")
 
         /**
          * List of countries where the model originated
@@ -7981,6 +7994,16 @@ private constructor(
         @JsonProperty("contributor_trust_level")
         @ExcludeMissing
         fun _contributorTrustLevel(): JsonField<String> = contributorTrustLevel
+
+        /**
+         * Returns the raw JSON value of [countryOfOrigin].
+         *
+         * Unlike [countryOfOrigin], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("country_of_origin")
+        @ExcludeMissing
+        fun _countryOfOrigin(): JsonField<String> = countryOfOrigin
 
         /**
          * Returns the raw JSON value of [geographicFootprint].
@@ -8033,6 +8056,7 @@ private constructor(
         class Builder internal constructor() {
 
             private var contributorTrustLevel: JsonField<String> = JsonMissing.of()
+            private var countryOfOrigin: JsonField<String> = JsonMissing.of()
             private var geographicFootprint: JsonField<MutableList<String>>? = null
             private var licenses: JsonField<MutableList<License>>? = null
             private var usagePolicies: JsonField<MutableList<UsagePolicy>>? = null
@@ -8041,6 +8065,7 @@ private constructor(
             @JvmSynthetic
             internal fun from(intelligence: Intelligence) = apply {
                 contributorTrustLevel = intelligence.contributorTrustLevel
+                countryOfOrigin = intelligence.countryOfOrigin
                 geographicFootprint = intelligence.geographicFootprint.map { it.toMutableList() }
                 licenses = intelligence.licenses.map { it.toMutableList() }
                 usagePolicies = intelligence.usagePolicies.map { it.toMutableList() }
@@ -8060,6 +8085,21 @@ private constructor(
              */
             fun contributorTrustLevel(contributorTrustLevel: JsonField<String>) = apply {
                 this.contributorTrustLevel = contributorTrustLevel
+            }
+
+            /** ISO 3166-1 alpha-2 country code of the model's primary origin */
+            fun countryOfOrigin(countryOfOrigin: String) =
+                countryOfOrigin(JsonField.of(countryOfOrigin))
+
+            /**
+             * Sets [Builder.countryOfOrigin] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.countryOfOrigin] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun countryOfOrigin(countryOfOrigin: JsonField<String>) = apply {
+                this.countryOfOrigin = countryOfOrigin
             }
 
             /** List of countries where the model originated */
@@ -8169,6 +8209,7 @@ private constructor(
             fun build(): Intelligence =
                 Intelligence(
                     contributorTrustLevel,
+                    countryOfOrigin,
                     (geographicFootprint ?: JsonMissing.of()).map { it.toImmutable() },
                     (licenses ?: JsonMissing.of()).map { it.toImmutable() },
                     (usagePolicies ?: JsonMissing.of()).map { it.toImmutable() },
@@ -8184,6 +8225,7 @@ private constructor(
             }
 
             contributorTrustLevel()
+            countryOfOrigin()
             geographicFootprint()
             licenses().ifPresent { it.forEach { it.validate() } }
             usagePolicies().ifPresent { it.forEach { it.validate() } }
@@ -8207,6 +8249,7 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (contributorTrustLevel.asKnown().isPresent) 1 else 0) +
+                (if (countryOfOrigin.asKnown().isPresent) 1 else 0) +
                 (geographicFootprint.asKnown().getOrNull()?.size ?: 0) +
                 (licenses.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                 (usagePolicies.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
@@ -8626,6 +8669,7 @@ private constructor(
 
             return other is Intelligence &&
                 contributorTrustLevel == other.contributorTrustLevel &&
+                countryOfOrigin == other.countryOfOrigin &&
                 geographicFootprint == other.geographicFootprint &&
                 licenses == other.licenses &&
                 usagePolicies == other.usagePolicies &&
@@ -8635,6 +8679,7 @@ private constructor(
         private val hashCode: Int by lazy {
             Objects.hash(
                 contributorTrustLevel,
+                countryOfOrigin,
                 geographicFootprint,
                 licenses,
                 usagePolicies,
@@ -8645,7 +8690,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Intelligence{contributorTrustLevel=$contributorTrustLevel, geographicFootprint=$geographicFootprint, licenses=$licenses, usagePolicies=$usagePolicies, additionalProperties=$additionalProperties}"
+            "Intelligence{contributorTrustLevel=$contributorTrustLevel, countryOfOrigin=$countryOfOrigin, geographicFootprint=$geographicFootprint, licenses=$licenses, usagePolicies=$usagePolicies, additionalProperties=$additionalProperties}"
     }
 
     /**
