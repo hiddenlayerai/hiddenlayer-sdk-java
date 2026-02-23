@@ -66,6 +66,7 @@ class ResultServiceAsyncImpl internal constructor(private val clientOptions: Cli
                     .method(HttpMethod.GET)
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("scan", "v3", "results", params._pathParam(0), "sarif")
+                    .putHeader("Accept", "application/sarif+json")
                     .build()
                     .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
