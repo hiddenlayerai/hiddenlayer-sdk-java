@@ -139,6 +139,7 @@ internal class ScanReportTest {
                 .intelligence(
                     ScanReport.Intelligence.builder()
                         .contributorTrustLevel("high")
+                        .countryOfOrigin("US")
                         .addGeographicFootprint("US")
                         .addGeographicFootprint("GB")
                         .addLicense(
@@ -287,6 +288,7 @@ internal class ScanReportTest {
             .contains(
                 ScanReport.Intelligence.builder()
                     .contributorTrustLevel("high")
+                    .countryOfOrigin("US")
                     .addGeographicFootprint("US")
                     .addGeographicFootprint("GB")
                     .addLicense(
@@ -435,6 +437,7 @@ internal class ScanReportTest {
                 .intelligence(
                     ScanReport.Intelligence.builder()
                         .contributorTrustLevel("high")
+                        .countryOfOrigin("US")
                         .addGeographicFootprint("US")
                         .addGeographicFootprint("GB")
                         .addLicense(
