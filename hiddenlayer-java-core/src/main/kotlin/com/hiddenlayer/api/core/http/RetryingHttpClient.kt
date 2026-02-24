@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package com.hiddenlayer.api.core.http
 
 import com.hiddenlayer.api.core.DefaultSleeper
