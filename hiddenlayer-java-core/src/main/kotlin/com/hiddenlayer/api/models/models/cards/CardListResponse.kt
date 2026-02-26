@@ -1323,11 +1323,11 @@ private constructor(
 
             @JvmField val COMPLIANT = of("COMPLIANT")
 
-            @JvmField val COMPLIANT = of("COMPLIANT*")
+            @JvmField val COMPLIANT_OVERRIDDEN = of("COMPLIANT_OVERRIDDEN")
 
             @JvmField val NONCOMPLIANT = of("NONCOMPLIANT")
 
-            @JvmField val NONCOMPLIANT = of("NONCOMPLIANT*")
+            @JvmField val NONCOMPLIANT_OVERRIDDEN = of("NONCOMPLIANT_OVERRIDDEN")
 
             @JvmStatic fun of(value: String) = PolicyStatus(JsonField.of(value))
         }
@@ -1335,9 +1335,9 @@ private constructor(
         /** An enum containing [PolicyStatus]'s known values. */
         enum class Known {
             COMPLIANT,
-            COMPLIANT,
+            COMPLIANT_OVERRIDDEN,
             NONCOMPLIANT,
-            NONCOMPLIANT,
+            NONCOMPLIANT_OVERRIDDEN,
         }
 
         /**
@@ -1351,9 +1351,9 @@ private constructor(
          */
         enum class Value {
             COMPLIANT,
-            COMPLIANT,
+            COMPLIANT_OVERRIDDEN,
             NONCOMPLIANT,
-            NONCOMPLIANT,
+            NONCOMPLIANT_OVERRIDDEN,
             /**
              * An enum member indicating that [PolicyStatus] was instantiated with an unknown value.
              */
@@ -1370,9 +1370,9 @@ private constructor(
         fun value(): Value =
             when (this) {
                 COMPLIANT -> Value.COMPLIANT
-                COMPLIANT -> Value.COMPLIANT
+                COMPLIANT_OVERRIDDEN -> Value.COMPLIANT_OVERRIDDEN
                 NONCOMPLIANT -> Value.NONCOMPLIANT
-                NONCOMPLIANT -> Value.NONCOMPLIANT
+                NONCOMPLIANT_OVERRIDDEN -> Value.NONCOMPLIANT_OVERRIDDEN
                 else -> Value._UNKNOWN
             }
 
@@ -1388,9 +1388,9 @@ private constructor(
         fun known(): Known =
             when (this) {
                 COMPLIANT -> Known.COMPLIANT
-                COMPLIANT -> Known.COMPLIANT
+                COMPLIANT_OVERRIDDEN -> Known.COMPLIANT_OVERRIDDEN
                 NONCOMPLIANT -> Known.NONCOMPLIANT
-                NONCOMPLIANT -> Known.NONCOMPLIANT
+                NONCOMPLIANT_OVERRIDDEN -> Known.NONCOMPLIANT_OVERRIDDEN
                 else -> throw HiddenLayerInvalidDataException("Unknown PolicyStatus: $value")
             }
 
