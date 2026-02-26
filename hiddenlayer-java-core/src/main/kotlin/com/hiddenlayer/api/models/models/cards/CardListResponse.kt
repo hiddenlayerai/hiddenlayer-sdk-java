@@ -32,6 +32,7 @@ private constructor(
     private val plaintextName: JsonField<String>,
     private val source: JsonField<String>,
     private val aidrThreatLevel: JsonField<AidrThreatLevel>,
+    private val latestScanId: JsonField<String>,
     private val modelScanHasError: JsonField<Boolean>,
     private val policyStatus: JsonField<PolicyStatus>,
     private val securityPosture: JsonField<SecurityPosture>,
@@ -65,6 +66,9 @@ private constructor(
         @JsonProperty("aidr_threat_level")
         @ExcludeMissing
         aidrThreatLevel: JsonField<AidrThreatLevel> = JsonMissing.of(),
+        @JsonProperty("latest_scan_id")
+        @ExcludeMissing
+        latestScanId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("model_scan_has_error")
         @ExcludeMissing
         modelScanHasError: JsonField<Boolean> = JsonMissing.of(),
@@ -86,6 +90,7 @@ private constructor(
         plaintextName,
         source,
         aidrThreatLevel,
+        latestScanId,
         modelScanHasError,
         policyStatus,
         securityPosture,
@@ -164,6 +169,15 @@ private constructor(
      */
     fun aidrThreatLevel(): Optional<AidrThreatLevel> =
         aidrThreatLevel.getOptional("aidr_threat_level")
+
+    /**
+     * The ID of the most recent model scanner scan for this model's latest version. Absent if no
+     * scan has been run.
+     *
+     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun latestScanId(): Optional<String> = latestScanId.getOptional("latest_scan_id")
 
     /**
      * True if the model's latest scan has an error
@@ -287,6 +301,15 @@ private constructor(
     fun _aidrThreatLevel(): JsonField<AidrThreatLevel> = aidrThreatLevel
 
     /**
+     * Returns the raw JSON value of [latestScanId].
+     *
+     * Unlike [latestScanId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("latest_scan_id")
+    @ExcludeMissing
+    fun _latestScanId(): JsonField<String> = latestScanId
+
+    /**
      * Returns the raw JSON value of [modelScanHasError].
      *
      * Unlike [modelScanHasError], this method doesn't throw if the JSON field has an unexpected
@@ -367,6 +390,7 @@ private constructor(
         private var plaintextName: JsonField<String>? = null
         private var source: JsonField<String>? = null
         private var aidrThreatLevel: JsonField<AidrThreatLevel> = JsonMissing.of()
+        private var latestScanId: JsonField<String> = JsonMissing.of()
         private var modelScanHasError: JsonField<Boolean> = JsonMissing.of()
         private var policyStatus: JsonField<PolicyStatus> = JsonMissing.of()
         private var securityPosture: JsonField<SecurityPosture> = JsonMissing.of()
@@ -385,6 +409,7 @@ private constructor(
             plaintextName = cardListResponse.plaintextName
             source = cardListResponse.source
             aidrThreatLevel = cardListResponse.aidrThreatLevel
+            latestScanId = cardListResponse.latestScanId
             modelScanHasError = cardListResponse.modelScanHasError
             policyStatus = cardListResponse.policyStatus
             securityPosture = cardListResponse.securityPosture
@@ -526,6 +551,23 @@ private constructor(
             this.aidrThreatLevel = aidrThreatLevel
         }
 
+        /**
+         * The ID of the most recent model scanner scan for this model's latest version. Absent if
+         * no scan has been run.
+         */
+        fun latestScanId(latestScanId: String) = latestScanId(JsonField.of(latestScanId))
+
+        /**
+         * Sets [Builder.latestScanId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.latestScanId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun latestScanId(latestScanId: JsonField<String>) = apply {
+            this.latestScanId = latestScanId
+        }
+
         /** True if the model's latest scan has an error */
         fun modelScanHasError(modelScanHasError: Boolean) =
             modelScanHasError(JsonField.of(modelScanHasError))
@@ -633,6 +675,7 @@ private constructor(
                 checkRequired("plaintextName", plaintextName),
                 checkRequired("source", source),
                 aidrThreatLevel,
+                latestScanId,
                 modelScanHasError,
                 policyStatus,
                 securityPosture,
@@ -658,6 +701,7 @@ private constructor(
         plaintextName()
         source()
         aidrThreatLevel().ifPresent { it.validate() }
+        latestScanId()
         modelScanHasError()
         policyStatus().ifPresent { it.validate() }
         securityPosture().ifPresent { it.validate() }
@@ -690,6 +734,7 @@ private constructor(
             (if (plaintextName.asKnown().isPresent) 1 else 0) +
             (if (source.asKnown().isPresent) 1 else 0) +
             (aidrThreatLevel.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (latestScanId.asKnown().isPresent) 1 else 0) +
             (if (modelScanHasError.asKnown().isPresent) 1 else 0) +
             (policyStatus.asKnown().getOrNull()?.validity() ?: 0) +
             (securityPosture.asKnown().getOrNull()?.validity() ?: 0) +
@@ -1748,6 +1793,7 @@ private constructor(
             plaintextName == other.plaintextName &&
             source == other.source &&
             aidrThreatLevel == other.aidrThreatLevel &&
+            latestScanId == other.latestScanId &&
             modelScanHasError == other.modelScanHasError &&
             policyStatus == other.policyStatus &&
             securityPosture == other.securityPosture &&
@@ -1767,6 +1813,7 @@ private constructor(
             plaintextName,
             source,
             aidrThreatLevel,
+            latestScanId,
             modelScanHasError,
             policyStatus,
             securityPosture,
@@ -1778,5 +1825,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "CardListResponse{activeVersionCount=$activeVersionCount, attackMonitoringThreatLevel=$attackMonitoringThreatLevel, createdAt=$createdAt, hasGenealogy=$hasGenealogy, modelId=$modelId, modelScanSeverity=$modelScanSeverity, modelScanThreatLevel=$modelScanThreatLevel, plaintextName=$plaintextName, source=$source, aidrThreatLevel=$aidrThreatLevel, modelScanHasError=$modelScanHasError, policyStatus=$policyStatus, securityPosture=$securityPosture, tags=$tags, additionalProperties=$additionalProperties}"
+        "CardListResponse{activeVersionCount=$activeVersionCount, attackMonitoringThreatLevel=$attackMonitoringThreatLevel, createdAt=$createdAt, hasGenealogy=$hasGenealogy, modelId=$modelId, modelScanSeverity=$modelScanSeverity, modelScanThreatLevel=$modelScanThreatLevel, plaintextName=$plaintextName, source=$source, aidrThreatLevel=$aidrThreatLevel, latestScanId=$latestScanId, modelScanHasError=$modelScanHasError, policyStatus=$policyStatus, securityPosture=$securityPosture, tags=$tags, additionalProperties=$additionalProperties}"
 }
