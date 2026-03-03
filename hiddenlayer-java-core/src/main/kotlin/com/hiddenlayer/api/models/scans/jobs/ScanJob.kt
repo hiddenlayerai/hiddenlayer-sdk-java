@@ -1749,6 +1749,8 @@ private constructor(
 
                         @JvmField val AWS_SAGEMAKER = of("AWS_SAGEMAKER")
 
+                        @JvmField val DATABRICKS = of("DATABRICKS")
+
                         @JvmStatic fun of(value: String) = Provider(JsonField.of(value))
                     }
 
@@ -1757,6 +1759,7 @@ private constructor(
                         AWS_BEDROCK,
                         AZURE_AI_FOUNDRY,
                         AWS_SAGEMAKER,
+                        DATABRICKS,
                     }
 
                     /**
@@ -1773,6 +1776,7 @@ private constructor(
                         AWS_BEDROCK,
                         AZURE_AI_FOUNDRY,
                         AWS_SAGEMAKER,
+                        DATABRICKS,
                         /**
                          * An enum member indicating that [Provider] was instantiated with an
                          * unknown value.
@@ -1792,6 +1796,7 @@ private constructor(
                             AWS_BEDROCK -> Value.AWS_BEDROCK
                             AZURE_AI_FOUNDRY -> Value.AZURE_AI_FOUNDRY
                             AWS_SAGEMAKER -> Value.AWS_SAGEMAKER
+                            DATABRICKS -> Value.DATABRICKS
                             else -> Value._UNKNOWN
                         }
 
@@ -1809,6 +1814,7 @@ private constructor(
                             AWS_BEDROCK -> Known.AWS_BEDROCK
                             AZURE_AI_FOUNDRY -> Known.AZURE_AI_FOUNDRY
                             AWS_SAGEMAKER -> Known.AWS_SAGEMAKER
+                            DATABRICKS -> Known.DATABRICKS
                             else ->
                                 throw HiddenLayerInvalidDataException("Unknown Provider: $value")
                         }
