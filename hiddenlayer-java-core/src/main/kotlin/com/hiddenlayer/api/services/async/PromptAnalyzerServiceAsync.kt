@@ -3,11 +3,6 @@
 package com.hiddenlayer.api.services.async
 
 import com.hiddenlayer.api.core.ClientOptions
-import com.hiddenlayer.api.core.RequestOptions
-import com.hiddenlayer.api.core.http.HttpResponseFor
-import com.hiddenlayer.api.models.promptanalyzer.PromptAnalyzerCreateParams
-import com.hiddenlayer.api.models.promptanalyzer.PromptAnalyzerCreateResponse
-import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
 interface PromptAnalyzerServiceAsync {
@@ -24,17 +19,6 @@ interface PromptAnalyzerServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): PromptAnalyzerServiceAsync
 
-    /** Analyze LLM Prompt and Response */
-    fun create(
-        params: PromptAnalyzerCreateParams
-    ): CompletableFuture<PromptAnalyzerCreateResponse> = create(params, RequestOptions.none())
-
-    /** @see create */
-    fun create(
-        params: PromptAnalyzerCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<PromptAnalyzerCreateResponse>
-
     /**
      * A view of [PromptAnalyzerServiceAsync] that provides access to raw HTTP responses for each
      * method.
@@ -49,20 +33,5 @@ interface PromptAnalyzerServiceAsync {
         fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): PromptAnalyzerServiceAsync.WithRawResponse
-
-        /**
-         * Returns a raw HTTP response for `post /api/v1/submit/prompt-analyzer`, but is otherwise
-         * the same as [PromptAnalyzerServiceAsync.create].
-         */
-        fun create(
-            params: PromptAnalyzerCreateParams
-        ): CompletableFuture<HttpResponseFor<PromptAnalyzerCreateResponse>> =
-            create(params, RequestOptions.none())
-
-        /** @see create */
-        fun create(
-            params: PromptAnalyzerCreateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<PromptAnalyzerCreateResponse>>
     }
 }
