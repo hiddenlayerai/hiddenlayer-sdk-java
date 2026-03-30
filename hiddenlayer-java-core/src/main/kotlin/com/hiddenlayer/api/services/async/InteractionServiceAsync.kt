@@ -3,6 +3,11 @@
 package com.hiddenlayer.api.services.async
 
 import com.hiddenlayer.api.core.ClientOptions
+import com.hiddenlayer.api.core.RequestOptions
+import com.hiddenlayer.api.core.http.HttpResponseFor
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeParams
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeResponse
+import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
 interface InteractionServiceAsync {
@@ -19,6 +24,16 @@ interface InteractionServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): InteractionServiceAsync
 
+    /** Performs a detailed security analysis of the input and/or output of LLM interactions. */
+    fun analyze(params: InteractionAnalyzeParams): CompletableFuture<InteractionAnalyzeResponse> =
+        analyze(params, RequestOptions.none())
+
+    /** @see analyze */
+    fun analyze(
+        params: InteractionAnalyzeParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<InteractionAnalyzeResponse>
+
     /**
      * A view of [InteractionServiceAsync] that provides access to raw HTTP responses for each
      * method.
@@ -33,5 +48,20 @@ interface InteractionServiceAsync {
         fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): InteractionServiceAsync.WithRawResponse
+
+        /**
+         * Returns a raw HTTP response for `post /detection/v1/interactions`, but is otherwise the
+         * same as [InteractionServiceAsync.analyze].
+         */
+        fun analyze(
+            params: InteractionAnalyzeParams
+        ): CompletableFuture<HttpResponseFor<InteractionAnalyzeResponse>> =
+            analyze(params, RequestOptions.none())
+
+        /** @see analyze */
+        fun analyze(
+            params: InteractionAnalyzeParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<InteractionAnalyzeResponse>>
     }
 }

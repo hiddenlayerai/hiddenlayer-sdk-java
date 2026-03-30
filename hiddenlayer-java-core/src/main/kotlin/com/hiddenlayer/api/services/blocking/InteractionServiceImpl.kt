@@ -3,6 +3,20 @@
 package com.hiddenlayer.api.services.blocking
 
 import com.hiddenlayer.api.core.ClientOptions
+import com.hiddenlayer.api.core.RequestOptions
+import com.hiddenlayer.api.core.handlers.errorBodyHandler
+import com.hiddenlayer.api.core.handlers.errorHandler
+import com.hiddenlayer.api.core.handlers.jsonHandler
+import com.hiddenlayer.api.core.http.HttpMethod
+import com.hiddenlayer.api.core.http.HttpRequest
+import com.hiddenlayer.api.core.http.HttpResponse
+import com.hiddenlayer.api.core.http.HttpResponse.Handler
+import com.hiddenlayer.api.core.http.HttpResponseFor
+import com.hiddenlayer.api.core.http.json
+import com.hiddenlayer.api.core.http.parseable
+import com.hiddenlayer.api.core.prepare
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeParams
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeResponse
 import java.util.function.Consumer
 
 class InteractionServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -17,8 +31,18 @@ class InteractionServiceImpl internal constructor(private val clientOptions: Cli
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): InteractionService =
         InteractionServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    override fun analyze(
+        params: InteractionAnalyzeParams,
+        requestOptions: RequestOptions,
+    ): InteractionAnalyzeResponse =
+        // post /detection/v1/interactions
+        withRawResponse().analyze(params, requestOptions).parse()
+
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         InteractionService.WithRawResponse {
+
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -26,5 +50,33 @@ class InteractionServiceImpl internal constructor(private val clientOptions: Cli
             InteractionServiceImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
+
+        private val analyzeHandler: Handler<InteractionAnalyzeResponse> =
+            jsonHandler<InteractionAnalyzeResponse>(clientOptions.jsonMapper)
+
+        override fun analyze(
+            params: InteractionAnalyzeParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<InteractionAnalyzeResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("detection", "v1", "interactions")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { analyzeHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
     }
 }

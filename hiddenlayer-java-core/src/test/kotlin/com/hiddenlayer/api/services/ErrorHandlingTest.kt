@@ -3,7 +3,7 @@
 package com.hiddenlayer.api.services
 
 import com.github.tomakehurst.wiremock.client.WireMock.anyUrl
-import com.github.tomakehurst.wiremock.client.WireMock.get
+import com.github.tomakehurst.wiremock.client.WireMock.post
 import com.github.tomakehurst.wiremock.client.WireMock.status
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
@@ -22,6 +22,7 @@ import com.hiddenlayer.api.errors.RateLimitException
 import com.hiddenlayer.api.errors.UnauthorizedException
 import com.hiddenlayer.api.errors.UnexpectedStatusCodeException
 import com.hiddenlayer.api.errors.UnprocessableEntityException
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeParams
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.entry
 import org.junit.jupiter.api.BeforeEach
@@ -58,10 +59,10 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieve400() {
-        val modelService = client.models()
+    fun interactionsAnalyze400() {
+        val interactionService = client.interactions()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(
                     status(400).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
                 )
@@ -69,7 +70,38 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<BadRequestException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e.statusCode()).isEqualTo(400)
@@ -78,10 +110,10 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieve400WithRawResponse() {
-        val modelService = client.models().withRawResponse()
+    fun interactionsAnalyze400WithRawResponse() {
+        val interactionService = client.interactions().withRawResponse()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(
                     status(400).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
                 )
@@ -89,7 +121,38 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<BadRequestException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e.statusCode()).isEqualTo(400)
@@ -98,10 +161,10 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieve401() {
-        val modelService = client.models()
+    fun interactionsAnalyze401() {
+        val interactionService = client.interactions()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(
                     status(401).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
                 )
@@ -109,7 +172,38 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<UnauthorizedException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e.statusCode()).isEqualTo(401)
@@ -118,10 +212,10 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieve401WithRawResponse() {
-        val modelService = client.models().withRawResponse()
+    fun interactionsAnalyze401WithRawResponse() {
+        val interactionService = client.interactions().withRawResponse()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(
                     status(401).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
                 )
@@ -129,7 +223,38 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<UnauthorizedException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e.statusCode()).isEqualTo(401)
@@ -138,10 +263,10 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieve403() {
-        val modelService = client.models()
+    fun interactionsAnalyze403() {
+        val interactionService = client.interactions()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(
                     status(403).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
                 )
@@ -149,7 +274,38 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<PermissionDeniedException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e.statusCode()).isEqualTo(403)
@@ -158,10 +314,10 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieve403WithRawResponse() {
-        val modelService = client.models().withRawResponse()
+    fun interactionsAnalyze403WithRawResponse() {
+        val interactionService = client.interactions().withRawResponse()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(
                     status(403).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
                 )
@@ -169,7 +325,38 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<PermissionDeniedException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e.statusCode()).isEqualTo(403)
@@ -178,10 +365,10 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieve404() {
-        val modelService = client.models()
+    fun interactionsAnalyze404() {
+        val interactionService = client.interactions()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(
                     status(404).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
                 )
@@ -189,7 +376,38 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<NotFoundException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e.statusCode()).isEqualTo(404)
@@ -198,10 +416,10 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieve404WithRawResponse() {
-        val modelService = client.models().withRawResponse()
+    fun interactionsAnalyze404WithRawResponse() {
+        val interactionService = client.interactions().withRawResponse()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(
                     status(404).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
                 )
@@ -209,7 +427,38 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<NotFoundException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e.statusCode()).isEqualTo(404)
@@ -218,10 +467,10 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieve422() {
-        val modelService = client.models()
+    fun interactionsAnalyze422() {
+        val interactionService = client.interactions()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(
                     status(422).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
                 )
@@ -229,7 +478,38 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<UnprocessableEntityException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e.statusCode()).isEqualTo(422)
@@ -238,10 +518,10 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieve422WithRawResponse() {
-        val modelService = client.models().withRawResponse()
+    fun interactionsAnalyze422WithRawResponse() {
+        val interactionService = client.interactions().withRawResponse()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(
                     status(422).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
                 )
@@ -249,7 +529,38 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<UnprocessableEntityException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e.statusCode()).isEqualTo(422)
@@ -258,10 +569,10 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieve429() {
-        val modelService = client.models()
+    fun interactionsAnalyze429() {
+        val interactionService = client.interactions()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(
                     status(429).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
                 )
@@ -269,7 +580,38 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<RateLimitException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e.statusCode()).isEqualTo(429)
@@ -278,10 +620,10 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieve429WithRawResponse() {
-        val modelService = client.models().withRawResponse()
+    fun interactionsAnalyze429WithRawResponse() {
+        val interactionService = client.interactions().withRawResponse()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(
                     status(429).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
                 )
@@ -289,7 +631,38 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<RateLimitException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e.statusCode()).isEqualTo(429)
@@ -298,10 +671,10 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieve500() {
-        val modelService = client.models()
+    fun interactionsAnalyze500() {
+        val interactionService = client.interactions()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(
                     status(500).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
                 )
@@ -309,7 +682,38 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<InternalServerException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e.statusCode()).isEqualTo(500)
@@ -318,10 +722,10 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieve500WithRawResponse() {
-        val modelService = client.models().withRawResponse()
+    fun interactionsAnalyze500WithRawResponse() {
+        val interactionService = client.interactions().withRawResponse()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(
                     status(500).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
                 )
@@ -329,7 +733,38 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<InternalServerException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e.statusCode()).isEqualTo(500)
@@ -338,10 +773,10 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieve999() {
-        val modelService = client.models()
+    fun interactionsAnalyze999() {
+        val interactionService = client.interactions()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(
                     status(999).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
                 )
@@ -349,7 +784,38 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<UnexpectedStatusCodeException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e.statusCode()).isEqualTo(999)
@@ -358,10 +824,10 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieve999WithRawResponse() {
-        val modelService = client.models().withRawResponse()
+    fun interactionsAnalyze999WithRawResponse() {
+        val interactionService = client.interactions().withRawResponse()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(
                     status(999).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
                 )
@@ -369,7 +835,38 @@ internal class ErrorHandlingTest {
 
         val e =
             assertThrows<UnexpectedStatusCodeException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e.statusCode()).isEqualTo(999)
@@ -378,16 +875,47 @@ internal class ErrorHandlingTest {
     }
 
     @Test
-    fun modelsRetrieveInvalidJsonBody() {
-        val modelService = client.models()
+    fun interactionsAnalyzeInvalidJsonBody() {
+        val interactionService = client.interactions()
         stubFor(
-            get(anyUrl())
+            post(anyUrl())
                 .willReturn(status(200).withHeader(HEADER_NAME, HEADER_VALUE).withBody(NOT_JSON))
         )
 
         val e =
             assertThrows<HiddenLayerException> {
-                modelService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                interactionService.analyze(
+                    InteractionAnalyzeParams.builder()
+                        .hlProjectId("internal-search-chatbot")
+                        .metadata(
+                            InteractionAnalyzeParams.Metadata.builder()
+                                .model("gpt-5")
+                                .requesterId("user-1234")
+                                .provider("openai")
+                                .build()
+                        )
+                        .input(
+                            InteractionAnalyzeParams.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeParams.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeParams.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
             }
 
         assertThat(e).hasMessage("Error reading response")
