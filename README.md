@@ -55,14 +55,26 @@ This library requires Java 8 or later.
 ```java
 import com.hiddenlayer.api.client.HiddenLayerClient;
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
-import com.hiddenlayer.api.models.models.ModelRetrieveParams;
-import com.hiddenlayer.api.models.models.ModelRetrieveResponse;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeParams;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeResponse;
 
 // Configures using the `hiddenlayer.token`, `hiddenlayer.clientId`, `hiddenlayer.clientSecret` and `hiddenlayer.baseUrl` system properties
 // Or configures using the `HIDDENLAYER_TOKEN`, `HIDDENLAYER_CLIENT_ID`, `HIDDENLAYER_CLIENT_SECRET` and `HIDDENLAYER_BASE_URL` environment variables
 HiddenLayerClient client = HiddenLayerOkHttpClient.fromEnv();
 
-ModelRetrieveResponse model = client.models().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
+InteractionAnalyzeParams params = InteractionAnalyzeParams.builder()
+    .metadata(InteractionAnalyzeParams.Metadata.builder()
+        .model("REPLACE_ME")
+        .requesterId("REPLACE_ME")
+        .build())
+    .input(InteractionAnalyzeParams.Input.builder()
+        .addMessage(InteractionAnalyzeParams.Input.Message.builder()
+            .role("user")
+            .content("REPLACE_ME")
+            .build())
+        .build())
+    .build();
+InteractionAnalyzeResponse response = client.interactions().analyze(params);
 ```
 
 ## Client configuration
@@ -137,7 +149,7 @@ The `withOptions()` method does not affect the original client or service.
 
 To send a request to the HiddenLayer API, build an instance of some `Params` class and pass it to the corresponding client method. When the response is received, it will be deserialized into an instance of a Java class.
 
-For example, `client.models().retrieve(...)` should be called with an instance of `ModelRetrieveParams`, and it will return an instance of `ModelRetrieveResponse`.
+For example, `client.interactions().analyze(...)` should be called with an instance of `InteractionAnalyzeParams`, and it will return an instance of `InteractionAnalyzeResponse`.
 
 ## Immutability
 
@@ -154,15 +166,27 @@ The default client is synchronous. To switch to asynchronous execution, call the
 ```java
 import com.hiddenlayer.api.client.HiddenLayerClient;
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
-import com.hiddenlayer.api.models.models.ModelRetrieveParams;
-import com.hiddenlayer.api.models.models.ModelRetrieveResponse;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeParams;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeResponse;
 import java.util.concurrent.CompletableFuture;
 
 // Configures using the `hiddenlayer.token`, `hiddenlayer.clientId`, `hiddenlayer.clientSecret` and `hiddenlayer.baseUrl` system properties
 // Or configures using the `HIDDENLAYER_TOKEN`, `HIDDENLAYER_CLIENT_ID`, `HIDDENLAYER_CLIENT_SECRET` and `HIDDENLAYER_BASE_URL` environment variables
 HiddenLayerClient client = HiddenLayerOkHttpClient.fromEnv();
 
-CompletableFuture<ModelRetrieveResponse> model = client.async().models().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
+InteractionAnalyzeParams params = InteractionAnalyzeParams.builder()
+    .metadata(InteractionAnalyzeParams.Metadata.builder()
+        .model("REPLACE_ME")
+        .requesterId("REPLACE_ME")
+        .build())
+    .input(InteractionAnalyzeParams.Input.builder()
+        .addMessage(InteractionAnalyzeParams.Input.Message.builder()
+            .role("user")
+            .content("REPLACE_ME")
+            .build())
+        .build())
+    .build();
+CompletableFuture<InteractionAnalyzeResponse> response = client.async().interactions().analyze(params);
 ```
 
 Or create an asynchronous client from the beginning:
@@ -170,15 +194,27 @@ Or create an asynchronous client from the beginning:
 ```java
 import com.hiddenlayer.api.client.HiddenLayerClientAsync;
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClientAsync;
-import com.hiddenlayer.api.models.models.ModelRetrieveParams;
-import com.hiddenlayer.api.models.models.ModelRetrieveResponse;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeParams;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeResponse;
 import java.util.concurrent.CompletableFuture;
 
 // Configures using the `hiddenlayer.token`, `hiddenlayer.clientId`, `hiddenlayer.clientSecret` and `hiddenlayer.baseUrl` system properties
 // Or configures using the `HIDDENLAYER_TOKEN`, `HIDDENLAYER_CLIENT_ID`, `HIDDENLAYER_CLIENT_SECRET` and `HIDDENLAYER_BASE_URL` environment variables
 HiddenLayerClientAsync client = HiddenLayerOkHttpClientAsync.fromEnv();
 
-CompletableFuture<ModelRetrieveResponse> model = client.models().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
+InteractionAnalyzeParams params = InteractionAnalyzeParams.builder()
+    .metadata(InteractionAnalyzeParams.Metadata.builder()
+        .model("REPLACE_ME")
+        .requesterId("REPLACE_ME")
+        .build())
+    .input(InteractionAnalyzeParams.Input.builder()
+        .addMessage(InteractionAnalyzeParams.Input.Message.builder()
+            .role("user")
+            .content("REPLACE_ME")
+            .build())
+        .build())
+    .build();
+CompletableFuture<InteractionAnalyzeResponse> response = client.interactions().analyze(params);
 ```
 
 The asynchronous client supports the same options as the synchronous one, except most methods return `CompletableFuture`s.
@@ -192,21 +228,33 @@ To access this data, prefix any HTTP method call on a client or service with `wi
 ```java
 import com.hiddenlayer.api.core.http.Headers;
 import com.hiddenlayer.api.core.http.HttpResponseFor;
-import com.hiddenlayer.api.models.models.ModelRetrieveParams;
-import com.hiddenlayer.api.models.models.ModelRetrieveResponse;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeParams;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeResponse;
 
-HttpResponseFor<ModelRetrieveResponse> model = client.models().withRawResponse().retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e");
+InteractionAnalyzeParams params = InteractionAnalyzeParams.builder()
+    .metadata(InteractionAnalyzeParams.Metadata.builder()
+        .model("REPLACE_ME")
+        .requesterId("REPLACE_ME")
+        .build())
+    .input(InteractionAnalyzeParams.Input.builder()
+        .addMessage(InteractionAnalyzeParams.Input.Message.builder()
+            .role("user")
+            .content("REPLACE_ME")
+            .build())
+        .build())
+    .build();
+HttpResponseFor<InteractionAnalyzeResponse> response = client.interactions().withRawResponse().analyze(params);
 
-int statusCode = model.statusCode();
-Headers headers = model.headers();
+int statusCode = response.statusCode();
+Headers headers = response.headers();
 ```
 
 You can still deserialize the response into an instance of a Java class if needed:
 
 ```java
-import com.hiddenlayer.api.models.models.ModelRetrieveResponse;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeResponse;
 
-ModelRetrieveResponse parsedModel = model.parse();
+InteractionAnalyzeResponse parsedResponse = response.parse();
 ```
 
 ## Error handling
@@ -404,9 +452,11 @@ Requests time out after 1 minute by default.
 To set a custom timeout, configure the method call using the `timeout` method:
 
 ```java
-import com.hiddenlayer.api.models.models.ModelRetrieveResponse;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeResponse;
 
-ModelRetrieveResponse model = client.models().retrieve(RequestOptions.builder().timeout(Duration.ofSeconds(30)).build());
+InteractionAnalyzeResponse response = client.interactions().analyze(
+  params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
+);
 ```
 
 Or configure the default for all method calls at the client level:
@@ -542,9 +592,9 @@ To set undocumented parameters, call the `putAdditionalHeader`, `putAdditionalQu
 
 ```java
 import com.hiddenlayer.api.core.JsonValue;
-import com.hiddenlayer.api.models.models.ModelRetrieveParams;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeParams;
 
-ModelRetrieveParams params = ModelRetrieveParams.builder()
+InteractionAnalyzeParams params = InteractionAnalyzeParams.builder()
     .putAdditionalHeader("Secret-Header", "42")
     .putAdditionalQueryParam("secret_query_param", "42")
     .putAdditionalBodyProperty("secretProperty", JsonValue.from("42"))
@@ -557,10 +607,10 @@ To set undocumented parameters on _nested_ headers, query params, or body classe
 
 ```java
 import com.hiddenlayer.api.core.JsonValue;
-import com.hiddenlayer.api.models.models.cards.CardListParams;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeParams;
 
-CardListParams params = CardListParams.builder()
-    .modelCreated(CardListParams.ModelCreated.builder()
+InteractionAnalyzeParams params = InteractionAnalyzeParams.builder()
+    .metadata(InteractionAnalyzeParams.Metadata.builder()
         .putAdditionalProperty("secretProperty", JsonValue.from("42"))
         .build())
     .build();
@@ -571,9 +621,18 @@ These properties can be accessed on the nested built object later using the `_ad
 To set a documented parameter or property to an undocumented or not yet supported _value_, pass a [`JsonValue`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/core/Values.kt) object to its setter:
 
 ```java
-import com.hiddenlayer.api.models.models.ModelRetrieveParams;
+import com.hiddenlayer.api.core.JsonValue;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeParams;
 
-ModelRetrieveParams params = ModelRetrieveParams.builder().build();
+InteractionAnalyzeParams params = InteractionAnalyzeParams.builder()
+    .metadata(JsonValue.from(42))
+    .input(InteractionAnalyzeParams.Input.builder()
+        .addMessage(InteractionAnalyzeParams.Input.Message.builder()
+            .role("user")
+            .content("REPLACE_ME")
+            .build())
+        .build())
+    .build();
 ```
 
 The most straightforward way to create a [`JsonValue`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/core/Values.kt) is using its `from(...)` method:
@@ -621,10 +680,10 @@ To forcibly omit a required parameter or property, pass [`JsonMissing`](hiddenla
 
 ```java
 import com.hiddenlayer.api.core.JsonMissing;
-import com.hiddenlayer.api.models.models.ModelRetrieveParams;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeParams;
 
-ModelRetrieveParams params = ModelRetrieveParams.builder()
-    .modelId(JsonMissing.of())
+InteractionAnalyzeParams params = InteractionAnalyzeParams.builder()
+    .metadata(JsonMissing.of())
     .build();
 ```
 
@@ -636,7 +695,7 @@ To access undocumented response properties, call the `_additionalProperties()` m
 import com.hiddenlayer.api.core.JsonValue;
 import java.util.Map;
 
-Map<String, JsonValue> additionalProperties = client.models().retrieve(params)._additionalProperties();
+Map<String, JsonValue> additionalProperties = client.interactions().analyze(params)._additionalProperties();
 JsonValue secretPropertyValue = additionalProperties.get("secretProperty");
 
 String result = secretPropertyValue.accept(new JsonValue.Visitor<>() {
@@ -664,21 +723,22 @@ To access a property's raw JSON value, which may be undocumented, call its `_` p
 
 ```java
 import com.hiddenlayer.api.core.JsonField;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeParams;
 import java.util.Optional;
 
-JsonField<Object> field = client.models().retrieve(params)._field();
+JsonField<InteractionAnalyzeParams.Metadata> metadata = client.interactions().analyze(params)._metadata();
 
-if (field.isMissing()) {
+if (metadata.isMissing()) {
   // The property is absent from the JSON response
-} else if (field.isNull()) {
+} else if (metadata.isNull()) {
   // The property was set to literal null
 } else {
   // Check if value was provided as a string
   // Other methods include `asNumber()`, `asBoolean()`, etc.
-  Optional<String> jsonString = field.asString();
+  Optional<String> jsonString = metadata.asString();
 
   // Try to deserialize into a custom type
-  MyClass myObject = field.asUnknown().orElseThrow().convert(MyClass.class);
+  MyClass myObject = metadata.asUnknown().orElseThrow().convert(MyClass.class);
 }
 ```
 
@@ -691,17 +751,19 @@ By default, the SDK will not throw an exception in this case. It will throw [`Hi
 If you would prefer to check that the response is completely well-typed upfront, then either call `validate()`:
 
 ```java
-import com.hiddenlayer.api.models.models.ModelRetrieveResponse;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeResponse;
 
-ModelRetrieveResponse model = client.models().retrieve(params).validate();
+InteractionAnalyzeResponse response = client.interactions().analyze(params).validate();
 ```
 
 Or configure the method call to validate the response using the `responseValidation` method:
 
 ```java
-import com.hiddenlayer.api.models.models.ModelRetrieveResponse;
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeResponse;
 
-ModelRetrieveResponse model = client.models().retrieve(RequestOptions.builder().responseValidation(true).build());
+InteractionAnalyzeResponse response = client.interactions().analyze(
+  params, RequestOptions.builder().responseValidation(true).build()
+);
 ```
 
 Or configure the default for all method calls at the client level:

@@ -4,8 +4,10 @@ package com.hiddenlayer.api.proguard
 
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient
+import com.hiddenlayer.api.core.JsonValue
 import com.hiddenlayer.api.core.jsonMapper
-import com.hiddenlayer.api.models.scans.jobs.ScanJob
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeResponse
+import java.time.OffsetDateTime
 import kotlin.reflect.full.memberFunctions
 import kotlin.reflect.jvm.javaMethod
 import org.assertj.core.api.Assertions.assertThat
@@ -56,62 +58,150 @@ internal class ProGuardCompatibilityTest {
     }
 
     @Test
-    fun scanJobRoundtrip() {
+    fun interactionAnalyzeResponseRoundtrip() {
         val jsonMapper = jsonMapper()
-        val scanJob =
-            ScanJob.builder()
-                .inventory(
-                    ScanJob.Inventory.builder()
-                        .modelName("keras-tf-2025-05-27")
-                        .modelVersion("1.0.0")
-                        .requestingEntity("requesting_entity")
-                        .origin("Hugging Face")
-                        .requestSource(ScanJob.Inventory.RequestSource.HYBRID_UPLOAD)
-                        .requestedScanLocation("/files-to-scan")
-                        .scanTarget(
-                            ScanJob.Inventory.ScanTarget.builder()
-                                .assetRegion("us-east-1")
-                                .deepScan(
-                                    ScanJob.Inventory.ScanTarget.DeepScan.builder()
-                                        .fileLocation(
-                                            "https://huggingface.co/meta-llama/Llama-3.1-8B"
-                                        )
-                                        .addFile(
-                                            ScanJob.Inventory.ScanTarget.DeepScan.File.builder()
-                                                .fileLocation(
-                                                    "https://huggingface.co/meta-llama/Llama-3.1-8B/resolve/main/config.json"
+        val interactionAnalyzeResponse =
+            InteractionAnalyzeResponse.builder()
+                .addAnalysis(
+                    InteractionAnalyzeResponse.Analysis.builder()
+                        .id("prompt_injection.5.input")
+                        .configuration(
+                            InteractionAnalyzeResponse.Analysis.Configuration.builder()
+                                .putAdditionalProperty("enabled", JsonValue.from("bar"))
+                                .putAdditionalProperty("scan_type", JsonValue.from("bar"))
+                                .putAdditionalProperty("allow_overrides", JsonValue.from("bar"))
+                                .putAdditionalProperty("block_overrides", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .detected(true)
+                        .findings(
+                            InteractionAnalyzeResponse.Analysis.Findings.builder()
+                                .frameworks(
+                                    InteractionAnalyzeResponse.Analysis.Findings.Frameworks
+                                        .builder()
+                                        .putAdditionalProperty(
+                                            "mitre",
+                                            JsonValue.from(
+                                                listOf(
+                                                    mapOf(
+                                                        "label" to "AML.T0051",
+                                                        "name" to "LLM Prompt Injection",
+                                                    )
                                                 )
-                                                .fileNameAlias("model-config.json")
-                                                .build()
+                                            ),
+                                        )
+                                        .putAdditionalProperty(
+                                            "owasp",
+                                            JsonValue.from(
+                                                listOf(
+                                                    mapOf(
+                                                        "label" to "LLM01",
+                                                        "name" to "Prompt Injection",
+                                                    )
+                                                )
+                                            ),
+                                        )
+                                        .putAdditionalProperty(
+                                            "owasp:2025",
+                                            JsonValue.from(
+                                                listOf(
+                                                    mapOf(
+                                                        "label" to "LLM01:2025",
+                                                        "name" to "Prompt Injection",
+                                                    )
+                                                )
+                                            ),
                                         )
                                         .build()
                                 )
-                                .providerDetails(
-                                    ScanJob.Inventory.ScanTarget.ProviderDetails.builder()
-                                        .provider(
-                                            ScanJob.Inventory.ScanTarget.ProviderDetails.Provider
-                                                .AWS_BEDROCK
-                                        )
-                                        .providerModelId(
-                                            "anthropic.claude-3-5-sonnet-20241022-v2:0"
-                                        )
-                                        .country("US")
-                                        .modelArn(
-                                            "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
-                                        )
+                                .build()
+                        )
+                        .name("prompt_injection")
+                        .phase("input")
+                        .processingTimeMs(7.01)
+                        .version("version")
+                        .build()
+                )
+                .analyzedData(
+                    InteractionAnalyzeResponse.AnalyzedData.builder()
+                        .input(
+                            InteractionAnalyzeResponse.AnalyzedData.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeResponse.AnalyzedData.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeResponse.AnalyzedData.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeResponse.AnalyzedData.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
                                         .build()
                                 )
                                 .build()
                         )
                         .build()
                 )
-                .scanId("00000000-0000-0000-0000-000000000000")
-                .status(ScanJob.Status.PENDING)
+                .metadata(
+                    InteractionAnalyzeResponse.Metadata.builder()
+                        .model("gpt-5")
+                        .processingTimeMs(15.34)
+                        .project(
+                            InteractionAnalyzeResponse.Metadata.Project.builder()
+                                .projectAlias("enterprise-search")
+                                .projectId("ca87b009-90bd-4724-91c2-f23326acd51a")
+                                .rulesetId("b5d7d261-b7be-451a-b943-0d408ab88aab")
+                                .build()
+                        )
+                        .provider("openai")
+                        .requesterId("user-1234")
+                        .analyzedAt(OffsetDateTime.parse("2023-10-10T14:48:00.000Z"))
+                        .eventId("d290f1ee-6c54-4b01-90e6-d701748f0851")
+                        .build()
+                )
+                .modifiedData(
+                    InteractionAnalyzeResponse.ModifiedData.builder()
+                        .input(
+                            InteractionAnalyzeResponse.ModifiedData.Input.builder()
+                                .addMessage(
+                                    InteractionAnalyzeResponse.ModifiedData.Input.Message.builder()
+                                        .content("What the largest moon of jupiter?")
+                                        .role("user")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .output(
+                            InteractionAnalyzeResponse.ModifiedData.Output.builder()
+                                .addMessage(
+                                    InteractionAnalyzeResponse.ModifiedData.Output.Message.builder()
+                                        .content("The largest moon of Jupiter is Ganymede.")
+                                        .role("assistant")
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .build()
+                )
+                .evaluation(
+                    InteractionAnalyzeResponse.Evaluation.builder()
+                        .action(InteractionAnalyzeResponse.Evaluation.Action.ALLOW)
+                        .hasDetections(true)
+                        .threatLevel(InteractionAnalyzeResponse.Evaluation.ThreatLevel.NONE)
+                        .build()
+                )
                 .build()
 
-        val roundtrippedScanJob =
-            jsonMapper.readValue(jsonMapper.writeValueAsString(scanJob), jacksonTypeRef<ScanJob>())
+        val roundtrippedInteractionAnalyzeResponse =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(interactionAnalyzeResponse),
+                jacksonTypeRef<InteractionAnalyzeResponse>(),
+            )
 
-        assertThat(roundtrippedScanJob).isEqualTo(scanJob)
+        assertThat(roundtrippedInteractionAnalyzeResponse).isEqualTo(interactionAnalyzeResponse)
     }
 }

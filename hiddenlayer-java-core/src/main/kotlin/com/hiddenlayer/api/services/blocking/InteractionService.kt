@@ -2,7 +2,12 @@
 
 package com.hiddenlayer.api.services.blocking
 
+import com.google.errorprone.annotations.MustBeClosed
 import com.hiddenlayer.api.core.ClientOptions
+import com.hiddenlayer.api.core.RequestOptions
+import com.hiddenlayer.api.core.http.HttpResponseFor
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeParams
+import com.hiddenlayer.api.models.interactions.InteractionAnalyzeResponse
 import java.util.function.Consumer
 
 interface InteractionService {
@@ -19,6 +24,16 @@ interface InteractionService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): InteractionService
 
+    /** Performs a detailed security analysis of the input and/or output of LLM interactions. */
+    fun analyze(params: InteractionAnalyzeParams): InteractionAnalyzeResponse =
+        analyze(params, RequestOptions.none())
+
+    /** @see analyze */
+    fun analyze(
+        params: InteractionAnalyzeParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): InteractionAnalyzeResponse
+
     /**
      * A view of [InteractionService] that provides access to raw HTTP responses for each method.
      */
@@ -32,5 +47,20 @@ interface InteractionService {
         fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): InteractionService.WithRawResponse
+
+        /**
+         * Returns a raw HTTP response for `post /detection/v1/interactions`, but is otherwise the
+         * same as [InteractionService.analyze].
+         */
+        @MustBeClosed
+        fun analyze(params: InteractionAnalyzeParams): HttpResponseFor<InteractionAnalyzeResponse> =
+            analyze(params, RequestOptions.none())
+
+        /** @see analyze */
+        @MustBeClosed
+        fun analyze(
+            params: InteractionAnalyzeParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<InteractionAnalyzeResponse>
     }
 }
