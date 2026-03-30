@@ -3,6 +3,7 @@
 package com.hiddenlayer.api.client
 
 import com.hiddenlayer.api.core.ClientOptions
+import com.hiddenlayer.api.services.async.DetectionServiceAsync
 import com.hiddenlayer.api.services.async.EvaluationServiceAsync
 import com.hiddenlayer.api.services.async.InteractionServiceAsync
 import com.hiddenlayer.api.services.async.ModelServiceAsync
@@ -55,6 +56,8 @@ interface HiddenLayerClientAsync {
 
     fun interactions(): InteractionServiceAsync
 
+    fun detection(): DetectionServiceAsync
+
     fun sensors(): SensorServiceAsync
 
     fun scans(): ScanServiceAsync
@@ -94,6 +97,8 @@ interface HiddenLayerClientAsync {
         fun promptAnalyzer(): PromptAnalyzerServiceAsync.WithRawResponse
 
         fun interactions(): InteractionServiceAsync.WithRawResponse
+
+        fun detection(): DetectionServiceAsync.WithRawResponse
 
         fun sensors(): SensorServiceAsync.WithRawResponse
 
