@@ -6,6 +6,8 @@ import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.core.getPackageVersion
 import com.hiddenlayer.api.lib.CommunityScanner
 import com.hiddenlayer.api.lib.ModelScanner
+import com.hiddenlayer.api.services.blocking.DetectionService
+import com.hiddenlayer.api.services.blocking.DetectionServiceImpl
 import com.hiddenlayer.api.services.blocking.EvaluationService
 import com.hiddenlayer.api.services.blocking.EvaluationServiceImpl
 import com.hiddenlayer.api.services.blocking.InteractionService
@@ -51,6 +53,10 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
         InteractionServiceImpl(clientOptionsWithUserAgent)
     }
 
+    private val detection: DetectionService by lazy {
+        DetectionServiceImpl(clientOptionsWithUserAgent)
+    }
+
     private val sensors: SensorService by lazy { SensorServiceImpl(clientOptionsWithUserAgent) }
 
     private val scans: ScanService by lazy { ScanServiceImpl(clientOptionsWithUserAgent) }
@@ -73,6 +79,8 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
     override fun promptAnalyzer(): PromptAnalyzerService = promptAnalyzer
 
     override fun interactions(): InteractionService = interactions
+
+    override fun detection(): DetectionService = detection
 
     override fun sensors(): SensorService = sensors
 
@@ -103,6 +111,10 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
             InteractionServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val detection: DetectionService.WithRawResponse by lazy {
+            DetectionServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
         private val sensors: SensorService.WithRawResponse by lazy {
             SensorServiceImpl.WithRawResponseImpl(clientOptions)
         }
@@ -125,6 +137,8 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
         override fun promptAnalyzer(): PromptAnalyzerService.WithRawResponse = promptAnalyzer
 
         override fun interactions(): InteractionService.WithRawResponse = interactions
+
+        override fun detection(): DetectionService.WithRawResponse = detection
 
         override fun sensors(): SensorService.WithRawResponse = sensors
 
