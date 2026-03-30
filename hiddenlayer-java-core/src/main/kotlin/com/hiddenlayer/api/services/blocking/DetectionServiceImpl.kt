@@ -20,6 +20,7 @@ import com.hiddenlayer.api.models.detection.DetectionRequestEvaluationResponse
 import com.hiddenlayer.api.models.detection.DetectionResponseEvaluationParams
 import com.hiddenlayer.api.models.detection.DetectionResponseEvaluationResponse
 import java.util.function.Consumer
+import com.hiddenlayer.api.lib.BetaWarning
 
 class DetectionServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     DetectionService {
@@ -36,16 +37,20 @@ class DetectionServiceImpl internal constructor(private val clientOptions: Clien
     override fun requestEvaluation(
         params: DetectionRequestEvaluationParams,
         requestOptions: RequestOptions,
-    ): DetectionRequestEvaluationResponse =
+    ): DetectionRequestEvaluationResponse  {
+        BetaWarning.warnBeta("DetectionService.requestEvaluation")
         // post /detection/v2/request-evaluations
-        withRawResponse().requestEvaluation(params, requestOptions).parse()
+        return withRawResponse().requestEvaluation(params, requestOptions).parse()
+    }
 
     override fun responseEvaluation(
         params: DetectionResponseEvaluationParams,
         requestOptions: RequestOptions,
-    ): DetectionResponseEvaluationResponse =
+    ): DetectionResponseEvaluationResponse  {
+        BetaWarning.warnBeta("DetectionService.responseEvaluation")
         // post /detection/v2/response-evaluations
-        withRawResponse().responseEvaluation(params, requestOptions).parse()
+        return withRawResponse().responseEvaluation(params, requestOptions).parse()
+    }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         DetectionService.WithRawResponse {

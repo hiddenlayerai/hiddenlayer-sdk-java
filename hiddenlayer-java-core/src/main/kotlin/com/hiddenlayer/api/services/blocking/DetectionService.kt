@@ -11,6 +11,7 @@ import com.hiddenlayer.api.models.detection.DetectionRequestEvaluationResponse
 import com.hiddenlayer.api.models.detection.DetectionResponseEvaluationParams
 import com.hiddenlayer.api.models.detection.DetectionResponseEvaluationResponse
 import java.util.function.Consumer
+import com.hiddenlayer.api.lib.BetaApi
 
 interface DetectionService {
 
@@ -45,17 +46,20 @@ interface DetectionService {
      * - [OpenAI Responses](https://platform.openai.com/docs/api-reference/responses)
      * - [Anthropic Messages](https://docs.anthropic.com/en/api/messages)
      */
+    @BetaApi
     fun requestEvaluation(
         params: DetectionRequestEvaluationParams
     ): DetectionRequestEvaluationResponse = requestEvaluation(params, RequestOptions.none())
 
     /** @see requestEvaluation */
+    @BetaApi
     fun requestEvaluation(
         params: DetectionRequestEvaluationParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DetectionRequestEvaluationResponse
 
     /** @see requestEvaluation */
+    @BetaApi
     fun requestEvaluation(
         body: DetectionRequestEvaluationParams.Body,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -66,6 +70,7 @@ interface DetectionService {
         )
 
     /** @see requestEvaluation */
+    @BetaApi
     fun requestEvaluation(
         body: DetectionRequestEvaluationParams.Body
     ): DetectionRequestEvaluationResponse = requestEvaluation(body, RequestOptions.none())
@@ -89,17 +94,20 @@ interface DetectionService {
      * - [OpenAI Responses](https://platform.openai.com/docs/api-reference/responses)
      * - [Anthropic Messages](https://docs.anthropic.com/en/api/messages)
      */
+    @BetaApi
     fun responseEvaluation(
         params: DetectionResponseEvaluationParams
     ): DetectionResponseEvaluationResponse = responseEvaluation(params, RequestOptions.none())
 
     /** @see responseEvaluation */
+    @BetaApi
     fun responseEvaluation(
         params: DetectionResponseEvaluationParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): DetectionResponseEvaluationResponse
 
     /** @see responseEvaluation */
+    @BetaApi
     fun responseEvaluation(
         body: DetectionResponseEvaluationParams.Body,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -110,6 +118,7 @@ interface DetectionService {
         )
 
     /** @see responseEvaluation */
+    @BetaApi
     fun responseEvaluation(
         body: DetectionResponseEvaluationParams.Body
     ): DetectionResponseEvaluationResponse = responseEvaluation(body, RequestOptions.none())
@@ -136,6 +145,7 @@ interface DetectionService {
 
         /** @see requestEvaluation */
         @MustBeClosed
+        @BetaApi
         fun requestEvaluation(
             params: DetectionRequestEvaluationParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -143,6 +153,7 @@ interface DetectionService {
 
         /** @see requestEvaluation */
         @MustBeClosed
+        @BetaApi
         fun requestEvaluation(
             body: DetectionRequestEvaluationParams.Body,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -154,6 +165,7 @@ interface DetectionService {
 
         /** @see requestEvaluation */
         @MustBeClosed
+        @BetaApi
         fun requestEvaluation(
             body: DetectionRequestEvaluationParams.Body
         ): HttpResponseFor<DetectionRequestEvaluationResponse> =
@@ -171,6 +183,7 @@ interface DetectionService {
 
         /** @see responseEvaluation */
         @MustBeClosed
+        @BetaApi
         fun responseEvaluation(
             params: DetectionResponseEvaluationParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -178,6 +191,7 @@ interface DetectionService {
 
         /** @see responseEvaluation */
         @MustBeClosed
+        @BetaApi
         fun responseEvaluation(
             body: DetectionResponseEvaluationParams.Body,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -189,6 +203,7 @@ interface DetectionService {
 
         /** @see responseEvaluation */
         @MustBeClosed
+        @BetaApi
         fun responseEvaluation(
             body: DetectionResponseEvaluationParams.Body
         ): HttpResponseFor<DetectionResponseEvaluationResponse> =

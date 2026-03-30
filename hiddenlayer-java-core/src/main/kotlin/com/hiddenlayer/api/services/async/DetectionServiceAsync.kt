@@ -11,6 +11,7 @@ import com.hiddenlayer.api.models.detection.DetectionResponseEvaluationParams
 import com.hiddenlayer.api.models.detection.DetectionResponseEvaluationResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
+import com.hiddenlayer.api.lib.BetaApi
 
 interface DetectionServiceAsync {
 
@@ -45,18 +46,21 @@ interface DetectionServiceAsync {
      * - [OpenAI Responses](https://platform.openai.com/docs/api-reference/responses)
      * - [Anthropic Messages](https://docs.anthropic.com/en/api/messages)
      */
+    @BetaApi
     fun requestEvaluation(
         params: DetectionRequestEvaluationParams
     ): CompletableFuture<DetectionRequestEvaluationResponse> =
         requestEvaluation(params, RequestOptions.none())
 
     /** @see requestEvaluation */
+    @BetaApi
     fun requestEvaluation(
         params: DetectionRequestEvaluationParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<DetectionRequestEvaluationResponse>
 
     /** @see requestEvaluation */
+    @BetaApi
     fun requestEvaluation(
         body: DetectionRequestEvaluationParams.Body,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -67,6 +71,7 @@ interface DetectionServiceAsync {
         )
 
     /** @see requestEvaluation */
+    @BetaApi
     fun requestEvaluation(
         body: DetectionRequestEvaluationParams.Body
     ): CompletableFuture<DetectionRequestEvaluationResponse> =
@@ -91,18 +96,21 @@ interface DetectionServiceAsync {
      * - [OpenAI Responses](https://platform.openai.com/docs/api-reference/responses)
      * - [Anthropic Messages](https://docs.anthropic.com/en/api/messages)
      */
+    @BetaApi
     fun responseEvaluation(
         params: DetectionResponseEvaluationParams
     ): CompletableFuture<DetectionResponseEvaluationResponse> =
         responseEvaluation(params, RequestOptions.none())
 
     /** @see responseEvaluation */
+    @BetaApi
     fun responseEvaluation(
         params: DetectionResponseEvaluationParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<DetectionResponseEvaluationResponse>
 
     /** @see responseEvaluation */
+    @BetaApi
     fun responseEvaluation(
         body: DetectionResponseEvaluationParams.Body,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -113,6 +121,7 @@ interface DetectionServiceAsync {
         )
 
     /** @see responseEvaluation */
+    @BetaApi
     fun responseEvaluation(
         body: DetectionResponseEvaluationParams.Body
     ): CompletableFuture<DetectionResponseEvaluationResponse> =
@@ -142,12 +151,14 @@ interface DetectionServiceAsync {
             requestEvaluation(params, RequestOptions.none())
 
         /** @see requestEvaluation */
+        @BetaApi
         fun requestEvaluation(
             params: DetectionRequestEvaluationParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<DetectionRequestEvaluationResponse>>
 
         /** @see requestEvaluation */
+        @BetaApi
         fun requestEvaluation(
             body: DetectionRequestEvaluationParams.Body,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -158,6 +169,7 @@ interface DetectionServiceAsync {
             )
 
         /** @see requestEvaluation */
+        @BetaApi
         fun requestEvaluation(
             body: DetectionRequestEvaluationParams.Body
         ): CompletableFuture<HttpResponseFor<DetectionRequestEvaluationResponse>> =
@@ -173,12 +185,14 @@ interface DetectionServiceAsync {
             responseEvaluation(params, RequestOptions.none())
 
         /** @see responseEvaluation */
+        @BetaApi
         fun responseEvaluation(
             params: DetectionResponseEvaluationParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<DetectionResponseEvaluationResponse>>
 
         /** @see responseEvaluation */
+        @BetaApi
         fun responseEvaluation(
             body: DetectionResponseEvaluationParams.Body,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -189,6 +203,7 @@ interface DetectionServiceAsync {
             )
 
         /** @see responseEvaluation */
+        @BetaApi
         fun responseEvaluation(
             body: DetectionResponseEvaluationParams.Body
         ): CompletableFuture<HttpResponseFor<DetectionResponseEvaluationResponse>> =
