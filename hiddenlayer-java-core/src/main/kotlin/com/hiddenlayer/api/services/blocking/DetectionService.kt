@@ -6,12 +6,12 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.core.RequestOptions
 import com.hiddenlayer.api.core.http.HttpResponseFor
+import com.hiddenlayer.api.lib.BetaApi
 import com.hiddenlayer.api.models.detection.DetectionRequestEvaluationParams
 import com.hiddenlayer.api.models.detection.DetectionRequestEvaluationResponse
 import com.hiddenlayer.api.models.detection.DetectionResponseEvaluationParams
 import com.hiddenlayer.api.models.detection.DetectionResponseEvaluationResponse
 import java.util.function.Consumer
-import com.hiddenlayer.api.lib.BetaApi
 
 interface DetectionService {
 
