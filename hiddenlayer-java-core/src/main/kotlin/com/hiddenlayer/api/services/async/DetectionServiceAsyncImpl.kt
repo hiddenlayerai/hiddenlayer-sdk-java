@@ -15,7 +15,6 @@ import com.hiddenlayer.api.core.http.HttpResponseFor
 import com.hiddenlayer.api.core.http.json
 import com.hiddenlayer.api.core.http.parseable
 import com.hiddenlayer.api.core.prepareAsync
-import com.hiddenlayer.api.lib.BetaWarning
 import com.hiddenlayer.api.models.detection.DetectionRequestEvaluationParams
 import com.hiddenlayer.api.models.detection.DetectionRequestEvaluationResponse
 import com.hiddenlayer.api.models.detection.DetectionResponseEvaluationParams
@@ -38,20 +37,16 @@ class DetectionServiceAsyncImpl internal constructor(private val clientOptions: 
     override fun requestEvaluation(
         params: DetectionRequestEvaluationParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<DetectionRequestEvaluationResponse> {
-        BetaWarning.warnBeta("DetectionService.requestEvaluation")
+    ): CompletableFuture<DetectionRequestEvaluationResponse> =
         // post /detection/v2/request-evaluations
-        return withRawResponse().requestEvaluation(params, requestOptions).thenApply { it.parse() }
-    }
+        withRawResponse().requestEvaluation(params, requestOptions).thenApply { it.parse() }
 
     override fun responseEvaluation(
         params: DetectionResponseEvaluationParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<DetectionResponseEvaluationResponse> {
-        BetaWarning.warnBeta("DetectionService.responseEvaluation")
+    ): CompletableFuture<DetectionResponseEvaluationResponse> =
         // post /detection/v2/response-evaluations
-        return withRawResponse().responseEvaluation(params, requestOptions).thenApply { it.parse() }
-    }
+        withRawResponse().responseEvaluation(params, requestOptions).thenApply { it.parse() }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         DetectionServiceAsync.WithRawResponse {
