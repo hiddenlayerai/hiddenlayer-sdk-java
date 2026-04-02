@@ -1,21 +1,21 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.hiddenlayer.api.models.detection
+package com.hiddenlayer.api.models.runtime
 
 import com.hiddenlayer.api.core.JsonValue
 import com.hiddenlayer.api.core.http.Headers
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class DetectionRequestEvaluationParamsTest {
+internal class RuntimeEvaluateRequestParamsTest {
 
     @Test
     fun create() {
-        DetectionRequestEvaluationParams.builder()
+        RuntimeEvaluateRequestParams.builder()
             .hlProjectId("internal-search-chatbot")
             .hlRuntimeSessionId("sess_4b8cde94604f4c389406a0b2f806069a")
             .body(
-                DetectionRequestEvaluationParams.Body.builder()
+                RuntimeEvaluateRequestParams.Body.builder()
                     .putAdditionalProperty("model", JsonValue.from("bar"))
                     .putAdditionalProperty("messages", JsonValue.from("bar"))
                     .putAdditionalProperty("max_tokens", JsonValue.from("bar"))
@@ -28,11 +28,11 @@ internal class DetectionRequestEvaluationParamsTest {
     @Test
     fun headers() {
         val params =
-            DetectionRequestEvaluationParams.builder()
+            RuntimeEvaluateRequestParams.builder()
                 .hlProjectId("internal-search-chatbot")
                 .hlRuntimeSessionId("sess_4b8cde94604f4c389406a0b2f806069a")
                 .body(
-                    DetectionRequestEvaluationParams.Body.builder()
+                    RuntimeEvaluateRequestParams.Body.builder()
                         .putAdditionalProperty("model", JsonValue.from("bar"))
                         .putAdditionalProperty("messages", JsonValue.from("bar"))
                         .putAdditionalProperty("max_tokens", JsonValue.from("bar"))
@@ -55,9 +55,9 @@ internal class DetectionRequestEvaluationParamsTest {
     @Test
     fun headersWithoutOptionalFields() {
         val params =
-            DetectionRequestEvaluationParams.builder()
+            RuntimeEvaluateRequestParams.builder()
                 .body(
-                    DetectionRequestEvaluationParams.Body.builder()
+                    RuntimeEvaluateRequestParams.Body.builder()
                         .putAdditionalProperty("model", JsonValue.from("bar"))
                         .putAdditionalProperty("messages", JsonValue.from("bar"))
                         .putAdditionalProperty("max_tokens", JsonValue.from("bar"))
@@ -74,11 +74,11 @@ internal class DetectionRequestEvaluationParamsTest {
     @Test
     fun body() {
         val params =
-            DetectionRequestEvaluationParams.builder()
+            RuntimeEvaluateRequestParams.builder()
                 .hlProjectId("internal-search-chatbot")
                 .hlRuntimeSessionId("sess_4b8cde94604f4c389406a0b2f806069a")
                 .body(
-                    DetectionRequestEvaluationParams.Body.builder()
+                    RuntimeEvaluateRequestParams.Body.builder()
                         .putAdditionalProperty("model", JsonValue.from("bar"))
                         .putAdditionalProperty("messages", JsonValue.from("bar"))
                         .putAdditionalProperty("max_tokens", JsonValue.from("bar"))
@@ -91,7 +91,7 @@ internal class DetectionRequestEvaluationParamsTest {
 
         assertThat(body)
             .isEqualTo(
-                DetectionRequestEvaluationParams.Body.builder()
+                RuntimeEvaluateRequestParams.Body.builder()
                     .putAdditionalProperty("model", JsonValue.from("bar"))
                     .putAdditionalProperty("messages", JsonValue.from("bar"))
                     .putAdditionalProperty("max_tokens", JsonValue.from("bar"))
@@ -103,9 +103,9 @@ internal class DetectionRequestEvaluationParamsTest {
     @Test
     fun bodyWithoutOptionalFields() {
         val params =
-            DetectionRequestEvaluationParams.builder()
+            RuntimeEvaluateRequestParams.builder()
                 .body(
-                    DetectionRequestEvaluationParams.Body.builder()
+                    RuntimeEvaluateRequestParams.Body.builder()
                         .putAdditionalProperty("model", JsonValue.from("bar"))
                         .putAdditionalProperty("messages", JsonValue.from("bar"))
                         .putAdditionalProperty("max_tokens", JsonValue.from("bar"))
@@ -118,7 +118,7 @@ internal class DetectionRequestEvaluationParamsTest {
 
         assertThat(body)
             .isEqualTo(
-                DetectionRequestEvaluationParams.Body.builder()
+                RuntimeEvaluateRequestParams.Body.builder()
                     .putAdditionalProperty("model", JsonValue.from("bar"))
                     .putAdditionalProperty("messages", JsonValue.from("bar"))
                     .putAdditionalProperty("max_tokens", JsonValue.from("bar"))

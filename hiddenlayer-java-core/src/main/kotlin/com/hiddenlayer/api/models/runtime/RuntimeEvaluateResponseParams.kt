@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.hiddenlayer.api.models.detection
+package com.hiddenlayer.api.models.runtime
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -35,7 +35,7 @@ import kotlin.jvm.optionals.getOrNull
  * - [OpenAI Responses](https://platform.openai.com/docs/api-reference/responses)
  * - [Anthropic Messages](https://docs.anthropic.com/en/api/messages)
  */
-class DetectionResponseEvaluationParams
+class RuntimeEvaluateResponseParams
 private constructor(
     private val hlProjectId: String?,
     private val hlRuntimeSessionId: String?,
@@ -68,7 +68,7 @@ private constructor(
 
         /**
          * Returns a mutable builder for constructing an instance of
-         * [DetectionResponseEvaluationParams].
+         * [RuntimeEvaluateResponseParams].
          *
          * The following fields are required:
          * ```java
@@ -78,7 +78,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [DetectionResponseEvaluationParams]. */
+    /** A builder for [RuntimeEvaluateResponseParams]. */
     class Builder internal constructor() {
 
         private var hlProjectId: String? = null
@@ -88,15 +88,13 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(detectionResponseEvaluationParams: DetectionResponseEvaluationParams) =
-            apply {
-                hlProjectId = detectionResponseEvaluationParams.hlProjectId
-                hlRuntimeSessionId = detectionResponseEvaluationParams.hlRuntimeSessionId
-                body = detectionResponseEvaluationParams.body
-                additionalHeaders = detectionResponseEvaluationParams.additionalHeaders.toBuilder()
-                additionalQueryParams =
-                    detectionResponseEvaluationParams.additionalQueryParams.toBuilder()
-            }
+        internal fun from(runtimeEvaluateResponseParams: RuntimeEvaluateResponseParams) = apply {
+            hlProjectId = runtimeEvaluateResponseParams.hlProjectId
+            hlRuntimeSessionId = runtimeEvaluateResponseParams.hlRuntimeSessionId
+            body = runtimeEvaluateResponseParams.body
+            additionalHeaders = runtimeEvaluateResponseParams.additionalHeaders.toBuilder()
+            additionalQueryParams = runtimeEvaluateResponseParams.additionalQueryParams.toBuilder()
+        }
 
         fun hlProjectId(hlProjectId: String?) = apply { this.hlProjectId = hlProjectId }
 
@@ -218,7 +216,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [DetectionResponseEvaluationParams].
+         * Returns an immutable instance of [RuntimeEvaluateResponseParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -229,8 +227,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): DetectionResponseEvaluationParams =
-            DetectionResponseEvaluationParams(
+        fun build(): RuntimeEvaluateResponseParams =
+            RuntimeEvaluateResponseParams(
                 hlProjectId,
                 hlRuntimeSessionId,
                 checkRequired("body", body),
@@ -360,7 +358,7 @@ private constructor(
             return true
         }
 
-        return other is DetectionResponseEvaluationParams &&
+        return other is RuntimeEvaluateResponseParams &&
             hlProjectId == other.hlProjectId &&
             hlRuntimeSessionId == other.hlRuntimeSessionId &&
             body == other.body &&
@@ -378,5 +376,5 @@ private constructor(
         )
 
     override fun toString() =
-        "DetectionResponseEvaluationParams{hlProjectId=$hlProjectId, hlRuntimeSessionId=$hlRuntimeSessionId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "RuntimeEvaluateResponseParams{hlProjectId=$hlProjectId, hlRuntimeSessionId=$hlRuntimeSessionId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
