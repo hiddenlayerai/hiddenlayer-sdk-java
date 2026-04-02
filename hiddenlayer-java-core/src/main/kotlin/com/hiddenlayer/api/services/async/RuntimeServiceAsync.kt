@@ -5,6 +5,7 @@ package com.hiddenlayer.api.services.async
 import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.core.RequestOptions
 import com.hiddenlayer.api.core.http.HttpResponseFor
+import com.hiddenlayer.api.lib.BetaApi
 import com.hiddenlayer.api.models.runtime.RuntimeEvaluateRequestParams
 import com.hiddenlayer.api.models.runtime.RuntimeEvaluateRequestResponse
 import com.hiddenlayer.api.models.runtime.RuntimeEvaluateResponseParams
@@ -45,18 +46,21 @@ interface RuntimeServiceAsync {
      * - [OpenAI Responses](https://platform.openai.com/docs/api-reference/responses)
      * - [Anthropic Messages](https://docs.anthropic.com/en/api/messages)
      */
+    @BetaApi
     fun evaluateRequest(
         params: RuntimeEvaluateRequestParams
     ): CompletableFuture<RuntimeEvaluateRequestResponse> =
         evaluateRequest(params, RequestOptions.none())
 
     /** @see evaluateRequest */
+    @BetaApi
     fun evaluateRequest(
         params: RuntimeEvaluateRequestParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RuntimeEvaluateRequestResponse>
 
     /** @see evaluateRequest */
+    @BetaApi
     fun evaluateRequest(
         body: RuntimeEvaluateRequestParams.Body,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -64,6 +68,7 @@ interface RuntimeServiceAsync {
         evaluateRequest(RuntimeEvaluateRequestParams.builder().body(body).build(), requestOptions)
 
     /** @see evaluateRequest */
+    @BetaApi
     fun evaluateRequest(
         body: RuntimeEvaluateRequestParams.Body
     ): CompletableFuture<RuntimeEvaluateRequestResponse> =
@@ -88,18 +93,21 @@ interface RuntimeServiceAsync {
      * - [OpenAI Responses](https://platform.openai.com/docs/api-reference/responses)
      * - [Anthropic Messages](https://docs.anthropic.com/en/api/messages)
      */
+    @BetaApi
     fun evaluateResponse(
         params: RuntimeEvaluateResponseParams
     ): CompletableFuture<RuntimeEvaluateResponseResponse> =
         evaluateResponse(params, RequestOptions.none())
 
     /** @see evaluateResponse */
+    @BetaApi
     fun evaluateResponse(
         params: RuntimeEvaluateResponseParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RuntimeEvaluateResponseResponse>
 
     /** @see evaluateResponse */
+    @BetaApi
     fun evaluateResponse(
         body: RuntimeEvaluateResponseParams.Body,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -107,6 +115,7 @@ interface RuntimeServiceAsync {
         evaluateResponse(RuntimeEvaluateResponseParams.builder().body(body).build(), requestOptions)
 
     /** @see evaluateResponse */
+    @BetaApi
     fun evaluateResponse(
         body: RuntimeEvaluateResponseParams.Body
     ): CompletableFuture<RuntimeEvaluateResponseResponse> =
@@ -136,12 +145,14 @@ interface RuntimeServiceAsync {
             evaluateRequest(params, RequestOptions.none())
 
         /** @see evaluateRequest */
+        @BetaApi
         fun evaluateRequest(
             params: RuntimeEvaluateRequestParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<RuntimeEvaluateRequestResponse>>
 
         /** @see evaluateRequest */
+        @BetaApi
         fun evaluateRequest(
             body: RuntimeEvaluateRequestParams.Body,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -152,6 +163,7 @@ interface RuntimeServiceAsync {
             )
 
         /** @see evaluateRequest */
+        @BetaApi
         fun evaluateRequest(
             body: RuntimeEvaluateRequestParams.Body
         ): CompletableFuture<HttpResponseFor<RuntimeEvaluateRequestResponse>> =
@@ -167,12 +179,14 @@ interface RuntimeServiceAsync {
             evaluateResponse(params, RequestOptions.none())
 
         /** @see evaluateResponse */
+        @BetaApi
         fun evaluateResponse(
             params: RuntimeEvaluateResponseParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<RuntimeEvaluateResponseResponse>>
 
         /** @see evaluateResponse */
+        @BetaApi
         fun evaluateResponse(
             body: RuntimeEvaluateResponseParams.Body,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -183,6 +197,7 @@ interface RuntimeServiceAsync {
             )
 
         /** @see evaluateResponse */
+        @BetaApi
         fun evaluateResponse(
             body: RuntimeEvaluateResponseParams.Body
         ): CompletableFuture<HttpResponseFor<RuntimeEvaluateResponseResponse>> =
