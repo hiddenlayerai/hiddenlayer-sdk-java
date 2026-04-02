@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.hiddenlayer.api.models.detection
+package com.hiddenlayer.api.models.runtime
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -34,7 +34,7 @@ import kotlin.jvm.optionals.getOrNull
  * - [OpenAI Responses](https://platform.openai.com/docs/api-reference/responses)
  * - [Anthropic Messages](https://docs.anthropic.com/en/api/messages)
  */
-class DetectionRequestEvaluationParams
+class RuntimeEvaluateRequestParams
 private constructor(
     private val hlProjectId: String?,
     private val hlRuntimeSessionId: String?,
@@ -66,8 +66,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of
-         * [DetectionRequestEvaluationParams].
+         * Returns a mutable builder for constructing an instance of [RuntimeEvaluateRequestParams].
          *
          * The following fields are required:
          * ```java
@@ -77,7 +76,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [DetectionRequestEvaluationParams]. */
+    /** A builder for [RuntimeEvaluateRequestParams]. */
     class Builder internal constructor() {
 
         private var hlProjectId: String? = null
@@ -87,15 +86,13 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(detectionRequestEvaluationParams: DetectionRequestEvaluationParams) =
-            apply {
-                hlProjectId = detectionRequestEvaluationParams.hlProjectId
-                hlRuntimeSessionId = detectionRequestEvaluationParams.hlRuntimeSessionId
-                body = detectionRequestEvaluationParams.body
-                additionalHeaders = detectionRequestEvaluationParams.additionalHeaders.toBuilder()
-                additionalQueryParams =
-                    detectionRequestEvaluationParams.additionalQueryParams.toBuilder()
-            }
+        internal fun from(runtimeEvaluateRequestParams: RuntimeEvaluateRequestParams) = apply {
+            hlProjectId = runtimeEvaluateRequestParams.hlProjectId
+            hlRuntimeSessionId = runtimeEvaluateRequestParams.hlRuntimeSessionId
+            body = runtimeEvaluateRequestParams.body
+            additionalHeaders = runtimeEvaluateRequestParams.additionalHeaders.toBuilder()
+            additionalQueryParams = runtimeEvaluateRequestParams.additionalQueryParams.toBuilder()
+        }
 
         fun hlProjectId(hlProjectId: String?) = apply { this.hlProjectId = hlProjectId }
 
@@ -217,7 +214,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [DetectionRequestEvaluationParams].
+         * Returns an immutable instance of [RuntimeEvaluateRequestParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -228,8 +225,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): DetectionRequestEvaluationParams =
-            DetectionRequestEvaluationParams(
+        fun build(): RuntimeEvaluateRequestParams =
+            RuntimeEvaluateRequestParams(
                 hlProjectId,
                 hlRuntimeSessionId,
                 checkRequired("body", body),
@@ -359,7 +356,7 @@ private constructor(
             return true
         }
 
-        return other is DetectionRequestEvaluationParams &&
+        return other is RuntimeEvaluateRequestParams &&
             hlProjectId == other.hlProjectId &&
             hlRuntimeSessionId == other.hlRuntimeSessionId &&
             body == other.body &&
@@ -377,5 +374,5 @@ private constructor(
         )
 
     override fun toString() =
-        "DetectionRequestEvaluationParams{hlProjectId=$hlProjectId, hlRuntimeSessionId=$hlRuntimeSessionId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "RuntimeEvaluateRequestParams{hlProjectId=$hlProjectId, hlRuntimeSessionId=$hlRuntimeSessionId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

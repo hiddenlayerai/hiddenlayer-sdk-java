@@ -5,11 +5,11 @@ package com.hiddenlayer.api.client
 import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.lib.CommunityScanner
 import com.hiddenlayer.api.lib.ModelScanner
-import com.hiddenlayer.api.services.blocking.DetectionService
 import com.hiddenlayer.api.services.blocking.EvaluationService
 import com.hiddenlayer.api.services.blocking.InteractionService
 import com.hiddenlayer.api.services.blocking.ModelService
 import com.hiddenlayer.api.services.blocking.PromptAnalyzerService
+import com.hiddenlayer.api.services.blocking.RuntimeService
 import com.hiddenlayer.api.services.blocking.ScanService
 import com.hiddenlayer.api.services.blocking.SensorService
 import java.util.function.Consumer
@@ -58,7 +58,7 @@ interface HiddenLayerClient {
 
     fun interactions(): InteractionService
 
-    fun detection(): DetectionService
+    fun runtime(): RuntimeService
 
     fun sensors(): SensorService
 
@@ -113,7 +113,7 @@ interface HiddenLayerClient {
 
         fun interactions(): InteractionService.WithRawResponse
 
-        fun detection(): DetectionService.WithRawResponse
+        fun runtime(): RuntimeService.WithRawResponse
 
         fun sensors(): SensorService.WithRawResponse
 

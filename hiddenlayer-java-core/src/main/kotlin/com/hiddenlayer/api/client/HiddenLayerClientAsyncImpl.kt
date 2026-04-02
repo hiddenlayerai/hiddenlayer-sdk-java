@@ -6,8 +6,6 @@ import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.core.getPackageVersion
 import com.hiddenlayer.api.lib.AsyncCommunityScanner
 import com.hiddenlayer.api.lib.AsyncModelScanner
-import com.hiddenlayer.api.services.async.DetectionServiceAsync
-import com.hiddenlayer.api.services.async.DetectionServiceAsyncImpl
 import com.hiddenlayer.api.services.async.EvaluationServiceAsync
 import com.hiddenlayer.api.services.async.EvaluationServiceAsyncImpl
 import com.hiddenlayer.api.services.async.InteractionServiceAsync
@@ -16,6 +14,8 @@ import com.hiddenlayer.api.services.async.ModelServiceAsync
 import com.hiddenlayer.api.services.async.ModelServiceAsyncImpl
 import com.hiddenlayer.api.services.async.PromptAnalyzerServiceAsync
 import com.hiddenlayer.api.services.async.PromptAnalyzerServiceAsyncImpl
+import com.hiddenlayer.api.services.async.RuntimeServiceAsync
+import com.hiddenlayer.api.services.async.RuntimeServiceAsyncImpl
 import com.hiddenlayer.api.services.async.ScanServiceAsync
 import com.hiddenlayer.api.services.async.ScanServiceAsyncImpl
 import com.hiddenlayer.api.services.async.SensorServiceAsync
@@ -56,8 +56,8 @@ class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
         InteractionServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
-    private val detection: DetectionServiceAsync by lazy {
-        DetectionServiceAsyncImpl(clientOptionsWithUserAgent)
+    private val runtime: RuntimeServiceAsync by lazy {
+        RuntimeServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
     private val sensors: SensorServiceAsync by lazy {
@@ -87,7 +87,7 @@ class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
 
     override fun interactions(): InteractionServiceAsync = interactions
 
-    override fun detection(): DetectionServiceAsync = detection
+    override fun runtime(): RuntimeServiceAsync = runtime
 
     override fun sensors(): SensorServiceAsync = sensors
 
@@ -135,8 +135,8 @@ class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
             InteractionServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
-        private val detection: DetectionServiceAsync.WithRawResponse by lazy {
-            DetectionServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        private val runtime: RuntimeServiceAsync.WithRawResponse by lazy {
+            RuntimeServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val sensors: SensorServiceAsync.WithRawResponse by lazy {
@@ -162,7 +162,7 @@ class HiddenLayerClientAsyncImpl(private val clientOptions: ClientOptions) :
 
         override fun interactions(): InteractionServiceAsync.WithRawResponse = interactions
 
-        override fun detection(): DetectionServiceAsync.WithRawResponse = detection
+        override fun runtime(): RuntimeServiceAsync.WithRawResponse = runtime
 
         override fun sensors(): SensorServiceAsync.WithRawResponse = sensors
 

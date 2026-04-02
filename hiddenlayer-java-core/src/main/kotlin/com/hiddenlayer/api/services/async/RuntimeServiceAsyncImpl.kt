@@ -16,63 +16,63 @@ import com.hiddenlayer.api.core.http.json
 import com.hiddenlayer.api.core.http.parseable
 import com.hiddenlayer.api.core.prepareAsync
 import com.hiddenlayer.api.lib.BetaWarning
-import com.hiddenlayer.api.models.detection.DetectionRequestEvaluationParams
-import com.hiddenlayer.api.models.detection.DetectionRequestEvaluationResponse
-import com.hiddenlayer.api.models.detection.DetectionResponseEvaluationParams
-import com.hiddenlayer.api.models.detection.DetectionResponseEvaluationResponse
+import com.hiddenlayer.api.models.runtime.RuntimeEvaluateRequestParams
+import com.hiddenlayer.api.models.runtime.RuntimeEvaluateRequestResponse
+import com.hiddenlayer.api.models.runtime.RuntimeEvaluateResponseParams
+import com.hiddenlayer.api.models.runtime.RuntimeEvaluateResponseResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
-class DetectionServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
-    DetectionServiceAsync {
+class RuntimeServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    RuntimeServiceAsync {
 
-    private val withRawResponse: DetectionServiceAsync.WithRawResponse by lazy {
+    private val withRawResponse: RuntimeServiceAsync.WithRawResponse by lazy {
         WithRawResponseImpl(clientOptions)
     }
 
-    override fun withRawResponse(): DetectionServiceAsync.WithRawResponse = withRawResponse
+    override fun withRawResponse(): RuntimeServiceAsync.WithRawResponse = withRawResponse
 
-    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): DetectionServiceAsync =
-        DetectionServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): RuntimeServiceAsync =
+        RuntimeServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
-    override fun requestEvaluation(
-        params: DetectionRequestEvaluationParams,
+    override fun evaluateRequest(
+        params: RuntimeEvaluateRequestParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<DetectionRequestEvaluationResponse> {
-        BetaWarning.warnBeta("DetectionService.requestEvaluation")
+    ): CompletableFuture<RuntimeEvaluateRequestResponse> {
+        BetaWarning.warnBeta("RuntimeService.evaluateRequest")
         // post /detection/v2/request-evaluations
-        return withRawResponse().requestEvaluation(params, requestOptions).thenApply { it.parse() }
+        return withRawResponse().evaluateRequest(params, requestOptions).thenApply { it.parse() }
     }
 
-    override fun responseEvaluation(
-        params: DetectionResponseEvaluationParams,
+    override fun evaluateResponse(
+        params: RuntimeEvaluateResponseParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<DetectionResponseEvaluationResponse> {
-        BetaWarning.warnBeta("DetectionService.responseEvaluation")
+    ): CompletableFuture<RuntimeEvaluateResponseResponse> {
+        BetaWarning.warnBeta("RuntimeService.evaluateResponse")
         // post /detection/v2/response-evaluations
-        return withRawResponse().responseEvaluation(params, requestOptions).thenApply { it.parse() }
+        return withRawResponse().evaluateResponse(params, requestOptions).thenApply { it.parse() }
     }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        DetectionServiceAsync.WithRawResponse {
+        RuntimeServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<HttpResponse> =
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
-        ): DetectionServiceAsync.WithRawResponse =
-            DetectionServiceAsyncImpl.WithRawResponseImpl(
+        ): RuntimeServiceAsync.WithRawResponse =
+            RuntimeServiceAsyncImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val requestEvaluationHandler: Handler<DetectionRequestEvaluationResponse> =
-            jsonHandler<DetectionRequestEvaluationResponse>(clientOptions.jsonMapper)
+        private val evaluateRequestHandler: Handler<RuntimeEvaluateRequestResponse> =
+            jsonHandler<RuntimeEvaluateRequestResponse>(clientOptions.jsonMapper)
 
-        override fun requestEvaluation(
-            params: DetectionRequestEvaluationParams,
+        override fun evaluateRequest(
+            params: RuntimeEvaluateRequestParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<DetectionRequestEvaluationResponse>> {
+        ): CompletableFuture<HttpResponseFor<RuntimeEvaluateRequestResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -87,7 +87,7 @@ class DetectionServiceAsyncImpl internal constructor(private val clientOptions: 
                 .thenApply { response ->
                     errorHandler.handle(response).parseable {
                         response
-                            .use { requestEvaluationHandler.handle(it) }
+                            .use { evaluateRequestHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()
@@ -97,13 +97,13 @@ class DetectionServiceAsyncImpl internal constructor(private val clientOptions: 
                 }
         }
 
-        private val responseEvaluationHandler: Handler<DetectionResponseEvaluationResponse> =
-            jsonHandler<DetectionResponseEvaluationResponse>(clientOptions.jsonMapper)
+        private val evaluateResponseHandler: Handler<RuntimeEvaluateResponseResponse> =
+            jsonHandler<RuntimeEvaluateResponseResponse>(clientOptions.jsonMapper)
 
-        override fun responseEvaluation(
-            params: DetectionResponseEvaluationParams,
+        override fun evaluateResponse(
+            params: RuntimeEvaluateResponseParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<DetectionResponseEvaluationResponse>> {
+        ): CompletableFuture<HttpResponseFor<RuntimeEvaluateResponseResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -118,7 +118,7 @@ class DetectionServiceAsyncImpl internal constructor(private val clientOptions: 
                 .thenApply { response ->
                     errorHandler.handle(response).parseable {
                         response
-                            .use { responseEvaluationHandler.handle(it) }
+                            .use { evaluateResponseHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()

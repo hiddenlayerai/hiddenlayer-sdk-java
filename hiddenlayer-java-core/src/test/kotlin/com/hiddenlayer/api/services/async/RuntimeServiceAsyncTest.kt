@@ -1,29 +1,29 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.hiddenlayer.api.services.blocking
+package com.hiddenlayer.api.services.async
 
-import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClientAsync
 import com.hiddenlayer.api.core.JsonValue
-import com.hiddenlayer.api.models.detection.DetectionRequestEvaluationParams
-import com.hiddenlayer.api.models.detection.DetectionResponseEvaluationParams
+import com.hiddenlayer.api.models.runtime.RuntimeEvaluateRequestParams
+import com.hiddenlayer.api.models.runtime.RuntimeEvaluateResponseParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-internal class DetectionServiceTest {
+internal class RuntimeServiceAsyncTest {
 
     @Disabled("Mock server tests are disabled")
     @Test
-    fun requestEvaluation() {
-        val client = HiddenLayerOkHttpClient.builder().bearerToken("My Bearer Token").build()
-        val detectionService = client.detection()
+    fun evaluateRequest() {
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
+        val runtimeServiceAsync = client.runtime()
 
-        val response =
-            detectionService.requestEvaluation(
-                DetectionRequestEvaluationParams.builder()
+        val responseFuture =
+            runtimeServiceAsync.evaluateRequest(
+                RuntimeEvaluateRequestParams.builder()
                     .hlProjectId("internal-search-chatbot")
                     .hlRuntimeSessionId("sess_4b8cde94604f4c389406a0b2f806069a")
                     .body(
-                        DetectionRequestEvaluationParams.Body.builder()
+                        RuntimeEvaluateRequestParams.Body.builder()
                             .putAdditionalProperty("model", JsonValue.from("bar"))
                             .putAdditionalProperty("messages", JsonValue.from("bar"))
                             .putAdditionalProperty("max_tokens", JsonValue.from("bar"))
@@ -33,22 +33,23 @@ internal class DetectionServiceTest {
                     .build()
             )
 
+        val response = responseFuture.get()
         response.validate()
     }
 
     @Disabled("Mock server tests are disabled")
     @Test
-    fun responseEvaluation() {
-        val client = HiddenLayerOkHttpClient.builder().bearerToken("My Bearer Token").build()
-        val detectionService = client.detection()
+    fun evaluateResponse() {
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
+        val runtimeServiceAsync = client.runtime()
 
-        val response =
-            detectionService.responseEvaluation(
-                DetectionResponseEvaluationParams.builder()
+        val responseFuture =
+            runtimeServiceAsync.evaluateResponse(
+                RuntimeEvaluateResponseParams.builder()
                     .hlProjectId("internal-search-chatbot")
                     .hlRuntimeSessionId("sess_4b8cde94604f4c389406a0b2f806069a")
                     .body(
-                        DetectionResponseEvaluationParams.Body.builder()
+                        RuntimeEvaluateResponseParams.Body.builder()
                             .putAdditionalProperty("id", JsonValue.from("bar"))
                             .putAdditionalProperty("object", JsonValue.from("bar"))
                             .putAdditionalProperty("created", JsonValue.from("bar"))
@@ -60,6 +61,7 @@ internal class DetectionServiceTest {
                     .build()
             )
 
+        val response = responseFuture.get()
         response.validate()
     }
 }

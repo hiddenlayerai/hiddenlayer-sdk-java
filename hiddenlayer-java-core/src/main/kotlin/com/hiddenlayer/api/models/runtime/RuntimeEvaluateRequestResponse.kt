@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.hiddenlayer.api.models.detection
+package com.hiddenlayer.api.models.runtime
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -14,7 +14,7 @@ import java.util.Objects
  * A pass-through payload in the native format of the LLM provider. Any valid provider request or
  * response payload is accepted as-is and returned in the same format.
  */
-class DetectionRequestEvaluationResponse
+class RuntimeEvaluateRequestResponse
 @JsonCreator
 private constructor(
     @com.fasterxml.jackson.annotation.JsonValue
@@ -31,22 +31,21 @@ private constructor(
 
         /**
          * Returns a mutable builder for constructing an instance of
-         * [DetectionRequestEvaluationResponse].
+         * [RuntimeEvaluateRequestResponse].
          */
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [DetectionRequestEvaluationResponse]. */
+    /** A builder for [RuntimeEvaluateRequestResponse]. */
     class Builder internal constructor() {
 
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(detectionRequestEvaluationResponse: DetectionRequestEvaluationResponse) =
-            apply {
-                additionalProperties =
-                    detectionRequestEvaluationResponse.additionalProperties.toMutableMap()
-            }
+        internal fun from(runtimeEvaluateRequestResponse: RuntimeEvaluateRequestResponse) = apply {
+            additionalProperties =
+                runtimeEvaluateRequestResponse.additionalProperties.toMutableMap()
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -68,17 +67,17 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [DetectionRequestEvaluationResponse].
+         * Returns an immutable instance of [RuntimeEvaluateRequestResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          */
-        fun build(): DetectionRequestEvaluationResponse =
-            DetectionRequestEvaluationResponse(additionalProperties.toImmutable())
+        fun build(): RuntimeEvaluateRequestResponse =
+            RuntimeEvaluateRequestResponse(additionalProperties.toImmutable())
     }
 
     private var validated: Boolean = false
 
-    fun validate(): DetectionRequestEvaluationResponse = apply {
+    fun validate(): RuntimeEvaluateRequestResponse = apply {
         if (validated) {
             return@apply
         }
@@ -108,7 +107,7 @@ private constructor(
             return true
         }
 
-        return other is DetectionRequestEvaluationResponse &&
+        return other is RuntimeEvaluateRequestResponse &&
             additionalProperties == other.additionalProperties
     }
 
@@ -117,5 +116,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "DetectionRequestEvaluationResponse{additionalProperties=$additionalProperties}"
+        "RuntimeEvaluateRequestResponse{additionalProperties=$additionalProperties}"
 }

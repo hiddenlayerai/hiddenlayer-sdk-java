@@ -16,62 +16,62 @@ import com.hiddenlayer.api.core.http.json
 import com.hiddenlayer.api.core.http.parseable
 import com.hiddenlayer.api.core.prepare
 import com.hiddenlayer.api.lib.BetaWarning
-import com.hiddenlayer.api.models.detection.DetectionRequestEvaluationParams
-import com.hiddenlayer.api.models.detection.DetectionRequestEvaluationResponse
-import com.hiddenlayer.api.models.detection.DetectionResponseEvaluationParams
-import com.hiddenlayer.api.models.detection.DetectionResponseEvaluationResponse
+import com.hiddenlayer.api.models.runtime.RuntimeEvaluateRequestParams
+import com.hiddenlayer.api.models.runtime.RuntimeEvaluateRequestResponse
+import com.hiddenlayer.api.models.runtime.RuntimeEvaluateResponseParams
+import com.hiddenlayer.api.models.runtime.RuntimeEvaluateResponseResponse
 import java.util.function.Consumer
 
-class DetectionServiceImpl internal constructor(private val clientOptions: ClientOptions) :
-    DetectionService {
+class RuntimeServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    RuntimeService {
 
-    private val withRawResponse: DetectionService.WithRawResponse by lazy {
+    private val withRawResponse: RuntimeService.WithRawResponse by lazy {
         WithRawResponseImpl(clientOptions)
     }
 
-    override fun withRawResponse(): DetectionService.WithRawResponse = withRawResponse
+    override fun withRawResponse(): RuntimeService.WithRawResponse = withRawResponse
 
-    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): DetectionService =
-        DetectionServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): RuntimeService =
+        RuntimeServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
-    override fun requestEvaluation(
-        params: DetectionRequestEvaluationParams,
+    override fun evaluateRequest(
+        params: RuntimeEvaluateRequestParams,
         requestOptions: RequestOptions,
-    ): DetectionRequestEvaluationResponse {
-        BetaWarning.warnBeta("DetectionService.requestEvaluation")
+    ): RuntimeEvaluateRequestResponse {
+        BetaWarning.warnBeta("RuntimeService.evaluateRequest")
         // post /detection/v2/request-evaluations
-        return withRawResponse().requestEvaluation(params, requestOptions).parse()
+        return withRawResponse().evaluateRequest(params, requestOptions).parse()
     }
 
-    override fun responseEvaluation(
-        params: DetectionResponseEvaluationParams,
+    override fun evaluateResponse(
+        params: RuntimeEvaluateResponseParams,
         requestOptions: RequestOptions,
-    ): DetectionResponseEvaluationResponse {
-        BetaWarning.warnBeta("DetectionService.responseEvaluation")
+    ): RuntimeEvaluateResponseResponse {
+        BetaWarning.warnBeta("RuntimeService.evaluateResponse")
         // post /detection/v2/response-evaluations
-        return withRawResponse().responseEvaluation(params, requestOptions).parse()
+        return withRawResponse().evaluateResponse(params, requestOptions).parse()
     }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        DetectionService.WithRawResponse {
+        RuntimeService.WithRawResponse {
 
         private val errorHandler: Handler<HttpResponse> =
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
-        ): DetectionService.WithRawResponse =
-            DetectionServiceImpl.WithRawResponseImpl(
+        ): RuntimeService.WithRawResponse =
+            RuntimeServiceImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val requestEvaluationHandler: Handler<DetectionRequestEvaluationResponse> =
-            jsonHandler<DetectionRequestEvaluationResponse>(clientOptions.jsonMapper)
+        private val evaluateRequestHandler: Handler<RuntimeEvaluateRequestResponse> =
+            jsonHandler<RuntimeEvaluateRequestResponse>(clientOptions.jsonMapper)
 
-        override fun requestEvaluation(
-            params: DetectionRequestEvaluationParams,
+        override fun evaluateRequest(
+            params: RuntimeEvaluateRequestParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<DetectionRequestEvaluationResponse> {
+        ): HttpResponseFor<RuntimeEvaluateRequestResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -84,7 +84,7 @@ class DetectionServiceImpl internal constructor(private val clientOptions: Clien
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use { requestEvaluationHandler.handle(it) }
+                    .use { evaluateRequestHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()
@@ -93,13 +93,13 @@ class DetectionServiceImpl internal constructor(private val clientOptions: Clien
             }
         }
 
-        private val responseEvaluationHandler: Handler<DetectionResponseEvaluationResponse> =
-            jsonHandler<DetectionResponseEvaluationResponse>(clientOptions.jsonMapper)
+        private val evaluateResponseHandler: Handler<RuntimeEvaluateResponseResponse> =
+            jsonHandler<RuntimeEvaluateResponseResponse>(clientOptions.jsonMapper)
 
-        override fun responseEvaluation(
-            params: DetectionResponseEvaluationParams,
+        override fun evaluateResponse(
+            params: RuntimeEvaluateResponseParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<DetectionResponseEvaluationResponse> {
+        ): HttpResponseFor<RuntimeEvaluateResponseResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -112,7 +112,7 @@ class DetectionServiceImpl internal constructor(private val clientOptions: Clien
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use { responseEvaluationHandler.handle(it) }
+                    .use { evaluateResponseHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()
