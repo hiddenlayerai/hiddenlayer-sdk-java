@@ -15,7 +15,6 @@ import com.hiddenlayer.api.core.http.HttpResponseFor
 import com.hiddenlayer.api.core.http.json
 import com.hiddenlayer.api.core.http.parseable
 import com.hiddenlayer.api.core.prepareAsync
-import com.hiddenlayer.api.lib.BetaWarning
 import com.hiddenlayer.api.models.runtime.RuntimeEvaluateRequestParams
 import com.hiddenlayer.api.models.runtime.RuntimeEvaluateRequestResponse
 import com.hiddenlayer.api.models.runtime.RuntimeEvaluateResponseParams
@@ -38,20 +37,16 @@ class RuntimeServiceAsyncImpl internal constructor(private val clientOptions: Cl
     override fun evaluateRequest(
         params: RuntimeEvaluateRequestParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<RuntimeEvaluateRequestResponse> {
-        BetaWarning.warnBeta("RuntimeService.evaluateRequest")
+    ): CompletableFuture<RuntimeEvaluateRequestResponse> =
         // post /detection/v2/request-evaluations
-        return withRawResponse().evaluateRequest(params, requestOptions).thenApply { it.parse() }
-    }
+        withRawResponse().evaluateRequest(params, requestOptions).thenApply { it.parse() }
 
     override fun evaluateResponse(
         params: RuntimeEvaluateResponseParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<RuntimeEvaluateResponseResponse> {
-        BetaWarning.warnBeta("RuntimeService.evaluateResponse")
+    ): CompletableFuture<RuntimeEvaluateResponseResponse> =
         // post /detection/v2/response-evaluations
-        return withRawResponse().evaluateResponse(params, requestOptions).thenApply { it.parse() }
-    }
+        withRawResponse().evaluateResponse(params, requestOptions).thenApply { it.parse() }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         RuntimeServiceAsync.WithRawResponse {
