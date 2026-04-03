@@ -1,21 +1,21 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.hiddenlayer.api.models.detection
+package com.hiddenlayer.api.models.runtime
 
 import com.hiddenlayer.api.core.JsonValue
 import com.hiddenlayer.api.core.http.Headers
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class DetectionResponseEvaluationParamsTest {
+internal class RuntimeEvaluateResponseParamsTest {
 
     @Test
     fun create() {
-        DetectionResponseEvaluationParams.builder()
+        RuntimeEvaluateResponseParams.builder()
             .hlProjectId("internal-search-chatbot")
             .hlRuntimeSessionId("sess_4b8cde94604f4c389406a0b2f806069a")
             .body(
-                DetectionResponseEvaluationParams.Body.builder()
+                RuntimeEvaluateResponseParams.Body.builder()
                     .putAdditionalProperty("id", JsonValue.from("bar"))
                     .putAdditionalProperty("object", JsonValue.from("bar"))
                     .putAdditionalProperty("created", JsonValue.from("bar"))
@@ -30,11 +30,11 @@ internal class DetectionResponseEvaluationParamsTest {
     @Test
     fun headers() {
         val params =
-            DetectionResponseEvaluationParams.builder()
+            RuntimeEvaluateResponseParams.builder()
                 .hlProjectId("internal-search-chatbot")
                 .hlRuntimeSessionId("sess_4b8cde94604f4c389406a0b2f806069a")
                 .body(
-                    DetectionResponseEvaluationParams.Body.builder()
+                    RuntimeEvaluateResponseParams.Body.builder()
                         .putAdditionalProperty("id", JsonValue.from("bar"))
                         .putAdditionalProperty("object", JsonValue.from("bar"))
                         .putAdditionalProperty("created", JsonValue.from("bar"))
@@ -59,9 +59,9 @@ internal class DetectionResponseEvaluationParamsTest {
     @Test
     fun headersWithoutOptionalFields() {
         val params =
-            DetectionResponseEvaluationParams.builder()
+            RuntimeEvaluateResponseParams.builder()
                 .body(
-                    DetectionResponseEvaluationParams.Body.builder()
+                    RuntimeEvaluateResponseParams.Body.builder()
                         .putAdditionalProperty("id", JsonValue.from("bar"))
                         .putAdditionalProperty("object", JsonValue.from("bar"))
                         .putAdditionalProperty("created", JsonValue.from("bar"))
@@ -80,11 +80,11 @@ internal class DetectionResponseEvaluationParamsTest {
     @Test
     fun body() {
         val params =
-            DetectionResponseEvaluationParams.builder()
+            RuntimeEvaluateResponseParams.builder()
                 .hlProjectId("internal-search-chatbot")
                 .hlRuntimeSessionId("sess_4b8cde94604f4c389406a0b2f806069a")
                 .body(
-                    DetectionResponseEvaluationParams.Body.builder()
+                    RuntimeEvaluateResponseParams.Body.builder()
                         .putAdditionalProperty("id", JsonValue.from("bar"))
                         .putAdditionalProperty("object", JsonValue.from("bar"))
                         .putAdditionalProperty("created", JsonValue.from("bar"))
@@ -99,7 +99,7 @@ internal class DetectionResponseEvaluationParamsTest {
 
         assertThat(body)
             .isEqualTo(
-                DetectionResponseEvaluationParams.Body.builder()
+                RuntimeEvaluateResponseParams.Body.builder()
                     .putAdditionalProperty("id", JsonValue.from("bar"))
                     .putAdditionalProperty("object", JsonValue.from("bar"))
                     .putAdditionalProperty("created", JsonValue.from("bar"))
@@ -113,9 +113,9 @@ internal class DetectionResponseEvaluationParamsTest {
     @Test
     fun bodyWithoutOptionalFields() {
         val params =
-            DetectionResponseEvaluationParams.builder()
+            RuntimeEvaluateResponseParams.builder()
                 .body(
-                    DetectionResponseEvaluationParams.Body.builder()
+                    RuntimeEvaluateResponseParams.Body.builder()
                         .putAdditionalProperty("id", JsonValue.from("bar"))
                         .putAdditionalProperty("object", JsonValue.from("bar"))
                         .putAdditionalProperty("created", JsonValue.from("bar"))
@@ -130,7 +130,7 @@ internal class DetectionResponseEvaluationParamsTest {
 
         assertThat(body)
             .isEqualTo(
-                DetectionResponseEvaluationParams.Body.builder()
+                RuntimeEvaluateResponseParams.Body.builder()
                     .putAdditionalProperty("id", JsonValue.from("bar"))
                     .putAdditionalProperty("object", JsonValue.from("bar"))
                     .putAdditionalProperty("created", JsonValue.from("bar"))
