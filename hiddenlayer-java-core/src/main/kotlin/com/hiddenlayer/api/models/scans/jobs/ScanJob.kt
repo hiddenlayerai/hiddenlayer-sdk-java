@@ -1745,9 +1745,11 @@ private constructor(
 
                         @JvmField val AWS_BEDROCK = of("AWS_BEDROCK")
 
+                        @JvmField val AWS_SAGEMAKER = of("AWS_SAGEMAKER")
+
                         @JvmField val AZURE_AI_FOUNDRY = of("AZURE_AI_FOUNDRY")
 
-                        @JvmField val AWS_SAGEMAKER = of("AWS_SAGEMAKER")
+                        @JvmField val AZURE_ML = of("AZURE_ML")
 
                         @JvmField val DATABRICKS = of("DATABRICKS")
 
@@ -1757,8 +1759,9 @@ private constructor(
                     /** An enum containing [Provider]'s known values. */
                     enum class Known {
                         AWS_BEDROCK,
-                        AZURE_AI_FOUNDRY,
                         AWS_SAGEMAKER,
+                        AZURE_AI_FOUNDRY,
+                        AZURE_ML,
                         DATABRICKS,
                     }
 
@@ -1774,8 +1777,9 @@ private constructor(
                      */
                     enum class Value {
                         AWS_BEDROCK,
-                        AZURE_AI_FOUNDRY,
                         AWS_SAGEMAKER,
+                        AZURE_AI_FOUNDRY,
+                        AZURE_ML,
                         DATABRICKS,
                         /**
                          * An enum member indicating that [Provider] was instantiated with an
@@ -1794,8 +1798,9 @@ private constructor(
                     fun value(): Value =
                         when (this) {
                             AWS_BEDROCK -> Value.AWS_BEDROCK
-                            AZURE_AI_FOUNDRY -> Value.AZURE_AI_FOUNDRY
                             AWS_SAGEMAKER -> Value.AWS_SAGEMAKER
+                            AZURE_AI_FOUNDRY -> Value.AZURE_AI_FOUNDRY
+                            AZURE_ML -> Value.AZURE_ML
                             DATABRICKS -> Value.DATABRICKS
                             else -> Value._UNKNOWN
                         }
@@ -1812,8 +1817,9 @@ private constructor(
                     fun known(): Known =
                         when (this) {
                             AWS_BEDROCK -> Known.AWS_BEDROCK
-                            AZURE_AI_FOUNDRY -> Known.AZURE_AI_FOUNDRY
                             AWS_SAGEMAKER -> Known.AWS_SAGEMAKER
+                            AZURE_AI_FOUNDRY -> Known.AZURE_AI_FOUNDRY
+                            AZURE_ML -> Known.AZURE_ML
                             DATABRICKS -> Known.DATABRICKS
                             else ->
                                 throw HiddenLayerInvalidDataException("Unknown Provider: $value")
