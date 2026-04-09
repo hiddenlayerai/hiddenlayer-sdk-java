@@ -35,6 +35,9 @@ interface RedTeamService {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): RedTeamService
 
     /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
+     * Breaking changes may occur.
+     *
      * Start a new red team client workflow. Auto-triggers planning phase. Client should then poll
      * /next-action.
      */
@@ -47,7 +50,12 @@ interface RedTeamService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RedTeamCreateResponse
 
-    /** Get the complete result of a red team workflow. */
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
+     * Breaking changes may occur.
+     *
+     * Get the complete result of a red team workflow.
+     */
     fun retrieveEvaluationResults(workflowId: String): RedTeamRetrieveEvaluationResultsResponse =
         retrieveEvaluationResults(workflowId, RedTeamRetrieveEvaluationResultsParams.none())
 
@@ -92,6 +100,9 @@ interface RedTeamService {
         )
 
     /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
+     * Breaking changes may occur.
+     *
      * Poll for next action - CLIENT'S MAIN POLLING ENDPOINT.
      *
      * This endpoint is designed to be polled repeatedly by the client. Returns immediately with
@@ -136,7 +147,12 @@ interface RedTeamService {
     ): RedTeamRetrieveNextActionResponse =
         retrieveNextAction(workflowId, RedTeamRetrieveNextActionParams.none(), requestOptions)
 
-    /** Get current status of a red team workflow. */
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
+     * Breaking changes may occur.
+     *
+     * Get current status of a red team workflow.
+     */
     fun retrieveStatus(workflowId: String): RedTeamRetrieveStatusResponse =
         retrieveStatus(workflowId, RedTeamRetrieveStatusParams.none())
 
@@ -172,6 +188,9 @@ interface RedTeamService {
         retrieveStatus(workflowId, RedTeamRetrieveStatusParams.none(), requestOptions)
 
     /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
+     * Breaking changes may occur.
+     *
      * Submit target's response.
      *
      * This triggers the ProcessTargetResponseWorkflow child workflow for the specified session.
@@ -202,7 +221,12 @@ interface RedTeamService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RedTeamSubmitTargetResponseResponse
 
-    /** Terminate a running workflow. */
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
+     * Breaking changes may occur.
+     *
+     * Terminate a running workflow job.
+     */
     fun terminate(workflowId: String) = terminate(workflowId, RedTeamTerminateParams.none())
 
     /** @see terminate */
@@ -242,8 +266,8 @@ interface RedTeamService {
         fun withOptions(modifier: Consumer<ClientOptions.Builder>): RedTeamService.WithRawResponse
 
         /**
-         * Returns a raw HTTP response for `post /evaluations/v1-beta/red-team`, but is otherwise
-         * the same as [RedTeamService.create].
+         * Returns a raw HTTP response for `post /evaluations/v1/red-team`, but is otherwise the
+         * same as [RedTeamService.create].
          */
         @MustBeClosed
         fun create(params: RedTeamCreateParams): HttpResponseFor<RedTeamCreateResponse> =
@@ -257,7 +281,7 @@ interface RedTeamService {
         ): HttpResponseFor<RedTeamCreateResponse>
 
         /**
-         * Returns a raw HTTP response for `get /evaluations/v1-beta/red-team/{workflow_id}`, but is
+         * Returns a raw HTTP response for `get /evaluations/v1/red-team/{workflow_id}`, but is
          * otherwise the same as [RedTeamService.retrieveEvaluationResults].
          */
         @MustBeClosed
@@ -315,9 +339,8 @@ interface RedTeamService {
             )
 
         /**
-         * Returns a raw HTTP response for `get
-         * /evaluations/v1-beta/red-team/{workflow_id}/next-action`, but is otherwise the same as
-         * [RedTeamService.retrieveNextAction].
+         * Returns a raw HTTP response for `get /evaluations/v1/red-team/{workflow_id}/next-action`,
+         * but is otherwise the same as [RedTeamService.retrieveNextAction].
          */
         @MustBeClosed
         fun retrieveNextAction(
@@ -365,8 +388,8 @@ interface RedTeamService {
             retrieveNextAction(workflowId, RedTeamRetrieveNextActionParams.none(), requestOptions)
 
         /**
-         * Returns a raw HTTP response for `get /evaluations/v1-beta/red-team/{workflow_id}/status`,
-         * but is otherwise the same as [RedTeamService.retrieveStatus].
+         * Returns a raw HTTP response for `get /evaluations/v1/red-team/{workflow_id}/status`, but
+         * is otherwise the same as [RedTeamService.retrieveStatus].
          */
         @MustBeClosed
         fun retrieveStatus(workflowId: String): HttpResponseFor<RedTeamRetrieveStatusResponse> =
@@ -413,8 +436,8 @@ interface RedTeamService {
 
         /**
          * Returns a raw HTTP response for `post
-         * /evaluations/v1-beta/red-team/{workflow_id}/target-response`, but is otherwise the same
-         * as [RedTeamService.submitTargetResponse].
+         * /evaluations/v1/red-team/{workflow_id}/target-response`, but is otherwise the same as
+         * [RedTeamService.submitTargetResponse].
          */
         @MustBeClosed
         fun submitTargetResponse(
@@ -447,9 +470,8 @@ interface RedTeamService {
         ): HttpResponseFor<RedTeamSubmitTargetResponseResponse>
 
         /**
-         * Returns a raw HTTP response for `post
-         * /evaluations/v1-beta/red-team/terminations/{workflow_id}`, but is otherwise the same as
-         * [RedTeamService.terminate].
+         * Returns a raw HTTP response for `post /evaluations/v1/jobs/{workflow_id}/termination`,
+         * but is otherwise the same as [RedTeamService.terminate].
          */
         @MustBeClosed
         fun terminate(workflowId: String): HttpResponse =

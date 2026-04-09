@@ -10,6 +10,9 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
+ * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
+ * Breaking changes may occur.
+ *
  * Poll for next action - CLIENT'S MAIN POLLING ENDPOINT.
  *
  * This endpoint is designed to be polled repeatedly by the client. Returns immediately with current
