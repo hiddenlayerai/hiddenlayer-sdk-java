@@ -16,21 +16,68 @@ internal class RedTeamRetrieveEvaluationResultsResponseTest {
             RedTeamRetrieveEvaluationResultsResponse.builder()
                 .result(
                     RedTeamRetrieveEvaluationResultsResponse.Result.builder()
-                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .attackerResults(
+                            RedTeamRetrieveEvaluationResultsResponse.Result.AttackerResults
+                                .builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .evaluationReport("evaluation_report")
+                        .name("name")
+                        .report(
+                            RedTeamRetrieveEvaluationResultsResponse.Result.Report.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .settings(
+                            RedTeamRetrieveEvaluationResultsResponse.Result.Settings.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .targetContext("target_context")
+                        .usage(
+                            RedTeamRetrieveEvaluationResultsResponse.Result.Usage.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
                         .build()
                 )
                 .runId("run_id")
                 .workflowId("workflow_id")
+                .status("status")
                 .build()
 
         assertThat(redTeamRetrieveEvaluationResultsResponse.result())
             .isEqualTo(
                 RedTeamRetrieveEvaluationResultsResponse.Result.builder()
-                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .attackerResults(
+                        RedTeamRetrieveEvaluationResultsResponse.Result.AttackerResults.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
+                    .evaluationReport("evaluation_report")
+                    .name("name")
+                    .report(
+                        RedTeamRetrieveEvaluationResultsResponse.Result.Report.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
+                    .settings(
+                        RedTeamRetrieveEvaluationResultsResponse.Result.Settings.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
+                    .targetContext("target_context")
+                    .usage(
+                        RedTeamRetrieveEvaluationResultsResponse.Result.Usage.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
                     .build()
             )
         assertThat(redTeamRetrieveEvaluationResultsResponse.runId()).isEqualTo("run_id")
         assertThat(redTeamRetrieveEvaluationResultsResponse.workflowId()).isEqualTo("workflow_id")
+        assertThat(redTeamRetrieveEvaluationResultsResponse.status()).contains("status")
     }
 
     @Test
@@ -40,11 +87,35 @@ internal class RedTeamRetrieveEvaluationResultsResponseTest {
             RedTeamRetrieveEvaluationResultsResponse.builder()
                 .result(
                     RedTeamRetrieveEvaluationResultsResponse.Result.builder()
-                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .attackerResults(
+                            RedTeamRetrieveEvaluationResultsResponse.Result.AttackerResults
+                                .builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .evaluationReport("evaluation_report")
+                        .name("name")
+                        .report(
+                            RedTeamRetrieveEvaluationResultsResponse.Result.Report.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .settings(
+                            RedTeamRetrieveEvaluationResultsResponse.Result.Settings.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .targetContext("target_context")
+                        .usage(
+                            RedTeamRetrieveEvaluationResultsResponse.Result.Usage.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
                         .build()
                 )
                 .runId("run_id")
                 .workflowId("workflow_id")
+                .status("status")
                 .build()
 
         val roundtrippedRedTeamRetrieveEvaluationResultsResponse =

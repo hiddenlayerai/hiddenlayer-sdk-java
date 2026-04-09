@@ -48,42 +48,42 @@ class RedTeamServiceAsyncImpl internal constructor(private val clientOptions: Cl
         params: RedTeamCreateParams,
         requestOptions: RequestOptions,
     ): CompletableFuture<RedTeamCreateResponse> =
-        // post /evaluations/v1-beta/red-team
+        // post /evaluations/v1/red-team
         withRawResponse().create(params, requestOptions).thenApply { it.parse() }
 
     override fun retrieveEvaluationResults(
         params: RedTeamRetrieveEvaluationResultsParams,
         requestOptions: RequestOptions,
     ): CompletableFuture<RedTeamRetrieveEvaluationResultsResponse> =
-        // get /evaluations/v1-beta/red-team/{workflow_id}
+        // get /evaluations/v1/red-team/{workflow_id}
         withRawResponse().retrieveEvaluationResults(params, requestOptions).thenApply { it.parse() }
 
     override fun retrieveNextAction(
         params: RedTeamRetrieveNextActionParams,
         requestOptions: RequestOptions,
     ): CompletableFuture<RedTeamRetrieveNextActionResponse> =
-        // get /evaluations/v1-beta/red-team/{workflow_id}/next-action
+        // get /evaluations/v1/red-team/{workflow_id}/next-action
         withRawResponse().retrieveNextAction(params, requestOptions).thenApply { it.parse() }
 
     override fun retrieveStatus(
         params: RedTeamRetrieveStatusParams,
         requestOptions: RequestOptions,
     ): CompletableFuture<RedTeamRetrieveStatusResponse> =
-        // get /evaluations/v1-beta/red-team/{workflow_id}/status
+        // get /evaluations/v1/red-team/{workflow_id}/status
         withRawResponse().retrieveStatus(params, requestOptions).thenApply { it.parse() }
 
     override fun submitTargetResponse(
         params: RedTeamSubmitTargetResponseParams,
         requestOptions: RequestOptions,
     ): CompletableFuture<RedTeamSubmitTargetResponseResponse> =
-        // post /evaluations/v1-beta/red-team/{workflow_id}/target-response
+        // post /evaluations/v1/red-team/{workflow_id}/target-response
         withRawResponse().submitTargetResponse(params, requestOptions).thenApply { it.parse() }
 
     override fun terminate(
         params: RedTeamTerminateParams,
         requestOptions: RequestOptions,
     ): CompletableFuture<Void?> =
-        // post /evaluations/v1-beta/red-team/terminations/{workflow_id}
+        // post /evaluations/v1/jobs/{workflow_id}/termination
         withRawResponse().terminate(params, requestOptions).thenAccept {}
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -110,7 +110,7 @@ class RedTeamServiceAsyncImpl internal constructor(private val clientOptions: Cl
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
                     .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("evaluations", "v1-beta", "red-team")
+                    .addPathSegments("evaluations", "v1", "red-team")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -145,7 +145,7 @@ class RedTeamServiceAsyncImpl internal constructor(private val clientOptions: Cl
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
                     .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("evaluations", "v1-beta", "red-team", params._pathParam(0))
+                    .addPathSegments("evaluations", "v1", "red-team", params._pathParam(0))
                     .build()
                     .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
@@ -180,7 +180,7 @@ class RedTeamServiceAsyncImpl internal constructor(private val clientOptions: Cl
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments(
                         "evaluations",
-                        "v1-beta",
+                        "v1",
                         "red-team",
                         params._pathParam(0),
                         "next-action",
@@ -219,7 +219,7 @@ class RedTeamServiceAsyncImpl internal constructor(private val clientOptions: Cl
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments(
                         "evaluations",
-                        "v1-beta",
+                        "v1",
                         "red-team",
                         params._pathParam(0),
                         "status",
@@ -258,7 +258,7 @@ class RedTeamServiceAsyncImpl internal constructor(private val clientOptions: Cl
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments(
                         "evaluations",
-                        "v1-beta",
+                        "v1",
                         "red-team",
                         params._pathParam(0),
                         "target-response",
@@ -297,10 +297,10 @@ class RedTeamServiceAsyncImpl internal constructor(private val clientOptions: Cl
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments(
                         "evaluations",
-                        "v1-beta",
-                        "red-team",
-                        "terminations",
+                        "v1",
+                        "jobs",
                         params._pathParam(0),
+                        "termination",
                     )
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()

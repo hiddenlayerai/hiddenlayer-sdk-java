@@ -31,10 +31,8 @@ private constructor(
     private val etaSeconds: JsonField<Double>,
     private val failedSessions: JsonField<Int>,
     private val message: JsonField<String>,
-    private val percentComplete: JsonField<Double>,
     private val phase: JsonField<String>,
     private val progressCompleted: JsonField<Int>,
-    private val progressPercent: JsonField<Double>,
     private val progressTotal: JsonField<Int>,
     private val readyPromptsInQueue: JsonField<Int>,
     private val tenantId: JsonField<String>,
@@ -67,16 +65,10 @@ private constructor(
         @ExcludeMissing
         failedSessions: JsonField<Int> = JsonMissing.of(),
         @JsonProperty("message") @ExcludeMissing message: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("percent_complete")
-        @ExcludeMissing
-        percentComplete: JsonField<Double> = JsonMissing.of(),
         @JsonProperty("phase") @ExcludeMissing phase: JsonField<String> = JsonMissing.of(),
         @JsonProperty("progress_completed")
         @ExcludeMissing
         progressCompleted: JsonField<Int> = JsonMissing.of(),
-        @JsonProperty("progress_percent")
-        @ExcludeMissing
-        progressPercent: JsonField<Double> = JsonMissing.of(),
         @JsonProperty("progress_total")
         @ExcludeMissing
         progressTotal: JsonField<Int> = JsonMissing.of(),
@@ -99,10 +91,8 @@ private constructor(
         etaSeconds,
         failedSessions,
         message,
-        percentComplete,
         phase,
         progressCompleted,
-        progressPercent,
         progressTotal,
         readyPromptsInQueue,
         tenantId,
@@ -199,14 +189,6 @@ private constructor(
     fun message(): Optional<String> = message.getOptional("message")
 
     /**
-     * Percentage complete
-     *
-     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun percentComplete(): Optional<Double> = percentComplete.getOptional("percent_complete")
-
-    /**
      * Current workflow phase
      *
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -221,14 +203,6 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun progressCompleted(): Optional<Int> = progressCompleted.getOptional("progress_completed")
-
-    /**
-     * Progress percentage
-     *
-     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun progressPercent(): Optional<Double> = progressPercent.getOptional("progress_percent")
 
     /**
      * Total progress items
@@ -350,15 +324,6 @@ private constructor(
     @JsonProperty("message") @ExcludeMissing fun _message(): JsonField<String> = message
 
     /**
-     * Returns the raw JSON value of [percentComplete].
-     *
-     * Unlike [percentComplete], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("percent_complete")
-    @ExcludeMissing
-    fun _percentComplete(): JsonField<Double> = percentComplete
-
-    /**
      * Returns the raw JSON value of [phase].
      *
      * Unlike [phase], this method doesn't throw if the JSON field has an unexpected type.
@@ -374,15 +339,6 @@ private constructor(
     @JsonProperty("progress_completed")
     @ExcludeMissing
     fun _progressCompleted(): JsonField<Int> = progressCompleted
-
-    /**
-     * Returns the raw JSON value of [progressPercent].
-     *
-     * Unlike [progressPercent], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("progress_percent")
-    @ExcludeMissing
-    fun _progressPercent(): JsonField<Double> = progressPercent
 
     /**
      * Returns the raw JSON value of [progressTotal].
@@ -462,10 +418,8 @@ private constructor(
         private var etaSeconds: JsonField<Double> = JsonMissing.of()
         private var failedSessions: JsonField<Int> = JsonMissing.of()
         private var message: JsonField<String> = JsonMissing.of()
-        private var percentComplete: JsonField<Double> = JsonMissing.of()
         private var phase: JsonField<String> = JsonMissing.of()
         private var progressCompleted: JsonField<Int> = JsonMissing.of()
-        private var progressPercent: JsonField<Double> = JsonMissing.of()
         private var progressTotal: JsonField<Int> = JsonMissing.of()
         private var readyPromptsInQueue: JsonField<Int> = JsonMissing.of()
         private var tenantId: JsonField<String> = JsonMissing.of()
@@ -485,10 +439,8 @@ private constructor(
             etaSeconds = redTeamRetrieveStatusResponse.etaSeconds
             failedSessions = redTeamRetrieveStatusResponse.failedSessions
             message = redTeamRetrieveStatusResponse.message
-            percentComplete = redTeamRetrieveStatusResponse.percentComplete
             phase = redTeamRetrieveStatusResponse.phase
             progressCompleted = redTeamRetrieveStatusResponse.progressCompleted
-            progressPercent = redTeamRetrieveStatusResponse.progressPercent
             progressTotal = redTeamRetrieveStatusResponse.progressTotal
             readyPromptsInQueue = redTeamRetrieveStatusResponse.readyPromptsInQueue
             tenantId = redTeamRetrieveStatusResponse.tenantId
@@ -632,21 +584,6 @@ private constructor(
          */
         fun message(message: JsonField<String>) = apply { this.message = message }
 
-        /** Percentage complete */
-        fun percentComplete(percentComplete: Double) =
-            percentComplete(JsonField.of(percentComplete))
-
-        /**
-         * Sets [Builder.percentComplete] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.percentComplete] with a well-typed [Double] value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
-         */
-        fun percentComplete(percentComplete: JsonField<Double>) = apply {
-            this.percentComplete = percentComplete
-        }
-
         /** Current workflow phase */
         fun phase(phase: String) = phase(JsonField.of(phase))
 
@@ -671,21 +608,6 @@ private constructor(
          */
         fun progressCompleted(progressCompleted: JsonField<Int>) = apply {
             this.progressCompleted = progressCompleted
-        }
-
-        /** Progress percentage */
-        fun progressPercent(progressPercent: Double) =
-            progressPercent(JsonField.of(progressPercent))
-
-        /**
-         * Sets [Builder.progressPercent] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.progressPercent] with a well-typed [Double] value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
-         */
-        fun progressPercent(progressPercent: JsonField<Double>) = apply {
-            this.progressPercent = progressPercent
         }
 
         /** Total progress items */
@@ -789,10 +711,8 @@ private constructor(
                 etaSeconds,
                 failedSessions,
                 message,
-                percentComplete,
                 phase,
                 progressCompleted,
-                progressPercent,
                 progressTotal,
                 readyPromptsInQueue,
                 tenantId,
@@ -819,10 +739,8 @@ private constructor(
         etaSeconds()
         failedSessions()
         message()
-        percentComplete()
         phase()
         progressCompleted()
-        progressPercent()
         progressTotal()
         readyPromptsInQueue()
         tenantId()
@@ -856,10 +774,8 @@ private constructor(
             (if (etaSeconds.asKnown().isPresent) 1 else 0) +
             (if (failedSessions.asKnown().isPresent) 1 else 0) +
             (if (message.asKnown().isPresent) 1 else 0) +
-            (if (percentComplete.asKnown().isPresent) 1 else 0) +
             (if (phase.asKnown().isPresent) 1 else 0) +
             (if (progressCompleted.asKnown().isPresent) 1 else 0) +
-            (if (progressPercent.asKnown().isPresent) 1 else 0) +
             (if (progressTotal.asKnown().isPresent) 1 else 0) +
             (if (readyPromptsInQueue.asKnown().isPresent) 1 else 0) +
             (if (tenantId.asKnown().isPresent) 1 else 0) +
@@ -882,10 +798,8 @@ private constructor(
             etaSeconds == other.etaSeconds &&
             failedSessions == other.failedSessions &&
             message == other.message &&
-            percentComplete == other.percentComplete &&
             phase == other.phase &&
             progressCompleted == other.progressCompleted &&
-            progressPercent == other.progressPercent &&
             progressTotal == other.progressTotal &&
             readyPromptsInQueue == other.readyPromptsInQueue &&
             tenantId == other.tenantId &&
@@ -906,10 +820,8 @@ private constructor(
             etaSeconds,
             failedSessions,
             message,
-            percentComplete,
             phase,
             progressCompleted,
-            progressPercent,
             progressTotal,
             readyPromptsInQueue,
             tenantId,
@@ -921,5 +833,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "RedTeamRetrieveStatusResponse{name=$name, runId=$runId, status=$status, workflowId=$workflowId, activeSessions=$activeSessions, completedSessions=$completedSessions, elapsedSeconds=$elapsedSeconds, error=$error, etaSeconds=$etaSeconds, failedSessions=$failedSessions, message=$message, percentComplete=$percentComplete, phase=$phase, progressCompleted=$progressCompleted, progressPercent=$progressPercent, progressTotal=$progressTotal, readyPromptsInQueue=$readyPromptsInQueue, tenantId=$tenantId, totalSessions=$totalSessions, additionalProperties=$additionalProperties}"
+        "RedTeamRetrieveStatusResponse{name=$name, runId=$runId, status=$status, workflowId=$workflowId, activeSessions=$activeSessions, completedSessions=$completedSessions, elapsedSeconds=$elapsedSeconds, error=$error, etaSeconds=$etaSeconds, failedSessions=$failedSessions, message=$message, phase=$phase, progressCompleted=$progressCompleted, progressTotal=$progressTotal, readyPromptsInQueue=$readyPromptsInQueue, tenantId=$tenantId, totalSessions=$totalSessions, additionalProperties=$additionalProperties}"
 }

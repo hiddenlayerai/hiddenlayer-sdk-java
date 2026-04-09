@@ -11,7 +11,12 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Terminate a running workflow. */
+/**
+ * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
+ * Breaking changes may occur.
+ *
+ * Terminate a running workflow job.
+ */
 class RedTeamTerminateParams
 private constructor(
     private val workflowId: String?,

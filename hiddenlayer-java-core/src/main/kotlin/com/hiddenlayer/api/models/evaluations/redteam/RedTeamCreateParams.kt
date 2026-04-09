@@ -23,6 +23,9 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
+ * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
+ * Breaking changes may occur.
+ *
  * Start a new red team client workflow. Auto-triggers planning phase. Client should then poll
  * /next-action.
  */

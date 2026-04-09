@@ -21,6 +21,9 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
+ * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
+ * Breaking changes may occur.
+ *
  * Submit target's response.
  *
  * This triggers the ProcessTargetResponseWorkflow child workflow for the specified session. Returns

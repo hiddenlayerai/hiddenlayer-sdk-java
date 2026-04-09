@@ -9,7 +9,12 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Get the complete result of a red team workflow. */
+/**
+ * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
+ * Breaking changes may occur.
+ *
+ * Get the complete result of a red team workflow.
+ */
 class RedTeamRetrieveEvaluationResultsParams
 private constructor(
     private val workflowId: String?,
