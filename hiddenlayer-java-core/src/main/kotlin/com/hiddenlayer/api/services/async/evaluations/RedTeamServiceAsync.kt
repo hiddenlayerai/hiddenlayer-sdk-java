@@ -6,6 +6,7 @@ import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.core.RequestOptions
 import com.hiddenlayer.api.core.http.HttpResponse
 import com.hiddenlayer.api.core.http.HttpResponseFor
+import com.hiddenlayer.api.lib.BetaApi
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamCreateParams
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamCreateResponse
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveEvaluationResultsParams
@@ -41,10 +42,12 @@ interface RedTeamServiceAsync {
      * Start a new red team client workflow. Auto-triggers planning phase. Client should then poll
      * /next-action.
      */
+    @BetaApi
     fun create(params: RedTeamCreateParams): CompletableFuture<RedTeamCreateResponse> =
         create(params, RequestOptions.none())
 
     /** @see create */
+    @BetaApi
     fun create(
         params: RedTeamCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -56,12 +59,14 @@ interface RedTeamServiceAsync {
      *
      * Get the complete result of a red team workflow.
      */
+    @BetaApi
     fun retrieveEvaluationResults(
         workflowId: String
     ): CompletableFuture<RedTeamRetrieveEvaluationResultsResponse> =
         retrieveEvaluationResults(workflowId, RedTeamRetrieveEvaluationResultsParams.none())
 
     /** @see retrieveEvaluationResults */
+    @BetaApi
     fun retrieveEvaluationResults(
         workflowId: String,
         params: RedTeamRetrieveEvaluationResultsParams =
@@ -71,6 +76,7 @@ interface RedTeamServiceAsync {
         retrieveEvaluationResults(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
     /** @see retrieveEvaluationResults */
+    @BetaApi
     fun retrieveEvaluationResults(
         workflowId: String,
         params: RedTeamRetrieveEvaluationResultsParams =
@@ -79,18 +85,21 @@ interface RedTeamServiceAsync {
         retrieveEvaluationResults(workflowId, params, RequestOptions.none())
 
     /** @see retrieveEvaluationResults */
+    @BetaApi
     fun retrieveEvaluationResults(
         params: RedTeamRetrieveEvaluationResultsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RedTeamRetrieveEvaluationResultsResponse>
 
     /** @see retrieveEvaluationResults */
+    @BetaApi
     fun retrieveEvaluationResults(
         params: RedTeamRetrieveEvaluationResultsParams
     ): CompletableFuture<RedTeamRetrieveEvaluationResultsResponse> =
         retrieveEvaluationResults(params, RequestOptions.none())
 
     /** @see retrieveEvaluationResults */
+    @BetaApi
     fun retrieveEvaluationResults(
         workflowId: String,
         requestOptions: RequestOptions,
@@ -113,12 +122,14 @@ interface RedTeamServiceAsync {
      * - If processing: Returns processing=true (client continues polling)
      * - If complete: Returns action_type=complete
      */
+    @BetaApi
     fun retrieveNextAction(
         workflowId: String
     ): CompletableFuture<RedTeamRetrieveNextActionResponse> =
         retrieveNextAction(workflowId, RedTeamRetrieveNextActionParams.none())
 
     /** @see retrieveNextAction */
+    @BetaApi
     fun retrieveNextAction(
         workflowId: String,
         params: RedTeamRetrieveNextActionParams = RedTeamRetrieveNextActionParams.none(),
@@ -127,6 +138,7 @@ interface RedTeamServiceAsync {
         retrieveNextAction(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
     /** @see retrieveNextAction */
+    @BetaApi
     fun retrieveNextAction(
         workflowId: String,
         params: RedTeamRetrieveNextActionParams = RedTeamRetrieveNextActionParams.none(),
@@ -134,18 +146,21 @@ interface RedTeamServiceAsync {
         retrieveNextAction(workflowId, params, RequestOptions.none())
 
     /** @see retrieveNextAction */
+    @BetaApi
     fun retrieveNextAction(
         params: RedTeamRetrieveNextActionParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RedTeamRetrieveNextActionResponse>
 
     /** @see retrieveNextAction */
+    @BetaApi
     fun retrieveNextAction(
         params: RedTeamRetrieveNextActionParams
     ): CompletableFuture<RedTeamRetrieveNextActionResponse> =
         retrieveNextAction(params, RequestOptions.none())
 
     /** @see retrieveNextAction */
+    @BetaApi
     fun retrieveNextAction(
         workflowId: String,
         requestOptions: RequestOptions,
@@ -158,10 +173,12 @@ interface RedTeamServiceAsync {
      *
      * Get current status of a red team workflow.
      */
+    @BetaApi
     fun retrieveStatus(workflowId: String): CompletableFuture<RedTeamRetrieveStatusResponse> =
         retrieveStatus(workflowId, RedTeamRetrieveStatusParams.none())
 
     /** @see retrieveStatus */
+    @BetaApi
     fun retrieveStatus(
         workflowId: String,
         params: RedTeamRetrieveStatusParams = RedTeamRetrieveStatusParams.none(),
@@ -170,6 +187,7 @@ interface RedTeamServiceAsync {
         retrieveStatus(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
     /** @see retrieveStatus */
+    @BetaApi
     fun retrieveStatus(
         workflowId: String,
         params: RedTeamRetrieveStatusParams = RedTeamRetrieveStatusParams.none(),
@@ -177,18 +195,21 @@ interface RedTeamServiceAsync {
         retrieveStatus(workflowId, params, RequestOptions.none())
 
     /** @see retrieveStatus */
+    @BetaApi
     fun retrieveStatus(
         params: RedTeamRetrieveStatusParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RedTeamRetrieveStatusResponse>
 
     /** @see retrieveStatus */
+    @BetaApi
     fun retrieveStatus(
         params: RedTeamRetrieveStatusParams
     ): CompletableFuture<RedTeamRetrieveStatusResponse> =
         retrieveStatus(params, RequestOptions.none())
 
     /** @see retrieveStatus */
+    @BetaApi
     fun retrieveStatus(
         workflowId: String,
         requestOptions: RequestOptions,
@@ -204,6 +225,7 @@ interface RedTeamServiceAsync {
      * This triggers the ProcessTargetResponseWorkflow child workflow for the specified session.
      * Returns immediately.
      */
+    @BetaApi
     fun submitTargetResponse(
         workflowId: String,
         params: RedTeamSubmitTargetResponseParams,
@@ -211,6 +233,7 @@ interface RedTeamServiceAsync {
         submitTargetResponse(workflowId, params, RequestOptions.none())
 
     /** @see submitTargetResponse */
+    @BetaApi
     fun submitTargetResponse(
         workflowId: String,
         params: RedTeamSubmitTargetResponseParams,
@@ -219,12 +242,14 @@ interface RedTeamServiceAsync {
         submitTargetResponse(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
     /** @see submitTargetResponse */
+    @BetaApi
     fun submitTargetResponse(
         params: RedTeamSubmitTargetResponseParams
     ): CompletableFuture<RedTeamSubmitTargetResponseResponse> =
         submitTargetResponse(params, RequestOptions.none())
 
     /** @see submitTargetResponse */
+    @BetaApi
     fun submitTargetResponse(
         params: RedTeamSubmitTargetResponseParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -236,10 +261,12 @@ interface RedTeamServiceAsync {
      *
      * Terminate a running workflow job.
      */
+    @BetaApi
     fun terminate(workflowId: String): CompletableFuture<Void?> =
         terminate(workflowId, RedTeamTerminateParams.none())
 
     /** @see terminate */
+    @BetaApi
     fun terminate(
         workflowId: String,
         params: RedTeamTerminateParams = RedTeamTerminateParams.none(),
@@ -248,22 +275,26 @@ interface RedTeamServiceAsync {
         terminate(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
     /** @see terminate */
+    @BetaApi
     fun terminate(
         workflowId: String,
         params: RedTeamTerminateParams = RedTeamTerminateParams.none(),
     ): CompletableFuture<Void?> = terminate(workflowId, params, RequestOptions.none())
 
     /** @see terminate */
+    @BetaApi
     fun terminate(
         params: RedTeamTerminateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
 
     /** @see terminate */
+    @BetaApi
     fun terminate(params: RedTeamTerminateParams): CompletableFuture<Void?> =
         terminate(params, RequestOptions.none())
 
     /** @see terminate */
+    @BetaApi
     fun terminate(workflowId: String, requestOptions: RequestOptions): CompletableFuture<Void?> =
         terminate(workflowId, RedTeamTerminateParams.none(), requestOptions)
 
@@ -291,6 +322,7 @@ interface RedTeamServiceAsync {
             create(params, RequestOptions.none())
 
         /** @see create */
+        @BetaApi
         fun create(
             params: RedTeamCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -306,6 +338,7 @@ interface RedTeamServiceAsync {
             retrieveEvaluationResults(workflowId, RedTeamRetrieveEvaluationResultsParams.none())
 
         /** @see retrieveEvaluationResults */
+        @BetaApi
         fun retrieveEvaluationResults(
             workflowId: String,
             params: RedTeamRetrieveEvaluationResultsParams =
@@ -318,6 +351,7 @@ interface RedTeamServiceAsync {
             )
 
         /** @see retrieveEvaluationResults */
+        @BetaApi
         fun retrieveEvaluationResults(
             workflowId: String,
             params: RedTeamRetrieveEvaluationResultsParams =
@@ -326,18 +360,21 @@ interface RedTeamServiceAsync {
             retrieveEvaluationResults(workflowId, params, RequestOptions.none())
 
         /** @see retrieveEvaluationResults */
+        @BetaApi
         fun retrieveEvaluationResults(
             params: RedTeamRetrieveEvaluationResultsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<RedTeamRetrieveEvaluationResultsResponse>>
 
         /** @see retrieveEvaluationResults */
+        @BetaApi
         fun retrieveEvaluationResults(
             params: RedTeamRetrieveEvaluationResultsParams
         ): CompletableFuture<HttpResponseFor<RedTeamRetrieveEvaluationResultsResponse>> =
             retrieveEvaluationResults(params, RequestOptions.none())
 
         /** @see retrieveEvaluationResults */
+        @BetaApi
         fun retrieveEvaluationResults(
             workflowId: String,
             requestOptions: RequestOptions,
@@ -358,6 +395,7 @@ interface RedTeamServiceAsync {
             retrieveNextAction(workflowId, RedTeamRetrieveNextActionParams.none())
 
         /** @see retrieveNextAction */
+        @BetaApi
         fun retrieveNextAction(
             workflowId: String,
             params: RedTeamRetrieveNextActionParams = RedTeamRetrieveNextActionParams.none(),
@@ -366,6 +404,7 @@ interface RedTeamServiceAsync {
             retrieveNextAction(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
         /** @see retrieveNextAction */
+        @BetaApi
         fun retrieveNextAction(
             workflowId: String,
             params: RedTeamRetrieveNextActionParams = RedTeamRetrieveNextActionParams.none(),
@@ -373,18 +412,21 @@ interface RedTeamServiceAsync {
             retrieveNextAction(workflowId, params, RequestOptions.none())
 
         /** @see retrieveNextAction */
+        @BetaApi
         fun retrieveNextAction(
             params: RedTeamRetrieveNextActionParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<RedTeamRetrieveNextActionResponse>>
 
         /** @see retrieveNextAction */
+        @BetaApi
         fun retrieveNextAction(
             params: RedTeamRetrieveNextActionParams
         ): CompletableFuture<HttpResponseFor<RedTeamRetrieveNextActionResponse>> =
             retrieveNextAction(params, RequestOptions.none())
 
         /** @see retrieveNextAction */
+        @BetaApi
         fun retrieveNextAction(
             workflowId: String,
             requestOptions: RequestOptions,
@@ -401,6 +443,7 @@ interface RedTeamServiceAsync {
             retrieveStatus(workflowId, RedTeamRetrieveStatusParams.none())
 
         /** @see retrieveStatus */
+        @BetaApi
         fun retrieveStatus(
             workflowId: String,
             params: RedTeamRetrieveStatusParams = RedTeamRetrieveStatusParams.none(),
@@ -409,6 +452,7 @@ interface RedTeamServiceAsync {
             retrieveStatus(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
         /** @see retrieveStatus */
+        @BetaApi
         fun retrieveStatus(
             workflowId: String,
             params: RedTeamRetrieveStatusParams = RedTeamRetrieveStatusParams.none(),
@@ -416,18 +460,21 @@ interface RedTeamServiceAsync {
             retrieveStatus(workflowId, params, RequestOptions.none())
 
         /** @see retrieveStatus */
+        @BetaApi
         fun retrieveStatus(
             params: RedTeamRetrieveStatusParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<RedTeamRetrieveStatusResponse>>
 
         /** @see retrieveStatus */
+        @BetaApi
         fun retrieveStatus(
             params: RedTeamRetrieveStatusParams
         ): CompletableFuture<HttpResponseFor<RedTeamRetrieveStatusResponse>> =
             retrieveStatus(params, RequestOptions.none())
 
         /** @see retrieveStatus */
+        @BetaApi
         fun retrieveStatus(
             workflowId: String,
             requestOptions: RequestOptions,
@@ -446,6 +493,7 @@ interface RedTeamServiceAsync {
             submitTargetResponse(workflowId, params, RequestOptions.none())
 
         /** @see submitTargetResponse */
+        @BetaApi
         fun submitTargetResponse(
             workflowId: String,
             params: RedTeamSubmitTargetResponseParams,
@@ -454,12 +502,14 @@ interface RedTeamServiceAsync {
             submitTargetResponse(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
         /** @see submitTargetResponse */
+        @BetaApi
         fun submitTargetResponse(
             params: RedTeamSubmitTargetResponseParams
         ): CompletableFuture<HttpResponseFor<RedTeamSubmitTargetResponseResponse>> =
             submitTargetResponse(params, RequestOptions.none())
 
         /** @see submitTargetResponse */
+        @BetaApi
         fun submitTargetResponse(
             params: RedTeamSubmitTargetResponseParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -473,6 +523,7 @@ interface RedTeamServiceAsync {
             terminate(workflowId, RedTeamTerminateParams.none())
 
         /** @see terminate */
+        @BetaApi
         fun terminate(
             workflowId: String,
             params: RedTeamTerminateParams = RedTeamTerminateParams.none(),
@@ -481,22 +532,26 @@ interface RedTeamServiceAsync {
             terminate(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
         /** @see terminate */
+        @BetaApi
         fun terminate(
             workflowId: String,
             params: RedTeamTerminateParams = RedTeamTerminateParams.none(),
         ): CompletableFuture<HttpResponse> = terminate(workflowId, params, RequestOptions.none())
 
         /** @see terminate */
+        @BetaApi
         fun terminate(
             params: RedTeamTerminateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
 
         /** @see terminate */
+        @BetaApi
         fun terminate(params: RedTeamTerminateParams): CompletableFuture<HttpResponse> =
             terminate(params, RequestOptions.none())
 
         /** @see terminate */
+        @BetaApi
         fun terminate(
             workflowId: String,
             requestOptions: RequestOptions,

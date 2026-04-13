@@ -7,6 +7,7 @@ import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.core.RequestOptions
 import com.hiddenlayer.api.core.http.HttpResponse
 import com.hiddenlayer.api.core.http.HttpResponseFor
+import com.hiddenlayer.api.lib.BetaApi
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamCreateParams
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamCreateResponse
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamRetrieveEvaluationResultsParams
@@ -41,10 +42,12 @@ interface RedTeamService {
      * Start a new red team client workflow. Auto-triggers planning phase. Client should then poll
      * /next-action.
      */
+    @BetaApi
     fun create(params: RedTeamCreateParams): RedTeamCreateResponse =
         create(params, RequestOptions.none())
 
     /** @see create */
+    @BetaApi
     fun create(
         params: RedTeamCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -56,10 +59,12 @@ interface RedTeamService {
      *
      * Get the complete result of a red team workflow.
      */
+    @BetaApi
     fun retrieveEvaluationResults(workflowId: String): RedTeamRetrieveEvaluationResultsResponse =
         retrieveEvaluationResults(workflowId, RedTeamRetrieveEvaluationResultsParams.none())
 
     /** @see retrieveEvaluationResults */
+    @BetaApi
     fun retrieveEvaluationResults(
         workflowId: String,
         params: RedTeamRetrieveEvaluationResultsParams =
@@ -69,6 +74,7 @@ interface RedTeamService {
         retrieveEvaluationResults(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
     /** @see retrieveEvaluationResults */
+    @BetaApi
     fun retrieveEvaluationResults(
         workflowId: String,
         params: RedTeamRetrieveEvaluationResultsParams =
@@ -77,18 +83,21 @@ interface RedTeamService {
         retrieveEvaluationResults(workflowId, params, RequestOptions.none())
 
     /** @see retrieveEvaluationResults */
+    @BetaApi
     fun retrieveEvaluationResults(
         params: RedTeamRetrieveEvaluationResultsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RedTeamRetrieveEvaluationResultsResponse
 
     /** @see retrieveEvaluationResults */
+    @BetaApi
     fun retrieveEvaluationResults(
         params: RedTeamRetrieveEvaluationResultsParams
     ): RedTeamRetrieveEvaluationResultsResponse =
         retrieveEvaluationResults(params, RequestOptions.none())
 
     /** @see retrieveEvaluationResults */
+    @BetaApi
     fun retrieveEvaluationResults(
         workflowId: String,
         requestOptions: RequestOptions,
@@ -111,10 +120,12 @@ interface RedTeamService {
      * - If processing: Returns processing=true (client continues polling)
      * - If complete: Returns action_type=complete
      */
+    @BetaApi
     fun retrieveNextAction(workflowId: String): RedTeamRetrieveNextActionResponse =
         retrieveNextAction(workflowId, RedTeamRetrieveNextActionParams.none())
 
     /** @see retrieveNextAction */
+    @BetaApi
     fun retrieveNextAction(
         workflowId: String,
         params: RedTeamRetrieveNextActionParams = RedTeamRetrieveNextActionParams.none(),
@@ -123,6 +134,7 @@ interface RedTeamService {
         retrieveNextAction(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
     /** @see retrieveNextAction */
+    @BetaApi
     fun retrieveNextAction(
         workflowId: String,
         params: RedTeamRetrieveNextActionParams = RedTeamRetrieveNextActionParams.none(),
@@ -130,17 +142,20 @@ interface RedTeamService {
         retrieveNextAction(workflowId, params, RequestOptions.none())
 
     /** @see retrieveNextAction */
+    @BetaApi
     fun retrieveNextAction(
         params: RedTeamRetrieveNextActionParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RedTeamRetrieveNextActionResponse
 
     /** @see retrieveNextAction */
+    @BetaApi
     fun retrieveNextAction(
         params: RedTeamRetrieveNextActionParams
     ): RedTeamRetrieveNextActionResponse = retrieveNextAction(params, RequestOptions.none())
 
     /** @see retrieveNextAction */
+    @BetaApi
     fun retrieveNextAction(
         workflowId: String,
         requestOptions: RequestOptions,
@@ -153,10 +168,12 @@ interface RedTeamService {
      *
      * Get current status of a red team workflow.
      */
+    @BetaApi
     fun retrieveStatus(workflowId: String): RedTeamRetrieveStatusResponse =
         retrieveStatus(workflowId, RedTeamRetrieveStatusParams.none())
 
     /** @see retrieveStatus */
+    @BetaApi
     fun retrieveStatus(
         workflowId: String,
         params: RedTeamRetrieveStatusParams = RedTeamRetrieveStatusParams.none(),
@@ -165,22 +182,26 @@ interface RedTeamService {
         retrieveStatus(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
     /** @see retrieveStatus */
+    @BetaApi
     fun retrieveStatus(
         workflowId: String,
         params: RedTeamRetrieveStatusParams = RedTeamRetrieveStatusParams.none(),
     ): RedTeamRetrieveStatusResponse = retrieveStatus(workflowId, params, RequestOptions.none())
 
     /** @see retrieveStatus */
+    @BetaApi
     fun retrieveStatus(
         params: RedTeamRetrieveStatusParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RedTeamRetrieveStatusResponse
 
     /** @see retrieveStatus */
+    @BetaApi
     fun retrieveStatus(params: RedTeamRetrieveStatusParams): RedTeamRetrieveStatusResponse =
         retrieveStatus(params, RequestOptions.none())
 
     /** @see retrieveStatus */
+    @BetaApi
     fun retrieveStatus(
         workflowId: String,
         requestOptions: RequestOptions,
@@ -196,6 +217,7 @@ interface RedTeamService {
      * This triggers the ProcessTargetResponseWorkflow child workflow for the specified session.
      * Returns immediately.
      */
+    @BetaApi
     fun submitTargetResponse(
         workflowId: String,
         params: RedTeamSubmitTargetResponseParams,
@@ -203,6 +225,7 @@ interface RedTeamService {
         submitTargetResponse(workflowId, params, RequestOptions.none())
 
     /** @see submitTargetResponse */
+    @BetaApi
     fun submitTargetResponse(
         workflowId: String,
         params: RedTeamSubmitTargetResponseParams,
@@ -211,11 +234,13 @@ interface RedTeamService {
         submitTargetResponse(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
     /** @see submitTargetResponse */
+    @BetaApi
     fun submitTargetResponse(
         params: RedTeamSubmitTargetResponseParams
     ): RedTeamSubmitTargetResponseResponse = submitTargetResponse(params, RequestOptions.none())
 
     /** @see submitTargetResponse */
+    @BetaApi
     fun submitTargetResponse(
         params: RedTeamSubmitTargetResponseParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -227,9 +252,11 @@ interface RedTeamService {
      *
      * Terminate a running workflow job.
      */
+    @BetaApi
     fun terminate(workflowId: String) = terminate(workflowId, RedTeamTerminateParams.none())
 
     /** @see terminate */
+    @BetaApi
     fun terminate(
         workflowId: String,
         params: RedTeamTerminateParams = RedTeamTerminateParams.none(),
@@ -237,21 +264,25 @@ interface RedTeamService {
     ) = terminate(params.toBuilder().workflowId(workflowId).build(), requestOptions)
 
     /** @see terminate */
+    @BetaApi
     fun terminate(
         workflowId: String,
         params: RedTeamTerminateParams = RedTeamTerminateParams.none(),
     ) = terminate(workflowId, params, RequestOptions.none())
 
     /** @see terminate */
+    @BetaApi
     fun terminate(
         params: RedTeamTerminateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     )
 
     /** @see terminate */
+    @BetaApi
     fun terminate(params: RedTeamTerminateParams) = terminate(params, RequestOptions.none())
 
     /** @see terminate */
+    @BetaApi
     fun terminate(workflowId: String, requestOptions: RequestOptions) =
         terminate(workflowId, RedTeamTerminateParams.none(), requestOptions)
 
@@ -275,6 +306,7 @@ interface RedTeamService {
 
         /** @see create */
         @MustBeClosed
+        @BetaApi
         fun create(
             params: RedTeamCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -292,6 +324,7 @@ interface RedTeamService {
 
         /** @see retrieveEvaluationResults */
         @MustBeClosed
+        @BetaApi
         fun retrieveEvaluationResults(
             workflowId: String,
             params: RedTeamRetrieveEvaluationResultsParams =
@@ -305,6 +338,7 @@ interface RedTeamService {
 
         /** @see retrieveEvaluationResults */
         @MustBeClosed
+        @BetaApi
         fun retrieveEvaluationResults(
             workflowId: String,
             params: RedTeamRetrieveEvaluationResultsParams =
@@ -314,6 +348,7 @@ interface RedTeamService {
 
         /** @see retrieveEvaluationResults */
         @MustBeClosed
+        @BetaApi
         fun retrieveEvaluationResults(
             params: RedTeamRetrieveEvaluationResultsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -321,6 +356,7 @@ interface RedTeamService {
 
         /** @see retrieveEvaluationResults */
         @MustBeClosed
+        @BetaApi
         fun retrieveEvaluationResults(
             params: RedTeamRetrieveEvaluationResultsParams
         ): HttpResponseFor<RedTeamRetrieveEvaluationResultsResponse> =
@@ -328,6 +364,7 @@ interface RedTeamService {
 
         /** @see retrieveEvaluationResults */
         @MustBeClosed
+        @BetaApi
         fun retrieveEvaluationResults(
             workflowId: String,
             requestOptions: RequestOptions,
@@ -350,6 +387,7 @@ interface RedTeamService {
 
         /** @see retrieveNextAction */
         @MustBeClosed
+        @BetaApi
         fun retrieveNextAction(
             workflowId: String,
             params: RedTeamRetrieveNextActionParams = RedTeamRetrieveNextActionParams.none(),
@@ -359,6 +397,7 @@ interface RedTeamService {
 
         /** @see retrieveNextAction */
         @MustBeClosed
+        @BetaApi
         fun retrieveNextAction(
             workflowId: String,
             params: RedTeamRetrieveNextActionParams = RedTeamRetrieveNextActionParams.none(),
@@ -367,6 +406,7 @@ interface RedTeamService {
 
         /** @see retrieveNextAction */
         @MustBeClosed
+        @BetaApi
         fun retrieveNextAction(
             params: RedTeamRetrieveNextActionParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -374,6 +414,7 @@ interface RedTeamService {
 
         /** @see retrieveNextAction */
         @MustBeClosed
+        @BetaApi
         fun retrieveNextAction(
             params: RedTeamRetrieveNextActionParams
         ): HttpResponseFor<RedTeamRetrieveNextActionResponse> =
@@ -381,6 +422,7 @@ interface RedTeamService {
 
         /** @see retrieveNextAction */
         @MustBeClosed
+        @BetaApi
         fun retrieveNextAction(
             workflowId: String,
             requestOptions: RequestOptions,
@@ -397,6 +439,7 @@ interface RedTeamService {
 
         /** @see retrieveStatus */
         @MustBeClosed
+        @BetaApi
         fun retrieveStatus(
             workflowId: String,
             params: RedTeamRetrieveStatusParams = RedTeamRetrieveStatusParams.none(),
@@ -406,6 +449,7 @@ interface RedTeamService {
 
         /** @see retrieveStatus */
         @MustBeClosed
+        @BetaApi
         fun retrieveStatus(
             workflowId: String,
             params: RedTeamRetrieveStatusParams = RedTeamRetrieveStatusParams.none(),
@@ -414,6 +458,7 @@ interface RedTeamService {
 
         /** @see retrieveStatus */
         @MustBeClosed
+        @BetaApi
         fun retrieveStatus(
             params: RedTeamRetrieveStatusParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -421,6 +466,7 @@ interface RedTeamService {
 
         /** @see retrieveStatus */
         @MustBeClosed
+        @BetaApi
         fun retrieveStatus(
             params: RedTeamRetrieveStatusParams
         ): HttpResponseFor<RedTeamRetrieveStatusResponse> =
@@ -428,6 +474,7 @@ interface RedTeamService {
 
         /** @see retrieveStatus */
         @MustBeClosed
+        @BetaApi
         fun retrieveStatus(
             workflowId: String,
             requestOptions: RequestOptions,
@@ -448,6 +495,7 @@ interface RedTeamService {
 
         /** @see submitTargetResponse */
         @MustBeClosed
+        @BetaApi
         fun submitTargetResponse(
             workflowId: String,
             params: RedTeamSubmitTargetResponseParams,
@@ -457,6 +505,7 @@ interface RedTeamService {
 
         /** @see submitTargetResponse */
         @MustBeClosed
+        @BetaApi
         fun submitTargetResponse(
             params: RedTeamSubmitTargetResponseParams
         ): HttpResponseFor<RedTeamSubmitTargetResponseResponse> =
@@ -464,6 +513,7 @@ interface RedTeamService {
 
         /** @see submitTargetResponse */
         @MustBeClosed
+        @BetaApi
         fun submitTargetResponse(
             params: RedTeamSubmitTargetResponseParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -479,6 +529,7 @@ interface RedTeamService {
 
         /** @see terminate */
         @MustBeClosed
+        @BetaApi
         fun terminate(
             workflowId: String,
             params: RedTeamTerminateParams = RedTeamTerminateParams.none(),
@@ -488,6 +539,7 @@ interface RedTeamService {
 
         /** @see terminate */
         @MustBeClosed
+        @BetaApi
         fun terminate(
             workflowId: String,
             params: RedTeamTerminateParams = RedTeamTerminateParams.none(),
@@ -495,6 +547,7 @@ interface RedTeamService {
 
         /** @see terminate */
         @MustBeClosed
+        @BetaApi
         fun terminate(
             params: RedTeamTerminateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -502,11 +555,13 @@ interface RedTeamService {
 
         /** @see terminate */
         @MustBeClosed
+        @BetaApi
         fun terminate(params: RedTeamTerminateParams): HttpResponse =
             terminate(params, RequestOptions.none())
 
         /** @see terminate */
         @MustBeClosed
+        @BetaApi
         fun terminate(workflowId: String, requestOptions: RequestOptions): HttpResponse =
             terminate(workflowId, RedTeamTerminateParams.none(), requestOptions)
     }
