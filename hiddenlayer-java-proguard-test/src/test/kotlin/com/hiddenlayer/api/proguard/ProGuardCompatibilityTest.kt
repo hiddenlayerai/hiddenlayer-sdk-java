@@ -50,6 +50,7 @@ internal class ProGuardCompatibilityTest {
 
         assertThat(client).isNotNull()
         assertThat(client.models()).isNotNull()
+        assertThat(client.evaluations()).isNotNull()
         assertThat(client.promptAnalyzer()).isNotNull()
         assertThat(client.interactions()).isNotNull()
         assertThat(client.sensors()).isNotNull()
@@ -63,7 +64,7 @@ internal class ProGuardCompatibilityTest {
             InteractionAnalyzeResponse.builder()
                 .addAnalysis(
                     InteractionAnalyzeResponse.Analysis.builder()
-                        .id("id")
+                        .id("prompt_injection.5.input")
                         .configuration(
                             InteractionAnalyzeResponse.Analysis.Configuration.builder()
                                 .putAdditionalProperty("enabled", JsonValue.from("bar"))

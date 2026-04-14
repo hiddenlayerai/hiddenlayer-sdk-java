@@ -24,7 +24,9 @@ internal class CardListResponseTest {
                 .plaintextName("Resnet-50")
                 .source("azure:datascience-workspace")
                 .aidrThreatLevel(CardListResponse.AidrThreatLevel.HIGH)
+                .latestScanId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .modelScanHasError(true)
+                .policyStatus(CardListResponse.PolicyStatus.COMPLIANT)
                 .securityPosture(
                     CardListResponse.SecurityPosture.builder()
                         .attackMonitoring(true)
@@ -52,7 +54,10 @@ internal class CardListResponseTest {
         assertThat(cardListResponse.source()).isEqualTo("azure:datascience-workspace")
         assertThat(cardListResponse.aidrThreatLevel())
             .contains(CardListResponse.AidrThreatLevel.HIGH)
+        assertThat(cardListResponse.latestScanId()).contains("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(cardListResponse.modelScanHasError()).contains(true)
+        assertThat(cardListResponse.policyStatus())
+            .contains(CardListResponse.PolicyStatus.COMPLIANT)
         assertThat(cardListResponse.securityPosture())
             .contains(
                 CardListResponse.SecurityPosture.builder()
@@ -83,7 +88,9 @@ internal class CardListResponseTest {
                 .plaintextName("Resnet-50")
                 .source("azure:datascience-workspace")
                 .aidrThreatLevel(CardListResponse.AidrThreatLevel.HIGH)
+                .latestScanId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .modelScanHasError(true)
+                .policyStatus(CardListResponse.PolicyStatus.COMPLIANT)
                 .securityPosture(
                     CardListResponse.SecurityPosture.builder()
                         .attackMonitoring(true)

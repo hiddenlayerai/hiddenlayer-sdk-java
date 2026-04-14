@@ -2,24 +2,17 @@
 
 package com.hiddenlayer.api.services.async.scans
 
-import com.hiddenlayer.api.TestServerExtension
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClientAsync
 import com.hiddenlayer.api.models.scans.upload.UploadStartParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class UploadServiceAsyncTest {
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun completeAll() {
-        val client =
-            HiddenLayerOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
         val uploadServiceAsync = client.scans().upload()
 
         val responseFuture = uploadServiceAsync.completeAll("00000000-0000-0000-0000-000000000000")
@@ -28,14 +21,10 @@ internal class UploadServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun start() {
-        val client =
-            HiddenLayerOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
         val uploadServiceAsync = client.scans().upload()
 
         val responseFuture =

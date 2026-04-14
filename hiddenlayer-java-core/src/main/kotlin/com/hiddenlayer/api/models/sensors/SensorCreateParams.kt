@@ -21,7 +21,8 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Create Sensor Record */
+/** ⚠️ **DEPRECATED**: This endpoint will be removed after April 13, 2026. */
+@Deprecated("deprecated")
 class SensorCreateParams
 private constructor(
     private val body: Body,

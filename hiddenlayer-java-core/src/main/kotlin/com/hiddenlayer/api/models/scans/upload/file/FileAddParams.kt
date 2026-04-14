@@ -17,7 +17,8 @@ class FileAddParams
 private constructor(
     private val scanId: String?,
     private val fileContentLength: Long,
-    private val fileName: String,
+    private val fileName: String?,
+    private val fileNameBase64: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
@@ -27,7 +28,9 @@ private constructor(
 
     fun fileContentLength(): Long = fileContentLength
 
-    fun fileName(): String = fileName
+    fun fileName(): Optional<String> = Optional.ofNullable(fileName)
+
+    fun fileNameBase64(): Optional<String> = Optional.ofNullable(fileNameBase64)
 
     /** Additional body properties to send with the request. */
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
@@ -48,7 +51,6 @@ private constructor(
          * The following fields are required:
          * ```java
          * .fileContentLength()
-         * .fileName()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -60,6 +62,7 @@ private constructor(
         private var scanId: String? = null
         private var fileContentLength: Long? = null
         private var fileName: String? = null
+        private var fileNameBase64: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -69,6 +72,7 @@ private constructor(
             scanId = fileAddParams.scanId
             fileContentLength = fileAddParams.fileContentLength
             fileName = fileAddParams.fileName
+            fileNameBase64 = fileAddParams.fileNameBase64
             additionalHeaders = fileAddParams.additionalHeaders.toBuilder()
             additionalQueryParams = fileAddParams.additionalQueryParams.toBuilder()
             additionalBodyProperties = fileAddParams.additionalBodyProperties.toMutableMap()
@@ -83,7 +87,16 @@ private constructor(
             this.fileContentLength = fileContentLength
         }
 
-        fun fileName(fileName: String) = apply { this.fileName = fileName }
+        fun fileName(fileName: String?) = apply { this.fileName = fileName }
+
+        /** Alias for calling [Builder.fileName] with `fileName.orElse(null)`. */
+        fun fileName(fileName: Optional<String>) = fileName(fileName.getOrNull())
+
+        fun fileNameBase64(fileNameBase64: String?) = apply { this.fileNameBase64 = fileNameBase64 }
+
+        /** Alias for calling [Builder.fileNameBase64] with `fileNameBase64.orElse(null)`. */
+        fun fileNameBase64(fileNameBase64: Optional<String>) =
+            fileNameBase64(fileNameBase64.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -213,7 +226,6 @@ private constructor(
          * The following fields are required:
          * ```java
          * .fileContentLength()
-         * .fileName()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -222,7 +234,8 @@ private constructor(
             FileAddParams(
                 scanId,
                 checkRequired("fileContentLength", fileContentLength),
-                checkRequired("fileName", fileName),
+                fileName,
+                fileNameBase64,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -242,7 +255,8 @@ private constructor(
         Headers.builder()
             .apply {
                 put("file-content-length", fileContentLength.toString())
-                put("file-name", fileName)
+                fileName?.let { put("file-name", it) }
+                fileNameBase64?.let { put("file-name-base64", it) }
                 putAll(additionalHeaders)
             }
             .build()
@@ -258,6 +272,7 @@ private constructor(
             scanId == other.scanId &&
             fileContentLength == other.fileContentLength &&
             fileName == other.fileName &&
+            fileNameBase64 == other.fileNameBase64 &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams &&
             additionalBodyProperties == other.additionalBodyProperties
@@ -268,11 +283,12 @@ private constructor(
             scanId,
             fileContentLength,
             fileName,
+            fileNameBase64,
             additionalHeaders,
             additionalQueryParams,
             additionalBodyProperties,
         )
 
     override fun toString() =
-        "FileAddParams{scanId=$scanId, fileContentLength=$fileContentLength, fileName=$fileName, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "FileAddParams{scanId=$scanId, fileContentLength=$fileContentLength, fileName=$fileName, fileNameBase64=$fileNameBase64, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

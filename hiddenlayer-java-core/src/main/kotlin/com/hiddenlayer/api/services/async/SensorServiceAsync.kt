@@ -32,21 +32,25 @@ interface SensorServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): SensorServiceAsync
 
-    /** Create Sensor Record */
+    /** ⚠️ **DEPRECATED**: This endpoint will be removed after April 13, 2026. */
+    @Deprecated("deprecated")
     fun create(params: SensorCreateParams): CompletableFuture<SensorCreateResponse> =
         create(params, RequestOptions.none())
 
     /** @see create */
+    @Deprecated("deprecated")
     fun create(
         params: SensorCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SensorCreateResponse>
 
-    /** Get Sensor */
+    /** ⚠️ **DEPRECATED**: This endpoint will be removed after April 13, 2026. */
+    @Deprecated("deprecated")
     fun retrieve(sensorId: String): CompletableFuture<SensorRetrieveResponse> =
         retrieve(sensorId, SensorRetrieveParams.none())
 
     /** @see retrieve */
+    @Deprecated("deprecated")
     fun retrieve(
         sensorId: String,
         params: SensorRetrieveParams = SensorRetrieveParams.none(),
@@ -55,33 +59,39 @@ interface SensorServiceAsync {
         retrieve(params.toBuilder().sensorId(sensorId).build(), requestOptions)
 
     /** @see retrieve */
+    @Deprecated("deprecated")
     fun retrieve(
         sensorId: String,
         params: SensorRetrieveParams = SensorRetrieveParams.none(),
     ): CompletableFuture<SensorRetrieveResponse> = retrieve(sensorId, params, RequestOptions.none())
 
     /** @see retrieve */
+    @Deprecated("deprecated")
     fun retrieve(
         params: SensorRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SensorRetrieveResponse>
 
     /** @see retrieve */
+    @Deprecated("deprecated")
     fun retrieve(params: SensorRetrieveParams): CompletableFuture<SensorRetrieveResponse> =
         retrieve(params, RequestOptions.none())
 
     /** @see retrieve */
+    @Deprecated("deprecated")
     fun retrieve(
         sensorId: String,
         requestOptions: RequestOptions,
     ): CompletableFuture<SensorRetrieveResponse> =
         retrieve(sensorId, SensorRetrieveParams.none(), requestOptions)
 
-    /** Update Sensor */
+    /** ⚠️ **DEPRECATED**: This endpoint will be removed after April 13, 2026. */
+    @Deprecated("deprecated")
     fun update(sensorId: String): CompletableFuture<SensorUpdateResponse> =
         update(sensorId, SensorUpdateParams.none())
 
     /** @see update */
+    @Deprecated("deprecated")
     fun update(
         sensorId: String,
         params: SensorUpdateParams = SensorUpdateParams.none(),
@@ -90,33 +100,39 @@ interface SensorServiceAsync {
         update(params.toBuilder().sensorId(sensorId).build(), requestOptions)
 
     /** @see update */
+    @Deprecated("deprecated")
     fun update(
         sensorId: String,
         params: SensorUpdateParams = SensorUpdateParams.none(),
     ): CompletableFuture<SensorUpdateResponse> = update(sensorId, params, RequestOptions.none())
 
     /** @see update */
+    @Deprecated("deprecated")
     fun update(
         params: SensorUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SensorUpdateResponse>
 
     /** @see update */
+    @Deprecated("deprecated")
     fun update(params: SensorUpdateParams): CompletableFuture<SensorUpdateResponse> =
         update(params, RequestOptions.none())
 
     /** @see update */
+    @Deprecated("deprecated")
     fun update(
         sensorId: String,
         requestOptions: RequestOptions,
     ): CompletableFuture<SensorUpdateResponse> =
         update(sensorId, SensorUpdateParams.none(), requestOptions)
 
-    /** Remove an Adhoc Sensor */
+    /** ⚠️ **DEPRECATED**: This endpoint will be removed after April 13, 2026. */
+    @Deprecated("deprecated")
     fun delete(sensorId: String): CompletableFuture<Void?> =
         delete(sensorId, SensorDeleteParams.none())
 
     /** @see delete */
+    @Deprecated("deprecated")
     fun delete(
         sensorId: String,
         params: SensorDeleteParams = SensorDeleteParams.none(),
@@ -125,40 +141,48 @@ interface SensorServiceAsync {
         delete(params.toBuilder().sensorId(sensorId).build(), requestOptions)
 
     /** @see delete */
+    @Deprecated("deprecated")
     fun delete(
         sensorId: String,
         params: SensorDeleteParams = SensorDeleteParams.none(),
     ): CompletableFuture<Void?> = delete(sensorId, params, RequestOptions.none())
 
     /** @see delete */
+    @Deprecated("deprecated")
     fun delete(
         params: SensorDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
 
     /** @see delete */
+    @Deprecated("deprecated")
     fun delete(params: SensorDeleteParams): CompletableFuture<Void?> =
         delete(params, RequestOptions.none())
 
     /** @see delete */
+    @Deprecated("deprecated")
     fun delete(sensorId: String, requestOptions: RequestOptions): CompletableFuture<Void?> =
         delete(sensorId, SensorDeleteParams.none(), requestOptions)
 
-    /** Query Sensors */
+    /** ⚠️ **DEPRECATED**: This endpoint will be removed after April 13, 2026. */
+    @Deprecated("deprecated")
     fun query(): CompletableFuture<SensorQueryResponse> = query(SensorQueryParams.none())
 
     /** @see query */
+    @Deprecated("deprecated")
     fun query(
         params: SensorQueryParams = SensorQueryParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<SensorQueryResponse>
 
     /** @see query */
+    @Deprecated("deprecated")
     fun query(
         params: SensorQueryParams = SensorQueryParams.none()
     ): CompletableFuture<SensorQueryResponse> = query(params, RequestOptions.none())
 
     /** @see query */
+    @Deprecated("deprecated")
     fun query(requestOptions: RequestOptions): CompletableFuture<SensorQueryResponse> =
         query(SensorQueryParams.none(), requestOptions)
 
@@ -180,12 +204,14 @@ interface SensorServiceAsync {
          * Returns a raw HTTP response for `post /api/v2/sensors/create`, but is otherwise the same
          * as [SensorServiceAsync.create].
          */
+        @Deprecated("deprecated")
         fun create(
             params: SensorCreateParams
         ): CompletableFuture<HttpResponseFor<SensorCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see create */
+        @Deprecated("deprecated")
         fun create(
             params: SensorCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -195,10 +221,12 @@ interface SensorServiceAsync {
          * Returns a raw HTTP response for `get /api/v2/sensors/{sensor_id}`, but is otherwise the
          * same as [SensorServiceAsync.retrieve].
          */
+        @Deprecated("deprecated")
         fun retrieve(sensorId: String): CompletableFuture<HttpResponseFor<SensorRetrieveResponse>> =
             retrieve(sensorId, SensorRetrieveParams.none())
 
         /** @see retrieve */
+        @Deprecated("deprecated")
         fun retrieve(
             sensorId: String,
             params: SensorRetrieveParams = SensorRetrieveParams.none(),
@@ -207,6 +235,7 @@ interface SensorServiceAsync {
             retrieve(params.toBuilder().sensorId(sensorId).build(), requestOptions)
 
         /** @see retrieve */
+        @Deprecated("deprecated")
         fun retrieve(
             sensorId: String,
             params: SensorRetrieveParams = SensorRetrieveParams.none(),
@@ -214,18 +243,21 @@ interface SensorServiceAsync {
             retrieve(sensorId, params, RequestOptions.none())
 
         /** @see retrieve */
+        @Deprecated("deprecated")
         fun retrieve(
             params: SensorRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<SensorRetrieveResponse>>
 
         /** @see retrieve */
+        @Deprecated("deprecated")
         fun retrieve(
             params: SensorRetrieveParams
         ): CompletableFuture<HttpResponseFor<SensorRetrieveResponse>> =
             retrieve(params, RequestOptions.none())
 
         /** @see retrieve */
+        @Deprecated("deprecated")
         fun retrieve(
             sensorId: String,
             requestOptions: RequestOptions,
@@ -236,10 +268,12 @@ interface SensorServiceAsync {
          * Returns a raw HTTP response for `put /api/v2/sensors/{sensor_id}`, but is otherwise the
          * same as [SensorServiceAsync.update].
          */
+        @Deprecated("deprecated")
         fun update(sensorId: String): CompletableFuture<HttpResponseFor<SensorUpdateResponse>> =
             update(sensorId, SensorUpdateParams.none())
 
         /** @see update */
+        @Deprecated("deprecated")
         fun update(
             sensorId: String,
             params: SensorUpdateParams = SensorUpdateParams.none(),
@@ -248,6 +282,7 @@ interface SensorServiceAsync {
             update(params.toBuilder().sensorId(sensorId).build(), requestOptions)
 
         /** @see update */
+        @Deprecated("deprecated")
         fun update(
             sensorId: String,
             params: SensorUpdateParams = SensorUpdateParams.none(),
@@ -255,18 +290,21 @@ interface SensorServiceAsync {
             update(sensorId, params, RequestOptions.none())
 
         /** @see update */
+        @Deprecated("deprecated")
         fun update(
             params: SensorUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<SensorUpdateResponse>>
 
         /** @see update */
+        @Deprecated("deprecated")
         fun update(
             params: SensorUpdateParams
         ): CompletableFuture<HttpResponseFor<SensorUpdateResponse>> =
             update(params, RequestOptions.none())
 
         /** @see update */
+        @Deprecated("deprecated")
         fun update(
             sensorId: String,
             requestOptions: RequestOptions,
@@ -277,10 +315,12 @@ interface SensorServiceAsync {
          * Returns a raw HTTP response for `delete /api/v2/sensors/{sensor_id}`, but is otherwise
          * the same as [SensorServiceAsync.delete].
          */
+        @Deprecated("deprecated")
         fun delete(sensorId: String): CompletableFuture<HttpResponse> =
             delete(sensorId, SensorDeleteParams.none())
 
         /** @see delete */
+        @Deprecated("deprecated")
         fun delete(
             sensorId: String,
             params: SensorDeleteParams = SensorDeleteParams.none(),
@@ -289,22 +329,26 @@ interface SensorServiceAsync {
             delete(params.toBuilder().sensorId(sensorId).build(), requestOptions)
 
         /** @see delete */
+        @Deprecated("deprecated")
         fun delete(
             sensorId: String,
             params: SensorDeleteParams = SensorDeleteParams.none(),
         ): CompletableFuture<HttpResponse> = delete(sensorId, params, RequestOptions.none())
 
         /** @see delete */
+        @Deprecated("deprecated")
         fun delete(
             params: SensorDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
 
         /** @see delete */
+        @Deprecated("deprecated")
         fun delete(params: SensorDeleteParams): CompletableFuture<HttpResponse> =
             delete(params, RequestOptions.none())
 
         /** @see delete */
+        @Deprecated("deprecated")
         fun delete(
             sensorId: String,
             requestOptions: RequestOptions,
@@ -315,22 +359,26 @@ interface SensorServiceAsync {
          * Returns a raw HTTP response for `post /api/v2/sensors/query`, but is otherwise the same
          * as [SensorServiceAsync.query].
          */
+        @Deprecated("deprecated")
         fun query(): CompletableFuture<HttpResponseFor<SensorQueryResponse>> =
             query(SensorQueryParams.none())
 
         /** @see query */
+        @Deprecated("deprecated")
         fun query(
             params: SensorQueryParams = SensorQueryParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<SensorQueryResponse>>
 
         /** @see query */
+        @Deprecated("deprecated")
         fun query(
             params: SensorQueryParams = SensorQueryParams.none()
         ): CompletableFuture<HttpResponseFor<SensorQueryResponse>> =
             query(params, RequestOptions.none())
 
         /** @see query */
+        @Deprecated("deprecated")
         fun query(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<SensorQueryResponse>> =

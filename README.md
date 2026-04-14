@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.hiddenlayer.api/hiddenlayer-java)](https://central.sonatype.com/artifact/com.hiddenlayer.api/hiddenlayer-java/2.0.0)
-[![javadoc](https://javadoc.io/badge2/com.hiddenlayer.api/hiddenlayer-java/2.0.0/javadoc.svg)](https://javadoc.io/doc/com.hiddenlayer.api/hiddenlayer-java/2.0.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.hiddenlayer.api/hiddenlayer-java)](https://central.sonatype.com/artifact/com.hiddenlayer.api/hiddenlayer-java/2.1.0)
+[![javadoc](https://javadoc.io/badge2/com.hiddenlayer.api/hiddenlayer-java/2.1.0/javadoc.svg)](https://javadoc.io/doc/com.hiddenlayer.api/hiddenlayer-java/2.1.0)
 
 <!-- x-release-please-end -->
 
@@ -13,9 +13,16 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [dev.hiddenlayer.ai](https://dev.hiddenlayer.ai). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.hiddenlayer.api/hiddenlayer-java/2.0.0).
+The REST API documentation can be found on [dev.hiddenlayer.ai](https://dev.hiddenlayer.ai). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.hiddenlayer.api/hiddenlayer-java/2.1.0).
 
 <!-- x-release-please-end -->
+
+## Beta APIs
+
+Some HiddenLayer APIs are marked as **Beta**, meaning they are not yet generally available (GA) or production ready. Beta APIs can be used in a production environment, but at your own risk and discretion. For full details, see the [Beta API Guidelines](https://dev.hiddenlayer.ai/docs/beta-api-faq) on the developer portal.
+
+- HiddenLayer does not provide compatibility guarantees for Beta APIs. Breaking changes may occur at any time.
+- SDK functions and types associated with Beta APIs are excluded when determining semver release versions.
 
 ## Installation
 
@@ -24,7 +31,7 @@ The REST API documentation can be found on [dev.hiddenlayer.ai](https://dev.hidd
 ### Gradle
 
 ```kotlin
-implementation("com.hiddenlayer.api:hiddenlayer-java:2.0.0")
+implementation("com.hiddenlayer.api:hiddenlayer-java:2.1.0")
 ```
 
 ### Maven
@@ -33,7 +40,7 @@ implementation("com.hiddenlayer.api:hiddenlayer-java:2.0.0")
 <dependency>
   <groupId>com.hiddenlayer.api</groupId>
   <artifactId>hiddenlayer-java</artifactId>
-  <version>2.0.0</version>
+  <version>2.1.0</version>
 </dependency>
 ```
 
@@ -275,6 +282,106 @@ The SDK throws custom unchecked exception types:
 
 - [`HiddenLayerException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/errors/HiddenLayerException.kt): Base class for all exceptions. Most errors will result in one of the previously mentioned ones, but completely generic errors may be thrown using the base class.
 
+## Pagination
+
+The SDK defines methods that return a paginated lists of results. It provides convenient ways to access the results either one page at a time or item-by-item across all pages.
+
+### Auto-pagination
+
+To iterate through all results across all pages, use the `autoPager()` method, which automatically fetches more pages as needed.
+
+When using the synchronous client, the method returns an [`Iterable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html)
+
+```java
+import com.hiddenlayer.api.models.models.cards.CardListPage;
+import com.hiddenlayer.api.models.models.cards.CardListResponse;
+
+CardListPage page = client.models().cards().list();
+
+// Process as an Iterable
+for (CardListResponse card : page.autoPager()) {
+    System.out.println(card);
+}
+
+// Process as a Stream
+page.autoPager()
+    .stream()
+    .limit(50)
+    .forEach(card -> System.out.println(card));
+```
+
+When using the asynchronous client, the method returns an [`AsyncStreamResponse`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/core/http/AsyncStreamResponse.kt):
+
+```java
+import com.hiddenlayer.api.core.http.AsyncStreamResponse;
+import com.hiddenlayer.api.models.models.cards.CardListPageAsync;
+import com.hiddenlayer.api.models.models.cards.CardListResponse;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+
+CompletableFuture<CardListPageAsync> pageFuture = client.async().models().cards().list();
+
+pageFuture.thenRun(page -> page.autoPager().subscribe(card -> {
+    System.out.println(card);
+}));
+
+// If you need to handle errors or completion of the stream
+pageFuture.thenRun(page -> page.autoPager().subscribe(new AsyncStreamResponse.Handler<>() {
+    @Override
+    public void onNext(CardListResponse card) {
+        System.out.println(card);
+    }
+
+    @Override
+    public void onComplete(Optional<Throwable> error) {
+        if (error.isPresent()) {
+            System.out.println("Something went wrong!");
+            throw new RuntimeException(error.get());
+        } else {
+            System.out.println("No more!");
+        }
+    }
+}));
+
+// Or use futures
+pageFuture.thenRun(page -> page.autoPager()
+    .subscribe(card -> {
+        System.out.println(card);
+    })
+    .onCompleteFuture()
+    .whenComplete((unused, error) -> {
+        if (error != null) {
+            System.out.println("Something went wrong!");
+            throw new RuntimeException(error);
+        } else {
+            System.out.println("No more!");
+        }
+    }));
+```
+
+### Manual pagination
+
+To access individual page items and manually request the next page, use the `items()`,
+`hasNextPage()`, and `nextPage()` methods:
+
+```java
+import com.hiddenlayer.api.models.models.cards.CardListPage;
+import com.hiddenlayer.api.models.models.cards.CardListResponse;
+
+CardListPage page = client.models().cards().list();
+while (true) {
+    for (CardListResponse card : page.items()) {
+        System.out.println(card);
+    }
+
+    if (!page.hasNextPage()) {
+        break;
+    }
+
+    page = page.nextPage();
+}
+```
+
 ## Logging
 
 The SDK uses the standard [OkHttp logging interceptor](https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor).
@@ -307,6 +414,8 @@ If the SDK threw an exception, but you're _certain_ the version is compatible, t
 
 > [!CAUTION]
 > We make no guarantee that the SDK works correctly when the Jackson version check is disabled.
+
+Also note that there are bugs in older Jackson versions that can affect the SDK. We don't work around all Jackson bugs ([example](https://github.com/FasterXML/jackson-databind/issues/3240)) and expect users to upgrade Jackson for those instead.
 
 ## Network options
 
@@ -382,6 +491,25 @@ HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
     ))
     .build();
 ```
+
+### Connection pooling
+
+To customize the underlying OkHttp connection pool, configure the client using the `maxIdleConnections` and `keepAliveDuration` methods:
+
+```java
+import com.hiddenlayer.api.client.HiddenLayerClient;
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
+import java.time.Duration;
+
+HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
+    .fromEnv()
+    // If `maxIdleConnections` is set, then `keepAliveDuration` must be set, and vice versa.
+    .maxIdleConnections(10)
+    .keepAliveDuration(Duration.ofMinutes(2))
+    .build();
+```
+
+If both options are unset, OkHttp's default connection pool settings are used.
 
 ### HTTPS
 

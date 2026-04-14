@@ -5,6 +5,7 @@ package com.hiddenlayer.api.client
 import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.lib.AsyncCommunityScanner
 import com.hiddenlayer.api.lib.AsyncModelScanner
+import com.hiddenlayer.api.services.async.EvaluationServiceAsync
 import com.hiddenlayer.api.services.async.InteractionServiceAsync
 import com.hiddenlayer.api.services.async.ModelServiceAsync
 import com.hiddenlayer.api.services.async.PromptAnalyzerServiceAsync
@@ -49,6 +50,8 @@ interface HiddenLayerClientAsync {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): HiddenLayerClientAsync
 
     fun models(): ModelServiceAsync
+
+    fun evaluations(): EvaluationServiceAsync
 
     fun promptAnalyzer(): PromptAnalyzerServiceAsync
 
@@ -103,6 +106,8 @@ interface HiddenLayerClientAsync {
         ): HiddenLayerClientAsync.WithRawResponse
 
         fun models(): ModelServiceAsync.WithRawResponse
+
+        fun evaluations(): EvaluationServiceAsync.WithRawResponse
 
         fun promptAnalyzer(): PromptAnalyzerServiceAsync.WithRawResponse
 

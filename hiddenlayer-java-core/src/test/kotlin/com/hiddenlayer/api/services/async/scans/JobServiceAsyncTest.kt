@@ -2,7 +2,6 @@
 
 package com.hiddenlayer.api.services.async.scans
 
-import com.hiddenlayer.api.TestServerExtension
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClientAsync
 import com.hiddenlayer.api.models.scans.jobs.JobListParams
 import com.hiddenlayer.api.models.scans.jobs.JobRequestParams
@@ -10,19 +9,13 @@ import com.hiddenlayer.api.models.scans.jobs.JobRetrieveParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class JobServiceAsyncTest {
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun retrieve() {
-        val client =
-            HiddenLayerOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
         val jobServiceAsync = client.scans().jobs()
 
         val scanReportFuture =
@@ -37,14 +30,10 @@ internal class JobServiceAsyncTest {
         scanReport.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun list() {
-        val client =
-            HiddenLayerOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
         val jobServiceAsync = client.scans().jobs()
 
         val jobsFuture =
@@ -80,14 +69,10 @@ internal class JobServiceAsyncTest {
         jobs.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun request() {
-        val client =
-            HiddenLayerOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .bearerToken("My Bearer Token")
-                .build()
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
         val jobServiceAsync = client.scans().jobs()
 
         val scanJobFuture =
@@ -137,6 +122,7 @@ internal class JobServiceAsyncTest {
                                             .providerModelId(
                                                 "anthropic.claude-3-5-sonnet-20241022-v2:0"
                                             )
+                                            .country("US")
                                             .modelArn(
                                                 "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
                                             )

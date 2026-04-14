@@ -33,6 +33,7 @@ internal class ScanReportTest {
                             ScanReport.Inventory.ProviderDetails.builder()
                                 .provider(ScanReport.Inventory.ProviderDetails.Provider.AWS_BEDROCK)
                                 .providerModelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
+                                .country("US")
                                 .modelArn(
                                     "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
                                 )
@@ -135,6 +136,26 @@ internal class ScanReportTest {
                         .build()
                 )
                 .hasGenealogy(true)
+                .intelligence(
+                    ScanReport.Intelligence.builder()
+                        .contributorTrustLevel("high")
+                        .countryOfOrigin("US")
+                        .addGeographicFootprint("US")
+                        .addGeographicFootprint("GB")
+                        .addLicense(
+                            ScanReport.Intelligence.License.builder()
+                                .name("Apache-2.0")
+                                .sha256("abc123...")
+                                .build()
+                        )
+                        .addUsagePolicy(
+                            ScanReport.Intelligence.UsagePolicy.builder()
+                                .name("Commercial Use Allowed")
+                                .sha256("def456...")
+                                .build()
+                        )
+                        .build()
+                )
                 .severity(ScanReport.Severity.CRITICAL)
                 .build()
 
@@ -157,6 +178,7 @@ internal class ScanReportTest {
                         ScanReport.Inventory.ProviderDetails.builder()
                             .provider(ScanReport.Inventory.ProviderDetails.Provider.AWS_BEDROCK)
                             .providerModelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
+                            .country("US")
                             .modelArn(
                                 "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
                             )
@@ -262,6 +284,27 @@ internal class ScanReportTest {
                     .build()
             )
         assertThat(scanReport.hasGenealogy()).contains(true)
+        assertThat(scanReport.intelligence())
+            .contains(
+                ScanReport.Intelligence.builder()
+                    .contributorTrustLevel("high")
+                    .countryOfOrigin("US")
+                    .addGeographicFootprint("US")
+                    .addGeographicFootprint("GB")
+                    .addLicense(
+                        ScanReport.Intelligence.License.builder()
+                            .name("Apache-2.0")
+                            .sha256("abc123...")
+                            .build()
+                    )
+                    .addUsagePolicy(
+                        ScanReport.Intelligence.UsagePolicy.builder()
+                            .name("Commercial Use Allowed")
+                            .sha256("def456...")
+                            .build()
+                    )
+                    .build()
+            )
         assertThat(scanReport.severity()).contains(ScanReport.Severity.CRITICAL)
     }
 
@@ -288,6 +331,7 @@ internal class ScanReportTest {
                             ScanReport.Inventory.ProviderDetails.builder()
                                 .provider(ScanReport.Inventory.ProviderDetails.Provider.AWS_BEDROCK)
                                 .providerModelId("anthropic.claude-3-5-sonnet-20241022-v2:0")
+                                .country("US")
                                 .modelArn(
                                     "arn:aws:bedrock:us-east-1:123456789012:provisioned-model/my-custom-model"
                                 )
@@ -390,6 +434,26 @@ internal class ScanReportTest {
                         .build()
                 )
                 .hasGenealogy(true)
+                .intelligence(
+                    ScanReport.Intelligence.builder()
+                        .contributorTrustLevel("high")
+                        .countryOfOrigin("US")
+                        .addGeographicFootprint("US")
+                        .addGeographicFootprint("GB")
+                        .addLicense(
+                            ScanReport.Intelligence.License.builder()
+                                .name("Apache-2.0")
+                                .sha256("abc123...")
+                                .build()
+                        )
+                        .addUsagePolicy(
+                            ScanReport.Intelligence.UsagePolicy.builder()
+                                .name("Commercial Use Allowed")
+                                .sha256("def456...")
+                                .build()
+                        )
+                        .build()
+                )
                 .severity(ScanReport.Severity.CRITICAL)
                 .build()
 

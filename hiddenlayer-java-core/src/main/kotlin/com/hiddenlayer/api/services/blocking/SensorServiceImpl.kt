@@ -41,6 +41,7 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): SensorService =
         SensorServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    @Deprecated("deprecated")
     override fun create(
         params: SensorCreateParams,
         requestOptions: RequestOptions,
@@ -48,6 +49,7 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
         // post /api/v2/sensors/create
         withRawResponse().create(params, requestOptions).parse()
 
+    @Deprecated("deprecated")
     override fun retrieve(
         params: SensorRetrieveParams,
         requestOptions: RequestOptions,
@@ -55,6 +57,7 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
         // get /api/v2/sensors/{sensor_id}
         withRawResponse().retrieve(params, requestOptions).parse()
 
+    @Deprecated("deprecated")
     override fun update(
         params: SensorUpdateParams,
         requestOptions: RequestOptions,
@@ -62,11 +65,13 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
         // put /api/v2/sensors/{sensor_id}
         withRawResponse().update(params, requestOptions).parse()
 
+    @Deprecated("deprecated")
     override fun delete(params: SensorDeleteParams, requestOptions: RequestOptions) {
         // delete /api/v2/sensors/{sensor_id}
         withRawResponse().delete(params, requestOptions)
     }
 
+    @Deprecated("deprecated")
     override fun query(
         params: SensorQueryParams,
         requestOptions: RequestOptions,
@@ -90,6 +95,7 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
         private val createHandler: Handler<SensorCreateResponse> =
             jsonHandler<SensorCreateResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun create(
             params: SensorCreateParams,
             requestOptions: RequestOptions,
@@ -118,6 +124,7 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
         private val retrieveHandler: Handler<SensorRetrieveResponse> =
             jsonHandler<SensorRetrieveResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun retrieve(
             params: SensorRetrieveParams,
             requestOptions: RequestOptions,
@@ -148,6 +155,7 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
         private val updateHandler: Handler<SensorUpdateResponse> =
             jsonHandler<SensorUpdateResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun update(
             params: SensorUpdateParams,
             requestOptions: RequestOptions,
@@ -178,6 +186,7 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
 
         private val deleteHandler: Handler<Void?> = emptyHandler()
 
+        @Deprecated("deprecated")
         override fun delete(
             params: SensorDeleteParams,
             requestOptions: RequestOptions,
@@ -203,6 +212,7 @@ class SensorServiceImpl internal constructor(private val clientOptions: ClientOp
         private val queryHandler: Handler<SensorQueryResponse> =
             jsonHandler<SensorQueryResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun query(
             params: SensorQueryParams,
             requestOptions: RequestOptions,

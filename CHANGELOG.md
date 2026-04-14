@@ -1,5 +1,100 @@
 # Changelog
 
+## 2.1.0 (2026-04-13)
+
+Full Changelog: [v2.0.0...v2.1.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.0.0...v2.1.0)
+
+### Features
+
+* **api:** add runtime security evaluations endpoints ([0e22999](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/0e22999d92f3d32ff57750871d7af461e2e969ce))
+* **api:** api update ([0a1385f](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/0a1385f633af3e2d1cc349b40e444b4caccfa977))
+* **api:** api update ([c7b4e82](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/c7b4e827692405efa8e0cdc255bfb22468471894))
+* **api:** api update ([f70e16c](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/f70e16c33ebda2037ae2f774aeca28dce8e58f36))
+* **api:** api update ([266c32c](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/266c32cb791c4eeb57d6f9c2ba2fbbd6b1a85034))
+* **api:** api update ([c6f3745](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/c6f3745981fdafbabdeb5185e92e20780b677822))
+* **api:** api update ([0dd8865](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/0dd8865b12e88b8f1cb5bf3293e683cc45c9de22))
+* **api:** api update ([49d14ed](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/49d14ed5207c03f6d1bdf8cf3350a25042dad382))
+* **api:** api update ([4c56077](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/4c56077f07033ff3c3bd0ff82a7ab9c794207f30))
+* **api:** api update ([b7cd998](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/b7cd9984fe1caaec3d029839585a2b9b37d3bcc0))
+* **api:** api update ([1f8a527](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/1f8a527b7b292c87b1dd54bed58829d8a888ef70))
+* **api:** api update ([2d27e54](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/2d27e548f8210efbfae78f41a94942e6bea7e2ed))
+* **api:** api update ([1bd7499](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/1bd7499b277337b5e4392fd0611367051be04da1))
+* **api:** api update ([065d3fb](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/065d3fb235663858d60574f0f4edef671d85312c))
+* **api:** api update ([9e3182d](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/9e3182d7560e1398eec0535b0923b1426cb27694))
+* **api:** api update ([976e9de](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/976e9dece5ccb56317afb6c1a4c1ffd9ecaa6125))
+* **api:** api update ([bf72dee](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/bf72dee8007cb25565b56e0bfade36fca3ea159f))
+* **api:** api update ([676fbfc](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/676fbfc0bf867f4db1c19e498679044129f60d18))
+* **api:** api update ([52ac40c](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/52ac40c60c0a83256edcd5f254609947ed324471))
+* **api:** api update ([efc2a71](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/efc2a716c2dc6fae2f173efaf1ace3ff4580ca4a))
+* **api:** finalize runtime security endpoints ([00ee91f](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/00ee91f0f7bbcae20097a60ae8f9153ba1b77226))
+* **client:** add `HttpRequest#url()` method ([442bd9e](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/442bd9ec7c4c8d33edd39d843cb3783589c5c2ec))
+* **client:** add connection pooling option ([57d5630](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/57d5630ff90f51b5605ffbc13768fbb976b62ee4))
+* **client:** allow configuring dispatcher executor service ([339eaaa](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/339eaaa99f63252631ce390f6e9052f3ea780a99))
+* **client:** send `X-Stainless-Kotlin-Version` header ([361a911](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/361a9119a057d4295745c59dc4838cf94672cad8))
+
+
+### Bug Fixes
+
+* add missing fields ([1e8e249](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/1e8e249d7079c515d5f586bb6416636634d38cea))
+* **client/oauth:** send grant_type in the right location ([09151c4](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/09151c4fd8483fd0b126ff0858a7b6024d761bf1))
+* **client:** allow updating header/query affecting fields in `toBuilder()` ([61bf203](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/61bf203a2935441205a5337a84195b48da563fc0))
+* **client:** disallow coercion from float to int ([fce63d4](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/fce63d4ed544bf3e2da402e14a2fcf8e73e1dbd1))
+* **client:** fully respect max retries ([0ac63fd](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/0ac63fd18431de3215e022887be382d895537e44))
+* **client:** incorrect `Retry-After` parsing ([57da4b1](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/57da4b1a747e7b02c70aa183f4d97422ec2b427a))
+* **client:** preserve time zone in lenient date-time parsing ([61a1f23](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/61a1f232cf61f59ea1430268bdaf83929fb59042))
+* **client:** send retry count header for max retries 0 ([0ac63fd](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/0ac63fd18431de3215e022887be382d895537e44))
+* date time deserialization leniency ([5c824bb](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/5c824bb17d35cea072ef9ba8cdc734442248fb6b))
+* fix request delays for retrying to be more respectful of high requested delays ([b2233ab](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/b2233ab98e320e14b1900e00e269483ddcb127d8))
+* set Accept header in more places ([3e9a969](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/3e9a969f2cee2583eb968da79f057d21f4f79bbf))
+
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([3b91daf](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/3b91dafa0a5d7c4613fc1e2494b3dea0251e803e))
+* **ci:** skip uploading artifacts on stainless-internal branches ([c8402b7](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/c8402b702e1c43870d29b967d1c6be52d7ee7417))
+* **ci:** upgrade `actions/github-script` ([1781837](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/1781837302eea52a6cd93c1fd22368788cd4f0bc))
+* **ci:** upgrade `actions/setup-java` ([0d79db0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/0d79db0f35e87971795c1541ffbc19173d53bfd2))
+* drop apache dependency ([5931039](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/593103991f2a109323ed5295362ee149c6c34401))
+* **internal:** allow passing args to `./scripts/test` ([6918eca](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/6918eca3e7ace0091f37675e405d6e55a53af8f1))
+* **internal:** bump palantir-java-format ([4b57e6f](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/4b57e6fa107dac73eadc0172a497542535289a85))
+* **internal:** clean up maven repo artifact script and add html documentation to repo root ([4f2296b](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/4f2296b64a8a5d023549076ff29f154527977213))
+* **internal:** codegen related update ([f8fbcb6](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/f8fbcb6071fc09c9345ad463e23804f6c79459fb))
+* **internal:** correct cache invalidation for `SKIP_MOCK_TESTS` ([4b7bda9](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/4b7bda9decf9074d6c8503b214054b7badcc809e))
+* **internal:** depend on packages directly in example ([0ac63fd](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/0ac63fd18431de3215e022887be382d895537e44))
+* **internal:** expand imports ([c66df94](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/c66df941eb0a70f127a4978051467443626d584c))
+* **internal:** improve maven repo docs ([d94232c](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/d94232c8975ccd4580e1dc21ea586ce90814e9fe))
+* **internal:** make `OkHttp` constructor internal ([4120b94](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/4120b940fb41e20cff25844371b7980be632945d))
+* **internal:** remove mock server code ([be51bfa](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/be51bfa43c95d7a201bb83e793a078fc8a3df86c))
+* **internal:** support uploading Maven repo artifacts to stainless package server ([3fe3d40](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/3fe3d40f57b5e590ab189dbb9ca6f8126fed7dd9))
+* **internal:** tweak CI branches ([5357a21](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/5357a21381afcfc8b5569ecc340905af8139db24))
+* **internal:** update `actions/checkout` version ([e32309b](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/e32309b5fdf2f9ccc26a487c239a55599ae7348b))
+* **internal:** update `TestServerExtension` comment ([e6debee](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/e6debeeceb1fec3df2142af2fc2bfb7afafe3f42))
+* **internal:** update gitignore ([542786c](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/542786c2dbc5f41d9f33d6ec091f91272d1d8749))
+* **internal:** update maven repo doc to include authentication ([767f85f](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/767f85f1ae99b3cbb3bd0274b2572c2c5656c543))
+* **internal:** update retry delay tests ([71c894b](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/71c894b5191c97b048320e38318a0f0089098a1c))
+* **internal:** upgrade AssertJ ([4be50f0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/4be50f087525b9095e23104352febf89ab6642ea))
+* make `Properties` more resilient to `null` ([64c230d](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/64c230dd92ab493fadebb5d7e1c818a48bcf087a))
+* patch beta warnings [skip ci] ([9c447b5](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/9c447b529e060824c2c7fc68dfd53486438598a2))
+* patch beta warnings [skip ci] ([4ab55f7](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/4ab55f7e5cfc2532e1cae1ad4d703cfb668bcd3f))
+* patch beta warnings [skip ci] ([c772ac2](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/c772ac2634991f0dfe0de2395e5ef13fdea0d4e4))
+* patch beta warnings [skip ci] ([d97a6a4](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/d97a6a4a9e1b20090fa9a907000373c6ffd524e7))
+* run formatter after beta warning patching ([5769301](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/57693018d1e9c42cfa27725977dd3339fbef1190))
+* test on Jackson 2.14.0 to avoid encountering FasterXML/jackson-databind[#3240](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/3240) in tests ([5c824bb](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/5c824bb17d35cea072ef9ba8cdc734442248fb6b))
+* **tests:** bump steady to v0.19.4 ([bced42f](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/bced42fd9190d420e5c163f630ab0ac874daadb4))
+* update mock server docs ([6d5f36b](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/6d5f36b14403233ab7e0965d9b1b462ee4e1501f))
+
+
+### Documentation
+
+* add more examples ([03294ab](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/03294ab6f0d85ff9fa45819e843b9598c63f4fcb))
+* **readme:** add Beta APIs section ([21613dd](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/21613dda68dfb5d8b6c207286b96031933363ee5))
+
+
+### Refactors
+
+* **client:** handling of absent pagination total ([6768f4b](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/6768f4b65a78f7550493204a018ace0db0257f84))
+* simplify beta patcher to interface annotations only ([#105](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/105)) ([0def4e7](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/0def4e7c053dd53a97ec1117ad7b71b5eab48b54))
+
 ## 2.0.0 (2025-12-05)
 
 Full Changelog: [v1.1.0...v2.0.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v1.1.0...v2.0.0)
