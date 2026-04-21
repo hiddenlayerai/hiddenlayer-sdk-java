@@ -9,7 +9,6 @@ import com.hiddenlayer.api.services.async.EvaluationServiceAsync
 import com.hiddenlayer.api.services.async.InteractionServiceAsync
 import com.hiddenlayer.api.services.async.ModelServiceAsync
 import com.hiddenlayer.api.services.async.PromptAnalyzerServiceAsync
-import com.hiddenlayer.api.services.async.RuntimeServiceAsync
 import com.hiddenlayer.api.services.async.ScanServiceAsync
 import com.hiddenlayer.api.services.async.SensorServiceAsync
 import java.util.function.Consumer
@@ -57,8 +56,6 @@ interface HiddenLayerClientAsync {
     fun promptAnalyzer(): PromptAnalyzerServiceAsync
 
     fun interactions(): InteractionServiceAsync
-
-    fun runtime(): RuntimeServiceAsync
 
     fun sensors(): SensorServiceAsync
 
@@ -115,8 +112,6 @@ interface HiddenLayerClientAsync {
         fun promptAnalyzer(): PromptAnalyzerServiceAsync.WithRawResponse
 
         fun interactions(): InteractionServiceAsync.WithRawResponse
-
-        fun runtime(): RuntimeServiceAsync.WithRawResponse
 
         fun sensors(): SensorServiceAsync.WithRawResponse
 

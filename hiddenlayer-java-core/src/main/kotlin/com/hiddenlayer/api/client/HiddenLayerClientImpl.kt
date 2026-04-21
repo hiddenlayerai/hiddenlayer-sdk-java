@@ -14,8 +14,6 @@ import com.hiddenlayer.api.services.blocking.ModelService
 import com.hiddenlayer.api.services.blocking.ModelServiceImpl
 import com.hiddenlayer.api.services.blocking.PromptAnalyzerService
 import com.hiddenlayer.api.services.blocking.PromptAnalyzerServiceImpl
-import com.hiddenlayer.api.services.blocking.RuntimeService
-import com.hiddenlayer.api.services.blocking.RuntimeServiceImpl
 import com.hiddenlayer.api.services.blocking.ScanService
 import com.hiddenlayer.api.services.blocking.ScanServiceImpl
 import com.hiddenlayer.api.services.blocking.SensorService
@@ -53,8 +51,6 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
         InteractionServiceImpl(clientOptionsWithUserAgent)
     }
 
-    private val runtime: RuntimeService by lazy { RuntimeServiceImpl(clientOptionsWithUserAgent) }
-
     private val sensors: SensorService by lazy { SensorServiceImpl(clientOptionsWithUserAgent) }
 
     private val scans: ScanService by lazy { ScanServiceImpl(clientOptionsWithUserAgent) }
@@ -77,8 +73,6 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
     override fun promptAnalyzer(): PromptAnalyzerService = promptAnalyzer
 
     override fun interactions(): InteractionService = interactions
-
-    override fun runtime(): RuntimeService = runtime
 
     override fun sensors(): SensorService = sensors
 
@@ -109,10 +103,6 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
             InteractionServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
-        private val runtime: RuntimeService.WithRawResponse by lazy {
-            RuntimeServiceImpl.WithRawResponseImpl(clientOptions)
-        }
-
         private val sensors: SensorService.WithRawResponse by lazy {
             SensorServiceImpl.WithRawResponseImpl(clientOptions)
         }
@@ -135,8 +125,6 @@ class HiddenLayerClientImpl(private val clientOptions: ClientOptions) : HiddenLa
         override fun promptAnalyzer(): PromptAnalyzerService.WithRawResponse = promptAnalyzer
 
         override fun interactions(): InteractionService.WithRawResponse = interactions
-
-        override fun runtime(): RuntimeService.WithRawResponse = runtime
 
         override fun sensors(): SensorService.WithRawResponse = sensors
 
