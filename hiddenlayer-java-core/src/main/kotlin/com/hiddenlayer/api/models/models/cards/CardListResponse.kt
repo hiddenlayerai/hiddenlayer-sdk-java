@@ -686,6 +686,14 @@ private constructor(
 
     private var validated: Boolean = false
 
+    /**
+     * Validates that the types of all values in this object match their expected types recursively.
+     *
+     * This method is _not_ forwards compatible with new types from the API for existing fields.
+     *
+     * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match its
+     *   expected type.
+     */
     fun validate(): CardListResponse = apply {
         if (validated) {
             return@apply
@@ -851,6 +859,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): AttackMonitoringThreatLevel = apply {
             if (validated) {
                 return@apply
@@ -1013,6 +1030,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): ModelScanSeverity = apply {
             if (validated) {
                 return@apply
@@ -1160,6 +1186,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): ModelScanThreatLevel = apply {
             if (validated) {
                 return@apply
@@ -1309,6 +1344,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): AidrThreatLevel = apply {
             if (validated) {
                 return@apply
@@ -1455,6 +1499,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): PolicyStatus = apply {
             if (validated) {
                 return@apply
@@ -1628,6 +1681,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): SecurityPosture = apply {
             if (validated) {
                 return@apply
@@ -1736,6 +1798,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): Tags = apply {
             if (validated) {
                 return@apply

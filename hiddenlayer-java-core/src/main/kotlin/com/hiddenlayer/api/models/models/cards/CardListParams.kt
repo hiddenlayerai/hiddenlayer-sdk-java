@@ -530,6 +530,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): AidrSeverity = apply {
             if (validated) {
                 return@apply
@@ -666,6 +675,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): AidrStatus = apply {
             if (validated) {
                 return@apply
@@ -1091,6 +1109,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): ModscanSeverity = apply {
             if (validated) {
                 return@apply
@@ -1228,6 +1255,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): ModscanStatus = apply {
             if (validated) {
                 return@apply
@@ -1358,6 +1394,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): PolicyStatus = apply {
             if (validated) {
                 return@apply
@@ -1485,6 +1530,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): Provider = apply {
             if (validated) {
                 return@apply
