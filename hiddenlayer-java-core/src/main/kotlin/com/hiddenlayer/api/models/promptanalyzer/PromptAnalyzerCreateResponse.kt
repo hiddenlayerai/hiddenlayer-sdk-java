@@ -425,6 +425,14 @@ private constructor(
 
     private var validated: Boolean = false
 
+    /**
+     * Validates that the types of all values in this object match their expected types recursively.
+     *
+     * This method is _not_ forwards compatible with new types from the API for existing fields.
+     *
+     * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match its
+     *   expected type.
+     */
     fun validate(): PromptAnalyzerCreateResponse = apply {
         if (validated) {
             return@apply
@@ -914,6 +922,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): Categories = apply {
             if (validated) {
                 return@apply
@@ -1204,6 +1221,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): Frameworks = apply {
             if (validated) {
                 return@apply
@@ -1368,6 +1394,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): Mitre = apply {
                 if (validated) {
                     return@apply
@@ -1548,6 +1584,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): Owasp = apply {
                 if (validated) {
                     return@apply
@@ -1728,6 +1774,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): Owasp2025 = apply {
                 if (validated) {
                     return@apply
@@ -2908,6 +2964,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): Policy = apply {
             if (validated) {
                 return@apply
@@ -3077,6 +3142,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): EntityType = apply {
                 if (validated) {
                     return@apply
@@ -3215,6 +3290,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): PromptInjectionScanType = apply {
                 if (validated) {
                     return@apply
@@ -3347,6 +3432,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): RedactType = apply {
                 if (validated) {
                     return@apply
@@ -3726,6 +3821,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): Response = apply {
             if (validated) {
                 return@apply
@@ -4356,6 +4460,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws HiddenLayerInvalidDataException if any value type in this object doesn't match
+         *   its expected type.
+         */
         fun validate(): Results = apply {
             if (validated) {
                 return@apply
@@ -4593,6 +4706,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): GuardrailResults = apply {
                 if (validated) {
                     return@apply
@@ -4864,6 +4987,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
                 fun validate(): RefusalClassifierResults = apply {
                     if (validated) {
                         return@apply
@@ -5137,6 +5270,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): InputBlockListResults = apply {
                 if (validated) {
                     return@apply
@@ -5331,6 +5474,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): InputCodeResults = apply {
                 if (validated) {
                     return@apply
@@ -5567,6 +5720,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): InputDosResults = apply {
                 if (validated) {
                     return@apply
@@ -5802,6 +5965,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): InputLanguageResults = apply {
                 if (validated) {
                     return@apply
@@ -6052,6 +6225,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): InputPiiResults = apply {
                 if (validated) {
                     return@apply
@@ -6261,6 +6444,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): InputUrlResults = apply {
                 if (validated) {
                     return@apply
@@ -6454,6 +6647,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): OutputCodeResults = apply {
                 if (validated) {
                     return@apply
@@ -6701,6 +6904,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): OutputPiiResults = apply {
                 if (validated) {
                     return@apply
@@ -6910,6 +7123,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): OutputUrlResults = apply {
                 if (validated) {
                     return@apply
@@ -7282,6 +7505,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
             fun validate(): PromptInjectionClassifierResult = apply {
                 if (validated) {
                     return@apply
