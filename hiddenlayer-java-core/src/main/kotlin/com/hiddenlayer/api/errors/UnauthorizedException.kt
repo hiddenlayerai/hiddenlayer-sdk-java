@@ -5,12 +5,16 @@ package com.hiddenlayer.api.errors
 import com.hiddenlayer.api.core.JsonValue
 import com.hiddenlayer.api.core.checkRequired
 import com.hiddenlayer.api.core.http.Headers
+import com.hiddenlayer.api.core.jsonMapper
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class UnauthorizedException
 private constructor(private val headers: Headers, private val body: JsonValue, cause: Throwable?) :
-    HiddenLayerServiceException("401: $body", cause) {
+    HiddenLayerServiceException(
+        "401: ${if (body.isMissing()) "Unknown" else jsonMapper().writeValueAsString(body)}",
+        cause,
+    ) {
 
     override fun statusCode(): Int = 401
 
