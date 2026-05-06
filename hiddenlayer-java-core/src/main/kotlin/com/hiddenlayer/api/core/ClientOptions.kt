@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.hiddenlayer.api.core.http.AsyncStreamResponse
 import com.hiddenlayer.api.core.http.Headers
 import com.hiddenlayer.api.core.http.HttpClient
+import com.hiddenlayer.api.core.http.LoggingHttpClient
 import com.hiddenlayer.api.core.http.OAuth2HttpClient
 import com.hiddenlayer.api.core.http.PhantomReachableClosingHttpClient
 import com.hiddenlayer.api.core.http.QueryParams
@@ -111,6 +112,14 @@ private constructor(
      * Defaults to 2.
      */
     @get:JvmName("maxRetries") val maxRetries: Int,
+    /**
+     * The level at which to log request and response information.
+     *
+     * [fromEnv] will set the level from environment variables. See [LogLevel.fromEnv].
+     *
+     * Defaults to [LogLevel.fromEnv].
+     */
+    @get:JvmName("logLevel") val logLevel: LogLevel,
     private val bearerToken: String?,
     private val clientId: String?,
     private val clientSecret: String?,
@@ -179,6 +188,7 @@ private constructor(
         private var responseValidation: Boolean = false
         private var timeout: Timeout = Timeout.default()
         private var maxRetries: Int = 2
+        private var logLevel: LogLevel = LogLevel.fromEnv()
         private var bearerToken: String? = null
         private var clientId: String? = null
         private var clientSecret: String? = null
@@ -197,6 +207,7 @@ private constructor(
             responseValidation = clientOptions.responseValidation
             timeout = clientOptions.timeout
             maxRetries = clientOptions.maxRetries
+            logLevel = clientOptions.logLevel
             bearerToken = clientOptions.bearerToken
             clientId = clientOptions.clientId
             clientSecret = clientOptions.clientSecret
@@ -329,6 +340,15 @@ private constructor(
          */
         fun maxRetries(maxRetries: Int) = apply { this.maxRetries = maxRetries }
 
+        /**
+         * The level at which to log request and response information.
+         *
+         * [fromEnv] will set the level from environment variables. See [LogLevel.fromEnv].
+         *
+         * Defaults to [LogLevel.fromEnv].
+         */
+        fun logLevel(logLevel: LogLevel) = apply { this.logLevel = logLevel }
+
         fun bearerToken(bearerToken: String?) = apply { this.bearerToken = bearerToken }
 
         /** Alias for calling [Builder.bearerToken] with `bearerToken.orElse(null)`. */
@@ -441,6 +461,7 @@ private constructor(
          * System properties take precedence over environment variables.
          */
         fun fromEnv() = apply {
+            logLevel(LogLevel.fromEnv())
             (System.getProperty("hiddenlayer.baseUrl") ?: System.getenv("HIDDENLAYER_BASE_URL"))
                 ?.let { baseUrl(it) }
             (System.getProperty("hiddenlayer.token") ?: System.getenv("HIDDENLAYER_TOKEN"))?.let {
@@ -520,7 +541,13 @@ private constructor(
                     .httpClient(
                         if (clientId != null && clientSecret != null) {
                             OAuth2HttpClient.builder()
-                                .httpClient(httpClient)
+                                .httpClient(
+                                    LoggingHttpClient.builder()
+                                        .httpClient(httpClient)
+                                        .clock(clock)
+                                        .level(logLevel)
+                                        .build()
+                                )
                                 .tokenUrl((baseUrl ?: PROD_US_URL) + "/oauth2/token")
                                 .clientId(clientId!!)
                                 .clientSecret(clientSecret!!)
@@ -528,7 +555,11 @@ private constructor(
                                 .clock(clock)
                                 .build()
                         } else {
-                            httpClient
+                            LoggingHttpClient.builder()
+                                .httpClient(httpClient)
+                                .clock(clock)
+                                .level(logLevel)
+                                .build()
                         }
                     )
                     .sleeper(sleeper)
@@ -546,6 +577,7 @@ private constructor(
                 responseValidation,
                 timeout,
                 maxRetries,
+                logLevel,
                 bearerToken,
                 clientId,
                 clientSecret,

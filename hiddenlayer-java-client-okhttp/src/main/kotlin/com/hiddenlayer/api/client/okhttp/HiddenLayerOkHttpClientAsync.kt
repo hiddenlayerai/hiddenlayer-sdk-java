@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.hiddenlayer.api.client.HiddenLayerClientAsync
 import com.hiddenlayer.api.client.HiddenLayerClientAsyncImpl
 import com.hiddenlayer.api.core.ClientOptions
+import com.hiddenlayer.api.core.LogLevel
 import com.hiddenlayer.api.core.Sleeper
 import com.hiddenlayer.api.core.Timeout
 import com.hiddenlayer.api.core.http.AsyncStreamResponse
@@ -295,6 +296,15 @@ class HiddenLayerOkHttpClientAsync private constructor() {
          * Defaults to 2.
          */
         fun maxRetries(maxRetries: Int) = apply { clientOptions.maxRetries(maxRetries) }
+
+        /**
+         * The level at which to log request and response information.
+         *
+         * [fromEnv] will set the level from environment variables. See [LogLevel.fromEnv].
+         *
+         * Defaults to [LogLevel.fromEnv].
+         */
+        fun logLevel(logLevel: LogLevel) = apply { clientOptions.logLevel(logLevel) }
 
         fun bearerToken(bearerToken: String?) = apply { clientOptions.bearerToken(bearerToken) }
 

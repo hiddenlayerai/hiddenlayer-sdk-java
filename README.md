@@ -377,8 +377,6 @@ while (true) {
 
 ## Logging
 
-The SDK uses the standard [OkHttp logging interceptor](https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor).
-
 Enable logging by setting the `HIDDENLAYER_LOG` environment variable to `info`:
 
 ```sh
@@ -389,6 +387,19 @@ Or to `debug` for more verbose logging:
 
 ```sh
 export HIDDENLAYER_LOG=debug
+```
+
+Or configure the client manually using the `logLevel` method:
+
+```java
+import com.hiddenlayer.api.client.HiddenLayerClient;
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
+import com.hiddenlayer.api.core.LogLevel;
+
+HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
+    .fromEnv()
+    .logLevel(LogLevel.INFO)
+    .build();
 ```
 
 ## ProGuard and R8
