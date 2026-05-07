@@ -1,5 +1,37 @@
 # Changelog
 
+## 2.2.0 (2026-05-07)
+
+Full Changelog: [v2.1.0...v2.2.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.1.0...v2.2.0)
+
+### Features
+
+* **api:** Add Runtime Security support ([3e7fb40](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/3e7fb40410b621fdb079a5bc4ed7be10c539ecca))
+* **api:** api update ([34ca8f7](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/34ca8f7d7b3cea61ea26168330799f62060e2e03))
+* **api:** api update ([166355e](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/166355ef8a05ceeb0e5988da965c1e34bd1627a6))
+* **client:** improve logging ([1f5d136](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/1f5d136794d8495cf42fbb34b444c4e9fbdc29a4))
+* **client:** more robust error parsing ([aac3509](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/aac35090ccbe4cc23d5640d5aae17a0c4819a413))
+* **client:** support proxy authentication ([094f035](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/094f035a8407581802b05aaa615a041179483085))
+* support setting headers via env ([31a6362](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/31a63624129bf5455a1b360aa0c17324552bc1af))
+
+
+### Performance Improvements
+
+* **client:** create one json mapper ([dff07e2](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/dff07e2ff3e01a93e36535dc3d38fd05527d4428))
+
+
+### Chores
+
+* patch beta warnings [skip ci] ([66d7e8b](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/66d7e8b3074c4ebe43d8ea48e9c361ad3960e2c9))
+* patch beta warnings [skip ci] ([dbd1a05](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/dbd1a05b182784c107e11e02e3e06985692a8890))
+* redact api-key headers in debug logs ([4cf579f](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/4cf579f0e3366b31277ffce2bae155255dddd23c))
+* remove duplicated dokka setup ([82d4c23](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/82d4c23e5fcab9f6e9df22d50f418f2791937d3b))
+
+
+### Documentation
+
+* clarify forwards compat behavior ([2dd812f](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/2dd812fdb9ccf26252fadaf841e3483f304dfa3a))
+
 ## 2.1.0 (2026-04-13)
 
 Full Changelog: [v2.0.0...v2.1.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.0.0...v2.1.0)
