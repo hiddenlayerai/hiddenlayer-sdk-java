@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.hiddenlayer.api/hiddenlayer-java)](https://central.sonatype.com/artifact/com.hiddenlayer.api/hiddenlayer-java/2.1.0)
-[![javadoc](https://javadoc.io/badge2/com.hiddenlayer.api/hiddenlayer-java/2.1.0/javadoc.svg)](https://javadoc.io/doc/com.hiddenlayer.api/hiddenlayer-java/2.1.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.hiddenlayer.api/hiddenlayer-java)](https://central.sonatype.com/artifact/com.hiddenlayer.api/hiddenlayer-java/2.2.0)
+[![javadoc](https://javadoc.io/badge2/com.hiddenlayer.api/hiddenlayer-java/2.2.0/javadoc.svg)](https://javadoc.io/doc/com.hiddenlayer.api/hiddenlayer-java/2.2.0)
 
 <!-- x-release-please-end -->
 
@@ -13,7 +13,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [dev.hiddenlayer.ai](https://dev.hiddenlayer.ai). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.hiddenlayer.api/hiddenlayer-java/2.1.0).
+The REST API documentation can be found on [dev.hiddenlayer.ai](https://dev.hiddenlayer.ai). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.hiddenlayer.api/hiddenlayer-java/2.2.0).
 
 <!-- x-release-please-end -->
 
@@ -31,7 +31,7 @@ Some HiddenLayer APIs are marked as **Beta**, meaning they are not yet generally
 ### Gradle
 
 ```kotlin
-implementation("com.hiddenlayer.api:hiddenlayer-java:2.1.0")
+implementation("com.hiddenlayer.api:hiddenlayer-java:2.2.0")
 ```
 
 ### Maven
@@ -40,7 +40,7 @@ implementation("com.hiddenlayer.api:hiddenlayer-java:2.1.0")
 <dependency>
   <groupId>com.hiddenlayer.api</groupId>
   <artifactId>hiddenlayer-java</artifactId>
-  <version>2.1.0</version>
+  <version>2.2.0</version>
 </dependency>
 ```
 
@@ -384,8 +384,6 @@ while (true) {
 
 ## Logging
 
-The SDK uses the standard [OkHttp logging interceptor](https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor).
-
 Enable logging by setting the `HIDDENLAYER_LOG` environment variable to `info`:
 
 ```sh
@@ -396,6 +394,19 @@ Or to `debug` for more verbose logging:
 
 ```sh
 export HIDDENLAYER_LOG=debug
+```
+
+Or configure the client manually using the `logLevel` method:
+
+```java
+import com.hiddenlayer.api.client.HiddenLayerClient;
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
+import com.hiddenlayer.api.core.LogLevel;
+
+HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
+    .fromEnv()
+    .logLevel(LogLevel.INFO)
+    .build();
 ```
 
 ## ProGuard and R8
@@ -489,6 +500,21 @@ HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
         "https://example.com", 8080
       )
     ))
+    .build();
+```
+
+If the proxy responds with `407 Proxy Authentication Required`, supply credentials by also configuring `proxyAuthenticator`:
+
+```java
+import com.hiddenlayer.api.client.HiddenLayerClient;
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClient;
+import com.hiddenlayer.api.core.http.ProxyAuthenticator;
+
+HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
+    .fromEnv()
+    .proxy(...)
+    // Or a custom implementation of `ProxyAuthenticator`.
+    .proxyAuthenticator(ProxyAuthenticator.basic("username", "password"))
     .build();
 ```
 
@@ -748,7 +774,9 @@ In rare cases, the API may return a response that doesn't match the expected typ
 
 By default, the SDK will not throw an exception in this case. It will throw [`HiddenLayerInvalidDataException`](hiddenlayer-java-core/src/main/kotlin/com/hiddenlayer/api/errors/HiddenLayerInvalidDataException.kt) only if you directly access the property.
 
-If you would prefer to check that the response is completely well-typed upfront, then either call `validate()`:
+Validating the response is _not_ forwards compatible with new types from the API for existing fields.
+
+If you would still prefer to check that the response is completely well-typed upfront, then either call `validate()`:
 
 ```java
 import com.hiddenlayer.api.models.interactions.InteractionAnalyzeResponse;

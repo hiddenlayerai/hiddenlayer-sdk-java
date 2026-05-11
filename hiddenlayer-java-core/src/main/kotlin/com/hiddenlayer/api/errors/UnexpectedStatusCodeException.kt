@@ -5,6 +5,7 @@ package com.hiddenlayer.api.errors
 import com.hiddenlayer.api.core.JsonValue
 import com.hiddenlayer.api.core.checkRequired
 import com.hiddenlayer.api.core.http.Headers
+import com.hiddenlayer.api.core.jsonMapper
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
@@ -14,7 +15,11 @@ private constructor(
     private val headers: Headers,
     private val body: JsonValue,
     cause: Throwable?,
-) : HiddenLayerServiceException("$statusCode: $body", cause) {
+) :
+    HiddenLayerServiceException(
+        "$statusCode: ${if (body.isMissing()) "Unknown" else jsonMapper().writeValueAsString(body)}",
+        cause,
+    ) {
 
     override fun statusCode(): Int = statusCode
 
