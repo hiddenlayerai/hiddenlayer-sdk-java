@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.2.0 (2026-05-07)
+
+Full Changelog: [v2.1.0...v2.2.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.1.0...v2.2.0)
+
+### Features
+
+* **api:** Add Runtime Security evaluation endpoints for real-time request and response analysis ([3e7fb40](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/3e7fb40410b621fdb079a5bc4ed7be10c539ecca))
+* **client:** Add streaming, configurable logging that works with any HTTP client ([1f5d136](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/1f5d136794d8495cf42fbb34b444c4e9fbdc29a4))
+* **client:** Support proxy authentication ([094f035](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/094f035a8407581802b05aaa615a041179483085))
+* **client:** Improve error response parsing for more informative error messages ([aac3509](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/aac35090ccbe4cc23d5640d5aae17a0c4819a413))
+* **client:** Support setting custom request headers via environment variables ([31a6362](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/31a63624129bf5455a1b360aa0c17324552bc1af))
+
+
+### Performance Improvements
+
+* **client:** Reuse a single JSON object mapper instead of creating one per request ([dff07e2](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/dff07e2ff3e01a93e36535dc3d38fd05527d4428))
+
+
+### Security
+
+* **client:** Redact API key headers in debug logs ([4cf579f](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/4cf579f0e3366b31277ffce2bae155255dddd23c))
+
 ## 2.1.0 (2026-04-13)
 
 Full Changelog: [v2.0.0...v2.1.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.0.0...v2.1.0)
