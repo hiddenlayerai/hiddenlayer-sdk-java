@@ -48,6 +48,8 @@ internal class ScanReportTest {
                 .status(ScanReport.Status.PENDING)
                 .summary(
                     ScanReport.Summary.builder()
+                        .addAdvisoryCategory("string")
+                        .advisoryCount(0L)
                         .addDetectionCategory("string")
                         .detectionCount(0L)
                         .fileCount(0L)
@@ -132,6 +134,16 @@ internal class ScanReportTest {
                         .seen(OffsetDateTime.parse("2024-10-22T17:59:12.431Z"))
                         .startTime(OffsetDateTime.parse("2024-10-16T23:38:32.278Z"))
                         .status(ScanReport.FileResult.Status.SKIPPED)
+                        .addAdvisory(
+                            ScanReport.FileResult.Advisory.builder()
+                                .advisoryId("00000000-0000-0000-0000-000000000000")
+                                .category("TokenBreak")
+                                .description(
+                                    "Models using the BPE and WordPiece tokenization strategies are vulnerable to TokenBreak"
+                                )
+                                .ruleId("SAFETENSORS_0001_202512")
+                                .build()
+                        )
                         .addFileError("File not found")
                         .build()
                 )
@@ -195,6 +207,8 @@ internal class ScanReportTest {
         assertThat(scanReport.summary())
             .isEqualTo(
                 ScanReport.Summary.builder()
+                    .addAdvisoryCategory("string")
+                    .advisoryCount(0L)
                     .addDetectionCategory("string")
                     .detectionCount(0L)
                     .fileCount(0L)
@@ -280,6 +294,16 @@ internal class ScanReportTest {
                     .seen(OffsetDateTime.parse("2024-10-22T17:59:12.431Z"))
                     .startTime(OffsetDateTime.parse("2024-10-16T23:38:32.278Z"))
                     .status(ScanReport.FileResult.Status.SKIPPED)
+                    .addAdvisory(
+                        ScanReport.FileResult.Advisory.builder()
+                            .advisoryId("00000000-0000-0000-0000-000000000000")
+                            .category("TokenBreak")
+                            .description(
+                                "Models using the BPE and WordPiece tokenization strategies are vulnerable to TokenBreak"
+                            )
+                            .ruleId("SAFETENSORS_0001_202512")
+                            .build()
+                    )
                     .addFileError("File not found")
                     .build()
             )
@@ -346,6 +370,8 @@ internal class ScanReportTest {
                 .status(ScanReport.Status.PENDING)
                 .summary(
                     ScanReport.Summary.builder()
+                        .addAdvisoryCategory("string")
+                        .advisoryCount(0L)
                         .addDetectionCategory("string")
                         .detectionCount(0L)
                         .fileCount(0L)
@@ -430,6 +456,16 @@ internal class ScanReportTest {
                         .seen(OffsetDateTime.parse("2024-10-22T17:59:12.431Z"))
                         .startTime(OffsetDateTime.parse("2024-10-16T23:38:32.278Z"))
                         .status(ScanReport.FileResult.Status.SKIPPED)
+                        .addAdvisory(
+                            ScanReport.FileResult.Advisory.builder()
+                                .advisoryId("00000000-0000-0000-0000-000000000000")
+                                .category("TokenBreak")
+                                .description(
+                                    "Models using the BPE and WordPiece tokenization strategies are vulnerable to TokenBreak"
+                                )
+                                .ruleId("SAFETENSORS_0001_202512")
+                                .build()
+                        )
                         .addFileError("File not found")
                         .build()
                 )

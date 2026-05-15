@@ -56,6 +56,8 @@ internal class JobListResponseTest {
                         .status(JobListResponse.Item.Status.PENDING)
                         .summary(
                             JobListResponse.Item.Summary.builder()
+                                .addAdvisoryCategory("string")
+                                .advisoryCount(0L)
                                 .addDetectionCategory("string")
                                 .detectionCount(0L)
                                 .fileCount(0L)
@@ -129,6 +131,8 @@ internal class JobListResponseTest {
                     .status(JobListResponse.Item.Status.PENDING)
                     .summary(
                         JobListResponse.Item.Summary.builder()
+                            .addAdvisoryCategory("string")
+                            .advisoryCount(0L)
                             .addDetectionCategory("string")
                             .detectionCount(0L)
                             .fileCount(0L)
@@ -206,6 +210,8 @@ internal class JobListResponseTest {
                         .status(JobListResponse.Item.Status.PENDING)
                         .summary(
                             JobListResponse.Item.Summary.builder()
+                                .addAdvisoryCategory("string")
+                                .advisoryCount(0L)
                                 .addDetectionCategory("string")
                                 .detectionCount(0L)
                                 .fileCount(0L)
