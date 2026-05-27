@@ -6,6 +6,8 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.core.RequestOptions
 import com.hiddenlayer.api.core.http.HttpResponseFor
+import com.hiddenlayer.api.models.runtime.RuntimeEvaluateInteractionParams
+import com.hiddenlayer.api.models.runtime.RuntimeEvaluateInteractionResponse
 import com.hiddenlayer.api.models.runtime.RuntimeEvaluateRequestParams
 import com.hiddenlayer.api.models.runtime.RuntimeEvaluateRequestResponse
 import com.hiddenlayer.api.models.runtime.RuntimeEvaluateResponseParams
@@ -25,6 +27,44 @@ interface RuntimeService {
      * The original service is not modified.
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): RuntimeService
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
+     * Breaking changes may occur.
+     *
+     * Performs synchronous security evaluation on an LLM **interaction**. The interaction can be a
+     * standalone user prompt, a standalone model response, a partial exchange, or a long multi-turn
+     * message history. The endpoint imposes no requirement that the messages form a complete
+     * request/response pair.
+     *
+     * The request carries `metadata` and an `interaction` payload. The `interaction` field accepts
+     * either:
+     * - the **canonical**, provider-agnostic form (`CanonicalInteraction`) — an ordered sequence of
+     *   messages (user, assistant, system, tool) with their role and content parts, and optionally
+     *   the tool catalog that was in scope; or
+     * - a **native LLM-provider payload** passed through verbatim. Supported provider formats:
+     *     - [OpenAI Chat Completions](https://platform.openai.com/docs/api-reference/chat)
+     *     - [OpenAI Responses](https://platform.openai.com/docs/api-reference/responses)
+     *     - [Anthropic Messages](https://docs.anthropic.com/en/api/messages)
+     *
+     * Returns the evaluation context (`evaluated_interaction`): the canonicalized messages with
+     * per-message signals and findings attached. Also returns the policy outcome, which carries the
+     * enforcement action, threat level, any detections, and the effective payload the caller should
+     * forward (`outcome.effective_interaction`).
+     *
+     * Use this endpoint when you need full evaluation results. For inline pass-through (provider
+     * request/response payloads returned in the same provider format), use the request-evaluations
+     * and response-evaluations endpoints instead.
+     */
+    fun evaluateInteraction(
+        params: RuntimeEvaluateInteractionParams
+    ): RuntimeEvaluateInteractionResponse = evaluateInteraction(params, RequestOptions.none())
+
+    /** @see evaluateInteraction */
+    fun evaluateInteraction(
+        params: RuntimeEvaluateInteractionParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): RuntimeEvaluateInteractionResponse
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
@@ -114,6 +154,23 @@ interface RuntimeService {
          * The original service is not modified.
          */
         fun withOptions(modifier: Consumer<ClientOptions.Builder>): RuntimeService.WithRawResponse
+
+        /**
+         * Returns a raw HTTP response for `post /detection/v2/interaction-evaluations`, but is
+         * otherwise the same as [RuntimeService.evaluateInteraction].
+         */
+        @MustBeClosed
+        fun evaluateInteraction(
+            params: RuntimeEvaluateInteractionParams
+        ): HttpResponseFor<RuntimeEvaluateInteractionResponse> =
+            evaluateInteraction(params, RequestOptions.none())
+
+        /** @see evaluateInteraction */
+        @MustBeClosed
+        fun evaluateInteraction(
+            params: RuntimeEvaluateInteractionParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<RuntimeEvaluateInteractionResponse>
 
         /**
          * Returns a raw HTTP response for `post /detection/v2/request-evaluations`, but is
