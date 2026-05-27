@@ -57,12 +57,14 @@ interface RuntimeServiceAsync {
      * request/response payloads returned in the same provider format), use the request-evaluations
      * and response-evaluations endpoints instead.
      */
+    @BetaApi
     fun evaluateInteraction(
         params: RuntimeEvaluateInteractionParams
     ): CompletableFuture<RuntimeEvaluateInteractionResponse> =
         evaluateInteraction(params, RequestOptions.none())
 
     /** @see evaluateInteraction */
+    @BetaApi
     fun evaluateInteraction(
         params: RuntimeEvaluateInteractionParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -186,6 +188,7 @@ interface RuntimeServiceAsync {
             evaluateInteraction(params, RequestOptions.none())
 
         /** @see evaluateInteraction */
+        @BetaApi
         fun evaluateInteraction(
             params: RuntimeEvaluateInteractionParams,
             requestOptions: RequestOptions = RequestOptions.none(),

@@ -57,11 +57,13 @@ interface RuntimeService {
      * request/response payloads returned in the same provider format), use the request-evaluations
      * and response-evaluations endpoints instead.
      */
+    @BetaApi
     fun evaluateInteraction(
         params: RuntimeEvaluateInteractionParams
     ): RuntimeEvaluateInteractionResponse = evaluateInteraction(params, RequestOptions.none())
 
     /** @see evaluateInteraction */
+    @BetaApi
     fun evaluateInteraction(
         params: RuntimeEvaluateInteractionParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -176,6 +178,7 @@ interface RuntimeService {
 
         /** @see evaluateInteraction */
         @MustBeClosed
+        @BetaApi
         fun evaluateInteraction(
             params: RuntimeEvaluateInteractionParams,
             requestOptions: RequestOptions = RequestOptions.none(),
