@@ -2340,6 +2340,7 @@ private constructor(
                         private val id: JsonField<String>,
                         private val result: JsonField<String>,
                         private val type: JsonValue,
+                        private val success: JsonField<Boolean>,
                         private val additionalProperties: MutableMap<String, JsonValue>,
                     ) {
 
@@ -2351,8 +2352,13 @@ private constructor(
                             @JsonProperty("result")
                             @ExcludeMissing
                             result: JsonField<String> = JsonMissing.of(),
-                            @JsonProperty("type") @ExcludeMissing type: JsonValue = JsonMissing.of(),
-                        ) : this(id, result, type, mutableMapOf())
+                            @JsonProperty("type")
+                            @ExcludeMissing
+                            type: JsonValue = JsonMissing.of(),
+                            @JsonProperty("success")
+                            @ExcludeMissing
+                            success: JsonField<Boolean> = JsonMissing.of(),
+                        ) : this(id, result, type, success, mutableMapOf())
 
                         /**
                          * Tool call identifier. Used to correlate this result with the original
@@ -2387,6 +2393,15 @@ private constructor(
                         @JsonProperty("type") @ExcludeMissing fun _type(): JsonValue = type
 
                         /**
+                         * Whether the tool execution succeeded.
+                         *
+                         * @throws HiddenLayerInvalidDataException if the JSON field has an
+                         *   unexpected type (e.g. if the server responded with an unexpected
+                         *   value).
+                         */
+                        fun success(): Optional<Boolean> = success.getOptional("success")
+
+                        /**
                          * Returns the raw JSON value of [id].
                          *
                          * Unlike [id], this method doesn't throw if the JSON field has an
@@ -2403,6 +2418,16 @@ private constructor(
                         @JsonProperty("result")
                         @ExcludeMissing
                         fun _result(): JsonField<String> = result
+
+                        /**
+                         * Returns the raw JSON value of [success].
+                         *
+                         * Unlike [success], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
+                        @JsonProperty("success")
+                        @ExcludeMissing
+                        fun _success(): JsonField<Boolean> = success
 
                         @JsonAnySetter
                         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -2437,6 +2462,7 @@ private constructor(
                             private var id: JsonField<String>? = null
                             private var result: JsonField<String>? = null
                             private var type: JsonValue = JsonValue.from("tool_result")
+                            private var success: JsonField<Boolean> = JsonMissing.of()
                             private var additionalProperties: MutableMap<String, JsonValue> =
                                 mutableMapOf()
 
@@ -2445,6 +2471,7 @@ private constructor(
                                 id = toolResult.id
                                 result = toolResult.result
                                 type = toolResult.type
+                                success = toolResult.success
                                 additionalProperties =
                                     toolResult.additionalProperties.toMutableMap()
                             }
@@ -2490,6 +2517,20 @@ private constructor(
                              */
                             fun type(type: JsonValue) = apply { this.type = type }
 
+                            /** Whether the tool execution succeeded. */
+                            fun success(success: Boolean) = success(JsonField.of(success))
+
+                            /**
+                             * Sets [Builder.success] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.success] with a well-typed [Boolean]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
+                            fun success(success: JsonField<Boolean>) = apply {
+                                this.success = success
+                            }
+
                             fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                                 apply {
                                     this.additionalProperties.clear()
@@ -2531,6 +2572,7 @@ private constructor(
                                     checkRequired("id", id),
                                     checkRequired("result", result),
                                     type,
+                                    success,
                                     additionalProperties.toMutableMap(),
                                 )
                         }
@@ -2561,6 +2603,7 @@ private constructor(
                                     )
                                 }
                             }
+                            success()
                             validated = true
                         }
 
@@ -2582,7 +2625,8 @@ private constructor(
                         internal fun validity(): Int =
                             (if (id.asKnown().isPresent) 1 else 0) +
                                 (if (result.asKnown().isPresent) 1 else 0) +
-                                type.let { if (it == JsonValue.from("tool_result")) 1 else 0 }
+                                type.let { if (it == JsonValue.from("tool_result")) 1 else 0 } +
+                                (if (success.asKnown().isPresent) 1 else 0)
 
                         override fun equals(other: Any?): Boolean {
                             if (this === other) {
@@ -2593,17 +2637,18 @@ private constructor(
                                 id == other.id &&
                                 result == other.result &&
                                 type == other.type &&
+                                success == other.success &&
                                 additionalProperties == other.additionalProperties
                         }
 
                         private val hashCode: Int by lazy {
-                            Objects.hash(id, result, type, additionalProperties)
+                            Objects.hash(id, result, type, success, additionalProperties)
                         }
 
                         override fun hashCode(): Int = hashCode
 
                         override fun toString() =
-                            "ToolResult{id=$id, result=$result, type=$type, additionalProperties=$additionalProperties}"
+                            "ToolResult{id=$id, result=$result, type=$type, success=$success, additionalProperties=$additionalProperties}"
                     }
                 }
 
