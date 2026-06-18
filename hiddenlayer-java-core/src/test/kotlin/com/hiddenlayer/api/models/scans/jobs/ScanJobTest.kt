@@ -23,6 +23,7 @@ internal class ScanJobTest {
                         .requestedScanLocation("/files-to-scan")
                         .scanTarget(
                             ScanJob.Inventory.ScanTarget.builder()
+                                .assetId("a1b2c3d4-5e6f-4a7b-8c9d-0e1f2a3b4c5d")
                                 .assetRegion("us-east-1")
                                 .deepScan(
                                     ScanJob.Inventory.ScanTarget.DeepScan.builder()
@@ -73,6 +74,7 @@ internal class ScanJobTest {
                     .requestedScanLocation("/files-to-scan")
                     .scanTarget(
                         ScanJob.Inventory.ScanTarget.builder()
+                            .assetId("a1b2c3d4-5e6f-4a7b-8c9d-0e1f2a3b4c5d")
                             .assetRegion("us-east-1")
                             .deepScan(
                                 ScanJob.Inventory.ScanTarget.DeepScan.builder()
@@ -123,6 +125,7 @@ internal class ScanJobTest {
                         .requestedScanLocation("/files-to-scan")
                         .scanTarget(
                             ScanJob.Inventory.ScanTarget.builder()
+                                .assetId("a1b2c3d4-5e6f-4a7b-8c9d-0e1f2a3b4c5d")
                                 .assetRegion("us-east-1")
                                 .deepScan(
                                     ScanJob.Inventory.ScanTarget.DeepScan.builder()

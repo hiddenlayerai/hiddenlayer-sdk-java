@@ -825,6 +825,7 @@ private constructor(
         class ScanTarget
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
+            private val assetId: JsonField<String>,
             private val assetRegion: JsonField<String>,
             private val deepScan: JsonField<DeepScan>,
             private val providerDetails: JsonField<ProviderDetails>,
@@ -833,6 +834,9 @@ private constructor(
 
             @JsonCreator
             private constructor(
+                @JsonProperty("asset_id")
+                @ExcludeMissing
+                assetId: JsonField<String> = JsonMissing.of(),
                 @JsonProperty("asset_region")
                 @ExcludeMissing
                 assetRegion: JsonField<String> = JsonMissing.of(),
@@ -842,7 +846,15 @@ private constructor(
                 @JsonProperty("provider_details")
                 @ExcludeMissing
                 providerDetails: JsonField<ProviderDetails> = JsonMissing.of(),
-            ) : this(assetRegion, deepScan, providerDetails, mutableMapOf())
+            ) : this(assetId, assetRegion, deepScan, providerDetails, mutableMapOf())
+
+            /**
+             * identifier of the discovered asset
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun assetId(): Optional<String> = assetId.getOptional("asset_id")
 
             /**
              * region of the discovered asset
@@ -864,6 +876,13 @@ private constructor(
              */
             fun providerDetails(): Optional<ProviderDetails> =
                 providerDetails.getOptional("provider_details")
+
+            /**
+             * Returns the raw JSON value of [assetId].
+             *
+             * Unlike [assetId], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("asset_id") @ExcludeMissing fun _assetId(): JsonField<String> = assetId
 
             /**
              * Returns the raw JSON value of [assetRegion].
@@ -916,6 +935,7 @@ private constructor(
             /** A builder for [ScanTarget]. */
             class Builder internal constructor() {
 
+                private var assetId: JsonField<String> = JsonMissing.of()
                 private var assetRegion: JsonField<String> = JsonMissing.of()
                 private var deepScan: JsonField<DeepScan> = JsonMissing.of()
                 private var providerDetails: JsonField<ProviderDetails> = JsonMissing.of()
@@ -923,11 +943,24 @@ private constructor(
 
                 @JvmSynthetic
                 internal fun from(scanTarget: ScanTarget) = apply {
+                    assetId = scanTarget.assetId
                     assetRegion = scanTarget.assetRegion
                     deepScan = scanTarget.deepScan
                     providerDetails = scanTarget.providerDetails
                     additionalProperties = scanTarget.additionalProperties.toMutableMap()
                 }
+
+                /** identifier of the discovered asset */
+                fun assetId(assetId: String) = assetId(JsonField.of(assetId))
+
+                /**
+                 * Sets [Builder.assetId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.assetId] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun assetId(assetId: JsonField<String>) = apply { this.assetId = assetId }
 
                 /** region of the discovered asset */
                 fun assetRegion(assetRegion: String) = assetRegion(JsonField.of(assetRegion))
@@ -997,6 +1030,7 @@ private constructor(
                  */
                 fun build(): ScanTarget =
                     ScanTarget(
+                        assetId,
                         assetRegion,
                         deepScan,
                         providerDetails,
@@ -1021,6 +1055,7 @@ private constructor(
                     return@apply
                 }
 
+                assetId()
                 assetRegion()
                 deepScan().ifPresent { it.validate() }
                 providerDetails().ifPresent { it.validate() }
@@ -1043,7 +1078,8 @@ private constructor(
              */
             @JvmSynthetic
             internal fun validity(): Int =
-                (if (assetRegion.asKnown().isPresent) 1 else 0) +
+                (if (assetId.asKnown().isPresent) 1 else 0) +
+                    (if (assetRegion.asKnown().isPresent) 1 else 0) +
                     (deepScan.asKnown().getOrNull()?.validity() ?: 0) +
                     (providerDetails.asKnown().getOrNull()?.validity() ?: 0)
 
@@ -1986,6 +2022,7 @@ private constructor(
                 }
 
                 return other is ScanTarget &&
+                    assetId == other.assetId &&
                     assetRegion == other.assetRegion &&
                     deepScan == other.deepScan &&
                     providerDetails == other.providerDetails &&
@@ -1993,13 +2030,13 @@ private constructor(
             }
 
             private val hashCode: Int by lazy {
-                Objects.hash(assetRegion, deepScan, providerDetails, additionalProperties)
+                Objects.hash(assetId, assetRegion, deepScan, providerDetails, additionalProperties)
             }
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "ScanTarget{assetRegion=$assetRegion, deepScan=$deepScan, providerDetails=$providerDetails, additionalProperties=$additionalProperties}"
+                "ScanTarget{assetId=$assetId, assetRegion=$assetRegion, deepScan=$deepScan, providerDetails=$providerDetails, additionalProperties=$additionalProperties}"
         }
 
         override fun equals(other: Any?): Boolean {
