@@ -93,6 +93,7 @@ internal class JobServiceAsyncTest {
                             .requestedScanLocation("owner/repo")
                             .scanTarget(
                                 JobRequestParams.Inventory.ScanTarget.builder()
+                                    .assetId("a1b2c3d4-5e6f-4a7b-8c9d-0e1f2a3b4c5d")
                                     .assetRegion("us-east-1")
                                     .deepScan(
                                         JobRequestParams.Inventory.ScanTarget.DeepScan.builder()

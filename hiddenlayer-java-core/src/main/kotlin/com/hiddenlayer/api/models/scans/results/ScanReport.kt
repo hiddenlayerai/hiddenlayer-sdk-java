@@ -865,6 +865,7 @@ private constructor(
         private val modelName: JsonField<String>,
         private val modelVersionId: JsonField<String>,
         private val requestedScanLocation: JsonField<String>,
+        private val assetId: JsonField<String>,
         private val assetRegion: JsonField<String>,
         private val fileLocation: JsonField<String>,
         private val modelSource: JsonField<String>,
@@ -888,6 +889,7 @@ private constructor(
             @JsonProperty("requested_scan_location")
             @ExcludeMissing
             requestedScanLocation: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("asset_id") @ExcludeMissing assetId: JsonField<String> = JsonMissing.of(),
             @JsonProperty("asset_region")
             @ExcludeMissing
             assetRegion: JsonField<String> = JsonMissing.of(),
@@ -915,6 +917,7 @@ private constructor(
             modelName,
             modelVersionId,
             requestedScanLocation,
+            assetId,
             assetRegion,
             fileLocation,
             modelSource,
@@ -958,6 +961,14 @@ private constructor(
          */
         fun requestedScanLocation(): String =
             requestedScanLocation.getRequired("requested_scan_location")
+
+        /**
+         * Identifier of discovered asset
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun assetId(): Optional<String> = assetId.getOptional("asset_id")
 
         /**
          * Region of discovered asset
@@ -1055,6 +1066,13 @@ private constructor(
         @JsonProperty("requested_scan_location")
         @ExcludeMissing
         fun _requestedScanLocation(): JsonField<String> = requestedScanLocation
+
+        /**
+         * Returns the raw JSON value of [assetId].
+         *
+         * Unlike [assetId], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("asset_id") @ExcludeMissing fun _assetId(): JsonField<String> = assetId
 
         /**
          * Returns the raw JSON value of [assetRegion].
@@ -1166,6 +1184,7 @@ private constructor(
             private var modelName: JsonField<String>? = null
             private var modelVersionId: JsonField<String>? = null
             private var requestedScanLocation: JsonField<String>? = null
+            private var assetId: JsonField<String> = JsonMissing.of()
             private var assetRegion: JsonField<String> = JsonMissing.of()
             private var fileLocation: JsonField<String> = JsonMissing.of()
             private var modelSource: JsonField<String> = JsonMissing.of()
@@ -1182,6 +1201,7 @@ private constructor(
                 modelName = inventory.modelName
                 modelVersionId = inventory.modelVersionId
                 requestedScanLocation = inventory.requestedScanLocation
+                assetId = inventory.assetId
                 assetRegion = inventory.assetRegion
                 fileLocation = inventory.fileLocation
                 modelSource = inventory.modelSource
@@ -1246,6 +1266,18 @@ private constructor(
             fun requestedScanLocation(requestedScanLocation: JsonField<String>) = apply {
                 this.requestedScanLocation = requestedScanLocation
             }
+
+            /** Identifier of discovered asset */
+            fun assetId(assetId: String) = assetId(JsonField.of(assetId))
+
+            /**
+             * Sets [Builder.assetId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.assetId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun assetId(assetId: JsonField<String>) = apply { this.assetId = assetId }
 
             /** Region of discovered asset */
             fun assetRegion(assetRegion: String) = assetRegion(JsonField.of(assetRegion))
@@ -1399,6 +1431,7 @@ private constructor(
                     checkRequired("modelName", modelName),
                     checkRequired("modelVersionId", modelVersionId),
                     checkRequired("requestedScanLocation", requestedScanLocation),
+                    assetId,
                     assetRegion,
                     fileLocation,
                     modelSource,
@@ -1431,6 +1464,7 @@ private constructor(
             modelName()
             modelVersionId()
             requestedScanLocation()
+            assetId()
             assetRegion()
             fileLocation()
             modelSource()
@@ -1462,6 +1496,7 @@ private constructor(
                 (if (modelName.asKnown().isPresent) 1 else 0) +
                 (if (modelVersionId.asKnown().isPresent) 1 else 0) +
                 (if (requestedScanLocation.asKnown().isPresent) 1 else 0) +
+                (if (assetId.asKnown().isPresent) 1 else 0) +
                 (if (assetRegion.asKnown().isPresent) 1 else 0) +
                 (if (fileLocation.asKnown().isPresent) 1 else 0) +
                 (if (modelSource.asKnown().isPresent) 1 else 0) +
@@ -2114,6 +2149,7 @@ private constructor(
                 modelName == other.modelName &&
                 modelVersionId == other.modelVersionId &&
                 requestedScanLocation == other.requestedScanLocation &&
+                assetId == other.assetId &&
                 assetRegion == other.assetRegion &&
                 fileLocation == other.fileLocation &&
                 modelSource == other.modelSource &&
@@ -2131,6 +2167,7 @@ private constructor(
                 modelName,
                 modelVersionId,
                 requestedScanLocation,
+                assetId,
                 assetRegion,
                 fileLocation,
                 modelSource,
@@ -2146,7 +2183,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Inventory{modelId=$modelId, modelName=$modelName, modelVersionId=$modelVersionId, requestedScanLocation=$requestedScanLocation, assetRegion=$assetRegion, fileLocation=$fileLocation, modelSource=$modelSource, modelVersion=$modelVersion, origin=$origin, providerDetails=$providerDetails, requestSource=$requestSource, requestingEntity=$requestingEntity, additionalProperties=$additionalProperties}"
+            "Inventory{modelId=$modelId, modelName=$modelName, modelVersionId=$modelVersionId, requestedScanLocation=$requestedScanLocation, assetId=$assetId, assetRegion=$assetRegion, fileLocation=$fileLocation, modelSource=$modelSource, modelVersion=$modelVersion, origin=$origin, providerDetails=$providerDetails, requestSource=$requestSource, requestingEntity=$requestingEntity, additionalProperties=$additionalProperties}"
     }
 
     /** status of the scan */
