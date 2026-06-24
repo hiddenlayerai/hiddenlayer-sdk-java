@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.3.0 (2026-06-24)
+
+Full Changelog: [v2.2.0...v2.3.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.2.0...v2.3.0)
+
+### Features
+
+* **api:** api update ([817618c](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/817618c513dd189f661ea273f096f82ad42d0962))
+* **api:** api update ([3770a9e](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/3770a9eb01db8a431721ec1d472976aabb672139))
+* **api:** api update ([56b06c7](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/56b06c7067618f5da7543575155efe37b4599448))
+* **api:** api update ([758d765](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/758d765d38a4b5c48a17c02a806be1924f1c8c0b))
+* **api:** api update ([c084452](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/c084452c9744d98039f25df3c60889e0d5d4d332))
+
+
+### Chores
+
+* **internal:** codegen related update ([a48045e](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/a48045ec5cea83682219cc81704d9fd6c701143a))
+* patch beta warnings [skip ci] ([4507ae5](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/4507ae5f5944a9fd2e4ab927d6332679e73cef5d))
+
 ## 2.2.0 (2026-05-07)
 
 Full Changelog: [v2.1.0...v2.2.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.1.0...v2.2.0)

@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.hiddenlayer.api/hiddenlayer-java)](https://central.sonatype.com/artifact/com.hiddenlayer.api/hiddenlayer-java/2.2.0)
-[![javadoc](https://javadoc.io/badge2/com.hiddenlayer.api/hiddenlayer-java/2.2.0/javadoc.svg)](https://javadoc.io/doc/com.hiddenlayer.api/hiddenlayer-java/2.2.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.hiddenlayer.api/hiddenlayer-java)](https://central.sonatype.com/artifact/com.hiddenlayer.api/hiddenlayer-java/2.3.0)
+[![javadoc](https://javadoc.io/badge2/com.hiddenlayer.api/hiddenlayer-java/2.3.0/javadoc.svg)](https://javadoc.io/doc/com.hiddenlayer.api/hiddenlayer-java/2.3.0)
 
 <!-- x-release-please-end -->
 
@@ -13,7 +13,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [dev.hiddenlayer.ai](https://dev.hiddenlayer.ai). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.hiddenlayer.api/hiddenlayer-java/2.2.0).
+The REST API documentation can be found on [dev.hiddenlayer.ai](https://dev.hiddenlayer.ai). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.hiddenlayer.api/hiddenlayer-java/2.3.0).
 
 <!-- x-release-please-end -->
 
@@ -31,7 +31,7 @@ Some HiddenLayer APIs are marked as **Beta**, meaning they are not yet generally
 ### Gradle
 
 ```kotlin
-implementation("com.hiddenlayer.api:hiddenlayer-java:2.2.0")
+implementation("com.hiddenlayer.api:hiddenlayer-java:2.3.0")
 ```
 
 ### Maven
@@ -40,7 +40,7 @@ implementation("com.hiddenlayer.api:hiddenlayer-java:2.2.0")
 <dependency>
   <groupId>com.hiddenlayer.api</groupId>
   <artifactId>hiddenlayer-java</artifactId>
-  <version>2.2.0</version>
+  <version>2.3.0</version>
 </dependency>
 ```
 
