@@ -3,6 +3,7 @@
 package com.hiddenlayer.api.services.async.evaluations
 
 import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClientAsync
+import com.hiddenlayer.api.core.JsonValue
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamCreateParams
 import com.hiddenlayer.api.models.evaluations.redteam.RedTeamSubmitTargetResponseParams
 import org.junit.jupiter.api.Disabled
@@ -20,20 +21,27 @@ internal class RedTeamServiceAsyncTest {
             redTeamServiceAsync.create(
                 RedTeamCreateParams.builder()
                     .name("name")
-                    .targetModel("target_model")
-                    .attackerMaxGenerationAttempts(0)
+                    .attackerGuidance("attacker_guidance")
+                    .attackerMaxGenerationAttempts(1)
                     .attackerModel("attacker_model")
+                    .configId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .evaluationReportModel("evaluation_report_model")
-                    .executionStrategyType("execution_strategy_type")
+                    .executionStrategyType(RedTeamCreateParams.ExecutionStrategyType.RANDOM)
                     .hlProjectId("hl_project_id")
                     .maxParallelTechniques(0)
                     .maxTurns(0)
                     .nRandomTechniques(0)
                     .addObjectiveId("string")
                     .objectiveJudgeModel("objective_judge_model")
-                    .promptSetId("prompt_set_id")
+                    .promptSetId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .refusalJudgeModel("refusal_judge_model")
-                    .sessionsPerTechnique(0)
+                    .sessionsPerTechnique(1)
+                    .severityMapping(
+                        RedTeamCreateParams.SeverityMapping.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("CRITICAL"))
+                            .build()
+                    )
+                    .targetModel("target_model")
                     .targetSystemPrompt("target_system_prompt")
                     .build()
             )

@@ -3,6 +3,7 @@
 package com.hiddenlayer.api.models.promptanalyzer
 
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.hiddenlayer.api.core.JsonValue
 import com.hiddenlayer.api.core.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -173,8 +174,9 @@ internal class PromptAnalyzerCreateResponseTest {
                         .addPromptInjectionClassifierResult(
                             PromptAnalyzerCreateResponse.Results.PromptInjectionClassifierResult
                                 .builder()
-                                .allowOverride("allow_override")
-                                .blockOverride("block_override")
+                                .addAllowOverride("string")
+                                .appeal(JsonValue.from(mapOf<String, Any>()))
+                                .addBlockOverride("string")
                                 .elapsedMs(100.0)
                                 .addProbability(1.0)
                                 .verdict(true)
@@ -352,8 +354,9 @@ internal class PromptAnalyzerCreateResponseTest {
                     .addPromptInjectionClassifierResult(
                         PromptAnalyzerCreateResponse.Results.PromptInjectionClassifierResult
                             .builder()
-                            .allowOverride("allow_override")
-                            .blockOverride("block_override")
+                            .addAllowOverride("string")
+                            .appeal(JsonValue.from(mapOf<String, Any>()))
+                            .addBlockOverride("string")
                             .elapsedMs(100.0)
                             .addProbability(1.0)
                             .verdict(true)
@@ -531,8 +534,9 @@ internal class PromptAnalyzerCreateResponseTest {
                         .addPromptInjectionClassifierResult(
                             PromptAnalyzerCreateResponse.Results.PromptInjectionClassifierResult
                                 .builder()
-                                .allowOverride("allow_override")
-                                .blockOverride("block_override")
+                                .addAllowOverride("string")
+                                .appeal(JsonValue.from(mapOf<String, Any>()))
+                                .addBlockOverride("string")
                                 .elapsedMs(100.0)
                                 .addProbability(1.0)
                                 .verdict(true)

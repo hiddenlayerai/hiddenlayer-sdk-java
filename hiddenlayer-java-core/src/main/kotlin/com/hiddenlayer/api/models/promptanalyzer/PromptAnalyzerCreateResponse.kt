@@ -7186,8 +7186,9 @@ private constructor(
         class PromptInjectionClassifierResult
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
-            private val allowOverride: JsonField<String>,
-            private val blockOverride: JsonField<String>,
+            private val allowOverrides: JsonField<List<String>>,
+            private val appeal: JsonValue,
+            private val blockOverrides: JsonField<List<String>>,
             private val elapsedMs: JsonField<Double>,
             private val probabilities: JsonField<List<Double>>,
             private val verdict: JsonField<Boolean>,
@@ -7197,12 +7198,13 @@ private constructor(
 
             @JsonCreator
             private constructor(
-                @JsonProperty("allow_override")
+                @JsonProperty("allow_overrides")
                 @ExcludeMissing
-                allowOverride: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("block_override")
+                allowOverrides: JsonField<List<String>> = JsonMissing.of(),
+                @JsonProperty("appeal") @ExcludeMissing appeal: JsonValue = JsonMissing.of(),
+                @JsonProperty("block_overrides")
                 @ExcludeMissing
-                blockOverride: JsonField<String> = JsonMissing.of(),
+                blockOverrides: JsonField<List<String>> = JsonMissing.of(),
                 @JsonProperty("elapsed_ms")
                 @ExcludeMissing
                 elapsedMs: JsonField<Double> = JsonMissing.of(),
@@ -7216,8 +7218,9 @@ private constructor(
                 @ExcludeMissing
                 version: JsonField<Double> = JsonMissing.of(),
             ) : this(
-                allowOverride,
-                blockOverride,
+                allowOverrides,
+                appeal,
+                blockOverrides,
                 elapsedMs,
                 probabilities,
                 verdict,
@@ -7226,20 +7229,33 @@ private constructor(
             )
 
             /**
-             * The allow override applied to the prompt
+             * The list of allow overrides applied to the prompt
              *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
              *   (e.g. if the server responded with an unexpected value).
              */
-            fun allowOverride(): Optional<String> = allowOverride.getOptional("allow_override")
+            fun allowOverrides(): Optional<List<String>> =
+                allowOverrides.getOptional("allow_overrides")
 
             /**
-             * The block override applied to the prompt
+             * Appeal details for the prompt injection decision, if any
+             *
+             * This arbitrary value can be deserialized into a custom type using the `convert`
+             * method:
+             * ```java
+             * MyClass myObject = promptInjectionClassifierResult.appeal().convert(MyClass.class);
+             * ```
+             */
+            @JsonProperty("appeal") @ExcludeMissing fun _appeal(): JsonValue = appeal
+
+            /**
+             * The list of block overrides applied to the prompt
              *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
              *   (e.g. if the server responded with an unexpected value).
              */
-            fun blockOverride(): Optional<String> = blockOverride.getOptional("block_override")
+            fun blockOverrides(): Optional<List<String>> =
+                blockOverrides.getOptional("block_overrides")
 
             /**
              * The time in milliseconds it took to process the prompt injection classifier
@@ -7272,24 +7288,24 @@ private constructor(
             fun version(): Optional<Double> = version.getOptional("version")
 
             /**
-             * Returns the raw JSON value of [allowOverride].
+             * Returns the raw JSON value of [allowOverrides].
              *
-             * Unlike [allowOverride], this method doesn't throw if the JSON field has an unexpected
-             * type.
+             * Unlike [allowOverrides], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
-            @JsonProperty("allow_override")
+            @JsonProperty("allow_overrides")
             @ExcludeMissing
-            fun _allowOverride(): JsonField<String> = allowOverride
+            fun _allowOverrides(): JsonField<List<String>> = allowOverrides
 
             /**
-             * Returns the raw JSON value of [blockOverride].
+             * Returns the raw JSON value of [blockOverrides].
              *
-             * Unlike [blockOverride], this method doesn't throw if the JSON field has an unexpected
-             * type.
+             * Unlike [blockOverrides], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
-            @JsonProperty("block_override")
+            @JsonProperty("block_overrides")
             @ExcludeMissing
-            fun _blockOverride(): JsonField<String> = blockOverride
+            fun _blockOverrides(): JsonField<List<String>> = blockOverrides
 
             /**
              * Returns the raw JSON value of [elapsedMs].
@@ -7349,8 +7365,9 @@ private constructor(
             /** A builder for [PromptInjectionClassifierResult]. */
             class Builder internal constructor() {
 
-                private var allowOverride: JsonField<String> = JsonMissing.of()
-                private var blockOverride: JsonField<String> = JsonMissing.of()
+                private var allowOverrides: JsonField<MutableList<String>>? = null
+                private var appeal: JsonValue = JsonMissing.of()
+                private var blockOverrides: JsonField<MutableList<String>>? = null
                 private var elapsedMs: JsonField<Double> = JsonMissing.of()
                 private var probabilities: JsonField<MutableList<Double>>? = null
                 private var verdict: JsonField<Boolean> = JsonMissing.of()
@@ -7361,8 +7378,11 @@ private constructor(
                 internal fun from(
                     promptInjectionClassifierResult: PromptInjectionClassifierResult
                 ) = apply {
-                    allowOverride = promptInjectionClassifierResult.allowOverride
-                    blockOverride = promptInjectionClassifierResult.blockOverride
+                    allowOverrides =
+                        promptInjectionClassifierResult.allowOverrides.map { it.toMutableList() }
+                    appeal = promptInjectionClassifierResult.appeal
+                    blockOverrides =
+                        promptInjectionClassifierResult.blockOverrides.map { it.toMutableList() }
                     elapsedMs = promptInjectionClassifierResult.elapsedMs
                     probabilities =
                         promptInjectionClassifierResult.probabilities.map { it.toMutableList() }
@@ -7372,34 +7392,61 @@ private constructor(
                         promptInjectionClassifierResult.additionalProperties.toMutableMap()
                 }
 
-                /** The allow override applied to the prompt */
-                fun allowOverride(allowOverride: String) =
-                    allowOverride(JsonField.of(allowOverride))
+                /** The list of allow overrides applied to the prompt */
+                fun allowOverrides(allowOverrides: List<String>) =
+                    allowOverrides(JsonField.of(allowOverrides))
 
                 /**
-                 * Sets [Builder.allowOverride] to an arbitrary JSON value.
+                 * Sets [Builder.allowOverrides] to an arbitrary JSON value.
                  *
-                 * You should usually call [Builder.allowOverride] with a well-typed [String] value
-                 * instead. This method is primarily for setting the field to an undocumented or not
-                 * yet supported value.
+                 * You should usually call [Builder.allowOverrides] with a well-typed `List<String>`
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
                  */
-                fun allowOverride(allowOverride: JsonField<String>) = apply {
-                    this.allowOverride = allowOverride
+                fun allowOverrides(allowOverrides: JsonField<List<String>>) = apply {
+                    this.allowOverrides = allowOverrides.map { it.toMutableList() }
                 }
 
-                /** The block override applied to the prompt */
-                fun blockOverride(blockOverride: String) =
-                    blockOverride(JsonField.of(blockOverride))
+                /**
+                 * Adds a single [String] to [allowOverrides].
+                 *
+                 * @throws IllegalStateException if the field was previously set to a non-list.
+                 */
+                fun addAllowOverride(allowOverride: String) = apply {
+                    allowOverrides =
+                        (allowOverrides ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("allowOverrides", it).add(allowOverride)
+                        }
+                }
+
+                /** Appeal details for the prompt injection decision, if any */
+                fun appeal(appeal: JsonValue) = apply { this.appeal = appeal }
+
+                /** The list of block overrides applied to the prompt */
+                fun blockOverrides(blockOverrides: List<String>) =
+                    blockOverrides(JsonField.of(blockOverrides))
 
                 /**
-                 * Sets [Builder.blockOverride] to an arbitrary JSON value.
+                 * Sets [Builder.blockOverrides] to an arbitrary JSON value.
                  *
-                 * You should usually call [Builder.blockOverride] with a well-typed [String] value
-                 * instead. This method is primarily for setting the field to an undocumented or not
-                 * yet supported value.
+                 * You should usually call [Builder.blockOverrides] with a well-typed `List<String>`
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
                  */
-                fun blockOverride(blockOverride: JsonField<String>) = apply {
-                    this.blockOverride = blockOverride
+                fun blockOverrides(blockOverrides: JsonField<List<String>>) = apply {
+                    this.blockOverrides = blockOverrides.map { it.toMutableList() }
+                }
+
+                /**
+                 * Adds a single [String] to [blockOverrides].
+                 *
+                 * @throws IllegalStateException if the field was previously set to a non-list.
+                 */
+                fun addBlockOverride(blockOverride: String) = apply {
+                    blockOverrides =
+                        (blockOverrides ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("blockOverrides", it).add(blockOverride)
+                        }
                 }
 
                 /** The time in milliseconds it took to process the prompt injection classifier */
@@ -7493,8 +7540,9 @@ private constructor(
                  */
                 fun build(): PromptInjectionClassifierResult =
                     PromptInjectionClassifierResult(
-                        allowOverride,
-                        blockOverride,
+                        (allowOverrides ?: JsonMissing.of()).map { it.toImmutable() },
+                        appeal,
+                        (blockOverrides ?: JsonMissing.of()).map { it.toImmutable() },
                         elapsedMs,
                         (probabilities ?: JsonMissing.of()).map { it.toImmutable() },
                         verdict,
@@ -7520,8 +7568,8 @@ private constructor(
                     return@apply
                 }
 
-                allowOverride()
-                blockOverride()
+                allowOverrides()
+                blockOverrides()
                 elapsedMs()
                 probabilities()
                 verdict()
@@ -7545,8 +7593,8 @@ private constructor(
              */
             @JvmSynthetic
             internal fun validity(): Int =
-                (if (allowOverride.asKnown().isPresent) 1 else 0) +
-                    (if (blockOverride.asKnown().isPresent) 1 else 0) +
+                (allowOverrides.asKnown().getOrNull()?.size ?: 0) +
+                    (blockOverrides.asKnown().getOrNull()?.size ?: 0) +
                     (if (elapsedMs.asKnown().isPresent) 1 else 0) +
                     (probabilities.asKnown().getOrNull()?.size ?: 0) +
                     (if (verdict.asKnown().isPresent) 1 else 0) +
@@ -7558,8 +7606,9 @@ private constructor(
                 }
 
                 return other is PromptInjectionClassifierResult &&
-                    allowOverride == other.allowOverride &&
-                    blockOverride == other.blockOverride &&
+                    allowOverrides == other.allowOverrides &&
+                    appeal == other.appeal &&
+                    blockOverrides == other.blockOverrides &&
                     elapsedMs == other.elapsedMs &&
                     probabilities == other.probabilities &&
                     verdict == other.verdict &&
@@ -7569,8 +7618,9 @@ private constructor(
 
             private val hashCode: Int by lazy {
                 Objects.hash(
-                    allowOverride,
-                    blockOverride,
+                    allowOverrides,
+                    appeal,
+                    blockOverrides,
                     elapsedMs,
                     probabilities,
                     verdict,
@@ -7582,7 +7632,7 @@ private constructor(
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "PromptInjectionClassifierResult{allowOverride=$allowOverride, blockOverride=$blockOverride, elapsedMs=$elapsedMs, probabilities=$probabilities, verdict=$verdict, version=$version, additionalProperties=$additionalProperties}"
+                "PromptInjectionClassifierResult{allowOverrides=$allowOverrides, appeal=$appeal, blockOverrides=$blockOverrides, elapsedMs=$elapsedMs, probabilities=$probabilities, verdict=$verdict, version=$version, additionalProperties=$additionalProperties}"
         }
 
         override fun equals(other: Any?): Boolean {

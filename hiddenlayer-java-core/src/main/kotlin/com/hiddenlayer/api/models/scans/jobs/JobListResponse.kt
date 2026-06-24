@@ -1054,6 +1054,7 @@ private constructor(
             private val modelName: JsonField<String>,
             private val modelVersionId: JsonField<String>,
             private val requestedScanLocation: JsonField<String>,
+            private val assetId: JsonField<String>,
             private val assetRegion: JsonField<String>,
             private val fileLocation: JsonField<String>,
             private val modelSource: JsonField<String>,
@@ -1079,6 +1080,9 @@ private constructor(
                 @JsonProperty("requested_scan_location")
                 @ExcludeMissing
                 requestedScanLocation: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("asset_id")
+                @ExcludeMissing
+                assetId: JsonField<String> = JsonMissing.of(),
                 @JsonProperty("asset_region")
                 @ExcludeMissing
                 assetRegion: JsonField<String> = JsonMissing.of(),
@@ -1108,6 +1112,7 @@ private constructor(
                 modelName,
                 modelVersionId,
                 requestedScanLocation,
+                assetId,
                 assetRegion,
                 fileLocation,
                 modelSource,
@@ -1155,6 +1160,14 @@ private constructor(
              */
             fun requestedScanLocation(): String =
                 requestedScanLocation.getRequired("requested_scan_location")
+
+            /**
+             * Identifier of discovered asset
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun assetId(): Optional<String> = assetId.getOptional("asset_id")
 
             /**
              * Region of discovered asset
@@ -1257,6 +1270,13 @@ private constructor(
             @JsonProperty("requested_scan_location")
             @ExcludeMissing
             fun _requestedScanLocation(): JsonField<String> = requestedScanLocation
+
+            /**
+             * Returns the raw JSON value of [assetId].
+             *
+             * Unlike [assetId], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("asset_id") @ExcludeMissing fun _assetId(): JsonField<String> = assetId
 
             /**
              * Returns the raw JSON value of [assetRegion].
@@ -1370,6 +1390,7 @@ private constructor(
                 private var modelName: JsonField<String>? = null
                 private var modelVersionId: JsonField<String>? = null
                 private var requestedScanLocation: JsonField<String>? = null
+                private var assetId: JsonField<String> = JsonMissing.of()
                 private var assetRegion: JsonField<String> = JsonMissing.of()
                 private var fileLocation: JsonField<String> = JsonMissing.of()
                 private var modelSource: JsonField<String> = JsonMissing.of()
@@ -1386,6 +1407,7 @@ private constructor(
                     modelName = inventory.modelName
                     modelVersionId = inventory.modelVersionId
                     requestedScanLocation = inventory.requestedScanLocation
+                    assetId = inventory.assetId
                     assetRegion = inventory.assetRegion
                     fileLocation = inventory.fileLocation
                     modelSource = inventory.modelSource
@@ -1450,6 +1472,18 @@ private constructor(
                 fun requestedScanLocation(requestedScanLocation: JsonField<String>) = apply {
                     this.requestedScanLocation = requestedScanLocation
                 }
+
+                /** Identifier of discovered asset */
+                fun assetId(assetId: String) = assetId(JsonField.of(assetId))
+
+                /**
+                 * Sets [Builder.assetId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.assetId] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun assetId(assetId: JsonField<String>) = apply { this.assetId = assetId }
 
                 /** Region of discovered asset */
                 fun assetRegion(assetRegion: String) = assetRegion(JsonField.of(assetRegion))
@@ -1608,6 +1642,7 @@ private constructor(
                         checkRequired("modelName", modelName),
                         checkRequired("modelVersionId", modelVersionId),
                         checkRequired("requestedScanLocation", requestedScanLocation),
+                        assetId,
                         assetRegion,
                         fileLocation,
                         modelSource,
@@ -1641,6 +1676,7 @@ private constructor(
                 modelName()
                 modelVersionId()
                 requestedScanLocation()
+                assetId()
                 assetRegion()
                 fileLocation()
                 modelSource()
@@ -1672,6 +1708,7 @@ private constructor(
                     (if (modelName.asKnown().isPresent) 1 else 0) +
                     (if (modelVersionId.asKnown().isPresent) 1 else 0) +
                     (if (requestedScanLocation.asKnown().isPresent) 1 else 0) +
+                    (if (assetId.asKnown().isPresent) 1 else 0) +
                     (if (assetRegion.asKnown().isPresent) 1 else 0) +
                     (if (fileLocation.asKnown().isPresent) 1 else 0) +
                     (if (modelSource.asKnown().isPresent) 1 else 0) +
@@ -2335,6 +2372,7 @@ private constructor(
                     modelName == other.modelName &&
                     modelVersionId == other.modelVersionId &&
                     requestedScanLocation == other.requestedScanLocation &&
+                    assetId == other.assetId &&
                     assetRegion == other.assetRegion &&
                     fileLocation == other.fileLocation &&
                     modelSource == other.modelSource &&
@@ -2352,6 +2390,7 @@ private constructor(
                     modelName,
                     modelVersionId,
                     requestedScanLocation,
+                    assetId,
                     assetRegion,
                     fileLocation,
                     modelSource,
@@ -2367,7 +2406,7 @@ private constructor(
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "Inventory{modelId=$modelId, modelName=$modelName, modelVersionId=$modelVersionId, requestedScanLocation=$requestedScanLocation, assetRegion=$assetRegion, fileLocation=$fileLocation, modelSource=$modelSource, modelVersion=$modelVersion, origin=$origin, providerDetails=$providerDetails, requestSource=$requestSource, requestingEntity=$requestingEntity, additionalProperties=$additionalProperties}"
+                "Inventory{modelId=$modelId, modelName=$modelName, modelVersionId=$modelVersionId, requestedScanLocation=$requestedScanLocation, assetId=$assetId, assetRegion=$assetRegion, fileLocation=$fileLocation, modelSource=$modelSource, modelVersion=$modelVersion, origin=$origin, providerDetails=$providerDetails, requestSource=$requestSource, requestingEntity=$requestingEntity, additionalProperties=$additionalProperties}"
         }
 
         /** status of the scan */
@@ -2531,6 +2570,8 @@ private constructor(
         class Summary
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
+            private val advisoryCategories: JsonField<List<String>>,
+            private val advisoryCount: JsonField<Long>,
             private val detectionCategories: JsonField<List<String>>,
             private val detectionCount: JsonField<Long>,
             private val fileCount: JsonField<Long>,
@@ -2544,6 +2585,12 @@ private constructor(
 
             @JsonCreator
             private constructor(
+                @JsonProperty("advisory_categories")
+                @ExcludeMissing
+                advisoryCategories: JsonField<List<String>> = JsonMissing.of(),
+                @JsonProperty("advisory_count")
+                @ExcludeMissing
+                advisoryCount: JsonField<Long> = JsonMissing.of(),
                 @JsonProperty("detection_categories")
                 @ExcludeMissing
                 detectionCategories: JsonField<List<String>> = JsonMissing.of(),
@@ -2569,6 +2616,8 @@ private constructor(
                 @ExcludeMissing
                 unknownFiles: JsonField<Long> = JsonMissing.of(),
             ) : this(
+                advisoryCategories,
+                advisoryCount,
                 detectionCategories,
                 detectionCount,
                 fileCount,
@@ -2579,6 +2628,23 @@ private constructor(
                 unknownFiles,
                 mutableMapOf(),
             )
+
+            /**
+             * list of unique advisory categories found
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun advisoryCategories(): Optional<List<String>> =
+                advisoryCategories.getOptional("advisory_categories")
+
+            /**
+             * total number of advisories found
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun advisoryCount(): Optional<Long> = advisoryCount.getOptional("advisory_count")
 
             /**
              * list of unique detection categories found
@@ -2649,6 +2715,26 @@ private constructor(
              *   (e.g. if the server responded with an unexpected value).
              */
             fun unknownFiles(): Optional<Long> = unknownFiles.getOptional("unknown_files")
+
+            /**
+             * Returns the raw JSON value of [advisoryCategories].
+             *
+             * Unlike [advisoryCategories], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
+            @JsonProperty("advisory_categories")
+            @ExcludeMissing
+            fun _advisoryCategories(): JsonField<List<String>> = advisoryCategories
+
+            /**
+             * Returns the raw JSON value of [advisoryCount].
+             *
+             * Unlike [advisoryCount], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("advisory_count")
+            @ExcludeMissing
+            fun _advisoryCount(): JsonField<Long> = advisoryCount
 
             /**
              * Returns the raw JSON value of [detectionCategories].
@@ -2752,6 +2838,8 @@ private constructor(
             /** A builder for [Summary]. */
             class Builder internal constructor() {
 
+                private var advisoryCategories: JsonField<MutableList<String>>? = null
+                private var advisoryCount: JsonField<Long> = JsonMissing.of()
                 private var detectionCategories: JsonField<MutableList<String>>? = null
                 private var detectionCount: JsonField<Long> = JsonMissing.of()
                 private var fileCount: JsonField<Long> = JsonMissing.of()
@@ -2764,6 +2852,8 @@ private constructor(
 
                 @JvmSynthetic
                 internal fun from(summary: Summary) = apply {
+                    advisoryCategories = summary.advisoryCategories.map { it.toMutableList() }
+                    advisoryCount = summary.advisoryCount
                     detectionCategories = summary.detectionCategories.map { it.toMutableList() }
                     detectionCount = summary.detectionCount
                     fileCount = summary.fileCount
@@ -2773,6 +2863,47 @@ private constructor(
                     severity = summary.severity
                     unknownFiles = summary.unknownFiles
                     additionalProperties = summary.additionalProperties.toMutableMap()
+                }
+
+                /** list of unique advisory categories found */
+                fun advisoryCategories(advisoryCategories: List<String>) =
+                    advisoryCategories(JsonField.of(advisoryCategories))
+
+                /**
+                 * Sets [Builder.advisoryCategories] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.advisoryCategories] with a well-typed
+                 * `List<String>` value instead. This method is primarily for setting the field to
+                 * an undocumented or not yet supported value.
+                 */
+                fun advisoryCategories(advisoryCategories: JsonField<List<String>>) = apply {
+                    this.advisoryCategories = advisoryCategories.map { it.toMutableList() }
+                }
+
+                /**
+                 * Adds a single [String] to [advisoryCategories].
+                 *
+                 * @throws IllegalStateException if the field was previously set to a non-list.
+                 */
+                fun addAdvisoryCategory(advisoryCategory: String) = apply {
+                    advisoryCategories =
+                        (advisoryCategories ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("advisoryCategories", it).add(advisoryCategory)
+                        }
+                }
+
+                /** total number of advisories found */
+                fun advisoryCount(advisoryCount: Long) = advisoryCount(JsonField.of(advisoryCount))
+
+                /**
+                 * Sets [Builder.advisoryCount] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.advisoryCount] with a well-typed [Long] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun advisoryCount(advisoryCount: JsonField<Long>) = apply {
+                    this.advisoryCount = advisoryCount
                 }
 
                 /** list of unique detection categories found */
@@ -2934,6 +3065,8 @@ private constructor(
                  */
                 fun build(): Summary =
                     Summary(
+                        (advisoryCategories ?: JsonMissing.of()).map { it.toImmutable() },
+                        advisoryCount,
                         (detectionCategories ?: JsonMissing.of()).map { it.toImmutable() },
                         detectionCount,
                         fileCount,
@@ -2963,6 +3096,8 @@ private constructor(
                     return@apply
                 }
 
+                advisoryCategories()
+                advisoryCount()
                 detectionCategories()
                 detectionCount()
                 fileCount()
@@ -2990,7 +3125,9 @@ private constructor(
              */
             @JvmSynthetic
             internal fun validity(): Int =
-                (detectionCategories.asKnown().getOrNull()?.size ?: 0) +
+                (advisoryCategories.asKnown().getOrNull()?.size ?: 0) +
+                    (if (advisoryCount.asKnown().isPresent) 1 else 0) +
+                    (detectionCategories.asKnown().getOrNull()?.size ?: 0) +
                     (if (detectionCount.asKnown().isPresent) 1 else 0) +
                     (if (fileCount.asKnown().isPresent) 1 else 0) +
                     (if (filesFailedToScan.asKnown().isPresent) 1 else 0) +
@@ -3345,6 +3482,8 @@ private constructor(
                 }
 
                 return other is Summary &&
+                    advisoryCategories == other.advisoryCategories &&
+                    advisoryCount == other.advisoryCount &&
                     detectionCategories == other.detectionCategories &&
                     detectionCount == other.detectionCount &&
                     fileCount == other.fileCount &&
@@ -3358,6 +3497,8 @@ private constructor(
 
             private val hashCode: Int by lazy {
                 Objects.hash(
+                    advisoryCategories,
+                    advisoryCount,
                     detectionCategories,
                     detectionCount,
                     fileCount,
@@ -3373,7 +3514,7 @@ private constructor(
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "Summary{detectionCategories=$detectionCategories, detectionCount=$detectionCount, fileCount=$fileCount, filesFailedToScan=$filesFailedToScan, filesWithDetectionsCount=$filesWithDetectionsCount, highestSeverity=$highestSeverity, severity=$severity, unknownFiles=$unknownFiles, additionalProperties=$additionalProperties}"
+                "Summary{advisoryCategories=$advisoryCategories, advisoryCount=$advisoryCount, detectionCategories=$detectionCategories, detectionCount=$detectionCount, fileCount=$fileCount, filesFailedToScan=$filesFailedToScan, filesWithDetectionsCount=$filesWithDetectionsCount, highestSeverity=$highestSeverity, severity=$severity, unknownFiles=$unknownFiles, additionalProperties=$additionalProperties}"
         }
 
         class Compliance

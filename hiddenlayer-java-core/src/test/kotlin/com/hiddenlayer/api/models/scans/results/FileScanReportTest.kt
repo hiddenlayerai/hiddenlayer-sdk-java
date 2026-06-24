@@ -79,6 +79,16 @@ internal class FileScanReportTest {
                         .seen(OffsetDateTime.parse("2024-10-22T17:59:12.431Z"))
                         .startTime(OffsetDateTime.parse("2024-10-16T23:38:32.278Z"))
                         .status(FileScanReport.FileResult.Status.SKIPPED)
+                        .addAdvisory(
+                            FileScanReport.FileResult.Advisory.builder()
+                                .advisoryId("00000000-0000-0000-0000-000000000000")
+                                .category("TokenBreak")
+                                .description(
+                                    "Models using the BPE and WordPiece tokenization strategies are vulnerable to TokenBreak"
+                                )
+                                .ruleId("SAFETENSORS_0001_202512")
+                                .build()
+                        )
                         .addFileError("File not found")
                         .build()
                 )
@@ -148,6 +158,16 @@ internal class FileScanReportTest {
                     .seen(OffsetDateTime.parse("2024-10-22T17:59:12.431Z"))
                     .startTime(OffsetDateTime.parse("2024-10-16T23:38:32.278Z"))
                     .status(FileScanReport.FileResult.Status.SKIPPED)
+                    .addAdvisory(
+                        FileScanReport.FileResult.Advisory.builder()
+                            .advisoryId("00000000-0000-0000-0000-000000000000")
+                            .category("TokenBreak")
+                            .description(
+                                "Models using the BPE and WordPiece tokenization strategies are vulnerable to TokenBreak"
+                            )
+                            .ruleId("SAFETENSORS_0001_202512")
+                            .build()
+                    )
                     .addFileError("File not found")
                     .build()
             )
@@ -222,6 +242,16 @@ internal class FileScanReportTest {
                         .seen(OffsetDateTime.parse("2024-10-22T17:59:12.431Z"))
                         .startTime(OffsetDateTime.parse("2024-10-16T23:38:32.278Z"))
                         .status(FileScanReport.FileResult.Status.SKIPPED)
+                        .addAdvisory(
+                            FileScanReport.FileResult.Advisory.builder()
+                                .advisoryId("00000000-0000-0000-0000-000000000000")
+                                .category("TokenBreak")
+                                .description(
+                                    "Models using the BPE and WordPiece tokenization strategies are vulnerable to TokenBreak"
+                                )
+                                .ruleId("SAFETENSORS_0001_202512")
+                                .build()
+                        )
                         .addFileError("File not found")
                         .build()
                 )
