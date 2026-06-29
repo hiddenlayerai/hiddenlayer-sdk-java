@@ -1,0 +1,70 @@
+name: "Publish hiddenlayer Java SDK to JFrog"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "hidden-layer-java*/**"
+      - "build.gradle.kts"
+      - "gradle.properties"
+      - "buildSrc/**"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
+
+      - name: Check current version
+        id: version-check
+        env:
+          JFROG_USER: ${{ secrets.JFROG_USER || vars.JFROG_USER }}
+          JFROG_TOKEN: ${{ secrets.JFROG_TOKEN }}
+        run: |
+          set -euo pipefail
+          
+          # Extract current version from build.gradle.kts
+          CURRENT_VERSION=$(grep -E 'version = ".*"' build.gradle.kts | sed -E 's/.*version = "(.*)".*/\1/')
+          echo "Current version: $CURRENT_VERSION"
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          
+          # Check if this version already exists in JFrog
+          GROUP_PATH="com/hiddenlayer_sdk/api"
+          ARTIFACT_NAME="hidden-layer-java-core"
+          JFROG_URL="https://hiddenlayer.jfrog.io/artifactory/internal-java-sdk/$GROUP_PATH/$ARTIFACT_NAME/$CURRENT_VERSION/"
+          
+          if curl -s -f -u "$JFROG_USER:$JFROG_TOKEN" "$JFROG_URL" > /dev/null 2>&1; then
+            echo "Version $CURRENT_VERSION already exists in JFrog."
+            echo "should_publish=false" >> $GITHUB_OUTPUT
+          else
+            echo "Version $CURRENT_VERSION is new."
+            echo "should_publish=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish to JFrog
+        if: steps.version-check.outputs.should_publish == 'true'
+        env:
+          JFROG_USER: ${{ secrets.JFROG_USER || vars.JFROG_USER }}
+          JFROG_TOKEN: ${{ secrets.JFROG_TOKEN }}
+        run: |
+          echo "Publishing version ${{ steps.version-check.outputs.current_version }} to JFrog..."
+          bash ./bin/publish-jfrog
+
+      - name: Skip publishing
+        if: steps.version-check.outputs.should_publish == 'false'
+        run: |
+          echo "Skipping publication - version ${{ steps.version-check.outputs.current_version }} already exists in JFrog"
