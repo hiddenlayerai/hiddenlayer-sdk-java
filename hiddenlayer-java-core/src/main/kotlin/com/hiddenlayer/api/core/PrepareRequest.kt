@@ -3,16 +3,19 @@
 package com.hiddenlayer.api.core
 
 import com.hiddenlayer.api.core.http.HttpRequest
+import com.hiddenlayer.api.lib.BetaWarning
 import java.util.concurrent.CompletableFuture
 
 @JvmSynthetic
-internal fun HttpRequest.prepare(clientOptions: ClientOptions, params: Params): HttpRequest =
-    toBuilder()
+internal fun HttpRequest.prepare(clientOptions: ClientOptions, params: Params): HttpRequest {
+    BetaWarning.checkBetaEndpoint(pathSegments)
+    return toBuilder()
         .putAllQueryParams(clientOptions.queryParams)
         .replaceAllQueryParams(params._queryParams())
         .putAllHeaders(clientOptions.headers)
         .replaceAllHeaders(params._headers())
         .build()
+}
 
 @JvmSynthetic
 internal fun HttpRequest.prepareAsync(
