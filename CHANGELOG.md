@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.4.0 (2026-06-30)
+
+Full Changelog: [v2.3.0...v2.4.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.3.0...v2.4.0)
+
+### Features
+
+* **api:** api update ([eaaf9c6](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/eaaf9c6cef86f874fc5a726a3414ea51e54660fe))
+
+
+### Bug Fixes
+
+* replace @BetaApi annotation patching with runtime beta warnings ([#108](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/108)) ([e6a7b77](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/e6a7b779c6c783f6b5d389afb8b671729f2bfc50))
+
 ## 2.3.0 (2026-06-24)
 
 Full Changelog: [v2.2.0...v2.3.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.2.0...v2.3.0)
