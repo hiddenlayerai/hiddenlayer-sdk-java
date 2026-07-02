@@ -8,7 +8,8 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":hiddenlayer-java"))
+    implementation(project(":hiddenlayer-java-core"))
+    implementation(project(":hiddenlayer-java-client-okhttp"))
 }
 
 tasks.withType<JavaCompile>().configureEach {
