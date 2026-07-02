@@ -989,6 +989,8 @@ private constructor(
 
             @JvmField val SUSPICIOUS = of("SUSPICIOUS")
 
+            @JvmField val UNKNOWN_LEGACY = of("UNKNOWN")
+
             @JvmField val ERROR = of("ERROR")
 
             @JvmField val CRITICAL = of("critical")
@@ -1011,6 +1013,7 @@ private constructor(
             SAFE,
             UNSAFE,
             SUSPICIOUS,
+            UNKNOWN_LEGACY,
             ERROR,
             CRITICAL,
             HIGH,
@@ -1033,6 +1036,7 @@ private constructor(
             SAFE,
             UNSAFE,
             SUSPICIOUS,
+            UNKNOWN_LEGACY,
             ERROR,
             CRITICAL,
             HIGH,
@@ -1059,6 +1063,7 @@ private constructor(
                 SAFE -> Value.SAFE
                 UNSAFE -> Value.UNSAFE
                 SUSPICIOUS -> Value.SUSPICIOUS
+                UNKNOWN_LEGACY -> Value.UNKNOWN_LEGACY
                 ERROR -> Value.ERROR
                 CRITICAL -> Value.CRITICAL
                 HIGH -> Value.HIGH
@@ -1083,6 +1088,7 @@ private constructor(
                 SAFE -> Known.SAFE
                 UNSAFE -> Known.UNSAFE
                 SUSPICIOUS -> Known.SUSPICIOUS
+                UNKNOWN_LEGACY -> Known.UNKNOWN_LEGACY
                 ERROR -> Known.ERROR
                 CRITICAL -> Known.CRITICAL
                 HIGH -> Known.HIGH
