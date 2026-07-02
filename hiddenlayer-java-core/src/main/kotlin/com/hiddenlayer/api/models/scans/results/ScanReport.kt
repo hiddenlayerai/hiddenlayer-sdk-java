@@ -2352,6 +2352,7 @@ private constructor(
         private val filesFailedToScan: JsonField<Long>,
         private val filesWithDetectionsCount: JsonField<Long>,
         private val highestSeverity: JsonField<HighestSeverity>,
+        private val mitreAtlas: JsonField<List<MitreAtlas>>,
         private val severity: JsonField<Severity>,
         private val unknownFiles: JsonField<Long>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -2383,6 +2384,9 @@ private constructor(
             @JsonProperty("highest_severity")
             @ExcludeMissing
             highestSeverity: JsonField<HighestSeverity> = JsonMissing.of(),
+            @JsonProperty("mitre_atlas")
+            @ExcludeMissing
+            mitreAtlas: JsonField<List<MitreAtlas>> = JsonMissing.of(),
             @JsonProperty("severity")
             @ExcludeMissing
             severity: JsonField<Severity> = JsonMissing.of(),
@@ -2398,6 +2402,7 @@ private constructor(
             filesFailedToScan,
             filesWithDetectionsCount,
             highestSeverity,
+            mitreAtlas,
             severity,
             unknownFiles,
             mutableMapOf(),
@@ -2471,6 +2476,14 @@ private constructor(
          */
         fun highestSeverity(): Optional<HighestSeverity> =
             highestSeverity.getOptional("highest_severity")
+
+        /**
+         * deduped list of MITRE Atlas tactic/technique pairs across all detections in the scan
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun mitreAtlas(): Optional<List<MitreAtlas>> = mitreAtlas.getOptional("mitre_atlas")
 
         /**
          * The highest severity of any detections on the scan, including "safe". Use
@@ -2568,6 +2581,15 @@ private constructor(
         fun _highestSeverity(): JsonField<HighestSeverity> = highestSeverity
 
         /**
+         * Returns the raw JSON value of [mitreAtlas].
+         *
+         * Unlike [mitreAtlas], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("mitre_atlas")
+        @ExcludeMissing
+        fun _mitreAtlas(): JsonField<List<MitreAtlas>> = mitreAtlas
+
+        /**
          * Returns the raw JSON value of [severity].
          *
          * Unlike [severity], this method doesn't throw if the JSON field has an unexpected type.
@@ -2616,6 +2638,7 @@ private constructor(
             private var filesFailedToScan: JsonField<Long> = JsonMissing.of()
             private var filesWithDetectionsCount: JsonField<Long> = JsonMissing.of()
             private var highestSeverity: JsonField<HighestSeverity> = JsonMissing.of()
+            private var mitreAtlas: JsonField<MutableList<MitreAtlas>>? = null
             private var severity: JsonField<Severity> = JsonMissing.of()
             private var unknownFiles: JsonField<Long> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -2630,6 +2653,7 @@ private constructor(
                 filesFailedToScan = summary.filesFailedToScan
                 filesWithDetectionsCount = summary.filesWithDetectionsCount
                 highestSeverity = summary.highestSeverity
+                mitreAtlas = summary.mitreAtlas.map { it.toMutableList() }
                 severity = summary.severity
                 unknownFiles = summary.unknownFiles
                 additionalProperties = summary.additionalProperties.toMutableMap()
@@ -2775,6 +2799,34 @@ private constructor(
             }
 
             /**
+             * deduped list of MITRE Atlas tactic/technique pairs across all detections in the scan
+             */
+            fun mitreAtlas(mitreAtlas: List<MitreAtlas>) = mitreAtlas(JsonField.of(mitreAtlas))
+
+            /**
+             * Sets [Builder.mitreAtlas] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.mitreAtlas] with a well-typed `List<MitreAtlas>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun mitreAtlas(mitreAtlas: JsonField<List<MitreAtlas>>) = apply {
+                this.mitreAtlas = mitreAtlas.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [MitreAtlas] to [Builder.mitreAtlas].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addMitreAtlas(mitreAtlas: MitreAtlas) = apply {
+                this.mitreAtlas =
+                    (this.mitreAtlas ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("mitreAtlas", it).add(mitreAtlas)
+                    }
+            }
+
+            /**
              * The highest severity of any detections on the scan, including "safe". Use
              * `.summary.highest_severity` instead.
              */
@@ -2839,6 +2891,7 @@ private constructor(
                     filesFailedToScan,
                     filesWithDetectionsCount,
                     highestSeverity,
+                    (mitreAtlas ?: JsonMissing.of()).map { it.toImmutable() },
                     severity,
                     unknownFiles,
                     additionalProperties.toMutableMap(),
@@ -2869,6 +2922,7 @@ private constructor(
             filesFailedToScan()
             filesWithDetectionsCount()
             highestSeverity().ifPresent { it.validate() }
+            mitreAtlas().ifPresent { it.forEach { it.validate() } }
             severity().ifPresent { it.validate() }
             unknownFiles()
             validated = true
@@ -2898,6 +2952,7 @@ private constructor(
                 (if (filesFailedToScan.asKnown().isPresent) 1 else 0) +
                 (if (filesWithDetectionsCount.asKnown().isPresent) 1 else 0) +
                 (highestSeverity.asKnown().getOrNull()?.validity() ?: 0) +
+                (mitreAtlas.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                 (severity.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (unknownFiles.asKnown().isPresent) 1 else 0)
 
@@ -3066,6 +3121,206 @@ private constructor(
             override fun hashCode() = value.hashCode()
 
             override fun toString() = value.toString()
+        }
+
+        class MitreAtlas
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+        private constructor(
+            private val tactic: JsonField<String>,
+            private val technique: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("tactic")
+                @ExcludeMissing
+                tactic: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("technique")
+                @ExcludeMissing
+                technique: JsonField<String> = JsonMissing.of(),
+            ) : this(tactic, technique, mutableMapOf())
+
+            /**
+             * MITRE Atlas Tactic
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun tactic(): Optional<String> = tactic.getOptional("tactic")
+
+            /**
+             * MITRE Atlas Technique
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun technique(): Optional<String> = technique.getOptional("technique")
+
+            /**
+             * Returns the raw JSON value of [tactic].
+             *
+             * Unlike [tactic], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("tactic") @ExcludeMissing fun _tactic(): JsonField<String> = tactic
+
+            /**
+             * Returns the raw JSON value of [technique].
+             *
+             * Unlike [technique], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("technique")
+            @ExcludeMissing
+            fun _technique(): JsonField<String> = technique
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /** Returns a mutable builder for constructing an instance of [MitreAtlas]. */
+                @JvmStatic fun builder() = Builder()
+            }
+
+            /** A builder for [MitreAtlas]. */
+            class Builder internal constructor() {
+
+                private var tactic: JsonField<String> = JsonMissing.of()
+                private var technique: JsonField<String> = JsonMissing.of()
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(mitreAtlas: MitreAtlas) = apply {
+                    tactic = mitreAtlas.tactic
+                    technique = mitreAtlas.technique
+                    additionalProperties = mitreAtlas.additionalProperties.toMutableMap()
+                }
+
+                /** MITRE Atlas Tactic */
+                fun tactic(tactic: String) = tactic(JsonField.of(tactic))
+
+                /**
+                 * Sets [Builder.tactic] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.tactic] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun tactic(tactic: JsonField<String>) = apply { this.tactic = tactic }
+
+                /** MITRE Atlas Technique */
+                fun technique(technique: String) = technique(JsonField.of(technique))
+
+                /**
+                 * Sets [Builder.technique] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.technique] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun technique(technique: JsonField<String>) = apply { this.technique = technique }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [MitreAtlas].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
+                fun build(): MitreAtlas =
+                    MitreAtlas(tactic, technique, additionalProperties.toMutableMap())
+            }
+
+            private var validated: Boolean = false
+
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
+            fun validate(): MitreAtlas = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                tactic()
+                technique()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: HiddenLayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (if (tactic.asKnown().isPresent) 1 else 0) +
+                    (if (technique.asKnown().isPresent) 1 else 0)
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is MitreAtlas &&
+                    tactic == other.tactic &&
+                    technique == other.technique &&
+                    additionalProperties == other.additionalProperties
+            }
+
+            private val hashCode: Int by lazy {
+                Objects.hash(tactic, technique, additionalProperties)
+            }
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "MitreAtlas{tactic=$tactic, technique=$technique, additionalProperties=$additionalProperties}"
         }
 
         /**
@@ -3251,6 +3506,7 @@ private constructor(
                 filesFailedToScan == other.filesFailedToScan &&
                 filesWithDetectionsCount == other.filesWithDetectionsCount &&
                 highestSeverity == other.highestSeverity &&
+                mitreAtlas == other.mitreAtlas &&
                 severity == other.severity &&
                 unknownFiles == other.unknownFiles &&
                 additionalProperties == other.additionalProperties
@@ -3266,6 +3522,7 @@ private constructor(
                 filesFailedToScan,
                 filesWithDetectionsCount,
                 highestSeverity,
+                mitreAtlas,
                 severity,
                 unknownFiles,
                 additionalProperties,
@@ -3275,7 +3532,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Summary{advisoryCategories=$advisoryCategories, advisoryCount=$advisoryCount, detectionCategories=$detectionCategories, detectionCount=$detectionCount, fileCount=$fileCount, filesFailedToScan=$filesFailedToScan, filesWithDetectionsCount=$filesWithDetectionsCount, highestSeverity=$highestSeverity, severity=$severity, unknownFiles=$unknownFiles, additionalProperties=$additionalProperties}"
+            "Summary{advisoryCategories=$advisoryCategories, advisoryCount=$advisoryCount, detectionCategories=$detectionCategories, detectionCount=$detectionCount, fileCount=$fileCount, filesFailedToScan=$filesFailedToScan, filesWithDetectionsCount=$filesWithDetectionsCount, highestSeverity=$highestSeverity, mitreAtlas=$mitreAtlas, severity=$severity, unknownFiles=$unknownFiles, additionalProperties=$additionalProperties}"
     }
 
     class Compliance
