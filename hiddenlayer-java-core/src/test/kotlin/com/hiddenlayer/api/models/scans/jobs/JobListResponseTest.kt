@@ -67,6 +67,12 @@ internal class JobListResponseTest {
                                 .highestSeverity(
                                     JobListResponse.Item.Summary.HighestSeverity.CRITICAL
                                 )
+                                .addMitreAtlas(
+                                    JobListResponse.Item.Summary.MitreAtlas.builder()
+                                        .tactic("AML.TA0001")
+                                        .technique("AML.T0003.45")
+                                        .build()
+                                )
                                 .severity(JobListResponse.Item.Summary.Severity.CRITICAL)
                                 .unknownFiles(0L)
                                 .build()
@@ -141,6 +147,12 @@ internal class JobListResponseTest {
                             .filesFailedToScan(0L)
                             .filesWithDetectionsCount(0L)
                             .highestSeverity(JobListResponse.Item.Summary.HighestSeverity.CRITICAL)
+                            .addMitreAtlas(
+                                JobListResponse.Item.Summary.MitreAtlas.builder()
+                                    .tactic("AML.TA0001")
+                                    .technique("AML.T0003.45")
+                                    .build()
+                            )
                             .severity(JobListResponse.Item.Summary.Severity.CRITICAL)
                             .unknownFiles(0L)
                             .build()
@@ -222,6 +234,12 @@ internal class JobListResponseTest {
                                 .filesWithDetectionsCount(0L)
                                 .highestSeverity(
                                     JobListResponse.Item.Summary.HighestSeverity.CRITICAL
+                                )
+                                .addMitreAtlas(
+                                    JobListResponse.Item.Summary.MitreAtlas.builder()
+                                        .tactic("AML.TA0001")
+                                        .technique("AML.T0003.45")
+                                        .build()
                                 )
                                 .severity(JobListResponse.Item.Summary.Severity.CRITICAL)
                                 .unknownFiles(0L)
