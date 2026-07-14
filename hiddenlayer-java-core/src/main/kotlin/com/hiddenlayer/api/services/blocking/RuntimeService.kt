@@ -6,7 +6,6 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.core.RequestOptions
 import com.hiddenlayer.api.core.http.HttpResponseFor
-import com.hiddenlayer.api.lib.BetaApi
 import com.hiddenlayer.api.models.runtime.RuntimeEvaluateInteractionParams
 import com.hiddenlayer.api.models.runtime.RuntimeEvaluateInteractionResponse
 import com.hiddenlayer.api.models.runtime.RuntimeEvaluateRequestParams
@@ -57,13 +56,11 @@ interface RuntimeService {
      * request/response payloads returned in the same provider format), use the request-evaluations
      * and response-evaluations endpoints instead.
      */
-    @BetaApi
     fun evaluateInteraction(
         params: RuntimeEvaluateInteractionParams
     ): RuntimeEvaluateInteractionResponse = evaluateInteraction(params, RequestOptions.none())
 
     /** @see evaluateInteraction */
-    @BetaApi
     fun evaluateInteraction(
         params: RuntimeEvaluateInteractionParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -88,19 +85,16 @@ interface RuntimeService {
      * - [OpenAI Responses](https://platform.openai.com/docs/api-reference/responses)
      * - [Anthropic Messages](https://docs.anthropic.com/en/api/messages)
      */
-    @BetaApi
     fun evaluateRequest(params: RuntimeEvaluateRequestParams): RuntimeEvaluateRequestResponse =
         evaluateRequest(params, RequestOptions.none())
 
     /** @see evaluateRequest */
-    @BetaApi
     fun evaluateRequest(
         params: RuntimeEvaluateRequestParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuntimeEvaluateRequestResponse
 
     /** @see evaluateRequest */
-    @BetaApi
     fun evaluateRequest(
         body: RuntimeEvaluateRequestParams.Body,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -108,7 +102,6 @@ interface RuntimeService {
         evaluateRequest(RuntimeEvaluateRequestParams.builder().body(body).build(), requestOptions)
 
     /** @see evaluateRequest */
-    @BetaApi
     fun evaluateRequest(body: RuntimeEvaluateRequestParams.Body): RuntimeEvaluateRequestResponse =
         evaluateRequest(body, RequestOptions.none())
 
@@ -131,19 +124,16 @@ interface RuntimeService {
      * - [OpenAI Responses](https://platform.openai.com/docs/api-reference/responses)
      * - [Anthropic Messages](https://docs.anthropic.com/en/api/messages)
      */
-    @BetaApi
     fun evaluateResponse(params: RuntimeEvaluateResponseParams): RuntimeEvaluateResponseResponse =
         evaluateResponse(params, RequestOptions.none())
 
     /** @see evaluateResponse */
-    @BetaApi
     fun evaluateResponse(
         params: RuntimeEvaluateResponseParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuntimeEvaluateResponseResponse
 
     /** @see evaluateResponse */
-    @BetaApi
     fun evaluateResponse(
         body: RuntimeEvaluateResponseParams.Body,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -151,7 +141,6 @@ interface RuntimeService {
         evaluateResponse(RuntimeEvaluateResponseParams.builder().body(body).build(), requestOptions)
 
     /** @see evaluateResponse */
-    @BetaApi
     fun evaluateResponse(
         body: RuntimeEvaluateResponseParams.Body
     ): RuntimeEvaluateResponseResponse = evaluateResponse(body, RequestOptions.none())
@@ -178,7 +167,6 @@ interface RuntimeService {
 
         /** @see evaluateInteraction */
         @MustBeClosed
-        @BetaApi
         fun evaluateInteraction(
             params: RuntimeEvaluateInteractionParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -196,7 +184,6 @@ interface RuntimeService {
 
         /** @see evaluateRequest */
         @MustBeClosed
-        @BetaApi
         fun evaluateRequest(
             params: RuntimeEvaluateRequestParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -204,7 +191,6 @@ interface RuntimeService {
 
         /** @see evaluateRequest */
         @MustBeClosed
-        @BetaApi
         fun evaluateRequest(
             body: RuntimeEvaluateRequestParams.Body,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -216,7 +202,6 @@ interface RuntimeService {
 
         /** @see evaluateRequest */
         @MustBeClosed
-        @BetaApi
         fun evaluateRequest(
             body: RuntimeEvaluateRequestParams.Body
         ): HttpResponseFor<RuntimeEvaluateRequestResponse> =
@@ -234,7 +219,6 @@ interface RuntimeService {
 
         /** @see evaluateResponse */
         @MustBeClosed
-        @BetaApi
         fun evaluateResponse(
             params: RuntimeEvaluateResponseParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -242,7 +226,6 @@ interface RuntimeService {
 
         /** @see evaluateResponse */
         @MustBeClosed
-        @BetaApi
         fun evaluateResponse(
             body: RuntimeEvaluateResponseParams.Body,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -254,7 +237,6 @@ interface RuntimeService {
 
         /** @see evaluateResponse */
         @MustBeClosed
-        @BetaApi
         fun evaluateResponse(
             body: RuntimeEvaluateResponseParams.Body
         ): HttpResponseFor<RuntimeEvaluateResponseResponse> =
