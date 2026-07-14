@@ -29,4 +29,37 @@ object BetaWarning {
             )
         }
     }
+
+    /**
+     * Emit a one-time beta warning if [pathSegments] matches a registered beta endpoint.
+     *
+     * Matching is segment-based so endpoints with path parameters (e.g.
+     * `/evaluations/v1/red-team/{workflowId}/status`) are recognized even though the request path
+     * has the parameter value substituted in. A `null` pattern segment is a wildcard matching any
+     * single segment.
+     *
+     * @param pathSegments The request's path segments, e.g. `["detection", "v2",
+     *   "request-evaluations"]`.
+     */
+    @JvmStatic
+    fun checkBetaEndpoint(pathSegments: List<String>) {
+        matchBetaEndpoint(pathSegments)?.let { warnBeta(it) }
+    }
+
+    /**
+     * Return the qualified method name of the beta endpoint whose pattern matches [pathSegments],
+     * or null if none matches. Matching compares segment counts and literal positions; a `null`
+     * pattern segment is a wildcard. Pure (no logging or dedup state) so it is safe to unit test
+     * directly.
+     */
+    @JvmStatic
+    internal fun matchBetaEndpoint(pathSegments: List<String>): String? {
+        for ((pattern, qualifiedName) in BetaEndpoints.REGISTRY) {
+            if (pattern.size != pathSegments.size) continue
+            if (pattern.indices.all { pattern[it] == null || pattern[it] == pathSegments[it] }) {
+                return qualifiedName
+            }
+        }
+        return null
+    }
 }
