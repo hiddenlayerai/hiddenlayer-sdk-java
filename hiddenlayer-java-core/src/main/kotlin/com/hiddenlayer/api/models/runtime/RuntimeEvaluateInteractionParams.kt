@@ -35,9 +35,6 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
- * Breaking changes may occur.
- *
  * Performs synchronous security evaluation on an LLM **interaction**. The interaction can be a
  * standalone user prompt, a standalone model response, a partial exchange, or a long multi-turn
  * message history. The endpoint imposes no requirement that the messages form a complete
