@@ -29,9 +29,6 @@ interface RuntimeService {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): RuntimeService
 
     /**
-     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
-     * Breaking changes may occur.
-     *
      * Performs synchronous security evaluation on an LLM **interaction**. The interaction can be a
      * standalone user prompt, a standalone model response, a partial exchange, or a long multi-turn
      * message history. The endpoint imposes no requirement that the messages form a complete
@@ -67,9 +64,6 @@ interface RuntimeService {
     ): RuntimeEvaluateInteractionResponse
 
     /**
-     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
-     * Breaking changes may occur.
-     *
      * Analyzes an LLM request payload for security threats before it is sent to the model.
      *
      * Accepts any valid provider request payload and returns:
@@ -106,9 +100,6 @@ interface RuntimeService {
         evaluateRequest(body, RequestOptions.none())
 
     /**
-     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
-     * Breaking changes may occur.
-     *
      * Analyzes an LLM response payload for security threats after it is received from the model.
      *
      * Accepts any valid provider response payload and returns:
