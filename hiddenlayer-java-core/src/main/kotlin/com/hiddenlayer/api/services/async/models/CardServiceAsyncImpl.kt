@@ -32,6 +32,7 @@ class CardServiceAsyncImpl internal constructor(private val clientOptions: Clien
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): CardServiceAsync =
         CardServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    @Deprecated("deprecated")
     override fun list(
         params: CardListParams,
         requestOptions: RequestOptions,
@@ -55,6 +56,7 @@ class CardServiceAsyncImpl internal constructor(private val clientOptions: Clien
         private val listHandler: Handler<CardListPageResponse> =
             jsonHandler<CardListPageResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun list(
             params: CardListParams,
             requestOptions: RequestOptions,
