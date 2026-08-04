@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.4.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.3.0...v2.4.0) (2026-08-04)
+
+
+### Features
+
+* **api:** api update ([d262d29](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/d262d29ddb5d5d5b082ade4ef2844377e18330c8))
+* **assets:** add POST endpoint for v2 asset relationships ([9b7903a](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/9b7903a94413fda67d90c77d16fff99b7a84bd8a))
+* **runtime:** remove beta label from v2 endpoints ([3e4c0eb](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/3e4c0eb4bdb27a3366c76496efaeb9faae30e183))
+
+
+### Bug Fixes
+
+* **ci:** build release-please fork from source with forced emit ([#111](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/111)) ([23a1efe](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/23a1efe951516e95c948320a2058886eb0f3625f))
+* **ci:** run CI on all PRs, remove dead Stainless code ([#115](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/115)) ([927039e](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/927039e21731dc91bc932014513dff9da744bd94))
+* replace @BetaApi annotation patching with runtime beta warnings ([#108](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/108)) ([71b9936](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/71b99364fb3e6d935453bb24975b37d0b8567d8e))
+
 ## 2.3.0 (2026-06-24)
 
 Full Changelog: [v2.2.0...v2.3.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.2.0...v2.3.0)
