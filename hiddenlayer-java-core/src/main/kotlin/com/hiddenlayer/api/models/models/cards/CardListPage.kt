@@ -12,6 +12,7 @@ import kotlin.jvm.optionals.getOrDefault
 import kotlin.jvm.optionals.getOrNull
 
 /** @see CardService.list */
+@Deprecated("deprecated")
 class CardListPage
 private constructor(
     private val service: CardService,
