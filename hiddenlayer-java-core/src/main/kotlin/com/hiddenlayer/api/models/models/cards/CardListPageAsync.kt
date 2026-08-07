@@ -14,6 +14,7 @@ import kotlin.jvm.optionals.getOrDefault
 import kotlin.jvm.optionals.getOrNull
 
 /** @see CardServiceAsync.list */
+@Deprecated("deprecated")
 class CardListPageAsync
 private constructor(
     private val service: CardServiceAsync,
