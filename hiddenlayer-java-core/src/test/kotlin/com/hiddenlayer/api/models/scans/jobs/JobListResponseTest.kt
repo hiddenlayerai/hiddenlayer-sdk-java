@@ -92,8 +92,8 @@ internal class JobListResponseTest {
                         .severity(JobListResponse.Item.Severity.CRITICAL)
                         .build()
                 )
-                .limit(50L)
-                .offset(250L)
+                .limit(50)
+                .offset(250)
                 .total(0.0)
                 .build()
 
@@ -172,8 +172,8 @@ internal class JobListResponseTest {
                     .severity(JobListResponse.Item.Severity.CRITICAL)
                     .build()
             )
-        assertThat(jobListResponse.limit()).isEqualTo(50L)
-        assertThat(jobListResponse.offset()).isEqualTo(250L)
+        assertThat(jobListResponse.limit()).isEqualTo(50)
+        assertThat(jobListResponse.offset()).isEqualTo(250)
         assertThat(jobListResponse.total()).isEqualTo(0.0)
     }
 
@@ -260,8 +260,8 @@ internal class JobListResponseTest {
                         .severity(JobListResponse.Item.Severity.CRITICAL)
                         .build()
                 )
-                .limit(50L)
-                .offset(250L)
+                .limit(50)
+                .offset(250)
                 .total(0.0)
                 .build()
 
