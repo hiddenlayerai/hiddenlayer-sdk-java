@@ -27,12 +27,12 @@ class CardListParams
 private constructor(
     private val aidrSeverity: List<AidrSeverity>?,
     private val aidrStatus: AidrStatus?,
-    private val limit: Long?,
+    private val limit: Int?,
     private val modelCreated: ModelCreated?,
     private val modelName: ModelName?,
     private val modscanSeverity: List<ModscanSeverity>?,
     private val modscanStatus: ModscanStatus?,
-    private val offset: Long?,
+    private val offset: Int?,
     private val policyStatus: List<PolicyStatus>?,
     private val provider: List<Provider>?,
     private val sort: String?,
@@ -48,7 +48,7 @@ private constructor(
     fun aidrStatus(): Optional<AidrStatus> = Optional.ofNullable(aidrStatus)
 
     /** Limit the number of items returned */
-    fun limit(): Optional<Long> = Optional.ofNullable(limit)
+    fun limit(): Optional<Int> = Optional.ofNullable(limit)
 
     /** match on models created between dates */
     fun modelCreated(): Optional<ModelCreated> = Optional.ofNullable(modelCreated)
@@ -61,7 +61,7 @@ private constructor(
     fun modscanStatus(): Optional<ModscanStatus> = Optional.ofNullable(modscanStatus)
 
     /** Begin returning the results from this offset */
-    fun offset(): Optional<Long> = Optional.ofNullable(offset)
+    fun offset(): Optional<Int> = Optional.ofNullable(offset)
 
     fun policyStatus(): Optional<List<PolicyStatus>> = Optional.ofNullable(policyStatus)
 
@@ -97,12 +97,12 @@ private constructor(
 
         private var aidrSeverity: MutableList<AidrSeverity>? = null
         private var aidrStatus: AidrStatus? = null
-        private var limit: Long? = null
+        private var limit: Int? = null
         private var modelCreated: ModelCreated? = null
         private var modelName: ModelName? = null
         private var modscanSeverity: MutableList<ModscanSeverity>? = null
         private var modscanStatus: ModscanStatus? = null
-        private var offset: Long? = null
+        private var offset: Int? = null
         private var policyStatus: MutableList<PolicyStatus>? = null
         private var provider: MutableList<Provider>? = null
         private var sort: String? = null
@@ -153,17 +153,17 @@ private constructor(
         fun aidrStatus(aidrStatus: Optional<AidrStatus>) = aidrStatus(aidrStatus.getOrNull())
 
         /** Limit the number of items returned */
-        fun limit(limit: Long?) = apply { this.limit = limit }
+        fun limit(limit: Int?) = apply { this.limit = limit }
 
         /**
          * Alias for [Builder.limit].
          *
          * This unboxed primitive overload exists for backwards compatibility.
          */
-        fun limit(limit: Long) = limit(limit as Long?)
+        fun limit(limit: Int) = limit(limit as Int?)
 
         /** Alias for calling [Builder.limit] with `limit.orElse(null)`. */
-        fun limit(limit: Optional<Long>) = limit(limit.getOrNull())
+        fun limit(limit: Optional<Int>) = limit(limit.getOrNull())
 
         /** match on models created between dates */
         fun modelCreated(modelCreated: ModelCreated?) = apply { this.modelCreated = modelCreated }
@@ -205,17 +205,17 @@ private constructor(
             modscanStatus(modscanStatus.getOrNull())
 
         /** Begin returning the results from this offset */
-        fun offset(offset: Long?) = apply { this.offset = offset }
+        fun offset(offset: Int?) = apply { this.offset = offset }
 
         /**
          * Alias for [Builder.offset].
          *
          * This unboxed primitive overload exists for backwards compatibility.
          */
-        fun offset(offset: Long) = offset(offset as Long?)
+        fun offset(offset: Int) = offset(offset as Int?)
 
         /** Alias for calling [Builder.offset] with `offset.orElse(null)`. */
-        fun offset(offset: Optional<Long>) = offset(offset.getOrNull())
+        fun offset(offset: Optional<Int>) = offset(offset.getOrNull())
 
         fun policyStatus(policyStatus: List<PolicyStatus>?) = apply {
             this.policyStatus = policyStatus?.toMutableList()

@@ -25,8 +25,8 @@ class JobListResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val items: JsonField<List<Item>>,
-    private val limit: JsonField<Long>,
-    private val offset: JsonField<Long>,
+    private val limit: JsonField<Int>,
+    private val offset: JsonField<Int>,
     private val total: JsonField<Double>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -34,8 +34,8 @@ private constructor(
     @JsonCreator
     private constructor(
         @JsonProperty("items") @ExcludeMissing items: JsonField<List<Item>> = JsonMissing.of(),
-        @JsonProperty("limit") @ExcludeMissing limit: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("offset") @ExcludeMissing offset: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("limit") @ExcludeMissing limit: JsonField<Int> = JsonMissing.of(),
+        @JsonProperty("offset") @ExcludeMissing offset: JsonField<Int> = JsonMissing.of(),
         @JsonProperty("total") @ExcludeMissing total: JsonField<Double> = JsonMissing.of(),
     ) : this(items, limit, offset, total, mutableMapOf())
 
@@ -53,7 +53,7 @@ private constructor(
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun limit(): Long = limit.getRequired("limit")
+    fun limit(): Int = limit.getRequired("limit")
 
     /**
      * Begin returning the results from this offset
@@ -61,7 +61,7 @@ private constructor(
      * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun offset(): Long = offset.getRequired("offset")
+    fun offset(): Int = offset.getRequired("offset")
 
     /**
      * Total number of items available based on the query criteria.
@@ -83,14 +83,14 @@ private constructor(
      *
      * Unlike [limit], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("limit") @ExcludeMissing fun _limit(): JsonField<Long> = limit
+    @JsonProperty("limit") @ExcludeMissing fun _limit(): JsonField<Int> = limit
 
     /**
      * Returns the raw JSON value of [offset].
      *
      * Unlike [offset], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("offset") @ExcludeMissing fun _offset(): JsonField<Long> = offset
+    @JsonProperty("offset") @ExcludeMissing fun _offset(): JsonField<Int> = offset
 
     /**
      * Returns the raw JSON value of [total].
@@ -131,8 +131,8 @@ private constructor(
     class Builder internal constructor() {
 
         private var items: JsonField<MutableList<Item>>? = null
-        private var limit: JsonField<Long>? = null
-        private var offset: JsonField<Long>? = null
+        private var limit: JsonField<Int>? = null
+        private var offset: JsonField<Int>? = null
         private var total: JsonField<Double>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -170,26 +170,26 @@ private constructor(
         }
 
         /** Maximum number of items to return */
-        fun limit(limit: Long) = limit(JsonField.of(limit))
+        fun limit(limit: Int) = limit(JsonField.of(limit))
 
         /**
          * Sets [Builder.limit] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.limit] with a well-typed [Long] value instead. This
+         * You should usually call [Builder.limit] with a well-typed [Int] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun limit(limit: JsonField<Long>) = apply { this.limit = limit }
+        fun limit(limit: JsonField<Int>) = apply { this.limit = limit }
 
         /** Begin returning the results from this offset */
-        fun offset(offset: Long) = offset(JsonField.of(offset))
+        fun offset(offset: Int) = offset(JsonField.of(offset))
 
         /**
          * Sets [Builder.offset] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.offset] with a well-typed [Long] value instead. This
+         * You should usually call [Builder.offset] with a well-typed [Int] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun offset(offset: JsonField<Long>) = apply { this.offset = offset }
+        fun offset(offset: JsonField<Int>) = apply { this.offset = offset }
 
         /** Total number of items available based on the query criteria. */
         fun total(total: Double) = total(JsonField.of(total))
