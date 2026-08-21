@@ -3397,6 +3397,7 @@ private constructor(
         private val provider: JsonField<String>,
         private val requesterId: JsonField<String>,
         private val externalSessionId: JsonField<String>,
+        private val externalSessionIds: JsonField<List<ExternalSessionId>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -3412,7 +3413,17 @@ private constructor(
             @JsonProperty("external_session_id")
             @ExcludeMissing
             externalSessionId: JsonField<String> = JsonMissing.of(),
-        ) : this(model, provider, requesterId, externalSessionId, mutableMapOf())
+            @JsonProperty("external_session_ids")
+            @ExcludeMissing
+            externalSessionIds: JsonField<List<ExternalSessionId>> = JsonMissing.of(),
+        ) : this(
+            model,
+            provider,
+            requesterId,
+            externalSessionId,
+            externalSessionIds,
+            mutableMapOf(),
+        )
 
         /**
          * The model identifier used for the interaction.
@@ -3450,6 +3461,17 @@ private constructor(
             externalSessionId.getOptional("external_session_id")
 
         /**
+         * External session identifiers with the system that supplied them. Each entry is attached
+         * to the stored interaction as a session alias, in addition to `external_session_id` when
+         * both are supplied.
+         *
+         * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun externalSessionIds(): Optional<List<ExternalSessionId>> =
+            externalSessionIds.getOptional("external_session_ids")
+
+        /**
          * Returns the raw JSON value of [model].
          *
          * Unlike [model], this method doesn't throw if the JSON field has an unexpected type.
@@ -3481,6 +3503,16 @@ private constructor(
         @JsonProperty("external_session_id")
         @ExcludeMissing
         fun _externalSessionId(): JsonField<String> = externalSessionId
+
+        /**
+         * Returns the raw JSON value of [externalSessionIds].
+         *
+         * Unlike [externalSessionIds], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("external_session_ids")
+        @ExcludeMissing
+        fun _externalSessionIds(): JsonField<List<ExternalSessionId>> = externalSessionIds
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -3516,6 +3548,7 @@ private constructor(
             private var provider: JsonField<String>? = null
             private var requesterId: JsonField<String>? = null
             private var externalSessionId: JsonField<String> = JsonMissing.of()
+            private var externalSessionIds: JsonField<MutableList<ExternalSessionId>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -3524,6 +3557,7 @@ private constructor(
                 provider = metadata.provider
                 requesterId = metadata.requesterId
                 externalSessionId = metadata.externalSessionId
+                externalSessionIds = metadata.externalSessionIds.map { it.toMutableList() }
                 additionalProperties = metadata.additionalProperties.toMutableMap()
             }
 
@@ -3586,6 +3620,37 @@ private constructor(
                 this.externalSessionId = externalSessionId
             }
 
+            /**
+             * External session identifiers with the system that supplied them. Each entry is
+             * attached to the stored interaction as a session alias, in addition to
+             * `external_session_id` when both are supplied.
+             */
+            fun externalSessionIds(externalSessionIds: List<ExternalSessionId>) =
+                externalSessionIds(JsonField.of(externalSessionIds))
+
+            /**
+             * Sets [Builder.externalSessionIds] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.externalSessionIds] with a well-typed
+             * `List<ExternalSessionId>` value instead. This method is primarily for setting the
+             * field to an undocumented or not yet supported value.
+             */
+            fun externalSessionIds(externalSessionIds: JsonField<List<ExternalSessionId>>) = apply {
+                this.externalSessionIds = externalSessionIds.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [ExternalSessionId] to [externalSessionIds].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addExternalSessionId(externalSessionId: ExternalSessionId) = apply {
+                externalSessionIds =
+                    (externalSessionIds ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("externalSessionIds", it).add(externalSessionId)
+                    }
+            }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -3625,6 +3690,7 @@ private constructor(
                     checkRequired("provider", provider),
                     checkRequired("requesterId", requesterId),
                     externalSessionId,
+                    (externalSessionIds ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -3649,6 +3715,7 @@ private constructor(
             provider()
             requesterId()
             externalSessionId()
+            externalSessionIds().ifPresent { it.forEach { it.validate() } }
             validated = true
         }
 
@@ -3671,7 +3738,218 @@ private constructor(
             (if (model.asKnown().isPresent) 1 else 0) +
                 (if (provider.asKnown().isPresent) 1 else 0) +
                 (if (requesterId.asKnown().isPresent) 1 else 0) +
-                (if (externalSessionId.asKnown().isPresent) 1 else 0)
+                (if (externalSessionId.asKnown().isPresent) 1 else 0) +
+                (externalSessionIds.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
+
+        /** An external session identifier with optional source. */
+        class ExternalSessionId
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+        private constructor(
+            private val id: JsonField<String>,
+            private val source: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("source") @ExcludeMissing source: JsonField<String> = JsonMissing.of(),
+            ) : this(id, source, mutableMapOf())
+
+            /**
+             * The external session identifier value.
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type or
+             *   is unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun id(): String = id.getRequired("id")
+
+            /**
+             * The system or client that supplied this identifier.
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun source(): Optional<String> = source.getOptional("source")
+
+            /**
+             * Returns the raw JSON value of [id].
+             *
+             * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+            /**
+             * Returns the raw JSON value of [source].
+             *
+             * Unlike [source], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("source") @ExcludeMissing fun _source(): JsonField<String> = source
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /**
+                 * Returns a mutable builder for constructing an instance of [ExternalSessionId].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .id()
+                 * ```
+                 */
+                @JvmStatic fun builder() = Builder()
+            }
+
+            /** A builder for [ExternalSessionId]. */
+            class Builder internal constructor() {
+
+                private var id: JsonField<String>? = null
+                private var source: JsonField<String> = JsonMissing.of()
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(externalSessionId: ExternalSessionId) = apply {
+                    id = externalSessionId.id
+                    source = externalSessionId.source
+                    additionalProperties = externalSessionId.additionalProperties.toMutableMap()
+                }
+
+                /** The external session identifier value. */
+                fun id(id: String) = id(JsonField.of(id))
+
+                /**
+                 * Sets [Builder.id] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.id] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun id(id: JsonField<String>) = apply { this.id = id }
+
+                /** The system or client that supplied this identifier. */
+                fun source(source: String) = source(JsonField.of(source))
+
+                /**
+                 * Sets [Builder.source] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.source] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun source(source: JsonField<String>) = apply { this.source = source }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [ExternalSessionId].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .id()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
+                fun build(): ExternalSessionId =
+                    ExternalSessionId(
+                        checkRequired("id", id),
+                        source,
+                        additionalProperties.toMutableMap(),
+                    )
+            }
+
+            private var validated: Boolean = false
+
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+             *   match its expected type.
+             */
+            fun validate(): ExternalSessionId = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                id()
+                source()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: HiddenLayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (if (id.asKnown().isPresent) 1 else 0) + (if (source.asKnown().isPresent) 1 else 0)
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is ExternalSessionId &&
+                    id == other.id &&
+                    source == other.source &&
+                    additionalProperties == other.additionalProperties
+            }
+
+            private val hashCode: Int by lazy { Objects.hash(id, source, additionalProperties) }
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "ExternalSessionId{id=$id, source=$source, additionalProperties=$additionalProperties}"
+        }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -3683,17 +3961,25 @@ private constructor(
                 provider == other.provider &&
                 requesterId == other.requesterId &&
                 externalSessionId == other.externalSessionId &&
+                externalSessionIds == other.externalSessionIds &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(model, provider, requesterId, externalSessionId, additionalProperties)
+            Objects.hash(
+                model,
+                provider,
+                requesterId,
+                externalSessionId,
+                externalSessionIds,
+                additionalProperties,
+            )
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Metadata{model=$model, provider=$provider, requesterId=$requesterId, externalSessionId=$externalSessionId, additionalProperties=$additionalProperties}"
+            "Metadata{model=$model, provider=$provider, requesterId=$requesterId, externalSessionId=$externalSessionId, externalSessionIds=$externalSessionIds, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
