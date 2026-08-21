@@ -84,6 +84,13 @@ internal class RuntimeServiceAsyncTest {
                             .provider("openai")
                             .requesterId("user-12345")
                             .externalSessionId("sess_4b8cde94604f4c389406a0b2f806069a")
+                            .addExternalSessionId(
+                                RuntimeEvaluateInteractionParams.Metadata.ExternalSessionId
+                                    .builder()
+                                    .id("id")
+                                    .source("source")
+                                    .build()
+                            )
                             .build()
                     )
                     .build()
