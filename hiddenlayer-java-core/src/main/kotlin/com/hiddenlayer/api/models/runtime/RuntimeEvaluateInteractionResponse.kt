@@ -543,7 +543,9 @@ private constructor(
             private val content: JsonField<List<Content>>,
             private val role: JsonField<String>,
             private val analysis: JsonField<Analysis>,
+            private val attachments: JsonField<List<Attachment>>,
             private val timestamp: JsonField<Timestamp>,
+            private val toolsUsed: JsonField<List<String>>,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
 
@@ -556,10 +558,16 @@ private constructor(
                 @JsonProperty("analysis")
                 @ExcludeMissing
                 analysis: JsonField<Analysis> = JsonMissing.of(),
+                @JsonProperty("attachments")
+                @ExcludeMissing
+                attachments: JsonField<List<Attachment>> = JsonMissing.of(),
                 @JsonProperty("timestamp")
                 @ExcludeMissing
                 timestamp: JsonField<Timestamp> = JsonMissing.of(),
-            ) : this(content, role, analysis, timestamp, mutableMapOf())
+                @JsonProperty("tools_used")
+                @ExcludeMissing
+                toolsUsed: JsonField<List<String>> = JsonMissing.of(),
+            ) : this(content, role, analysis, attachments, timestamp, toolsUsed, mutableMapOf())
 
             /**
              * Array of content parts representing the message content. Each part has a `type` field
@@ -596,6 +604,15 @@ private constructor(
             fun analysis(): Optional<Analysis> = analysis.getOptional("analysis")
 
             /**
+             * Files supplied with the message by its author, as distinct from files its content
+             * cites.
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun attachments(): Optional<List<Attachment>> = attachments.getOptional("attachments")
+
+            /**
              * Optional timestamp for when this message was created. When supplied, `value` is
              * required.
              *
@@ -603,6 +620,15 @@ private constructor(
              *   (e.g. if the server responded with an unexpected value).
              */
             fun timestamp(): Optional<Timestamp> = timestamp.getOptional("timestamp")
+
+            /**
+             * Names of provider-hosted tools invoked while producing this message. Tools the model
+             * called directly appear as `tool_use` content parts instead.
+             *
+             * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+             *   (e.g. if the server responded with an unexpected value).
+             */
+            fun toolsUsed(): Optional<List<String>> = toolsUsed.getOptional("tools_used")
 
             /**
              * Returns the raw JSON value of [content].
@@ -631,6 +657,16 @@ private constructor(
             fun _analysis(): JsonField<Analysis> = analysis
 
             /**
+             * Returns the raw JSON value of [attachments].
+             *
+             * Unlike [attachments], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("attachments")
+            @ExcludeMissing
+            fun _attachments(): JsonField<List<Attachment>> = attachments
+
+            /**
              * Returns the raw JSON value of [timestamp].
              *
              * Unlike [timestamp], this method doesn't throw if the JSON field has an unexpected
@@ -639,6 +675,16 @@ private constructor(
             @JsonProperty("timestamp")
             @ExcludeMissing
             fun _timestamp(): JsonField<Timestamp> = timestamp
+
+            /**
+             * Returns the raw JSON value of [toolsUsed].
+             *
+             * Unlike [toolsUsed], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("tools_used")
+            @ExcludeMissing
+            fun _toolsUsed(): JsonField<List<String>> = toolsUsed
 
             @JsonAnySetter
             private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -672,7 +718,9 @@ private constructor(
                 private var content: JsonField<MutableList<Content>>? = null
                 private var role: JsonField<String>? = null
                 private var analysis: JsonField<Analysis> = JsonMissing.of()
+                private var attachments: JsonField<MutableList<Attachment>>? = null
                 private var timestamp: JsonField<Timestamp> = JsonMissing.of()
+                private var toolsUsed: JsonField<MutableList<String>>? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
@@ -680,7 +728,9 @@ private constructor(
                     content = message.content.map { it.toMutableList() }
                     role = message.role
                     analysis = message.analysis
+                    attachments = message.attachments.map { it.toMutableList() }
                     timestamp = message.timestamp
+                    toolsUsed = message.toolsUsed.map { it.toMutableList() }
                     additionalProperties = message.additionalProperties.toMutableMap()
                 }
 
@@ -770,6 +820,36 @@ private constructor(
                 fun analysis(analysis: JsonField<Analysis>) = apply { this.analysis = analysis }
 
                 /**
+                 * Files supplied with the message by its author, as distinct from files its content
+                 * cites.
+                 */
+                fun attachments(attachments: List<Attachment>) =
+                    attachments(JsonField.of(attachments))
+
+                /**
+                 * Sets [Builder.attachments] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.attachments] with a well-typed
+                 * `List<Attachment>` value instead. This method is primarily for setting the field
+                 * to an undocumented or not yet supported value.
+                 */
+                fun attachments(attachments: JsonField<List<Attachment>>) = apply {
+                    this.attachments = attachments.map { it.toMutableList() }
+                }
+
+                /**
+                 * Adds a single [Attachment] to [attachments].
+                 *
+                 * @throws IllegalStateException if the field was previously set to a non-list.
+                 */
+                fun addAttachment(attachment: Attachment) = apply {
+                    attachments =
+                        (attachments ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("attachments", it).add(attachment)
+                        }
+                }
+
+                /**
                  * Optional timestamp for when this message was created. When supplied, `value` is
                  * required.
                  */
@@ -784,6 +864,35 @@ private constructor(
                  */
                 fun timestamp(timestamp: JsonField<Timestamp>) = apply {
                     this.timestamp = timestamp
+                }
+
+                /**
+                 * Names of provider-hosted tools invoked while producing this message. Tools the
+                 * model called directly appear as `tool_use` content parts instead.
+                 */
+                fun toolsUsed(toolsUsed: List<String>) = toolsUsed(JsonField.of(toolsUsed))
+
+                /**
+                 * Sets [Builder.toolsUsed] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.toolsUsed] with a well-typed `List<String>`
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
+                fun toolsUsed(toolsUsed: JsonField<List<String>>) = apply {
+                    this.toolsUsed = toolsUsed.map { it.toMutableList() }
+                }
+
+                /**
+                 * Adds a single [String] to [Builder.toolsUsed].
+                 *
+                 * @throws IllegalStateException if the field was previously set to a non-list.
+                 */
+                fun addToolsUsed(toolsUsed: String) = apply {
+                    this.toolsUsed =
+                        (this.toolsUsed ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("toolsUsed", it).add(toolsUsed)
+                        }
                 }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -826,7 +935,9 @@ private constructor(
                         checkRequired("content", content).map { it.toImmutable() },
                         checkRequired("role", role),
                         analysis,
+                        (attachments ?: JsonMissing.of()).map { it.toImmutable() },
                         timestamp,
+                        (toolsUsed ?: JsonMissing.of()).map { it.toImmutable() },
                         additionalProperties.toMutableMap(),
                     )
             }
@@ -851,7 +962,9 @@ private constructor(
                 content().forEach { it.validate() }
                 role()
                 analysis().ifPresent { it.validate() }
+                attachments().ifPresent { it.forEach { it.validate() } }
                 timestamp().ifPresent { it.validate() }
+                toolsUsed()
                 validated = true
             }
 
@@ -874,7 +987,9 @@ private constructor(
                 (content.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                     (if (role.asKnown().isPresent) 1 else 0) +
                     (analysis.asKnown().getOrNull()?.validity() ?: 0) +
-                    (timestamp.asKnown().getOrNull()?.validity() ?: 0)
+                    (attachments.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+                    (timestamp.asKnown().getOrNull()?.validity() ?: 0) +
+                    (toolsUsed.asKnown().getOrNull()?.size ?: 0)
 
             /** A content part within an individual message. */
             @JsonDeserialize(using = Content.Deserializer::class)
@@ -1131,6 +1246,7 @@ private constructor(
                 private constructor(
                     private val text: JsonField<String>,
                     private val type: JsonValue,
+                    private val annotations: JsonField<List<Annotation>>,
                     private val additionalProperties: MutableMap<String, JsonValue>,
                 ) {
 
@@ -1140,7 +1256,10 @@ private constructor(
                         @ExcludeMissing
                         text: JsonField<String> = JsonMissing.of(),
                         @JsonProperty("type") @ExcludeMissing type: JsonValue = JsonMissing.of(),
-                    ) : this(text, type, mutableMapOf())
+                        @JsonProperty("annotations")
+                        @ExcludeMissing
+                        annotations: JsonField<List<Annotation>> = JsonMissing.of(),
+                    ) : this(text, type, annotations, mutableMapOf())
 
                     /**
                      * The text content.
@@ -1165,12 +1284,31 @@ private constructor(
                     @JsonProperty("type") @ExcludeMissing fun _type(): JsonValue = type
 
                     /**
+                     * External sources this text drew on. Absent when the text cites nothing.
+                     *
+                     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected
+                     *   type (e.g. if the server responded with an unexpected value).
+                     */
+                    fun annotations(): Optional<List<Annotation>> =
+                        annotations.getOptional("annotations")
+
+                    /**
                      * Returns the raw JSON value of [text].
                      *
                      * Unlike [text], this method doesn't throw if the JSON field has an unexpected
                      * type.
                      */
                     @JsonProperty("text") @ExcludeMissing fun _text(): JsonField<String> = text
+
+                    /**
+                     * Returns the raw JSON value of [annotations].
+                     *
+                     * Unlike [annotations], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("annotations")
+                    @ExcludeMissing
+                    fun _annotations(): JsonField<List<Annotation>> = annotations
 
                     @JsonAnySetter
                     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -1202,6 +1340,7 @@ private constructor(
 
                         private var text: JsonField<String>? = null
                         private var type: JsonValue = JsonValue.from("text")
+                        private var annotations: JsonField<MutableList<Annotation>>? = null
                         private var additionalProperties: MutableMap<String, JsonValue> =
                             mutableMapOf()
 
@@ -1209,6 +1348,7 @@ private constructor(
                         internal fun from(text: Text) = apply {
                             this.text = text.text
                             type = text.type
+                            annotations = text.annotations.map { it.toMutableList() }
                             additionalProperties = text.additionalProperties.toMutableMap()
                         }
 
@@ -1237,6 +1377,36 @@ private constructor(
                          * yet supported value.
                          */
                         fun type(type: JsonValue) = apply { this.type = type }
+
+                        /**
+                         * External sources this text drew on. Absent when the text cites nothing.
+                         */
+                        fun annotations(annotations: List<Annotation>) =
+                            annotations(JsonField.of(annotations))
+
+                        /**
+                         * Sets [Builder.annotations] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.annotations] with a well-typed
+                         * `List<Annotation>` value instead. This method is primarily for setting
+                         * the field to an undocumented or not yet supported value.
+                         */
+                        fun annotations(annotations: JsonField<List<Annotation>>) = apply {
+                            this.annotations = annotations.map { it.toMutableList() }
+                        }
+
+                        /**
+                         * Adds a single [Annotation] to [annotations].
+                         *
+                         * @throws IllegalStateException if the field was previously set to a
+                         *   non-list.
+                         */
+                        fun addAnnotation(annotation: Annotation) = apply {
+                            annotations =
+                                (annotations ?: JsonField.of(mutableListOf())).also {
+                                    checkKnown("annotations", it).add(annotation)
+                                }
+                        }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
                             apply {
@@ -1276,6 +1446,7 @@ private constructor(
                             Text(
                                 checkRequired("text", text),
                                 type,
+                                (annotations ?: JsonMissing.of()).map { it.toImmutable() },
                                 additionalProperties.toMutableMap(),
                             )
                     }
@@ -1305,6 +1476,7 @@ private constructor(
                                 )
                             }
                         }
+                        annotations().ifPresent { it.forEach { it.validate() } }
                         validated = true
                     }
 
@@ -1325,7 +1497,543 @@ private constructor(
                     @JvmSynthetic
                     internal fun validity(): Int =
                         (if (text.asKnown().isPresent) 1 else 0) +
-                            type.let { if (it == JsonValue.from("text")) 1 else 0 }
+                            type.let { if (it == JsonValue.from("text")) 1 else 0 } +
+                            (annotations.asKnown().getOrNull()?.sumOf { it.validity().toInt() }
+                                ?: 0)
+
+                    /** An external source a span of message content drew on. */
+                    class Annotation
+                    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                    private constructor(
+                        private val type: JsonField<String>,
+                        private val files: JsonField<List<File>>,
+                        private val urls: JsonField<List<String>>,
+                        private val additionalProperties: MutableMap<String, JsonValue>,
+                    ) {
+
+                        @JsonCreator
+                        private constructor(
+                            @JsonProperty("type")
+                            @ExcludeMissing
+                            type: JsonField<String> = JsonMissing.of(),
+                            @JsonProperty("files")
+                            @ExcludeMissing
+                            files: JsonField<List<File>> = JsonMissing.of(),
+                            @JsonProperty("urls")
+                            @ExcludeMissing
+                            urls: JsonField<List<String>> = JsonMissing.of(),
+                        ) : this(type, files, urls, mutableMapOf())
+
+                        /**
+                         * The kind of source cited, as reported by the provider. Common values
+                         * include:
+                         * - `url_citation`: A web page
+                         * - `file_citation`: A file available to the conversation
+                         *
+                         * @throws HiddenLayerInvalidDataException if the JSON field has an
+                         *   unexpected type or is unexpectedly missing or null (e.g. if the server
+                         *   responded with an unexpected value).
+                         */
+                        fun type(): String = type.getRequired("type")
+
+                        /**
+                         * Files this annotation cites.
+                         *
+                         * @throws HiddenLayerInvalidDataException if the JSON field has an
+                         *   unexpected type (e.g. if the server responded with an unexpected
+                         *   value).
+                         */
+                        fun files(): Optional<List<File>> = files.getOptional("files")
+
+                        /**
+                         * URLs this annotation cites.
+                         *
+                         * @throws HiddenLayerInvalidDataException if the JSON field has an
+                         *   unexpected type (e.g. if the server responded with an unexpected
+                         *   value).
+                         */
+                        fun urls(): Optional<List<String>> = urls.getOptional("urls")
+
+                        /**
+                         * Returns the raw JSON value of [type].
+                         *
+                         * Unlike [type], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
+                        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<String> = type
+
+                        /**
+                         * Returns the raw JSON value of [files].
+                         *
+                         * Unlike [files], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
+                        @JsonProperty("files")
+                        @ExcludeMissing
+                        fun _files(): JsonField<List<File>> = files
+
+                        /**
+                         * Returns the raw JSON value of [urls].
+                         *
+                         * Unlike [urls], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
+                        @JsonProperty("urls")
+                        @ExcludeMissing
+                        fun _urls(): JsonField<List<String>> = urls
+
+                        @JsonAnySetter
+                        private fun putAdditionalProperty(key: String, value: JsonValue) {
+                            additionalProperties.put(key, value)
+                        }
+
+                        @JsonAnyGetter
+                        @ExcludeMissing
+                        fun _additionalProperties(): Map<String, JsonValue> =
+                            Collections.unmodifiableMap(additionalProperties)
+
+                        fun toBuilder() = Builder().from(this)
+
+                        companion object {
+
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [Annotation].
+                             *
+                             * The following fields are required:
+                             * ```java
+                             * .type()
+                             * ```
+                             */
+                            @JvmStatic fun builder() = Builder()
+                        }
+
+                        /** A builder for [Annotation]. */
+                        class Builder internal constructor() {
+
+                            private var type: JsonField<String>? = null
+                            private var files: JsonField<MutableList<File>>? = null
+                            private var urls: JsonField<MutableList<String>>? = null
+                            private var additionalProperties: MutableMap<String, JsonValue> =
+                                mutableMapOf()
+
+                            @JvmSynthetic
+                            internal fun from(annotation: Annotation) = apply {
+                                type = annotation.type
+                                files = annotation.files.map { it.toMutableList() }
+                                urls = annotation.urls.map { it.toMutableList() }
+                                additionalProperties =
+                                    annotation.additionalProperties.toMutableMap()
+                            }
+
+                            /**
+                             * The kind of source cited, as reported by the provider. Common values
+                             * include:
+                             * - `url_citation`: A web page
+                             * - `file_citation`: A file available to the conversation
+                             */
+                            fun type(type: String) = type(JsonField.of(type))
+
+                            /**
+                             * Sets [Builder.type] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.type] with a well-typed [String]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
+                            fun type(type: JsonField<String>) = apply { this.type = type }
+
+                            /** Files this annotation cites. */
+                            fun files(files: List<File>) = files(JsonField.of(files))
+
+                            /**
+                             * Sets [Builder.files] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.files] with a well-typed
+                             * `List<File>` value instead. This method is primarily for setting the
+                             * field to an undocumented or not yet supported value.
+                             */
+                            fun files(files: JsonField<List<File>>) = apply {
+                                this.files = files.map { it.toMutableList() }
+                            }
+
+                            /**
+                             * Adds a single [File] to [files].
+                             *
+                             * @throws IllegalStateException if the field was previously set to a
+                             *   non-list.
+                             */
+                            fun addFile(file: File) = apply {
+                                files =
+                                    (files ?: JsonField.of(mutableListOf())).also {
+                                        checkKnown("files", it).add(file)
+                                    }
+                            }
+
+                            /** URLs this annotation cites. */
+                            fun urls(urls: List<String>) = urls(JsonField.of(urls))
+
+                            /**
+                             * Sets [Builder.urls] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.urls] with a well-typed
+                             * `List<String>` value instead. This method is primarily for setting
+                             * the field to an undocumented or not yet supported value.
+                             */
+                            fun urls(urls: JsonField<List<String>>) = apply {
+                                this.urls = urls.map { it.toMutableList() }
+                            }
+
+                            /**
+                             * Adds a single [String] to [urls].
+                             *
+                             * @throws IllegalStateException if the field was previously set to a
+                             *   non-list.
+                             */
+                            fun addUrl(url: String) = apply {
+                                urls =
+                                    (urls ?: JsonField.of(mutableListOf())).also {
+                                        checkKnown("urls", it).add(url)
+                                    }
+                            }
+
+                            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                                apply {
+                                    this.additionalProperties.clear()
+                                    putAllAdditionalProperties(additionalProperties)
+                                }
+
+                            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                additionalProperties.put(key, value)
+                            }
+
+                            fun putAllAdditionalProperties(
+                                additionalProperties: Map<String, JsonValue>
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                            fun removeAdditionalProperty(key: String) = apply {
+                                additionalProperties.remove(key)
+                            }
+
+                            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                keys.forEach(::removeAdditionalProperty)
+                            }
+
+                            /**
+                             * Returns an immutable instance of [Annotation].
+                             *
+                             * Further updates to this [Builder] will not mutate the returned
+                             * instance.
+                             *
+                             * The following fields are required:
+                             * ```java
+                             * .type()
+                             * ```
+                             *
+                             * @throws IllegalStateException if any required field is unset.
+                             */
+                            fun build(): Annotation =
+                                Annotation(
+                                    checkRequired("type", type),
+                                    (files ?: JsonMissing.of()).map { it.toImmutable() },
+                                    (urls ?: JsonMissing.of()).map { it.toImmutable() },
+                                    additionalProperties.toMutableMap(),
+                                )
+                        }
+
+                        private var validated: Boolean = false
+
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws HiddenLayerInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
+                        fun validate(): Annotation = apply {
+                            if (validated) {
+                                return@apply
+                            }
+
+                            type()
+                            files().ifPresent { it.forEach { it.validate() } }
+                            urls()
+                            validated = true
+                        }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: HiddenLayerInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (type.asKnown().isPresent) 1 else 0) +
+                                (files.asKnown().getOrNull()?.sumOf { it.validity().toInt() }
+                                    ?: 0) +
+                                (urls.asKnown().getOrNull()?.size ?: 0)
+
+                        /**
+                         * A file referenced by a message, whether attached to it or cited by its
+                         * content.
+                         */
+                        class File
+                        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                        private constructor(
+                            private val id: JsonField<String>,
+                            private val name: JsonField<String>,
+                            private val additionalProperties: MutableMap<String, JsonValue>,
+                        ) {
+
+                            @JsonCreator
+                            private constructor(
+                                @JsonProperty("id")
+                                @ExcludeMissing
+                                id: JsonField<String> = JsonMissing.of(),
+                                @JsonProperty("name")
+                                @ExcludeMissing
+                                name: JsonField<String> = JsonMissing.of(),
+                            ) : this(id, name, mutableMapOf())
+
+                            /**
+                             * Provider-assigned identifier for the file.
+                             *
+                             * @throws HiddenLayerInvalidDataException if the JSON field has an
+                             *   unexpected type or is unexpectedly missing or null (e.g. if the
+                             *   server responded with an unexpected value).
+                             */
+                            fun id(): String = id.getRequired("id")
+
+                            /**
+                             * Filename as presented to the user.
+                             *
+                             * @throws HiddenLayerInvalidDataException if the JSON field has an
+                             *   unexpected type (e.g. if the server responded with an unexpected
+                             *   value).
+                             */
+                            fun name(): Optional<String> = name.getOptional("name")
+
+                            /**
+                             * Returns the raw JSON value of [id].
+                             *
+                             * Unlike [id], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
+                            @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+                            /**
+                             * Returns the raw JSON value of [name].
+                             *
+                             * Unlike [name], this method doesn't throw if the JSON field has an
+                             * unexpected type.
+                             */
+                            @JsonProperty("name")
+                            @ExcludeMissing
+                            fun _name(): JsonField<String> = name
+
+                            @JsonAnySetter
+                            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                                additionalProperties.put(key, value)
+                            }
+
+                            @JsonAnyGetter
+                            @ExcludeMissing
+                            fun _additionalProperties(): Map<String, JsonValue> =
+                                Collections.unmodifiableMap(additionalProperties)
+
+                            fun toBuilder() = Builder().from(this)
+
+                            companion object {
+
+                                /**
+                                 * Returns a mutable builder for constructing an instance of [File].
+                                 *
+                                 * The following fields are required:
+                                 * ```java
+                                 * .id()
+                                 * ```
+                                 */
+                                @JvmStatic fun builder() = Builder()
+                            }
+
+                            /** A builder for [File]. */
+                            class Builder internal constructor() {
+
+                                private var id: JsonField<String>? = null
+                                private var name: JsonField<String> = JsonMissing.of()
+                                private var additionalProperties: MutableMap<String, JsonValue> =
+                                    mutableMapOf()
+
+                                @JvmSynthetic
+                                internal fun from(file: File) = apply {
+                                    id = file.id
+                                    name = file.name
+                                    additionalProperties = file.additionalProperties.toMutableMap()
+                                }
+
+                                /** Provider-assigned identifier for the file. */
+                                fun id(id: String) = id(JsonField.of(id))
+
+                                /**
+                                 * Sets [Builder.id] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.id] with a well-typed [String]
+                                 * value instead. This method is primarily for setting the field to
+                                 * an undocumented or not yet supported value.
+                                 */
+                                fun id(id: JsonField<String>) = apply { this.id = id }
+
+                                /** Filename as presented to the user. */
+                                fun name(name: String) = name(JsonField.of(name))
+
+                                /**
+                                 * Sets [Builder.name] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.name] with a well-typed [String]
+                                 * value instead. This method is primarily for setting the field to
+                                 * an undocumented or not yet supported value.
+                                 */
+                                fun name(name: JsonField<String>) = apply { this.name = name }
+
+                                fun additionalProperties(
+                                    additionalProperties: Map<String, JsonValue>
+                                ) = apply {
+                                    this.additionalProperties.clear()
+                                    putAllAdditionalProperties(additionalProperties)
+                                }
+
+                                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                    additionalProperties.put(key, value)
+                                }
+
+                                fun putAllAdditionalProperties(
+                                    additionalProperties: Map<String, JsonValue>
+                                ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                                fun removeAdditionalProperty(key: String) = apply {
+                                    additionalProperties.remove(key)
+                                }
+
+                                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                    keys.forEach(::removeAdditionalProperty)
+                                }
+
+                                /**
+                                 * Returns an immutable instance of [File].
+                                 *
+                                 * Further updates to this [Builder] will not mutate the returned
+                                 * instance.
+                                 *
+                                 * The following fields are required:
+                                 * ```java
+                                 * .id()
+                                 * ```
+                                 *
+                                 * @throws IllegalStateException if any required field is unset.
+                                 */
+                                fun build(): File =
+                                    File(
+                                        checkRequired("id", id),
+                                        name,
+                                        additionalProperties.toMutableMap(),
+                                    )
+                            }
+
+                            private var validated: Boolean = false
+
+                            /**
+                             * Validates that the types of all values in this object match their
+                             * expected types recursively.
+                             *
+                             * This method is _not_ forwards compatible with new types from the API
+                             * for existing fields.
+                             *
+                             * @throws HiddenLayerInvalidDataException if any value type in this
+                             *   object doesn't match its expected type.
+                             */
+                            fun validate(): File = apply {
+                                if (validated) {
+                                    return@apply
+                                }
+
+                                id()
+                                name()
+                                validated = true
+                            }
+
+                            fun isValid(): Boolean =
+                                try {
+                                    validate()
+                                    true
+                                } catch (e: HiddenLayerInvalidDataException) {
+                                    false
+                                }
+
+                            /**
+                             * Returns a score indicating how many valid values are contained in
+                             * this object recursively.
+                             *
+                             * Used for best match union deserialization.
+                             */
+                            @JvmSynthetic
+                            internal fun validity(): Int =
+                                (if (id.asKnown().isPresent) 1 else 0) +
+                                    (if (name.asKnown().isPresent) 1 else 0)
+
+                            override fun equals(other: Any?): Boolean {
+                                if (this === other) {
+                                    return true
+                                }
+
+                                return other is File &&
+                                    id == other.id &&
+                                    name == other.name &&
+                                    additionalProperties == other.additionalProperties
+                            }
+
+                            private val hashCode: Int by lazy {
+                                Objects.hash(id, name, additionalProperties)
+                            }
+
+                            override fun hashCode(): Int = hashCode
+
+                            override fun toString() =
+                                "File{id=$id, name=$name, additionalProperties=$additionalProperties}"
+                        }
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return other is Annotation &&
+                                type == other.type &&
+                                files == other.files &&
+                                urls == other.urls &&
+                                additionalProperties == other.additionalProperties
+                        }
+
+                        private val hashCode: Int by lazy {
+                            Objects.hash(type, files, urls, additionalProperties)
+                        }
+
+                        override fun hashCode(): Int = hashCode
+
+                        override fun toString() =
+                            "Annotation{type=$type, files=$files, urls=$urls, additionalProperties=$additionalProperties}"
+                    }
 
                     override fun equals(other: Any?): Boolean {
                         if (this === other) {
@@ -1335,17 +2043,18 @@ private constructor(
                         return other is Text &&
                             text == other.text &&
                             type == other.type &&
+                            annotations == other.annotations &&
                             additionalProperties == other.additionalProperties
                     }
 
                     private val hashCode: Int by lazy {
-                        Objects.hash(text, type, additionalProperties)
+                        Objects.hash(text, type, annotations, additionalProperties)
                     }
 
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "Text{text=$text, type=$type, additionalProperties=$additionalProperties}"
+                        "Text{text=$text, type=$type, annotations=$annotations, additionalProperties=$additionalProperties}"
                 }
 
                 /** A tool invocation part representing a tool call by the assistant. */
@@ -2409,6 +3118,218 @@ private constructor(
                     "Analysis{signals=$signals, additionalProperties=$additionalProperties}"
             }
 
+            /** A file referenced by a message, whether attached to it or cited by its content. */
+            class Attachment
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+            private constructor(
+                private val id: JsonField<String>,
+                private val name: JsonField<String>,
+                private val additionalProperties: MutableMap<String, JsonValue>,
+            ) {
+
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+                ) : this(id, name, mutableMapOf())
+
+                /**
+                 * Provider-assigned identifier for the file.
+                 *
+                 * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+                 *   or is unexpectedly missing or null (e.g. if the server responded with an
+                 *   unexpected value).
+                 */
+                fun id(): String = id.getRequired("id")
+
+                /**
+                 * Filename as presented to the user.
+                 *
+                 * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun name(): Optional<String> = name.getOptional("name")
+
+                /**
+                 * Returns the raw JSON value of [id].
+                 *
+                 * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+                 */
+                @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+                /**
+                 * Returns the raw JSON value of [name].
+                 *
+                 * Unlike [name], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
+                @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+                @JsonAnySetter
+                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                    additionalProperties.put(key, value)
+                }
+
+                @JsonAnyGetter
+                @ExcludeMissing
+                fun _additionalProperties(): Map<String, JsonValue> =
+                    Collections.unmodifiableMap(additionalProperties)
+
+                fun toBuilder() = Builder().from(this)
+
+                companion object {
+
+                    /**
+                     * Returns a mutable builder for constructing an instance of [Attachment].
+                     *
+                     * The following fields are required:
+                     * ```java
+                     * .id()
+                     * ```
+                     */
+                    @JvmStatic fun builder() = Builder()
+                }
+
+                /** A builder for [Attachment]. */
+                class Builder internal constructor() {
+
+                    private var id: JsonField<String>? = null
+                    private var name: JsonField<String> = JsonMissing.of()
+                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                    @JvmSynthetic
+                    internal fun from(attachment: Attachment) = apply {
+                        id = attachment.id
+                        name = attachment.name
+                        additionalProperties = attachment.additionalProperties.toMutableMap()
+                    }
+
+                    /** Provider-assigned identifier for the file. */
+                    fun id(id: String) = id(JsonField.of(id))
+
+                    /**
+                     * Sets [Builder.id] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.id] with a well-typed [String] value
+                     * instead. This method is primarily for setting the field to an undocumented or
+                     * not yet supported value.
+                     */
+                    fun id(id: JsonField<String>) = apply { this.id = id }
+
+                    /** Filename as presented to the user. */
+                    fun name(name: String) = name(JsonField.of(name))
+
+                    /**
+                     * Sets [Builder.name] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.name] with a well-typed [String] value
+                     * instead. This method is primarily for setting the field to an undocumented or
+                     * not yet supported value.
+                     */
+                    fun name(name: JsonField<String>) = apply { this.name = name }
+
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
+
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
+
+                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                        apply {
+                            this.additionalProperties.putAll(additionalProperties)
+                        }
+
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
+                    /**
+                     * Returns an immutable instance of [Attachment].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     *
+                     * The following fields are required:
+                     * ```java
+                     * .id()
+                     * ```
+                     *
+                     * @throws IllegalStateException if any required field is unset.
+                     */
+                    fun build(): Attachment =
+                        Attachment(
+                            checkRequired("id", id),
+                            name,
+                            additionalProperties.toMutableMap(),
+                        )
+                }
+
+                private var validated: Boolean = false
+
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws HiddenLayerInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
+                fun validate(): Attachment = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    id()
+                    name()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: HiddenLayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    (if (id.asKnown().isPresent) 1 else 0) +
+                        (if (name.asKnown().isPresent) 1 else 0)
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is Attachment &&
+                        id == other.id &&
+                        name == other.name &&
+                        additionalProperties == other.additionalProperties
+                }
+
+                private val hashCode: Int by lazy { Objects.hash(id, name, additionalProperties) }
+
+                override fun hashCode(): Int = hashCode
+
+                override fun toString() =
+                    "Attachment{id=$id, name=$name, additionalProperties=$additionalProperties}"
+            }
+
             /**
              * Optional timestamp for when this message was created. When supplied, `value` is
              * required.
@@ -2601,18 +3522,28 @@ private constructor(
                     content == other.content &&
                     role == other.role &&
                     analysis == other.analysis &&
+                    attachments == other.attachments &&
                     timestamp == other.timestamp &&
+                    toolsUsed == other.toolsUsed &&
                     additionalProperties == other.additionalProperties
             }
 
             private val hashCode: Int by lazy {
-                Objects.hash(content, role, analysis, timestamp, additionalProperties)
+                Objects.hash(
+                    content,
+                    role,
+                    analysis,
+                    attachments,
+                    timestamp,
+                    toolsUsed,
+                    additionalProperties,
+                )
             }
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "Message{content=$content, role=$role, analysis=$analysis, timestamp=$timestamp, additionalProperties=$additionalProperties}"
+                "Message{content=$content, role=$role, analysis=$analysis, attachments=$attachments, timestamp=$timestamp, toolsUsed=$toolsUsed, additionalProperties=$additionalProperties}"
         }
 
         /**
@@ -5224,7 +6155,9 @@ private constructor(
                 private constructor(
                     private val content: JsonField<List<Content>>,
                     private val role: JsonField<String>,
+                    private val attachments: JsonField<List<Attachment>>,
                     private val timestamp: JsonField<Timestamp>,
+                    private val toolsUsed: JsonField<List<String>>,
                     private val additionalProperties: MutableMap<String, JsonValue>,
                 ) {
 
@@ -5236,10 +6169,16 @@ private constructor(
                         @JsonProperty("role")
                         @ExcludeMissing
                         role: JsonField<String> = JsonMissing.of(),
+                        @JsonProperty("attachments")
+                        @ExcludeMissing
+                        attachments: JsonField<List<Attachment>> = JsonMissing.of(),
                         @JsonProperty("timestamp")
                         @ExcludeMissing
                         timestamp: JsonField<Timestamp> = JsonMissing.of(),
-                    ) : this(content, role, timestamp, mutableMapOf())
+                        @JsonProperty("tools_used")
+                        @ExcludeMissing
+                        toolsUsed: JsonField<List<String>> = JsonMissing.of(),
+                    ) : this(content, role, attachments, timestamp, toolsUsed, mutableMapOf())
 
                     /**
                      * Array of content parts representing the message content. Each part has a
@@ -5265,6 +6204,16 @@ private constructor(
                     fun role(): String = role.getRequired("role")
 
                     /**
+                     * Files supplied with the message by its author, as distinct from files its
+                     * content cites.
+                     *
+                     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected
+                     *   type (e.g. if the server responded with an unexpected value).
+                     */
+                    fun attachments(): Optional<List<Attachment>> =
+                        attachments.getOptional("attachments")
+
+                    /**
                      * Optional timestamp for when this message was created. When supplied, `value`
                      * is required.
                      *
@@ -5272,6 +6221,15 @@ private constructor(
                      *   type (e.g. if the server responded with an unexpected value).
                      */
                     fun timestamp(): Optional<Timestamp> = timestamp.getOptional("timestamp")
+
+                    /**
+                     * Names of provider-hosted tools invoked while producing this message. Tools
+                     * the model called directly appear as `tool_use` content parts instead.
+                     *
+                     * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected
+                     *   type (e.g. if the server responded with an unexpected value).
+                     */
+                    fun toolsUsed(): Optional<List<String>> = toolsUsed.getOptional("tools_used")
 
                     /**
                      * Returns the raw JSON value of [content].
@@ -5292,6 +6250,16 @@ private constructor(
                     @JsonProperty("role") @ExcludeMissing fun _role(): JsonField<String> = role
 
                     /**
+                     * Returns the raw JSON value of [attachments].
+                     *
+                     * Unlike [attachments], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("attachments")
+                    @ExcludeMissing
+                    fun _attachments(): JsonField<List<Attachment>> = attachments
+
+                    /**
                      * Returns the raw JSON value of [timestamp].
                      *
                      * Unlike [timestamp], this method doesn't throw if the JSON field has an
@@ -5300,6 +6268,16 @@ private constructor(
                     @JsonProperty("timestamp")
                     @ExcludeMissing
                     fun _timestamp(): JsonField<Timestamp> = timestamp
+
+                    /**
+                     * Returns the raw JSON value of [toolsUsed].
+                     *
+                     * Unlike [toolsUsed], this method doesn't throw if the JSON field has an
+                     * unexpected type.
+                     */
+                    @JsonProperty("tools_used")
+                    @ExcludeMissing
+                    fun _toolsUsed(): JsonField<List<String>> = toolsUsed
 
                     @JsonAnySetter
                     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -5332,7 +6310,9 @@ private constructor(
 
                         private var content: JsonField<MutableList<Content>>? = null
                         private var role: JsonField<String>? = null
+                        private var attachments: JsonField<MutableList<Attachment>>? = null
                         private var timestamp: JsonField<Timestamp> = JsonMissing.of()
+                        private var toolsUsed: JsonField<MutableList<String>>? = null
                         private var additionalProperties: MutableMap<String, JsonValue> =
                             mutableMapOf()
 
@@ -5340,7 +6320,9 @@ private constructor(
                         internal fun from(message: Message) = apply {
                             content = message.content.map { it.toMutableList() }
                             role = message.role
+                            attachments = message.attachments.map { it.toMutableList() }
                             timestamp = message.timestamp
+                            toolsUsed = message.toolsUsed.map { it.toMutableList() }
                             additionalProperties = message.additionalProperties.toMutableMap()
                         }
 
@@ -5417,6 +6399,37 @@ private constructor(
                         fun role(role: JsonField<String>) = apply { this.role = role }
 
                         /**
+                         * Files supplied with the message by its author, as distinct from files its
+                         * content cites.
+                         */
+                        fun attachments(attachments: List<Attachment>) =
+                            attachments(JsonField.of(attachments))
+
+                        /**
+                         * Sets [Builder.attachments] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.attachments] with a well-typed
+                         * `List<Attachment>` value instead. This method is primarily for setting
+                         * the field to an undocumented or not yet supported value.
+                         */
+                        fun attachments(attachments: JsonField<List<Attachment>>) = apply {
+                            this.attachments = attachments.map { it.toMutableList() }
+                        }
+
+                        /**
+                         * Adds a single [Attachment] to [attachments].
+                         *
+                         * @throws IllegalStateException if the field was previously set to a
+                         *   non-list.
+                         */
+                        fun addAttachment(attachment: Attachment) = apply {
+                            attachments =
+                                (attachments ?: JsonField.of(mutableListOf())).also {
+                                    checkKnown("attachments", it).add(attachment)
+                                }
+                        }
+
+                        /**
                          * Optional timestamp for when this message was created. When supplied,
                          * `value` is required.
                          */
@@ -5431,6 +6444,37 @@ private constructor(
                          */
                         fun timestamp(timestamp: JsonField<Timestamp>) = apply {
                             this.timestamp = timestamp
+                        }
+
+                        /**
+                         * Names of provider-hosted tools invoked while producing this message.
+                         * Tools the model called directly appear as `tool_use` content parts
+                         * instead.
+                         */
+                        fun toolsUsed(toolsUsed: List<String>) = toolsUsed(JsonField.of(toolsUsed))
+
+                        /**
+                         * Sets [Builder.toolsUsed] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.toolsUsed] with a well-typed
+                         * `List<String>` value instead. This method is primarily for setting the
+                         * field to an undocumented or not yet supported value.
+                         */
+                        fun toolsUsed(toolsUsed: JsonField<List<String>>) = apply {
+                            this.toolsUsed = toolsUsed.map { it.toMutableList() }
+                        }
+
+                        /**
+                         * Adds a single [String] to [Builder.toolsUsed].
+                         *
+                         * @throws IllegalStateException if the field was previously set to a
+                         *   non-list.
+                         */
+                        fun addToolsUsed(toolsUsed: String) = apply {
+                            this.toolsUsed =
+                                (this.toolsUsed ?: JsonField.of(mutableListOf())).also {
+                                    checkKnown("toolsUsed", it).add(toolsUsed)
+                                }
                         }
 
                         fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -5472,7 +6516,9 @@ private constructor(
                             Message(
                                 checkRequired("content", content).map { it.toImmutable() },
                                 checkRequired("role", role),
+                                (attachments ?: JsonMissing.of()).map { it.toImmutable() },
                                 timestamp,
+                                (toolsUsed ?: JsonMissing.of()).map { it.toImmutable() },
                                 additionalProperties.toMutableMap(),
                             )
                     }
@@ -5496,7 +6542,9 @@ private constructor(
 
                         content().forEach { it.validate() }
                         role()
+                        attachments().ifPresent { it.forEach { it.validate() } }
                         timestamp().ifPresent { it.validate() }
+                        toolsUsed()
                         validated = true
                     }
 
@@ -5518,7 +6566,10 @@ private constructor(
                     internal fun validity(): Int =
                         (content.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                             (if (role.asKnown().isPresent) 1 else 0) +
-                            (timestamp.asKnown().getOrNull()?.validity() ?: 0)
+                            (attachments.asKnown().getOrNull()?.sumOf { it.validity().toInt() }
+                                ?: 0) +
+                            (timestamp.asKnown().getOrNull()?.validity() ?: 0) +
+                            (toolsUsed.asKnown().getOrNull()?.size ?: 0)
 
                     /** A content part within an individual message. */
                     @JsonDeserialize(using = Content.Deserializer::class)
@@ -5785,6 +6836,7 @@ private constructor(
                         private constructor(
                             private val text: JsonField<String>,
                             private val type: JsonValue,
+                            private val annotations: JsonField<List<Annotation>>,
                             private val additionalProperties: MutableMap<String, JsonValue>,
                         ) {
 
@@ -5796,7 +6848,10 @@ private constructor(
                                 @JsonProperty("type")
                                 @ExcludeMissing
                                 type: JsonValue = JsonMissing.of(),
-                            ) : this(text, type, mutableMapOf())
+                                @JsonProperty("annotations")
+                                @ExcludeMissing
+                                annotations: JsonField<List<Annotation>> = JsonMissing.of(),
+                            ) : this(text, type, annotations, mutableMapOf())
 
                             /**
                              * The text content.
@@ -5821,6 +6876,17 @@ private constructor(
                             @JsonProperty("type") @ExcludeMissing fun _type(): JsonValue = type
 
                             /**
+                             * External sources this text drew on. Absent when the text cites
+                             * nothing.
+                             *
+                             * @throws HiddenLayerInvalidDataException if the JSON field has an
+                             *   unexpected type (e.g. if the server responded with an unexpected
+                             *   value).
+                             */
+                            fun annotations(): Optional<List<Annotation>> =
+                                annotations.getOptional("annotations")
+
+                            /**
                              * Returns the raw JSON value of [text].
                              *
                              * Unlike [text], this method doesn't throw if the JSON field has an
@@ -5829,6 +6895,16 @@ private constructor(
                             @JsonProperty("text")
                             @ExcludeMissing
                             fun _text(): JsonField<String> = text
+
+                            /**
+                             * Returns the raw JSON value of [annotations].
+                             *
+                             * Unlike [annotations], this method doesn't throw if the JSON field has
+                             * an unexpected type.
+                             */
+                            @JsonProperty("annotations")
+                            @ExcludeMissing
+                            fun _annotations(): JsonField<List<Annotation>> = annotations
 
                             @JsonAnySetter
                             private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -5860,6 +6936,7 @@ private constructor(
 
                                 private var text: JsonField<String>? = null
                                 private var type: JsonValue = JsonValue.from("text")
+                                private var annotations: JsonField<MutableList<Annotation>>? = null
                                 private var additionalProperties: MutableMap<String, JsonValue> =
                                     mutableMapOf()
 
@@ -5867,6 +6944,7 @@ private constructor(
                                 internal fun from(text: Text) = apply {
                                     this.text = text.text
                                     type = text.type
+                                    annotations = text.annotations.map { it.toMutableList() }
                                     additionalProperties = text.additionalProperties.toMutableMap()
                                 }
 
@@ -5895,6 +6973,37 @@ private constructor(
                                  * or not yet supported value.
                                  */
                                 fun type(type: JsonValue) = apply { this.type = type }
+
+                                /**
+                                 * External sources this text drew on. Absent when the text cites
+                                 * nothing.
+                                 */
+                                fun annotations(annotations: List<Annotation>) =
+                                    annotations(JsonField.of(annotations))
+
+                                /**
+                                 * Sets [Builder.annotations] to an arbitrary JSON value.
+                                 *
+                                 * You should usually call [Builder.annotations] with a well-typed
+                                 * `List<Annotation>` value instead. This method is primarily for
+                                 * setting the field to an undocumented or not yet supported value.
+                                 */
+                                fun annotations(annotations: JsonField<List<Annotation>>) = apply {
+                                    this.annotations = annotations.map { it.toMutableList() }
+                                }
+
+                                /**
+                                 * Adds a single [Annotation] to [annotations].
+                                 *
+                                 * @throws IllegalStateException if the field was previously set to
+                                 *   a non-list.
+                                 */
+                                fun addAnnotation(annotation: Annotation) = apply {
+                                    annotations =
+                                        (annotations ?: JsonField.of(mutableListOf())).also {
+                                            checkKnown("annotations", it).add(annotation)
+                                        }
+                                }
 
                                 fun additionalProperties(
                                     additionalProperties: Map<String, JsonValue>
@@ -5936,6 +7045,7 @@ private constructor(
                                     Text(
                                         checkRequired("text", text),
                                         type,
+                                        (annotations ?: JsonMissing.of()).map { it.toImmutable() },
                                         additionalProperties.toMutableMap(),
                                     )
                             }
@@ -5965,6 +7075,7 @@ private constructor(
                                         )
                                     }
                                 }
+                                annotations().ifPresent { it.forEach { it.validate() } }
                                 validated = true
                             }
 
@@ -5985,7 +7096,571 @@ private constructor(
                             @JvmSynthetic
                             internal fun validity(): Int =
                                 (if (text.asKnown().isPresent) 1 else 0) +
-                                    type.let { if (it == JsonValue.from("text")) 1 else 0 }
+                                    type.let { if (it == JsonValue.from("text")) 1 else 0 } +
+                                    (annotations.asKnown().getOrNull()?.sumOf {
+                                        it.validity().toInt()
+                                    } ?: 0)
+
+                            /** An external source a span of message content drew on. */
+                            class Annotation
+                            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                            private constructor(
+                                private val type: JsonField<String>,
+                                private val files: JsonField<List<File>>,
+                                private val urls: JsonField<List<String>>,
+                                private val additionalProperties: MutableMap<String, JsonValue>,
+                            ) {
+
+                                @JsonCreator
+                                private constructor(
+                                    @JsonProperty("type")
+                                    @ExcludeMissing
+                                    type: JsonField<String> = JsonMissing.of(),
+                                    @JsonProperty("files")
+                                    @ExcludeMissing
+                                    files: JsonField<List<File>> = JsonMissing.of(),
+                                    @JsonProperty("urls")
+                                    @ExcludeMissing
+                                    urls: JsonField<List<String>> = JsonMissing.of(),
+                                ) : this(type, files, urls, mutableMapOf())
+
+                                /**
+                                 * The kind of source cited, as reported by the provider. Common
+                                 * values include:
+                                 * - `url_citation`: A web page
+                                 * - `file_citation`: A file available to the conversation
+                                 *
+                                 * @throws HiddenLayerInvalidDataException if the JSON field has an
+                                 *   unexpected type or is unexpectedly missing or null (e.g. if the
+                                 *   server responded with an unexpected value).
+                                 */
+                                fun type(): String = type.getRequired("type")
+
+                                /**
+                                 * Files this annotation cites.
+                                 *
+                                 * @throws HiddenLayerInvalidDataException if the JSON field has an
+                                 *   unexpected type (e.g. if the server responded with an
+                                 *   unexpected value).
+                                 */
+                                fun files(): Optional<List<File>> = files.getOptional("files")
+
+                                /**
+                                 * URLs this annotation cites.
+                                 *
+                                 * @throws HiddenLayerInvalidDataException if the JSON field has an
+                                 *   unexpected type (e.g. if the server responded with an
+                                 *   unexpected value).
+                                 */
+                                fun urls(): Optional<List<String>> = urls.getOptional("urls")
+
+                                /**
+                                 * Returns the raw JSON value of [type].
+                                 *
+                                 * Unlike [type], this method doesn't throw if the JSON field has an
+                                 * unexpected type.
+                                 */
+                                @JsonProperty("type")
+                                @ExcludeMissing
+                                fun _type(): JsonField<String> = type
+
+                                /**
+                                 * Returns the raw JSON value of [files].
+                                 *
+                                 * Unlike [files], this method doesn't throw if the JSON field has
+                                 * an unexpected type.
+                                 */
+                                @JsonProperty("files")
+                                @ExcludeMissing
+                                fun _files(): JsonField<List<File>> = files
+
+                                /**
+                                 * Returns the raw JSON value of [urls].
+                                 *
+                                 * Unlike [urls], this method doesn't throw if the JSON field has an
+                                 * unexpected type.
+                                 */
+                                @JsonProperty("urls")
+                                @ExcludeMissing
+                                fun _urls(): JsonField<List<String>> = urls
+
+                                @JsonAnySetter
+                                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                                    additionalProperties.put(key, value)
+                                }
+
+                                @JsonAnyGetter
+                                @ExcludeMissing
+                                fun _additionalProperties(): Map<String, JsonValue> =
+                                    Collections.unmodifiableMap(additionalProperties)
+
+                                fun toBuilder() = Builder().from(this)
+
+                                companion object {
+
+                                    /**
+                                     * Returns a mutable builder for constructing an instance of
+                                     * [Annotation].
+                                     *
+                                     * The following fields are required:
+                                     * ```java
+                                     * .type()
+                                     * ```
+                                     */
+                                    @JvmStatic fun builder() = Builder()
+                                }
+
+                                /** A builder for [Annotation]. */
+                                class Builder internal constructor() {
+
+                                    private var type: JsonField<String>? = null
+                                    private var files: JsonField<MutableList<File>>? = null
+                                    private var urls: JsonField<MutableList<String>>? = null
+                                    private var additionalProperties:
+                                        MutableMap<String, JsonValue> =
+                                        mutableMapOf()
+
+                                    @JvmSynthetic
+                                    internal fun from(annotation: Annotation) = apply {
+                                        type = annotation.type
+                                        files = annotation.files.map { it.toMutableList() }
+                                        urls = annotation.urls.map { it.toMutableList() }
+                                        additionalProperties =
+                                            annotation.additionalProperties.toMutableMap()
+                                    }
+
+                                    /**
+                                     * The kind of source cited, as reported by the provider. Common
+                                     * values include:
+                                     * - `url_citation`: A web page
+                                     * - `file_citation`: A file available to the conversation
+                                     */
+                                    fun type(type: String) = type(JsonField.of(type))
+
+                                    /**
+                                     * Sets [Builder.type] to an arbitrary JSON value.
+                                     *
+                                     * You should usually call [Builder.type] with a well-typed
+                                     * [String] value instead. This method is primarily for setting
+                                     * the field to an undocumented or not yet supported value.
+                                     */
+                                    fun type(type: JsonField<String>) = apply { this.type = type }
+
+                                    /** Files this annotation cites. */
+                                    fun files(files: List<File>) = files(JsonField.of(files))
+
+                                    /**
+                                     * Sets [Builder.files] to an arbitrary JSON value.
+                                     *
+                                     * You should usually call [Builder.files] with a well-typed
+                                     * `List<File>` value instead. This method is primarily for
+                                     * setting the field to an undocumented or not yet supported
+                                     * value.
+                                     */
+                                    fun files(files: JsonField<List<File>>) = apply {
+                                        this.files = files.map { it.toMutableList() }
+                                    }
+
+                                    /**
+                                     * Adds a single [File] to [files].
+                                     *
+                                     * @throws IllegalStateException if the field was previously set
+                                     *   to a non-list.
+                                     */
+                                    fun addFile(file: File) = apply {
+                                        files =
+                                            (files ?: JsonField.of(mutableListOf())).also {
+                                                checkKnown("files", it).add(file)
+                                            }
+                                    }
+
+                                    /** URLs this annotation cites. */
+                                    fun urls(urls: List<String>) = urls(JsonField.of(urls))
+
+                                    /**
+                                     * Sets [Builder.urls] to an arbitrary JSON value.
+                                     *
+                                     * You should usually call [Builder.urls] with a well-typed
+                                     * `List<String>` value instead. This method is primarily for
+                                     * setting the field to an undocumented or not yet supported
+                                     * value.
+                                     */
+                                    fun urls(urls: JsonField<List<String>>) = apply {
+                                        this.urls = urls.map { it.toMutableList() }
+                                    }
+
+                                    /**
+                                     * Adds a single [String] to [urls].
+                                     *
+                                     * @throws IllegalStateException if the field was previously set
+                                     *   to a non-list.
+                                     */
+                                    fun addUrl(url: String) = apply {
+                                        urls =
+                                            (urls ?: JsonField.of(mutableListOf())).also {
+                                                checkKnown("urls", it).add(url)
+                                            }
+                                    }
+
+                                    fun additionalProperties(
+                                        additionalProperties: Map<String, JsonValue>
+                                    ) = apply {
+                                        this.additionalProperties.clear()
+                                        putAllAdditionalProperties(additionalProperties)
+                                    }
+
+                                    fun putAdditionalProperty(key: String, value: JsonValue) =
+                                        apply {
+                                            additionalProperties.put(key, value)
+                                        }
+
+                                    fun putAllAdditionalProperties(
+                                        additionalProperties: Map<String, JsonValue>
+                                    ) = apply {
+                                        this.additionalProperties.putAll(additionalProperties)
+                                    }
+
+                                    fun removeAdditionalProperty(key: String) = apply {
+                                        additionalProperties.remove(key)
+                                    }
+
+                                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                        keys.forEach(::removeAdditionalProperty)
+                                    }
+
+                                    /**
+                                     * Returns an immutable instance of [Annotation].
+                                     *
+                                     * Further updates to this [Builder] will not mutate the
+                                     * returned instance.
+                                     *
+                                     * The following fields are required:
+                                     * ```java
+                                     * .type()
+                                     * ```
+                                     *
+                                     * @throws IllegalStateException if any required field is unset.
+                                     */
+                                    fun build(): Annotation =
+                                        Annotation(
+                                            checkRequired("type", type),
+                                            (files ?: JsonMissing.of()).map { it.toImmutable() },
+                                            (urls ?: JsonMissing.of()).map { it.toImmutable() },
+                                            additionalProperties.toMutableMap(),
+                                        )
+                                }
+
+                                private var validated: Boolean = false
+
+                                /**
+                                 * Validates that the types of all values in this object match their
+                                 * expected types recursively.
+                                 *
+                                 * This method is _not_ forwards compatible with new types from the
+                                 * API for existing fields.
+                                 *
+                                 * @throws HiddenLayerInvalidDataException if any value type in this
+                                 *   object doesn't match its expected type.
+                                 */
+                                fun validate(): Annotation = apply {
+                                    if (validated) {
+                                        return@apply
+                                    }
+
+                                    type()
+                                    files().ifPresent { it.forEach { it.validate() } }
+                                    urls()
+                                    validated = true
+                                }
+
+                                fun isValid(): Boolean =
+                                    try {
+                                        validate()
+                                        true
+                                    } catch (e: HiddenLayerInvalidDataException) {
+                                        false
+                                    }
+
+                                /**
+                                 * Returns a score indicating how many valid values are contained in
+                                 * this object recursively.
+                                 *
+                                 * Used for best match union deserialization.
+                                 */
+                                @JvmSynthetic
+                                internal fun validity(): Int =
+                                    (if (type.asKnown().isPresent) 1 else 0) +
+                                        (files.asKnown().getOrNull()?.sumOf {
+                                            it.validity().toInt()
+                                        } ?: 0) +
+                                        (urls.asKnown().getOrNull()?.size ?: 0)
+
+                                /**
+                                 * A file referenced by a message, whether attached to it or cited
+                                 * by its content.
+                                 */
+                                class File
+                                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                                private constructor(
+                                    private val id: JsonField<String>,
+                                    private val name: JsonField<String>,
+                                    private val additionalProperties: MutableMap<String, JsonValue>,
+                                ) {
+
+                                    @JsonCreator
+                                    private constructor(
+                                        @JsonProperty("id")
+                                        @ExcludeMissing
+                                        id: JsonField<String> = JsonMissing.of(),
+                                        @JsonProperty("name")
+                                        @ExcludeMissing
+                                        name: JsonField<String> = JsonMissing.of(),
+                                    ) : this(id, name, mutableMapOf())
+
+                                    /**
+                                     * Provider-assigned identifier for the file.
+                                     *
+                                     * @throws HiddenLayerInvalidDataException if the JSON field has
+                                     *   an unexpected type or is unexpectedly missing or null (e.g.
+                                     *   if the server responded with an unexpected value).
+                                     */
+                                    fun id(): String = id.getRequired("id")
+
+                                    /**
+                                     * Filename as presented to the user.
+                                     *
+                                     * @throws HiddenLayerInvalidDataException if the JSON field has
+                                     *   an unexpected type (e.g. if the server responded with an
+                                     *   unexpected value).
+                                     */
+                                    fun name(): Optional<String> = name.getOptional("name")
+
+                                    /**
+                                     * Returns the raw JSON value of [id].
+                                     *
+                                     * Unlike [id], this method doesn't throw if the JSON field has
+                                     * an unexpected type.
+                                     */
+                                    @JsonProperty("id")
+                                    @ExcludeMissing
+                                    fun _id(): JsonField<String> = id
+
+                                    /**
+                                     * Returns the raw JSON value of [name].
+                                     *
+                                     * Unlike [name], this method doesn't throw if the JSON field
+                                     * has an unexpected type.
+                                     */
+                                    @JsonProperty("name")
+                                    @ExcludeMissing
+                                    fun _name(): JsonField<String> = name
+
+                                    @JsonAnySetter
+                                    private fun putAdditionalProperty(
+                                        key: String,
+                                        value: JsonValue,
+                                    ) {
+                                        additionalProperties.put(key, value)
+                                    }
+
+                                    @JsonAnyGetter
+                                    @ExcludeMissing
+                                    fun _additionalProperties(): Map<String, JsonValue> =
+                                        Collections.unmodifiableMap(additionalProperties)
+
+                                    fun toBuilder() = Builder().from(this)
+
+                                    companion object {
+
+                                        /**
+                                         * Returns a mutable builder for constructing an instance of
+                                         * [File].
+                                         *
+                                         * The following fields are required:
+                                         * ```java
+                                         * .id()
+                                         * ```
+                                         */
+                                        @JvmStatic fun builder() = Builder()
+                                    }
+
+                                    /** A builder for [File]. */
+                                    class Builder internal constructor() {
+
+                                        private var id: JsonField<String>? = null
+                                        private var name: JsonField<String> = JsonMissing.of()
+                                        private var additionalProperties:
+                                            MutableMap<String, JsonValue> =
+                                            mutableMapOf()
+
+                                        @JvmSynthetic
+                                        internal fun from(file: File) = apply {
+                                            id = file.id
+                                            name = file.name
+                                            additionalProperties =
+                                                file.additionalProperties.toMutableMap()
+                                        }
+
+                                        /** Provider-assigned identifier for the file. */
+                                        fun id(id: String) = id(JsonField.of(id))
+
+                                        /**
+                                         * Sets [Builder.id] to an arbitrary JSON value.
+                                         *
+                                         * You should usually call [Builder.id] with a well-typed
+                                         * [String] value instead. This method is primarily for
+                                         * setting the field to an undocumented or not yet supported
+                                         * value.
+                                         */
+                                        fun id(id: JsonField<String>) = apply { this.id = id }
+
+                                        /** Filename as presented to the user. */
+                                        fun name(name: String) = name(JsonField.of(name))
+
+                                        /**
+                                         * Sets [Builder.name] to an arbitrary JSON value.
+                                         *
+                                         * You should usually call [Builder.name] with a well-typed
+                                         * [String] value instead. This method is primarily for
+                                         * setting the field to an undocumented or not yet supported
+                                         * value.
+                                         */
+                                        fun name(name: JsonField<String>) = apply {
+                                            this.name = name
+                                        }
+
+                                        fun additionalProperties(
+                                            additionalProperties: Map<String, JsonValue>
+                                        ) = apply {
+                                            this.additionalProperties.clear()
+                                            putAllAdditionalProperties(additionalProperties)
+                                        }
+
+                                        fun putAdditionalProperty(key: String, value: JsonValue) =
+                                            apply {
+                                                additionalProperties.put(key, value)
+                                            }
+
+                                        fun putAllAdditionalProperties(
+                                            additionalProperties: Map<String, JsonValue>
+                                        ) = apply {
+                                            this.additionalProperties.putAll(additionalProperties)
+                                        }
+
+                                        fun removeAdditionalProperty(key: String) = apply {
+                                            additionalProperties.remove(key)
+                                        }
+
+                                        fun removeAllAdditionalProperties(keys: Set<String>) =
+                                            apply {
+                                                keys.forEach(::removeAdditionalProperty)
+                                            }
+
+                                        /**
+                                         * Returns an immutable instance of [File].
+                                         *
+                                         * Further updates to this [Builder] will not mutate the
+                                         * returned instance.
+                                         *
+                                         * The following fields are required:
+                                         * ```java
+                                         * .id()
+                                         * ```
+                                         *
+                                         * @throws IllegalStateException if any required field is
+                                         *   unset.
+                                         */
+                                        fun build(): File =
+                                            File(
+                                                checkRequired("id", id),
+                                                name,
+                                                additionalProperties.toMutableMap(),
+                                            )
+                                    }
+
+                                    private var validated: Boolean = false
+
+                                    /**
+                                     * Validates that the types of all values in this object match
+                                     * their expected types recursively.
+                                     *
+                                     * This method is _not_ forwards compatible with new types from
+                                     * the API for existing fields.
+                                     *
+                                     * @throws HiddenLayerInvalidDataException if any value type in
+                                     *   this object doesn't match its expected type.
+                                     */
+                                    fun validate(): File = apply {
+                                        if (validated) {
+                                            return@apply
+                                        }
+
+                                        id()
+                                        name()
+                                        validated = true
+                                    }
+
+                                    fun isValid(): Boolean =
+                                        try {
+                                            validate()
+                                            true
+                                        } catch (e: HiddenLayerInvalidDataException) {
+                                            false
+                                        }
+
+                                    /**
+                                     * Returns a score indicating how many valid values are
+                                     * contained in this object recursively.
+                                     *
+                                     * Used for best match union deserialization.
+                                     */
+                                    @JvmSynthetic
+                                    internal fun validity(): Int =
+                                        (if (id.asKnown().isPresent) 1 else 0) +
+                                            (if (name.asKnown().isPresent) 1 else 0)
+
+                                    override fun equals(other: Any?): Boolean {
+                                        if (this === other) {
+                                            return true
+                                        }
+
+                                        return other is File &&
+                                            id == other.id &&
+                                            name == other.name &&
+                                            additionalProperties == other.additionalProperties
+                                    }
+
+                                    private val hashCode: Int by lazy {
+                                        Objects.hash(id, name, additionalProperties)
+                                    }
+
+                                    override fun hashCode(): Int = hashCode
+
+                                    override fun toString() =
+                                        "File{id=$id, name=$name, additionalProperties=$additionalProperties}"
+                                }
+
+                                override fun equals(other: Any?): Boolean {
+                                    if (this === other) {
+                                        return true
+                                    }
+
+                                    return other is Annotation &&
+                                        type == other.type &&
+                                        files == other.files &&
+                                        urls == other.urls &&
+                                        additionalProperties == other.additionalProperties
+                                }
+
+                                private val hashCode: Int by lazy {
+                                    Objects.hash(type, files, urls, additionalProperties)
+                                }
+
+                                override fun hashCode(): Int = hashCode
+
+                                override fun toString() =
+                                    "Annotation{type=$type, files=$files, urls=$urls, additionalProperties=$additionalProperties}"
+                            }
 
                             override fun equals(other: Any?): Boolean {
                                 if (this === other) {
@@ -5995,17 +7670,18 @@ private constructor(
                                 return other is Text &&
                                     text == other.text &&
                                     type == other.type &&
+                                    annotations == other.annotations &&
                                     additionalProperties == other.additionalProperties
                             }
 
                             private val hashCode: Int by lazy {
-                                Objects.hash(text, type, additionalProperties)
+                                Objects.hash(text, type, annotations, additionalProperties)
                             }
 
                             override fun hashCode(): Int = hashCode
 
                             override fun toString() =
-                                "Text{text=$text, type=$type, additionalProperties=$additionalProperties}"
+                                "Text{text=$text, type=$type, annotations=$annotations, additionalProperties=$additionalProperties}"
                         }
 
                         /** A tool invocation part representing a tool call by the assistant. */
@@ -6786,6 +8462,233 @@ private constructor(
                     }
 
                     /**
+                     * A file referenced by a message, whether attached to it or cited by its
+                     * content.
+                     */
+                    class Attachment
+                    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+                    private constructor(
+                        private val id: JsonField<String>,
+                        private val name: JsonField<String>,
+                        private val additionalProperties: MutableMap<String, JsonValue>,
+                    ) {
+
+                        @JsonCreator
+                        private constructor(
+                            @JsonProperty("id")
+                            @ExcludeMissing
+                            id: JsonField<String> = JsonMissing.of(),
+                            @JsonProperty("name")
+                            @ExcludeMissing
+                            name: JsonField<String> = JsonMissing.of(),
+                        ) : this(id, name, mutableMapOf())
+
+                        /**
+                         * Provider-assigned identifier for the file.
+                         *
+                         * @throws HiddenLayerInvalidDataException if the JSON field has an
+                         *   unexpected type or is unexpectedly missing or null (e.g. if the server
+                         *   responded with an unexpected value).
+                         */
+                        fun id(): String = id.getRequired("id")
+
+                        /**
+                         * Filename as presented to the user.
+                         *
+                         * @throws HiddenLayerInvalidDataException if the JSON field has an
+                         *   unexpected type (e.g. if the server responded with an unexpected
+                         *   value).
+                         */
+                        fun name(): Optional<String> = name.getOptional("name")
+
+                        /**
+                         * Returns the raw JSON value of [id].
+                         *
+                         * Unlike [id], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
+                        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+                        /**
+                         * Returns the raw JSON value of [name].
+                         *
+                         * Unlike [name], this method doesn't throw if the JSON field has an
+                         * unexpected type.
+                         */
+                        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+                        @JsonAnySetter
+                        private fun putAdditionalProperty(key: String, value: JsonValue) {
+                            additionalProperties.put(key, value)
+                        }
+
+                        @JsonAnyGetter
+                        @ExcludeMissing
+                        fun _additionalProperties(): Map<String, JsonValue> =
+                            Collections.unmodifiableMap(additionalProperties)
+
+                        fun toBuilder() = Builder().from(this)
+
+                        companion object {
+
+                            /**
+                             * Returns a mutable builder for constructing an instance of
+                             * [Attachment].
+                             *
+                             * The following fields are required:
+                             * ```java
+                             * .id()
+                             * ```
+                             */
+                            @JvmStatic fun builder() = Builder()
+                        }
+
+                        /** A builder for [Attachment]. */
+                        class Builder internal constructor() {
+
+                            private var id: JsonField<String>? = null
+                            private var name: JsonField<String> = JsonMissing.of()
+                            private var additionalProperties: MutableMap<String, JsonValue> =
+                                mutableMapOf()
+
+                            @JvmSynthetic
+                            internal fun from(attachment: Attachment) = apply {
+                                id = attachment.id
+                                name = attachment.name
+                                additionalProperties =
+                                    attachment.additionalProperties.toMutableMap()
+                            }
+
+                            /** Provider-assigned identifier for the file. */
+                            fun id(id: String) = id(JsonField.of(id))
+
+                            /**
+                             * Sets [Builder.id] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.id] with a well-typed [String] value
+                             * instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
+                            fun id(id: JsonField<String>) = apply { this.id = id }
+
+                            /** Filename as presented to the user. */
+                            fun name(name: String) = name(JsonField.of(name))
+
+                            /**
+                             * Sets [Builder.name] to an arbitrary JSON value.
+                             *
+                             * You should usually call [Builder.name] with a well-typed [String]
+                             * value instead. This method is primarily for setting the field to an
+                             * undocumented or not yet supported value.
+                             */
+                            fun name(name: JsonField<String>) = apply { this.name = name }
+
+                            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                                apply {
+                                    this.additionalProperties.clear()
+                                    putAllAdditionalProperties(additionalProperties)
+                                }
+
+                            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                                additionalProperties.put(key, value)
+                            }
+
+                            fun putAllAdditionalProperties(
+                                additionalProperties: Map<String, JsonValue>
+                            ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                            fun removeAdditionalProperty(key: String) = apply {
+                                additionalProperties.remove(key)
+                            }
+
+                            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                                keys.forEach(::removeAdditionalProperty)
+                            }
+
+                            /**
+                             * Returns an immutable instance of [Attachment].
+                             *
+                             * Further updates to this [Builder] will not mutate the returned
+                             * instance.
+                             *
+                             * The following fields are required:
+                             * ```java
+                             * .id()
+                             * ```
+                             *
+                             * @throws IllegalStateException if any required field is unset.
+                             */
+                            fun build(): Attachment =
+                                Attachment(
+                                    checkRequired("id", id),
+                                    name,
+                                    additionalProperties.toMutableMap(),
+                                )
+                        }
+
+                        private var validated: Boolean = false
+
+                        /**
+                         * Validates that the types of all values in this object match their
+                         * expected types recursively.
+                         *
+                         * This method is _not_ forwards compatible with new types from the API for
+                         * existing fields.
+                         *
+                         * @throws HiddenLayerInvalidDataException if any value type in this object
+                         *   doesn't match its expected type.
+                         */
+                        fun validate(): Attachment = apply {
+                            if (validated) {
+                                return@apply
+                            }
+
+                            id()
+                            name()
+                            validated = true
+                        }
+
+                        fun isValid(): Boolean =
+                            try {
+                                validate()
+                                true
+                            } catch (e: HiddenLayerInvalidDataException) {
+                                false
+                            }
+
+                        /**
+                         * Returns a score indicating how many valid values are contained in this
+                         * object recursively.
+                         *
+                         * Used for best match union deserialization.
+                         */
+                        @JvmSynthetic
+                        internal fun validity(): Int =
+                            (if (id.asKnown().isPresent) 1 else 0) +
+                                (if (name.asKnown().isPresent) 1 else 0)
+
+                        override fun equals(other: Any?): Boolean {
+                            if (this === other) {
+                                return true
+                            }
+
+                            return other is Attachment &&
+                                id == other.id &&
+                                name == other.name &&
+                                additionalProperties == other.additionalProperties
+                        }
+
+                        private val hashCode: Int by lazy {
+                            Objects.hash(id, name, additionalProperties)
+                        }
+
+                        override fun hashCode(): Int = hashCode
+
+                        override fun toString() =
+                            "Attachment{id=$id, name=$name, additionalProperties=$additionalProperties}"
+                    }
+
+                    /**
                      * Optional timestamp for when this message was created. When supplied, `value`
                      * is required.
                      */
@@ -6983,18 +8886,27 @@ private constructor(
                         return other is Message &&
                             content == other.content &&
                             role == other.role &&
+                            attachments == other.attachments &&
                             timestamp == other.timestamp &&
+                            toolsUsed == other.toolsUsed &&
                             additionalProperties == other.additionalProperties
                     }
 
                     private val hashCode: Int by lazy {
-                        Objects.hash(content, role, timestamp, additionalProperties)
+                        Objects.hash(
+                            content,
+                            role,
+                            attachments,
+                            timestamp,
+                            toolsUsed,
+                            additionalProperties,
+                        )
                     }
 
                     override fun hashCode(): Int = hashCode
 
                     override fun toString() =
-                        "Message{content=$content, role=$role, timestamp=$timestamp, additionalProperties=$additionalProperties}"
+                        "Message{content=$content, role=$role, attachments=$attachments, timestamp=$timestamp, toolsUsed=$toolsUsed, additionalProperties=$additionalProperties}"
                 }
 
                 /**
