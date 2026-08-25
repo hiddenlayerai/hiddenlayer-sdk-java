@@ -20,7 +20,38 @@ internal class RuntimeEvaluateInteractionResponseTest {
                         .addMessage(
                             RuntimeEvaluateInteractionResponse.EvaluatedInteraction.Message
                                 .builder()
-                                .addTextContent("Hello, how can I help you today?")
+                                .addContent(
+                                    RuntimeEvaluateInteractionResponse.EvaluatedInteraction.Message
+                                        .Content
+                                        .Text
+                                        .builder()
+                                        .text("Hello, how can I help you today?")
+                                        .addAnnotation(
+                                            RuntimeEvaluateInteractionResponse.EvaluatedInteraction
+                                                .Message
+                                                .Content
+                                                .Text
+                                                .Annotation
+                                                .builder()
+                                                .type("url_citation")
+                                                .addFile(
+                                                    RuntimeEvaluateInteractionResponse
+                                                        .EvaluatedInteraction
+                                                        .Message
+                                                        .Content
+                                                        .Text
+                                                        .Annotation
+                                                        .File
+                                                        .builder()
+                                                        .id("file-abc123")
+                                                        .name("q3-revenue.pdf")
+                                                        .build()
+                                                )
+                                                .addUrl("https://example.com/q3-report")
+                                                .build()
+                                        )
+                                        .build()
+                                )
                                 .role("user")
                                 .analysis(
                                     RuntimeEvaluateInteractionResponse.EvaluatedInteraction.Message
@@ -40,6 +71,14 @@ internal class RuntimeEvaluateInteractionResponseTest {
                                         )
                                         .build()
                                 )
+                                .addAttachment(
+                                    RuntimeEvaluateInteractionResponse.EvaluatedInteraction.Message
+                                        .Attachment
+                                        .builder()
+                                        .id("file-abc123")
+                                        .name("q3-revenue.pdf")
+                                        .build()
+                                )
                                 .timestamp(
                                     RuntimeEvaluateInteractionResponse.EvaluatedInteraction.Message
                                         .Timestamp
@@ -47,6 +86,7 @@ internal class RuntimeEvaluateInteractionResponseTest {
                                         .value(OffsetDateTime.parse("2024-02-10T12:00:00Z"))
                                         .build()
                                 )
+                                .addToolsUsed("web_search")
                                 .build()
                         )
                         .addToolsAvailable(
@@ -105,8 +145,57 @@ internal class RuntimeEvaluateInteractionResponseTest {
                                         .CanonicalInteraction
                                         .Message
                                         .builder()
-                                        .addTextContent("Hello, how can I help you today?")
+                                        .addContent(
+                                            RuntimeEvaluateInteractionResponse.Outcome
+                                                .EffectiveInteraction
+                                                .CanonicalInteraction
+                                                .Message
+                                                .Content
+                                                .Text
+                                                .builder()
+                                                .text("Hello, how can I help you today?")
+                                                .addAnnotation(
+                                                    RuntimeEvaluateInteractionResponse.Outcome
+                                                        .EffectiveInteraction
+                                                        .CanonicalInteraction
+                                                        .Message
+                                                        .Content
+                                                        .Text
+                                                        .Annotation
+                                                        .builder()
+                                                        .type("url_citation")
+                                                        .addFile(
+                                                            RuntimeEvaluateInteractionResponse
+                                                                .Outcome
+                                                                .EffectiveInteraction
+                                                                .CanonicalInteraction
+                                                                .Message
+                                                                .Content
+                                                                .Text
+                                                                .Annotation
+                                                                .File
+                                                                .builder()
+                                                                .id("file-abc123")
+                                                                .name("q3-revenue.pdf")
+                                                                .build()
+                                                        )
+                                                        .addUrl("https://example.com/q3-report")
+                                                        .build()
+                                                )
+                                                .build()
+                                        )
                                         .role("user")
+                                        .addAttachment(
+                                            RuntimeEvaluateInteractionResponse.Outcome
+                                                .EffectiveInteraction
+                                                .CanonicalInteraction
+                                                .Message
+                                                .Attachment
+                                                .builder()
+                                                .id("file-abc123")
+                                                .name("q3-revenue.pdf")
+                                                .build()
+                                        )
                                         .timestamp(
                                             RuntimeEvaluateInteractionResponse.Outcome
                                                 .EffectiveInteraction
@@ -117,6 +206,7 @@ internal class RuntimeEvaluateInteractionResponseTest {
                                                 .value(OffsetDateTime.parse("2024-02-10T12:00:00Z"))
                                                 .build()
                                         )
+                                        .addToolsUsed("web_search")
                                         .build()
                                 )
                                 .addToolsAvailable(
@@ -150,7 +240,38 @@ internal class RuntimeEvaluateInteractionResponseTest {
                 RuntimeEvaluateInteractionResponse.EvaluatedInteraction.builder()
                     .addMessage(
                         RuntimeEvaluateInteractionResponse.EvaluatedInteraction.Message.builder()
-                            .addTextContent("Hello, how can I help you today?")
+                            .addContent(
+                                RuntimeEvaluateInteractionResponse.EvaluatedInteraction.Message
+                                    .Content
+                                    .Text
+                                    .builder()
+                                    .text("Hello, how can I help you today?")
+                                    .addAnnotation(
+                                        RuntimeEvaluateInteractionResponse.EvaluatedInteraction
+                                            .Message
+                                            .Content
+                                            .Text
+                                            .Annotation
+                                            .builder()
+                                            .type("url_citation")
+                                            .addFile(
+                                                RuntimeEvaluateInteractionResponse
+                                                    .EvaluatedInteraction
+                                                    .Message
+                                                    .Content
+                                                    .Text
+                                                    .Annotation
+                                                    .File
+                                                    .builder()
+                                                    .id("file-abc123")
+                                                    .name("q3-revenue.pdf")
+                                                    .build()
+                                            )
+                                            .addUrl("https://example.com/q3-report")
+                                            .build()
+                                    )
+                                    .build()
+                            )
                             .role("user")
                             .analysis(
                                 RuntimeEvaluateInteractionResponse.EvaluatedInteraction.Message
@@ -170,6 +291,14 @@ internal class RuntimeEvaluateInteractionResponseTest {
                                     )
                                     .build()
                             )
+                            .addAttachment(
+                                RuntimeEvaluateInteractionResponse.EvaluatedInteraction.Message
+                                    .Attachment
+                                    .builder()
+                                    .id("file-abc123")
+                                    .name("q3-revenue.pdf")
+                                    .build()
+                            )
                             .timestamp(
                                 RuntimeEvaluateInteractionResponse.EvaluatedInteraction.Message
                                     .Timestamp
@@ -177,6 +306,7 @@ internal class RuntimeEvaluateInteractionResponseTest {
                                     .value(OffsetDateTime.parse("2024-02-10T12:00:00Z"))
                                     .build()
                             )
+                            .addToolsUsed("web_search")
                             .build()
                     )
                     .addToolsAvailable(
@@ -236,8 +366,56 @@ internal class RuntimeEvaluateInteractionResponseTest {
                                     .CanonicalInteraction
                                     .Message
                                     .builder()
-                                    .addTextContent("Hello, how can I help you today?")
+                                    .addContent(
+                                        RuntimeEvaluateInteractionResponse.Outcome
+                                            .EffectiveInteraction
+                                            .CanonicalInteraction
+                                            .Message
+                                            .Content
+                                            .Text
+                                            .builder()
+                                            .text("Hello, how can I help you today?")
+                                            .addAnnotation(
+                                                RuntimeEvaluateInteractionResponse.Outcome
+                                                    .EffectiveInteraction
+                                                    .CanonicalInteraction
+                                                    .Message
+                                                    .Content
+                                                    .Text
+                                                    .Annotation
+                                                    .builder()
+                                                    .type("url_citation")
+                                                    .addFile(
+                                                        RuntimeEvaluateInteractionResponse.Outcome
+                                                            .EffectiveInteraction
+                                                            .CanonicalInteraction
+                                                            .Message
+                                                            .Content
+                                                            .Text
+                                                            .Annotation
+                                                            .File
+                                                            .builder()
+                                                            .id("file-abc123")
+                                                            .name("q3-revenue.pdf")
+                                                            .build()
+                                                    )
+                                                    .addUrl("https://example.com/q3-report")
+                                                    .build()
+                                            )
+                                            .build()
+                                    )
                                     .role("user")
+                                    .addAttachment(
+                                        RuntimeEvaluateInteractionResponse.Outcome
+                                            .EffectiveInteraction
+                                            .CanonicalInteraction
+                                            .Message
+                                            .Attachment
+                                            .builder()
+                                            .id("file-abc123")
+                                            .name("q3-revenue.pdf")
+                                            .build()
+                                    )
                                     .timestamp(
                                         RuntimeEvaluateInteractionResponse.Outcome
                                             .EffectiveInteraction
@@ -248,6 +426,7 @@ internal class RuntimeEvaluateInteractionResponseTest {
                                             .value(OffsetDateTime.parse("2024-02-10T12:00:00Z"))
                                             .build()
                                     )
+                                    .addToolsUsed("web_search")
                                     .build()
                             )
                             .addToolsAvailable(
@@ -286,7 +465,38 @@ internal class RuntimeEvaluateInteractionResponseTest {
                         .addMessage(
                             RuntimeEvaluateInteractionResponse.EvaluatedInteraction.Message
                                 .builder()
-                                .addTextContent("Hello, how can I help you today?")
+                                .addContent(
+                                    RuntimeEvaluateInteractionResponse.EvaluatedInteraction.Message
+                                        .Content
+                                        .Text
+                                        .builder()
+                                        .text("Hello, how can I help you today?")
+                                        .addAnnotation(
+                                            RuntimeEvaluateInteractionResponse.EvaluatedInteraction
+                                                .Message
+                                                .Content
+                                                .Text
+                                                .Annotation
+                                                .builder()
+                                                .type("url_citation")
+                                                .addFile(
+                                                    RuntimeEvaluateInteractionResponse
+                                                        .EvaluatedInteraction
+                                                        .Message
+                                                        .Content
+                                                        .Text
+                                                        .Annotation
+                                                        .File
+                                                        .builder()
+                                                        .id("file-abc123")
+                                                        .name("q3-revenue.pdf")
+                                                        .build()
+                                                )
+                                                .addUrl("https://example.com/q3-report")
+                                                .build()
+                                        )
+                                        .build()
+                                )
                                 .role("user")
                                 .analysis(
                                     RuntimeEvaluateInteractionResponse.EvaluatedInteraction.Message
@@ -306,6 +516,14 @@ internal class RuntimeEvaluateInteractionResponseTest {
                                         )
                                         .build()
                                 )
+                                .addAttachment(
+                                    RuntimeEvaluateInteractionResponse.EvaluatedInteraction.Message
+                                        .Attachment
+                                        .builder()
+                                        .id("file-abc123")
+                                        .name("q3-revenue.pdf")
+                                        .build()
+                                )
                                 .timestamp(
                                     RuntimeEvaluateInteractionResponse.EvaluatedInteraction.Message
                                         .Timestamp
@@ -313,6 +531,7 @@ internal class RuntimeEvaluateInteractionResponseTest {
                                         .value(OffsetDateTime.parse("2024-02-10T12:00:00Z"))
                                         .build()
                                 )
+                                .addToolsUsed("web_search")
                                 .build()
                         )
                         .addToolsAvailable(
@@ -371,8 +590,57 @@ internal class RuntimeEvaluateInteractionResponseTest {
                                         .CanonicalInteraction
                                         .Message
                                         .builder()
-                                        .addTextContent("Hello, how can I help you today?")
+                                        .addContent(
+                                            RuntimeEvaluateInteractionResponse.Outcome
+                                                .EffectiveInteraction
+                                                .CanonicalInteraction
+                                                .Message
+                                                .Content
+                                                .Text
+                                                .builder()
+                                                .text("Hello, how can I help you today?")
+                                                .addAnnotation(
+                                                    RuntimeEvaluateInteractionResponse.Outcome
+                                                        .EffectiveInteraction
+                                                        .CanonicalInteraction
+                                                        .Message
+                                                        .Content
+                                                        .Text
+                                                        .Annotation
+                                                        .builder()
+                                                        .type("url_citation")
+                                                        .addFile(
+                                                            RuntimeEvaluateInteractionResponse
+                                                                .Outcome
+                                                                .EffectiveInteraction
+                                                                .CanonicalInteraction
+                                                                .Message
+                                                                .Content
+                                                                .Text
+                                                                .Annotation
+                                                                .File
+                                                                .builder()
+                                                                .id("file-abc123")
+                                                                .name("q3-revenue.pdf")
+                                                                .build()
+                                                        )
+                                                        .addUrl("https://example.com/q3-report")
+                                                        .build()
+                                                )
+                                                .build()
+                                        )
                                         .role("user")
+                                        .addAttachment(
+                                            RuntimeEvaluateInteractionResponse.Outcome
+                                                .EffectiveInteraction
+                                                .CanonicalInteraction
+                                                .Message
+                                                .Attachment
+                                                .builder()
+                                                .id("file-abc123")
+                                                .name("q3-revenue.pdf")
+                                                .build()
+                                        )
                                         .timestamp(
                                             RuntimeEvaluateInteractionResponse.Outcome
                                                 .EffectiveInteraction
@@ -383,6 +651,7 @@ internal class RuntimeEvaluateInteractionResponseTest {
                                                 .value(OffsetDateTime.parse("2024-02-10T12:00:00Z"))
                                                 .build()
                                         )
+                                        .addToolsUsed("web_search")
                                         .build()
                                 )
                                 .addToolsAvailable(

@@ -19,8 +19,50 @@ internal class RuntimeEvaluateInteractionParamsTest {
                     .addMessage(
                         RuntimeEvaluateInteractionParams.Interaction.CanonicalInteraction.Message
                             .builder()
-                            .addTextContent("What is the capital of France?")
+                            .addContent(
+                                RuntimeEvaluateInteractionParams.Interaction.CanonicalInteraction
+                                    .Message
+                                    .Content
+                                    .Text
+                                    .builder()
+                                    .text("What is the capital of France?")
+                                    .addAnnotation(
+                                        RuntimeEvaluateInteractionParams.Interaction
+                                            .CanonicalInteraction
+                                            .Message
+                                            .Content
+                                            .Text
+                                            .Annotation
+                                            .builder()
+                                            .type("url_citation")
+                                            .addFile(
+                                                RuntimeEvaluateInteractionParams.Interaction
+                                                    .CanonicalInteraction
+                                                    .Message
+                                                    .Content
+                                                    .Text
+                                                    .Annotation
+                                                    .File
+                                                    .builder()
+                                                    .id("file-abc123")
+                                                    .name("q3-revenue.pdf")
+                                                    .build()
+                                            )
+                                            .addUrl("https://example.com/q3-report")
+                                            .build()
+                                    )
+                                    .build()
+                            )
                             .role("user")
+                            .addAttachment(
+                                RuntimeEvaluateInteractionParams.Interaction.CanonicalInteraction
+                                    .Message
+                                    .Attachment
+                                    .builder()
+                                    .id("file-abc123")
+                                    .name("q3-revenue.pdf")
+                                    .build()
+                            )
                             .timestamp(
                                 RuntimeEvaluateInteractionParams.Interaction.CanonicalInteraction
                                     .Message
@@ -29,13 +71,56 @@ internal class RuntimeEvaluateInteractionParamsTest {
                                     .value(OffsetDateTime.parse("2024-02-10T12:00:00Z"))
                                     .build()
                             )
+                            .addToolsUsed("web_search")
                             .build()
                     )
                     .addMessage(
                         RuntimeEvaluateInteractionParams.Interaction.CanonicalInteraction.Message
                             .builder()
-                            .addTextContent("The capital of France is Paris.")
+                            .addContent(
+                                RuntimeEvaluateInteractionParams.Interaction.CanonicalInteraction
+                                    .Message
+                                    .Content
+                                    .Text
+                                    .builder()
+                                    .text("The capital of France is Paris.")
+                                    .addAnnotation(
+                                        RuntimeEvaluateInteractionParams.Interaction
+                                            .CanonicalInteraction
+                                            .Message
+                                            .Content
+                                            .Text
+                                            .Annotation
+                                            .builder()
+                                            .type("url_citation")
+                                            .addFile(
+                                                RuntimeEvaluateInteractionParams.Interaction
+                                                    .CanonicalInteraction
+                                                    .Message
+                                                    .Content
+                                                    .Text
+                                                    .Annotation
+                                                    .File
+                                                    .builder()
+                                                    .id("file-abc123")
+                                                    .name("q3-revenue.pdf")
+                                                    .build()
+                                            )
+                                            .addUrl("https://example.com/q3-report")
+                                            .build()
+                                    )
+                                    .build()
+                            )
                             .role("assistant")
+                            .addAttachment(
+                                RuntimeEvaluateInteractionParams.Interaction.CanonicalInteraction
+                                    .Message
+                                    .Attachment
+                                    .builder()
+                                    .id("file-abc123")
+                                    .name("q3-revenue.pdf")
+                                    .build()
+                            )
                             .timestamp(
                                 RuntimeEvaluateInteractionParams.Interaction.CanonicalInteraction
                                     .Message
@@ -44,6 +129,7 @@ internal class RuntimeEvaluateInteractionParamsTest {
                                     .value(OffsetDateTime.parse("2024-02-10T12:00:00Z"))
                                     .build()
                             )
+                            .addToolsUsed("web_search")
                             .build()
                     )
                     .addToolsAvailable(
@@ -70,6 +156,12 @@ internal class RuntimeEvaluateInteractionParamsTest {
                     .provider("openai")
                     .requesterId("user-12345")
                     .externalSessionId("sess_4b8cde94604f4c389406a0b2f806069a")
+                    .addExternalSessionId(
+                        RuntimeEvaluateInteractionParams.Metadata.ExternalSessionId.builder()
+                            .id("id")
+                            .source("source")
+                            .build()
+                    )
                     .build()
             )
             .build()
@@ -86,8 +178,52 @@ internal class RuntimeEvaluateInteractionParamsTest {
                             RuntimeEvaluateInteractionParams.Interaction.CanonicalInteraction
                                 .Message
                                 .builder()
-                                .addTextContent("What is the capital of France?")
+                                .addContent(
+                                    RuntimeEvaluateInteractionParams.Interaction
+                                        .CanonicalInteraction
+                                        .Message
+                                        .Content
+                                        .Text
+                                        .builder()
+                                        .text("What is the capital of France?")
+                                        .addAnnotation(
+                                            RuntimeEvaluateInteractionParams.Interaction
+                                                .CanonicalInteraction
+                                                .Message
+                                                .Content
+                                                .Text
+                                                .Annotation
+                                                .builder()
+                                                .type("url_citation")
+                                                .addFile(
+                                                    RuntimeEvaluateInteractionParams.Interaction
+                                                        .CanonicalInteraction
+                                                        .Message
+                                                        .Content
+                                                        .Text
+                                                        .Annotation
+                                                        .File
+                                                        .builder()
+                                                        .id("file-abc123")
+                                                        .name("q3-revenue.pdf")
+                                                        .build()
+                                                )
+                                                .addUrl("https://example.com/q3-report")
+                                                .build()
+                                        )
+                                        .build()
+                                )
                                 .role("user")
+                                .addAttachment(
+                                    RuntimeEvaluateInteractionParams.Interaction
+                                        .CanonicalInteraction
+                                        .Message
+                                        .Attachment
+                                        .builder()
+                                        .id("file-abc123")
+                                        .name("q3-revenue.pdf")
+                                        .build()
+                                )
                                 .timestamp(
                                     RuntimeEvaluateInteractionParams.Interaction
                                         .CanonicalInteraction
@@ -97,14 +233,59 @@ internal class RuntimeEvaluateInteractionParamsTest {
                                         .value(OffsetDateTime.parse("2024-02-10T12:00:00Z"))
                                         .build()
                                 )
+                                .addToolsUsed("web_search")
                                 .build()
                         )
                         .addMessage(
                             RuntimeEvaluateInteractionParams.Interaction.CanonicalInteraction
                                 .Message
                                 .builder()
-                                .addTextContent("The capital of France is Paris.")
+                                .addContent(
+                                    RuntimeEvaluateInteractionParams.Interaction
+                                        .CanonicalInteraction
+                                        .Message
+                                        .Content
+                                        .Text
+                                        .builder()
+                                        .text("The capital of France is Paris.")
+                                        .addAnnotation(
+                                            RuntimeEvaluateInteractionParams.Interaction
+                                                .CanonicalInteraction
+                                                .Message
+                                                .Content
+                                                .Text
+                                                .Annotation
+                                                .builder()
+                                                .type("url_citation")
+                                                .addFile(
+                                                    RuntimeEvaluateInteractionParams.Interaction
+                                                        .CanonicalInteraction
+                                                        .Message
+                                                        .Content
+                                                        .Text
+                                                        .Annotation
+                                                        .File
+                                                        .builder()
+                                                        .id("file-abc123")
+                                                        .name("q3-revenue.pdf")
+                                                        .build()
+                                                )
+                                                .addUrl("https://example.com/q3-report")
+                                                .build()
+                                        )
+                                        .build()
+                                )
                                 .role("assistant")
+                                .addAttachment(
+                                    RuntimeEvaluateInteractionParams.Interaction
+                                        .CanonicalInteraction
+                                        .Message
+                                        .Attachment
+                                        .builder()
+                                        .id("file-abc123")
+                                        .name("q3-revenue.pdf")
+                                        .build()
+                                )
                                 .timestamp(
                                     RuntimeEvaluateInteractionParams.Interaction
                                         .CanonicalInteraction
@@ -114,6 +295,7 @@ internal class RuntimeEvaluateInteractionParamsTest {
                                         .value(OffsetDateTime.parse("2024-02-10T12:00:00Z"))
                                         .build()
                                 )
+                                .addToolsUsed("web_search")
                                 .build()
                         )
                         .addToolsAvailable(
@@ -141,6 +323,12 @@ internal class RuntimeEvaluateInteractionParamsTest {
                         .provider("openai")
                         .requesterId("user-12345")
                         .externalSessionId("sess_4b8cde94604f4c389406a0b2f806069a")
+                        .addExternalSessionId(
+                            RuntimeEvaluateInteractionParams.Metadata.ExternalSessionId.builder()
+                                .id("id")
+                                .source("source")
+                                .build()
+                        )
                         .build()
                 )
                 .build()
@@ -200,8 +388,52 @@ internal class RuntimeEvaluateInteractionParamsTest {
                             RuntimeEvaluateInteractionParams.Interaction.CanonicalInteraction
                                 .Message
                                 .builder()
-                                .addTextContent("What is the capital of France?")
+                                .addContent(
+                                    RuntimeEvaluateInteractionParams.Interaction
+                                        .CanonicalInteraction
+                                        .Message
+                                        .Content
+                                        .Text
+                                        .builder()
+                                        .text("What is the capital of France?")
+                                        .addAnnotation(
+                                            RuntimeEvaluateInteractionParams.Interaction
+                                                .CanonicalInteraction
+                                                .Message
+                                                .Content
+                                                .Text
+                                                .Annotation
+                                                .builder()
+                                                .type("url_citation")
+                                                .addFile(
+                                                    RuntimeEvaluateInteractionParams.Interaction
+                                                        .CanonicalInteraction
+                                                        .Message
+                                                        .Content
+                                                        .Text
+                                                        .Annotation
+                                                        .File
+                                                        .builder()
+                                                        .id("file-abc123")
+                                                        .name("q3-revenue.pdf")
+                                                        .build()
+                                                )
+                                                .addUrl("https://example.com/q3-report")
+                                                .build()
+                                        )
+                                        .build()
+                                )
                                 .role("user")
+                                .addAttachment(
+                                    RuntimeEvaluateInteractionParams.Interaction
+                                        .CanonicalInteraction
+                                        .Message
+                                        .Attachment
+                                        .builder()
+                                        .id("file-abc123")
+                                        .name("q3-revenue.pdf")
+                                        .build()
+                                )
                                 .timestamp(
                                     RuntimeEvaluateInteractionParams.Interaction
                                         .CanonicalInteraction
@@ -211,14 +443,59 @@ internal class RuntimeEvaluateInteractionParamsTest {
                                         .value(OffsetDateTime.parse("2024-02-10T12:00:00Z"))
                                         .build()
                                 )
+                                .addToolsUsed("web_search")
                                 .build()
                         )
                         .addMessage(
                             RuntimeEvaluateInteractionParams.Interaction.CanonicalInteraction
                                 .Message
                                 .builder()
-                                .addTextContent("The capital of France is Paris.")
+                                .addContent(
+                                    RuntimeEvaluateInteractionParams.Interaction
+                                        .CanonicalInteraction
+                                        .Message
+                                        .Content
+                                        .Text
+                                        .builder()
+                                        .text("The capital of France is Paris.")
+                                        .addAnnotation(
+                                            RuntimeEvaluateInteractionParams.Interaction
+                                                .CanonicalInteraction
+                                                .Message
+                                                .Content
+                                                .Text
+                                                .Annotation
+                                                .builder()
+                                                .type("url_citation")
+                                                .addFile(
+                                                    RuntimeEvaluateInteractionParams.Interaction
+                                                        .CanonicalInteraction
+                                                        .Message
+                                                        .Content
+                                                        .Text
+                                                        .Annotation
+                                                        .File
+                                                        .builder()
+                                                        .id("file-abc123")
+                                                        .name("q3-revenue.pdf")
+                                                        .build()
+                                                )
+                                                .addUrl("https://example.com/q3-report")
+                                                .build()
+                                        )
+                                        .build()
+                                )
                                 .role("assistant")
+                                .addAttachment(
+                                    RuntimeEvaluateInteractionParams.Interaction
+                                        .CanonicalInteraction
+                                        .Message
+                                        .Attachment
+                                        .builder()
+                                        .id("file-abc123")
+                                        .name("q3-revenue.pdf")
+                                        .build()
+                                )
                                 .timestamp(
                                     RuntimeEvaluateInteractionParams.Interaction
                                         .CanonicalInteraction
@@ -228,6 +505,7 @@ internal class RuntimeEvaluateInteractionParamsTest {
                                         .value(OffsetDateTime.parse("2024-02-10T12:00:00Z"))
                                         .build()
                                 )
+                                .addToolsUsed("web_search")
                                 .build()
                         )
                         .addToolsAvailable(
@@ -255,6 +533,12 @@ internal class RuntimeEvaluateInteractionParamsTest {
                         .provider("openai")
                         .requesterId("user-12345")
                         .externalSessionId("sess_4b8cde94604f4c389406a0b2f806069a")
+                        .addExternalSessionId(
+                            RuntimeEvaluateInteractionParams.Metadata.ExternalSessionId.builder()
+                                .id("id")
+                                .source("source")
+                                .build()
+                        )
                         .build()
                 )
                 .build()
@@ -269,8 +553,52 @@ internal class RuntimeEvaluateInteractionParamsTest {
                             RuntimeEvaluateInteractionParams.Interaction.CanonicalInteraction
                                 .Message
                                 .builder()
-                                .addTextContent("What is the capital of France?")
+                                .addContent(
+                                    RuntimeEvaluateInteractionParams.Interaction
+                                        .CanonicalInteraction
+                                        .Message
+                                        .Content
+                                        .Text
+                                        .builder()
+                                        .text("What is the capital of France?")
+                                        .addAnnotation(
+                                            RuntimeEvaluateInteractionParams.Interaction
+                                                .CanonicalInteraction
+                                                .Message
+                                                .Content
+                                                .Text
+                                                .Annotation
+                                                .builder()
+                                                .type("url_citation")
+                                                .addFile(
+                                                    RuntimeEvaluateInteractionParams.Interaction
+                                                        .CanonicalInteraction
+                                                        .Message
+                                                        .Content
+                                                        .Text
+                                                        .Annotation
+                                                        .File
+                                                        .builder()
+                                                        .id("file-abc123")
+                                                        .name("q3-revenue.pdf")
+                                                        .build()
+                                                )
+                                                .addUrl("https://example.com/q3-report")
+                                                .build()
+                                        )
+                                        .build()
+                                )
                                 .role("user")
+                                .addAttachment(
+                                    RuntimeEvaluateInteractionParams.Interaction
+                                        .CanonicalInteraction
+                                        .Message
+                                        .Attachment
+                                        .builder()
+                                        .id("file-abc123")
+                                        .name("q3-revenue.pdf")
+                                        .build()
+                                )
                                 .timestamp(
                                     RuntimeEvaluateInteractionParams.Interaction
                                         .CanonicalInteraction
@@ -280,14 +608,59 @@ internal class RuntimeEvaluateInteractionParamsTest {
                                         .value(OffsetDateTime.parse("2024-02-10T12:00:00Z"))
                                         .build()
                                 )
+                                .addToolsUsed("web_search")
                                 .build()
                         )
                         .addMessage(
                             RuntimeEvaluateInteractionParams.Interaction.CanonicalInteraction
                                 .Message
                                 .builder()
-                                .addTextContent("The capital of France is Paris.")
+                                .addContent(
+                                    RuntimeEvaluateInteractionParams.Interaction
+                                        .CanonicalInteraction
+                                        .Message
+                                        .Content
+                                        .Text
+                                        .builder()
+                                        .text("The capital of France is Paris.")
+                                        .addAnnotation(
+                                            RuntimeEvaluateInteractionParams.Interaction
+                                                .CanonicalInteraction
+                                                .Message
+                                                .Content
+                                                .Text
+                                                .Annotation
+                                                .builder()
+                                                .type("url_citation")
+                                                .addFile(
+                                                    RuntimeEvaluateInteractionParams.Interaction
+                                                        .CanonicalInteraction
+                                                        .Message
+                                                        .Content
+                                                        .Text
+                                                        .Annotation
+                                                        .File
+                                                        .builder()
+                                                        .id("file-abc123")
+                                                        .name("q3-revenue.pdf")
+                                                        .build()
+                                                )
+                                                .addUrl("https://example.com/q3-report")
+                                                .build()
+                                        )
+                                        .build()
+                                )
                                 .role("assistant")
+                                .addAttachment(
+                                    RuntimeEvaluateInteractionParams.Interaction
+                                        .CanonicalInteraction
+                                        .Message
+                                        .Attachment
+                                        .builder()
+                                        .id("file-abc123")
+                                        .name("q3-revenue.pdf")
+                                        .build()
+                                )
                                 .timestamp(
                                     RuntimeEvaluateInteractionParams.Interaction
                                         .CanonicalInteraction
@@ -297,6 +670,7 @@ internal class RuntimeEvaluateInteractionParamsTest {
                                         .value(OffsetDateTime.parse("2024-02-10T12:00:00Z"))
                                         .build()
                                 )
+                                .addToolsUsed("web_search")
                                 .build()
                         )
                         .addToolsAvailable(
@@ -326,6 +700,12 @@ internal class RuntimeEvaluateInteractionParamsTest {
                     .provider("openai")
                     .requesterId("user-12345")
                     .externalSessionId("sess_4b8cde94604f4c389406a0b2f806069a")
+                    .addExternalSessionId(
+                        RuntimeEvaluateInteractionParams.Metadata.ExternalSessionId.builder()
+                            .id("id")
+                            .source("source")
+                            .build()
+                    )
                     .build()
             )
     }
