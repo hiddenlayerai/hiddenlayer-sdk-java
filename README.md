@@ -117,12 +117,12 @@ HiddenLayerClient client = HiddenLayerOkHttpClient.builder()
 
 See this table for the available options:
 
-| Setter         | System property            | Environment variable        | Required | Default value                  |
-| -------------- | -------------------------- | --------------------------- | -------- | ------------------------------ |
-| `bearerToken`  | `hiddenlayer.token`        | `HIDDENLAYER_TOKEN`         | false    | -                              |
-| `clientId`     | `hiddenlayer.clientId`     | `HIDDENLAYER_CLIENT_ID`     | false    | -                              |
-| `clientSecret` | `hiddenlayer.clientSecret` | `HIDDENLAYER_CLIENT_SECRET` | false    | -                              |
-| `baseUrl`      | `hiddenlayer.baseUrl`      | `HIDDENLAYER_BASE_URL`      | true     | `"https://api.hiddenlayer.ai"` |
+| Setter         | System property            | Environment variable        | Required | Default value                     |
+| -------------- | -------------------------- | --------------------------- | -------- | --------------------------------- |
+| `bearerToken`  | `hiddenlayer.token`        | `HIDDENLAYER_TOKEN`         | false    | -                                 |
+| `clientId`     | `hiddenlayer.clientId`     | `HIDDENLAYER_CLIENT_ID`     | false    | -                                 |
+| `clientSecret` | `hiddenlayer.clientSecret` | `HIDDENLAYER_CLIENT_SECRET` | false    | -                                 |
+| `baseUrl`      | `hiddenlayer.baseUrl`      | `HIDDENLAYER_BASE_URL`      | true     | `"https://api.us.hiddenlayer.ai"` |
 
 System properties take precedence over environment variables.
 
