@@ -134,7 +134,7 @@ private constructor(
     /**
      * The base URL to use for every request.
      *
-     * Defaults to the prod-us environment: `https://api.hiddenlayer.ai`.
+     * Defaults to the prod-us environment: `https://api.us.hiddenlayer.ai`.
      *
      * The following other environments, with dedicated builder methods, are available:
      * - prod-eu: `https://api.eu.hiddenlayer.ai`
@@ -151,7 +151,7 @@ private constructor(
 
     companion object {
 
-        const val PROD_US_URL = "https://api.hiddenlayer.ai"
+        const val PROD_US_URL = "https://api.us.hiddenlayer.ai"
 
         const val PROD_EU_URL = "https://api.eu.hiddenlayer.ai"
 
@@ -280,7 +280,7 @@ private constructor(
         /**
          * The base URL to use for every request.
          *
-         * Defaults to the prod-us environment: `https://api.hiddenlayer.ai`.
+         * Defaults to the prod-us environment: `https://api.us.hiddenlayer.ai`.
          *
          * The following other environments, with dedicated builder methods, are available:
          * - prod-eu: `https://api.eu.hiddenlayer.ai`
@@ -451,12 +451,12 @@ private constructor(
          *
          * See this table for the available options:
          *
-         * |Setter        |System property           |Environment variable       |Required|Default value                 |
-         * |--------------|--------------------------|---------------------------|--------|------------------------------|
-         * |`bearerToken` |`hiddenlayer.token`       |`HIDDENLAYER_TOKEN`        |false   |-                             |
-         * |`clientId`    |`hiddenlayer.clientId`    |`HIDDENLAYER_CLIENT_ID`    |false   |-                             |
-         * |`clientSecret`|`hiddenlayer.clientSecret`|`HIDDENLAYER_CLIENT_SECRET`|false   |-                             |
-         * |`baseUrl`     |`hiddenlayer.baseUrl`     |`HIDDENLAYER_BASE_URL`     |true    |`"https://api.hiddenlayer.ai"`|
+         * |Setter        |System property           |Environment variable       |Required|Default value                    |
+         * |--------------|--------------------------|---------------------------|--------|---------------------------------|
+         * |`bearerToken` |`hiddenlayer.token`       |`HIDDENLAYER_TOKEN`        |false   |-                                |
+         * |`clientId`    |`hiddenlayer.clientId`    |`HIDDENLAYER_CLIENT_ID`    |false   |-                                |
+         * |`clientSecret`|`hiddenlayer.clientSecret`|`HIDDENLAYER_CLIENT_SECRET`|false   |-                                |
+         * |`baseUrl`     |`hiddenlayer.baseUrl`     |`HIDDENLAYER_BASE_URL`     |true    |`"https://api.us.hiddenlayer.ai"`|
          *
          * System properties take precedence over environment variables.
          */

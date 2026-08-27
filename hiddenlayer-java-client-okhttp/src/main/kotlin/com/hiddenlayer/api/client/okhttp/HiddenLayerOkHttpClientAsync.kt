@@ -237,7 +237,7 @@ class HiddenLayerOkHttpClientAsync private constructor() {
         /**
          * The base URL to use for every request.
          *
-         * Defaults to the prod-us environment: `https://api.hiddenlayer.ai`.
+         * Defaults to the prod-us environment: `https://api.us.hiddenlayer.ai`.
          *
          * The following other environments, with dedicated builder methods, are available:
          * - prod-eu: `https://api.eu.hiddenlayer.ai`
