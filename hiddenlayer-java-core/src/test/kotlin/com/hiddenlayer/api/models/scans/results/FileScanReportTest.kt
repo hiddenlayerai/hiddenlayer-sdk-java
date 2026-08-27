@@ -21,7 +21,9 @@ internal class FileScanReportTest {
                             FileScanReport.FileResult.Details.builder()
                                 .estimatedTime("estimated_time")
                                 .fileType("safetensors")
-                                .sha256("a54d88e06612d820bc3be72877c74f257b561b19")
+                                .sha256(
+                                    "fae6d75cb56ba5d9bf898b5b49a83d635668cf726f0a1b25cf7dbb1b299101d6"
+                                )
                                 .fileSize("9 GB")
                                 .fileSizeBytes(9663676416L)
                                 .fileTypeDetails(
@@ -33,7 +35,7 @@ internal class FileScanReportTest {
                                 )
                                 .md5("ce114e4501d2f4e2dcea3e17b546f339")
                                 .tlsh(
-                                    "T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293"
+                                    "C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D2933A"
                                 )
                                 .build()
                         )
@@ -101,7 +103,9 @@ internal class FileScanReportTest {
                         FileScanReport.FileResult.Details.builder()
                             .estimatedTime("estimated_time")
                             .fileType("safetensors")
-                            .sha256("a54d88e06612d820bc3be72877c74f257b561b19")
+                            .sha256(
+                                "fae6d75cb56ba5d9bf898b5b49a83d635668cf726f0a1b25cf7dbb1b299101d6"
+                            )
                             .fileSize("9 GB")
                             .fileSizeBytes(9663676416L)
                             .fileTypeDetails(
@@ -112,7 +116,7 @@ internal class FileScanReportTest {
                             )
                             .md5("ce114e4501d2f4e2dcea3e17b546f339")
                             .tlsh(
-                                "T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293"
+                                "C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D2933A"
                             )
                             .build()
                     )
@@ -184,7 +188,9 @@ internal class FileScanReportTest {
                             FileScanReport.FileResult.Details.builder()
                                 .estimatedTime("estimated_time")
                                 .fileType("safetensors")
-                                .sha256("a54d88e06612d820bc3be72877c74f257b561b19")
+                                .sha256(
+                                    "fae6d75cb56ba5d9bf898b5b49a83d635668cf726f0a1b25cf7dbb1b299101d6"
+                                )
                                 .fileSize("9 GB")
                                 .fileSizeBytes(9663676416L)
                                 .fileTypeDetails(
@@ -196,7 +202,7 @@ internal class FileScanReportTest {
                                 )
                                 .md5("ce114e4501d2f4e2dcea3e17b546f339")
                                 .tlsh(
-                                    "T1C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D293"
+                                    "C50757F93C74D00C05B70C0793A1D5A9DF3F6D3A2F7AD940F3BFBF07B3BDF5A1D2933A"
                                 )
                                 .build()
                         )
