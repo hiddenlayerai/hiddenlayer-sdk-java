@@ -120,7 +120,7 @@ internal class ProGuardCompatibilityTest {
                         .name("prompt_injection")
                         .phase("input")
                         .processingTimeMs(7.01)
-                        .version("version")
+                        .version("5")
                         .build()
                 )
                 .analyzedData(
