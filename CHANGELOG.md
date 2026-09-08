@@ -7,7 +7,7 @@
 
 * **api:** api update ([d262d29](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/d262d29ddb5d5d5b082ade4ef2844377e18330c8))
 * **assets:** add POST endpoint for v2 asset relationships ([9b7903a](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/9b7903a94413fda67d90c77d16fff99b7a84bd8a))
-* **hl-ai-service:** add chat completions and models endpoints ([#140](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/140)) ([14a6ac2](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/14a6ac2c8d7c4adf660313c519121474640148c6))
+* **scans:** add scan summary and paginated file results endpoints ([#140](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/140)) ([14a6ac2](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/14a6ac2c8d7c4adf660313c519121474640148c6))
 * **runtime:** remove beta label from v2 endpoints ([3e4c0eb](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/3e4c0eb4bdb27a3366c76496efaeb9faae30e183))
 
 
