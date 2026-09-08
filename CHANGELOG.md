@@ -17,8 +17,7 @@
 * **ci:** run CI on all PRs, remove dead Stainless code ([#115](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/115)) ([927039e](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/927039e21731dc91bc932014513dff9da744bd94))
 * **ci:** use RELEASE_PLEASE_TOKEN for auto-approve ([#138](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/138)) ([b570fa1](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/b570fa1ad2ead40aa55da2dc3de1b059fc462249))
 * replace @BetaApi annotation patching with runtime beta warnings ([#108](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/108)) ([71b9936](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/71b99364fb3e6d935453bb24975b37d0b8567d8e))
-* **scans:** fetch scan results via summary polling and paginated file reads ([d5d657e](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/d5d657e23bb210605b0c2458ec3667c8eb5f1b5c))
-* **scans:** fetch scan results via summary polling and paginated file reads ([f623072](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/f623072fc7ab4373040d4a85fabc6a980a077311))
+* **scans:** fetch scan results via summary polling and paginated file reads ([#141](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/141)) ([f623072](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/f623072fc7ab4373040d4a85fabc6a980a077311))
 * update US region API base URL to https://api.us.hiddenlayer.ai ([#139](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/139)) ([3c9de8b](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/3c9de8b7a0b5c11ef457c5477cddcb57d59d084b))
 
 ## 2.3.0 (2026-06-24)
