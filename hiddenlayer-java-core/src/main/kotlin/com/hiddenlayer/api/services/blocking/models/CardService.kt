@@ -24,20 +24,28 @@ interface CardService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): CardService
 
-    /** List Model Cards */
-    fun list(): CardListPage = list(CardListParams.none())
+    /**
+     * Deprecated in favor of `GET /asset-inventory/v2/assets` (`asset_type[in]=MODEL`), which
+     * returns the same model-card data — scan status/timing and findings from the `supply-chain`
+     * annotation — alongside the rest of an asset's data, with matching filters (`model_id[eq]`,
+     * `scan_started_at[gt/gte/lt/lte]`) and sorts (`model_name`, `scan_started_at`).
+     */
+    @Deprecated("deprecated") fun list(): CardListPage = list(CardListParams.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         params: CardListParams = CardListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CardListPage
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(params: CardListParams = CardListParams.none()): CardListPage =
         list(params, RequestOptions.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(requestOptions: RequestOptions): CardListPage =
         list(CardListParams.none(), requestOptions)
 
@@ -55,9 +63,12 @@ interface CardService {
          * Returns a raw HTTP response for `get /models/v4/cards`, but is otherwise the same as
          * [CardService.list].
          */
-        @MustBeClosed fun list(): HttpResponseFor<CardListPage> = list(CardListParams.none())
+        @Deprecated("deprecated")
+        @MustBeClosed
+        fun list(): HttpResponseFor<CardListPage> = list(CardListParams.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(
             params: CardListParams = CardListParams.none(),
@@ -65,11 +76,13 @@ interface CardService {
         ): HttpResponseFor<CardListPage>
 
         /** @see list */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(params: CardListParams = CardListParams.none()): HttpResponseFor<CardListPage> =
             list(params, RequestOptions.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<CardListPage> =
             list(CardListParams.none(), requestOptions)

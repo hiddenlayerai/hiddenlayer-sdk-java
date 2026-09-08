@@ -5,7 +5,6 @@ package com.hiddenlayer.api.services.async
 import com.hiddenlayer.api.core.ClientOptions
 import com.hiddenlayer.api.core.RequestOptions
 import com.hiddenlayer.api.core.http.HttpResponseFor
-import com.hiddenlayer.api.lib.BetaApi
 import com.hiddenlayer.api.models.runtime.RuntimeEvaluateInteractionParams
 import com.hiddenlayer.api.models.runtime.RuntimeEvaluateInteractionResponse
 import com.hiddenlayer.api.models.runtime.RuntimeEvaluateRequestParams
@@ -30,9 +29,6 @@ interface RuntimeServiceAsync {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): RuntimeServiceAsync
 
     /**
-     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
-     * Breaking changes may occur.
-     *
      * Performs synchronous security evaluation on an LLM **interaction**. The interaction can be a
      * standalone user prompt, a standalone model response, a partial exchange, or a long multi-turn
      * message history. The endpoint imposes no requirement that the messages form a complete
@@ -57,23 +53,18 @@ interface RuntimeServiceAsync {
      * request/response payloads returned in the same provider format), use the request-evaluations
      * and response-evaluations endpoints instead.
      */
-    @BetaApi
     fun evaluateInteraction(
         params: RuntimeEvaluateInteractionParams
     ): CompletableFuture<RuntimeEvaluateInteractionResponse> =
         evaluateInteraction(params, RequestOptions.none())
 
     /** @see evaluateInteraction */
-    @BetaApi
     fun evaluateInteraction(
         params: RuntimeEvaluateInteractionParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RuntimeEvaluateInteractionResponse>
 
     /**
-     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
-     * Breaking changes may occur.
-     *
      * Analyzes an LLM request payload for security threats before it is sent to the model.
      *
      * Accepts any valid provider request payload and returns:
@@ -89,21 +80,18 @@ interface RuntimeServiceAsync {
      * - [OpenAI Responses](https://platform.openai.com/docs/api-reference/responses)
      * - [Anthropic Messages](https://docs.anthropic.com/en/api/messages)
      */
-    @BetaApi
     fun evaluateRequest(
         params: RuntimeEvaluateRequestParams
     ): CompletableFuture<RuntimeEvaluateRequestResponse> =
         evaluateRequest(params, RequestOptions.none())
 
     /** @see evaluateRequest */
-    @BetaApi
     fun evaluateRequest(
         params: RuntimeEvaluateRequestParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RuntimeEvaluateRequestResponse>
 
     /** @see evaluateRequest */
-    @BetaApi
     fun evaluateRequest(
         body: RuntimeEvaluateRequestParams.Body,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -111,16 +99,12 @@ interface RuntimeServiceAsync {
         evaluateRequest(RuntimeEvaluateRequestParams.builder().body(body).build(), requestOptions)
 
     /** @see evaluateRequest */
-    @BetaApi
     fun evaluateRequest(
         body: RuntimeEvaluateRequestParams.Body
     ): CompletableFuture<RuntimeEvaluateRequestResponse> =
         evaluateRequest(body, RequestOptions.none())
 
     /**
-     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
-     * Breaking changes may occur.
-     *
      * Analyzes an LLM response payload for security threats after it is received from the model.
      *
      * Accepts any valid provider response payload and returns:
@@ -136,21 +120,18 @@ interface RuntimeServiceAsync {
      * - [OpenAI Responses](https://platform.openai.com/docs/api-reference/responses)
      * - [Anthropic Messages](https://docs.anthropic.com/en/api/messages)
      */
-    @BetaApi
     fun evaluateResponse(
         params: RuntimeEvaluateResponseParams
     ): CompletableFuture<RuntimeEvaluateResponseResponse> =
         evaluateResponse(params, RequestOptions.none())
 
     /** @see evaluateResponse */
-    @BetaApi
     fun evaluateResponse(
         params: RuntimeEvaluateResponseParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RuntimeEvaluateResponseResponse>
 
     /** @see evaluateResponse */
-    @BetaApi
     fun evaluateResponse(
         body: RuntimeEvaluateResponseParams.Body,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -158,7 +139,6 @@ interface RuntimeServiceAsync {
         evaluateResponse(RuntimeEvaluateResponseParams.builder().body(body).build(), requestOptions)
 
     /** @see evaluateResponse */
-    @BetaApi
     fun evaluateResponse(
         body: RuntimeEvaluateResponseParams.Body
     ): CompletableFuture<RuntimeEvaluateResponseResponse> =
@@ -188,7 +168,6 @@ interface RuntimeServiceAsync {
             evaluateInteraction(params, RequestOptions.none())
 
         /** @see evaluateInteraction */
-        @BetaApi
         fun evaluateInteraction(
             params: RuntimeEvaluateInteractionParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -204,14 +183,12 @@ interface RuntimeServiceAsync {
             evaluateRequest(params, RequestOptions.none())
 
         /** @see evaluateRequest */
-        @BetaApi
         fun evaluateRequest(
             params: RuntimeEvaluateRequestParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<RuntimeEvaluateRequestResponse>>
 
         /** @see evaluateRequest */
-        @BetaApi
         fun evaluateRequest(
             body: RuntimeEvaluateRequestParams.Body,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -222,7 +199,6 @@ interface RuntimeServiceAsync {
             )
 
         /** @see evaluateRequest */
-        @BetaApi
         fun evaluateRequest(
             body: RuntimeEvaluateRequestParams.Body
         ): CompletableFuture<HttpResponseFor<RuntimeEvaluateRequestResponse>> =
@@ -238,14 +214,12 @@ interface RuntimeServiceAsync {
             evaluateResponse(params, RequestOptions.none())
 
         /** @see evaluateResponse */
-        @BetaApi
         fun evaluateResponse(
             params: RuntimeEvaluateResponseParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<RuntimeEvaluateResponseResponse>>
 
         /** @see evaluateResponse */
-        @BetaApi
         fun evaluateResponse(
             body: RuntimeEvaluateResponseParams.Body,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -256,7 +230,6 @@ interface RuntimeServiceAsync {
             )
 
         /** @see evaluateResponse */
-        @BetaApi
         fun evaluateResponse(
             body: RuntimeEvaluateResponseParams.Body
         ): CompletableFuture<HttpResponseFor<RuntimeEvaluateResponseResponse>> =
