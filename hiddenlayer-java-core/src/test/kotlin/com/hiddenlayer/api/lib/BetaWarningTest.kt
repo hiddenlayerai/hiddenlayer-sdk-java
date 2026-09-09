@@ -72,4 +72,51 @@ internal class BetaWarningTest {
         assertThat(alpha).hasSize(1)
         assertThat(bravo).hasSize(1)
     }
+
+    @Test
+    fun matchBetaEndpoint_matchesStaticBetaPath() {
+        assertThat(BetaWarning.matchBetaEndpoint(listOf("detection", "v2", "request-evaluations")))
+            .isEqualTo("RuntimeService.evaluateRequest")
+    }
+
+    @Test
+    fun matchBetaEndpoint_matchesDynamicBetaPath() {
+        assertThat(
+                BetaWarning.matchBetaEndpoint(
+                    listOf("evaluations", "v1", "red-team", "abc123", "status")
+                )
+            )
+            .isEqualTo("RedTeamService.retrieveStatus")
+    }
+
+    @Test
+    fun matchBetaEndpoint_matchesSingleParameterBetaPath() {
+        assertThat(BetaWarning.matchBetaEndpoint(listOf("evaluations", "v1", "red-team", "abc123")))
+            .isEqualTo("RedTeamService.retrieveEvaluationResults")
+    }
+
+    @Test
+    fun matchBetaEndpoint_returnsNullForNonBetaPath() {
+        assertThat(BetaWarning.matchBetaEndpoint(listOf("models", "v2", "list"))).isNull()
+    }
+
+    @Test
+    fun matchBetaEndpoint_returnsNullWhenLiteralSegmentDiffers() {
+        assertThat(
+                BetaWarning.matchBetaEndpoint(
+                    listOf("evaluations", "v1", "red-team", "abc123", "not-a-real-action")
+                )
+            )
+            .isNull()
+    }
+
+    @Test
+    fun matchBetaEndpoint_returnsNullWhenSegmentCountDiffers() {
+        assertThat(
+                BetaWarning.matchBetaEndpoint(
+                    listOf("evaluations", "v1", "red-team", "abc123", "status", "extra")
+                )
+            )
+            .isNull()
+    }
 }

@@ -17,9 +17,6 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time.
- * Breaking changes may occur.
- *
  * Analyzes an LLM response payload for security threats after it is received from the model.
  *
  * Accepts any valid provider response payload and returns:

@@ -24,20 +24,29 @@ interface CardServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): CardServiceAsync
 
-    /** List Model Cards */
+    /**
+     * Deprecated in favor of `GET /asset-inventory/v2/assets` (`asset_type[in]=MODEL`), which
+     * returns the same model-card data — scan status/timing and findings from the `supply-chain`
+     * annotation — alongside the rest of an asset's data, with matching filters (`model_id[eq]`,
+     * `scan_started_at[gt/gte/lt/lte]`) and sorts (`model_name`, `scan_started_at`).
+     */
+    @Deprecated("deprecated")
     fun list(): CompletableFuture<CardListPageAsync> = list(CardListParams.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         params: CardListParams = CardListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CardListPageAsync>
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(params: CardListParams = CardListParams.none()): CompletableFuture<CardListPageAsync> =
         list(params, RequestOptions.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(requestOptions: RequestOptions): CompletableFuture<CardListPageAsync> =
         list(CardListParams.none(), requestOptions)
 
@@ -55,22 +64,26 @@ interface CardServiceAsync {
          * Returns a raw HTTP response for `get /models/v4/cards`, but is otherwise the same as
          * [CardServiceAsync.list].
          */
+        @Deprecated("deprecated")
         fun list(): CompletableFuture<HttpResponseFor<CardListPageAsync>> =
             list(CardListParams.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         fun list(
             params: CardListParams = CardListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<CardListPageAsync>>
 
         /** @see list */
+        @Deprecated("deprecated")
         fun list(
             params: CardListParams = CardListParams.none()
         ): CompletableFuture<HttpResponseFor<CardListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<CardListPageAsync>> =

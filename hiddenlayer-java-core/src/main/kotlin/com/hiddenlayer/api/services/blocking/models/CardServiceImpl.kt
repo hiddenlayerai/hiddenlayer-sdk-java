@@ -30,6 +30,7 @@ class CardServiceImpl internal constructor(private val clientOptions: ClientOpti
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): CardService =
         CardServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    @Deprecated("deprecated")
     override fun list(params: CardListParams, requestOptions: RequestOptions): CardListPage =
         // get /models/v4/cards
         withRawResponse().list(params, requestOptions).parse()
@@ -50,6 +51,7 @@ class CardServiceImpl internal constructor(private val clientOptions: ClientOpti
         private val listHandler: Handler<CardListPageResponse> =
             jsonHandler<CardListPageResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun list(
             params: CardListParams,
             requestOptions: RequestOptions,
