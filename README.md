@@ -3,7 +3,7 @@
 <!-- x-release-please-start-version -->
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.hiddenlayer.api/hiddenlayer-java)](https://central.sonatype.com/artifact/com.hiddenlayer.api/hiddenlayer-java/2.4.0)
-[![javadoc](https://javadoc.io/badge2/com.hiddenlayer.api/hiddenlayer-java/2.4.0/javadoc.svg)](https://javadoc.io/doc/com.hiddenlayer.api/hiddenlayer-java/2.4.0)
+[![javadoc](https://javadoc.io/badge2/com.hiddenlayer.api/hiddenlayer-java/2.4.0/javadoc.svg)](https://javadoc.io/doc/com.hiddenlayer.api/hiddenlayer-java/2.3.0)
 
 <!-- x-release-please-end -->
 
