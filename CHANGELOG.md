@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.5.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.4.0...v2.5.0) (2026-09-11)
+
+
+### Features
+
+* **governance:** add replace_active_policy param to rule set create ([#142](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/142)) ([8ee1805](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/8ee1805c108063786bbb66a24a957ac138d65328))
+
+
+### Bug Fixes
+
+* **scans:** restore paginated scan helpers reverted by stale custom-code seal ([#144](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/144)) ([b982194](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/b982194425df54210036772d1dec126e18140a32))
+* **scans:** stop paginating file results on a blank next cursor ([23a0f6e](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/23a0f6e51e3023214f3e74e77863e8d8f337028b))
+* **scans:** stop paginating file results on a blank next cursor ([7dc6966](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/7dc6966daf1c14d3aefa1f9e990d38af0af277bc))
+
 ## [2.4.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.3.0...v2.4.0) (2026-09-08)
 
 
