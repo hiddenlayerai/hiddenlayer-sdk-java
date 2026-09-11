@@ -15,6 +15,7 @@ import com.hiddenlayer.api.client.HiddenLayerClient
 import com.hiddenlayer.api.client.HiddenLayerClientAsync
 import com.hiddenlayer.api.core.jsonMapper
 import com.hiddenlayer.api.errors.NotFoundException
+import com.hiddenlayer.api.models.scans.results.ResultListFilesPage
 import com.hiddenlayer.api.models.scans.results.ResultListFilesPageAsync
 import com.hiddenlayer.api.models.scans.results.ResultListFilesParams
 import com.hiddenlayer.api.models.scans.results.ResultRetrieveSummaryParams
@@ -42,6 +43,25 @@ private val logger = Logger.getLogger("ScanUtils")
 // with back-to-back page reads.
 private const val FILE_RESULTS_PAGE_SIZE = 100L
 private const val FILE_RESULTS_PAGE_DELAY_MS = 250L
+
+// Upper bound on page reads for one scan (1M files at the page size above). A cursor that never
+// advances must fail loudly instead of paginating forever.
+private const val FILE_RESULTS_MAX_PAGES = 10_000
+
+/**
+ * Whether another page of file results should be requested. The API always includes the `next` key
+ * and sends an empty string (or null) on the last page; only a non-blank cursor means more.
+ */
+internal fun hasMoreFileResults(page: ResultListFilesPage): Boolean =
+    page.items().isNotEmpty() && page.next().map { it.isNotBlank() }.orElse(false)
+
+internal fun hasMoreFileResults(page: ResultListFilesPageAsync): Boolean =
+    page.items().isNotEmpty() && page.next().map { it.isNotBlank() }.orElse(false)
+
+private fun tooManyPages(scanId: String, pages: Int): IllegalStateException =
+    IllegalStateException(
+        "Scan $scanId file results exceeded $FILE_RESULTS_MAX_PAGES pages; the next cursor is not advancing"
+    )
 
 // Deprecated top-level report fields that mirror `.summary.*` per the API contract.
 private val DEPRECATED_SUMMARY_MIRROR_FIELDS =
@@ -85,9 +105,12 @@ internal fun collectFileResults(client: HiddenLayerClient, scanId: String): List
                     .build()
             )
     val fileResults = page.items().toMutableList()
-    while (page.hasNextPage()) {
+    var pages = 1
+    while (hasMoreFileResults(page)) {
+        if (pages >= FILE_RESULTS_MAX_PAGES) throw tooManyPages(scanId, pages)
         Thread.sleep(FILE_RESULTS_PAGE_DELAY_MS)
         page = page.nextPage()
+        pages++
         fileResults.addAll(page.items())
     }
     return fileResults
@@ -106,17 +129,24 @@ internal fun collectFileResultsAsync(
             ResultListFilesParams.builder().scanId(scanId).pageSize(FILE_RESULTS_PAGE_SIZE).build()
         )
         .thenCompose { page ->
-            collectRemainingPagesAsync(page, page.items().toMutableList(), executor)
+            collectRemainingPagesAsync(scanId, page, page.items().toMutableList(), 1, executor)
         }
 }
 
 private fun collectRemainingPagesAsync(
+    scanId: String,
     page: ResultListFilesPageAsync,
     collected: MutableList<ScanFileResult>,
+    pages: Int,
     executor: java.util.concurrent.ScheduledExecutorService,
 ): CompletableFuture<List<ScanFileResult>> {
-    if (!page.hasNextPage()) {
+    if (!hasMoreFileResults(page)) {
         return CompletableFuture.completedFuture(collected)
+    }
+    if (pages >= FILE_RESULTS_MAX_PAGES) {
+        return CompletableFuture<List<ScanFileResult>>().also {
+            it.completeExceptionally(tooManyPages(scanId, pages))
+        }
     }
     val future = CompletableFuture<List<ScanFileResult>>()
     executor.schedule(
@@ -125,7 +155,7 @@ private fun collectRemainingPagesAsync(
                 .nextPage()
                 .thenCompose { next ->
                     collected.addAll(next.items())
-                    collectRemainingPagesAsync(next, collected, executor)
+                    collectRemainingPagesAsync(scanId, next, collected, pages + 1, executor)
                 }
                 .whenComplete { result, ex ->
                     if (ex != null) {
