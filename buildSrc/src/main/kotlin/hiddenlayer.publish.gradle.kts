@@ -42,8 +42,8 @@ configure<MavenPublishBaseExtension> {
     )
 
     pom {
-        name.set("HiddenLayer Audit API")
-        description.set("Query and review audit logs for activity within your HiddenLayer tenant.")
+        name.set("HiddenLayer Platform API")
+        description.set("HiddenLayer Platform API")
         url.set("https://dev.hiddenlayer.ai")
 
         licenses {
