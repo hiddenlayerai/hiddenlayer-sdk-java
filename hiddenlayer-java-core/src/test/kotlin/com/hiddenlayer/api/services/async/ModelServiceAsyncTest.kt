@@ -1,0 +1,33 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.hiddenlayer.api.services.async
+
+import com.hiddenlayer.api.client.okhttp.HiddenLayerOkHttpClientAsync
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
+
+internal class ModelServiceAsyncTest {
+
+    @Disabled("Mock server tests are disabled")
+    @Test
+    fun retrieve() {
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
+        val modelServiceAsync = client.models()
+
+        val modelFuture = modelServiceAsync.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+
+        val model = modelFuture.get()
+        model.validate()
+    }
+
+    @Disabled("Mock server tests are disabled")
+    @Test
+    fun delete() {
+        val client = HiddenLayerOkHttpClientAsync.builder().bearerToken("My Bearer Token").build()
+        val modelServiceAsync = client.models()
+
+        val future = modelServiceAsync.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+
+        val response = future.get()
+    }
+}
