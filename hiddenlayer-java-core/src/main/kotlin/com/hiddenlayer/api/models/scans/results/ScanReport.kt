@@ -4589,7 +4589,7 @@ private constructor(
             fun md5(): Optional<String> = md5.getOptional("md5")
 
             /**
-             * TLSH hash of file
+             * TLSH hash of file, with or without the "T1" version prefix
              *
              * @throws HiddenLayerInvalidDataException if the JSON field has an unexpected type
              *   (e.g. if the server responded with an unexpected value).
@@ -4835,7 +4835,7 @@ private constructor(
                  */
                 fun md5(md5: JsonField<String>) = apply { this.md5 = md5 }
 
-                /** TLSH hash of file */
+                /** TLSH hash of file, with or without the "T1" version prefix */
                 fun tlsh(tlsh: String) = tlsh(JsonField.of(tlsh))
 
                 /**
