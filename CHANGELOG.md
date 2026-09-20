@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.5.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.4.0...v2.5.0) (2026-09-11)
+## [2.5.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.4.0...v2.5.0) (2026-09-20)
 
 
 ### Features
@@ -10,8 +10,14 @@
 
 ### Bug Fixes
 
-* **scans:** restore paginated scan helpers ([#144](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/144)) ([b982194](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/b982194425df54210036772d1dec126e18140a32))
-* **scans:** stop paginating file results on a blank next cursor ([#145](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/145)) ([23a0f6e](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/23a0f6e51e3023214f3e74e77863e8d8f337028b))
+* **scans:** restore paginated scan helpers reverted by stale custom-code seal ([#144](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/144)) ([b982194](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/b982194425df54210036772d1dec126e18140a32))
+* **scans:** stop paginating file results on a blank next cursor ([23a0f6e](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/23a0f6e51e3023214f3e74e77863e8d8f337028b))
+* **scans:** stop paginating file results on a blank next cursor ([7dc6966](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/7dc6966daf1c14d3aefa1f9e990d38af0af277bc))
+
+
+### Documentation
+
+* document canonical tool result names ([#147](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/147)) ([eed204e](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/eed204e275b2dfc8f980e1ae008522f6f4016818))
 
 ## [2.4.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.3.0...v2.4.0) (2026-09-08)
 
