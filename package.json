@@ -1,0 +1,8 @@
+{
+  "name": "hiddenlayer-java",
+  "version": "2.5.0",
+  "private": true,
+  "devDependencies": {
+    "@changesets/cli": "^3.0.3"
+  }
+}
