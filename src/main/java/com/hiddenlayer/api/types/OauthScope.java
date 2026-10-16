@@ -11,8 +11,6 @@ public final class OauthScope {
 
     public static final OauthScope INTEGRATION_DELETE = new OauthScope(Value.INTEGRATION_DELETE, "integration:delete");
 
-    public static final OauthScope POLICY_READ = new OauthScope(Value.POLICY_READ, "policy:read");
-
     public static final OauthScope INTEGRATION_READ = new OauthScope(Value.INTEGRATION_READ, "integration:read");
 
     public static final OauthScope EULA_CHECK = new OauthScope(Value.EULA_CHECK, "eula:check");
@@ -31,6 +29,10 @@ public final class OauthScope {
 
     public static final OauthScope PROJECT_DELETE = new OauthScope(Value.PROJECT_DELETE, "project:delete");
 
+    public static final OauthScope POLICY_R = new OauthScope(Value.POLICY_R, "policy:r");
+
+    public static final OauthScope POLICY_D = new OauthScope(Value.POLICY_D, "policy:d");
+
     public static final OauthScope RUNTIME_D = new OauthScope(Value.RUNTIME_D, "runtime:d");
 
     public static final OauthScope PROJECT_WRITE = new OauthScope(Value.PROJECT_WRITE, "project:write");
@@ -48,8 +50,6 @@ public final class OauthScope {
     public static final OauthScope USER_DELETE = new OauthScope(Value.USER_DELETE, "user:delete");
 
     public static final OauthScope MODEL_DELETE = new OauthScope(Value.MODEL_DELETE, "model:delete");
-
-    public static final OauthScope POLICY_DELETE = new OauthScope(Value.POLICY_DELETE, "policy:delete");
 
     public static final OauthScope PLATFORM_CONFIG_READ =
             new OauthScope(Value.PLATFORM_CONFIG_READ, "platform-config:read");
@@ -73,11 +73,11 @@ public final class OauthScope {
 
     public static final OauthScope RUNTIME_R = new OauthScope(Value.RUNTIME_R, "runtime:r");
 
-    public static final OauthScope POLICY_WRITE = new OauthScope(Value.POLICY_WRITE, "policy:write");
-
     public static final OauthScope RULE_SET_WRITE = new OauthScope(Value.RULE_SET_WRITE, "rule-set:write");
 
     public static final OauthScope MODEL_READ = new OauthScope(Value.MODEL_READ, "model:read");
+
+    public static final OauthScope POLICY_W = new OauthScope(Value.POLICY_W, "policy:w");
 
     public static final OauthScope CREDENTIAL_DELETE = new OauthScope(Value.CREDENTIAL_DELETE, "credential:delete");
 
@@ -123,8 +123,6 @@ public final class OauthScope {
                 return visitor.visitUserWrite();
             case INTEGRATION_DELETE:
                 return visitor.visitIntegrationDelete();
-            case POLICY_READ:
-                return visitor.visitPolicyRead();
             case INTEGRATION_READ:
                 return visitor.visitIntegrationRead();
             case EULA_CHECK:
@@ -143,6 +141,10 @@ public final class OauthScope {
                 return visitor.visitInferenceRead();
             case PROJECT_DELETE:
                 return visitor.visitProjectDelete();
+            case POLICY_R:
+                return visitor.visitPolicyR();
+            case POLICY_D:
+                return visitor.visitPolicyD();
             case RUNTIME_D:
                 return visitor.visitRuntimeD();
             case PROJECT_WRITE:
@@ -161,8 +163,6 @@ public final class OauthScope {
                 return visitor.visitUserDelete();
             case MODEL_DELETE:
                 return visitor.visitModelDelete();
-            case POLICY_DELETE:
-                return visitor.visitPolicyDelete();
             case PLATFORM_CONFIG_READ:
                 return visitor.visitPlatformConfigRead();
             case RULE_SET_DELETE:
@@ -183,12 +183,12 @@ public final class OauthScope {
                 return visitor.visitTenantPrefWrite();
             case RUNTIME_R:
                 return visitor.visitRuntimeR();
-            case POLICY_WRITE:
-                return visitor.visitPolicyWrite();
             case RULE_SET_WRITE:
                 return visitor.visitRuleSetWrite();
             case MODEL_READ:
                 return visitor.visitModelRead();
+            case POLICY_W:
+                return visitor.visitPolicyW();
             case CREDENTIAL_DELETE:
                 return visitor.visitCredentialDelete();
             case RUNTIME_W:
@@ -210,8 +210,6 @@ public final class OauthScope {
                 return USER_WRITE;
             case "integration:delete":
                 return INTEGRATION_DELETE;
-            case "policy:read":
-                return POLICY_READ;
             case "integration:read":
                 return INTEGRATION_READ;
             case "eula:check":
@@ -230,6 +228,10 @@ public final class OauthScope {
                 return INFERENCE_READ;
             case "project:delete":
                 return PROJECT_DELETE;
+            case "policy:r":
+                return POLICY_R;
+            case "policy:d":
+                return POLICY_D;
             case "runtime:d":
                 return RUNTIME_D;
             case "project:write":
@@ -248,8 +250,6 @@ public final class OauthScope {
                 return USER_DELETE;
             case "model:delete":
                 return MODEL_DELETE;
-            case "policy:delete":
-                return POLICY_DELETE;
             case "platform-config:read":
                 return PLATFORM_CONFIG_READ;
             case "rule-set:delete":
@@ -270,12 +270,12 @@ public final class OauthScope {
                 return TENANT_PREF_WRITE;
             case "runtime:r":
                 return RUNTIME_R;
-            case "policy:write":
-                return POLICY_WRITE;
             case "rule-set:write":
                 return RULE_SET_WRITE;
             case "model:read":
                 return MODEL_READ;
+            case "policy:w":
+                return POLICY_W;
             case "credential:delete":
                 return CREDENTIAL_DELETE;
             case "runtime:w":
@@ -296,11 +296,11 @@ public final class OauthScope {
 
         AUDIT_READ,
 
-        POLICY_READ,
+        POLICY_R,
 
-        POLICY_WRITE,
+        POLICY_W,
 
-        POLICY_DELETE,
+        POLICY_D,
 
         RULE_SET_READ,
 
@@ -378,11 +378,11 @@ public final class OauthScope {
 
         T visitAuditRead();
 
-        T visitPolicyRead();
+        T visitPolicyR();
 
-        T visitPolicyWrite();
+        T visitPolicyW();
 
-        T visitPolicyDelete();
+        T visitPolicyD();
 
         T visitRuleSetRead();
 
