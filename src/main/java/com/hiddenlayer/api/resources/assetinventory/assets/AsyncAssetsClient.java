@@ -446,6 +446,7 @@ public class AsyncAssetsClient {
      * timestamps and its current set of annotations. Each annotation
      * carries its <code>annotating_service</code> and an <code>attributes</code> property
      * map holding the details that service observed.</p>
+     * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public CompletableFuture<Asset> get(String assetId) {
         return this.rawClient.get(assetId).thenApply(response -> response.body());
@@ -458,6 +459,7 @@ public class AsyncAssetsClient {
      * timestamps and its current set of annotations. Each annotation
      * carries its <code>annotating_service</code> and an <code>attributes</code> property
      * map holding the details that service observed.</p>
+     * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public CompletableFuture<Asset> get(String assetId, RequestOptions requestOptions) {
         return this.rawClient.get(assetId, requestOptions).thenApply(response -> response.body());
@@ -470,6 +472,7 @@ public class AsyncAssetsClient {
      * timestamps and its current set of annotations. Each annotation
      * carries its <code>annotating_service</code> and an <code>attributes</code> property
      * map holding the details that service observed.</p>
+     * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public CompletableFuture<Asset> get(String assetId, GetAssetsRequest request) {
         return this.rawClient.get(assetId, request).thenApply(response -> response.body());
@@ -482,6 +485,7 @@ public class AsyncAssetsClient {
      * timestamps and its current set of annotations. Each annotation
      * carries its <code>annotating_service</code> and an <code>attributes</code> property
      * map holding the details that service observed.</p>
+     * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public CompletableFuture<Asset> get(String assetId, GetAssetsRequest request, RequestOptions requestOptions) {
         return this.rawClient.get(assetId, request, requestOptions).thenApply(response -> response.body());

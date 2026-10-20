@@ -1255,6 +1255,7 @@ public class AsyncRawAssetsClient {
      * timestamps and its current set of annotations. Each annotation
      * carries its <code>annotating_service</code> and an <code>attributes</code> property
      * map holding the details that service observed.</p>
+     * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public CompletableFuture<HiddenLayerHttpResponse<Asset>> get(String assetId) {
         return get(assetId, GetAssetsRequest.builder().build());
@@ -1267,6 +1268,7 @@ public class AsyncRawAssetsClient {
      * timestamps and its current set of annotations. Each annotation
      * carries its <code>annotating_service</code> and an <code>attributes</code> property
      * map holding the details that service observed.</p>
+     * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public CompletableFuture<HiddenLayerHttpResponse<Asset>> get(String assetId, RequestOptions requestOptions) {
         return get(assetId, GetAssetsRequest.builder().build(), requestOptions);
@@ -1279,6 +1281,7 @@ public class AsyncRawAssetsClient {
      * timestamps and its current set of annotations. Each annotation
      * carries its <code>annotating_service</code> and an <code>attributes</code> property
      * map holding the details that service observed.</p>
+     * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public CompletableFuture<HiddenLayerHttpResponse<Asset>> get(String assetId, GetAssetsRequest request) {
         return get(assetId, request, null);
@@ -1291,6 +1294,7 @@ public class AsyncRawAssetsClient {
      * timestamps and its current set of annotations. Each annotation
      * carries its <code>annotating_service</code> and an <code>attributes</code> property
      * map holding the details that service observed.</p>
+     * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public CompletableFuture<HiddenLayerHttpResponse<Asset>> get(
             String assetId, GetAssetsRequest request, RequestOptions requestOptions) {
@@ -1352,6 +1356,11 @@ public class AsyncRawAssetsClient {
                                 return;
                             case 404:
                                 future.completeExceptionally(new NotFoundError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 422:
+                                future.completeExceptionally(new UnprocessableEntityError(
                                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;

@@ -443,6 +443,7 @@ public class AssetsClient {
      * timestamps and its current set of annotations. Each annotation
      * carries its <code>annotating_service</code> and an <code>attributes</code> property
      * map holding the details that service observed.</p>
+     * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public Asset get(String assetId) {
         return this.rawClient.get(assetId).body();
@@ -455,6 +456,7 @@ public class AssetsClient {
      * timestamps and its current set of annotations. Each annotation
      * carries its <code>annotating_service</code> and an <code>attributes</code> property
      * map holding the details that service observed.</p>
+     * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public Asset get(String assetId, RequestOptions requestOptions) {
         return this.rawClient.get(assetId, requestOptions).body();
@@ -467,6 +469,7 @@ public class AssetsClient {
      * timestamps and its current set of annotations. Each annotation
      * carries its <code>annotating_service</code> and an <code>attributes</code> property
      * map holding the details that service observed.</p>
+     * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public Asset get(String assetId, GetAssetsRequest request) {
         return this.rawClient.get(assetId, request).body();
@@ -479,6 +482,7 @@ public class AssetsClient {
      * timestamps and its current set of annotations. Each annotation
      * carries its <code>annotating_service</code> and an <code>attributes</code> property
      * map holding the details that service observed.</p>
+     * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public Asset get(String assetId, GetAssetsRequest request, RequestOptions requestOptions) {
         return this.rawClient.get(assetId, request, requestOptions).body();

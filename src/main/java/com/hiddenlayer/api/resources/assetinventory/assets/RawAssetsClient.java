@@ -1087,6 +1087,7 @@ public class RawAssetsClient {
      * timestamps and its current set of annotations. Each annotation
      * carries its <code>annotating_service</code> and an <code>attributes</code> property
      * map holding the details that service observed.</p>
+     * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public HiddenLayerHttpResponse<Asset> get(String assetId) {
         return get(assetId, GetAssetsRequest.builder().build());
@@ -1099,6 +1100,7 @@ public class RawAssetsClient {
      * timestamps and its current set of annotations. Each annotation
      * carries its <code>annotating_service</code> and an <code>attributes</code> property
      * map holding the details that service observed.</p>
+     * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public HiddenLayerHttpResponse<Asset> get(String assetId, RequestOptions requestOptions) {
         return get(assetId, GetAssetsRequest.builder().build(), requestOptions);
@@ -1111,6 +1113,7 @@ public class RawAssetsClient {
      * timestamps and its current set of annotations. Each annotation
      * carries its <code>annotating_service</code> and an <code>attributes</code> property
      * map holding the details that service observed.</p>
+     * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public HiddenLayerHttpResponse<Asset> get(String assetId, GetAssetsRequest request) {
         return get(assetId, request, null);
@@ -1123,6 +1126,7 @@ public class RawAssetsClient {
      * timestamps and its current set of annotations. Each annotation
      * carries its <code>annotating_service</code> and an <code>attributes</code> property
      * map holding the details that service observed.</p>
+     * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public HiddenLayerHttpResponse<Asset> get(String assetId, GetAssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
@@ -1175,6 +1179,9 @@ public class RawAssetsClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 404:
                         throw new NotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 422:
+                        throw new UnprocessableEntityError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 500:
                         throw new InternalServerError(

@@ -3298,6 +3298,8 @@ the full asset, including its creation and last-updated
 timestamps and its current set of annotations. Each annotation
 carries its `annotating_service` and an `attributes` property
 map holding the details that service observed.
+
+Embedding `projects` additionally requires the `project:read` scope.
 </dd>
 </dl>
 </dd>
@@ -8252,6 +8254,83 @@ client.governance().policyPacks().create(
 <dd>
 
 **request:** `PolicyPackWriteRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.governance.policyPacks.recommendations(request) -> PolicyPackRecommendation</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+To apply the recommendation, set the returned `id` as the project's `policy_pack_id`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.governance().policyPacks().recommendations(
+    PolicyPackRecommendationRequest
+        .builder()
+        .applicationType(PolicyPackApplicationType.GENERAL)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**applicationType:** `PolicyPackApplicationType` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**exposure:** `Optional<PolicyPackApplicationExposure>` — Needed unless `application_type` is CODING_HARNESS, which ignores it; omitting it when needed returns 422
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**deploymentStage:** `Optional<PolicyPackDeploymentStage>` — Needed only when `application_type` is GENERAL and `exposure` is INTERNET_FACING, and ignored otherwise; omitting it when needed returns 422
     
 </dd>
 </dl>

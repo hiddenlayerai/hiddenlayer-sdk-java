@@ -9,8 +9,10 @@ import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.governance.policypacks.requests.DeletePolicyPacksRequest;
 import com.hiddenlayer.api.resources.governance.policypacks.requests.GetPolicyPacksRequest;
 import com.hiddenlayer.api.resources.governance.policypacks.requests.ListPolicyPacksRequest;
+import com.hiddenlayer.api.resources.governance.policypacks.requests.PolicyPackRecommendationRequest;
 import com.hiddenlayer.api.resources.governance.policypacks.requests.UpdatePolicyPacksRequest;
 import com.hiddenlayer.api.types.PolicyPack;
+import com.hiddenlayer.api.types.PolicyPackRecommendation;
 import com.hiddenlayer.api.types.PolicyPackSummary;
 import com.hiddenlayer.api.types.PolicyPackWriteRequest;
 import java.util.concurrent.CompletableFuture;
@@ -79,6 +81,23 @@ public class AsyncPolicyPacksClient {
      */
     public CompletableFuture<PolicyPack> create(PolicyPackWriteRequest request, RequestOptions requestOptions) {
         return this.rawClient.create(request, requestOptions).thenApply(response -> response.body());
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>To apply the recommendation, set the returned <code>id</code> as the project's <code>policy_pack_id</code>.</p>
+     */
+    public CompletableFuture<PolicyPackRecommendation> recommendations(PolicyPackRecommendationRequest request) {
+        return this.rawClient.recommendations(request).thenApply(response -> response.body());
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>To apply the recommendation, set the returned <code>id</code> as the project's <code>policy_pack_id</code>.</p>
+     */
+    public CompletableFuture<PolicyPackRecommendation> recommendations(
+            PolicyPackRecommendationRequest request, RequestOptions requestOptions) {
+        return this.rawClient.recommendations(request, requestOptions).thenApply(response -> response.body());
     }
 
     /**

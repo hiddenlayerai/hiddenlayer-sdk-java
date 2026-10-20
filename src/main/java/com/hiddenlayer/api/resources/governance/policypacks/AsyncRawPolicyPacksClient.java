@@ -23,9 +23,11 @@ import com.hiddenlayer.api.errors.UnprocessableEntityError;
 import com.hiddenlayer.api.resources.governance.policypacks.requests.DeletePolicyPacksRequest;
 import com.hiddenlayer.api.resources.governance.policypacks.requests.GetPolicyPacksRequest;
 import com.hiddenlayer.api.resources.governance.policypacks.requests.ListPolicyPacksRequest;
+import com.hiddenlayer.api.resources.governance.policypacks.requests.PolicyPackRecommendationRequest;
 import com.hiddenlayer.api.resources.governance.policypacks.requests.UpdatePolicyPacksRequest;
 import com.hiddenlayer.api.resources.governance.policypacks.types.ListPolicyPacksResponse;
 import com.hiddenlayer.api.types.PolicyPack;
+import com.hiddenlayer.api.types.PolicyPackRecommendation;
 import com.hiddenlayer.api.types.PolicyPackSummary;
 import com.hiddenlayer.api.types.PolicyPackWriteRequest;
 import java.io.IOException;
@@ -288,6 +290,120 @@ public class AsyncRawPolicyPacksClient {
                                 return;
                             case 409:
                                 future.completeExceptionally(new ConflictError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 422:
+                                future.completeExceptionally(new UnprocessableEntityError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 500:
+                                future.completeExceptionally(new InternalServerError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 503:
+                                future.completeExceptionally(new ServiceUnavailableError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                        }
+                    } catch (JsonProcessingException ignored) {
+                        // unable to map error response, throwing generic error
+                    }
+                    Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+                    future.completeExceptionally(new HiddenLayerApiException(
+                            "Error with status code " + response.code(), response.code(), errorBody, response));
+                    return;
+                } catch (JsonProcessingException e) {
+                    future.completeExceptionally(
+                            new HiddenLayerException("Failed to deserialize response: " + e.getMessage(), e));
+                } catch (IOException e) {
+                    future.completeExceptionally(new HiddenLayerException("Network error executing HTTP request", e));
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                future.completeExceptionally(new HiddenLayerException("Network error executing HTTP request", e));
+            }
+        });
+        return future;
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>To apply the recommendation, set the returned <code>id</code> as the project's <code>policy_pack_id</code>.</p>
+     */
+    public CompletableFuture<HiddenLayerHttpResponse<PolicyPackRecommendation>> recommendations(
+            PolicyPackRecommendationRequest request) {
+        return recommendations(request, null);
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>To apply the recommendation, set the returned <code>id</code> as the project's <code>policy_pack_id</code>.</p>
+     */
+    public CompletableFuture<HiddenLayerHttpResponse<PolicyPackRecommendation>> recommendations(
+            PolicyPackRecommendationRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("governance/v2/policy-packs/recommendations");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request),
+                    MediaType.parse("application/json; charset=utf-8"));
+        } catch (JsonProcessingException e) {
+            throw new HiddenLayerException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json; charset=utf-8")
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        if (requestOptions != null && requestOptions.getMaxRetries().isPresent()) {
+            okhttpRequest = okhttpRequest
+                    .newBuilder()
+                    .tag(
+                            RetryInterceptor.MaxRetriesOverride.class,
+                            new RetryInterceptor.MaxRetriesOverride(
+                                    requestOptions.getMaxRetries().get()))
+                    .build();
+        }
+        CompletableFuture<HiddenLayerHttpResponse<PolicyPackRecommendation>> future = new CompletableFuture<>();
+        client.newCall(okhttpRequest).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+                    if (response.isSuccessful()) {
+                        future.complete(new HiddenLayerHttpResponse<>(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PolicyPackRecommendation.class),
+                                response));
+                        return;
+                    }
+                    try {
+                        switch (response.code()) {
+                            case 400:
+                                future.completeExceptionally(new BadRequestError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 403:
+                                future.completeExceptionally(new ForbiddenError(
                                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;

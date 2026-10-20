@@ -43,6 +43,8 @@ public final class Asset {
 
     private final Optional<AssetTagMap> tags;
 
+    private final Optional<List<String>> projects;
+
     private final Map<String, Object> additionalProperties;
 
     private Asset(
@@ -54,6 +56,7 @@ public final class Asset {
             Optional<OffsetDateTime> firstSyncedAt,
             List<Annotation> annotations,
             Optional<AssetTagMap> tags,
+            Optional<List<String>> projects,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.assetType = assetType;
@@ -63,6 +66,7 @@ public final class Asset {
         this.firstSyncedAt = firstSyncedAt;
         this.annotations = annotations;
         this.tags = tags;
+        this.projects = projects;
         this.additionalProperties = additionalProperties;
     }
 
@@ -171,6 +175,14 @@ public final class Asset {
         return tags;
     }
 
+    /**
+     * @return The Compliance API IDs of the projects the asset belongs to, in ID order. Present only with <code>embed=projects</code> on <code>GET /asset-inventory/v2/assets/{asset_id}</code>, and empty when the asset is in no project.
+     */
+    @JsonProperty("projects")
+    public Optional<List<String>> getProjects() {
+        return projects;
+    }
+
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("policy_status")
     private Optional<PolicyStatus> _getPolicyStatus() {
@@ -196,7 +208,8 @@ public final class Asset {
                 && updatedAt.equals(other.updatedAt)
                 && firstSyncedAt.equals(other.firstSyncedAt)
                 && annotations.equals(other.annotations)
-                && tags.equals(other.tags);
+                && tags.equals(other.tags)
+                && projects.equals(other.projects);
     }
 
     @java.lang.Override
@@ -209,7 +222,8 @@ public final class Asset {
                 this.updatedAt,
                 this.firstSyncedAt,
                 this.annotations,
-                this.tags);
+                this.tags,
+                this.projects);
     }
 
     @java.lang.Override
@@ -327,11 +341,20 @@ public final class Asset {
         _FinalStage tags(Optional<AssetTagMap> tags);
 
         _FinalStage tags(AssetTagMap tags);
+
+        /**
+         * <p>The Compliance API IDs of the projects the asset belongs to, in ID order. Present only with <code>embed=projects</code> on <code>GET /asset-inventory/v2/assets/{asset_id}</code>, and empty when the asset is in no project.</p>
+         */
+        _FinalStage projects(Optional<List<String>> projects);
+
+        _FinalStage projects(List<String> projects);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements AssetTypeStage, _FinalStage {
         private String assetType;
+
+        private Optional<List<String>> projects = Optional.empty();
 
         private Optional<AssetTagMap> tags = Optional.empty();
 
@@ -362,6 +385,7 @@ public final class Asset {
             firstSyncedAt(other.getFirstSyncedAt());
             annotations(other.getAnnotations());
             tags(other.getTags());
+            projects(other.getProjects());
             return this;
         }
 
@@ -379,6 +403,26 @@ public final class Asset {
         @JsonSetter("asset_type")
         public _FinalStage assetType(@NotNull String assetType) {
             this.assetType = Objects.requireNonNull(assetType, "assetType must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The Compliance API IDs of the projects the asset belongs to, in ID order. Present only with <code>embed=projects</code> on <code>GET /asset-inventory/v2/assets/{asset_id}</code>, and empty when the asset is in no project.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage projects(List<String> projects) {
+            this.projects = Optional.ofNullable(projects);
+            return this;
+        }
+
+        /**
+         * <p>The Compliance API IDs of the projects the asset belongs to, in ID order. Present only with <code>embed=projects</code> on <code>GET /asset-inventory/v2/assets/{asset_id}</code>, and empty when the asset is in no project.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "projects", nulls = Nulls.SKIP)
+        public _FinalStage projects(Optional<List<String>> projects) {
+            this.projects = projects;
             return this;
         }
 
@@ -642,6 +686,7 @@ public final class Asset {
                     firstSyncedAt,
                     annotations,
                     tags,
+                    projects,
                     additionalProperties);
         }
 
