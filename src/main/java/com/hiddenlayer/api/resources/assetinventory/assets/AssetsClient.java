@@ -153,12 +153,15 @@ public class AssetsClient {
      * results with the available filters such as provider, cloud
      * account, region, service, asset type, policy status, tags
      * (<code>tag_name</code>, <code>tag_def</code>, and <code>tag</code>), relationship to another
-     * asset (<code>related_to</code>), and — for MODEL assets — the model id
+     * asset (<code>related_to</code>), membership in a project (<code>project_id</code>),
+     * and — for MODEL assets — the model id
      * (<code>model_id</code>), model name (<code>model_name</code>), or the latest scan's
      * start time (<code>scan_started_at</code>).
      * Results are returned in cursor-paginated pages of <code>page_size</code>
      * items; follow the <code>next</code> cursor to retrieve subsequent pages.
-     * See the <code>sort</code> parameter for available sort fields.</p>
+     * See the <code>sort</code> parameter for available sort fields. Filtering by
+     * <code>project_id</code> or embedding <code>projects</code> additionally requires the
+     * <code>project:read</code> scope.</p>
      * <p>To discover the filterable fields and their available values for
      * your tenant, call
      * <a href="/api/assets-and-integrations/ai-asset-inventory/v2/ai-asset-inventory/inventory/get_ai_asset_filters_v2"><code>GET /asset-inventory/v2/assets/filters</code></a>.</p>
@@ -179,12 +182,15 @@ public class AssetsClient {
      * results with the available filters such as provider, cloud
      * account, region, service, asset type, policy status, tags
      * (<code>tag_name</code>, <code>tag_def</code>, and <code>tag</code>), relationship to another
-     * asset (<code>related_to</code>), and — for MODEL assets — the model id
+     * asset (<code>related_to</code>), membership in a project (<code>project_id</code>),
+     * and — for MODEL assets — the model id
      * (<code>model_id</code>), model name (<code>model_name</code>), or the latest scan's
      * start time (<code>scan_started_at</code>).
      * Results are returned in cursor-paginated pages of <code>page_size</code>
      * items; follow the <code>next</code> cursor to retrieve subsequent pages.
-     * See the <code>sort</code> parameter for available sort fields.</p>
+     * See the <code>sort</code> parameter for available sort fields. Filtering by
+     * <code>project_id</code> or embedding <code>projects</code> additionally requires the
+     * <code>project:read</code> scope.</p>
      * <p>To discover the filterable fields and their available values for
      * your tenant, call
      * <a href="/api/assets-and-integrations/ai-asset-inventory/v2/ai-asset-inventory/inventory/get_ai_asset_filters_v2"><code>GET /asset-inventory/v2/assets/filters</code></a>.</p>
@@ -205,12 +211,15 @@ public class AssetsClient {
      * results with the available filters such as provider, cloud
      * account, region, service, asset type, policy status, tags
      * (<code>tag_name</code>, <code>tag_def</code>, and <code>tag</code>), relationship to another
-     * asset (<code>related_to</code>), and — for MODEL assets — the model id
+     * asset (<code>related_to</code>), membership in a project (<code>project_id</code>),
+     * and — for MODEL assets — the model id
      * (<code>model_id</code>), model name (<code>model_name</code>), or the latest scan's
      * start time (<code>scan_started_at</code>).
      * Results are returned in cursor-paginated pages of <code>page_size</code>
      * items; follow the <code>next</code> cursor to retrieve subsequent pages.
-     * See the <code>sort</code> parameter for available sort fields.</p>
+     * See the <code>sort</code> parameter for available sort fields. Filtering by
+     * <code>project_id</code> or embedding <code>projects</code> additionally requires the
+     * <code>project:read</code> scope.</p>
      * <p>To discover the filterable fields and their available values for
      * your tenant, call
      * <a href="/api/assets-and-integrations/ai-asset-inventory/v2/ai-asset-inventory/inventory/get_ai_asset_filters_v2"><code>GET /asset-inventory/v2/assets/filters</code></a>.</p>
@@ -231,12 +240,15 @@ public class AssetsClient {
      * results with the available filters such as provider, cloud
      * account, region, service, asset type, policy status, tags
      * (<code>tag_name</code>, <code>tag_def</code>, and <code>tag</code>), relationship to another
-     * asset (<code>related_to</code>), and — for MODEL assets — the model id
+     * asset (<code>related_to</code>), membership in a project (<code>project_id</code>),
+     * and — for MODEL assets — the model id
      * (<code>model_id</code>), model name (<code>model_name</code>), or the latest scan's
      * start time (<code>scan_started_at</code>).
      * Results are returned in cursor-paginated pages of <code>page_size</code>
      * items; follow the <code>next</code> cursor to retrieve subsequent pages.
-     * See the <code>sort</code> parameter for available sort fields.</p>
+     * See the <code>sort</code> parameter for available sort fields. Filtering by
+     * <code>project_id</code> or embedding <code>projects</code> additionally requires the
+     * <code>project:read</code> scope.</p>
      * <p>To discover the filterable fields and their available values for
      * your tenant, call
      * <a href="/api/assets-and-integrations/ai-asset-inventory/v2/ai-asset-inventory/inventory/get_ai_asset_filters_v2"><code>GET /asset-inventory/v2/assets/filters</code></a>.</p>
@@ -255,7 +267,8 @@ public class AssetsClient {
      * <p>Return typeahead suggestions for a partial search term, to help
      * build asset search queries as the user types. The same filters
      * available on the asset list endpoint can be applied to scope the
-     * suggestions.</p>
+     * suggestions. Filtering by <code>project_id</code> additionally requires the
+     * <code>project:read</code> scope.</p>
      */
     public SuggestionsAssetsResponse suggestions(SuggestionsAssetsRequest request) {
         return this.rawClient.suggestions(request).body();
@@ -266,7 +279,8 @@ public class AssetsClient {
      * <p>Return typeahead suggestions for a partial search term, to help
      * build asset search queries as the user types. The same filters
      * available on the asset list endpoint can be applied to scope the
-     * suggestions.</p>
+     * suggestions. Filtering by <code>project_id</code> additionally requires the
+     * <code>project:read</code> scope.</p>
      */
     public SuggestionsAssetsResponse suggestions(SuggestionsAssetsRequest request, RequestOptions requestOptions) {
         return this.rawClient.suggestions(request, requestOptions).body();
@@ -302,6 +316,9 @@ public class AssetsClient {
      * <code>422 Unprocessable Entity</code>. (An <code>annotating_service</code> facet
      * selection still round-trips to the list endpoint via <code>[in]</code>,
      * as its <code>param</code> states.)</li>
+     * <li><strong>Project</strong> (<code>project_id[eq]</code>) — limits every facet's values to
+     * the project's members. Requires the <code>project:read</code> scope in
+     * addition to <code>asset:read</code>.</li>
      * </ul>
      * <p>The underlying query runs under a configurable server-side
      * statement timeout; a tenant whose data exceeds it receives
@@ -343,6 +360,9 @@ public class AssetsClient {
      * <code>422 Unprocessable Entity</code>. (An <code>annotating_service</code> facet
      * selection still round-trips to the list endpoint via <code>[in]</code>,
      * as its <code>param</code> states.)</li>
+     * <li><strong>Project</strong> (<code>project_id[eq]</code>) — limits every facet's values to
+     * the project's members. Requires the <code>project:read</code> scope in
+     * addition to <code>asset:read</code>.</li>
      * </ul>
      * <p>The underlying query runs under a configurable server-side
      * statement timeout; a tenant whose data exceeds it receives
@@ -384,6 +404,9 @@ public class AssetsClient {
      * <code>422 Unprocessable Entity</code>. (An <code>annotating_service</code> facet
      * selection still round-trips to the list endpoint via <code>[in]</code>,
      * as its <code>param</code> states.)</li>
+     * <li><strong>Project</strong> (<code>project_id[eq]</code>) — limits every facet's values to
+     * the project's members. Requires the <code>project:read</code> scope in
+     * addition to <code>asset:read</code>.</li>
      * </ul>
      * <p>The underlying query runs under a configurable server-side
      * statement timeout; a tenant whose data exceeds it receives
@@ -425,6 +448,9 @@ public class AssetsClient {
      * <code>422 Unprocessable Entity</code>. (An <code>annotating_service</code> facet
      * selection still round-trips to the list endpoint via <code>[in]</code>,
      * as its <code>param</code> states.)</li>
+     * <li><strong>Project</strong> (<code>project_id[eq]</code>) — limits every facet's values to
+     * the project's members. Requires the <code>project:read</code> scope in
+     * addition to <code>asset:read</code>.</li>
      * </ul>
      * <p>The underlying query runs under a configurable server-side
      * statement timeout; a tenant whose data exceeds it receives

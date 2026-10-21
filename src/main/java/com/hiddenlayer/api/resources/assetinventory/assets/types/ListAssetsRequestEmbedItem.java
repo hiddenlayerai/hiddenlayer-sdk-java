@@ -9,6 +9,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public final class ListAssetsRequestEmbedItem {
     public static final ListAssetsRequestEmbedItem TAGS = new ListAssetsRequestEmbedItem(Value.TAGS, "tags");
 
+    public static final ListAssetsRequestEmbedItem PROJECTS =
+            new ListAssetsRequestEmbedItem(Value.PROJECTS, "projects");
+
     private final Value value;
 
     private final String string;
@@ -44,6 +47,8 @@ public final class ListAssetsRequestEmbedItem {
         switch (value) {
             case TAGS:
                 return visitor.visitTags();
+            case PROJECTS:
+                return visitor.visitProjects();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -55,6 +60,8 @@ public final class ListAssetsRequestEmbedItem {
         switch (value) {
             case "tags":
                 return TAGS;
+            case "projects":
+                return PROJECTS;
             default:
                 return new ListAssetsRequestEmbedItem(Value.UNKNOWN, value);
         }
@@ -63,11 +70,15 @@ public final class ListAssetsRequestEmbedItem {
     public enum Value {
         TAGS,
 
+        PROJECTS,
+
         UNKNOWN
     }
 
     public interface Visitor<T> {
         T visitTags();
+
+        T visitProjects();
 
         T visitUnknown(String unknownType);
     }

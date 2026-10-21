@@ -176,7 +176,7 @@ public final class Asset {
     }
 
     /**
-     * @return The Compliance API IDs of the projects the asset belongs to, in ID order. Present only with <code>embed=projects</code> on <code>GET /asset-inventory/v2/assets/{asset_id}</code>, and empty when the asset is in no project.
+     * @return The Compliance API IDs of the projects the asset belongs to, in ID order. Returned only when <code>GET /asset-inventory/v2/assets</code> or <code>GET /asset-inventory/v2/assets/{asset_id}</code> is called with <code>embed=projects</code>; empty when the asset is in no project.
      */
     @JsonProperty("projects")
     public Optional<List<String>> getProjects() {
@@ -343,7 +343,7 @@ public final class Asset {
         _FinalStage tags(AssetTagMap tags);
 
         /**
-         * <p>The Compliance API IDs of the projects the asset belongs to, in ID order. Present only with <code>embed=projects</code> on <code>GET /asset-inventory/v2/assets/{asset_id}</code>, and empty when the asset is in no project.</p>
+         * <p>The Compliance API IDs of the projects the asset belongs to, in ID order. Returned only when <code>GET /asset-inventory/v2/assets</code> or <code>GET /asset-inventory/v2/assets/{asset_id}</code> is called with <code>embed=projects</code>; empty when the asset is in no project.</p>
          */
         _FinalStage projects(Optional<List<String>> projects);
 
@@ -407,7 +407,7 @@ public final class Asset {
         }
 
         /**
-         * <p>The Compliance API IDs of the projects the asset belongs to, in ID order. Present only with <code>embed=projects</code> on <code>GET /asset-inventory/v2/assets/{asset_id}</code>, and empty when the asset is in no project.</p>
+         * <p>The Compliance API IDs of the projects the asset belongs to, in ID order. Returned only when <code>GET /asset-inventory/v2/assets</code> or <code>GET /asset-inventory/v2/assets/{asset_id}</code> is called with <code>embed=projects</code>; empty when the asset is in no project.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -417,7 +417,7 @@ public final class Asset {
         }
 
         /**
-         * <p>The Compliance API IDs of the projects the asset belongs to, in ID order. Present only with <code>embed=projects</code> on <code>GET /asset-inventory/v2/assets/{asset_id}</code>, and empty when the asset is in no project.</p>
+         * <p>The Compliance API IDs of the projects the asset belongs to, in ID order. Returned only when <code>GET /asset-inventory/v2/assets</code> or <code>GET /asset-inventory/v2/assets/{asset_id}</code> is called with <code>embed=projects</code>; empty when the asset is in no project.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "projects", nulls = Nulls.SKIP)

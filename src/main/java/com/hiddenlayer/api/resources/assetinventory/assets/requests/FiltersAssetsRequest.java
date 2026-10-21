@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.types.FiltersAssetsRequestAnnotatingService;
+import com.hiddenlayer.api.types.FiltersAssetsRequestProjectId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -23,12 +24,16 @@ import java.util.Optional;
 public final class FiltersAssetsRequest {
     private final Optional<FiltersAssetsRequestAnnotatingService> annotatingService;
 
+    private final Optional<FiltersAssetsRequestProjectId> projectId;
+
     private final Map<String, Object> additionalProperties;
 
     private FiltersAssetsRequest(
             Optional<FiltersAssetsRequestAnnotatingService> annotatingService,
+            Optional<FiltersAssetsRequestProjectId> projectId,
             Map<String, Object> additionalProperties) {
         this.annotatingService = annotatingService;
+        this.projectId = projectId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -40,14 +45,25 @@ public final class FiltersAssetsRequest {
      * the list endpoint's many-valued <code>[in]</code> form is rejected
      * with <code>422 Unprocessable Entity</code>. Omit to receive only the
      * service-independent facets.
-     * <p>This is the only parameter the endpoint honors. Other list
-     * endpoint filter parameters are accepted for wire
-     * compatibility but do not narrow the facet values (malformed
-     * ones are still rejected with <code>422 Unprocessable Entity</code>).</p>
+     * <p>This and <code>project_id</code> are the only parameters the endpoint
+     * honors. Other list endpoint filter parameters are accepted
+     * for wire compatibility but do not narrow the facet values
+     * (malformed ones are still rejected with
+     * <code>422 Unprocessable Entity</code>).</p>
      */
     @JsonProperty("annotating_service")
     public Optional<FiltersAssetsRequestAnnotatingService> getAnnotatingService() {
         return annotatingService;
+    }
+
+    /**
+     * @return Filter to the members of one project. Requires the <code>project:read</code>
+     * scope in addition to <code>asset:read</code>. A project with no members, or
+     * one inventory has never seen, matches nothing.
+     */
+    @JsonProperty("project_id")
+    public Optional<FiltersAssetsRequestProjectId> getProjectId() {
+        return projectId;
     }
 
     @java.lang.Override
@@ -62,12 +78,12 @@ public final class FiltersAssetsRequest {
     }
 
     private boolean equalTo(FiltersAssetsRequest other) {
-        return annotatingService.equals(other.annotatingService);
+        return annotatingService.equals(other.annotatingService) && projectId.equals(other.projectId);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.annotatingService);
+        return Objects.hash(this.annotatingService, this.projectId);
     }
 
     @java.lang.Override
@@ -83,6 +99,8 @@ public final class FiltersAssetsRequest {
     public static final class Builder {
         private Optional<FiltersAssetsRequestAnnotatingService> annotatingService = Optional.empty();
 
+        private Optional<FiltersAssetsRequestProjectId> projectId = Optional.empty();
+
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -90,6 +108,7 @@ public final class FiltersAssetsRequest {
 
         public Builder from(FiltersAssetsRequest other) {
             annotatingService(other.getAnnotatingService());
+            projectId(other.getProjectId());
             return this;
         }
 
@@ -101,10 +120,11 @@ public final class FiltersAssetsRequest {
          * the list endpoint's many-valued <code>[in]</code> form is rejected
          * with <code>422 Unprocessable Entity</code>. Omit to receive only the
          * service-independent facets.</p>
-         * <p>This is the only parameter the endpoint honors. Other list
-         * endpoint filter parameters are accepted for wire
-         * compatibility but do not narrow the facet values (malformed
-         * ones are still rejected with <code>422 Unprocessable Entity</code>).</p>
+         * <p>This and <code>project_id</code> are the only parameters the endpoint
+         * honors. Other list endpoint filter parameters are accepted
+         * for wire compatibility but do not narrow the facet values
+         * (malformed ones are still rejected with
+         * <code>422 Unprocessable Entity</code>).</p>
          */
         @JsonSetter(value = "annotating_service", nulls = Nulls.SKIP)
         public Builder annotatingService(Optional<FiltersAssetsRequestAnnotatingService> annotatingService) {
@@ -117,8 +137,24 @@ public final class FiltersAssetsRequest {
             return this;
         }
 
+        /**
+         * <p>Filter to the members of one project. Requires the <code>project:read</code>
+         * scope in addition to <code>asset:read</code>. A project with no members, or
+         * one inventory has never seen, matches nothing.</p>
+         */
+        @JsonSetter(value = "project_id", nulls = Nulls.SKIP)
+        public Builder projectId(Optional<FiltersAssetsRequestProjectId> projectId) {
+            this.projectId = projectId;
+            return this;
+        }
+
+        public Builder projectId(FiltersAssetsRequestProjectId projectId) {
+            this.projectId = Optional.ofNullable(projectId);
+            return this;
+        }
+
         public FiltersAssetsRequest build() {
-            return new FiltersAssetsRequest(annotatingService, additionalProperties);
+            return new FiltersAssetsRequest(annotatingService, projectId, additionalProperties);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -18,6 +18,7 @@ import com.hiddenlayer.api.types.SuggestionsAssetsRequestAssetType;
 import com.hiddenlayer.api.types.SuggestionsAssetsRequestModelId;
 import com.hiddenlayer.api.types.SuggestionsAssetsRequestModelName;
 import com.hiddenlayer.api.types.SuggestionsAssetsRequestPolicyStatus;
+import com.hiddenlayer.api.types.SuggestionsAssetsRequestProjectId;
 import com.hiddenlayer.api.types.SuggestionsAssetsRequestRelatedTo;
 import com.hiddenlayer.api.types.SuggestionsAssetsRequestScanStartedAt;
 import com.hiddenlayer.api.types.TagDefFilter;
@@ -52,6 +53,8 @@ public final class SuggestionsAssetsRequest {
 
     private final Optional<SuggestionsAssetsRequestRelatedTo> relatedTo;
 
+    private final Optional<SuggestionsAssetsRequestProjectId> projectId;
+
     private final Optional<TagNameFilter> tagName;
 
     private final Optional<TagDefFilter> tagDef;
@@ -71,6 +74,7 @@ public final class SuggestionsAssetsRequest {
             Optional<SuggestionsAssetsRequestModelId> modelId,
             Optional<SuggestionsAssetsRequestModelName> modelName,
             Optional<SuggestionsAssetsRequestRelatedTo> relatedTo,
+            Optional<SuggestionsAssetsRequestProjectId> projectId,
             Optional<TagNameFilter> tagName,
             Optional<TagDefFilter> tagDef,
             Optional<TagValueFilter> tag,
@@ -85,6 +89,7 @@ public final class SuggestionsAssetsRequest {
         this.modelId = modelId;
         this.modelName = modelName;
         this.relatedTo = relatedTo;
+        this.projectId = projectId;
         this.tagName = tagName;
         this.tagDef = tagDef;
         this.tag = tag;
@@ -211,6 +216,16 @@ public final class SuggestionsAssetsRequest {
     }
 
     /**
+     * @return Filter to the members of one project. Requires the <code>project:read</code>
+     * scope in addition to <code>asset:read</code>. A project with no members, or
+     * one inventory has never seen, matches nothing.
+     */
+    @JsonProperty("project_id")
+    public Optional<SuggestionsAssetsRequestProjectId> getProjectId() {
+        return projectId;
+    }
+
+    /**
      * @return Filter by tag name regardless of source. Matches across both custom and discovered tags.
      */
     @JsonProperty("tag_name")
@@ -256,6 +271,7 @@ public final class SuggestionsAssetsRequest {
                 && modelId.equals(other.modelId)
                 && modelName.equals(other.modelName)
                 && relatedTo.equals(other.relatedTo)
+                && projectId.equals(other.projectId)
                 && tagName.equals(other.tagName)
                 && tagDef.equals(other.tagDef)
                 && tag.equals(other.tag);
@@ -274,6 +290,7 @@ public final class SuggestionsAssetsRequest {
                 this.modelId,
                 this.modelName,
                 this.relatedTo,
+                this.projectId,
                 this.tagName,
                 this.tagDef,
                 this.tag);
@@ -407,6 +424,15 @@ public final class SuggestionsAssetsRequest {
         _FinalStage relatedTo(SuggestionsAssetsRequestRelatedTo relatedTo);
 
         /**
+         * <p>Filter to the members of one project. Requires the <code>project:read</code>
+         * scope in addition to <code>asset:read</code>. A project with no members, or
+         * one inventory has never seen, matches nothing.</p>
+         */
+        _FinalStage projectId(Optional<SuggestionsAssetsRequestProjectId> projectId);
+
+        _FinalStage projectId(SuggestionsAssetsRequestProjectId projectId);
+
+        /**
          * <p>Filter by tag name regardless of source. Matches across both custom and discovered tags.</p>
          */
         _FinalStage tagName(Optional<TagNameFilter> tagName);
@@ -437,6 +463,8 @@ public final class SuggestionsAssetsRequest {
         private Optional<TagDefFilter> tagDef = Optional.empty();
 
         private Optional<TagNameFilter> tagName = Optional.empty();
+
+        private Optional<SuggestionsAssetsRequestProjectId> projectId = Optional.empty();
 
         private Optional<SuggestionsAssetsRequestRelatedTo> relatedTo = Optional.empty();
 
@@ -473,6 +501,7 @@ public final class SuggestionsAssetsRequest {
             modelId(other.getModelId());
             modelName(other.getModelName());
             relatedTo(other.getRelatedTo());
+            projectId(other.getProjectId());
             tagName(other.getTagName());
             tagDef(other.getTagDef());
             tag(other.getTag());
@@ -547,6 +576,30 @@ public final class SuggestionsAssetsRequest {
         @JsonSetter(value = "tag_name", nulls = Nulls.SKIP)
         public _FinalStage tagName(Optional<TagNameFilter> tagName) {
             this.tagName = tagName;
+            return this;
+        }
+
+        /**
+         * <p>Filter to the members of one project. Requires the <code>project:read</code>
+         * scope in addition to <code>asset:read</code>. A project with no members, or
+         * one inventory has never seen, matches nothing.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage projectId(SuggestionsAssetsRequestProjectId projectId) {
+            this.projectId = Optional.ofNullable(projectId);
+            return this;
+        }
+
+        /**
+         * <p>Filter to the members of one project. Requires the <code>project:read</code>
+         * scope in addition to <code>asset:read</code>. A project with no members, or
+         * one inventory has never seen, matches nothing.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "project_id", nulls = Nulls.SKIP)
+        public _FinalStage projectId(Optional<SuggestionsAssetsRequestProjectId> projectId) {
+            this.projectId = projectId;
             return this;
         }
 
@@ -821,6 +874,7 @@ public final class SuggestionsAssetsRequest {
                     modelId,
                     modelName,
                     relatedTo,
+                    projectId,
                     tagName,
                     tagDef,
                     tag,

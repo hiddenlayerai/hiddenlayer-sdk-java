@@ -19,6 +19,7 @@ import com.hiddenlayer.api.types.ListAssetsRequestAssetType;
 import com.hiddenlayer.api.types.ListAssetsRequestModelId;
 import com.hiddenlayer.api.types.ListAssetsRequestModelName;
 import com.hiddenlayer.api.types.ListAssetsRequestPolicyStatus;
+import com.hiddenlayer.api.types.ListAssetsRequestProjectId;
 import com.hiddenlayer.api.types.ListAssetsRequestRelatedTo;
 import com.hiddenlayer.api.types.ListAssetsRequestScanStartedAt;
 import com.hiddenlayer.api.types.TagDefFilter;
@@ -58,6 +59,8 @@ public final class ListAssetsRequest {
 
     private final Optional<ListAssetsRequestRelatedTo> relatedTo;
 
+    private final Optional<ListAssetsRequestProjectId> projectId;
+
     private final Optional<TagNameFilter> tagName;
 
     private final Optional<TagDefFilter> tagDef;
@@ -81,6 +84,7 @@ public final class ListAssetsRequest {
             Optional<ListAssetsRequestModelId> modelId,
             Optional<ListAssetsRequestModelName> modelName,
             Optional<ListAssetsRequestRelatedTo> relatedTo,
+            Optional<ListAssetsRequestProjectId> projectId,
             Optional<TagNameFilter> tagName,
             Optional<TagDefFilter> tagDef,
             Optional<TagValueFilter> tag,
@@ -98,6 +102,7 @@ public final class ListAssetsRequest {
         this.modelId = modelId;
         this.modelName = modelName;
         this.relatedTo = relatedTo;
+        this.projectId = projectId;
         this.tagName = tagName;
         this.tagDef = tagDef;
         this.tag = tag;
@@ -243,6 +248,16 @@ public final class ListAssetsRequest {
     }
 
     /**
+     * @return Filter to the members of one project. Requires the <code>project:read</code>
+     * scope in addition to <code>asset:read</code>. A project with no members, or
+     * one inventory has never seen, matches nothing.
+     */
+    @JsonProperty("project_id")
+    public Optional<ListAssetsRequestProjectId> getProjectId() {
+        return projectId;
+    }
+
+    /**
      * @return Filter by tag name regardless of source. Matches across both custom and discovered tags.
      */
     @JsonProperty("tag_name")
@@ -328,6 +343,7 @@ public final class ListAssetsRequest {
                 && modelId.equals(other.modelId)
                 && modelName.equals(other.modelName)
                 && relatedTo.equals(other.relatedTo)
+                && projectId.equals(other.projectId)
                 && tagName.equals(other.tagName)
                 && tagDef.equals(other.tagDef)
                 && tag.equals(other.tag)
@@ -349,6 +365,7 @@ public final class ListAssetsRequest {
                 this.modelId,
                 this.modelName,
                 this.relatedTo,
+                this.projectId,
                 this.tagName,
                 this.tagDef,
                 this.tag,
@@ -390,6 +407,8 @@ public final class ListAssetsRequest {
 
         private Optional<ListAssetsRequestRelatedTo> relatedTo = Optional.empty();
 
+        private Optional<ListAssetsRequestProjectId> projectId = Optional.empty();
+
         private Optional<TagNameFilter> tagName = Optional.empty();
 
         private Optional<TagDefFilter> tagDef = Optional.empty();
@@ -416,6 +435,7 @@ public final class ListAssetsRequest {
             modelId(other.getModelId());
             modelName(other.getModelName());
             relatedTo(other.getRelatedTo());
+            projectId(other.getProjectId());
             tagName(other.getTagName());
             tagDef(other.getTagDef());
             tag(other.getTag());
@@ -638,6 +658,22 @@ public final class ListAssetsRequest {
         }
 
         /**
+         * <p>Filter to the members of one project. Requires the <code>project:read</code>
+         * scope in addition to <code>asset:read</code>. A project with no members, or
+         * one inventory has never seen, matches nothing.</p>
+         */
+        @JsonSetter(value = "project_id", nulls = Nulls.SKIP)
+        public Builder projectId(Optional<ListAssetsRequestProjectId> projectId) {
+            this.projectId = projectId;
+            return this;
+        }
+
+        public Builder projectId(ListAssetsRequestProjectId projectId) {
+            this.projectId = Optional.ofNullable(projectId);
+            return this;
+        }
+
+        /**
          * <p>Filter by tag name regardless of source. Matches across both custom and discovered tags.</p>
          */
         @JsonSetter(value = "tag_name", nulls = Nulls.SKIP)
@@ -737,6 +773,7 @@ public final class ListAssetsRequest {
                     modelId,
                     modelName,
                     relatedTo,
+                    projectId,
                     tagName,
                     tagDef,
                     tag,
