@@ -123,6 +123,31 @@ public final class Annotation {
      * asset's <code>first_synced_at</code> is set by the server and is not
      * derived from <code>attributes</code>; a <code>first_synced_at</code> attribute
      * supplied here is not interpreted.</p>
+     * <p>By convention, supply-chain (<code>annotating_service: supply-chain</code>)
+     * annotations hold a <code>latest_scan</code> object, a <code>model_card</code> object
+     * when model-card data is available, and a root <code>created_at</code>.
+     * <code>latest_scan</code> carries <code>scan_id</code> (a UUID), <code>status</code>
+     * (<code>SUBMITTED</code>, <code>COMPLETED</code>, or <code>ERROR</code>), <code>start_time</code>,
+     * <code>end_time</code>, and <code>detection_count</code>. <code>start_time</code> and <code>end_time</code>
+     * are RFC 3339 timestamps. <code>end_time</code> is <code>null</code> when the producer
+     * has no scan end time.</p>
+     * <p><code>detection_count</code> is an int64 with a minimum of 0: the total
+     * number of detections found for <code>latest_scan.scan_id</code>. It
+     * appears only when <code>status</code> is COMPLETED. Zero is a known
+     * result meaning no detections were found; an absent count is
+     * unknown and must not be read as zero. The field is optional,
+     * so older annotations and producers that have not adopted it
+     * omit it.</p>
+     * <p>For the same <code>scan_id</code>, AIS does not let a write move a
+     * COMPLETED scan back to a non-terminal status or clear its
+     * <code>detection_count</code>.
+     * A write for a different <code>scan_id</code> replaces <code>latest_scan</code>,
+     * count included.</p>
+     * <p>A PATCH is a merge-patch, which merges nested objects. A PATCH
+     * that moves <code>latest_scan</code> to a different <code>scan_id</code> must also
+     * set <code>detection_count</code> in the same patch, or delete it with
+     * <code>null</code>, or the previous scan's <code>detection_count</code> would remain
+     * on the new <code>scan_id</code>.</p>
      */
     @JsonProperty("attributes")
     public Map<String, Object> getAttributes() {
@@ -243,6 +268,31 @@ public final class Annotation {
          * asset's <code>first_synced_at</code> is set by the server and is not
          * derived from <code>attributes</code>; a <code>first_synced_at</code> attribute
          * supplied here is not interpreted.</p>
+         * <p>By convention, supply-chain (<code>annotating_service: supply-chain</code>)
+         * annotations hold a <code>latest_scan</code> object, a <code>model_card</code> object
+         * when model-card data is available, and a root <code>created_at</code>.
+         * <code>latest_scan</code> carries <code>scan_id</code> (a UUID), <code>status</code>
+         * (<code>SUBMITTED</code>, <code>COMPLETED</code>, or <code>ERROR</code>), <code>start_time</code>,
+         * <code>end_time</code>, and <code>detection_count</code>. <code>start_time</code> and <code>end_time</code>
+         * are RFC 3339 timestamps. <code>end_time</code> is <code>null</code> when the producer
+         * has no scan end time.</p>
+         * <p><code>detection_count</code> is an int64 with a minimum of 0: the total
+         * number of detections found for <code>latest_scan.scan_id</code>. It
+         * appears only when <code>status</code> is COMPLETED. Zero is a known
+         * result meaning no detections were found; an absent count is
+         * unknown and must not be read as zero. The field is optional,
+         * so older annotations and producers that have not adopted it
+         * omit it.</p>
+         * <p>For the same <code>scan_id</code>, AIS does not let a write move a
+         * COMPLETED scan back to a non-terminal status or clear its
+         * <code>detection_count</code>.
+         * A write for a different <code>scan_id</code> replaces <code>latest_scan</code>,
+         * count included.</p>
+         * <p>A PATCH is a merge-patch, which merges nested objects. A PATCH
+         * that moves <code>latest_scan</code> to a different <code>scan_id</code> must also
+         * set <code>detection_count</code> in the same patch, or delete it with
+         * <code>null</code>, or the previous scan's <code>detection_count</code> would remain
+         * on the new <code>scan_id</code>.</p>
          */
         _FinalStage attributes(Map<String, Object> attributes);
 
@@ -343,6 +393,31 @@ public final class Annotation {
          * asset's <code>first_synced_at</code> is set by the server and is not
          * derived from <code>attributes</code>; a <code>first_synced_at</code> attribute
          * supplied here is not interpreted.</p>
+         * <p>By convention, supply-chain (<code>annotating_service: supply-chain</code>)
+         * annotations hold a <code>latest_scan</code> object, a <code>model_card</code> object
+         * when model-card data is available, and a root <code>created_at</code>.
+         * <code>latest_scan</code> carries <code>scan_id</code> (a UUID), <code>status</code>
+         * (<code>SUBMITTED</code>, <code>COMPLETED</code>, or <code>ERROR</code>), <code>start_time</code>,
+         * <code>end_time</code>, and <code>detection_count</code>. <code>start_time</code> and <code>end_time</code>
+         * are RFC 3339 timestamps. <code>end_time</code> is <code>null</code> when the producer
+         * has no scan end time.</p>
+         * <p><code>detection_count</code> is an int64 with a minimum of 0: the total
+         * number of detections found for <code>latest_scan.scan_id</code>. It
+         * appears only when <code>status</code> is COMPLETED. Zero is a known
+         * result meaning no detections were found; an absent count is
+         * unknown and must not be read as zero. The field is optional,
+         * so older annotations and producers that have not adopted it
+         * omit it.</p>
+         * <p>For the same <code>scan_id</code>, AIS does not let a write move a
+         * COMPLETED scan back to a non-terminal status or clear its
+         * <code>detection_count</code>.
+         * A write for a different <code>scan_id</code> replaces <code>latest_scan</code>,
+         * count included.</p>
+         * <p>A PATCH is a merge-patch, which merges nested objects. A PATCH
+         * that moves <code>latest_scan</code> to a different <code>scan_id</code> must also
+         * set <code>detection_count</code> in the same patch, or delete it with
+         * <code>null</code>, or the previous scan's <code>detection_count</code> would remain
+         * on the new <code>scan_id</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -374,6 +449,31 @@ public final class Annotation {
          * asset's <code>first_synced_at</code> is set by the server and is not
          * derived from <code>attributes</code>; a <code>first_synced_at</code> attribute
          * supplied here is not interpreted.</p>
+         * <p>By convention, supply-chain (<code>annotating_service: supply-chain</code>)
+         * annotations hold a <code>latest_scan</code> object, a <code>model_card</code> object
+         * when model-card data is available, and a root <code>created_at</code>.
+         * <code>latest_scan</code> carries <code>scan_id</code> (a UUID), <code>status</code>
+         * (<code>SUBMITTED</code>, <code>COMPLETED</code>, or <code>ERROR</code>), <code>start_time</code>,
+         * <code>end_time</code>, and <code>detection_count</code>. <code>start_time</code> and <code>end_time</code>
+         * are RFC 3339 timestamps. <code>end_time</code> is <code>null</code> when the producer
+         * has no scan end time.</p>
+         * <p><code>detection_count</code> is an int64 with a minimum of 0: the total
+         * number of detections found for <code>latest_scan.scan_id</code>. It
+         * appears only when <code>status</code> is COMPLETED. Zero is a known
+         * result meaning no detections were found; an absent count is
+         * unknown and must not be read as zero. The field is optional,
+         * so older annotations and producers that have not adopted it
+         * omit it.</p>
+         * <p>For the same <code>scan_id</code>, AIS does not let a write move a
+         * COMPLETED scan back to a non-terminal status or clear its
+         * <code>detection_count</code>.
+         * A write for a different <code>scan_id</code> replaces <code>latest_scan</code>,
+         * count included.</p>
+         * <p>A PATCH is a merge-patch, which merges nested objects. A PATCH
+         * that moves <code>latest_scan</code> to a different <code>scan_id</code> must also
+         * set <code>detection_count</code> in the same patch, or delete it with
+         * <code>null</code>, or the previous scan's <code>detection_count</code> would remain
+         * on the new <code>scan_id</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -407,6 +507,31 @@ public final class Annotation {
          * asset's <code>first_synced_at</code> is set by the server and is not
          * derived from <code>attributes</code>; a <code>first_synced_at</code> attribute
          * supplied here is not interpreted.</p>
+         * <p>By convention, supply-chain (<code>annotating_service: supply-chain</code>)
+         * annotations hold a <code>latest_scan</code> object, a <code>model_card</code> object
+         * when model-card data is available, and a root <code>created_at</code>.
+         * <code>latest_scan</code> carries <code>scan_id</code> (a UUID), <code>status</code>
+         * (<code>SUBMITTED</code>, <code>COMPLETED</code>, or <code>ERROR</code>), <code>start_time</code>,
+         * <code>end_time</code>, and <code>detection_count</code>. <code>start_time</code> and <code>end_time</code>
+         * are RFC 3339 timestamps. <code>end_time</code> is <code>null</code> when the producer
+         * has no scan end time.</p>
+         * <p><code>detection_count</code> is an int64 with a minimum of 0: the total
+         * number of detections found for <code>latest_scan.scan_id</code>. It
+         * appears only when <code>status</code> is COMPLETED. Zero is a known
+         * result meaning no detections were found; an absent count is
+         * unknown and must not be read as zero. The field is optional,
+         * so older annotations and producers that have not adopted it
+         * omit it.</p>
+         * <p>For the same <code>scan_id</code>, AIS does not let a write move a
+         * COMPLETED scan back to a non-terminal status or clear its
+         * <code>detection_count</code>.
+         * A write for a different <code>scan_id</code> replaces <code>latest_scan</code>,
+         * count included.</p>
+         * <p>A PATCH is a merge-patch, which merges nested objects. A PATCH
+         * that moves <code>latest_scan</code> to a different <code>scan_id</code> must also
+         * set <code>detection_count</code> in the same patch, or delete it with
+         * <code>null</code>, or the previous scan's <code>detection_count</code> would remain
+         * on the new <code>scan_id</code>.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "attributes", nulls = Nulls.SKIP)

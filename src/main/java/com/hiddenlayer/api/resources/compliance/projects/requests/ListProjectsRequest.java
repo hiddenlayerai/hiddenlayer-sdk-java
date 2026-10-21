@@ -132,7 +132,7 @@ public final class ListProjectsRequest {
     }
 
     /**
-     * @return allow sorting by name, ascending (+) or the default descending (-)
+     * @return allow sorting by name or modified_at, ascending (+) or the default descending (-)
      */
     @JsonProperty("sort")
     public Optional<String> getSort() {
@@ -336,7 +336,7 @@ public final class ListProjectsRequest {
         }
 
         /**
-         * <p>allow sorting by name, ascending (+) or the default descending (-)</p>
+         * <p>allow sorting by name or modified_at, ascending (+) or the default descending (-)</p>
          */
         @JsonSetter(value = "sort", nulls = Nulls.SKIP)
         public Builder sort(Optional<String> sort) {

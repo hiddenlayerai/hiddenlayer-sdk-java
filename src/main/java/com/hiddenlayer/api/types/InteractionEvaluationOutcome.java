@@ -52,9 +52,12 @@ public final class InteractionEvaluationOutcome {
      * empty and the effective payload is unchanged.</p>
      * <p><code>DETECT</code>, <code>REDACT</code>, and <code>BLOCK</code> all mean one or more detections
      * were produced; they differ in what the policy did with the payload.
-     * <code>DETECT</code> is an intentional observe-only outcome (detections are
-     * surfaced but the effective payload is unchanged); <code>REDACT</code> modifies
-     * the payload in place; <code>BLOCK</code> substitutes a canned block response.</p>
+     * <code>DETECT</code> is an observe-only outcome (detections are surfaced but the
+     * effective payload is unchanged); <code>REDACT</code> modifies the payload in place;
+     * <code>BLOCK</code> substitutes a canned block response.</p>
+     * <p>When the project is in monitor mode, policy evaluation does not block or
+     * redact. A REDACT or BLOCK decision is returned as <code>DETECT</code>, and the
+     * effective payload is unchanged.</p>
      */
     @JsonProperty("action")
     public InteractionEvaluationOutcomeAction getAction() {
@@ -135,9 +138,12 @@ public final class InteractionEvaluationOutcome {
          * empty and the effective payload is unchanged.</p>
          * <p><code>DETECT</code>, <code>REDACT</code>, and <code>BLOCK</code> all mean one or more detections
          * were produced; they differ in what the policy did with the payload.
-         * <code>DETECT</code> is an intentional observe-only outcome (detections are
-         * surfaced but the effective payload is unchanged); <code>REDACT</code> modifies
-         * the payload in place; <code>BLOCK</code> substitutes a canned block response.</p>
+         * <code>DETECT</code> is an observe-only outcome (detections are surfaced but the
+         * effective payload is unchanged); <code>REDACT</code> modifies the payload in place;
+         * <code>BLOCK</code> substitutes a canned block response.</p>
+         * <p>When the project is in monitor mode, policy evaluation does not block or
+         * redact. A REDACT or BLOCK decision is returned as <code>DETECT</code>, and the
+         * effective payload is unchanged.</p>
          */
         ThreatLevelStage action(@NotNull InteractionEvaluationOutcomeAction action);
 
@@ -217,9 +223,12 @@ public final class InteractionEvaluationOutcome {
          * empty and the effective payload is unchanged.</p>
          * <p><code>DETECT</code>, <code>REDACT</code>, and <code>BLOCK</code> all mean one or more detections
          * were produced; they differ in what the policy did with the payload.
-         * <code>DETECT</code> is an intentional observe-only outcome (detections are
-         * surfaced but the effective payload is unchanged); <code>REDACT</code> modifies
-         * the payload in place; <code>BLOCK</code> substitutes a canned block response.</p>
+         * <code>DETECT</code> is an observe-only outcome (detections are surfaced but the
+         * effective payload is unchanged); <code>REDACT</code> modifies the payload in place;
+         * <code>BLOCK</code> substitutes a canned block response.</p>
+         * <p>When the project is in monitor mode, policy evaluation does not block or
+         * redact. A REDACT or BLOCK decision is returned as <code>DETECT</code>, and the
+         * effective payload is unchanged.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

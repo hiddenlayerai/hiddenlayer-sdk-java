@@ -25,14 +25,14 @@ public final class ToolUsePart {
 
     private final String toolName;
 
-    private final Optional<Map<String, Object>> toolInput;
+    private final Optional<ToolUsePartToolInput> toolInput;
 
     private final Map<String, Object> additionalProperties;
 
     private ToolUsePart(
             String id,
             String toolName,
-            Optional<Map<String, Object>> toolInput,
+            Optional<ToolUsePartToolInput> toolInput,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.toolName = toolName;
@@ -57,10 +57,11 @@ public final class ToolUsePart {
     }
 
     /**
-     * @return Tool arguments/input as a key-value object.
+     * @return Tool arguments. Text may contain free-form input or redacted arguments
+     * that no longer parse as a JSON object.
      */
     @JsonProperty("tool_input")
-    public Optional<Map<String, Object>> getToolInput() {
+    public Optional<ToolUsePartToolInput> getToolInput() {
         return toolInput;
     }
 
@@ -117,11 +118,12 @@ public final class ToolUsePart {
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
         /**
-         * <p>Tool arguments/input as a key-value object.</p>
+         * <p>Tool arguments. Text may contain free-form input or redacted arguments
+         * that no longer parse as a JSON object.</p>
          */
-        _FinalStage toolInput(Optional<Map<String, Object>> toolInput);
+        _FinalStage toolInput(Optional<ToolUsePartToolInput> toolInput);
 
-        _FinalStage toolInput(Map<String, Object> toolInput);
+        _FinalStage toolInput(ToolUsePartToolInput toolInput);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -130,7 +132,7 @@ public final class ToolUsePart {
 
         private String toolName;
 
-        private Optional<Map<String, Object>> toolInput = Optional.empty();
+        private Optional<ToolUsePartToolInput> toolInput = Optional.empty();
 
         @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -168,21 +170,23 @@ public final class ToolUsePart {
         }
 
         /**
-         * <p>Tool arguments/input as a key-value object.</p>
+         * <p>Tool arguments. Text may contain free-form input or redacted arguments
+         * that no longer parse as a JSON object.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage toolInput(Map<String, Object> toolInput) {
+        public _FinalStage toolInput(ToolUsePartToolInput toolInput) {
             this.toolInput = Optional.ofNullable(toolInput);
             return this;
         }
 
         /**
-         * <p>Tool arguments/input as a key-value object.</p>
+         * <p>Tool arguments. Text may contain free-form input or redacted arguments
+         * that no longer parse as a JSON object.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "tool_input", nulls = Nulls.SKIP)
-        public _FinalStage toolInput(Optional<Map<String, Object>> toolInput) {
+        public _FinalStage toolInput(Optional<ToolUsePartToolInput> toolInput) {
             this.toolInput = toolInput;
             return this;
         }

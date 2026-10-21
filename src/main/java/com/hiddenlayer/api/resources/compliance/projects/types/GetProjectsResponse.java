@@ -256,6 +256,9 @@ public final class GetProjectsResponse
         return escalationDetails;
     }
 
+    /**
+     * @return Deprecated - this field will be removed. Do not send it, and do not depend on it in responses.
+     */
     @JsonProperty("risk_level")
     public Optional<ProjectDetailsRiskLevel> getRiskLevel() {
         return riskLevel;
@@ -461,6 +464,9 @@ public final class GetProjectsResponse
 
         _FinalStage escalationDetails(ProjectDetailsEscalationDetails escalationDetails);
 
+        /**
+         * <p>Deprecated - this field will be removed. Do not send it, and do not depend on it in responses.</p>
+         */
         _FinalStage riskLevel(Optional<ProjectDetailsRiskLevel> riskLevel);
 
         _FinalStage riskLevel(ProjectDetailsRiskLevel riskLevel);
@@ -542,12 +548,19 @@ public final class GetProjectsResponse
             return this;
         }
 
+        /**
+         * <p>Deprecated - this field will be removed. Do not send it, and do not depend on it in responses.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage riskLevel(ProjectDetailsRiskLevel riskLevel) {
             this.riskLevel = Optional.ofNullable(riskLevel);
             return this;
         }
 
+        /**
+         * <p>Deprecated - this field will be removed. Do not send it, and do not depend on it in responses.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "risk_level", nulls = Nulls.SKIP)
         public _FinalStage riskLevel(Optional<ProjectDetailsRiskLevel> riskLevel) {

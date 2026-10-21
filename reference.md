@@ -1370,6 +1370,9 @@ Accepts any valid provider request payload and returns:
 - If detect or redact action: the request payload (potentially modified) in the provider's request format
 - If block action: a canned block message in the provider's response format
 
+If the project is in monitor mode, the endpoint does not block or redact. It returns the
+request payload unchanged.
+
 Use this endpoint inline in your LLM pipeline to evaluate prompts before they reach the model.
 
 Supported provider formats:
@@ -1473,6 +1476,9 @@ Analyzes an LLM response payload for security threats after it is received from 
 Accepts any valid provider response payload and returns:
 - If detect or redact action: the response payload (potentially modified) in the provider's response format
 - If block action: a canned block message in the provider's response format
+
+If the project is in monitor mode, the endpoint does not block or redact. It returns the
+response payload unchanged.
 
 Use this endpoint inline in your LLM pipeline to evaluate model outputs before returning them to users.
 
@@ -5711,7 +5717,7 @@ client.compliance().projects().list(
 <dl>
 <dd>
 
-**sort:** `Optional<String>` — allow sorting by name, ascending (+) or the default descending (-)
+**sort:** `Optional<String>` — allow sorting by name or modified_at, ascending (+) or the default descending (-)
     
 </dd>
 </dl>
@@ -8322,7 +8328,7 @@ client.governance().policyPacks().recommendations(
 <dl>
 <dd>
 
-**exposure:** `Optional<PolicyPackApplicationExposure>` — Needed unless `application_type` is CODING_HARNESS, which ignores it; omitting it when needed returns 422
+**exposure:** `Optional<PolicyPackApplicationExposure>` — Needed unless `application_type` is CODING_HARNESS, which ignores it; omitting it when needed returns 422. An empty string is the same as an omitted value.
     
 </dd>
 </dl>
@@ -8330,7 +8336,7 @@ client.governance().policyPacks().recommendations(
 <dl>
 <dd>
 
-**deploymentStage:** `Optional<PolicyPackDeploymentStage>` — Needed only when `application_type` is GENERAL and `exposure` is INTERNET_FACING, and ignored otherwise; omitting it when needed returns 422
+**deploymentStage:** `Optional<PolicyPackDeploymentStage>` — Needed only when `application_type` is GENERAL and `exposure` is INTERNET_FACING, and ignored otherwise; omitting it when needed returns 422. An empty string is the same as an omitted value.
     
 </dd>
 </dl>

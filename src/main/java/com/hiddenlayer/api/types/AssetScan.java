@@ -34,6 +34,8 @@ public final class AssetScan {
 
     private final Optional<PolicyStatus> policyStatus;
 
+    private final Optional<Long> detectionCount;
+
     private final OffsetDateTime createdAt;
 
     private final OffsetDateTime updatedAt;
@@ -47,6 +49,7 @@ public final class AssetScan {
             Optional<String> scanId,
             AssetScanStatus status,
             Optional<PolicyStatus> policyStatus,
+            Optional<Long> detectionCount,
             OffsetDateTime createdAt,
             OffsetDateTime updatedAt,
             Map<String, Object> additionalProperties) {
@@ -56,6 +59,7 @@ public final class AssetScan {
         this.scanId = scanId;
         this.status = status;
         this.policyStatus = policyStatus;
+        this.detectionCount = detectionCount;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.additionalProperties = additionalProperties;
@@ -107,6 +111,16 @@ public final class AssetScan {
     }
 
     /**
+     * @return The latest scan's detection count, read from the supply-chain
+     * annotation's <code>latest_scan.detection_count</code>. Omitted when the
+     * count is unknown.
+     */
+    @JsonProperty("detection_count")
+    public Optional<Long> getDetectionCount() {
+        return detectionCount;
+    }
+
+    /**
      * @return The datetime when the scan was created
      */
     @JsonProperty("created_at")
@@ -140,6 +154,7 @@ public final class AssetScan {
                 && scanId.equals(other.scanId)
                 && status.equals(other.status)
                 && policyStatus.equals(other.policyStatus)
+                && detectionCount.equals(other.detectionCount)
                 && createdAt.equals(other.createdAt)
                 && updatedAt.equals(other.updatedAt);
     }
@@ -153,6 +168,7 @@ public final class AssetScan {
                 this.scanId,
                 this.status,
                 this.policyStatus,
+                this.detectionCount,
                 this.createdAt,
                 this.updatedAt);
     }
@@ -227,6 +243,15 @@ public final class AssetScan {
         _FinalStage policyStatus(Optional<PolicyStatus> policyStatus);
 
         _FinalStage policyStatus(PolicyStatus policyStatus);
+
+        /**
+         * <p>The latest scan's detection count, read from the supply-chain
+         * annotation's <code>latest_scan.detection_count</code>. Omitted when the
+         * count is unknown.</p>
+         */
+        _FinalStage detectionCount(Optional<Long> detectionCount);
+
+        _FinalStage detectionCount(Long detectionCount);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -239,6 +264,8 @@ public final class AssetScan {
         private OffsetDateTime createdAt;
 
         private OffsetDateTime updatedAt;
+
+        private Optional<Long> detectionCount = Optional.empty();
 
         private Optional<PolicyStatus> policyStatus = Optional.empty();
 
@@ -261,6 +288,7 @@ public final class AssetScan {
             scanId(other.getScanId());
             status(other.getStatus());
             policyStatus(other.getPolicyStatus());
+            detectionCount(other.getDetectionCount());
             createdAt(other.getCreatedAt());
             updatedAt(other.getUpdatedAt());
             return this;
@@ -303,6 +331,30 @@ public final class AssetScan {
         @JsonSetter("updated_at")
         public _FinalStage updatedAt(@NotNull OffsetDateTime updatedAt) {
             this.updatedAt = Objects.requireNonNull(updatedAt, "updatedAt must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The latest scan's detection count, read from the supply-chain
+         * annotation's <code>latest_scan.detection_count</code>. Omitted when the
+         * count is unknown.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage detectionCount(Long detectionCount) {
+            this.detectionCount = Optional.ofNullable(detectionCount);
+            return this;
+        }
+
+        /**
+         * <p>The latest scan's detection count, read from the supply-chain
+         * annotation's <code>latest_scan.detection_count</code>. Omitted when the
+         * count is unknown.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "detection_count", nulls = Nulls.SKIP)
+        public _FinalStage detectionCount(Optional<Long> detectionCount) {
+            this.detectionCount = detectionCount;
             return this;
         }
 
@@ -395,6 +447,7 @@ public final class AssetScan {
                     scanId,
                     status,
                     policyStatus,
+                    detectionCount,
                     createdAt,
                     updatedAt,
                     additionalProperties);

@@ -49,7 +49,7 @@ public final class PolicyPackRecommendationRequest {
     }
 
     /**
-     * @return Needed unless <code>application_type</code> is CODING_HARNESS, which ignores it; omitting it when needed returns 422
+     * @return Needed unless <code>application_type</code> is CODING_HARNESS, which ignores it; omitting it when needed returns 422. An empty string is the same as an omitted value.
      */
     @JsonProperty("exposure")
     public Optional<PolicyPackApplicationExposure> getExposure() {
@@ -57,7 +57,7 @@ public final class PolicyPackRecommendationRequest {
     }
 
     /**
-     * @return Needed only when <code>application_type</code> is GENERAL and <code>exposure</code> is INTERNET_FACING, and ignored otherwise; omitting it when needed returns 422
+     * @return Needed only when <code>application_type</code> is GENERAL and <code>exposure</code> is INTERNET_FACING, and ignored otherwise; omitting it when needed returns 422. An empty string is the same as an omitted value.
      */
     @JsonProperty("deployment_stage")
     public Optional<PolicyPackDeploymentStage> getDeploymentStage() {
@@ -109,14 +109,14 @@ public final class PolicyPackRecommendationRequest {
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
         /**
-         * <p>Needed unless <code>application_type</code> is CODING_HARNESS, which ignores it; omitting it when needed returns 422</p>
+         * <p>Needed unless <code>application_type</code> is CODING_HARNESS, which ignores it; omitting it when needed returns 422. An empty string is the same as an omitted value.</p>
          */
         _FinalStage exposure(Optional<PolicyPackApplicationExposure> exposure);
 
         _FinalStage exposure(PolicyPackApplicationExposure exposure);
 
         /**
-         * <p>Needed only when <code>application_type</code> is GENERAL and <code>exposure</code> is INTERNET_FACING, and ignored otherwise; omitting it when needed returns 422</p>
+         * <p>Needed only when <code>application_type</code> is GENERAL and <code>exposure</code> is INTERNET_FACING, and ignored otherwise; omitting it when needed returns 422. An empty string is the same as an omitted value.</p>
          */
         _FinalStage deploymentStage(Optional<PolicyPackDeploymentStage> deploymentStage);
 
@@ -152,7 +152,7 @@ public final class PolicyPackRecommendationRequest {
         }
 
         /**
-         * <p>Needed only when <code>application_type</code> is GENERAL and <code>exposure</code> is INTERNET_FACING, and ignored otherwise; omitting it when needed returns 422</p>
+         * <p>Needed only when <code>application_type</code> is GENERAL and <code>exposure</code> is INTERNET_FACING, and ignored otherwise; omitting it when needed returns 422. An empty string is the same as an omitted value.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -162,7 +162,7 @@ public final class PolicyPackRecommendationRequest {
         }
 
         /**
-         * <p>Needed only when <code>application_type</code> is GENERAL and <code>exposure</code> is INTERNET_FACING, and ignored otherwise; omitting it when needed returns 422</p>
+         * <p>Needed only when <code>application_type</code> is GENERAL and <code>exposure</code> is INTERNET_FACING, and ignored otherwise; omitting it when needed returns 422. An empty string is the same as an omitted value.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "deployment_stage", nulls = Nulls.SKIP)
@@ -172,7 +172,7 @@ public final class PolicyPackRecommendationRequest {
         }
 
         /**
-         * <p>Needed unless <code>application_type</code> is CODING_HARNESS, which ignores it; omitting it when needed returns 422</p>
+         * <p>Needed unless <code>application_type</code> is CODING_HARNESS, which ignores it; omitting it when needed returns 422. An empty string is the same as an omitted value.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -182,7 +182,7 @@ public final class PolicyPackRecommendationRequest {
         }
 
         /**
-         * <p>Needed unless <code>application_type</code> is CODING_HARNESS, which ignores it; omitting it when needed returns 422</p>
+         * <p>Needed unless <code>application_type</code> is CODING_HARNESS, which ignores it; omitting it when needed returns 422. An empty string is the same as an omitted value.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "exposure", nulls = Nulls.SKIP)

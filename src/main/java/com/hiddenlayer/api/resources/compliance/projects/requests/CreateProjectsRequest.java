@@ -238,6 +238,9 @@ public final class CreateProjectsRequest implements IProjectAlias, IProjectDetai
         return escalationDetails;
     }
 
+    /**
+     * @return Deprecated - this field will be removed. Do not send it, and do not depend on it in responses.
+     */
     @JsonProperty("risk_level")
     public Optional<ProjectDetailsRiskLevel> getRiskLevel() {
         return riskLevel;
@@ -608,6 +611,9 @@ public final class CreateProjectsRequest implements IProjectAlias, IProjectDetai
             return this;
         }
 
+        /**
+         * <p>Deprecated - this field will be removed. Do not send it, and do not depend on it in responses.</p>
+         */
         @JsonSetter(value = "risk_level", nulls = Nulls.SKIP)
         public Builder riskLevel(Optional<ProjectDetailsRiskLevel> riskLevel) {
             this.riskLevel = riskLevel;

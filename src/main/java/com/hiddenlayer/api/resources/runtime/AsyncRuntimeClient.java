@@ -101,6 +101,8 @@ public class AsyncRuntimeClient {
      * <li>If detect or redact action: the request payload (potentially modified) in the provider's request format</li>
      * <li>If block action: a canned block message in the provider's response format</li>
      * </ul>
+     * <p>If the project is in monitor mode, the endpoint does not block or redact. It returns the
+     * request payload unchanged.</p>
      * <p>Use this endpoint inline in your LLM pipeline to evaluate prompts before they reach the model.</p>
      * <p>Supported provider formats:</p>
      * <ul>
@@ -120,6 +122,8 @@ public class AsyncRuntimeClient {
      * <li>If detect or redact action: the request payload (potentially modified) in the provider's request format</li>
      * <li>If block action: a canned block message in the provider's response format</li>
      * </ul>
+     * <p>If the project is in monitor mode, the endpoint does not block or redact. It returns the
+     * request payload unchanged.</p>
      * <p>Use this endpoint inline in your LLM pipeline to evaluate prompts before they reach the model.</p>
      * <p>Supported provider formats:</p>
      * <ul>
@@ -140,6 +144,8 @@ public class AsyncRuntimeClient {
      * <li>If detect or redact action: the request payload (potentially modified) in the provider's request format</li>
      * <li>If block action: a canned block message in the provider's response format</li>
      * </ul>
+     * <p>If the project is in monitor mode, the endpoint does not block or redact. It returns the
+     * request payload unchanged.</p>
      * <p>Use this endpoint inline in your LLM pipeline to evaluate prompts before they reach the model.</p>
      * <p>Supported provider formats:</p>
      * <ul>
@@ -159,6 +165,8 @@ public class AsyncRuntimeClient {
      * <li>If detect or redact action: the request payload (potentially modified) in the provider's request format</li>
      * <li>If block action: a canned block message in the provider's response format</li>
      * </ul>
+     * <p>If the project is in monitor mode, the endpoint does not block or redact. It returns the
+     * request payload unchanged.</p>
      * <p>Use this endpoint inline in your LLM pipeline to evaluate prompts before they reach the model.</p>
      * <p>Supported provider formats:</p>
      * <ul>
@@ -179,6 +187,8 @@ public class AsyncRuntimeClient {
      * <li>If detect or redact action: the response payload (potentially modified) in the provider's response format</li>
      * <li>If block action: a canned block message in the provider's response format</li>
      * </ul>
+     * <p>If the project is in monitor mode, the endpoint does not block or redact. It returns the
+     * response payload unchanged.</p>
      * <p>Use this endpoint inline in your LLM pipeline to evaluate model outputs before returning them to users.</p>
      * <p>Supported provider formats:</p>
      * <ul>
@@ -198,6 +208,8 @@ public class AsyncRuntimeClient {
      * <li>If detect or redact action: the response payload (potentially modified) in the provider's response format</li>
      * <li>If block action: a canned block message in the provider's response format</li>
      * </ul>
+     * <p>If the project is in monitor mode, the endpoint does not block or redact. It returns the
+     * response payload unchanged.</p>
      * <p>Use this endpoint inline in your LLM pipeline to evaluate model outputs before returning them to users.</p>
      * <p>Supported provider formats:</p>
      * <ul>
@@ -218,6 +230,8 @@ public class AsyncRuntimeClient {
      * <li>If detect or redact action: the response payload (potentially modified) in the provider's response format</li>
      * <li>If block action: a canned block message in the provider's response format</li>
      * </ul>
+     * <p>If the project is in monitor mode, the endpoint does not block or redact. It returns the
+     * response payload unchanged.</p>
      * <p>Use this endpoint inline in your LLM pipeline to evaluate model outputs before returning them to users.</p>
      * <p>Supported provider formats:</p>
      * <ul>
@@ -237,6 +251,8 @@ public class AsyncRuntimeClient {
      * <li>If detect or redact action: the response payload (potentially modified) in the provider's response format</li>
      * <li>If block action: a canned block message in the provider's response format</li>
      * </ul>
+     * <p>If the project is in monitor mode, the endpoint does not block or redact. It returns the
+     * response payload unchanged.</p>
      * <p>Use this endpoint inline in your LLM pipeline to evaluate model outputs before returning them to users.</p>
      * <p>Supported provider formats:</p>
      * <ul>
