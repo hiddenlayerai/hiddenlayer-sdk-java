@@ -114,7 +114,6 @@ public final class MeUsersResponse {
 
         private Optional<List<Org>> observableOrgs = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -157,6 +156,16 @@ public final class MeUsersResponse {
         @java.lang.Override
         public MeUsersResponse build() {
             return new MeUsersResponse(user, org, observableOrgs, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("user")
+                    || key.equalsIgnoreCase("org")
+                    || key.equalsIgnoreCase("observable_orgs")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

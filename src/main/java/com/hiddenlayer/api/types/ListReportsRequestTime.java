@@ -79,7 +79,6 @@ public final class ListReportsRequestTime {
 
         private Optional<OffsetDateTime> gte = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -114,6 +113,14 @@ public final class ListReportsRequestTime {
 
         public ListReportsRequestTime build() {
             return new ListReportsRequestTime(lte, gte, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("lte") || key.equalsIgnoreCase("gte")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

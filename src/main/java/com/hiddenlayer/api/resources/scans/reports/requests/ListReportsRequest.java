@@ -119,7 +119,6 @@ public final class ListReportsRequest {
 
         private Optional<ListReportsRequestTime> time = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -191,6 +190,17 @@ public final class ListReportsRequest {
 
         public ListReportsRequest build() {
             return new ListReportsRequest(pageSize, limit, cursor, time, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("page_size")
+                    || key.equalsIgnoreCase("limit")
+                    || key.equalsIgnoreCase("cursor")
+                    || key.equalsIgnoreCase("time")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

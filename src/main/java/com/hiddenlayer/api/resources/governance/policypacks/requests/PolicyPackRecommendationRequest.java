@@ -131,7 +131,6 @@ public final class PolicyPackRecommendationRequest {
 
         private Optional<PolicyPackApplicationExposure> exposure = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -195,6 +194,16 @@ public final class PolicyPackRecommendationRequest {
         public PolicyPackRecommendationRequest build() {
             return new PolicyPackRecommendationRequest(
                     applicationType, exposure, deploymentStage, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("application_type")
+                    || key.equalsIgnoreCase("exposure")
+                    || key.equalsIgnoreCase("deployment_stage")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

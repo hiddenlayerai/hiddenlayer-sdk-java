@@ -80,7 +80,6 @@ public final class UpdateLocationsRequest {
     public static final class Builder implements BodyStage, _FinalStage {
         private String body;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -101,6 +100,14 @@ public final class UpdateLocationsRequest {
         @java.lang.Override
         public UpdateLocationsRequest build() {
             return new UpdateLocationsRequest(body, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("body")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

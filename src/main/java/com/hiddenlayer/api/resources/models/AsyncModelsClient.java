@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.models;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.Suppliers;
 import com.hiddenlayer.api.resources.models.cards.AsyncCardsClient;
@@ -44,52 +45,142 @@ public class AsyncModelsClient {
     }
 
     public CompletableFuture<SensorSorModel> retrieve(String modelId) {
-        return this.rawClient.retrieve(modelId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SensorSorModel>> rawFuture = this.rawClient.retrieve(modelId);
+        CompletableFuture<SensorSorModel> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<SensorSorModel> retrieve(String modelId, RequestOptions requestOptions) {
-        return this.rawClient.retrieve(modelId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SensorSorModel>> rawFuture =
+                this.rawClient.retrieve(modelId, requestOptions);
+        CompletableFuture<SensorSorModel> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<SensorSorModel> retrieve(String modelId, RetrieveModelsRequest request) {
-        return this.rawClient.retrieve(modelId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SensorSorModel>> rawFuture =
+                this.rawClient.retrieve(modelId, request);
+        CompletableFuture<SensorSorModel> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<SensorSorModel> retrieve(
             String modelId, RetrieveModelsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.retrieve(modelId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SensorSorModel>> rawFuture =
+                this.rawClient.retrieve(modelId, request, requestOptions);
+        CompletableFuture<SensorSorModel> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<Void> delete(String modelId) {
-        return this.rawClient.delete(modelId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(modelId);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<Void> delete(String modelId, RequestOptions requestOptions) {
-        return this.rawClient.delete(modelId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(modelId, requestOptions);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<Void> delete(String modelId, DeleteModelsRequest request) {
-        return this.rawClient.delete(modelId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(modelId, request);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<Void> delete(String modelId, DeleteModelsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.delete(modelId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(modelId, request, requestOptions);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<List<SensorSorModel>> list() {
-        return this.rawClient.list().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<List<SensorSorModel>>> rawFuture = this.rawClient.list();
+        CompletableFuture<List<SensorSorModel>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<List<SensorSorModel>> list(RequestOptions requestOptions) {
-        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<List<SensorSorModel>>> rawFuture =
+                this.rawClient.list(requestOptions);
+        CompletableFuture<List<SensorSorModel>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<UpdateModelsResponse> update(List<SensorSorModel> request) {
-        return this.rawClient.update(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<UpdateModelsResponse>> rawFuture = this.rawClient.update(request);
+        CompletableFuture<UpdateModelsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<UpdateModelsResponse> update(List<SensorSorModel> request, RequestOptions requestOptions) {
-        return this.rawClient.update(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<UpdateModelsResponse>> rawFuture =
+                this.rawClient.update(request, requestOptions);
+        CompletableFuture<UpdateModelsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public AsyncCardsClient cards() {

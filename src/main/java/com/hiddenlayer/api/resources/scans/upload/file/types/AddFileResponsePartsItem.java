@@ -105,7 +105,6 @@ public final class AddFileResponsePartsItem {
 
         private Optional<String> uploadUrl = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -164,6 +163,17 @@ public final class AddFileResponsePartsItem {
 
         public AddFileResponsePartsItem build() {
             return new AddFileResponsePartsItem(partNumber, startOffset, endOffset, uploadUrl, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("part_number")
+                    || key.equalsIgnoreCase("start_offset")
+                    || key.equalsIgnoreCase("end_offset")
+                    || key.equalsIgnoreCase("upload_url")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

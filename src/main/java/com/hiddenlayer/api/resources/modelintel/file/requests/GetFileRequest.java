@@ -84,7 +84,6 @@ public final class GetFileRequest {
 
         private Optional<String> cursor = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -125,6 +124,14 @@ public final class GetFileRequest {
 
         public GetFileRequest build() {
             return new GetFileRequest(pageSize, cursor, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("page_size") || key.equalsIgnoreCase("cursor")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

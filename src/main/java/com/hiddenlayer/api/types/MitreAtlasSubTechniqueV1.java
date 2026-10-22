@@ -91,7 +91,6 @@ public final class MitreAtlasSubTechniqueV1 {
 
         private Optional<String> description = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -138,6 +137,14 @@ public final class MitreAtlasSubTechniqueV1 {
 
         public MitreAtlasSubTechniqueV1 build() {
             return new MitreAtlasSubTechniqueV1(id, name, description, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id") || key.equalsIgnoreCase("name") || key.equalsIgnoreCase("description")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

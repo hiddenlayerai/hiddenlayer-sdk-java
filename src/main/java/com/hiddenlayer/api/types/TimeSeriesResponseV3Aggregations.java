@@ -68,7 +68,6 @@ public final class TimeSeriesResponseV3Aggregations {
     public static final class Builder {
         private Optional<AggregationContainer> total = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -91,6 +90,14 @@ public final class TimeSeriesResponseV3Aggregations {
 
         public TimeSeriesResponseV3Aggregations build() {
             return new TimeSeriesResponseV3Aggregations(total, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("total")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.governance.licenses;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.governance.licenses.types.ListLicensesResponse;
 import java.util.concurrent.CompletableFuture;
@@ -30,7 +31,14 @@ public class AsyncLicensesClient {
      * alongside the named licenses. Rules store each license's <code>id</code>; <code>name</code> is for display only.
      */
     public CompletableFuture<ListLicensesResponse> list() {
-        return this.rawClient.list().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ListLicensesResponse>> rawFuture = this.rawClient.list();
+        CompletableFuture<ListLicensesResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -38,6 +46,14 @@ public class AsyncLicensesClient {
      * alongside the named licenses. Rules store each license's <code>id</code>; <code>name</code> is for display only.
      */
     public CompletableFuture<ListLicensesResponse> list(RequestOptions requestOptions) {
-        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ListLicensesResponse>> rawFuture =
+                this.rawClient.list(requestOptions);
+        CompletableFuture<ListLicensesResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

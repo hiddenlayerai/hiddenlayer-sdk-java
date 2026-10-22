@@ -81,7 +81,6 @@ public final class ScanModelInventoryV3 implements IScanModelInventoryV3 {
     public static final class Builder implements InventoryStage, _FinalStage {
         private ScanModelInventoryComboV3 inventory;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -102,6 +101,14 @@ public final class ScanModelInventoryV3 implements IScanModelInventoryV3 {
         @java.lang.Override
         public ScanModelInventoryV3 build() {
             return new ScanModelInventoryV3(inventory, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("inventory")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

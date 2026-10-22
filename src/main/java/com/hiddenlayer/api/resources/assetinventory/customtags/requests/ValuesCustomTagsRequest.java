@@ -117,7 +117,6 @@ public final class ValuesCustomTagsRequest {
 
         private Optional<Integer> pageSize = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -188,6 +187,17 @@ public final class ValuesCustomTagsRequest {
 
         public ValuesCustomTagsRequest build() {
             return new ValuesCustomTagsRequest(sort, q, cursor, pageSize, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("sort")
+                    || key.equalsIgnoreCase("q")
+                    || key.equalsIgnoreCase("cursor")
+                    || key.equalsIgnoreCase("page_size")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -201,7 +201,6 @@ public final class AssetFilterV2 {
 
         private Optional<TagValueFilter> tag = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -357,6 +356,22 @@ public final class AssetFilterV2 {
                     tagDef,
                     tag,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("asset_type")
+                    || key.equalsIgnoreCase("policy_status")
+                    || key.equalsIgnoreCase("annotating_service")
+                    || key.equalsIgnoreCase("attributes")
+                    || key.equalsIgnoreCase("related_to")
+                    || key.equalsIgnoreCase("tag_name")
+                    || key.equalsIgnoreCase("tag_def")
+                    || key.equalsIgnoreCase("tag")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

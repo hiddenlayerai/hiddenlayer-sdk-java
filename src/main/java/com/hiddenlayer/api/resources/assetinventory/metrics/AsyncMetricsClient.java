@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.assetinventory.metrics;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.types.AiAssetInventoryV1AssetTypeCounts;
 import com.hiddenlayer.api.types.AiAssetInventoryV1ProviderCounts;
@@ -31,27 +32,75 @@ public class AsyncMetricsClient {
     }
 
     public CompletableFuture<AiAssetInventoryV1ProviderCounts> providerCountsV1() {
-        return this.rawClient.providerCountsV1().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1ProviderCounts>> rawFuture =
+                this.rawClient.providerCountsV1();
+        CompletableFuture<AiAssetInventoryV1ProviderCounts> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AiAssetInventoryV1ProviderCounts> providerCountsV1(RequestOptions requestOptions) {
-        return this.rawClient.providerCountsV1(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1ProviderCounts>> rawFuture =
+                this.rawClient.providerCountsV1(requestOptions);
+        CompletableFuture<AiAssetInventoryV1ProviderCounts> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AiAssetInventoryV1RegionCounts> regionCountsV1() {
-        return this.rawClient.regionCountsV1().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1RegionCounts>> rawFuture =
+                this.rawClient.regionCountsV1();
+        CompletableFuture<AiAssetInventoryV1RegionCounts> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AiAssetInventoryV1RegionCounts> regionCountsV1(RequestOptions requestOptions) {
-        return this.rawClient.regionCountsV1(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1RegionCounts>> rawFuture =
+                this.rawClient.regionCountsV1(requestOptions);
+        CompletableFuture<AiAssetInventoryV1RegionCounts> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AiAssetInventoryV1AssetTypeCounts> assetTypeCountsV1() {
-        return this.rawClient.assetTypeCountsV1().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetTypeCounts>> rawFuture =
+                this.rawClient.assetTypeCountsV1();
+        CompletableFuture<AiAssetInventoryV1AssetTypeCounts> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AiAssetInventoryV1AssetTypeCounts> assetTypeCountsV1(RequestOptions requestOptions) {
-        return this.rawClient.assetTypeCountsV1(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetTypeCounts>> rawFuture =
+                this.rawClient.assetTypeCountsV1(requestOptions);
+        CompletableFuture<AiAssetInventoryV1AssetTypeCounts> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -62,7 +111,14 @@ public class AsyncMetricsClient {
      * <code>other</code>.</p>
      */
     public CompletableFuture<ProviderCounts> providerCounts() {
-        return this.rawClient.providerCounts().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ProviderCounts>> rawFuture = this.rawClient.providerCounts();
+        CompletableFuture<ProviderCounts> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -73,7 +129,15 @@ public class AsyncMetricsClient {
      * <code>other</code>.</p>
      */
     public CompletableFuture<ProviderCounts> providerCounts(RequestOptions requestOptions) {
-        return this.rawClient.providerCounts(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ProviderCounts>> rawFuture =
+                this.rawClient.providerCounts(requestOptions);
+        CompletableFuture<ProviderCounts> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -84,7 +148,14 @@ public class AsyncMetricsClient {
      * Europe).</p>
      */
     public CompletableFuture<RegionCounts> regionCounts() {
-        return this.rawClient.regionCounts().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RegionCounts>> rawFuture = this.rawClient.regionCounts();
+        CompletableFuture<RegionCounts> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -95,7 +166,15 @@ public class AsyncMetricsClient {
      * Europe).</p>
      */
     public CompletableFuture<RegionCounts> regionCounts(RequestOptions requestOptions) {
-        return this.rawClient.regionCounts(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RegionCounts>> rawFuture =
+                this.rawClient.regionCounts(requestOptions);
+        CompletableFuture<RegionCounts> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -104,7 +183,14 @@ public class AsyncMetricsClient {
      * asset type (for example, model, endpoint, or agent).</p>
      */
     public CompletableFuture<Map<String, Integer>> assetTypeCounts() {
-        return this.rawClient.assetTypeCounts().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Map<String, Integer>>> rawFuture = this.rawClient.assetTypeCounts();
+        CompletableFuture<Map<String, Integer>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -113,6 +199,14 @@ public class AsyncMetricsClient {
      * asset type (for example, model, endpoint, or agent).</p>
      */
     public CompletableFuture<Map<String, Integer>> assetTypeCounts(RequestOptions requestOptions) {
-        return this.rawClient.assetTypeCounts(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Map<String, Integer>>> rawFuture =
+                this.rawClient.assetTypeCounts(requestOptions);
+        CompletableFuture<Map<String, Integer>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

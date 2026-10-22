@@ -116,7 +116,6 @@ public final class SuggestionsAssetsRequestScanStartedAt {
 
         private Optional<OffsetDateTime> lte = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -187,6 +186,17 @@ public final class SuggestionsAssetsRequestScanStartedAt {
 
         public SuggestionsAssetsRequestScanStartedAt build() {
             return new SuggestionsAssetsRequestScanStartedAt(gt, gte, lt, lte, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("gt")
+                    || key.equalsIgnoreCase("gte")
+                    || key.equalsIgnoreCase("lt")
+                    || key.equalsIgnoreCase("lte")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

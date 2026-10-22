@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.compliance.rulesets.settings;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
@@ -24,7 +25,6 @@ import com.hiddenlayer.api.resources.compliance.rulesets.settings.requests.GetSe
 import com.hiddenlayer.api.resources.compliance.rulesets.settings.requests.ListSettingsRequest;
 import com.hiddenlayer.api.resources.compliance.rulesets.settings.requests.UpdateSettingsRequest;
 import com.hiddenlayer.api.resources.compliance.rulesets.settings.types.ListSettingsResponse;
-import com.hiddenlayer.api.types.PreconditionFailedErrorBody;
 import com.hiddenlayer.api.types.Settings;
 import com.hiddenlayer.api.types.SettingsDetailsWithSchema;
 import com.hiddenlayer.api.types.SettingsId;
@@ -145,7 +145,8 @@ public class RawSettingsClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request),
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(BodyProperties.merge(
+                            request, requestOptions != null ? requestOptions.getBodyProperties() : null)),
                     MediaType.parse("application/json; charset=utf-8"));
         } catch (JsonProcessingException e) {
             throw new HiddenLayerException("Failed to serialize request", e);
@@ -320,7 +321,8 @@ public class RawSettingsClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()),
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(BodyProperties.merge(
+                            request.getBody(), requestOptions != null ? requestOptions.getBodyProperties() : null)),
                     MediaType.parse("application/json; charset=utf-8"));
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -364,9 +366,7 @@ public class RawSettingsClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 412:
                         throw new PreconditionFailedError(
-                                ObjectMappers.JSON_MAPPER.readValue(
-                                        responseBodyString, PreconditionFailedErrorBody.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 422:
                         throw new UnprocessableEntityError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
@@ -417,7 +417,10 @@ public class RawSettingsClient {
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
-                .method("DELETE", null)
+                .method(
+                        "DELETE",
+                        BodyProperties.toRequestBody(
+                                requestOptions != null ? requestOptions.getBodyProperties() : null, null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();

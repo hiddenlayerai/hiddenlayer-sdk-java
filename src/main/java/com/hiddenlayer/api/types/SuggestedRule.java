@@ -134,7 +134,6 @@ public final class SuggestedRule {
 
         private Optional<String> reason = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -192,6 +191,16 @@ public final class SuggestedRule {
         @java.lang.Override
         public SuggestedRule build() {
             return new SuggestedRule(expressionName, newExpression, reason, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("expression_name")
+                    || key.equalsIgnoreCase("new_expression")
+                    || key.equalsIgnoreCase("reason")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

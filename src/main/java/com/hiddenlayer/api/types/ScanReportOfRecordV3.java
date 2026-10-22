@@ -457,7 +457,6 @@ public final class ScanReportOfRecordV3
 
         private Optional<Boolean> hasGenealogy = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -728,6 +727,30 @@ public final class ScanReportOfRecordV3
                     detectionCategories,
                     severity,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("has_genealogy")
+                    || key.equalsIgnoreCase("version")
+                    || key.equalsIgnoreCase("$schema_version")
+                    || key.equalsIgnoreCase("scan_id")
+                    || key.equalsIgnoreCase("start_time")
+                    || key.equalsIgnoreCase("end_time")
+                    || key.equalsIgnoreCase("status")
+                    || key.equalsIgnoreCase("inventory")
+                    || key.equalsIgnoreCase("intelligence")
+                    || key.equalsIgnoreCase("summary")
+                    || key.equalsIgnoreCase("compliance")
+                    || key.equalsIgnoreCase("file_results")
+                    || key.equalsIgnoreCase("file_count")
+                    || key.equalsIgnoreCase("files_with_detections_count")
+                    || key.equalsIgnoreCase("detection_count")
+                    || key.equalsIgnoreCase("detection_categories")
+                    || key.equalsIgnoreCase("severity")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

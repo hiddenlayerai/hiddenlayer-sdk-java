@@ -101,7 +101,6 @@ public final class ScanRulesetComplianceV3Compliance {
 
         private Optional<List<String>> ruleSetIds = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -154,6 +153,16 @@ public final class ScanRulesetComplianceV3Compliance {
 
         public ScanRulesetComplianceV3Compliance build() {
             return new ScanRulesetComplianceV3Compliance(status, evaluatedAt, ruleSetIds, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("status")
+                    || key.equalsIgnoreCase("evaluated_at")
+                    || key.equalsIgnoreCase("rule_set_ids")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -477,7 +477,6 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
 
         private Optional<String> id = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -873,6 +872,31 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
                     createdBy,
                     updatedBy,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("description")
+                    || key.equalsIgnoreCase("type")
+                    || key.equalsIgnoreCase("block_rule_count")
+                    || key.equalsIgnoreCase("detect_rule_count")
+                    || key.equalsIgnoreCase("redact_entity_type_count")
+                    || key.equalsIgnoreCase("rule_pack_ids")
+                    || key.equalsIgnoreCase("individual_rules")
+                    || key.equalsIgnoreCase("block")
+                    || key.equalsIgnoreCase("detect")
+                    || key.equalsIgnoreCase("redact")
+                    || key.equalsIgnoreCase("project_count")
+                    || key.equalsIgnoreCase("is_enabled")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("updated_at")
+                    || key.equalsIgnoreCase("created_by")
+                    || key.equalsIgnoreCase("updated_by")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

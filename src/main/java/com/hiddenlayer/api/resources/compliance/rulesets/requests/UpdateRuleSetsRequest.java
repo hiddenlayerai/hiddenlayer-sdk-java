@@ -114,7 +114,6 @@ public final class UpdateRuleSetsRequest {
 
         private Optional<String> ifUnmodifiedSince = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -165,6 +164,14 @@ public final class UpdateRuleSetsRequest {
         @java.lang.Override
         public UpdateRuleSetsRequest build() {
             return new UpdateRuleSetsRequest(ifUnmodifiedSince, body, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("body")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

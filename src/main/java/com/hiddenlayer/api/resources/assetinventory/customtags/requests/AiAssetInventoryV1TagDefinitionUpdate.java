@@ -87,7 +87,6 @@ public final class AiAssetInventoryV1TagDefinitionUpdate {
     public static final class Builder implements NameStage, _FinalStage {
         private String name;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -112,6 +111,14 @@ public final class AiAssetInventoryV1TagDefinitionUpdate {
         @java.lang.Override
         public AiAssetInventoryV1TagDefinitionUpdate build() {
             return new AiAssetInventoryV1TagDefinitionUpdate(name, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("name")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

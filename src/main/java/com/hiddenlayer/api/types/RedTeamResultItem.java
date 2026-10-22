@@ -312,7 +312,6 @@ public final class RedTeamResultItem {
 
         private List<String> objectiveIds = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -509,6 +508,23 @@ public final class RedTeamResultItem {
                     highestSeverity,
                     hlProjectId,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("workflow_id")
+                    || key.equalsIgnoreCase("run_id")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("target_model")
+                    || key.equalsIgnoreCase("objective_ids")
+                    || key.equalsIgnoreCase("started_at")
+                    || key.equalsIgnoreCase("completed_at")
+                    || key.equalsIgnoreCase("attack_success_rate")
+                    || key.equalsIgnoreCase("highest_severity")
+                    || key.equalsIgnoreCase("hl_project_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

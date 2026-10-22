@@ -250,7 +250,6 @@ public final class Rule {
 
         private Optional<String> id = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -435,6 +434,21 @@ public final class Rule {
                     conditions,
                     isDisabled,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("previous_rule_id")
+                    || key.equalsIgnoreCase("display_name")
+                    || key.equalsIgnoreCase("notes")
+                    || key.equalsIgnoreCase("is_compliant_when_conditions_met")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("conditions")
+                    || key.equalsIgnoreCase("is_disabled")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

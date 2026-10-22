@@ -69,7 +69,6 @@ public final class ListSearchRequestHlResourceType {
     public static final class Builder {
         private Optional<List<ListSearchRequestHlResourceTypeInItem>> in = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -92,6 +91,14 @@ public final class ListSearchRequestHlResourceType {
 
         public ListSearchRequestHlResourceType build() {
             return new ListSearchRequestHlResourceType(in, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("in")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

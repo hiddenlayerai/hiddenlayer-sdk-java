@@ -204,7 +204,6 @@ public final class ListRedTeamRequest {
 
         private Optional<String> cursor = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -361,6 +360,22 @@ public final class ListRedTeamRequest {
                     pageSize,
                     cursor,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("target_model")
+                    || key.equalsIgnoreCase("workflow_type")
+                    || key.equalsIgnoreCase("status")
+                    || key.equalsIgnoreCase("start_time_from")
+                    || key.equalsIgnoreCase("start_time_to")
+                    || key.equalsIgnoreCase("project_id")
+                    || key.equalsIgnoreCase("limit")
+                    || key.equalsIgnoreCase("page_size")
+                    || key.equalsIgnoreCase("cursor")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

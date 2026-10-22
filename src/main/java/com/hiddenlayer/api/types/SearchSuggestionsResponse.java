@@ -97,7 +97,6 @@ public final class SearchSuggestionsResponse {
 
         private Optional<Long> banditArmId = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -147,6 +146,16 @@ public final class SearchSuggestionsResponse {
 
         public SearchSuggestionsResponse build() {
             return new SearchSuggestionsResponse(suggestions, suggestionHighlights, banditArmId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("suggestions")
+                    || key.equalsIgnoreCase("suggestion_highlights")
+                    || key.equalsIgnoreCase("bandit_arm_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -120,7 +120,6 @@ public final class ScanTimeseriesResponseV2 {
 
         private List<ScanTimeseriesResponseV2TimeseriesItem> timeseries = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -180,6 +179,16 @@ public final class ScanTimeseriesResponseV2 {
         @java.lang.Override
         public ScanTimeseriesResponseV2 build() {
             return new ScanTimeseriesResponseV2(timeseries, aggregations, metadata, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("timeseries")
+                    || key.equalsIgnoreCase("aggregations")
+                    || key.equalsIgnoreCase("metadata")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

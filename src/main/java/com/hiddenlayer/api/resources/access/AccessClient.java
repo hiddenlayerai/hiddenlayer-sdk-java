@@ -5,6 +5,7 @@ package com.hiddenlayer.api.resources.access;
 
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.Suppliers;
+import com.hiddenlayer.api.resources.access.apikeys.ApiKeysClient;
 import com.hiddenlayer.api.resources.access.permissions.PermissionsClient;
 import com.hiddenlayer.api.resources.access.tokens.TokensClient;
 import com.hiddenlayer.api.resources.access.users.UsersClient;
@@ -12,6 +13,8 @@ import java.util.function.Supplier;
 
 public class AccessClient {
     protected final ClientOptions clientOptions;
+
+    protected final Supplier<ApiKeysClient> apiKeysClient;
 
     protected final Supplier<UsersClient> usersClient;
 
@@ -21,9 +24,14 @@ public class AccessClient {
 
     public AccessClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        this.apiKeysClient = Suppliers.memoize(() -> new ApiKeysClient(clientOptions));
         this.usersClient = Suppliers.memoize(() -> new UsersClient(clientOptions));
         this.permissionsClient = Suppliers.memoize(() -> new PermissionsClient(clientOptions));
         this.tokensClient = Suppliers.memoize(() -> new TokensClient(clientOptions));
+    }
+
+    public ApiKeysClient apiKeys() {
+        return this.apiKeysClient.get();
     }
 
     public UsersClient users() {

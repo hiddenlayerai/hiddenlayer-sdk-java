@@ -135,7 +135,6 @@ public final class AddFileRequest {
 
         private Optional<String> fileName = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -203,6 +202,11 @@ public final class AddFileRequest {
         @java.lang.Override
         public AddFileRequest build() {
             return new AddFileRequest(fileContentLength, fileName, fileNameBase64, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

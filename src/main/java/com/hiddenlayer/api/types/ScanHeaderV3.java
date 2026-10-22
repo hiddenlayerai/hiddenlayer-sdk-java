@@ -237,7 +237,6 @@ public final class ScanHeaderV3 implements IScanHeaderV3 {
 
         private Optional<Boolean> hasGenealogy = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -362,6 +361,20 @@ public final class ScanHeaderV3 implements IScanHeaderV3 {
         public ScanHeaderV3 build() {
             return new ScanHeaderV3(
                     hasGenealogy, version, schemaVersion, scanId, startTime, endTime, status, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("has_genealogy")
+                    || key.equalsIgnoreCase("version")
+                    || key.equalsIgnoreCase("$schema_version")
+                    || key.equalsIgnoreCase("scan_id")
+                    || key.equalsIgnoreCase("start_time")
+                    || key.equalsIgnoreCase("end_time")
+                    || key.equalsIgnoreCase("status")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

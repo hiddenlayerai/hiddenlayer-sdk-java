@@ -118,7 +118,6 @@ public final class ListRulePacksRequest {
 
         private Optional<String> sort = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -189,6 +188,17 @@ public final class ListRulePacksRequest {
 
         public ListRulePacksRequest build() {
             return new ListRulePacksRequest(type, limit, cursor, sort, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("type")
+                    || key.equalsIgnoreCase("limit")
+                    || key.equalsIgnoreCase("cursor")
+                    || key.equalsIgnoreCase("sort")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

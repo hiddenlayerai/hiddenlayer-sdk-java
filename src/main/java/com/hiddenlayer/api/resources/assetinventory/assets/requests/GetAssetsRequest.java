@@ -74,7 +74,6 @@ public final class GetAssetsRequest {
     public static final class Builder {
         private Optional<List<GetAssetsRequestEmbedItem>> embed = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -105,6 +104,14 @@ public final class GetAssetsRequest {
 
         public GetAssetsRequest build() {
             return new GetAssetsRequest(embed, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("embed")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -117,7 +117,6 @@ public final class SensorSorQueryRequest {
 
         private Optional<Integer> pageNumber = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -188,6 +187,18 @@ public final class SensorSorQueryRequest {
 
         public SensorSorQueryRequest build() {
             return new SensorSorQueryRequest(filter, orderBy, orderDir, pageSize, pageNumber, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("filter")
+                    || key.equalsIgnoreCase("order_by")
+                    || key.equalsIgnoreCase("order_dir")
+                    || key.equalsIgnoreCase("page_size")
+                    || key.equalsIgnoreCase("page_number")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

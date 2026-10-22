@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.audit.activitytypes;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.types.ActivityTypeList;
 import java.util.concurrent.CompletableFuture;
@@ -29,13 +30,27 @@ public class AsyncActivityTypesClient {
      * Returns the list of all auditable activity types. Use this to understand what actions are tracked and to build filters when querying audit entries.
      */
     public CompletableFuture<ActivityTypeList> list() {
-        return this.rawClient.list().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ActivityTypeList>> rawFuture = this.rawClient.list();
+        CompletableFuture<ActivityTypeList> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Returns the list of all auditable activity types. Use this to understand what actions are tracked and to build filters when querying audit entries.
      */
     public CompletableFuture<ActivityTypeList> list(RequestOptions requestOptions) {
-        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ActivityTypeList>> rawFuture = this.rawClient.list(requestOptions);
+        CompletableFuture<ActivityTypeList> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

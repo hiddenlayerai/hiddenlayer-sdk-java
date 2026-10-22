@@ -484,7 +484,6 @@ public final class SuggestionsAssetsRequest {
 
         private Optional<Integer> limit = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -879,6 +878,27 @@ public final class SuggestionsAssetsRequest {
                     tagDef,
                     tag,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("q")
+                    || key.equalsIgnoreCase("limit")
+                    || key.equalsIgnoreCase("annotating_service")
+                    || key.equalsIgnoreCase("attributes")
+                    || key.equalsIgnoreCase("asset_type")
+                    || key.equalsIgnoreCase("policy_status")
+                    || key.equalsIgnoreCase("scan_started_at")
+                    || key.equalsIgnoreCase("model_id")
+                    || key.equalsIgnoreCase("model_name")
+                    || key.equalsIgnoreCase("related_to")
+                    || key.equalsIgnoreCase("project_id")
+                    || key.equalsIgnoreCase("tag_name")
+                    || key.equalsIgnoreCase("tag_def")
+                    || key.equalsIgnoreCase("tag")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

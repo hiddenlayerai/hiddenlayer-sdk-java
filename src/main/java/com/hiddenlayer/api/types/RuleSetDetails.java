@@ -268,7 +268,6 @@ public final class RuleSetDetails implements IRuleSetDetails, ITags {
 
         private Optional<OffsetDateTime> createdAt = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -442,6 +441,22 @@ public final class RuleSetDetails implements IRuleSetDetails, ITags {
                     description,
                     tags,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("created_by")
+                    || key.equalsIgnoreCase("modified_at")
+                    || key.equalsIgnoreCase("modified_by")
+                    || key.equalsIgnoreCase("is_editable")
+                    || key.equalsIgnoreCase("is_established")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("description")
+                    || key.equalsIgnoreCase("tags")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

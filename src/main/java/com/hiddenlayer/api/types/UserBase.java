@@ -169,7 +169,6 @@ public final class UserBase implements IUserBase {
 
         private Optional<List<String>> roles = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -282,6 +281,20 @@ public final class UserBase implements IUserBase {
 
         public UserBase build() {
             return new UserBase(id, email, firstname, lastname, fullName, createdAt, roles, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("email")
+                    || key.equalsIgnoreCase("firstname")
+                    || key.equalsIgnoreCase("lastname")
+                    || key.equalsIgnoreCase("full_name")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("roles")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

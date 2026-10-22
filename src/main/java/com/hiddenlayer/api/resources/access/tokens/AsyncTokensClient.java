@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.access.tokens;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.types.ShortLivedTokenResponse;
 import java.util.concurrent.CompletableFuture;
@@ -29,13 +30,28 @@ public class AsyncTokensClient {
      * Exchange a valid user access token for a short-lived JWT with minimal scopes. This endpoint is suitable for scenarios where a long-lived or broad-scope token is inappropriate. A typical use case is authenticating WebSocket connections, where the token may be passed via query parameters.
      */
     public CompletableFuture<ShortLivedTokenResponse> shortLived() {
-        return this.rawClient.shortLived().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ShortLivedTokenResponse>> rawFuture = this.rawClient.shortLived();
+        CompletableFuture<ShortLivedTokenResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Exchange a valid user access token for a short-lived JWT with minimal scopes. This endpoint is suitable for scenarios where a long-lived or broad-scope token is inappropriate. A typical use case is authenticating WebSocket connections, where the token may be passed via query parameters.
      */
     public CompletableFuture<ShortLivedTokenResponse> shortLived(RequestOptions requestOptions) {
-        return this.rawClient.shortLived(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ShortLivedTokenResponse>> rawFuture =
+                this.rawClient.shortLived(requestOptions);
+        CompletableFuture<ShortLivedTokenResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

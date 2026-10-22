@@ -162,7 +162,6 @@ public final class ProviderDetails {
 
         private Optional<String> modelArn = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -244,6 +243,17 @@ public final class ProviderDetails {
         @java.lang.Override
         public ProviderDetails build() {
             return new ProviderDetails(provider, providerModelId, modelArn, country, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("provider")
+                    || key.equalsIgnoreCase("provider_model_id")
+                    || key.equalsIgnoreCase("model_arn")
+                    || key.equalsIgnoreCase("country")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

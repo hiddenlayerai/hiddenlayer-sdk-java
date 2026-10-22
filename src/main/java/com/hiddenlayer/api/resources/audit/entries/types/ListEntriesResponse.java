@@ -120,7 +120,6 @@ public final class ListEntriesResponse {
 
         private List<AuditEntry> items = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -185,6 +184,14 @@ public final class ListEntriesResponse {
         @java.lang.Override
         public ListEntriesResponse build() {
             return new ListEntriesResponse(items, limit, offset, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("items") || key.equalsIgnoreCase("limit") || key.equalsIgnoreCase("offset")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

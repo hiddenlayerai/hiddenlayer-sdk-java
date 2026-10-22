@@ -107,7 +107,6 @@ public final class SubmitTargetResponseBody {
 
         private String targetResponse;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -144,6 +143,14 @@ public final class SubmitTargetResponseBody {
         @java.lang.Override
         public SubmitTargetResponseBody build() {
             return new SubmitTargetResponseBody(sessionId, targetResponse, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("session_id") || key.equalsIgnoreCase("target_response")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

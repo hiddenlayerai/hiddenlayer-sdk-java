@@ -284,7 +284,6 @@ public final class License {
 
         private Optional<String> spdxId = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -424,6 +423,22 @@ public final class License {
         public License build() {
             return new License(
                     id, name, spdxId, version, url, description, sha256, createdAt, updatedAt, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("spdx_id")
+                    || key.equalsIgnoreCase("version")
+                    || key.equalsIgnoreCase("url")
+                    || key.equalsIgnoreCase("description")
+                    || key.equalsIgnoreCase("sha256")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("updated_at")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

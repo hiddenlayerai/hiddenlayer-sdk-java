@@ -111,7 +111,6 @@ public final class PermissionArea {
 
         private List<PermissionAreaElement> items = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -172,6 +171,14 @@ public final class PermissionArea {
         @java.lang.Override
         public PermissionArea build() {
             return new PermissionArea(name, items, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("name") || key.equalsIgnoreCase("items")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

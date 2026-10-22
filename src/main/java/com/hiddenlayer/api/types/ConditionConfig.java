@@ -71,7 +71,6 @@ public final class ConditionConfig {
     public static final class Builder {
         private Optional<List<String>> any = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -97,6 +96,14 @@ public final class ConditionConfig {
 
         public ConditionConfig build() {
             return new ConditionConfig(any, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("any")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

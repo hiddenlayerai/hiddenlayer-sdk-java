@@ -91,7 +91,6 @@ public final class ProjectDetailsEscalationDetails {
 
         private Optional<String> notes = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -138,6 +137,16 @@ public final class ProjectDetailsEscalationDetails {
 
         public ProjectDetailsEscalationDetails build() {
             return new ProjectDetailsEscalationDetails(ownerContact, team, notes, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("owner_contact")
+                    || key.equalsIgnoreCase("team")
+                    || key.equalsIgnoreCase("notes")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

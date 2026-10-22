@@ -232,7 +232,6 @@ public final class SensorSorItemResponse {
 
         private Optional<Integer> version = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -356,6 +355,22 @@ public final class SensorSorItemResponse {
                     tags,
                     adhoc,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("tenant_id")
+                    || key.equalsIgnoreCase("model_id")
+                    || key.equalsIgnoreCase("sensor_id")
+                    || key.equalsIgnoreCase("plaintext_name")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("version")
+                    || key.equalsIgnoreCase("active")
+                    || key.equalsIgnoreCase("tags")
+                    || key.equalsIgnoreCase("adhoc")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

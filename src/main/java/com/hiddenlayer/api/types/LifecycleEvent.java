@@ -133,7 +133,6 @@ public final class LifecycleEvent {
 
         private String userId;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -183,6 +182,16 @@ public final class LifecycleEvent {
         @java.lang.Override
         public LifecycleEvent build() {
             return new LifecycleEvent(eventType, timestamp, userId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("event_type")
+                    || key.equalsIgnoreCase("timestamp")
+                    || key.equalsIgnoreCase("user_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

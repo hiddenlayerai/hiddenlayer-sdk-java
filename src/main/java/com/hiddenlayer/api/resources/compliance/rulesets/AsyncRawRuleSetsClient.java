@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.compliance.rulesets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
@@ -25,7 +26,6 @@ import com.hiddenlayer.api.resources.compliance.rulesets.requests.ListRuleSetsRe
 import com.hiddenlayer.api.resources.compliance.rulesets.requests.UpdateRuleSetsRequest;
 import com.hiddenlayer.api.resources.compliance.rulesets.types.ListRuleSetsResponse;
 import com.hiddenlayer.api.types.GetRuleSetItem;
-import com.hiddenlayer.api.types.PreconditionFailedErrorBody;
 import com.hiddenlayer.api.types.RuleSetDetails;
 import java.io.IOException;
 import java.util.List;
@@ -122,7 +122,8 @@ public class AsyncRawRuleSetsClient {
         }
         CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<GetRuleSetItem>>> future =
                 new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
+        RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
+        okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
@@ -188,6 +189,11 @@ public class AsyncRawRuleSetsClient {
                 future.completeExceptionally(new HiddenLayerException("Network error executing HTTP request", e));
             }
         });
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                okhttpCall.cancel();
+            }
+        });
         return future;
     }
 
@@ -208,7 +214,8 @@ public class AsyncRawRuleSetsClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request),
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(BodyProperties.merge(
+                            request, requestOptions != null ? requestOptions.getBodyProperties() : null)),
                     MediaType.parse("application/json; charset=utf-8"));
         } catch (JsonProcessingException e) {
             throw new HiddenLayerException("Failed to serialize request", e);
@@ -234,7 +241,8 @@ public class AsyncRawRuleSetsClient {
                     .build();
         }
         CompletableFuture<HiddenLayerHttpResponse<GetRuleSetItem>> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
+        RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
+        okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
@@ -286,6 +294,11 @@ public class AsyncRawRuleSetsClient {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 future.completeExceptionally(new HiddenLayerException("Network error executing HTTP request", e));
+            }
+        });
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                okhttpCall.cancel();
             }
         });
         return future;
@@ -334,7 +347,8 @@ public class AsyncRawRuleSetsClient {
                     .build();
         }
         CompletableFuture<HiddenLayerHttpResponse<GetRuleSetItem>> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
+        RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
+        okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
@@ -388,6 +402,11 @@ public class AsyncRawRuleSetsClient {
                 future.completeExceptionally(new HiddenLayerException("Network error executing HTTP request", e));
             }
         });
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                okhttpCall.cancel();
+            }
+        });
         return future;
     }
 
@@ -418,7 +437,8 @@ public class AsyncRawRuleSetsClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()),
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(BodyProperties.merge(
+                            request.getBody(), requestOptions != null ? requestOptions.getBodyProperties() : null)),
                     MediaType.parse("application/json; charset=utf-8"));
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -448,7 +468,8 @@ public class AsyncRawRuleSetsClient {
                     .build();
         }
         CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
+        RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
+        okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
@@ -471,8 +492,7 @@ public class AsyncRawRuleSetsClient {
                                 return;
                             case 412:
                                 future.completeExceptionally(new PreconditionFailedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PreconditionFailedErrorBody.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 422:
@@ -511,6 +531,11 @@ public class AsyncRawRuleSetsClient {
                 future.completeExceptionally(new HiddenLayerException("Network error executing HTTP request", e));
             }
         });
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                okhttpCall.cancel();
+            }
+        });
         return future;
     }
 
@@ -539,7 +564,10 @@ public class AsyncRawRuleSetsClient {
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
-                .method("DELETE", null)
+                .method(
+                        "DELETE",
+                        BodyProperties.toRequestBody(
+                                requestOptions != null ? requestOptions.getBodyProperties() : null, null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
@@ -557,7 +585,8 @@ public class AsyncRawRuleSetsClient {
                     .build();
         }
         CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
+        RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
+        okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
@@ -607,6 +636,11 @@ public class AsyncRawRuleSetsClient {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 future.completeExceptionally(new HiddenLayerException("Network error executing HTTP request", e));
+            }
+        });
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                okhttpCall.cancel();
             }
         });
         return future;

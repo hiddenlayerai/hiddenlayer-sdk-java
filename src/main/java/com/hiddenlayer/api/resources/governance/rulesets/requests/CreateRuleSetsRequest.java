@@ -104,7 +104,6 @@ public final class CreateRuleSetsRequest {
 
         private Optional<Boolean> replaceActivePolicy = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -146,6 +145,14 @@ public final class CreateRuleSetsRequest {
         @java.lang.Override
         public CreateRuleSetsRequest build() {
             return new CreateRuleSetsRequest(replaceActivePolicy, body, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("replace_active_policy") || key.equalsIgnoreCase("body")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

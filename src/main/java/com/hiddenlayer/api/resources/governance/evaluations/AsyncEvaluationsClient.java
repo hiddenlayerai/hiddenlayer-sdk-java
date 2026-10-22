@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.governance.evaluations;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.governance.evaluations.requests.GetEvaluationsRequest;
 import com.hiddenlayer.api.resources.governance.evaluations.requests.ListEvaluationsRequest;
@@ -33,7 +34,14 @@ public class AsyncEvaluationsClient {
      * Each artifact will have a corresponding status to indicate whether evaluation results exist for that ID.
      */
     public CompletableFuture<Map<String, EvaluationResult>> list() {
-        return this.rawClient.list().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Map<String, EvaluationResult>>> rawFuture = this.rawClient.list();
+        CompletableFuture<Map<String, EvaluationResult>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -41,7 +49,15 @@ public class AsyncEvaluationsClient {
      * Each artifact will have a corresponding status to indicate whether evaluation results exist for that ID.
      */
     public CompletableFuture<Map<String, EvaluationResult>> list(RequestOptions requestOptions) {
-        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Map<String, EvaluationResult>>> rawFuture =
+                this.rawClient.list(requestOptions);
+        CompletableFuture<Map<String, EvaluationResult>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -49,7 +65,15 @@ public class AsyncEvaluationsClient {
      * Each artifact will have a corresponding status to indicate whether evaluation results exist for that ID.
      */
     public CompletableFuture<Map<String, EvaluationResult>> list(ListEvaluationsRequest request) {
-        return this.rawClient.list(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Map<String, EvaluationResult>>> rawFuture =
+                this.rawClient.list(request);
+        CompletableFuture<Map<String, EvaluationResult>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -58,7 +82,15 @@ public class AsyncEvaluationsClient {
      */
     public CompletableFuture<Map<String, EvaluationResult>> list(
             ListEvaluationsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.list(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Map<String, EvaluationResult>>> rawFuture =
+                this.rawClient.list(request, requestOptions);
+        CompletableFuture<Map<String, EvaluationResult>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -66,7 +98,14 @@ public class AsyncEvaluationsClient {
      * The response includes whether the artifact is compliant with the defined policies and an explanation of the evaluation.
      */
     public CompletableFuture<EvaluationResult> get(String artifactId) {
-        return this.rawClient.get(artifactId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<EvaluationResult>> rawFuture = this.rawClient.get(artifactId);
+        CompletableFuture<EvaluationResult> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -74,7 +113,15 @@ public class AsyncEvaluationsClient {
      * The response includes whether the artifact is compliant with the defined policies and an explanation of the evaluation.
      */
     public CompletableFuture<EvaluationResult> get(String artifactId, RequestOptions requestOptions) {
-        return this.rawClient.get(artifactId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<EvaluationResult>> rawFuture =
+                this.rawClient.get(artifactId, requestOptions);
+        CompletableFuture<EvaluationResult> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -82,7 +129,15 @@ public class AsyncEvaluationsClient {
      * The response includes whether the artifact is compliant with the defined policies and an explanation of the evaluation.
      */
     public CompletableFuture<EvaluationResult> get(String artifactId, GetEvaluationsRequest request) {
-        return this.rawClient.get(artifactId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<EvaluationResult>> rawFuture =
+                this.rawClient.get(artifactId, request);
+        CompletableFuture<EvaluationResult> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -91,6 +146,14 @@ public class AsyncEvaluationsClient {
      */
     public CompletableFuture<EvaluationResult> get(
             String artifactId, GetEvaluationsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.get(artifactId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<EvaluationResult>> rawFuture =
+                this.rawClient.get(artifactId, request, requestOptions);
+        CompletableFuture<EvaluationResult> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

@@ -126,7 +126,6 @@ public final class HlTenantBase implements IHlTenantBase {
 
         private Optional<List<String>> emailDomains = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -182,6 +181,16 @@ public final class HlTenantBase implements IHlTenantBase {
         @java.lang.Override
         public HlTenantBase build() {
             return new HlTenantBase(name, emailDomains, hasEulaExemption, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("email_domains")
+                    || key.equalsIgnoreCase("has_eula_exemption")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

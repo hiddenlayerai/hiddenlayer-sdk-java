@@ -68,7 +68,6 @@ public final class SuggestionsSearchRequestRegion {
     public static final class Builder {
         private Optional<List<String>> in = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -91,6 +90,14 @@ public final class SuggestionsSearchRequestRegion {
 
         public SuggestionsSearchRequestRegion build() {
             return new SuggestionsSearchRequestRegion(in, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("in")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

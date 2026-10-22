@@ -85,7 +85,6 @@ public final class FiltersV1AssetsResponseItemsItem {
 
         private Optional<List<String>> values = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -126,6 +125,14 @@ public final class FiltersV1AssetsResponseItemsItem {
 
         public FiltersV1AssetsResponseItemsItem build() {
             return new FiltersV1AssetsResponseItemsItem(field, values, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("field") || key.equalsIgnoreCase("values")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

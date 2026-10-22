@@ -123,7 +123,6 @@ public final class SelfEulaResponsesResponse implements IEulaResponseValue, IEul
 
         private Optional<String> modifiedBy = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -194,6 +193,17 @@ public final class SelfEulaResponsesResponse implements IEulaResponseValue, IEul
 
         public SelfEulaResponsesResponse build() {
             return new SelfEulaResponsesResponse(response, version, modifiedAt, modifiedBy, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("response")
+                    || key.equalsIgnoreCase("version")
+                    || key.equalsIgnoreCase("modified_at")
+                    || key.equalsIgnoreCase("modified_by")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

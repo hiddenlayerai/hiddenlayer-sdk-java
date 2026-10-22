@@ -86,7 +86,6 @@ public final class AiAssetInventoryV1TagValue {
     public static final class Builder implements ValueStage, _FinalStage {
         private String value;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -111,6 +110,14 @@ public final class AiAssetInventoryV1TagValue {
         @java.lang.Override
         public AiAssetInventoryV1TagValue build() {
             return new AiAssetInventoryV1TagValue(value, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("value")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

@@ -91,7 +91,6 @@ public final class InteractionPayload {
 
         private Optional<List<ToolBase>> toolsAvailable = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -145,6 +144,14 @@ public final class InteractionPayload {
 
         public InteractionPayload build() {
             return new InteractionPayload(messages, toolsAvailable, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("messages") || key.equalsIgnoreCase("tools_available")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -139,7 +139,6 @@ public final class ListTimeseriesConvictionsRequest {
 
         private Optional<OffsetDateTime> endTimestamp = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -210,6 +209,16 @@ public final class ListTimeseriesConvictionsRequest {
         public ListTimeseriesConvictionsRequest build() {
             return new ListTimeseriesConvictionsRequest(
                     startTimestamp, endTimestamp, requesterId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("start_timestamp")
+                    || key.equalsIgnoreCase("end_timestamp")
+                    || key.equalsIgnoreCase("requester_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

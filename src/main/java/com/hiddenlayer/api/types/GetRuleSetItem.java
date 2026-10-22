@@ -304,7 +304,6 @@ public final class GetRuleSetItem implements IRuleSetId, IRuleSetDetails, ITags,
 
         private Optional<String> ruleSetId = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -508,6 +507,24 @@ public final class GetRuleSetItem implements IRuleSetId, IRuleSetDetails, ITags,
                     tags,
                     settings,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("rule_set_id")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("created_by")
+                    || key.equalsIgnoreCase("modified_at")
+                    || key.equalsIgnoreCase("modified_by")
+                    || key.equalsIgnoreCase("is_editable")
+                    || key.equalsIgnoreCase("is_established")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("description")
+                    || key.equalsIgnoreCase("tags")
+                    || key.equalsIgnoreCase("settings")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

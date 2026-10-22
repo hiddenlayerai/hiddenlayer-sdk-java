@@ -87,7 +87,6 @@ public final class CreateCsvRequest {
     public static final class Builder implements TimeStage, _FinalStage {
         private CreateCsvRequestTime time;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -112,6 +111,14 @@ public final class CreateCsvRequest {
         @java.lang.Override
         public CreateCsvRequest build() {
             return new CreateCsvRequest(time, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("time")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

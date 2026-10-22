@@ -121,7 +121,6 @@ public final class NumpyFileAttributes {
 
         private List<String> subtype = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -192,6 +191,16 @@ public final class NumpyFileAttributes {
         @java.lang.Override
         public NumpyFileAttributes build() {
             return new NumpyFileAttributes(subtype, numpyArrays, numpyShape, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("subtype")
+                    || key.equalsIgnoreCase("numpy_arrays")
+                    || key.equalsIgnoreCase("numpy_shape")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

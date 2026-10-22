@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.assetinventory.tags;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.assetinventory.tags.requests.ListTagsRequest;
@@ -33,7 +34,16 @@ public class AsyncTagsClient {
      * Returns a paginated list of tag definitions. Optionally filter by source.
      */
     public CompletableFuture<SyncPagingIterable<AiAssetInventoryV1TagDefinition>> listV1() {
-        return this.rawClient.listV1().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>>> rawFuture =
+                this.rawClient.listV1();
+        CompletableFuture<SyncPagingIterable<AiAssetInventoryV1TagDefinition>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -41,14 +51,32 @@ public class AsyncTagsClient {
      */
     public CompletableFuture<SyncPagingIterable<AiAssetInventoryV1TagDefinition>> listV1(
             RequestOptions requestOptions) {
-        return this.rawClient.listV1(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>>> rawFuture =
+                this.rawClient.listV1(requestOptions);
+        CompletableFuture<SyncPagingIterable<AiAssetInventoryV1TagDefinition>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Returns a paginated list of tag definitions. Optionally filter by source.
      */
     public CompletableFuture<SyncPagingIterable<AiAssetInventoryV1TagDefinition>> listV1(ListV1TagsRequest request) {
-        return this.rawClient.listV1(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>>> rawFuture =
+                this.rawClient.listV1(request);
+        CompletableFuture<SyncPagingIterable<AiAssetInventoryV1TagDefinition>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -56,7 +84,16 @@ public class AsyncTagsClient {
      */
     public CompletableFuture<SyncPagingIterable<AiAssetInventoryV1TagDefinition>> listV1(
             ListV1TagsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.listV1(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>>> rawFuture =
+                this.rawClient.listV1(request, requestOptions);
+        CompletableFuture<SyncPagingIterable<AiAssetInventoryV1TagDefinition>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -64,7 +101,14 @@ public class AsyncTagsClient {
      * <p>Returns a cursor-paginated list of tag definitions. Optionally filter by source.</p>
      */
     public CompletableFuture<SyncPagingIterable<TagDefinition>> list() {
-        return this.rawClient.list().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TagDefinition>>> rawFuture = this.rawClient.list();
+        CompletableFuture<SyncPagingIterable<TagDefinition>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -72,7 +116,15 @@ public class AsyncTagsClient {
      * <p>Returns a cursor-paginated list of tag definitions. Optionally filter by source.</p>
      */
     public CompletableFuture<SyncPagingIterable<TagDefinition>> list(RequestOptions requestOptions) {
-        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TagDefinition>>> rawFuture =
+                this.rawClient.list(requestOptions);
+        CompletableFuture<SyncPagingIterable<TagDefinition>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -80,7 +132,15 @@ public class AsyncTagsClient {
      * <p>Returns a cursor-paginated list of tag definitions. Optionally filter by source.</p>
      */
     public CompletableFuture<SyncPagingIterable<TagDefinition>> list(ListTagsRequest request) {
-        return this.rawClient.list(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TagDefinition>>> rawFuture =
+                this.rawClient.list(request);
+        CompletableFuture<SyncPagingIterable<TagDefinition>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -89,6 +149,14 @@ public class AsyncTagsClient {
      */
     public CompletableFuture<SyncPagingIterable<TagDefinition>> list(
             ListTagsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.list(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TagDefinition>>> rawFuture =
+                this.rawClient.list(request, requestOptions);
+        CompletableFuture<SyncPagingIterable<TagDefinition>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

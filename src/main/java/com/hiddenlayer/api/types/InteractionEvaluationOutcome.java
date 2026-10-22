@@ -202,7 +202,6 @@ public final class InteractionEvaluationOutcome {
 
         private List<InteractionEvaluationDetection> detections = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -313,6 +312,17 @@ public final class InteractionEvaluationOutcome {
         public InteractionEvaluationOutcome build() {
             return new InteractionEvaluationOutcome(
                     action, threatLevel, detections, effectiveInteraction, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("action")
+                    || key.equalsIgnoreCase("threat_level")
+                    || key.equalsIgnoreCase("detections")
+                    || key.equalsIgnoreCase("effective_interaction")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

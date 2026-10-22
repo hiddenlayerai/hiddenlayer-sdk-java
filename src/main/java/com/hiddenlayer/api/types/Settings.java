@@ -71,7 +71,6 @@ public final class Settings implements ISettings {
     public static final class Builder {
         private Map<String, Object> settings = new LinkedHashMap<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -107,6 +106,14 @@ public final class Settings implements ISettings {
 
         public Settings build() {
             return new Settings(settings, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("settings")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -73,7 +73,6 @@ public final class GetV1AssetsRequest {
     public static final class Builder {
         private Optional<List<Embed>> embed = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -104,6 +103,14 @@ public final class GetV1AssetsRequest {
 
         public GetV1AssetsRequest build() {
             return new GetV1AssetsRequest(embed, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("embed")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

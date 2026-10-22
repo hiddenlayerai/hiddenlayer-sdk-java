@@ -325,7 +325,6 @@ public final class ScanFileResultWithComplianceV3 implements IScanFileResultV3 {
 
         private List<ScanDetectionV3> detections = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -511,6 +510,24 @@ public final class ScanFileResultWithComplianceV3 implements IScanFileResultV3 {
                     fileError,
                     compliance,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("file_instance_id")
+                    || key.equalsIgnoreCase("file_location")
+                    || key.equalsIgnoreCase("start_time")
+                    || key.equalsIgnoreCase("end_time")
+                    || key.equalsIgnoreCase("details")
+                    || key.equalsIgnoreCase("status")
+                    || key.equalsIgnoreCase("seen")
+                    || key.equalsIgnoreCase("detections")
+                    || key.equalsIgnoreCase("advisories")
+                    || key.equalsIgnoreCase("file_error")
+                    || key.equalsIgnoreCase("compliance")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

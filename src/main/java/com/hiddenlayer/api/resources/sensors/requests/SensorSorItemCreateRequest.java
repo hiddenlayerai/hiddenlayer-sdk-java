@@ -148,7 +148,6 @@ public final class SensorSorItemCreateRequest {
 
         private Optional<Integer> version = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -225,6 +224,18 @@ public final class SensorSorItemCreateRequest {
         @java.lang.Override
         public SensorSorItemCreateRequest build() {
             return new SensorSorItemCreateRequest(plaintextName, version, active, tags, adhoc, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("plaintext_name")
+                    || key.equalsIgnoreCase("version")
+                    || key.equalsIgnoreCase("active")
+                    || key.equalsIgnoreCase("tags")
+                    || key.equalsIgnoreCase("adhoc")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

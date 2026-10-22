@@ -150,7 +150,6 @@ public final class SettingsDetailsWithSchema implements ISettingsDetails, ISetti
 
         private Map<String, Object> settings = new LinkedHashMap<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -236,6 +235,17 @@ public final class SettingsDetailsWithSchema implements ISettingsDetails, ISetti
         @java.lang.Override
         public SettingsDetailsWithSchema build() {
             return new SettingsDetailsWithSchema(settingsId, category, settings, jsonSchema, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("settings_id")
+                    || key.equalsIgnoreCase("category")
+                    || key.equalsIgnoreCase("settings")
+                    || key.equalsIgnoreCase("json_schema")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

@@ -108,7 +108,6 @@ public final class InteractionsTextContent {
 
         private Optional<String> role = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -154,6 +153,14 @@ public final class InteractionsTextContent {
         @java.lang.Override
         public InteractionsTextContent build() {
             return new InteractionsTextContent(role, content, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("role") || key.equalsIgnoreCase("content")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

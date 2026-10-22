@@ -117,7 +117,6 @@ public final class AiAssetInventoryV1ProviderCounts {
 
         private Optional<Long> other = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -188,6 +187,17 @@ public final class AiAssetInventoryV1ProviderCounts {
 
         public AiAssetInventoryV1ProviderCounts build() {
             return new AiAssetInventoryV1ProviderCounts(databricks, aws, azure, other, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("databricks")
+                    || key.equalsIgnoreCase("aws")
+                    || key.equalsIgnoreCase("azure")
+                    || key.equalsIgnoreCase("other")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

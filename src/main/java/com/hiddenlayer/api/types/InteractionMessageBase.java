@@ -127,7 +127,6 @@ public final class InteractionMessageBase implements IInteractionMessageBase {
 
         private List<ContentPart> content = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -197,6 +196,14 @@ public final class InteractionMessageBase implements IInteractionMessageBase {
         @java.lang.Override
         public InteractionMessageBase build() {
             return new InteractionMessageBase(role, content, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("role") || key.equalsIgnoreCase("content")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

@@ -140,7 +140,6 @@ public final class KerasFileAttributes {
 
         private Optional<String> kerasModule = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -253,6 +252,19 @@ public final class KerasFileAttributes {
                     kerasDateSavedAt,
                     kerasModule,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("subtype")
+                    || key.equalsIgnoreCase("keras_version")
+                    || key.equalsIgnoreCase("pickle_modules")
+                    || key.equalsIgnoreCase("keras_class_name")
+                    || key.equalsIgnoreCase("keras_date_saved_at")
+                    || key.equalsIgnoreCase("keras_module")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

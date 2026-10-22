@@ -81,7 +81,6 @@ public final class InferenceTimeseriesResponseV3Aggregations {
 
         private Optional<AggregationContainer> threatLevelUnsafe = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -117,6 +116,14 @@ public final class InferenceTimeseriesResponseV3Aggregations {
         public InferenceTimeseriesResponseV3Aggregations build() {
             return new InferenceTimeseriesResponseV3Aggregations(
                     threatLevelSafe, threatLevelUnsafe, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("threat_level_safe") || key.equalsIgnoreCase("threat_level_unsafe")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

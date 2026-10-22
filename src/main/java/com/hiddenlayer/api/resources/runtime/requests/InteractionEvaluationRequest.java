@@ -142,7 +142,6 @@ public final class InteractionEvaluationRequest {
 
         private Optional<String> hlProjectId = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -201,6 +200,14 @@ public final class InteractionEvaluationRequest {
         @java.lang.Override
         public InteractionEvaluationRequest build() {
             return new InteractionEvaluationRequest(hlProjectId, metadata, interaction, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("metadata") || key.equalsIgnoreCase("interaction")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

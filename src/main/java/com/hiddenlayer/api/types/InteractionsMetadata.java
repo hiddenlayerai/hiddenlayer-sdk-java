@@ -129,7 +129,6 @@ public final class InteractionsMetadata {
 
         private Optional<String> provider = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -187,6 +186,16 @@ public final class InteractionsMetadata {
         @java.lang.Override
         public InteractionsMetadata build() {
             return new InteractionsMetadata(model, requesterId, provider, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("model")
+                    || key.equalsIgnoreCase("requester_id")
+                    || key.equalsIgnoreCase("provider")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

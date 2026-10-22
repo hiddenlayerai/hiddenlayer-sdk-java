@@ -85,7 +85,6 @@ public final class ScanReportSummaryV3SummaryMitreAtlasItem {
 
         private Optional<String> tactic = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -126,6 +125,14 @@ public final class ScanReportSummaryV3SummaryMitreAtlasItem {
 
         public ScanReportSummaryV3SummaryMitreAtlasItem build() {
             return new ScanReportSummaryV3SummaryMitreAtlasItem(technique, tactic, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("technique") || key.equalsIgnoreCase("tactic")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

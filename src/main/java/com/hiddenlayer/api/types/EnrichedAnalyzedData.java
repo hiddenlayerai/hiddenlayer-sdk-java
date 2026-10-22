@@ -97,7 +97,6 @@ public final class EnrichedAnalyzedData {
 
         private Optional<InteractionsOutput> output = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -132,6 +131,14 @@ public final class EnrichedAnalyzedData {
         @java.lang.Override
         public EnrichedAnalyzedData build() {
             return new EnrichedAnalyzedData(input, output, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("input") || key.equalsIgnoreCase("output")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

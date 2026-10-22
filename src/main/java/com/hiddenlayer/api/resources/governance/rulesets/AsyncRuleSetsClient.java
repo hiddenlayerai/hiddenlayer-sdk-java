@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.governance.rulesets;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.Suppliers;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
@@ -42,7 +43,14 @@ public class AsyncRuleSetsClient {
      * Rule sets are ordered by their creation time, with the oldest rule sets listed first.
      */
     public CompletableFuture<SyncPagingIterable<RuleSet>> list() {
-        return this.rawClient.list().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RuleSet>>> rawFuture = this.rawClient.list();
+        CompletableFuture<SyncPagingIterable<RuleSet>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -51,7 +59,15 @@ public class AsyncRuleSetsClient {
      * Rule sets are ordered by their creation time, with the oldest rule sets listed first.
      */
     public CompletableFuture<SyncPagingIterable<RuleSet>> list(RequestOptions requestOptions) {
-        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RuleSet>>> rawFuture =
+                this.rawClient.list(requestOptions);
+        CompletableFuture<SyncPagingIterable<RuleSet>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -60,7 +76,15 @@ public class AsyncRuleSetsClient {
      * Rule sets are ordered by their creation time, with the oldest rule sets listed first.
      */
     public CompletableFuture<SyncPagingIterable<RuleSet>> list(ListRuleSetsRequest request) {
-        return this.rawClient.list(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RuleSet>>> rawFuture =
+                this.rawClient.list(request);
+        CompletableFuture<SyncPagingIterable<RuleSet>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -70,7 +94,15 @@ public class AsyncRuleSetsClient {
      */
     public CompletableFuture<SyncPagingIterable<RuleSet>> list(
             ListRuleSetsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.list(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RuleSet>>> rawFuture =
+                this.rawClient.list(request, requestOptions);
+        CompletableFuture<SyncPagingIterable<RuleSet>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -85,7 +117,14 @@ public class AsyncRuleSetsClient {
      * by this operation.</p>
      */
     public CompletableFuture<RuleSet> create(RuleSet body) {
-        return this.rawClient.create(body).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture = this.rawClient.create(body);
+        CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -100,7 +139,14 @@ public class AsyncRuleSetsClient {
      * by this operation.</p>
      */
     public CompletableFuture<RuleSet> create(RuleSet body, RequestOptions requestOptions) {
-        return this.rawClient.create(body, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture = this.rawClient.create(body, requestOptions);
+        CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -115,7 +161,14 @@ public class AsyncRuleSetsClient {
      * by this operation.</p>
      */
     public CompletableFuture<RuleSet> create(CreateRuleSetsRequest request) {
-        return this.rawClient.create(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -130,7 +183,14 @@ public class AsyncRuleSetsClient {
      * by this operation.</p>
      */
     public CompletableFuture<RuleSet> create(CreateRuleSetsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.create(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture = this.rawClient.create(request, requestOptions);
+        CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -139,7 +199,14 @@ public class AsyncRuleSetsClient {
      * If the rule set does not exist, a 404 Not Found error is returned.
      */
     public CompletableFuture<RuleSet> get(String ruleSetId) {
-        return this.rawClient.get(ruleSetId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture = this.rawClient.get(ruleSetId);
+        CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -148,7 +215,14 @@ public class AsyncRuleSetsClient {
      * If the rule set does not exist, a 404 Not Found error is returned.
      */
     public CompletableFuture<RuleSet> get(String ruleSetId, RequestOptions requestOptions) {
-        return this.rawClient.get(ruleSetId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture = this.rawClient.get(ruleSetId, requestOptions);
+        CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -157,7 +231,14 @@ public class AsyncRuleSetsClient {
      * If the rule set does not exist, a 404 Not Found error is returned.
      */
     public CompletableFuture<RuleSet> get(String ruleSetId, GetRuleSetsRequest request) {
-        return this.rawClient.get(ruleSetId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture = this.rawClient.get(ruleSetId, request);
+        CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -166,7 +247,15 @@ public class AsyncRuleSetsClient {
      * If the rule set does not exist, a 404 Not Found error is returned.
      */
     public CompletableFuture<RuleSet> get(String ruleSetId, GetRuleSetsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.get(ruleSetId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture =
+                this.rawClient.get(ruleSetId, request, requestOptions);
+        CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -175,7 +264,14 @@ public class AsyncRuleSetsClient {
      * This operation is irreversible; once deleted, the rule set cannot be recovered.
      */
     public CompletableFuture<Void> delete(String ruleSetId) {
-        return this.rawClient.delete(ruleSetId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(ruleSetId);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -184,7 +280,14 @@ public class AsyncRuleSetsClient {
      * This operation is irreversible; once deleted, the rule set cannot be recovered.
      */
     public CompletableFuture<Void> delete(String ruleSetId, RequestOptions requestOptions) {
-        return this.rawClient.delete(ruleSetId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(ruleSetId, requestOptions);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -193,7 +296,14 @@ public class AsyncRuleSetsClient {
      * This operation is irreversible; once deleted, the rule set cannot be recovered.
      */
     public CompletableFuture<Void> delete(String ruleSetId, DeleteRuleSetsRequest request) {
-        return this.rawClient.delete(ruleSetId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(ruleSetId, request);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -203,7 +313,15 @@ public class AsyncRuleSetsClient {
      */
     public CompletableFuture<Void> delete(
             String ruleSetId, DeleteRuleSetsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.delete(ruleSetId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(ruleSetId, request, requestOptions);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public AsyncRulesClient rules() {

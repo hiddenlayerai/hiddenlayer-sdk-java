@@ -132,7 +132,6 @@ public final class CredentialsCreateRequestV2 {
 
         private Optional<OffsetDateTime> expiresAt = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -199,6 +198,16 @@ public final class CredentialsCreateRequestV2 {
         @java.lang.Override
         public CredentialsCreateRequestV2 build() {
             return new CredentialsCreateRequestV2(name, expiresAt, permissions, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("expires_at")
+                    || key.equalsIgnoreCase("permissions")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.access.users;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.access.users.requests.ListUsersRequest;
@@ -31,27 +32,57 @@ public class AsyncUsersClient {
      * Returns the list of users belonging to the authenticated user's tenant. Use the <code>cursor</code> parameter to navigate through pages of results. Replaces the deprecated <code>GET /api/v2/users</code> endpoint.
      */
     public CompletableFuture<SyncPagingIterable<User>> list() {
-        return this.rawClient.list().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<User>>> rawFuture = this.rawClient.list();
+        CompletableFuture<SyncPagingIterable<User>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Returns the list of users belonging to the authenticated user's tenant. Use the <code>cursor</code> parameter to navigate through pages of results. Replaces the deprecated <code>GET /api/v2/users</code> endpoint.
      */
     public CompletableFuture<SyncPagingIterable<User>> list(RequestOptions requestOptions) {
-        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<User>>> rawFuture =
+                this.rawClient.list(requestOptions);
+        CompletableFuture<SyncPagingIterable<User>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Returns the list of users belonging to the authenticated user's tenant. Use the <code>cursor</code> parameter to navigate through pages of results. Replaces the deprecated <code>GET /api/v2/users</code> endpoint.
      */
     public CompletableFuture<SyncPagingIterable<User>> list(ListUsersRequest request) {
-        return this.rawClient.list(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<User>>> rawFuture = this.rawClient.list(request);
+        CompletableFuture<SyncPagingIterable<User>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Returns the list of users belonging to the authenticated user's tenant. Use the <code>cursor</code> parameter to navigate through pages of results. Replaces the deprecated <code>GET /api/v2/users</code> endpoint.
      */
     public CompletableFuture<SyncPagingIterable<User>> list(ListUsersRequest request, RequestOptions requestOptions) {
-        return this.rawClient.list(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<User>>> rawFuture =
+                this.rawClient.list(request, requestOptions);
+        CompletableFuture<SyncPagingIterable<User>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

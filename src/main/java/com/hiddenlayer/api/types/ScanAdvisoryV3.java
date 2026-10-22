@@ -155,7 +155,6 @@ public final class ScanAdvisoryV3 {
 
         private String description;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -216,6 +215,17 @@ public final class ScanAdvisoryV3 {
         @java.lang.Override
         public ScanAdvisoryV3 build() {
             return new ScanAdvisoryV3(advisoryId, ruleId, category, description, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("advisory_id")
+                    || key.equalsIgnoreCase("rule_id")
+                    || key.equalsIgnoreCase("category")
+                    || key.equalsIgnoreCase("description")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

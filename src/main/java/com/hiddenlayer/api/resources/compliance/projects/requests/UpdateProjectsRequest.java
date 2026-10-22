@@ -377,7 +377,6 @@ public final class UpdateProjectsRequest implements IProjectAlias, IProjectDetai
 
         private Optional<String> ifUnmodifiedSince = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -686,6 +685,30 @@ public final class UpdateProjectsRequest implements IProjectAlias, IProjectDetai
                     riskLevel,
                     ifUnmodifiedSince,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("project_alias")
+                    || key.equalsIgnoreCase("tags")
+                    || key.equalsIgnoreCase("system_annotations")
+                    || key.equalsIgnoreCase("assets")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("created_by")
+                    || key.equalsIgnoreCase("modified_at")
+                    || key.equalsIgnoreCase("modified_by")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("rule_set_id")
+                    || key.equalsIgnoreCase("policy_id")
+                    || key.equalsIgnoreCase("policy_pack_id")
+                    || key.equalsIgnoreCase("policy_pack")
+                    || key.equalsIgnoreCase("monitor_mode")
+                    || key.equalsIgnoreCase("is_editable")
+                    || key.equalsIgnoreCase("escalation_details")
+                    || key.equalsIgnoreCase("risk_level")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

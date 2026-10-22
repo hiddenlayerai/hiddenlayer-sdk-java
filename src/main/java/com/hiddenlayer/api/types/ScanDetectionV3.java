@@ -419,7 +419,6 @@ public final class ScanDetectionV3 {
 
         private Optional<List<ScanDetectionV3RuleDetailsItem>> ruleDetails = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -692,6 +691,29 @@ public final class ScanDetectionV3 {
                     technicalBlogHrefs,
                     technicalBlogHref,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("detection_id")
+                    || key.equalsIgnoreCase("rule_id")
+                    || key.equalsIgnoreCase("risk")
+                    || key.equalsIgnoreCase("category")
+                    || key.equalsIgnoreCase("description")
+                    || key.equalsIgnoreCase("likelihood")
+                    || key.equalsIgnoreCase("impact")
+                    || key.equalsIgnoreCase("severity")
+                    || key.equalsIgnoreCase("rule_details")
+                    || key.equalsIgnoreCase("mitre_atlas")
+                    || key.equalsIgnoreCase("owasp")
+                    || key.equalsIgnoreCase("cve")
+                    || key.equalsIgnoreCase("cwe")
+                    || key.equalsIgnoreCase("cwe_href")
+                    || key.equalsIgnoreCase("technical_blog_hrefs")
+                    || key.equalsIgnoreCase("technical_blog_href")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

@@ -123,7 +123,6 @@ public final class AiAssetInventoryV1AssetGraphRelationship {
 
         private Optional<Map<String, Object>> metadata = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -174,6 +173,16 @@ public final class AiAssetInventoryV1AssetGraphRelationship {
         public AiAssetInventoryV1AssetGraphRelationship build() {
             return new AiAssetInventoryV1AssetGraphRelationship(
                     relationshipType, asset, metadata, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("relationship_type")
+                    || key.equalsIgnoreCase("asset")
+                    || key.equalsIgnoreCase("metadata")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

@@ -369,7 +369,6 @@ public final class ScanModelInventoryComboV3 implements IScanModelInventoryDetai
 
         private Optional<String> modelVersion = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -620,6 +619,26 @@ public final class ScanModelInventoryComboV3 implements IScanModelInventoryDetai
                     modelId,
                     modelVersionId,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("model_name")
+                    || key.equalsIgnoreCase("model_version")
+                    || key.equalsIgnoreCase("model_source")
+                    || key.equalsIgnoreCase("requested_scan_location")
+                    || key.equalsIgnoreCase("file_location")
+                    || key.equalsIgnoreCase("provider_details")
+                    || key.equalsIgnoreCase("asset_region")
+                    || key.equalsIgnoreCase("asset_id")
+                    || key.equalsIgnoreCase("requesting_entity")
+                    || key.equalsIgnoreCase("request_source")
+                    || key.equalsIgnoreCase("origin")
+                    || key.equalsIgnoreCase("model_id")
+                    || key.equalsIgnoreCase("model_version_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

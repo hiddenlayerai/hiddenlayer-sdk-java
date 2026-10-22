@@ -106,7 +106,6 @@ public final class StartWorkflowResponse {
 
         private String runId;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -143,6 +142,14 @@ public final class StartWorkflowResponse {
         @java.lang.Override
         public StartWorkflowResponse build() {
             return new StartWorkflowResponse(workflowId, runId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("workflow_id") || key.equalsIgnoreCase("run_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

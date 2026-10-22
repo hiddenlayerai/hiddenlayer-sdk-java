@@ -132,7 +132,6 @@ public final class EnrichedEvaluation {
 
         private EnrichedEvaluationThreatLevel threatLevel;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -181,6 +180,16 @@ public final class EnrichedEvaluation {
         @java.lang.Override
         public EnrichedEvaluation build() {
             return new EnrichedEvaluation(action, hasDetections, threatLevel, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("action")
+                    || key.equalsIgnoreCase("has_detections")
+                    || key.equalsIgnoreCase("threat_level")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

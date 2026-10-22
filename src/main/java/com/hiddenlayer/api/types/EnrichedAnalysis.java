@@ -250,7 +250,6 @@ public final class EnrichedAnalysis {
 
         private Map<String, Object> configuration = new LinkedHashMap<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -386,6 +385,21 @@ public final class EnrichedAnalysis {
                     processingTimeMs,
                     id,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("phase")
+                    || key.equalsIgnoreCase("version")
+                    || key.equalsIgnoreCase("detected")
+                    || key.equalsIgnoreCase("configuration")
+                    || key.equalsIgnoreCase("findings")
+                    || key.equalsIgnoreCase("processing_time_ms")
+                    || key.equalsIgnoreCase("id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

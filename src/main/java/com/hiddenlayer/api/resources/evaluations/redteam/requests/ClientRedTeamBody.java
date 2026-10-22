@@ -532,7 +532,6 @@ public final class ClientRedTeamBody {
 
         private Optional<String> configId = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -979,6 +978,32 @@ public final class ClientRedTeamBody {
                     sessionsPerTechnique,
                     attackerGuidance,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("config_id")
+                    || key.equalsIgnoreCase("target_model")
+                    || key.equalsIgnoreCase("target_system_prompt")
+                    || key.equalsIgnoreCase("objective_ids")
+                    || key.equalsIgnoreCase("severity_mapping")
+                    || key.equalsIgnoreCase("execution_strategy_type")
+                    || key.equalsIgnoreCase("n_random_techniques")
+                    || key.equalsIgnoreCase("max_parallel_techniques")
+                    || key.equalsIgnoreCase("max_turns")
+                    || key.equalsIgnoreCase("attacker_max_generation_attempts")
+                    || key.equalsIgnoreCase("refusal_judge_model")
+                    || key.equalsIgnoreCase("objective_judge_model")
+                    || key.equalsIgnoreCase("evaluation_report_model")
+                    || key.equalsIgnoreCase("attacker_model")
+                    || key.equalsIgnoreCase("hl_project_id")
+                    || key.equalsIgnoreCase("prompt_set_id")
+                    || key.equalsIgnoreCase("sessions_per_technique")
+                    || key.equalsIgnoreCase("attacker_guidance")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

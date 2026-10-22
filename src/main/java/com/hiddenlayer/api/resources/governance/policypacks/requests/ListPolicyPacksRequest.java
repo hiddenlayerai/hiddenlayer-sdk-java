@@ -166,7 +166,6 @@ public final class ListPolicyPacksRequest {
 
         private Optional<String> sort = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -283,6 +282,20 @@ public final class ListPolicyPacksRequest {
         public ListPolicyPacksRequest build() {
             return new ListPolicyPacksRequest(
                     q, type, isEnabled, detectionRuleId, limit, cursor, sort, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("q")
+                    || key.equalsIgnoreCase("type")
+                    || key.equalsIgnoreCase("is_enabled")
+                    || key.equalsIgnoreCase("detection_rule_id")
+                    || key.equalsIgnoreCase("limit")
+                    || key.equalsIgnoreCase("cursor")
+                    || key.equalsIgnoreCase("sort")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

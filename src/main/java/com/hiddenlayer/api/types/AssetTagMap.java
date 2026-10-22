@@ -84,7 +84,6 @@ public final class AssetTagMap {
 
         private Map<String, String> discovered = new LinkedHashMap<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -145,6 +144,14 @@ public final class AssetTagMap {
 
         public AssetTagMap build() {
             return new AssetTagMap(custom, discovered, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("custom") || key.equalsIgnoreCase("discovered")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

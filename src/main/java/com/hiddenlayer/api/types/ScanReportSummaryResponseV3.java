@@ -366,7 +366,6 @@ public final class ScanReportSummaryResponseV3
 
         private Optional<Boolean> hasGenealogy = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -590,6 +589,26 @@ public final class ScanReportSummaryResponseV3
                     scanError,
                     referencedModels,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("has_genealogy")
+                    || key.equalsIgnoreCase("version")
+                    || key.equalsIgnoreCase("$schema_version")
+                    || key.equalsIgnoreCase("scan_id")
+                    || key.equalsIgnoreCase("start_time")
+                    || key.equalsIgnoreCase("end_time")
+                    || key.equalsIgnoreCase("status")
+                    || key.equalsIgnoreCase("inventory")
+                    || key.equalsIgnoreCase("intelligence")
+                    || key.equalsIgnoreCase("summary")
+                    || key.equalsIgnoreCase("compliance")
+                    || key.equalsIgnoreCase("scan_error")
+                    || key.equalsIgnoreCase("referenced_models")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

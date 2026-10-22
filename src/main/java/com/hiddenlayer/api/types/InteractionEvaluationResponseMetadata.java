@@ -233,7 +233,6 @@ public final class InteractionEvaluationResponseMetadata {
 
         private float processingTimeMs;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -335,6 +334,20 @@ public final class InteractionEvaluationResponseMetadata {
                     project,
                     processingTimeMs,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("evaluation_id")
+                    || key.equalsIgnoreCase("evaluated_at")
+                    || key.equalsIgnoreCase("provider")
+                    || key.equalsIgnoreCase("model")
+                    || key.equalsIgnoreCase("requester_id")
+                    || key.equalsIgnoreCase("project")
+                    || key.equalsIgnoreCase("processing_time_ms")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

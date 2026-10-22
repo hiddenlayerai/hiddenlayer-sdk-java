@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.assetinventory.relationships;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.assetinventory.relationships.requests.GetRelationshipsRequest;
 import com.hiddenlayer.api.types.AiAssetInventoryV1AssetRelationship;
@@ -27,21 +28,57 @@ public class AsyncRelationshipsClient {
     }
 
     public CompletableFuture<AiAssetInventoryV1AssetRelationship> get(String relationshipId) {
-        return this.rawClient.get(relationshipId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship>> rawFuture =
+                this.rawClient.get(relationshipId);
+        CompletableFuture<AiAssetInventoryV1AssetRelationship> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AiAssetInventoryV1AssetRelationship> get(
             String relationshipId, RequestOptions requestOptions) {
-        return this.rawClient.get(relationshipId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship>> rawFuture =
+                this.rawClient.get(relationshipId, requestOptions);
+        CompletableFuture<AiAssetInventoryV1AssetRelationship> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AiAssetInventoryV1AssetRelationship> get(
             String relationshipId, GetRelationshipsRequest request) {
-        return this.rawClient.get(relationshipId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship>> rawFuture =
+                this.rawClient.get(relationshipId, request);
+        CompletableFuture<AiAssetInventoryV1AssetRelationship> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AiAssetInventoryV1AssetRelationship> get(
             String relationshipId, GetRelationshipsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.get(relationshipId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship>> rawFuture =
+                this.rawClient.get(relationshipId, request, requestOptions);
+        CompletableFuture<AiAssetInventoryV1AssetRelationship> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

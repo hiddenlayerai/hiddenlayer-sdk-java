@@ -137,7 +137,6 @@ public final class SensorSorQueryResponse implements IPageInfo {
 
         private List<SensorSorItemResponse> results = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -199,6 +198,17 @@ public final class SensorSorQueryResponse implements IPageInfo {
         @java.lang.Override
         public SensorSorQueryResponse build() {
             return new SensorSorQueryResponse(totalCount, pageSize, pageNumber, results, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("total_count")
+                    || key.equalsIgnoreCase("page_size")
+                    || key.equalsIgnoreCase("page_number")
+                    || key.equalsIgnoreCase("results")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

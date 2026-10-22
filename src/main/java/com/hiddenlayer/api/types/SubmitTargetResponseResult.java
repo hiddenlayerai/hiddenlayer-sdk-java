@@ -129,7 +129,6 @@ public final class SubmitTargetResponseResult {
 
         private Optional<String> error = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -187,6 +186,14 @@ public final class SubmitTargetResponseResult {
         @java.lang.Override
         public SubmitTargetResponseResult build() {
             return new SubmitTargetResponseResult(isOk, message, error, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("is_ok") || key.equalsIgnoreCase("message") || key.equalsIgnoreCase("error")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

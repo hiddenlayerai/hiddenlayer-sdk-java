@@ -109,7 +109,6 @@ public final class InternalLocationResponse {
 
         private boolean available;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -146,6 +145,14 @@ public final class InternalLocationResponse {
         @java.lang.Override
         public InternalLocationResponse build() {
             return new InternalLocationResponse(key, location, available, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("key") || key.equalsIgnoreCase("location") || key.equalsIgnoreCase("available")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

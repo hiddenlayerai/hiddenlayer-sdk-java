@@ -160,7 +160,6 @@ public final class ToolResultPart {
 
         private Optional<String> toolName = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -243,6 +242,17 @@ public final class ToolResultPart {
         @java.lang.Override
         public ToolResultPart build() {
             return new ToolResultPart(id, toolName, result, success, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("tool_name")
+                    || key.equalsIgnoreCase("result")
+                    || key.equalsIgnoreCase("success")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

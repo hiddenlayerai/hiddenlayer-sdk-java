@@ -4,21 +4,20 @@
 package com.hiddenlayer.api.errors;
 
 import com.hiddenlayer.api.core.HiddenLayerApiException;
-import com.hiddenlayer.api.types.PreconditionFailedErrorBody;
 import okhttp3.Response;
 
 public final class PreconditionFailedError extends HiddenLayerApiException {
     /**
      * The body of the response that triggered the exception.
      */
-    private final PreconditionFailedErrorBody body;
+    private final Object body;
 
-    public PreconditionFailedError(PreconditionFailedErrorBody body) {
+    public PreconditionFailedError(Object body) {
         super("PreconditionFailedError", 412, body);
         this.body = body;
     }
 
-    public PreconditionFailedError(PreconditionFailedErrorBody body, Response rawResponse) {
+    public PreconditionFailedError(Object body, Response rawResponse) {
         super("PreconditionFailedError", 412, body, rawResponse);
         this.body = body;
     }
@@ -27,7 +26,7 @@ public final class PreconditionFailedError extends HiddenLayerApiException {
      * @return the body
      */
     @java.lang.Override
-    public PreconditionFailedErrorBody body() {
+    public Object body() {
         return this.body;
     }
 }

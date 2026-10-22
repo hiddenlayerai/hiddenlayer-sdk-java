@@ -275,7 +275,6 @@ public final class NextActionResponse {
 
         private Optional<Boolean> isProcessing = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -478,6 +477,22 @@ public final class NextActionResponse {
                     history,
                     targetSystemPrompt,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("is_ready")
+                    || key.equalsIgnoreCase("is_processing")
+                    || key.equalsIgnoreCase("action_type")
+                    || key.equalsIgnoreCase("message")
+                    || key.equalsIgnoreCase("session_id")
+                    || key.equalsIgnoreCase("turn")
+                    || key.equalsIgnoreCase("attack_prompt")
+                    || key.equalsIgnoreCase("history")
+                    || key.equalsIgnoreCase("target_system_prompt")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

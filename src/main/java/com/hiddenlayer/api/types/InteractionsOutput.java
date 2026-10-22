@@ -72,7 +72,6 @@ public final class InteractionsOutput {
     public static final class Builder {
         private Optional<List<InteractionsTextContent>> messages = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -98,6 +97,14 @@ public final class InteractionsOutput {
 
         public InteractionsOutput build() {
             return new InteractionsOutput(messages, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("messages")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

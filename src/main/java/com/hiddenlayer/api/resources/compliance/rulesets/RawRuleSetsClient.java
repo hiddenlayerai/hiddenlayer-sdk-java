@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.compliance.rulesets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
@@ -25,7 +26,6 @@ import com.hiddenlayer.api.resources.compliance.rulesets.requests.ListRuleSetsRe
 import com.hiddenlayer.api.resources.compliance.rulesets.requests.UpdateRuleSetsRequest;
 import com.hiddenlayer.api.resources.compliance.rulesets.types.ListRuleSetsResponse;
 import com.hiddenlayer.api.types.GetRuleSetItem;
-import com.hiddenlayer.api.types.PreconditionFailedErrorBody;
 import com.hiddenlayer.api.types.RuleSetDetails;
 import java.io.IOException;
 import java.util.List;
@@ -173,7 +173,8 @@ public class RawRuleSetsClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request),
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(BodyProperties.merge(
+                            request, requestOptions != null ? requestOptions.getBodyProperties() : null)),
                     MediaType.parse("application/json; charset=utf-8"));
         } catch (JsonProcessingException e) {
             throw new HiddenLayerException("Failed to serialize request", e);
@@ -336,7 +337,8 @@ public class RawRuleSetsClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request.getBody()),
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(BodyProperties.merge(
+                            request.getBody(), requestOptions != null ? requestOptions.getBodyProperties() : null)),
                     MediaType.parse("application/json; charset=utf-8"));
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -381,9 +383,7 @@ public class RawRuleSetsClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 412:
                         throw new PreconditionFailedError(
-                                ObjectMappers.JSON_MAPPER.readValue(
-                                        responseBodyString, PreconditionFailedErrorBody.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 422:
                         throw new UnprocessableEntityError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
@@ -432,7 +432,10 @@ public class RawRuleSetsClient {
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
-                .method("DELETE", null)
+                .method(
+                        "DELETE",
+                        BodyProperties.toRequestBody(
+                                requestOptions != null ? requestOptions.getBodyProperties() : null, null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();

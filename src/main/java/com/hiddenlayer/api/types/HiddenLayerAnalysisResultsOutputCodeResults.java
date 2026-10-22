@@ -85,7 +85,6 @@ public final class HiddenLayerAnalysisResultsOutputCodeResults {
 
         private Optional<Double> elapsedMs = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -126,6 +125,14 @@ public final class HiddenLayerAnalysisResultsOutputCodeResults {
 
         public HiddenLayerAnalysisResultsOutputCodeResults build() {
             return new HiddenLayerAnalysisResultsOutputCodeResults(verdict, elapsedMs, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("verdict") || key.equalsIgnoreCase("elapsed_ms")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

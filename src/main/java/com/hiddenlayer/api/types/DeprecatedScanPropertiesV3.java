@@ -183,7 +183,6 @@ public final class DeprecatedScanPropertiesV3 implements IDeprecatedScanProperti
 
         private Optional<List<String>> detectionCategories = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -273,6 +272,18 @@ public final class DeprecatedScanPropertiesV3 implements IDeprecatedScanProperti
                     detectionCategories,
                     severity,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("file_count")
+                    || key.equalsIgnoreCase("files_with_detections_count")
+                    || key.equalsIgnoreCase("detection_count")
+                    || key.equalsIgnoreCase("detection_categories")
+                    || key.equalsIgnoreCase("severity")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

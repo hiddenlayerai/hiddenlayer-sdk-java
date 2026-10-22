@@ -80,7 +80,6 @@ public final class IsDefaultProject implements IIsDefaultProject {
     public static final class Builder implements IsDefaultStage, _FinalStage {
         private boolean isDefault;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -101,6 +100,14 @@ public final class IsDefaultProject implements IIsDefaultProject {
         @java.lang.Override
         public IsDefaultProject build() {
             return new IsDefaultProject(isDefault, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("is_default")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

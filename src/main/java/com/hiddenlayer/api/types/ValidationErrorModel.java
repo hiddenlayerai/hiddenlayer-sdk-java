@@ -114,7 +114,6 @@ public final class ValidationErrorModel {
 
         private List<ValidationErrorModelLocItem> loc = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -168,6 +167,14 @@ public final class ValidationErrorModel {
         @java.lang.Override
         public ValidationErrorModel build() {
             return new ValidationErrorModel(loc, msg, type, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("loc") || key.equalsIgnoreCase("msg") || key.equalsIgnoreCase("type")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

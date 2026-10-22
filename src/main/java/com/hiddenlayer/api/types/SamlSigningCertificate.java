@@ -157,7 +157,6 @@ public final class SamlSigningCertificate {
 
         private Optional<OffsetDateTime> expiresAt = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -245,6 +244,17 @@ public final class SamlSigningCertificate {
         @java.lang.Override
         public SamlSigningCertificate build() {
             return new SamlSigningCertificate(content, expiresAt, algorithm, issuer, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("content")
+                    || key.equalsIgnoreCase("expires_at")
+                    || key.equalsIgnoreCase("algorithm")
+                    || key.equalsIgnoreCase("issuer")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

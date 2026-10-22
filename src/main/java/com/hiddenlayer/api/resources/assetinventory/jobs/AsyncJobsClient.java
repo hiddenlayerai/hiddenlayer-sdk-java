@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.assetinventory.jobs;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.assetinventory.jobs.requests.BulkCustomTagJobRequestV2;
 import com.hiddenlayer.api.resources.assetinventory.jobs.types.CustomTagsJobsResponse;
@@ -34,7 +35,15 @@ public class AsyncJobsClient {
      * A job matches at most 10,000 assets; a filter that would match more is rejected with <code>422 Unprocessable Entity</code>. Narrow the filter and retry.</p>
      */
     public CompletableFuture<CustomTagsJobsResponse> customTags(BulkCustomTagJobRequestV2 request) {
-        return this.rawClient.customTags(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<CustomTagsJobsResponse>> rawFuture =
+                this.rawClient.customTags(request);
+        CompletableFuture<CustomTagsJobsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -46,6 +55,14 @@ public class AsyncJobsClient {
      */
     public CompletableFuture<CustomTagsJobsResponse> customTags(
             BulkCustomTagJobRequestV2 request, RequestOptions requestOptions) {
-        return this.rawClient.customTags(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<CustomTagsJobsResponse>> rawFuture =
+                this.rawClient.customTags(request, requestOptions);
+        CompletableFuture<CustomTagsJobsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

@@ -152,7 +152,6 @@ public final class EnrichedResponse {
 
         private List<EnrichedAnalysis> analysis = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -229,6 +228,18 @@ public final class EnrichedResponse {
         public EnrichedResponse build() {
             return new EnrichedResponse(
                     metadata, analysis, evaluation, analyzedData, modifiedData, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("metadata")
+                    || key.equalsIgnoreCase("analysis")
+                    || key.equalsIgnoreCase("evaluation")
+                    || key.equalsIgnoreCase("analyzed_data")
+                    || key.equalsIgnoreCase("modified_data")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

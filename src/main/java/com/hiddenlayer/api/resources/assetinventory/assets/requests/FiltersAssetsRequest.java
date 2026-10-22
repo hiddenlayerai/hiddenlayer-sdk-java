@@ -101,7 +101,6 @@ public final class FiltersAssetsRequest {
 
         private Optional<FiltersAssetsRequestProjectId> projectId = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -155,6 +154,14 @@ public final class FiltersAssetsRequest {
 
         public FiltersAssetsRequest build() {
             return new FiltersAssetsRequest(annotatingService, projectId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("annotating_service") || key.equalsIgnoreCase("project_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

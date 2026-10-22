@@ -152,7 +152,6 @@ public final class ScanTimeseriesResponseV3Aggregations {
 
         private Optional<AggregationContainer> threatLevelNotAvailable = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -258,6 +257,20 @@ public final class ScanTimeseriesResponseV3Aggregations {
                     threatLevelCritical,
                     threatLevelNotAvailable,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("threat_level_safe")
+                    || key.equalsIgnoreCase("threat_level_none")
+                    || key.equalsIgnoreCase("threat_level_low")
+                    || key.equalsIgnoreCase("threat_level_medium")
+                    || key.equalsIgnoreCase("threat_level_high")
+                    || key.equalsIgnoreCase("threat_level_critical")
+                    || key.equalsIgnoreCase("threat_level_not_available")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -235,7 +235,6 @@ public final class HiddenLayerAnalysisResults {
 
         private Optional<HiddenLayerAnalysisResultsInputLanguageResults> inputLanguageResults = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -425,6 +424,24 @@ public final class HiddenLayerAnalysisResults {
                     outputUrlResults,
                     inputLanguageResults,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("input_block_list_results")
+                    || key.equalsIgnoreCase("prompt_injection_classifier_results")
+                    || key.equalsIgnoreCase("input_dos_results")
+                    || key.equalsIgnoreCase("input_pii_results")
+                    || key.equalsIgnoreCase("output_pii_results")
+                    || key.equalsIgnoreCase("input_code_results")
+                    || key.equalsIgnoreCase("output_code_results")
+                    || key.equalsIgnoreCase("guardrail_results")
+                    || key.equalsIgnoreCase("input_url_results")
+                    || key.equalsIgnoreCase("output_url_results")
+                    || key.equalsIgnoreCase("input_language_results")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

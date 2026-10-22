@@ -72,7 +72,6 @@ public final class EnrichedAnalysisFindings {
     public static final class Builder {
         private Map<String, List<FrameworkItem>> frameworks = new LinkedHashMap<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -108,6 +107,14 @@ public final class EnrichedAnalysisFindings {
 
         public EnrichedAnalysisFindings build() {
             return new EnrichedAnalysisFindings(frameworks, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("frameworks")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

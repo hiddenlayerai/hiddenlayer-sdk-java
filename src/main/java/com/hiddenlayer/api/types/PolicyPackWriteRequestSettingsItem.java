@@ -108,7 +108,6 @@ public final class PolicyPackWriteRequestSettingsItem implements ISettingsId, IS
 
         private Map<String, Object> settings = new LinkedHashMap<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -165,6 +164,14 @@ public final class PolicyPackWriteRequestSettingsItem implements ISettingsId, IS
         @java.lang.Override
         public PolicyPackWriteRequestSettingsItem build() {
             return new PolicyPackWriteRequestSettingsItem(settingsId, settings, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("settings_id") || key.equalsIgnoreCase("settings")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

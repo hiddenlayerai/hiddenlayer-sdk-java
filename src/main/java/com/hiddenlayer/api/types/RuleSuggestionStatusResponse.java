@@ -178,7 +178,6 @@ public final class RuleSuggestionStatusResponse {
 
         private Optional<String> error = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -269,6 +268,18 @@ public final class RuleSuggestionStatusResponse {
         @java.lang.Override
         public RuleSuggestionStatusResponse build() {
             return new RuleSuggestionStatusResponse(suggestionId, phase, name, error, message, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("suggestion_id")
+                    || key.equalsIgnoreCase("phase")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("error")
+                    || key.equalsIgnoreCase("message")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

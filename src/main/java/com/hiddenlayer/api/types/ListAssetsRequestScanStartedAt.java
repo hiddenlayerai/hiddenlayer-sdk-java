@@ -115,7 +115,6 @@ public final class ListAssetsRequestScanStartedAt {
 
         private Optional<OffsetDateTime> lte = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -186,6 +185,17 @@ public final class ListAssetsRequestScanStartedAt {
 
         public ListAssetsRequestScanStartedAt build() {
             return new ListAssetsRequestScanStartedAt(gt, gte, lt, lte, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("gt")
+                    || key.equalsIgnoreCase("gte")
+                    || key.equalsIgnoreCase("lt")
+                    || key.equalsIgnoreCase("lte")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

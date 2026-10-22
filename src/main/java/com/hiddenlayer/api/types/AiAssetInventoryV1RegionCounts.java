@@ -81,7 +81,6 @@ public final class AiAssetInventoryV1RegionCounts {
 
         private List<AiAssetInventoryV1GeographicRegionCount> geographicRegions = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -136,6 +135,14 @@ public final class AiAssetInventoryV1RegionCounts {
 
         public AiAssetInventoryV1RegionCounts build() {
             return new AiAssetInventoryV1RegionCounts(countries, geographicRegions, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("countries") || key.equalsIgnoreCase("geographic_regions")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

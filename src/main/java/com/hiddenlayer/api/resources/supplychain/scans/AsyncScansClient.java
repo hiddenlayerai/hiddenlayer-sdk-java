@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.supplychain.scans;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.supplychain.scans.requests.GetScansRequest;
 import com.hiddenlayer.api.resources.supplychain.scans.requests.GuidanceScansRequest;
@@ -30,20 +31,52 @@ public class AsyncScansClient {
     }
 
     public CompletableFuture<Optional<Map<String, Object>>> get(String scanId) {
-        return this.rawClient.get(scanId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Optional<Map<String, Object>>>> rawFuture =
+                this.rawClient.get(scanId);
+        CompletableFuture<Optional<Map<String, Object>>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<Optional<Map<String, Object>>> get(String scanId, RequestOptions requestOptions) {
-        return this.rawClient.get(scanId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Optional<Map<String, Object>>>> rawFuture =
+                this.rawClient.get(scanId, requestOptions);
+        CompletableFuture<Optional<Map<String, Object>>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<Optional<Map<String, Object>>> get(String scanId, GetScansRequest request) {
-        return this.rawClient.get(scanId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Optional<Map<String, Object>>>> rawFuture =
+                this.rawClient.get(scanId, request);
+        CompletableFuture<Optional<Map<String, Object>>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<Optional<Map<String, Object>>> get(
             String scanId, GetScansRequest request, RequestOptions requestOptions) {
-        return this.rawClient.get(scanId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Optional<Map<String, Object>>>> rawFuture =
+                this.rawClient.get(scanId, request, requestOptions);
+        CompletableFuture<Optional<Map<String, Object>>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -52,7 +85,14 @@ public class AsyncScansClient {
      * immediately available.</p>
      */
     public CompletableFuture<GuidanceScansResponse> guidance(String scanId) {
-        return this.rawClient.guidance(scanId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<GuidanceScansResponse>> rawFuture = this.rawClient.guidance(scanId);
+        CompletableFuture<GuidanceScansResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -61,7 +101,15 @@ public class AsyncScansClient {
      * immediately available.</p>
      */
     public CompletableFuture<GuidanceScansResponse> guidance(String scanId, RequestOptions requestOptions) {
-        return this.rawClient.guidance(scanId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<GuidanceScansResponse>> rawFuture =
+                this.rawClient.guidance(scanId, requestOptions);
+        CompletableFuture<GuidanceScansResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -70,7 +118,15 @@ public class AsyncScansClient {
      * immediately available.</p>
      */
     public CompletableFuture<GuidanceScansResponse> guidance(String scanId, GuidanceScansRequest request) {
-        return this.rawClient.guidance(scanId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<GuidanceScansResponse>> rawFuture =
+                this.rawClient.guidance(scanId, request);
+        CompletableFuture<GuidanceScansResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -80,6 +136,14 @@ public class AsyncScansClient {
      */
     public CompletableFuture<GuidanceScansResponse> guidance(
             String scanId, GuidanceScansRequest request, RequestOptions requestOptions) {
-        return this.rawClient.guidance(scanId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<GuidanceScansResponse>> rawFuture =
+                this.rawClient.guidance(scanId, request, requestOptions);
+        CompletableFuture<GuidanceScansResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

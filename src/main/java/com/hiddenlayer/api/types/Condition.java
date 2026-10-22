@@ -157,7 +157,6 @@ public final class Condition {
 
         private Optional<String> fieldValue = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -236,6 +235,17 @@ public final class Condition {
         @java.lang.Override
         public Condition build() {
             return new Condition(field, conditionOperator, fieldValue, fieldValues, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("field")
+                    || key.equalsIgnoreCase("condition_operator")
+                    || key.equalsIgnoreCase("field_value")
+                    || key.equalsIgnoreCase("field_values")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

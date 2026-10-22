@@ -88,7 +88,6 @@ public final class CanonicalInteractionMessageTimestamp {
     public static final class Builder implements ValueStage, _FinalStage {
         private OffsetDateTime value;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -113,6 +112,14 @@ public final class CanonicalInteractionMessageTimestamp {
         @java.lang.Override
         public CanonicalInteractionMessageTimestamp build() {
             return new CanonicalInteractionMessageTimestamp(value, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("value")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

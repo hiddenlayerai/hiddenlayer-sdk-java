@@ -131,7 +131,6 @@ public final class SensorSorQueryFilter {
 
         private Optional<SensorSorQueryFilterSource> source = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -215,6 +214,19 @@ public final class SensorSorQueryFilter {
         public SensorSorQueryFilter build() {
             return new SensorSorQueryFilter(
                     plaintextName, active, version, createdAtStart, createdAtStop, source, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("plaintext_name")
+                    || key.equalsIgnoreCase("active")
+                    || key.equalsIgnoreCase("version")
+                    || key.equalsIgnoreCase("created_at_start")
+                    || key.equalsIgnoreCase("created_at_stop")
+                    || key.equalsIgnoreCase("source")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

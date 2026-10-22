@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.models.versions.location;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.models.versions.location.requests.InternalLocationRequest;
 import com.hiddenlayer.api.resources.models.versions.location.types.InternalLocationResponse;
@@ -27,19 +28,51 @@ public class AsyncLocationClient {
     }
 
     public CompletableFuture<InternalLocationResponse> internal(String versionId) {
-        return this.rawClient.internal(versionId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<InternalLocationResponse>> rawFuture =
+                this.rawClient.internal(versionId);
+        CompletableFuture<InternalLocationResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<InternalLocationResponse> internal(String versionId, RequestOptions requestOptions) {
-        return this.rawClient.internal(versionId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<InternalLocationResponse>> rawFuture =
+                this.rawClient.internal(versionId, requestOptions);
+        CompletableFuture<InternalLocationResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<InternalLocationResponse> internal(String versionId, InternalLocationRequest request) {
-        return this.rawClient.internal(versionId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<InternalLocationResponse>> rawFuture =
+                this.rawClient.internal(versionId, request);
+        CompletableFuture<InternalLocationResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<InternalLocationResponse> internal(
             String versionId, InternalLocationRequest request, RequestOptions requestOptions) {
-        return this.rawClient.internal(versionId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<InternalLocationResponse>> rawFuture =
+                this.rawClient.internal(versionId, request, requestOptions);
+        CompletableFuture<InternalLocationResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

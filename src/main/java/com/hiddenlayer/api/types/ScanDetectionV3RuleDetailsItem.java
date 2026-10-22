@@ -101,7 +101,6 @@ public final class ScanDetectionV3RuleDetailsItem {
 
         private Optional<String> description = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -157,6 +156,16 @@ public final class ScanDetectionV3RuleDetailsItem {
 
         public ScanDetectionV3RuleDetailsItem build() {
             return new ScanDetectionV3RuleDetailsItem(status, statusAt, description, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("status")
+                    || key.equalsIgnoreCase("status_at")
+                    || key.equalsIgnoreCase("description")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

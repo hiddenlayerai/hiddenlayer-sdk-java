@@ -164,7 +164,6 @@ public final class ListRuleSetsRequest {
 
         private Optional<String> sort = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -280,6 +279,20 @@ public final class ListRuleSetsRequest {
 
         public ListRuleSetsRequest build() {
             return new ListRuleSetsRequest(name, q, feature, limit, pageSize, cursor, sort, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("q")
+                    || key.equalsIgnoreCase("feature")
+                    || key.equalsIgnoreCase("limit")
+                    || key.equalsIgnoreCase("page_size")
+                    || key.equalsIgnoreCase("cursor")
+                    || key.equalsIgnoreCase("sort")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

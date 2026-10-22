@@ -69,7 +69,6 @@ public final class ListLicensesResponse {
     public static final class Builder {
         private List<GovernanceLicense> items = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -102,6 +101,14 @@ public final class ListLicensesResponse {
 
         public ListLicensesResponse build() {
             return new ListLicensesResponse(items, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("items")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -114,7 +114,6 @@ public final class InteractionEvaluationResponse {
 
         private InteractionEvaluationOutcome outcome;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -152,6 +151,16 @@ public final class InteractionEvaluationResponse {
         @java.lang.Override
         public InteractionEvaluationResponse build() {
             return new InteractionEvaluationResponse(metadata, evaluatedInteraction, outcome, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("metadata")
+                    || key.equalsIgnoreCase("evaluated_interaction")
+                    || key.equalsIgnoreCase("outcome")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

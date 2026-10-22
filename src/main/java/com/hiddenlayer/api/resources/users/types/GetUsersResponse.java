@@ -81,7 +81,6 @@ public final class GetUsersResponse {
     public static final class Builder implements UserStage, _FinalStage {
         private User user;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -102,6 +101,14 @@ public final class GetUsersResponse {
         @java.lang.Override
         public GetUsersResponse build() {
             return new GetUsersResponse(user, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("user")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

@@ -108,7 +108,6 @@ public final class SsoIntegrationRequestSigning {
 
         private Optional<SamlSigningCertificate> certificate = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -154,6 +153,14 @@ public final class SsoIntegrationRequestSigning {
         @java.lang.Override
         public SsoIntegrationRequestSigning build() {
             return new SsoIntegrationRequestSigning(isEnabled, certificate, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("is_enabled") || key.equalsIgnoreCase("certificate")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

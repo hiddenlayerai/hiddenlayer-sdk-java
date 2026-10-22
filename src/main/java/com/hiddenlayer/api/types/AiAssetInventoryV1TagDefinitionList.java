@@ -181,7 +181,6 @@ public final class AiAssetInventoryV1TagDefinitionList implements ICursors {
 
         private Optional<String> last = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -276,6 +275,18 @@ public final class AiAssetInventoryV1TagDefinitionList implements ICursors {
         @java.lang.Override
         public AiAssetInventoryV1TagDefinitionList build() {
             return new AiAssetInventoryV1TagDefinitionList(first, prev, next, last, items, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("first")
+                    || key.equalsIgnoreCase("prev")
+                    || key.equalsIgnoreCase("next")
+                    || key.equalsIgnoreCase("last")
+                    || key.equalsIgnoreCase("items")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

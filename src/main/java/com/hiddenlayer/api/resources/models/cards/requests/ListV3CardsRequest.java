@@ -247,7 +247,6 @@ public final class ListV3CardsRequest {
 
         private Optional<String> sort = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -459,6 +458,25 @@ public final class ListV3CardsRequest {
                     offset,
                     sort,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("aidr_severity")
+                    || key.equalsIgnoreCase("aidr_threat_level")
+                    || key.equalsIgnoreCase("modscan_severity")
+                    || key.equalsIgnoreCase("provider")
+                    || key.equalsIgnoreCase("model_name")
+                    || key.equalsIgnoreCase("model_created")
+                    || key.equalsIgnoreCase("aidr_status")
+                    || key.equalsIgnoreCase("modscan_status")
+                    || key.equalsIgnoreCase("source")
+                    || key.equalsIgnoreCase("limit")
+                    || key.equalsIgnoreCase("offset")
+                    || key.equalsIgnoreCase("sort")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

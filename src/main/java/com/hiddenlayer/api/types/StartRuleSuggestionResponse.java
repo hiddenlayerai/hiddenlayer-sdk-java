@@ -106,7 +106,6 @@ public final class StartRuleSuggestionResponse {
 
         private String runId;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -143,6 +142,14 @@ public final class StartRuleSuggestionResponse {
         @java.lang.Override
         public StartRuleSuggestionResponse build() {
             return new StartRuleSuggestionResponse(suggestionId, runId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("suggestion_id") || key.equalsIgnoreCase("run_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

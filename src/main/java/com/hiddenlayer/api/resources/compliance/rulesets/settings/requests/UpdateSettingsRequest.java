@@ -115,7 +115,6 @@ public final class UpdateSettingsRequest {
 
         private Optional<String> ifMatch = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -168,6 +167,14 @@ public final class UpdateSettingsRequest {
         @java.lang.Override
         public UpdateSettingsRequest build() {
             return new UpdateSettingsRequest(ifMatch, body, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("body")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

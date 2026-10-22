@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.integrations.assets;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.integrations.assets.requests.ScansAssetsRequest;
 import com.hiddenlayer.api.types.AssetScanTriggerResponse;
@@ -30,21 +31,44 @@ public class AsyncAssetsClient {
      * Triggers an on-demand retrieval and scan workflow for a discovered AI asset. This endpoint validates the asset exists and has a matching integration, then sends a message to initiate the asset retrieval and scanning process.
      */
     public CompletableFuture<AssetScanTriggerResponse> scans(String assetId) {
-        return this.rawClient.scans(assetId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AssetScanTriggerResponse>> rawFuture = this.rawClient.scans(assetId);
+        CompletableFuture<AssetScanTriggerResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Triggers an on-demand retrieval and scan workflow for a discovered AI asset. This endpoint validates the asset exists and has a matching integration, then sends a message to initiate the asset retrieval and scanning process.
      */
     public CompletableFuture<AssetScanTriggerResponse> scans(String assetId, RequestOptions requestOptions) {
-        return this.rawClient.scans(assetId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AssetScanTriggerResponse>> rawFuture =
+                this.rawClient.scans(assetId, requestOptions);
+        CompletableFuture<AssetScanTriggerResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Triggers an on-demand retrieval and scan workflow for a discovered AI asset. This endpoint validates the asset exists and has a matching integration, then sends a message to initiate the asset retrieval and scanning process.
      */
     public CompletableFuture<AssetScanTriggerResponse> scans(String assetId, ScansAssetsRequest request) {
-        return this.rawClient.scans(assetId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AssetScanTriggerResponse>> rawFuture =
+                this.rawClient.scans(assetId, request);
+        CompletableFuture<AssetScanTriggerResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -52,6 +76,14 @@ public class AsyncAssetsClient {
      */
     public CompletableFuture<AssetScanTriggerResponse> scans(
             String assetId, ScansAssetsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.scans(assetId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AssetScanTriggerResponse>> rawFuture =
+                this.rawClient.scans(assetId, request, requestOptions);
+        CompletableFuture<AssetScanTriggerResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

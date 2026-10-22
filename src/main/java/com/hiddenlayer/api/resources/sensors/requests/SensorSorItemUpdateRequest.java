@@ -91,7 +91,6 @@ public final class SensorSorItemUpdateRequest {
 
         private Optional<Map<String, Object>> tags = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -138,6 +137,16 @@ public final class SensorSorItemUpdateRequest {
 
         public SensorSorItemUpdateRequest build() {
             return new SensorSorItemUpdateRequest(plaintextName, active, tags, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("plaintext_name")
+                    || key.equalsIgnoreCase("active")
+                    || key.equalsIgnoreCase("tags")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

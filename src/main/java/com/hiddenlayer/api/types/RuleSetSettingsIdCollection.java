@@ -70,7 +70,6 @@ public final class RuleSetSettingsIdCollection implements IRuleSetSettingsIdColl
     public static final class Builder {
         private Optional<List<RuleSetSettingsIdCollectionSettingsItem>> settings = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -93,6 +92,14 @@ public final class RuleSetSettingsIdCollection implements IRuleSetSettingsIdColl
 
         public RuleSetSettingsIdCollection build() {
             return new RuleSetSettingsIdCollection(settings, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("settings")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

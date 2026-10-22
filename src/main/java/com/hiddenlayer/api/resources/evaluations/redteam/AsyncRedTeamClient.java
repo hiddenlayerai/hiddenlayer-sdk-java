@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.evaluations.redteam;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.Suppliers;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
@@ -52,7 +53,16 @@ public class AsyncRedTeamClient {
      * Returns metadata only - use GET /evaluations/v1/red-team/{workflow_id} for full payload.</p>
      */
     public CompletableFuture<SyncPagingIterable<RedTeamResultItem>> list() {
-        return this.rawClient.list().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamResultItem>>> rawFuture =
+                this.rawClient.list();
+        CompletableFuture<SyncPagingIterable<RedTeamResultItem>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -62,7 +72,16 @@ public class AsyncRedTeamClient {
      * Returns metadata only - use GET /evaluations/v1/red-team/{workflow_id} for full payload.</p>
      */
     public CompletableFuture<SyncPagingIterable<RedTeamResultItem>> list(RequestOptions requestOptions) {
-        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamResultItem>>> rawFuture =
+                this.rawClient.list(requestOptions);
+        CompletableFuture<SyncPagingIterable<RedTeamResultItem>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -72,7 +91,16 @@ public class AsyncRedTeamClient {
      * Returns metadata only - use GET /evaluations/v1/red-team/{workflow_id} for full payload.</p>
      */
     public CompletableFuture<SyncPagingIterable<RedTeamResultItem>> list(ListRedTeamRequest request) {
-        return this.rawClient.list(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamResultItem>>> rawFuture =
+                this.rawClient.list(request);
+        CompletableFuture<SyncPagingIterable<RedTeamResultItem>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -83,7 +111,16 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<SyncPagingIterable<RedTeamResultItem>> list(
             ListRedTeamRequest request, RequestOptions requestOptions) {
-        return this.rawClient.list(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamResultItem>>> rawFuture =
+                this.rawClient.list(request, requestOptions);
+        CompletableFuture<SyncPagingIterable<RedTeamResultItem>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -92,7 +129,14 @@ public class AsyncRedTeamClient {
      * Auto-triggers planning phase. Client should then poll /next-action.</p>
      */
     public CompletableFuture<StartWorkflowResponse> create(ClientRedTeamBody request) {
-        return this.rawClient.create(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<StartWorkflowResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -101,7 +145,15 @@ public class AsyncRedTeamClient {
      * Auto-triggers planning phase. Client should then poll /next-action.</p>
      */
     public CompletableFuture<StartWorkflowResponse> create(ClientRedTeamBody request, RequestOptions requestOptions) {
-        return this.rawClient.create(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> rawFuture =
+                this.rawClient.create(request, requestOptions);
+        CompletableFuture<StartWorkflowResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -109,7 +161,15 @@ public class AsyncRedTeamClient {
      * <p>Get current status of a red team workflow.</p>
      */
     public CompletableFuture<WorkflowStatusResponse> retrieveStatus(String workflowId) {
-        return this.rawClient.retrieveStatus(workflowId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<WorkflowStatusResponse>> rawFuture =
+                this.rawClient.retrieveStatus(workflowId);
+        CompletableFuture<WorkflowStatusResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -117,7 +177,15 @@ public class AsyncRedTeamClient {
      * <p>Get current status of a red team workflow.</p>
      */
     public CompletableFuture<WorkflowStatusResponse> retrieveStatus(String workflowId, RequestOptions requestOptions) {
-        return this.rawClient.retrieveStatus(workflowId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<WorkflowStatusResponse>> rawFuture =
+                this.rawClient.retrieveStatus(workflowId, requestOptions);
+        CompletableFuture<WorkflowStatusResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -126,7 +194,15 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<WorkflowStatusResponse> retrieveStatus(
             String workflowId, RetrieveStatusRedTeamRequest request) {
-        return this.rawClient.retrieveStatus(workflowId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<WorkflowStatusResponse>> rawFuture =
+                this.rawClient.retrieveStatus(workflowId, request);
+        CompletableFuture<WorkflowStatusResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -135,9 +211,15 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<WorkflowStatusResponse> retrieveStatus(
             String workflowId, RetrieveStatusRedTeamRequest request, RequestOptions requestOptions) {
-        return this.rawClient
-                .retrieveStatus(workflowId, request, requestOptions)
-                .thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<WorkflowStatusResponse>> rawFuture =
+                this.rawClient.retrieveStatus(workflowId, request, requestOptions);
+        CompletableFuture<WorkflowStatusResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -152,7 +234,15 @@ public class AsyncRedTeamClient {
      * </ul>
      */
     public CompletableFuture<NextActionResponse> retrieveNextAction(String workflowId) {
-        return this.rawClient.retrieveNextAction(workflowId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<NextActionResponse>> rawFuture =
+                this.rawClient.retrieveNextAction(workflowId);
+        CompletableFuture<NextActionResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -167,7 +257,15 @@ public class AsyncRedTeamClient {
      * </ul>
      */
     public CompletableFuture<NextActionResponse> retrieveNextAction(String workflowId, RequestOptions requestOptions) {
-        return this.rawClient.retrieveNextAction(workflowId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<NextActionResponse>> rawFuture =
+                this.rawClient.retrieveNextAction(workflowId, requestOptions);
+        CompletableFuture<NextActionResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -183,7 +281,15 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<NextActionResponse> retrieveNextAction(
             String workflowId, RetrieveNextActionRedTeamRequest request) {
-        return this.rawClient.retrieveNextAction(workflowId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<NextActionResponse>> rawFuture =
+                this.rawClient.retrieveNextAction(workflowId, request);
+        CompletableFuture<NextActionResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -199,9 +305,15 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<NextActionResponse> retrieveNextAction(
             String workflowId, RetrieveNextActionRedTeamRequest request, RequestOptions requestOptions) {
-        return this.rawClient
-                .retrieveNextAction(workflowId, request, requestOptions)
-                .thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<NextActionResponse>> rawFuture =
+                this.rawClient.retrieveNextAction(workflowId, request, requestOptions);
+        CompletableFuture<NextActionResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -212,7 +324,15 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<SubmitTargetResponseResult> submitTargetResponse(
             String workflowId, SubmitTargetResponseBody request) {
-        return this.rawClient.submitTargetResponse(workflowId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SubmitTargetResponseResult>> rawFuture =
+                this.rawClient.submitTargetResponse(workflowId, request);
+        CompletableFuture<SubmitTargetResponseResult> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -223,9 +343,15 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<SubmitTargetResponseResult> submitTargetResponse(
             String workflowId, SubmitTargetResponseBody request, RequestOptions requestOptions) {
-        return this.rawClient
-                .submitTargetResponse(workflowId, request, requestOptions)
-                .thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SubmitTargetResponseResult>> rawFuture =
+                this.rawClient.submitTargetResponse(workflowId, request, requestOptions);
+        CompletableFuture<SubmitTargetResponseResult> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -233,7 +359,15 @@ public class AsyncRedTeamClient {
      * <p>Get the complete result of a red team workflow.</p>
      */
     public CompletableFuture<WorkflowResultResponse> retrieveEvaluationResults(String workflowId) {
-        return this.rawClient.retrieveEvaluationResults(workflowId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<WorkflowResultResponse>> rawFuture =
+                this.rawClient.retrieveEvaluationResults(workflowId);
+        CompletableFuture<WorkflowResultResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -242,9 +376,15 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<WorkflowResultResponse> retrieveEvaluationResults(
             String workflowId, RequestOptions requestOptions) {
-        return this.rawClient
-                .retrieveEvaluationResults(workflowId, requestOptions)
-                .thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<WorkflowResultResponse>> rawFuture =
+                this.rawClient.retrieveEvaluationResults(workflowId, requestOptions);
+        CompletableFuture<WorkflowResultResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -253,7 +393,15 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<WorkflowResultResponse> retrieveEvaluationResults(
             String workflowId, RetrieveEvaluationResultsRedTeamRequest request) {
-        return this.rawClient.retrieveEvaluationResults(workflowId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<WorkflowResultResponse>> rawFuture =
+                this.rawClient.retrieveEvaluationResults(workflowId, request);
+        CompletableFuture<WorkflowResultResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -262,9 +410,15 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<WorkflowResultResponse> retrieveEvaluationResults(
             String workflowId, RetrieveEvaluationResultsRedTeamRequest request, RequestOptions requestOptions) {
-        return this.rawClient
-                .retrieveEvaluationResults(workflowId, request, requestOptions)
-                .thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<WorkflowResultResponse>> rawFuture =
+                this.rawClient.retrieveEvaluationResults(workflowId, request, requestOptions);
+        CompletableFuture<WorkflowResultResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -272,7 +426,14 @@ public class AsyncRedTeamClient {
      * <p>Delete a red team workflow result from storage.</p>
      */
     public CompletableFuture<Void> delete(String workflowId) {
-        return this.rawClient.delete(workflowId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -280,7 +441,14 @@ public class AsyncRedTeamClient {
      * <p>Delete a red team workflow result from storage.</p>
      */
     public CompletableFuture<Void> delete(String workflowId, RequestOptions requestOptions) {
-        return this.rawClient.delete(workflowId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId, requestOptions);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -288,7 +456,14 @@ public class AsyncRedTeamClient {
      * <p>Delete a red team workflow result from storage.</p>
      */
     public CompletableFuture<Void> delete(String workflowId, DeleteRedTeamRequest request) {
-        return this.rawClient.delete(workflowId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId, request);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -297,7 +472,15 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<Void> delete(
             String workflowId, DeleteRedTeamRequest request, RequestOptions requestOptions) {
-        return this.rawClient.delete(workflowId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(workflowId, request, requestOptions);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -305,7 +488,14 @@ public class AsyncRedTeamClient {
      * <p>Terminate a running workflow job.</p>
      */
     public CompletableFuture<Void> terminate(String workflowId) {
-        return this.rawClient.terminate(workflowId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.terminate(workflowId);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -313,7 +503,15 @@ public class AsyncRedTeamClient {
      * <p>Terminate a running workflow job.</p>
      */
     public CompletableFuture<Void> terminate(String workflowId, RequestOptions requestOptions) {
-        return this.rawClient.terminate(workflowId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+                this.rawClient.terminate(workflowId, requestOptions);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -321,7 +519,14 @@ public class AsyncRedTeamClient {
      * <p>Terminate a running workflow job.</p>
      */
     public CompletableFuture<Void> terminate(String workflowId, TerminateRedTeamRequest request) {
-        return this.rawClient.terminate(workflowId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.terminate(workflowId, request);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -330,7 +535,15 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<Void> terminate(
             String workflowId, TerminateRedTeamRequest request, RequestOptions requestOptions) {
-        return this.rawClient.terminate(workflowId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+                this.rawClient.terminate(workflowId, request, requestOptions);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public AsyncRuleSuggestionsClient ruleSuggestions() {

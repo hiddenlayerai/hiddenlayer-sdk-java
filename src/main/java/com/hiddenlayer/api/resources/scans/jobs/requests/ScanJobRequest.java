@@ -156,7 +156,6 @@ public final class ScanJobRequest implements IScanJob {
 
         private Optional<String> scanId = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -231,6 +230,17 @@ public final class ScanJobRequest implements IScanJob {
         @java.lang.Override
         public ScanJobRequest build() {
             return new ScanJobRequest(inventory, scanId, status, access, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("inventory")
+                    || key.equalsIgnoreCase("scan_id")
+                    || key.equalsIgnoreCase("status")
+                    || key.equalsIgnoreCase("access")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

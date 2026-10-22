@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.sensors;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.sensors.requests.DeleteSensorsRequest;
@@ -36,7 +37,14 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SensorSorItemResponse> create(SensorSorItemCreateRequest request) {
-        return this.rawClient.create(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<SensorSorItemResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -44,28 +52,59 @@ public class AsyncSensorsClient {
      */
     public CompletableFuture<SensorSorItemResponse> create(
             SensorSorItemCreateRequest request, RequestOptions requestOptions) {
-        return this.rawClient.create(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> rawFuture =
+                this.rawClient.create(request, requestOptions);
+        CompletableFuture<SensorSorItemResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SensorSorItemResponse> retrieve(String sensorId) {
-        return this.rawClient.retrieve(sensorId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> rawFuture = this.rawClient.retrieve(sensorId);
+        CompletableFuture<SensorSorItemResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SensorSorItemResponse> retrieve(String sensorId, RequestOptions requestOptions) {
-        return this.rawClient.retrieve(sensorId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> rawFuture =
+                this.rawClient.retrieve(sensorId, requestOptions);
+        CompletableFuture<SensorSorItemResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SensorSorItemResponse> retrieve(String sensorId, RetrieveSensorsRequest request) {
-        return this.rawClient.retrieve(sensorId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> rawFuture =
+                this.rawClient.retrieve(sensorId, request);
+        CompletableFuture<SensorSorItemResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -73,28 +112,60 @@ public class AsyncSensorsClient {
      */
     public CompletableFuture<SensorSorItemResponse> retrieve(
             String sensorId, RetrieveSensorsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.retrieve(sensorId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> rawFuture =
+                this.rawClient.retrieve(sensorId, request, requestOptions);
+        CompletableFuture<SensorSorItemResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SensorSorUpdateResponseModel> update(String sensorId) {
-        return this.rawClient.update(sensorId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SensorSorUpdateResponseModel>> rawFuture =
+                this.rawClient.update(sensorId);
+        CompletableFuture<SensorSorUpdateResponseModel> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SensorSorUpdateResponseModel> update(String sensorId, RequestOptions requestOptions) {
-        return this.rawClient.update(sensorId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SensorSorUpdateResponseModel>> rawFuture =
+                this.rawClient.update(sensorId, requestOptions);
+        CompletableFuture<SensorSorUpdateResponseModel> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SensorSorUpdateResponseModel> update(String sensorId, SensorSorItemUpdateRequest request) {
-        return this.rawClient.update(sensorId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SensorSorUpdateResponseModel>> rawFuture =
+                this.rawClient.update(sensorId, request);
+        CompletableFuture<SensorSorUpdateResponseModel> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -102,28 +173,57 @@ public class AsyncSensorsClient {
      */
     public CompletableFuture<SensorSorUpdateResponseModel> update(
             String sensorId, SensorSorItemUpdateRequest request, RequestOptions requestOptions) {
-        return this.rawClient.update(sensorId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SensorSorUpdateResponseModel>> rawFuture =
+                this.rawClient.update(sensorId, request, requestOptions);
+        CompletableFuture<SensorSorUpdateResponseModel> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<Void> delete(String sensorId) {
-        return this.rawClient.delete(sensorId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(sensorId);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<Void> delete(String sensorId, RequestOptions requestOptions) {
-        return this.rawClient.delete(sensorId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(sensorId, requestOptions);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<Void> delete(String sensorId, DeleteSensorsRequest request) {
-        return this.rawClient.delete(sensorId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(sensorId, request);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -131,28 +231,63 @@ public class AsyncSensorsClient {
      */
     public CompletableFuture<Void> delete(
             String sensorId, DeleteSensorsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.delete(sensorId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(sensorId, request, requestOptions);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> queryLegacy() {
-        return this.rawClient.queryLegacy().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
+                this.rawClient.queryLegacy();
+        CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> queryLegacy(RequestOptions requestOptions) {
-        return this.rawClient.queryLegacy(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
+                this.rawClient.queryLegacy(requestOptions);
+        CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> queryLegacy(SensorSorQueryRequest request) {
-        return this.rawClient.queryLegacy(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
+                this.rawClient.queryLegacy(request);
+        CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -160,28 +295,64 @@ public class AsyncSensorsClient {
      */
     public CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> queryLegacy(
             SensorSorQueryRequest request, RequestOptions requestOptions) {
-        return this.rawClient.queryLegacy(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
+                this.rawClient.queryLegacy(request, requestOptions);
+        CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> query() {
-        return this.rawClient.query().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
+                this.rawClient.query();
+        CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> query(RequestOptions requestOptions) {
-        return this.rawClient.query(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
+                this.rawClient.query(requestOptions);
+        CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> query(SensorSorQueryRequest request) {
-        return this.rawClient.query(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
+                this.rawClient.query(request);
+        CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -189,6 +360,15 @@ public class AsyncSensorsClient {
      */
     public CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> query(
             SensorSorQueryRequest request, RequestOptions requestOptions) {
-        return this.rawClient.query(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
+                this.rawClient.query(request, requestOptions);
+        CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

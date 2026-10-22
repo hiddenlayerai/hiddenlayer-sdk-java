@@ -67,7 +67,6 @@ public final class ListTagsRequestSource {
     public static final class Builder {
         private Optional<Source> eq = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -90,6 +89,14 @@ public final class ListTagsRequestSource {
 
         public ListTagsRequestSource build() {
             return new ListTagsRequestSource(eq, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("eq")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

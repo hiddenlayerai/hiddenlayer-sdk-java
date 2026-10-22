@@ -92,7 +92,6 @@ public final class CanonicalInteraction {
 
         private Optional<List<ToolBase>> toolsAvailable = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -147,6 +146,14 @@ public final class CanonicalInteraction {
 
         public CanonicalInteraction build() {
             return new CanonicalInteraction(messages, toolsAvailable, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("messages") || key.equalsIgnoreCase("tools_available")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

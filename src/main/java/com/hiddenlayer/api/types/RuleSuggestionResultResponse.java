@@ -257,7 +257,6 @@ public final class RuleSuggestionResultResponse {
 
         private Optional<String> responseType = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -426,6 +425,21 @@ public final class RuleSuggestionResultResponse {
                     message,
                     rules,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("suggestion_id")
+                    || key.equalsIgnoreCase("phase")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("source_workflow_id")
+                    || key.equalsIgnoreCase("response_type")
+                    || key.equalsIgnoreCase("confidence")
+                    || key.equalsIgnoreCase("message")
+                    || key.equalsIgnoreCase("rules")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

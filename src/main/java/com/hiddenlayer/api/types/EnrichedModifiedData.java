@@ -95,7 +95,6 @@ public final class EnrichedModifiedData {
 
         private InteractionsOutput output;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -124,6 +123,14 @@ public final class EnrichedModifiedData {
         @java.lang.Override
         public EnrichedModifiedData build() {
             return new EnrichedModifiedData(input, output, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("input") || key.equalsIgnoreCase("output")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

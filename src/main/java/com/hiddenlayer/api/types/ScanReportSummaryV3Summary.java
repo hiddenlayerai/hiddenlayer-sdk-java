@@ -228,7 +228,6 @@ public final class ScanReportSummaryV3Summary {
 
         private Optional<List<ScanReportSummaryV3SummaryMitreAtlasItem>> mitreAtlas = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -410,6 +409,24 @@ public final class ScanReportSummaryV3Summary {
                     unknownFiles,
                     mitreAtlas,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("severity")
+                    || key.equalsIgnoreCase("highest_severity")
+                    || key.equalsIgnoreCase("detection_count")
+                    || key.equalsIgnoreCase("advisory_count")
+                    || key.equalsIgnoreCase("file_count")
+                    || key.equalsIgnoreCase("files_with_detections_count")
+                    || key.equalsIgnoreCase("detection_categories")
+                    || key.equalsIgnoreCase("advisory_categories")
+                    || key.equalsIgnoreCase("files_failed_to_scan")
+                    || key.equalsIgnoreCase("unknown_files")
+                    || key.equalsIgnoreCase("mitre_atlas")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

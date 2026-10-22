@@ -68,7 +68,6 @@ public final class CustomTagsJobsResponse {
     public static final class Builder {
         private Optional<CustomTagsJobsResponseType> type = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -91,6 +90,14 @@ public final class CustomTagsJobsResponse {
 
         public CustomTagsJobsResponse build() {
             return new CustomTagsJobsResponse(type, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("type")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

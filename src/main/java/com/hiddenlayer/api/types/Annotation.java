@@ -313,7 +313,6 @@ public final class Annotation {
 
         private Optional<PolicyStatus> policyStatus = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -594,6 +593,18 @@ public final class Annotation {
         @java.lang.Override
         public Annotation build() {
             return new Annotation(annotatingService, key, fingerprint, policyStatus, attributes, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("annotating_service")
+                    || key.equalsIgnoreCase("key")
+                    || key.equalsIgnoreCase("fingerprint")
+                    || key.equalsIgnoreCase("policy_status")
+                    || key.equalsIgnoreCase("attributes")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

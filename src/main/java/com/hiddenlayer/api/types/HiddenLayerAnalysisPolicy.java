@@ -448,7 +448,6 @@ public final class HiddenLayerAnalysisPolicy {
 
         private Optional<Double> inputDosDetectionThreshold = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -852,6 +851,38 @@ public final class HiddenLayerAnalysisPolicy {
                     blockInputDosDetection,
                     inputDosDetectionThreshold,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("block_unsafe")
+                    || key.equalsIgnoreCase("block_unsafe_input")
+                    || key.equalsIgnoreCase("block_unsafe_output")
+                    || key.equalsIgnoreCase("skip_prompt_injection_detection")
+                    || key.equalsIgnoreCase("block_prompt_injection")
+                    || key.equalsIgnoreCase("prompt_injection_scan_type")
+                    || key.equalsIgnoreCase("skip_input_pii_detection")
+                    || key.equalsIgnoreCase("skip_output_pii_detection")
+                    || key.equalsIgnoreCase("block_input_pii")
+                    || key.equalsIgnoreCase("block_output_pii")
+                    || key.equalsIgnoreCase("redact_input_pii")
+                    || key.equalsIgnoreCase("redact_output_pii")
+                    || key.equalsIgnoreCase("redact_type")
+                    || key.equalsIgnoreCase("entity_type")
+                    || key.equalsIgnoreCase("skip_input_code_detection")
+                    || key.equalsIgnoreCase("skip_output_code_detection")
+                    || key.equalsIgnoreCase("block_input_code_detection")
+                    || key.equalsIgnoreCase("block_output_code_detection")
+                    || key.equalsIgnoreCase("skip_guardrail_detection")
+                    || key.equalsIgnoreCase("block_guardrail_detection")
+                    || key.equalsIgnoreCase("skip_input_url_detection")
+                    || key.equalsIgnoreCase("skip_output_url_detection")
+                    || key.equalsIgnoreCase("skip_input_dos_detection")
+                    || key.equalsIgnoreCase("block_input_dos_detection")
+                    || key.equalsIgnoreCase("input_dos_detection_threshold")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

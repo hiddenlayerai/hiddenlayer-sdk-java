@@ -370,7 +370,6 @@ public final class Asset {
 
         private Optional<String> id = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -688,6 +687,22 @@ public final class Asset {
                     tags,
                     projects,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("asset_type")
+                    || key.equalsIgnoreCase("policy_status")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("updated_at")
+                    || key.equalsIgnoreCase("first_synced_at")
+                    || key.equalsIgnoreCase("annotations")
+                    || key.equalsIgnoreCase("tags")
+                    || key.equalsIgnoreCase("projects")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

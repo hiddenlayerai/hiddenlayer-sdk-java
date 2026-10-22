@@ -92,7 +92,6 @@ public final class HiddenLayerAnalysisFrameworks {
 
         private Optional<List<HiddenLayerAnalysisFrameworksOwasp2025Item>> owasp2025 = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -139,6 +138,14 @@ public final class HiddenLayerAnalysisFrameworks {
 
         public HiddenLayerAnalysisFrameworks build() {
             return new HiddenLayerAnalysisFrameworks(mitre, owasp, owasp2025, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("mitre") || key.equalsIgnoreCase("owasp") || key.equalsIgnoreCase("owasp:2025")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

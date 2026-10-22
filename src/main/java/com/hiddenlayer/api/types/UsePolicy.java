@@ -225,7 +225,6 @@ public final class UsePolicy {
 
         private Optional<String> description = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -331,6 +330,20 @@ public final class UsePolicy {
         @java.lang.Override
         public UsePolicy build() {
             return new UsePolicy(id, title, url, sha256, description, createdAt, updatedAt, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("title")
+                    || key.equalsIgnoreCase("url")
+                    || key.equalsIgnoreCase("sha256")
+                    || key.equalsIgnoreCase("description")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("updated_at")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

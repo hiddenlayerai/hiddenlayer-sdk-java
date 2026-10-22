@@ -108,7 +108,6 @@ public final class ScanModelInventoryIdsV3 implements IScanModelInventoryIdsV3 {
 
         private String modelVersionId;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -145,6 +144,14 @@ public final class ScanModelInventoryIdsV3 implements IScanModelInventoryIdsV3 {
         @java.lang.Override
         public ScanModelInventoryIdsV3 build() {
             return new ScanModelInventoryIdsV3(modelId, modelVersionId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("model_id") || key.equalsIgnoreCase("model_version_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

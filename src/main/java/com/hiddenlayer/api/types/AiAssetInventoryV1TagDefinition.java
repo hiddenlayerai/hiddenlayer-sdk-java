@@ -179,7 +179,6 @@ public final class AiAssetInventoryV1TagDefinition {
 
         private Optional<String> createdBy = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -271,6 +270,18 @@ public final class AiAssetInventoryV1TagDefinition {
         public AiAssetInventoryV1TagDefinition build() {
             return new AiAssetInventoryV1TagDefinition(
                     name, source, createdAt, createdBy, updatedAt, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("source")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("created_by")
+                    || key.equalsIgnoreCase("updated_at")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

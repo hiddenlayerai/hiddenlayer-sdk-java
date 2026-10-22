@@ -94,7 +94,6 @@ public final class ConvictionTimeseriesResponseV3Aggregations {
 
         private Optional<AggregationContainer> severityLow = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -142,6 +141,16 @@ public final class ConvictionTimeseriesResponseV3Aggregations {
         public ConvictionTimeseriesResponseV3Aggregations build() {
             return new ConvictionTimeseriesResponseV3Aggregations(
                     severityHigh, severityMedium, severityLow, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("severity_high")
+                    || key.equalsIgnoreCase("severity_medium")
+                    || key.equalsIgnoreCase("severity_low")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

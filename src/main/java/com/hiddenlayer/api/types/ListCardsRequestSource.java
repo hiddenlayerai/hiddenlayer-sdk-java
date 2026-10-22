@@ -78,7 +78,6 @@ public final class ListCardsRequestSource {
 
         private Optional<String> eq = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -113,6 +112,14 @@ public final class ListCardsRequestSource {
 
         public ListCardsRequestSource build() {
             return new ListCardsRequestSource(contains, eq, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("contains") || key.equalsIgnoreCase("eq")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -71,7 +71,6 @@ public final class EulaVersion implements IEulaVersion {
     public static final class Builder {
         private Optional<String> version = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -97,6 +96,14 @@ public final class EulaVersion implements IEulaVersion {
 
         public EulaVersion build() {
             return new EulaVersion(version, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("version")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

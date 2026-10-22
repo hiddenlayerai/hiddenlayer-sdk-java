@@ -104,7 +104,6 @@ public final class HiddenLayerAnalysisResultsGuardrailResults {
         private Optional<HiddenLayerAnalysisResultsGuardrailResultsRefusalClassifierResults> refusalClassifierResults =
                 Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -163,6 +162,16 @@ public final class HiddenLayerAnalysisResultsGuardrailResults {
         public HiddenLayerAnalysisResultsGuardrailResults build() {
             return new HiddenLayerAnalysisResultsGuardrailResults(
                     verdict, elapsedMs, refusalClassifierResults, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("verdict")
+                    || key.equalsIgnoreCase("elapsed_ms")
+                    || key.equalsIgnoreCase("refusal_classifier_results")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

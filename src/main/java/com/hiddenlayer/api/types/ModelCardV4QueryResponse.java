@@ -137,7 +137,6 @@ public final class ModelCardV4QueryResponse implements IPageInfo {
 
         private List<ModelCardV4> results = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -199,6 +198,17 @@ public final class ModelCardV4QueryResponse implements IPageInfo {
         @java.lang.Override
         public ModelCardV4QueryResponse build() {
             return new ModelCardV4QueryResponse(totalCount, pageSize, pageNumber, results, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("total_count")
+                    || key.equalsIgnoreCase("page_size")
+                    || key.equalsIgnoreCase("page_number")
+                    || key.equalsIgnoreCase("results")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

@@ -85,7 +85,6 @@ public final class HiddenLayerAnalysisFrameworksOwasp2025Item {
 
         private Optional<String> label = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -126,6 +125,14 @@ public final class HiddenLayerAnalysisFrameworksOwasp2025Item {
 
         public HiddenLayerAnalysisFrameworksOwasp2025Item build() {
             return new HiddenLayerAnalysisFrameworksOwasp2025Item(name, label, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("name") || key.equalsIgnoreCase("label")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

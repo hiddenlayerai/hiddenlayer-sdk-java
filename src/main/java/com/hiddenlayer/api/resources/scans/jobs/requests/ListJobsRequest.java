@@ -363,7 +363,6 @@ public final class ListJobsRequest {
 
         private Optional<Boolean> deepScan = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -708,6 +707,32 @@ public final class ListJobsRequest {
                     modelName,
                     deepScan,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("model_version_ids")
+                    || key.equalsIgnoreCase("model_ids")
+                    || key.equalsIgnoreCase("status")
+                    || key.equalsIgnoreCase("request_source")
+                    || key.equalsIgnoreCase("region")
+                    || key.equalsIgnoreCase("provider")
+                    || key.equalsIgnoreCase("compliance_status")
+                    || key.equalsIgnoreCase("start_time")
+                    || key.equalsIgnoreCase("end_time")
+                    || key.equalsIgnoreCase("severity")
+                    || key.equalsIgnoreCase("limit")
+                    || key.equalsIgnoreCase("offset")
+                    || key.equalsIgnoreCase("sort")
+                    || key.equalsIgnoreCase("latest_per_model_version_only")
+                    || key.equalsIgnoreCase("source")
+                    || key.equalsIgnoreCase("scanner_version")
+                    || key.equalsIgnoreCase("detection_category")
+                    || key.equalsIgnoreCase("model_name")
+                    || key.equalsIgnoreCase("deep_scan")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

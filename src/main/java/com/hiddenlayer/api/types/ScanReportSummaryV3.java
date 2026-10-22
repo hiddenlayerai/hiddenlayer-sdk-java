@@ -80,7 +80,6 @@ public final class ScanReportSummaryV3 implements IScanReportSummaryV3 {
     public static final class Builder implements SummaryStage, _FinalStage {
         private ScanReportSummaryV3Summary summary;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -101,6 +100,14 @@ public final class ScanReportSummaryV3 implements IScanReportSummaryV3 {
         @java.lang.Override
         public ScanReportSummaryV3 build() {
             return new ScanReportSummaryV3(summary, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("summary")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

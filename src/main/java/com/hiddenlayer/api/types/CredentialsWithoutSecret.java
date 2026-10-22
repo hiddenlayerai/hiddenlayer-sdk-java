@@ -200,7 +200,6 @@ public final class CredentialsWithoutSecret implements ICredentialsWithoutSecret
 
         private Optional<User> createdByUser = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -293,6 +292,20 @@ public final class CredentialsWithoutSecret implements ICredentialsWithoutSecret
         public CredentialsWithoutSecret build() {
             return new CredentialsWithoutSecret(
                     clientId, createdAt, createdBy, createdByUser, expiresAt, permissions, name, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("client_id")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("created_by")
+                    || key.equalsIgnoreCase("created_by_user")
+                    || key.equalsIgnoreCase("expires_at")
+                    || key.equalsIgnoreCase("permissions")
+                    || key.equalsIgnoreCase("name")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

@@ -161,7 +161,6 @@ public final class PromptAnalyzerRequest {
 
         private Optional<String> hlProjectId = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -250,6 +249,14 @@ public final class PromptAnalyzerRequest {
         @java.lang.Override
         public PromptAnalyzerRequest build() {
             return new PromptAnalyzerRequest(hlProjectId, requesterId, prompt, output, model, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("prompt") || key.equalsIgnoreCase("output") || key.equalsIgnoreCase("model")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

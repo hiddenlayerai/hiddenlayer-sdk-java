@@ -197,7 +197,6 @@ public final class ListEntriesRequest {
 
         private Optional<Integer> offset = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -347,6 +346,22 @@ public final class ListEntriesRequest {
                     limit,
                     offset,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("start_time")
+                    || key.equalsIgnoreCase("end_time")
+                    || key.equalsIgnoreCase("role")
+                    || key.equalsIgnoreCase("action")
+                    || key.equalsIgnoreCase("resource_type")
+                    || key.equalsIgnoreCase("actor_type")
+                    || key.equalsIgnoreCase("search")
+                    || key.equalsIgnoreCase("limit")
+                    || key.equalsIgnoreCase("offset")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

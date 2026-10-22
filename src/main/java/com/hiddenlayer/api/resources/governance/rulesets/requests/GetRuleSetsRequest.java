@@ -70,7 +70,6 @@ public final class GetRuleSetsRequest {
     public static final class Builder {
         private Optional<Boolean> includeDisabled = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -96,6 +95,14 @@ public final class GetRuleSetsRequest {
 
         public GetRuleSetsRequest build() {
             return new GetRuleSetsRequest(includeDisabled, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("include_disabled")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

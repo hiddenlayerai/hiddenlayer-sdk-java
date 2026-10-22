@@ -168,7 +168,6 @@ public final class HiddenLayerAnalysisResultsPromptInjectionClassifierResultsIte
 
         private Optional<Map<String, Object>> appeal = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -289,6 +288,20 @@ public final class HiddenLayerAnalysisResultsPromptInjectionClassifierResultsIte
                     blockOverrides,
                     appeal,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("version")
+                    || key.equalsIgnoreCase("verdict")
+                    || key.equalsIgnoreCase("probabilities")
+                    || key.equalsIgnoreCase("elapsed_ms")
+                    || key.equalsIgnoreCase("allow_overrides")
+                    || key.equalsIgnoreCase("block_overrides")
+                    || key.equalsIgnoreCase("appeal")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

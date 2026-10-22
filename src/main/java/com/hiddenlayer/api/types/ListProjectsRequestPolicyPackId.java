@@ -79,7 +79,6 @@ public final class ListProjectsRequestPolicyPackId {
 
         private Optional<List<String>> in = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -114,6 +113,14 @@ public final class ListProjectsRequestPolicyPackId {
 
         public ListProjectsRequestPolicyPackId build() {
             return new ListProjectsRequestPolicyPackId(eq, in, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("eq") || key.equalsIgnoreCase("in")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

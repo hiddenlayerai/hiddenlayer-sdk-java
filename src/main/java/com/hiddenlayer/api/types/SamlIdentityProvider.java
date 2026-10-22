@@ -118,7 +118,6 @@ public final class SamlIdentityProvider {
 
         private Optional<SamlSigningCertificate> certificate = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -191,6 +190,17 @@ public final class SamlIdentityProvider {
         public SamlIdentityProvider build() {
             return new SamlIdentityProvider(
                     idpEndpoint, isIdpInitiationEnabled, issuer, certificate, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("idp_endpoint")
+                    || key.equalsIgnoreCase("is_idp_initiation_enabled")
+                    || key.equalsIgnoreCase("issuer")
+                    || key.equalsIgnoreCase("certificate")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

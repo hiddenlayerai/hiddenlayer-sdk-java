@@ -100,7 +100,6 @@ public final class ListUsersRequest {
 
         private Optional<String> sort = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -156,6 +155,14 @@ public final class ListUsersRequest {
 
         public ListUsersRequest build() {
             return new ListUsersRequest(cursor, limit, sort, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("cursor") || key.equalsIgnoreCase("limit") || key.equalsIgnoreCase("sort")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

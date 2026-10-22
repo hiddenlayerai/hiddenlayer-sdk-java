@@ -459,7 +459,6 @@ public final class WorkflowStatusResponse {
 
         private Optional<String> tenantId = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -811,6 +810,30 @@ public final class WorkflowStatusResponse {
                     elapsedSeconds,
                     etaSeconds,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("workflow_id")
+                    || key.equalsIgnoreCase("run_id")
+                    || key.equalsIgnoreCase("status")
+                    || key.equalsIgnoreCase("tenant_id")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("message")
+                    || key.equalsIgnoreCase("error")
+                    || key.equalsIgnoreCase("total_sessions")
+                    || key.equalsIgnoreCase("completed_sessions")
+                    || key.equalsIgnoreCase("failed_sessions")
+                    || key.equalsIgnoreCase("active_sessions")
+                    || key.equalsIgnoreCase("ready_prompts_in_queue")
+                    || key.equalsIgnoreCase("progress_total")
+                    || key.equalsIgnoreCase("progress_completed")
+                    || key.equalsIgnoreCase("phase")
+                    || key.equalsIgnoreCase("elapsed_seconds")
+                    || key.equalsIgnoreCase("eta_seconds")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

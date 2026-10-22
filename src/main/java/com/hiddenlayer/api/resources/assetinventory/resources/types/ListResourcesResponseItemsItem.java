@@ -116,7 +116,6 @@ public final class ListResourcesResponseItemsItem {
 
         private Optional<AiAssetSummary> aiAsset = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -184,6 +183,17 @@ public final class ListResourcesResponseItemsItem {
 
         public ListResourcesResponseItemsItem build() {
             return new ListResourcesResponseItemsItem(id, resourceType, linkedAt, aiAsset, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("resource_type")
+                    || key.equalsIgnoreCase("linked_at")
+                    || key.equalsIgnoreCase("ai_asset")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

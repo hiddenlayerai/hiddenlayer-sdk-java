@@ -202,7 +202,6 @@ public final class RuleSuggestionListItem {
 
         private Optional<OffsetDateTime> completedAt = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -297,6 +296,19 @@ public final class RuleSuggestionListItem {
         public RuleSuggestionListItem build() {
             return new RuleSuggestionListItem(
                     suggestionId, runId, name, startedAt, completedAt, ruleCount, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("suggestion_id")
+                    || key.equalsIgnoreCase("run_id")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("started_at")
+                    || key.equalsIgnoreCase("completed_at")
+                    || key.equalsIgnoreCase("rule_count")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

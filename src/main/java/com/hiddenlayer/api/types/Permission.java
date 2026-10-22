@@ -108,7 +108,6 @@ public final class Permission {
 
         private String scope;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -146,6 +145,14 @@ public final class Permission {
         @java.lang.Override
         public Permission build() {
             return new Permission(displayName, scope, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("display_name") || key.equalsIgnoreCase("scope")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

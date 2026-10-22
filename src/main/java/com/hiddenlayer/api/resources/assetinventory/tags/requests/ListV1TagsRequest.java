@@ -133,7 +133,6 @@ public final class ListV1TagsRequest {
 
         private Optional<Integer> pageSize = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -219,6 +218,18 @@ public final class ListV1TagsRequest {
 
         public ListV1TagsRequest build() {
             return new ListV1TagsRequest(source, q, sort, cursor, pageSize, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("source")
+                    || key.equalsIgnoreCase("q")
+                    || key.equalsIgnoreCase("sort")
+                    || key.equalsIgnoreCase("cursor")
+                    || key.equalsIgnoreCase("page_size")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

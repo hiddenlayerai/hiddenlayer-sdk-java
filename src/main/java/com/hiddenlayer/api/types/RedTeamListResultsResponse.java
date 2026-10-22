@@ -134,7 +134,6 @@ public final class RedTeamListResultsResponse {
 
         private List<RedTeamResultItem> items = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -230,6 +229,18 @@ public final class RedTeamListResultsResponse {
 
         public RedTeamListResultsResponse build() {
             return new RedTeamListResultsResponse(first, next, prev, last, items, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("first")
+                    || key.equalsIgnoreCase("next")
+                    || key.equalsIgnoreCase("prev")
+                    || key.equalsIgnoreCase("last")
+                    || key.equalsIgnoreCase("items")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

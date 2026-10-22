@@ -88,7 +88,6 @@ public final class ListSettingsRequest {
 
         private Optional<String> overlay = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -130,6 +129,14 @@ public final class ListSettingsRequest {
 
         public ListSettingsRequest build() {
             return new ListSettingsRequest(category, overlay, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("category") || key.equalsIgnoreCase("overlay")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

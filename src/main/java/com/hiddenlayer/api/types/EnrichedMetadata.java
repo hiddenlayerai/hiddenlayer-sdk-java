@@ -225,7 +225,6 @@ public final class EnrichedMetadata {
 
         private Optional<String> eventId = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -337,6 +336,20 @@ public final class EnrichedMetadata {
         public EnrichedMetadata build() {
             return new EnrichedMetadata(
                     eventId, analyzedAt, provider, model, requesterId, project, processingTimeMs, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("event_id")
+                    || key.equalsIgnoreCase("analyzed_at")
+                    || key.equalsIgnoreCase("provider")
+                    || key.equalsIgnoreCase("model")
+                    || key.equalsIgnoreCase("requester_id")
+                    || key.equalsIgnoreCase("project")
+                    || key.equalsIgnoreCase("processing_time_ms")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

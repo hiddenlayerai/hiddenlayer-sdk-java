@@ -68,7 +68,6 @@ public final class ScanRulesetComplianceV3 implements IScanRulesetComplianceV3 {
     public static final class Builder {
         private Optional<ScanRulesetComplianceV3Compliance> compliance = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -91,6 +90,14 @@ public final class ScanRulesetComplianceV3 implements IScanRulesetComplianceV3 {
 
         public ScanRulesetComplianceV3 build() {
             return new ScanRulesetComplianceV3(compliance, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("compliance")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

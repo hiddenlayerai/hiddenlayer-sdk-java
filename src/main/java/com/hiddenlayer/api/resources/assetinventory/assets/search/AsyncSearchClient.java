@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.assetinventory.assets.search;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.assetinventory.assets.search.requests.ListSearchRequest;
@@ -30,20 +31,52 @@ public class AsyncSearchClient {
     }
 
     public CompletableFuture<SyncPagingIterable<SearchResult>> list(ListSearchRequest request) {
-        return this.rawClient.list(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SearchResult>>> rawFuture =
+                this.rawClient.list(request);
+        CompletableFuture<SyncPagingIterable<SearchResult>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<SyncPagingIterable<SearchResult>> list(
             ListSearchRequest request, RequestOptions requestOptions) {
-        return this.rawClient.list(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SearchResult>>> rawFuture =
+                this.rawClient.list(request, requestOptions);
+        CompletableFuture<SyncPagingIterable<SearchResult>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<SearchSuggestionsResponse> suggestions(SuggestionsSearchRequest request) {
-        return this.rawClient.suggestions(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SearchSuggestionsResponse>> rawFuture =
+                this.rawClient.suggestions(request);
+        CompletableFuture<SearchSuggestionsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<SearchSuggestionsResponse> suggestions(
             SuggestionsSearchRequest request, RequestOptions requestOptions) {
-        return this.rawClient.suggestions(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SearchSuggestionsResponse>> rawFuture =
+                this.rawClient.suggestions(request, requestOptions);
+        CompletableFuture<SearchSuggestionsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.models.cards;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.models.cards.requests.ListCardsRequest;
@@ -32,20 +33,51 @@ public class AsyncCardsClient {
     }
 
     public CompletableFuture<SyncPagingIterable<ModelCardV3>> listV3() {
-        return this.rawClient.listV3().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>>> rawFuture = this.rawClient.listV3();
+        CompletableFuture<SyncPagingIterable<ModelCardV3>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<SyncPagingIterable<ModelCardV3>> listV3(RequestOptions requestOptions) {
-        return this.rawClient.listV3(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>>> rawFuture =
+                this.rawClient.listV3(requestOptions);
+        CompletableFuture<SyncPagingIterable<ModelCardV3>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<SyncPagingIterable<ModelCardV3>> listV3(ListV3CardsRequest request) {
-        return this.rawClient.listV3(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>>> rawFuture =
+                this.rawClient.listV3(request);
+        CompletableFuture<SyncPagingIterable<ModelCardV3>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<SyncPagingIterable<ModelCardV3>> listV3(
             ListV3CardsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.listV3(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>>> rawFuture =
+                this.rawClient.listV3(request, requestOptions);
+        CompletableFuture<SyncPagingIterable<ModelCardV3>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -57,7 +89,14 @@ public class AsyncCardsClient {
      * (<code>model_name</code>, <code>scan_started_at</code>).
      */
     public CompletableFuture<SyncPagingIterable<ModelCardV4>> list() {
-        return this.rawClient.list().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>>> rawFuture = this.rawClient.list();
+        CompletableFuture<SyncPagingIterable<ModelCardV4>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -69,7 +108,15 @@ public class AsyncCardsClient {
      * (<code>model_name</code>, <code>scan_started_at</code>).
      */
     public CompletableFuture<SyncPagingIterable<ModelCardV4>> list(RequestOptions requestOptions) {
-        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>>> rawFuture =
+                this.rawClient.list(requestOptions);
+        CompletableFuture<SyncPagingIterable<ModelCardV4>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -81,7 +128,15 @@ public class AsyncCardsClient {
      * (<code>model_name</code>, <code>scan_started_at</code>).
      */
     public CompletableFuture<SyncPagingIterable<ModelCardV4>> list(ListCardsRequest request) {
-        return this.rawClient.list(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>>> rawFuture =
+                this.rawClient.list(request);
+        CompletableFuture<SyncPagingIterable<ModelCardV4>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -94,15 +149,39 @@ public class AsyncCardsClient {
      */
     public CompletableFuture<SyncPagingIterable<ModelCardV4>> list(
             ListCardsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.list(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>>> rawFuture =
+                this.rawClient.list(request, requestOptions);
+        CompletableFuture<SyncPagingIterable<ModelCardV4>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<SuggestionsCardsResponse> suggestions(SuggestionsCardsRequest request) {
-        return this.rawClient.suggestions(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SuggestionsCardsResponse>> rawFuture =
+                this.rawClient.suggestions(request);
+        CompletableFuture<SuggestionsCardsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<SuggestionsCardsResponse> suggestions(
             SuggestionsCardsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.suggestions(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SuggestionsCardsResponse>> rawFuture =
+                this.rawClient.suggestions(request, requestOptions);
+        CompletableFuture<SuggestionsCardsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

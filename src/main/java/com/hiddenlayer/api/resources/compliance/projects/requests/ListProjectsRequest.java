@@ -205,7 +205,6 @@ public final class ListProjectsRequest {
 
         private Optional<String> sort = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -352,6 +351,22 @@ public final class ListProjectsRequest {
         public ListProjectsRequest build() {
             return new ListProjectsRequest(
                     name, q, default_, ruleSetId, policyId, policyPackId, limit, cursor, sort, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("q")
+                    || key.equalsIgnoreCase("default")
+                    || key.equalsIgnoreCase("rule_set_id")
+                    || key.equalsIgnoreCase("policy_id")
+                    || key.equalsIgnoreCase("policy_pack_id")
+                    || key.equalsIgnoreCase("limit")
+                    || key.equalsIgnoreCase("cursor")
+                    || key.equalsIgnoreCase("sort")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

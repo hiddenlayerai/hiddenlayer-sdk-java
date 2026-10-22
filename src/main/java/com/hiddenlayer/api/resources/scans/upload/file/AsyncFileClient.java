@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.scans.upload.file;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.scans.upload.file.requests.AddFileRequest;
 import com.hiddenlayer.api.resources.scans.upload.file.requests.CompleteFileRequest;
@@ -29,29 +30,76 @@ public class AsyncFileClient {
     }
 
     public CompletableFuture<AddFileResponse> add(String scanId, AddFileRequest request) {
-        return this.rawClient.add(scanId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AddFileResponse>> rawFuture = this.rawClient.add(scanId, request);
+        CompletableFuture<AddFileResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AddFileResponse> add(
             String scanId, AddFileRequest request, RequestOptions requestOptions) {
-        return this.rawClient.add(scanId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AddFileResponse>> rawFuture =
+                this.rawClient.add(scanId, request, requestOptions);
+        CompletableFuture<AddFileResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<CompleteFileResponse> complete(String scanId, String fileId) {
-        return this.rawClient.complete(scanId, fileId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<CompleteFileResponse>> rawFuture =
+                this.rawClient.complete(scanId, fileId);
+        CompletableFuture<CompleteFileResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<CompleteFileResponse> complete(
             String scanId, String fileId, RequestOptions requestOptions) {
-        return this.rawClient.complete(scanId, fileId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<CompleteFileResponse>> rawFuture =
+                this.rawClient.complete(scanId, fileId, requestOptions);
+        CompletableFuture<CompleteFileResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<CompleteFileResponse> complete(String scanId, String fileId, CompleteFileRequest request) {
-        return this.rawClient.complete(scanId, fileId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<CompleteFileResponse>> rawFuture =
+                this.rawClient.complete(scanId, fileId, request);
+        CompletableFuture<CompleteFileResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<CompleteFileResponse> complete(
             String scanId, String fileId, CompleteFileRequest request, RequestOptions requestOptions) {
-        return this.rawClient.complete(scanId, fileId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<CompleteFileResponse>> rawFuture =
+                this.rawClient.complete(scanId, fileId, request, requestOptions);
+        CompletableFuture<CompleteFileResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

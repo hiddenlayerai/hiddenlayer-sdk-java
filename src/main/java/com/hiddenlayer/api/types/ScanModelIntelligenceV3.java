@@ -69,7 +69,6 @@ public final class ScanModelIntelligenceV3 implements IScanModelIntelligenceV3 {
     public static final class Builder {
         private Optional<ModelIntelligence> intelligence = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -92,6 +91,14 @@ public final class ScanModelIntelligenceV3 implements IScanModelIntelligenceV3 {
 
         public ScanModelIntelligenceV3 build() {
             return new ScanModelIntelligenceV3(intelligence, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("intelligence")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

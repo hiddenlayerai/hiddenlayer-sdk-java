@@ -69,7 +69,6 @@ public final class ListV1AssetsRequestHlResourceType {
     public static final class Builder {
         private Optional<List<ListV1AssetsRequestHlResourceTypeInItem>> in = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -92,6 +91,14 @@ public final class ListV1AssetsRequestHlResourceType {
 
         public ListV1AssetsRequestHlResourceType build() {
             return new ListV1AssetsRequestHlResourceType(in, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("in")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

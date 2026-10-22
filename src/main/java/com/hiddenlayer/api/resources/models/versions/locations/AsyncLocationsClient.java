@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.models.versions.locations;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.models.versions.locations.requests.GetLocationsRequest;
 import com.hiddenlayer.api.resources.models.versions.locations.requests.UpdateLocationsRequest;
@@ -29,29 +30,76 @@ public class AsyncLocationsClient {
     }
 
     public CompletableFuture<GetLocationsResponse> get(String versionId, String key) {
-        return this.rawClient.get(versionId, key).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<GetLocationsResponse>> rawFuture = this.rawClient.get(versionId, key);
+        CompletableFuture<GetLocationsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<GetLocationsResponse> get(String versionId, String key, RequestOptions requestOptions) {
-        return this.rawClient.get(versionId, key, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<GetLocationsResponse>> rawFuture =
+                this.rawClient.get(versionId, key, requestOptions);
+        CompletableFuture<GetLocationsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<GetLocationsResponse> get(String versionId, String key, GetLocationsRequest request) {
-        return this.rawClient.get(versionId, key, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<GetLocationsResponse>> rawFuture =
+                this.rawClient.get(versionId, key, request);
+        CompletableFuture<GetLocationsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<GetLocationsResponse> get(
             String versionId, String key, GetLocationsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.get(versionId, key, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<GetLocationsResponse>> rawFuture =
+                this.rawClient.get(versionId, key, request, requestOptions);
+        CompletableFuture<GetLocationsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<UpdateLocationsResponse> update(
             String versionId, String key, UpdateLocationsRequest request) {
-        return this.rawClient.update(versionId, key, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<UpdateLocationsResponse>> rawFuture =
+                this.rawClient.update(versionId, key, request);
+        CompletableFuture<UpdateLocationsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<UpdateLocationsResponse> update(
             String versionId, String key, UpdateLocationsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.update(versionId, key, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<UpdateLocationsResponse>> rawFuture =
+                this.rawClient.update(versionId, key, request, requestOptions);
+        CompletableFuture<UpdateLocationsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

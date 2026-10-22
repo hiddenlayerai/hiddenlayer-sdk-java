@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.compliance.projects;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
@@ -28,7 +29,6 @@ import com.hiddenlayer.api.resources.compliance.projects.requests.UpdateProjects
 import com.hiddenlayer.api.resources.compliance.projects.types.GetProjectsResponse;
 import com.hiddenlayer.api.resources.compliance.projects.types.ListProjectsResponse;
 import com.hiddenlayer.api.types.GetProjectItem;
-import com.hiddenlayer.api.types.PreconditionFailedErrorBody;
 import com.hiddenlayer.api.types.ProjectId;
 import java.io.IOException;
 import java.util.List;
@@ -133,7 +133,8 @@ public class AsyncRawProjectsClient {
         }
         CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<GetProjectItem>>> future =
                 new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
+        RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
+        okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
@@ -199,6 +200,11 @@ public class AsyncRawProjectsClient {
                 future.completeExceptionally(new HiddenLayerException("Network error executing HTTP request", e));
             }
         });
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                okhttpCall.cancel();
+            }
+        });
         return future;
     }
 
@@ -239,7 +245,8 @@ public class AsyncRawProjectsClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request),
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(BodyProperties.merge(
+                            request, requestOptions != null ? requestOptions.getBodyProperties() : null)),
                     MediaType.parse("application/json; charset=utf-8"));
         } catch (JsonProcessingException e) {
             throw new HiddenLayerException("Failed to serialize request", e);
@@ -265,7 +272,8 @@ public class AsyncRawProjectsClient {
                     .build();
         }
         CompletableFuture<HiddenLayerHttpResponse<ProjectId>> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
+        RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
+        okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
@@ -323,6 +331,11 @@ public class AsyncRawProjectsClient {
                 future.completeExceptionally(new HiddenLayerException("Network error executing HTTP request", e));
             }
         });
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                okhttpCall.cancel();
+            }
+        });
         return future;
     }
 
@@ -370,7 +383,8 @@ public class AsyncRawProjectsClient {
                     .build();
         }
         CompletableFuture<HiddenLayerHttpResponse<GetProjectsResponse>> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
+        RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
+        okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
@@ -424,6 +438,11 @@ public class AsyncRawProjectsClient {
                 future.completeExceptionally(new HiddenLayerException("Network error executing HTTP request", e));
             }
         });
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                okhttpCall.cancel();
+            }
+        });
         return future;
     }
 
@@ -465,7 +484,8 @@ public class AsyncRawProjectsClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request),
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(BodyProperties.merge(
+                            request, requestOptions != null ? requestOptions.getBodyProperties() : null)),
                     MediaType.parse("application/json; charset=utf-8"));
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -495,7 +515,8 @@ public class AsyncRawProjectsClient {
                     .build();
         }
         CompletableFuture<HiddenLayerHttpResponse<ProjectId>> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
+        RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
+        okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
@@ -524,8 +545,7 @@ public class AsyncRawProjectsClient {
                                 return;
                             case 412:
                                 future.completeExceptionally(new PreconditionFailedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, PreconditionFailedErrorBody.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 422:
@@ -564,6 +584,11 @@ public class AsyncRawProjectsClient {
                 future.completeExceptionally(new HiddenLayerException("Network error executing HTTP request", e));
             }
         });
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                okhttpCall.cancel();
+            }
+        });
         return future;
     }
 
@@ -592,7 +617,10 @@ public class AsyncRawProjectsClient {
         }
         Request.Builder _requestBuilder = new Request.Builder()
                 .url(httpUrl.build())
-                .method("DELETE", null)
+                .method(
+                        "DELETE",
+                        BodyProperties.toRequestBody(
+                                requestOptions != null ? requestOptions.getBodyProperties() : null, null))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json");
         Request okhttpRequest = _requestBuilder.build();
@@ -610,7 +638,8 @@ public class AsyncRawProjectsClient {
                     .build();
         }
         CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
-        client.newCall(okhttpRequest).enqueue(new Callback() {
+        RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
+        okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
@@ -660,6 +689,11 @@ public class AsyncRawProjectsClient {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 future.completeExceptionally(new HiddenLayerException("Network error executing HTTP request", e));
+            }
+        });
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                okhttpCall.cancel();
             }
         });
         return future;

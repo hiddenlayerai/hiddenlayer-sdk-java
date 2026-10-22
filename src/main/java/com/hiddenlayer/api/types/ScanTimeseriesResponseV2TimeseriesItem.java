@@ -94,7 +94,6 @@ public final class ScanTimeseriesResponseV2TimeseriesItem {
 
         private Optional<AggregationContainer> threatLevelSuspicious = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -142,6 +141,16 @@ public final class ScanTimeseriesResponseV2TimeseriesItem {
         public ScanTimeseriesResponseV2TimeseriesItem build() {
             return new ScanTimeseriesResponseV2TimeseriesItem(
                     threatLevelSafe, threatLevelUnsafe, threatLevelSuspicious, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("threat_level_safe")
+                    || key.equalsIgnoreCase("threat_level_unsafe")
+                    || key.equalsIgnoreCase("threat_level_suspicious")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

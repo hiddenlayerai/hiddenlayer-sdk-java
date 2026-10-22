@@ -92,7 +92,6 @@ public final class GuidanceScansResponseDetectionGuidanceItemRemediationActionsI
 
         private Optional<String> description = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -140,6 +139,16 @@ public final class GuidanceScansResponseDetectionGuidanceItemRemediationActionsI
         public GuidanceScansResponseDetectionGuidanceItemRemediationActionsItem build() {
             return new GuidanceScansResponseDetectionGuidanceItemRemediationActionsItem(
                     priority, action, description, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("priority")
+                    || key.equalsIgnoreCase("action")
+                    || key.equalsIgnoreCase("description")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

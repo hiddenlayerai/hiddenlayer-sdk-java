@@ -104,7 +104,6 @@ public final class TimeSeriesResponseV2TimeseriesItem {
 
         private Optional<AggregationContainer> total = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -160,6 +159,16 @@ public final class TimeSeriesResponseV2TimeseriesItem {
 
         public TimeSeriesResponseV2TimeseriesItem build() {
             return new TimeSeriesResponseV2TimeseriesItem(startTimestamp, endTimestamp, total, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("start_timestamp")
+                    || key.equalsIgnoreCase("end_timestamp")
+                    || key.equalsIgnoreCase("total")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -135,7 +135,6 @@ public final class SsoIntegrationsUpdateRequest {
 
         private Optional<SamlIdentityProvider> identityProvider = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -221,6 +220,18 @@ public final class SsoIntegrationsUpdateRequest {
         public SsoIntegrationsUpdateRequest build() {
             return new SsoIntegrationsUpdateRequest(
                     name, isEnabled, requestSigning, managedDomains, identityProvider, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("is_enabled")
+                    || key.equalsIgnoreCase("request_signing")
+                    || key.equalsIgnoreCase("managed_domains")
+                    || key.equalsIgnoreCase("identity_provider")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -110,7 +110,6 @@ public final class PageInfo implements IPageInfo {
 
         private int pageNumber;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -147,6 +146,16 @@ public final class PageInfo implements IPageInfo {
         @java.lang.Override
         public PageInfo build() {
             return new PageInfo(totalCount, pageSize, pageNumber, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("total_count")
+                    || key.equalsIgnoreCase("page_size")
+                    || key.equalsIgnoreCase("page_number")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

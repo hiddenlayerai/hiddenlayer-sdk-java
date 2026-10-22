@@ -86,7 +86,6 @@ public final class PreconditionFailedErrorBody {
     public static final class Builder implements MessageStage, _FinalStage {
         private String message;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -111,6 +110,14 @@ public final class PreconditionFailedErrorBody {
         @java.lang.Override
         public PreconditionFailedErrorBody build() {
             return new PreconditionFailedErrorBody(message, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("message")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

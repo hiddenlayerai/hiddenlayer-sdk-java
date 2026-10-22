@@ -154,7 +154,6 @@ public final class RuleSet {
 
         private Optional<String> id = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -246,6 +245,17 @@ public final class RuleSet {
         @java.lang.Override
         public RuleSet build() {
             return new RuleSet(id, displayName, rules, previousRuleSetId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("display_name")
+                    || key.equalsIgnoreCase("rules")
+                    || key.equalsIgnoreCase("previous_rule_set_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

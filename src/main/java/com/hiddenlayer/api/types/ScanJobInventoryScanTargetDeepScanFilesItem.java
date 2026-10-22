@@ -110,7 +110,6 @@ public final class ScanJobInventoryScanTargetDeepScanFilesItem {
 
         private Optional<String> fileNameAlias = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -156,6 +155,14 @@ public final class ScanJobInventoryScanTargetDeepScanFilesItem {
         @java.lang.Override
         public ScanJobInventoryScanTargetDeepScanFilesItem build() {
             return new ScanJobInventoryScanTargetDeepScanFilesItem(fileLocation, fileNameAlias, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("file_location") || key.equalsIgnoreCase("file_name_alias")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

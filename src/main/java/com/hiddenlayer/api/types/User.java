@@ -207,7 +207,6 @@ public final class User implements IUserBase {
 
         private Optional<Boolean> isEmailMutable = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -360,6 +359,22 @@ public final class User implements IUserBase {
                     isPasswordAuthenticationEnabled,
                     isEmailMutable,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("email")
+                    || key.equalsIgnoreCase("firstname")
+                    || key.equalsIgnoreCase("lastname")
+                    || key.equalsIgnoreCase("full_name")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("roles")
+                    || key.equalsIgnoreCase("is_password_authentication_enabled")
+                    || key.equalsIgnoreCase("is_email_mutable")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

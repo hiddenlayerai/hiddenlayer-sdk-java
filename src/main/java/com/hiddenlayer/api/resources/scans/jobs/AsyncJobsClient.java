@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.scans.jobs;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.scans.jobs.requests.ListJobsRequest;
@@ -32,44 +33,125 @@ public class AsyncJobsClient {
     }
 
     public CompletableFuture<ScanJob> request(ScanJobRequest request) {
-        return this.rawClient.request(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ScanJob>> rawFuture = this.rawClient.request(request);
+        CompletableFuture<ScanJob> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<ScanJob> request(ScanJobRequest request, RequestOptions requestOptions) {
-        return this.rawClient.request(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ScanJob>> rawFuture = this.rawClient.request(request, requestOptions);
+        CompletableFuture<ScanJob> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<ScanReportOfRecordV3> retrieve(String scanId) {
-        return this.rawClient.retrieve(scanId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ScanReportOfRecordV3>> rawFuture = this.rawClient.retrieve(scanId);
+        CompletableFuture<ScanReportOfRecordV3> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<ScanReportOfRecordV3> retrieve(String scanId, RequestOptions requestOptions) {
-        return this.rawClient.retrieve(scanId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ScanReportOfRecordV3>> rawFuture =
+                this.rawClient.retrieve(scanId, requestOptions);
+        CompletableFuture<ScanReportOfRecordV3> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<ScanReportOfRecordV3> retrieve(String scanId, RetrieveJobsRequest request) {
-        return this.rawClient.retrieve(scanId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ScanReportOfRecordV3>> rawFuture =
+                this.rawClient.retrieve(scanId, request);
+        CompletableFuture<ScanReportOfRecordV3> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<ScanReportOfRecordV3> retrieve(
             String scanId, RetrieveJobsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.retrieve(scanId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ScanReportOfRecordV3>> rawFuture =
+                this.rawClient.retrieve(scanId, request, requestOptions);
+        CompletableFuture<ScanReportOfRecordV3> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<SyncPagingIterable<ScanReportOfRecordV3Summary>> list() {
-        return this.rawClient.list().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> rawFuture =
+                this.rawClient.list();
+        CompletableFuture<SyncPagingIterable<ScanReportOfRecordV3Summary>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<SyncPagingIterable<ScanReportOfRecordV3Summary>> list(RequestOptions requestOptions) {
-        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> rawFuture =
+                this.rawClient.list(requestOptions);
+        CompletableFuture<SyncPagingIterable<ScanReportOfRecordV3Summary>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<SyncPagingIterable<ScanReportOfRecordV3Summary>> list(ListJobsRequest request) {
-        return this.rawClient.list(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> rawFuture =
+                this.rawClient.list(request);
+        CompletableFuture<SyncPagingIterable<ScanReportOfRecordV3Summary>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<SyncPagingIterable<ScanReportOfRecordV3Summary>> list(
             ListJobsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.list(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> rawFuture =
+                this.rawClient.list(request, requestOptions);
+        CompletableFuture<SyncPagingIterable<ScanReportOfRecordV3Summary>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

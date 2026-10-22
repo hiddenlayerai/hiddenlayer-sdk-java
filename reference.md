@@ -2146,6 +2146,272 @@ client.models().update(
 </dl>
 </details>
 
+## Access ApiKeys
+<details><summary><code>client.access.apiKeys.list() -> SyncPagingIterable&amp;lt;StaticApiKey&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.access().apiKeys().list(
+    ListApiKeysRequest
+        .builder()
+        .limit(50)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**cursor:** `Optional<String>` — Cursor for pagination, used to navigate through pages of results
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Optional<Integer>` — Limit the number of items returned
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.access.apiKeys.create(request) -> StaticApiKeyWithValue</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+A tenant can have at most 100 keys that are neither revoked nor retired, including keys with no active secret.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.access().apiKeys().create(
+    StaticApiKeyCreateRequest
+        .builder()
+        .name("ci-pipeline")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**permissions:** `Optional<List<String>>` — Each permission must be one the caller holds, outside the `credential` area: a key can never hold `credential:*` permissions. If omitted, the key gets every such permission, which may be none.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.access.apiKeys.get(id) -> StaticApiKey</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.access().apiKeys().get(
+    "00000000-0000-0000-0000-000000000000",
+    GetApiKeysRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `String` — A UUID in the request URI
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.access.apiKeys.delete(id)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Revokes the key and all its secrets. Revoking a key that is already revoked returns `204`, whatever the `If-Match` value.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.access().apiKeys().delete(
+    "00000000-0000-0000-0000-000000000000",
+    DeleteApiKeysRequest
+        .builder()
+        .ifMatch("\"7da7a728-f910-11e6-942a-68f728c1ba70\"")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `String` — A UUID in the request URI
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ifMatch:** `String` — The key's current `ETag`, or `*` to skip the version check.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Access Users
 <details><summary><code>client.access.users.list() -> SyncPagingIterable&amp;lt;User&amp;gt;</code></summary>
 <dl>
@@ -2302,6 +2568,169 @@ Exchange a valid user access token for a short-lived JWT with minimal scopes. Th
 ```java
 client.access().tokens().shortLived();
 ```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Access ApiKeys Secrets
+<details><summary><code>client.access.apiKeys.secrets.create(id, request) -> StaticApiKeySecretWithValue</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Adds a secret to the key. Existing secrets keep working until they are revoked or expire.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.access().apiKeys().secrets().create(
+    "00000000-0000-0000-0000-000000000000",
+    CreateSecretsRequest
+        .builder()
+        .ifMatch("\"7da7a728-f910-11e6-942a-68f728c1ba70\"")
+        .body(
+            StaticApiKeySecretCreateRequest
+                .builder()
+                .build()
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `String` — A UUID in the request URI
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ifMatch:** `String` — The key's current `ETag`, or `*` to skip the version check.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `StaticApiKeySecretCreateRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.access.apiKeys.secrets.delete(id, secretId)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Revokes only this secret; the key and its other secret keep working. Revoking a secret that is already revoked or expired, or whose key is revoked, returns `204`, whatever the `If-Match` value.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.access().apiKeys().secrets().delete(
+    "00000000-0000-0000-0000-000000000000",
+    "01n1adc0r38r9n4m5p6t7w8x9y",
+    DeleteSecretsRequest
+        .builder()
+        .ifMatch("\"7da7a728-f910-11e6-942a-68f728c1ba70\"")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `String` — A UUID in the request URI
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**secretId:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ifMatch:** `String` — The key's current `ETag`, or `*` to skip the version check.
+    
 </dd>
 </dl>
 </dd>

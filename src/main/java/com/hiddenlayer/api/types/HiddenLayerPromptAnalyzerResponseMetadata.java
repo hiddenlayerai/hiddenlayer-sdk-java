@@ -131,7 +131,6 @@ public final class HiddenLayerPromptAnalyzerResponseMetadata {
 
         private Optional<String> unmodifiedOutput = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -215,6 +214,19 @@ public final class HiddenLayerPromptAnalyzerResponseMetadata {
         public HiddenLayerPromptAnalyzerResponseMetadata build() {
             return new HiddenLayerPromptAnalyzerResponseMetadata(
                     provider, model, prompt, output, unmodifiedPrompt, unmodifiedOutput, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("provider")
+                    || key.equalsIgnoreCase("model")
+                    || key.equalsIgnoreCase("prompt")
+                    || key.equalsIgnoreCase("output")
+                    || key.equalsIgnoreCase("unmodified_prompt")
+                    || key.equalsIgnoreCase("unmodified_output")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

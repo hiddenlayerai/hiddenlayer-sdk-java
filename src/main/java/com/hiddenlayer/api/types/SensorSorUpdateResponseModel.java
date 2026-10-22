@@ -80,7 +80,6 @@ public final class SensorSorUpdateResponseModel {
     public static final class Builder implements DetailStage, _FinalStage {
         private String detail;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -101,6 +100,14 @@ public final class SensorSorUpdateResponseModel {
         @java.lang.Override
         public SensorSorUpdateResponseModel build() {
             return new SensorSorUpdateResponseModel(detail, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("detail")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

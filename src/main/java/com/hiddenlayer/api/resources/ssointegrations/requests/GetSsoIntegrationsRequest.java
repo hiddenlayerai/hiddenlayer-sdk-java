@@ -43,7 +43,6 @@ public final class GetSsoIntegrationsRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -54,6 +53,11 @@ public final class GetSsoIntegrationsRequest {
 
         public GetSsoIntegrationsRequest build() {
             return new GetSsoIntegrationsRequest(additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

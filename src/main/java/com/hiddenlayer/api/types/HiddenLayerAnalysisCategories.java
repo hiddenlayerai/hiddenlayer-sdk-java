@@ -217,7 +217,6 @@ public final class HiddenLayerAnalysisCategories {
 
         private Optional<Boolean> inputLanguage = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -389,6 +388,23 @@ public final class HiddenLayerAnalysisCategories {
                     guardrail,
                     inputLanguage,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("unsafe_input")
+                    || key.equalsIgnoreCase("unsafe_output")
+                    || key.equalsIgnoreCase("prompt_injection")
+                    || key.equalsIgnoreCase("input_dos")
+                    || key.equalsIgnoreCase("input_pii")
+                    || key.equalsIgnoreCase("output_pii")
+                    || key.equalsIgnoreCase("input_code")
+                    || key.equalsIgnoreCase("output_code")
+                    || key.equalsIgnoreCase("guardrail")
+                    || key.equalsIgnoreCase("input_language")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

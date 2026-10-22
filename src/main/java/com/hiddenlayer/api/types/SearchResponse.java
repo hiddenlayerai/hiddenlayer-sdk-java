@@ -139,7 +139,6 @@ public final class SearchResponse {
 
         private Optional<Long> banditArmId = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -231,6 +230,19 @@ public final class SearchResponse {
 
         public SearchResponse build() {
             return new SearchResponse(query, items, limit, offset, total, banditArmId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("query")
+                    || key.equalsIgnoreCase("items")
+                    || key.equalsIgnoreCase("limit")
+                    || key.equalsIgnoreCase("offset")
+                    || key.equalsIgnoreCase("total")
+                    || key.equalsIgnoreCase("bandit_arm_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

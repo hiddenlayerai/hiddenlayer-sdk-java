@@ -201,7 +201,6 @@ public final class AiAssetInventoryV1AssetTypeCounts {
 
         private Optional<Long> other = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -357,6 +356,22 @@ public final class AiAssetInventoryV1AssetTypeCounts {
                     toolPolicy,
                     other,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("model")
+                    || key.equalsIgnoreCase("catalog")
+                    || key.equalsIgnoreCase("schema")
+                    || key.equalsIgnoreCase("endpoint")
+                    || key.equalsIgnoreCase("agent")
+                    || key.equalsIgnoreCase("memory")
+                    || key.equalsIgnoreCase("tool_gateway")
+                    || key.equalsIgnoreCase("tool_policy")
+                    || key.equalsIgnoreCase("other")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -264,7 +264,6 @@ public final class FileInstance {
 
         private List<String> tags = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -407,6 +406,21 @@ public final class FileInstance {
         public FileInstance build() {
             return new FileInstance(
                     sha256, revisionId, path, source, tags, committedDate, createdAt, updatedAt, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("sha256")
+                    || key.equalsIgnoreCase("revision_id")
+                    || key.equalsIgnoreCase("path")
+                    || key.equalsIgnoreCase("source")
+                    || key.equalsIgnoreCase("tags")
+                    || key.equalsIgnoreCase("committed_date")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("updated_at")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

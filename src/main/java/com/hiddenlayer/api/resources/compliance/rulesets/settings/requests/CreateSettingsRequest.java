@@ -109,7 +109,6 @@ public final class CreateSettingsRequest implements ISettingsId, ISettings {
 
         private Map<String, Object> settings = new LinkedHashMap<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -166,6 +165,14 @@ public final class CreateSettingsRequest implements ISettingsId, ISettings {
         @java.lang.Override
         public CreateSettingsRequest build() {
             return new CreateSettingsRequest(settingsId, settings, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("settings_id") || key.equalsIgnoreCase("settings")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

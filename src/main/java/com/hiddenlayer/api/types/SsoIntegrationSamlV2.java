@@ -258,7 +258,6 @@ public final class SsoIntegrationSamlV2 {
 
         private Optional<SamlIdentityProvider> identityProvider = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -441,6 +440,22 @@ public final class SsoIntegrationSamlV2 {
                     managedDomains,
                     isEnabled,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("type")
+                    || key.equalsIgnoreCase("service_provider")
+                    || key.equalsIgnoreCase("identity_provider")
+                    || key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("status")
+                    || key.equalsIgnoreCase("lifecycle")
+                    || key.equalsIgnoreCase("managed_domains")
+                    || key.equalsIgnoreCase("is_enabled")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

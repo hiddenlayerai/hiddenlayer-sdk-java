@@ -81,7 +81,6 @@ public final class RegionCounts {
 
         private List<GeographicRegionCount> geographicRegions = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -136,6 +135,14 @@ public final class RegionCounts {
 
         public RegionCounts build() {
             return new RegionCounts(countries, geographicRegions, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("countries") || key.equalsIgnoreCase("geographic_regions")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

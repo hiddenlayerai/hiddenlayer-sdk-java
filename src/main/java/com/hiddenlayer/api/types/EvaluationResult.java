@@ -154,7 +154,6 @@ public final class EvaluationResult {
 
         private Optional<List<String>> rationale = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -262,6 +261,19 @@ public final class EvaluationResult {
                     complianceStatus,
                     rationale,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("artifact_id")
+                    || key.equalsIgnoreCase("artifact_type")
+                    || key.equalsIgnoreCase("evaluated_timestamp")
+                    || key.equalsIgnoreCase("applied_rule_sets")
+                    || key.equalsIgnoreCase("compliance_status")
+                    || key.equalsIgnoreCase("rationale")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

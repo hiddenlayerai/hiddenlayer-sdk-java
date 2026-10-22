@@ -188,7 +188,6 @@ public final class SensorSorModelVersion {
 
         private Optional<String> modelVersionId = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -301,6 +300,20 @@ public final class SensorSorModelVersion {
                     multiFile,
                     retrievable,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("model_version_id")
+                    || key.equalsIgnoreCase("version")
+                    || key.equalsIgnoreCase("tags")
+                    || key.equalsIgnoreCase("locations")
+                    || key.equalsIgnoreCase("deployments")
+                    || key.equalsIgnoreCase("multi_file")
+                    || key.equalsIgnoreCase("retrievable")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

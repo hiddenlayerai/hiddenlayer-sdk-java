@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.assetinventory.scans;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.assetinventory.scans.requests.GetScansRequest;
 import com.hiddenlayer.api.types.AssetScan;
@@ -27,18 +28,47 @@ public class AsyncScansClient {
     }
 
     public CompletableFuture<AssetScan> get(String scanId) {
-        return this.rawClient.get(scanId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AssetScan>> rawFuture = this.rawClient.get(scanId);
+        CompletableFuture<AssetScan> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AssetScan> get(String scanId, RequestOptions requestOptions) {
-        return this.rawClient.get(scanId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AssetScan>> rawFuture = this.rawClient.get(scanId, requestOptions);
+        CompletableFuture<AssetScan> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AssetScan> get(String scanId, GetScansRequest request) {
-        return this.rawClient.get(scanId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AssetScan>> rawFuture = this.rawClient.get(scanId, request);
+        CompletableFuture<AssetScan> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AssetScan> get(String scanId, GetScansRequest request, RequestOptions requestOptions) {
-        return this.rawClient.get(scanId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AssetScan>> rawFuture =
+                this.rawClient.get(scanId, request, requestOptions);
+        CompletableFuture<AssetScan> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

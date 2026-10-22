@@ -68,7 +68,6 @@ public final class FilterFacetsResponse {
     public static final class Builder {
         private List<FilterFacet> items = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -101,6 +100,14 @@ public final class FilterFacetsResponse {
 
         public FilterFacetsResponse build() {
             return new FilterFacetsResponse(items, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("items")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

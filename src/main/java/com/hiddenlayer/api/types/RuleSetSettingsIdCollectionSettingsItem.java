@@ -98,7 +98,6 @@ public final class RuleSetSettingsIdCollectionSettingsItem implements ICategory,
 
         private String settingsId;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -127,6 +126,14 @@ public final class RuleSetSettingsIdCollectionSettingsItem implements ICategory,
         @java.lang.Override
         public RuleSetSettingsIdCollectionSettingsItem build() {
             return new RuleSetSettingsIdCollectionSettingsItem(category, settingsId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("category") || key.equalsIgnoreCase("settings_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.evaluations.redteam.rulesuggestions;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.evaluations.redteam.rulesuggestions.requests.GetRuleSuggestionsRequest;
@@ -39,7 +40,16 @@ public class AsyncRuleSuggestionsClient {
      * <p>Each run is independent - triggering a new run does not replace or affect prior runs.</p>
      */
     public CompletableFuture<SyncPagingIterable<RuleSuggestionListItem>> list(String workflowId) {
-        return this.rawClient.list(workflowId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RuleSuggestionListItem>>> rawFuture =
+                this.rawClient.list(workflowId);
+        CompletableFuture<SyncPagingIterable<RuleSuggestionListItem>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -49,7 +59,16 @@ public class AsyncRuleSuggestionsClient {
      */
     public CompletableFuture<SyncPagingIterable<RuleSuggestionListItem>> list(
             String workflowId, RequestOptions requestOptions) {
-        return this.rawClient.list(workflowId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RuleSuggestionListItem>>> rawFuture =
+                this.rawClient.list(workflowId, requestOptions);
+        CompletableFuture<SyncPagingIterable<RuleSuggestionListItem>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -59,7 +78,16 @@ public class AsyncRuleSuggestionsClient {
      */
     public CompletableFuture<SyncPagingIterable<RuleSuggestionListItem>> list(
             String workflowId, ListRuleSuggestionsRequest request) {
-        return this.rawClient.list(workflowId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RuleSuggestionListItem>>> rawFuture =
+                this.rawClient.list(workflowId, request);
+        CompletableFuture<SyncPagingIterable<RuleSuggestionListItem>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -69,7 +97,16 @@ public class AsyncRuleSuggestionsClient {
      */
     public CompletableFuture<SyncPagingIterable<RuleSuggestionListItem>> list(
             String workflowId, ListRuleSuggestionsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.list(workflowId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RuleSuggestionListItem>>> rawFuture =
+                this.rawClient.list(workflowId, request, requestOptions);
+        CompletableFuture<SyncPagingIterable<RuleSuggestionListItem>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -85,7 +122,15 @@ public class AsyncRuleSuggestionsClient {
      * <p>An empty JSON object <code>{}</code> is the minimal valid request body.</p>
      */
     public CompletableFuture<StartRuleSuggestionResponse> create(String workflowId) {
-        return this.rawClient.create(workflowId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<StartRuleSuggestionResponse>> rawFuture =
+                this.rawClient.create(workflowId);
+        CompletableFuture<StartRuleSuggestionResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -101,7 +146,15 @@ public class AsyncRuleSuggestionsClient {
      * <p>An empty JSON object <code>{}</code> is the minimal valid request body.</p>
      */
     public CompletableFuture<StartRuleSuggestionResponse> create(String workflowId, RequestOptions requestOptions) {
-        return this.rawClient.create(workflowId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<StartRuleSuggestionResponse>> rawFuture =
+                this.rawClient.create(workflowId, requestOptions);
+        CompletableFuture<StartRuleSuggestionResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -117,7 +170,15 @@ public class AsyncRuleSuggestionsClient {
      * <p>An empty JSON object <code>{}</code> is the minimal valid request body.</p>
      */
     public CompletableFuture<StartRuleSuggestionResponse> create(String workflowId, StartRuleSuggestionBody request) {
-        return this.rawClient.create(workflowId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<StartRuleSuggestionResponse>> rawFuture =
+                this.rawClient.create(workflowId, request);
+        CompletableFuture<StartRuleSuggestionResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -134,7 +195,15 @@ public class AsyncRuleSuggestionsClient {
      */
     public CompletableFuture<StartRuleSuggestionResponse> create(
             String workflowId, StartRuleSuggestionBody request, RequestOptions requestOptions) {
-        return this.rawClient.create(workflowId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<StartRuleSuggestionResponse>> rawFuture =
+                this.rawClient.create(workflowId, request, requestOptions);
+        CompletableFuture<StartRuleSuggestionResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -143,7 +212,15 @@ public class AsyncRuleSuggestionsClient {
      * Returns immediately with current state.</p>
      */
     public CompletableFuture<RuleSuggestionStatusResponse> status(String workflowId, String suggestionId) {
-        return this.rawClient.status(workflowId, suggestionId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RuleSuggestionStatusResponse>> rawFuture =
+                this.rawClient.status(workflowId, suggestionId);
+        CompletableFuture<RuleSuggestionStatusResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -153,7 +230,15 @@ public class AsyncRuleSuggestionsClient {
      */
     public CompletableFuture<RuleSuggestionStatusResponse> status(
             String workflowId, String suggestionId, RequestOptions requestOptions) {
-        return this.rawClient.status(workflowId, suggestionId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RuleSuggestionStatusResponse>> rawFuture =
+                this.rawClient.status(workflowId, suggestionId, requestOptions);
+        CompletableFuture<RuleSuggestionStatusResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -163,7 +248,15 @@ public class AsyncRuleSuggestionsClient {
      */
     public CompletableFuture<RuleSuggestionStatusResponse> status(
             String workflowId, String suggestionId, StatusRuleSuggestionsRequest request) {
-        return this.rawClient.status(workflowId, suggestionId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RuleSuggestionStatusResponse>> rawFuture =
+                this.rawClient.status(workflowId, suggestionId, request);
+        CompletableFuture<RuleSuggestionStatusResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -176,9 +269,15 @@ public class AsyncRuleSuggestionsClient {
             String suggestionId,
             StatusRuleSuggestionsRequest request,
             RequestOptions requestOptions) {
-        return this.rawClient
-                .status(workflowId, suggestionId, request, requestOptions)
-                .thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RuleSuggestionStatusResponse>> rawFuture =
+                this.rawClient.status(workflowId, suggestionId, request, requestOptions);
+        CompletableFuture<RuleSuggestionStatusResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -186,7 +285,15 @@ public class AsyncRuleSuggestionsClient {
      * <p>Get the complete result of a rule suggestion run, including any generated rules.</p>
      */
     public CompletableFuture<RuleSuggestionResultResponse> get(String workflowId, String suggestionId) {
-        return this.rawClient.get(workflowId, suggestionId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RuleSuggestionResultResponse>> rawFuture =
+                this.rawClient.get(workflowId, suggestionId);
+        CompletableFuture<RuleSuggestionResultResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -195,7 +302,15 @@ public class AsyncRuleSuggestionsClient {
      */
     public CompletableFuture<RuleSuggestionResultResponse> get(
             String workflowId, String suggestionId, RequestOptions requestOptions) {
-        return this.rawClient.get(workflowId, suggestionId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RuleSuggestionResultResponse>> rawFuture =
+                this.rawClient.get(workflowId, suggestionId, requestOptions);
+        CompletableFuture<RuleSuggestionResultResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -204,7 +319,15 @@ public class AsyncRuleSuggestionsClient {
      */
     public CompletableFuture<RuleSuggestionResultResponse> get(
             String workflowId, String suggestionId, GetRuleSuggestionsRequest request) {
-        return this.rawClient.get(workflowId, suggestionId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RuleSuggestionResultResponse>> rawFuture =
+                this.rawClient.get(workflowId, suggestionId, request);
+        CompletableFuture<RuleSuggestionResultResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -213,8 +336,14 @@ public class AsyncRuleSuggestionsClient {
      */
     public CompletableFuture<RuleSuggestionResultResponse> get(
             String workflowId, String suggestionId, GetRuleSuggestionsRequest request, RequestOptions requestOptions) {
-        return this.rawClient
-                .get(workflowId, suggestionId, request, requestOptions)
-                .thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<RuleSuggestionResultResponse>> rawFuture =
+                this.rawClient.get(workflowId, suggestionId, request, requestOptions);
+        CompletableFuture<RuleSuggestionResultResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

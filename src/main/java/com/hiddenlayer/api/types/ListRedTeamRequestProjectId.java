@@ -71,7 +71,6 @@ public final class ListRedTeamRequestProjectId {
     public static final class Builder {
         private List<String> in = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -107,6 +106,14 @@ public final class ListRedTeamRequestProjectId {
 
         public ListRedTeamRequestProjectId build() {
             return new ListRedTeamRequestProjectId(in, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("in")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

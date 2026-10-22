@@ -81,7 +81,6 @@ public final class BulkCustomTagJobRequestV2Filter {
     public static final class Builder implements AssetsStage, _FinalStage {
         private AssetFilterV2 assets;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -102,6 +101,14 @@ public final class BulkCustomTagJobRequestV2Filter {
         @java.lang.Override
         public BulkCustomTagJobRequestV2Filter build() {
             return new BulkCustomTagJobRequestV2Filter(assets, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("assets")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

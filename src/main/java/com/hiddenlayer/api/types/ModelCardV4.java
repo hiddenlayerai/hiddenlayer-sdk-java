@@ -379,7 +379,6 @@ public final class ModelCardV4 implements IModelCardBaseResponse {
 
         private Optional<Map<String, Object>> tags = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -601,6 +600,28 @@ public final class ModelCardV4 implements IModelCardBaseResponse {
                     policyStatus,
                     latestScanId,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("model_id")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("plaintext_name")
+                    || key.equalsIgnoreCase("source")
+                    || key.equalsIgnoreCase("tags")
+                    || key.equalsIgnoreCase("model_scan_threat_level")
+                    || key.equalsIgnoreCase("attack_monitoring_threat_level")
+                    || key.equalsIgnoreCase("aidr_threat_level")
+                    || key.equalsIgnoreCase("security_posture")
+                    || key.equalsIgnoreCase("active_version_count")
+                    || key.equalsIgnoreCase("has_genealogy")
+                    || key.equalsIgnoreCase("model_scan_severity")
+                    || key.equalsIgnoreCase("model_scan_has_error")
+                    || key.equalsIgnoreCase("policy_status")
+                    || key.equalsIgnoreCase("latest_scan_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

@@ -72,7 +72,6 @@ public final class SuggestionsAssetsResponse {
     public static final class Builder {
         private List<SuggestionsAssetsResponseSuggestionsItem> suggestions = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -108,6 +107,14 @@ public final class SuggestionsAssetsResponse {
 
         public SuggestionsAssetsResponse build() {
             return new SuggestionsAssetsResponse(suggestions, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("suggestions")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

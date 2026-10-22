@@ -169,7 +169,6 @@ public final class RedTeamResultPayload {
 
         private Optional<Map<String, Object>> report = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -293,6 +292,20 @@ public final class RedTeamResultPayload {
                     usage,
                     report,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("target_context")
+                    || key.equalsIgnoreCase("evaluation_report")
+                    || key.equalsIgnoreCase("settings")
+                    || key.equalsIgnoreCase("attacker_results")
+                    || key.equalsIgnoreCase("usage")
+                    || key.equalsIgnoreCase("report")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -275,7 +275,6 @@ public final class AssetScan {
 
         private Optional<String> tenantId = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -451,6 +450,22 @@ public final class AssetScan {
                     createdAt,
                     updatedAt,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("tenant_id")
+                    || key.equalsIgnoreCase("asset_id")
+                    || key.equalsIgnoreCase("asset_id_v2")
+                    || key.equalsIgnoreCase("scan_id")
+                    || key.equalsIgnoreCase("status")
+                    || key.equalsIgnoreCase("policy_status")
+                    || key.equalsIgnoreCase("detection_count")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("updated_at")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

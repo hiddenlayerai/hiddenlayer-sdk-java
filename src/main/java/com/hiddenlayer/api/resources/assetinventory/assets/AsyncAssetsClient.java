@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.assetinventory.assets;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.Suppliers;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
@@ -56,87 +57,217 @@ public class AsyncAssetsClient {
     }
 
     public CompletableFuture<ListV1AssetsResponse> listV1() {
-        return this.rawClient.listV1().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ListV1AssetsResponse>> rawFuture = this.rawClient.listV1();
+        CompletableFuture<ListV1AssetsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<ListV1AssetsResponse> listV1(RequestOptions requestOptions) {
-        return this.rawClient.listV1(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ListV1AssetsResponse>> rawFuture =
+                this.rawClient.listV1(requestOptions);
+        CompletableFuture<ListV1AssetsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<ListV1AssetsResponse> listV1(ListV1AssetsRequest request) {
-        return this.rawClient.listV1(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ListV1AssetsResponse>> rawFuture = this.rawClient.listV1(request);
+        CompletableFuture<ListV1AssetsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<ListV1AssetsResponse> listV1(ListV1AssetsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.listV1(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ListV1AssetsResponse>> rawFuture =
+                this.rawClient.listV1(request, requestOptions);
+        CompletableFuture<ListV1AssetsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AiAsset> getV1(String assetId) {
-        return this.rawClient.getV1(assetId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAsset>> rawFuture = this.rawClient.getV1(assetId);
+        CompletableFuture<AiAsset> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AiAsset> getV1(String assetId, RequestOptions requestOptions) {
-        return this.rawClient.getV1(assetId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAsset>> rawFuture = this.rawClient.getV1(assetId, requestOptions);
+        CompletableFuture<AiAsset> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AiAsset> getV1(String assetId, GetV1AssetsRequest request) {
-        return this.rawClient.getV1(assetId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAsset>> rawFuture = this.rawClient.getV1(assetId, request);
+        CompletableFuture<AiAsset> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AiAsset> getV1(String assetId, GetV1AssetsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.getV1(assetId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAsset>> rawFuture =
+                this.rawClient.getV1(assetId, request, requestOptions);
+        CompletableFuture<AiAsset> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AiAssetInventoryV1AssetGraphNode> graph(String assetId) {
-        return this.rawClient.graph(assetId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetGraphNode>> rawFuture =
+                this.rawClient.graph(assetId);
+        CompletableFuture<AiAssetInventoryV1AssetGraphNode> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AiAssetInventoryV1AssetGraphNode> graph(String assetId, RequestOptions requestOptions) {
-        return this.rawClient.graph(assetId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetGraphNode>> rawFuture =
+                this.rawClient.graph(assetId, requestOptions);
+        CompletableFuture<AiAssetInventoryV1AssetGraphNode> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AiAssetInventoryV1AssetGraphNode> graph(String assetId, GraphAssetsRequest request) {
-        return this.rawClient.graph(assetId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetGraphNode>> rawFuture =
+                this.rawClient.graph(assetId, request);
+        CompletableFuture<AiAssetInventoryV1AssetGraphNode> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<AiAssetInventoryV1AssetGraphNode> graph(
             String assetId, GraphAssetsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.graph(assetId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetGraphNode>> rawFuture =
+                this.rawClient.graph(assetId, request, requestOptions);
+        CompletableFuture<AiAssetInventoryV1AssetGraphNode> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Returns the available filter fields and their values. Tag names are included as a filter field.
      */
     public CompletableFuture<FiltersV1AssetsResponse> filtersV1() {
-        return this.rawClient.filtersV1().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<FiltersV1AssetsResponse>> rawFuture = this.rawClient.filtersV1();
+        CompletableFuture<FiltersV1AssetsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Returns the available filter fields and their values. Tag names are included as a filter field.
      */
     public CompletableFuture<FiltersV1AssetsResponse> filtersV1(RequestOptions requestOptions) {
-        return this.rawClient.filtersV1(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<FiltersV1AssetsResponse>> rawFuture =
+                this.rawClient.filtersV1(requestOptions);
+        CompletableFuture<FiltersV1AssetsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Returns all custom and discovered tags assigned to the given asset.
      */
     public CompletableFuture<AiAssetInventoryV1AssetTagMap> tagsV1(String assetId) {
-        return this.rawClient.tagsV1(assetId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetTagMap>> rawFuture =
+                this.rawClient.tagsV1(assetId);
+        CompletableFuture<AiAssetInventoryV1AssetTagMap> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Returns all custom and discovered tags assigned to the given asset.
      */
     public CompletableFuture<AiAssetInventoryV1AssetTagMap> tagsV1(String assetId, RequestOptions requestOptions) {
-        return this.rawClient.tagsV1(assetId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetTagMap>> rawFuture =
+                this.rawClient.tagsV1(assetId, requestOptions);
+        CompletableFuture<AiAssetInventoryV1AssetTagMap> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Returns all custom and discovered tags assigned to the given asset.
      */
     public CompletableFuture<AiAssetInventoryV1AssetTagMap> tagsV1(String assetId, TagsV1AssetsRequest request) {
-        return this.rawClient.tagsV1(assetId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetTagMap>> rawFuture =
+                this.rawClient.tagsV1(assetId, request);
+        CompletableFuture<AiAssetInventoryV1AssetTagMap> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -144,7 +275,15 @@ public class AsyncAssetsClient {
      */
     public CompletableFuture<AiAssetInventoryV1AssetTagMap> tagsV1(
             String assetId, TagsV1AssetsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.tagsV1(assetId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetTagMap>> rawFuture =
+                this.rawClient.tagsV1(assetId, request, requestOptions);
+        CompletableFuture<AiAssetInventoryV1AssetTagMap> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -173,7 +312,14 @@ public class AsyncAssetsClient {
      * suggesting index-backed sort fields to retry with.</p>
      */
     public CompletableFuture<SyncPagingIterable<Asset>> list() {
-        return this.rawClient.list().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<Asset>>> rawFuture = this.rawClient.list();
+        CompletableFuture<SyncPagingIterable<Asset>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -202,7 +348,15 @@ public class AsyncAssetsClient {
      * suggesting index-backed sort fields to retry with.</p>
      */
     public CompletableFuture<SyncPagingIterable<Asset>> list(RequestOptions requestOptions) {
-        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<Asset>>> rawFuture =
+                this.rawClient.list(requestOptions);
+        CompletableFuture<SyncPagingIterable<Asset>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -231,7 +385,14 @@ public class AsyncAssetsClient {
      * suggesting index-backed sort fields to retry with.</p>
      */
     public CompletableFuture<SyncPagingIterable<Asset>> list(ListAssetsRequest request) {
-        return this.rawClient.list(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<Asset>>> rawFuture = this.rawClient.list(request);
+        CompletableFuture<SyncPagingIterable<Asset>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -260,7 +421,15 @@ public class AsyncAssetsClient {
      * suggesting index-backed sort fields to retry with.</p>
      */
     public CompletableFuture<SyncPagingIterable<Asset>> list(ListAssetsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.list(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<Asset>>> rawFuture =
+                this.rawClient.list(request, requestOptions);
+        CompletableFuture<SyncPagingIterable<Asset>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -272,7 +441,15 @@ public class AsyncAssetsClient {
      * <code>project:read</code> scope.</p>
      */
     public CompletableFuture<SuggestionsAssetsResponse> suggestions(SuggestionsAssetsRequest request) {
-        return this.rawClient.suggestions(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SuggestionsAssetsResponse>> rawFuture =
+                this.rawClient.suggestions(request);
+        CompletableFuture<SuggestionsAssetsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -285,7 +462,15 @@ public class AsyncAssetsClient {
      */
     public CompletableFuture<SuggestionsAssetsResponse> suggestions(
             SuggestionsAssetsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.suggestions(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SuggestionsAssetsResponse>> rawFuture =
+                this.rawClient.suggestions(request, requestOptions);
+        CompletableFuture<SuggestionsAssetsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -329,7 +514,14 @@ public class AsyncAssetsClient {
      * unbounded query.</p>
      */
     public CompletableFuture<FilterFacetsResponse> filters() {
-        return this.rawClient.filters().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<FilterFacetsResponse>> rawFuture = this.rawClient.filters();
+        CompletableFuture<FilterFacetsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -373,7 +565,15 @@ public class AsyncAssetsClient {
      * unbounded query.</p>
      */
     public CompletableFuture<FilterFacetsResponse> filters(RequestOptions requestOptions) {
-        return this.rawClient.filters(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<FilterFacetsResponse>> rawFuture =
+                this.rawClient.filters(requestOptions);
+        CompletableFuture<FilterFacetsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -417,7 +617,14 @@ public class AsyncAssetsClient {
      * unbounded query.</p>
      */
     public CompletableFuture<FilterFacetsResponse> filters(FiltersAssetsRequest request) {
-        return this.rawClient.filters(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<FilterFacetsResponse>> rawFuture = this.rawClient.filters(request);
+        CompletableFuture<FilterFacetsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -462,7 +669,15 @@ public class AsyncAssetsClient {
      */
     public CompletableFuture<FilterFacetsResponse> filters(
             FiltersAssetsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.filters(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<FilterFacetsResponse>> rawFuture =
+                this.rawClient.filters(request, requestOptions);
+        CompletableFuture<FilterFacetsResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -475,7 +690,14 @@ public class AsyncAssetsClient {
      * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public CompletableFuture<Asset> get(String assetId) {
-        return this.rawClient.get(assetId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Asset>> rawFuture = this.rawClient.get(assetId);
+        CompletableFuture<Asset> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -488,7 +710,14 @@ public class AsyncAssetsClient {
      * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public CompletableFuture<Asset> get(String assetId, RequestOptions requestOptions) {
-        return this.rawClient.get(assetId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Asset>> rawFuture = this.rawClient.get(assetId, requestOptions);
+        CompletableFuture<Asset> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -501,7 +730,14 @@ public class AsyncAssetsClient {
      * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public CompletableFuture<Asset> get(String assetId, GetAssetsRequest request) {
-        return this.rawClient.get(assetId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Asset>> rawFuture = this.rawClient.get(assetId, request);
+        CompletableFuture<Asset> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -514,7 +750,15 @@ public class AsyncAssetsClient {
      * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
     public CompletableFuture<Asset> get(String assetId, GetAssetsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.get(assetId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Asset>> rawFuture =
+                this.rawClient.get(assetId, request, requestOptions);
+        CompletableFuture<Asset> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -532,7 +776,14 @@ public class AsyncAssetsClient {
      * <p>Requires the <code>asset:read</code> scope.</p>
      */
     public CompletableFuture<AssetGraphNode> discoveredGraph(String assetId) {
-        return this.rawClient.discoveredGraph(assetId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AssetGraphNode>> rawFuture = this.rawClient.discoveredGraph(assetId);
+        CompletableFuture<AssetGraphNode> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -550,7 +801,15 @@ public class AsyncAssetsClient {
      * <p>Requires the <code>asset:read</code> scope.</p>
      */
     public CompletableFuture<AssetGraphNode> discoveredGraph(String assetId, RequestOptions requestOptions) {
-        return this.rawClient.discoveredGraph(assetId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AssetGraphNode>> rawFuture =
+                this.rawClient.discoveredGraph(assetId, requestOptions);
+        CompletableFuture<AssetGraphNode> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -568,7 +827,15 @@ public class AsyncAssetsClient {
      * <p>Requires the <code>asset:read</code> scope.</p>
      */
     public CompletableFuture<AssetGraphNode> discoveredGraph(String assetId, DiscoveredGraphAssetsRequest request) {
-        return this.rawClient.discoveredGraph(assetId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AssetGraphNode>> rawFuture =
+                this.rawClient.discoveredGraph(assetId, request);
+        CompletableFuture<AssetGraphNode> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -587,7 +854,15 @@ public class AsyncAssetsClient {
      */
     public CompletableFuture<AssetGraphNode> discoveredGraph(
             String assetId, DiscoveredGraphAssetsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.discoveredGraph(assetId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AssetGraphNode>> rawFuture =
+                this.rawClient.discoveredGraph(assetId, request, requestOptions);
+        CompletableFuture<AssetGraphNode> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -595,7 +870,14 @@ public class AsyncAssetsClient {
      * <p>Returns all custom and discovered tags assigned to the given asset.</p>
      */
     public CompletableFuture<AssetTagMap> tags(String assetId) {
-        return this.rawClient.tags(assetId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AssetTagMap>> rawFuture = this.rawClient.tags(assetId);
+        CompletableFuture<AssetTagMap> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -603,7 +885,15 @@ public class AsyncAssetsClient {
      * <p>Returns all custom and discovered tags assigned to the given asset.</p>
      */
     public CompletableFuture<AssetTagMap> tags(String assetId, RequestOptions requestOptions) {
-        return this.rawClient.tags(assetId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AssetTagMap>> rawFuture =
+                this.rawClient.tags(assetId, requestOptions);
+        CompletableFuture<AssetTagMap> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -611,7 +901,14 @@ public class AsyncAssetsClient {
      * <p>Returns all custom and discovered tags assigned to the given asset.</p>
      */
     public CompletableFuture<AssetTagMap> tags(String assetId, TagsAssetsRequest request) {
-        return this.rawClient.tags(assetId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AssetTagMap>> rawFuture = this.rawClient.tags(assetId, request);
+        CompletableFuture<AssetTagMap> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -620,7 +917,15 @@ public class AsyncAssetsClient {
      */
     public CompletableFuture<AssetTagMap> tags(
             String assetId, TagsAssetsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.tags(assetId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<AssetTagMap>> rawFuture =
+                this.rawClient.tags(assetId, request, requestOptions);
+        CompletableFuture<AssetTagMap> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public AsyncSearchClient search() {

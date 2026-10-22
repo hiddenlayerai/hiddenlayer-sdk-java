@@ -232,7 +232,6 @@ public final class AiAssetInventoryV1AssetRelationship {
 
         private Optional<Map<String, Object>> metadata = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -342,6 +341,20 @@ public final class AiAssetInventoryV1AssetRelationship {
                     metadata,
                     integrationId,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("source_asset_id")
+                    || key.equalsIgnoreCase("target_asset_id")
+                    || key.equalsIgnoreCase("relationship_type")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("last_synced_at")
+                    || key.equalsIgnoreCase("metadata")
+                    || key.equalsIgnoreCase("integration_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

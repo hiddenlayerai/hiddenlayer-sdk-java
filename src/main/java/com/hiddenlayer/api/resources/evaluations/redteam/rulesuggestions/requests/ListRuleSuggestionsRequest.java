@@ -84,7 +84,6 @@ public final class ListRuleSuggestionsRequest {
 
         private Optional<String> cursor = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -125,6 +124,14 @@ public final class ListRuleSuggestionsRequest {
 
         public ListRuleSuggestionsRequest build() {
             return new ListRuleSuggestionsRequest(limit, cursor, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("limit") || key.equalsIgnoreCase("cursor")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

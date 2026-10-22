@@ -212,7 +212,6 @@ public final class AuditEntryBase implements IAuditEntryBase {
 
         private List<String> apiPermissionsRequired = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -333,6 +332,19 @@ public final class AuditEntryBase implements IAuditEntryBase {
                     apiPermissionsRequired,
                     metadata,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("occurred_at")
+                    || key.equalsIgnoreCase("action")
+                    || key.equalsIgnoreCase("resource_type")
+                    || key.equalsIgnoreCase("resource_id")
+                    || key.equalsIgnoreCase("api_permissions_required")
+                    || key.equalsIgnoreCase("metadata")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

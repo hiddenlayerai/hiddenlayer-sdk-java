@@ -81,7 +81,6 @@ public final class UpdateV1CustomTagsRequest {
     public static final class Builder implements BodyStage, _FinalStage {
         private AiAssetInventoryV1TagValue body;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -102,6 +101,14 @@ public final class UpdateV1CustomTagsRequest {
         @java.lang.Override
         public UpdateV1CustomTagsRequest build() {
             return new UpdateV1CustomTagsRequest(body, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("body")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

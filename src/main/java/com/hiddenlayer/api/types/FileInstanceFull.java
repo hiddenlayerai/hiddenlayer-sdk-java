@@ -171,7 +171,6 @@ public final class FileInstanceFull {
 
         private List<License> licenses = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -267,6 +266,19 @@ public final class FileInstanceFull {
         public FileInstanceFull build() {
             return new FileInstanceFull(
                     instance, repoRevision, repository, repoOwner, licenses, usePolicies, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("instance")
+                    || key.equalsIgnoreCase("repo_revision")
+                    || key.equalsIgnoreCase("repository")
+                    || key.equalsIgnoreCase("repo_owner")
+                    || key.equalsIgnoreCase("licenses")
+                    || key.equalsIgnoreCase("use_policies")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

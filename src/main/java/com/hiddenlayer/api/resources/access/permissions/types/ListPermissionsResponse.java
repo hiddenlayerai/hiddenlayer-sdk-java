@@ -72,7 +72,6 @@ public final class ListPermissionsResponse {
     public static final class Builder {
         private List<PermissionArea> areas = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -108,6 +107,14 @@ public final class ListPermissionsResponse {
 
         public ListPermissionsResponse build() {
             return new ListPermissionsResponse(areas, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("areas")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

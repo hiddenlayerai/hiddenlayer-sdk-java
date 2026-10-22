@@ -126,7 +126,6 @@ public final class CountryCount {
 
         private int count;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -175,6 +174,16 @@ public final class CountryCount {
         @java.lang.Override
         public CountryCount build() {
             return new CountryCount(country, countryCode, count, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("country")
+                    || key.equalsIgnoreCase("country_code")
+                    || key.equalsIgnoreCase("count")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

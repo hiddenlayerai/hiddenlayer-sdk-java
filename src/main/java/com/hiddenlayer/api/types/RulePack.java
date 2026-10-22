@@ -164,7 +164,6 @@ public final class RulePack {
 
         private Optional<String> id = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -270,6 +269,18 @@ public final class RulePack {
         @java.lang.Override
         public RulePack build() {
             return new RulePack(id, name, description, type, detectionRules, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("description")
+                    || key.equalsIgnoreCase("type")
+                    || key.equalsIgnoreCase("detection_rules")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

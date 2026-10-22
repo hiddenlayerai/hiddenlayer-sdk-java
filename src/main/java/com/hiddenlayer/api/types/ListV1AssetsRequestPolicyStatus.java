@@ -79,7 +79,6 @@ public final class ListV1AssetsRequestPolicyStatus {
 
         private Optional<PolicyStatus> eq = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -114,6 +113,14 @@ public final class ListV1AssetsRequestPolicyStatus {
 
         public ListV1AssetsRequestPolicyStatus build() {
             return new ListV1AssetsRequestPolicyStatus(in, eq, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("in") || key.equalsIgnoreCase("eq")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

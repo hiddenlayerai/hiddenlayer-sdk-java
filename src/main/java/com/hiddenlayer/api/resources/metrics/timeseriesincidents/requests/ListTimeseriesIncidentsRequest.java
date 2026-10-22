@@ -139,7 +139,6 @@ public final class ListTimeseriesIncidentsRequest {
 
         private Optional<OffsetDateTime> endTimestamp = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -209,6 +208,16 @@ public final class ListTimeseriesIncidentsRequest {
         @java.lang.Override
         public ListTimeseriesIncidentsRequest build() {
             return new ListTimeseriesIncidentsRequest(startTimestamp, endTimestamp, requesterId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("start_timestamp")
+                    || key.equalsIgnoreCase("end_timestamp")
+                    || key.equalsIgnoreCase("requester_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

@@ -156,7 +156,6 @@ public final class Cursors implements ICursors {
 
         private Optional<String> last = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -226,6 +225,17 @@ public final class Cursors implements ICursors {
         @java.lang.Override
         public Cursors build() {
             return new Cursors(first, prev, next, last, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("first")
+                    || key.equalsIgnoreCase("prev")
+                    || key.equalsIgnoreCase("next")
+                    || key.equalsIgnoreCase("last")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

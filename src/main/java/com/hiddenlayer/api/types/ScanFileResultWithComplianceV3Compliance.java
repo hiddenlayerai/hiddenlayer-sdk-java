@@ -80,7 +80,6 @@ public final class ScanFileResultWithComplianceV3Compliance {
 
         private Optional<List<String>> rationale = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -115,6 +114,14 @@ public final class ScanFileResultWithComplianceV3Compliance {
 
         public ScanFileResultWithComplianceV3Compliance build() {
             return new ScanFileResultWithComplianceV3Compliance(status, rationale, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("status") || key.equalsIgnoreCase("rationale")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

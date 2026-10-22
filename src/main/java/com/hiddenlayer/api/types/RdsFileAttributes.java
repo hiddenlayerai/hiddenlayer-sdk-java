@@ -177,7 +177,6 @@ public final class RdsFileAttributes {
 
         private List<String> subtype = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -265,6 +264,18 @@ public final class RdsFileAttributes {
         public RdsFileAttributes build() {
             return new RdsFileAttributes(
                     subtype, rdsEncoding, rdsMinReaderVersion, rdsVersion, rdsWriterVersion, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("subtype")
+                    || key.equalsIgnoreCase("rds_encoding")
+                    || key.equalsIgnoreCase("rds_min_reader_version")
+                    || key.equalsIgnoreCase("rds_version")
+                    || key.equalsIgnoreCase("rds_writer_version")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

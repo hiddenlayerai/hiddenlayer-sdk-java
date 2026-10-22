@@ -78,7 +78,6 @@ public final class SecurityPosture {
 
         private Optional<Boolean> attackMonitoring = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -113,6 +112,14 @@ public final class SecurityPosture {
 
         public SecurityPosture build() {
             return new SecurityPosture(modelScan, attackMonitoring, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("model_scan") || key.equalsIgnoreCase("attack_monitoring")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

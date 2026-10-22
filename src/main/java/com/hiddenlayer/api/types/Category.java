@@ -81,7 +81,6 @@ public final class Category implements ICategory {
     public static final class Builder implements CategoryStage, _FinalStage {
         private String category;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -102,6 +101,14 @@ public final class Category implements ICategory {
         @java.lang.Override
         public Category build() {
             return new Category(category, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("category")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

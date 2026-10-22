@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.metrics.timeseriesinferences;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.metrics.timeseriesinferences.requests.ListTimeseriesInferencesRequest;
 import com.hiddenlayer.api.resources.metrics.timeseriesinferences.requests.ListV2TimeseriesInferencesRequest;
@@ -29,20 +30,52 @@ public class AsyncTimeseriesInferencesClient {
     }
 
     public CompletableFuture<InferenceTimeseriesResponseV2> listV2(ListV2TimeseriesInferencesRequest request) {
-        return this.rawClient.listV2(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<InferenceTimeseriesResponseV2>> rawFuture =
+                this.rawClient.listV2(request);
+        CompletableFuture<InferenceTimeseriesResponseV2> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<InferenceTimeseriesResponseV2> listV2(
             ListV2TimeseriesInferencesRequest request, RequestOptions requestOptions) {
-        return this.rawClient.listV2(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<InferenceTimeseriesResponseV2>> rawFuture =
+                this.rawClient.listV2(request, requestOptions);
+        CompletableFuture<InferenceTimeseriesResponseV2> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<InferenceTimeseriesResponseV3> list(ListTimeseriesInferencesRequest request) {
-        return this.rawClient.list(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<InferenceTimeseriesResponseV3>> rawFuture =
+                this.rawClient.list(request);
+        CompletableFuture<InferenceTimeseriesResponseV3> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<InferenceTimeseriesResponseV3> list(
             ListTimeseriesInferencesRequest request, RequestOptions requestOptions) {
-        return this.rawClient.list(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<InferenceTimeseriesResponseV3>> rawFuture =
+                this.rawClient.list(request, requestOptions);
+        CompletableFuture<InferenceTimeseriesResponseV3> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

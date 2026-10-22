@@ -243,7 +243,6 @@ public final class ModelCardBaseResponse implements IModelCardBaseResponse {
 
         private Optional<Map<String, Object>> tags = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -364,6 +363,22 @@ public final class ModelCardBaseResponse implements IModelCardBaseResponse {
                     aidrThreatLevel,
                     securityPosture,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("model_id")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("plaintext_name")
+                    || key.equalsIgnoreCase("source")
+                    || key.equalsIgnoreCase("tags")
+                    || key.equalsIgnoreCase("model_scan_threat_level")
+                    || key.equalsIgnoreCase("attack_monitoring_threat_level")
+                    || key.equalsIgnoreCase("aidr_threat_level")
+                    || key.equalsIgnoreCase("security_posture")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

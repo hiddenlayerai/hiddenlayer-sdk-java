@@ -231,7 +231,6 @@ public final class ScanJobInventory {
 
         private Optional<String> requestedScanLocation = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -373,6 +372,20 @@ public final class ScanJobInventory {
                     requestSource,
                     origin,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("model_name")
+                    || key.equalsIgnoreCase("model_version")
+                    || key.equalsIgnoreCase("requested_scan_location")
+                    || key.equalsIgnoreCase("scan_target")
+                    || key.equalsIgnoreCase("requesting_entity")
+                    || key.equalsIgnoreCase("request_source")
+                    || key.equalsIgnoreCase("origin")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

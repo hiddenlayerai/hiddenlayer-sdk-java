@@ -139,7 +139,6 @@ public final class PagedResponseWithTotal {
 
         private List<Object> items = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -216,6 +215,17 @@ public final class PagedResponseWithTotal {
         @java.lang.Override
         public PagedResponseWithTotal build() {
             return new PagedResponseWithTotal(items, total, limit, offset, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("items")
+                    || key.equalsIgnoreCase("total")
+                    || key.equalsIgnoreCase("limit")
+                    || key.equalsIgnoreCase("offset")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

@@ -163,7 +163,6 @@ public final class AttributeCondition {
 
         private Optional<String> contains = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -279,6 +278,20 @@ public final class AttributeCondition {
 
         public AttributeCondition build() {
             return new AttributeCondition(eq, in, gt, gte, lt, lte, contains, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("eq")
+                    || key.equalsIgnoreCase("in")
+                    || key.equalsIgnoreCase("gt")
+                    || key.equalsIgnoreCase("gte")
+                    || key.equalsIgnoreCase("lt")
+                    || key.equalsIgnoreCase("lte")
+                    || key.equalsIgnoreCase("contains")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

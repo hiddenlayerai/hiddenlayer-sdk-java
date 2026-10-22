@@ -139,7 +139,6 @@ public final class ListV2TimeseriesScansRequest {
 
         private Optional<OffsetDateTime> endTimestamp = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -209,6 +208,16 @@ public final class ListV2TimeseriesScansRequest {
         @java.lang.Override
         public ListV2TimeseriesScansRequest build() {
             return new ListV2TimeseriesScansRequest(startTimestamp, endTimestamp, requesterId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("start_timestamp")
+                    || key.equalsIgnoreCase("end_timestamp")
+                    || key.equalsIgnoreCase("requester_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

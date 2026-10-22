@@ -86,7 +86,6 @@ public final class CompleteFileResponse {
     public static final class Builder implements ScanIdStage, _FinalStage {
         private String scanId;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -111,6 +110,14 @@ public final class CompleteFileResponse {
         @java.lang.Override
         public CompleteFileResponse build() {
             return new CompleteFileResponse(scanId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("scan_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

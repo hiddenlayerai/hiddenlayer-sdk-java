@@ -80,7 +80,6 @@ public final class ScanSubmissionSource {
 
         private Optional<ScanSubmissionSourceSaas> saas = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -115,6 +114,14 @@ public final class ScanSubmissionSource {
 
         public ScanSubmissionSource build() {
             return new ScanSubmissionSource(repo, saas, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("REPO") || key.equalsIgnoreCase("SAAS")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -409,7 +409,6 @@ public final class SearchResult implements IAiAssetSummary {
 
         private Optional<String> regionDetails = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -665,6 +664,28 @@ public final class SearchResult implements IAiAssetSummary {
                     matchType,
                     matchConfidence,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("provider")
+                    || key.equalsIgnoreCase("account_id")
+                    || key.equalsIgnoreCase("region")
+                    || key.equalsIgnoreCase("service")
+                    || key.equalsIgnoreCase("asset_type")
+                    || key.equalsIgnoreCase("region_details")
+                    || key.equalsIgnoreCase("country")
+                    || key.equalsIgnoreCase("country_code")
+                    || key.equalsIgnoreCase("geographic_region")
+                    || key.equalsIgnoreCase("highlights")
+                    || key.equalsIgnoreCase("score")
+                    || key.equalsIgnoreCase("match_type")
+                    || key.equalsIgnoreCase("match_confidence")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

@@ -67,7 +67,6 @@ public final class CreateCsvRequestSource {
     public static final class Builder {
         private Optional<CreateCsvRequestSourceEq> eq = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -90,6 +89,14 @@ public final class CreateCsvRequestSource {
 
         public CreateCsvRequestSource build() {
             return new CreateCsvRequestSource(eq, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("eq")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

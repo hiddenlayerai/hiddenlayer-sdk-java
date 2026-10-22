@@ -107,7 +107,6 @@ public final class CreateCsvRequestTime {
 
         private OffsetDateTime lte;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -144,6 +143,14 @@ public final class CreateCsvRequestTime {
         @java.lang.Override
         public CreateCsvRequestTime build() {
             return new CreateCsvRequestTime(gte, lte, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("gte") || key.equalsIgnoreCase("lte")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

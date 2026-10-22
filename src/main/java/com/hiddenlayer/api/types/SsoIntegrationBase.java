@@ -223,7 +223,6 @@ public final class SsoIntegrationBase {
 
         private Optional<String> id = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -379,6 +378,20 @@ public final class SsoIntegrationBase {
         public SsoIntegrationBase build() {
             return new SsoIntegrationBase(
                     id, type, name, status, lifecycle, managedDomains, isEnabled, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("type")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("status")
+                    || key.equalsIgnoreCase("lifecycle")
+                    || key.equalsIgnoreCase("managed_domains")
+                    || key.equalsIgnoreCase("is_enabled")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

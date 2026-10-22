@@ -131,7 +131,6 @@ public final class HlResource {
 
         private OffsetDateTime linkedAt;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -180,6 +179,16 @@ public final class HlResource {
         @java.lang.Override
         public HlResource build() {
             return new HlResource(id, resourceType, linkedAt, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("resource_type")
+                    || key.equalsIgnoreCase("linked_at")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

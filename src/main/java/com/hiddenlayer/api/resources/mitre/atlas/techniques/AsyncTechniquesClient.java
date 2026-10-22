@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.mitre.atlas.techniques;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.mitre.atlas.techniques.requests.GetTechniquesRequest;
 import com.hiddenlayer.api.resources.mitre.atlas.techniques.types.GetTechniquesResponse;
@@ -27,19 +28,50 @@ public class AsyncTechniquesClient {
     }
 
     public CompletableFuture<GetTechniquesResponse> get(String techniqueId) {
-        return this.rawClient.get(techniqueId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<GetTechniquesResponse>> rawFuture = this.rawClient.get(techniqueId);
+        CompletableFuture<GetTechniquesResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<GetTechniquesResponse> get(String techniqueId, RequestOptions requestOptions) {
-        return this.rawClient.get(techniqueId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<GetTechniquesResponse>> rawFuture =
+                this.rawClient.get(techniqueId, requestOptions);
+        CompletableFuture<GetTechniquesResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<GetTechniquesResponse> get(String techniqueId, GetTechniquesRequest request) {
-        return this.rawClient.get(techniqueId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<GetTechniquesResponse>> rawFuture =
+                this.rawClient.get(techniqueId, request);
+        CompletableFuture<GetTechniquesResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<GetTechniquesResponse> get(
             String techniqueId, GetTechniquesRequest request, RequestOptions requestOptions) {
-        return this.rawClient.get(techniqueId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<GetTechniquesResponse>> rawFuture =
+                this.rawClient.get(techniqueId, request, requestOptions);
+        CompletableFuture<GetTechniquesResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

@@ -86,7 +86,6 @@ public final class TextPart {
     public static final class Builder implements TextStage, _FinalStage {
         private String text;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -111,6 +110,14 @@ public final class TextPart {
         @java.lang.Override
         public TextPart build() {
             return new TextPart(text, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("text")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

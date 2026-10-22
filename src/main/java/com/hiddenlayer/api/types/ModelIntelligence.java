@@ -138,7 +138,6 @@ public final class ModelIntelligence {
 
         private Optional<List<ModelUsagePolicy>> usagePolicies = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -230,6 +229,18 @@ public final class ModelIntelligence {
                     licenses,
                     usagePolicies,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("geographic_footprint")
+                    || key.equalsIgnoreCase("country_of_origin")
+                    || key.equalsIgnoreCase("contributor_trust_level")
+                    || key.equalsIgnoreCase("licenses")
+                    || key.equalsIgnoreCase("usage_policies")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

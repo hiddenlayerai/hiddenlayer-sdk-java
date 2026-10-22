@@ -66,7 +66,6 @@ public final class GetScansRequest {
     public static final class Builder {
         private Optional<GetScansRequestAccept> accept = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -88,6 +87,11 @@ public final class GetScansRequest {
 
         public GetScansRequest build() {
             return new GetScansRequest(accept, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

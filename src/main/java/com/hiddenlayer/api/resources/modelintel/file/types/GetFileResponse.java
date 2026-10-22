@@ -179,7 +179,6 @@ public final class GetFileResponse implements ICursors {
 
         private Optional<String> last = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -263,6 +262,18 @@ public final class GetFileResponse implements ICursors {
         @java.lang.Override
         public GetFileResponse build() {
             return new GetFileResponse(first, prev, next, last, fileInstances, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("first")
+                    || key.equalsIgnoreCase("prev")
+                    || key.equalsIgnoreCase("next")
+                    || key.equalsIgnoreCase("last")
+                    || key.equalsIgnoreCase("file_instances")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

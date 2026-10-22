@@ -161,7 +161,6 @@ public final class InteractionEvaluationRequestMetadata {
 
         private Optional<String> externalSessionId = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -235,6 +234,17 @@ public final class InteractionEvaluationRequestMetadata {
         public InteractionEvaluationRequestMetadata build() {
             return new InteractionEvaluationRequestMetadata(
                     model, requesterId, provider, externalSessionId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("model")
+                    || key.equalsIgnoreCase("requester_id")
+                    || key.equalsIgnoreCase("provider")
+                    || key.equalsIgnoreCase("external_session_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

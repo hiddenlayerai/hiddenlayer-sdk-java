@@ -149,7 +149,6 @@ public final class SensorSorModel {
 
         private Optional<String> modelId = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -220,6 +219,18 @@ public final class SensorSorModel {
         @java.lang.Override
         public SensorSorModel build() {
             return new SensorSorModel(modelId, tenantId, name, source, versions, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("model_id")
+                    || key.equalsIgnoreCase("tenant_id")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("source")
+                    || key.equalsIgnoreCase("versions")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

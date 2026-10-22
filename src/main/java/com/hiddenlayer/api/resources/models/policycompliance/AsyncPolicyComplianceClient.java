@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.models.policycompliance;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.models.policycompliance.requests.DeletePolicyComplianceRequest;
 import com.hiddenlayer.api.resources.models.policycompliance.requests.OverridePolicyComplianceRequest;
@@ -30,7 +31,14 @@ public class AsyncPolicyComplianceClient {
      * Override the policy compliance status for a model. Send {&quot;compliant&quot;: true} to mark as compliant, or {&quot;compliant&quot;: false} to mark as noncompliant.
      */
     public CompletableFuture<Void> update(String modelId, OverridePolicyComplianceRequest request) {
-        return this.rawClient.update(modelId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.update(modelId, request);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -38,28 +46,57 @@ public class AsyncPolicyComplianceClient {
      */
     public CompletableFuture<Void> update(
             String modelId, OverridePolicyComplianceRequest request, RequestOptions requestOptions) {
-        return this.rawClient.update(modelId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+                this.rawClient.update(modelId, request, requestOptions);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Remove the manual policy compliance override for a model, reverting to the policy-derived compliance status.
      */
     public CompletableFuture<Void> delete(String modelId) {
-        return this.rawClient.delete(modelId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(modelId);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Remove the manual policy compliance override for a model, reverting to the policy-derived compliance status.
      */
     public CompletableFuture<Void> delete(String modelId, RequestOptions requestOptions) {
-        return this.rawClient.delete(modelId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(modelId, requestOptions);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Remove the manual policy compliance override for a model, reverting to the policy-derived compliance status.
      */
     public CompletableFuture<Void> delete(String modelId, DeletePolicyComplianceRequest request) {
-        return this.rawClient.delete(modelId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(modelId, request);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -67,6 +104,14 @@ public class AsyncPolicyComplianceClient {
      */
     public CompletableFuture<Void> delete(
             String modelId, DeletePolicyComplianceRequest request, RequestOptions requestOptions) {
-        return this.rawClient.delete(modelId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(modelId, request, requestOptions);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

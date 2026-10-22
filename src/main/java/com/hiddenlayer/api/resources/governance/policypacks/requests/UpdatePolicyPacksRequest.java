@@ -81,7 +81,6 @@ public final class UpdatePolicyPacksRequest {
     public static final class Builder implements BodyStage, _FinalStage {
         private PolicyPackWriteRequest body;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -102,6 +101,14 @@ public final class UpdatePolicyPacksRequest {
         @java.lang.Override
         public UpdatePolicyPacksRequest build() {
             return new UpdatePolicyPacksRequest(body, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("body")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

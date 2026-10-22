@@ -162,7 +162,6 @@ public final class PermissionAreaElement {
 
         private Optional<String> description = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -258,6 +257,17 @@ public final class PermissionAreaElement {
         @java.lang.Override
         public PermissionAreaElement build() {
             return new PermissionAreaElement(identifier, displayName, description, permissions, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("identifier")
+                    || key.equalsIgnoreCase("display_name")
+                    || key.equalsIgnoreCase("description")
+                    || key.equalsIgnoreCase("permissions")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

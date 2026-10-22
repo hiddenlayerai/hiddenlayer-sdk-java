@@ -84,7 +84,6 @@ public final class ScanDetectionV3MitreAtlasItem {
 
         private Optional<String> tactic = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -125,6 +124,14 @@ public final class ScanDetectionV3MitreAtlasItem {
 
         public ScanDetectionV3MitreAtlasItem build() {
             return new ScanDetectionV3MitreAtlasItem(technique, tactic, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("technique") || key.equalsIgnoreCase("tactic")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

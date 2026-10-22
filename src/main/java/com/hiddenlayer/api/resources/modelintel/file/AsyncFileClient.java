@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.modelintel.file;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.modelintel.file.requests.GetFileRequest;
 import com.hiddenlayer.api.resources.modelintel.file.requests.MetadataFileRequest;
@@ -32,21 +33,43 @@ public class AsyncFileClient {
      * Retrieve detailed file information including all associated instances, repositories, and metadata
      */
     public CompletableFuture<GetFileResponse> get(String sha256) {
-        return this.rawClient.get(sha256).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<GetFileResponse>> rawFuture = this.rawClient.get(sha256);
+        CompletableFuture<GetFileResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Retrieve detailed file information including all associated instances, repositories, and metadata
      */
     public CompletableFuture<GetFileResponse> get(String sha256, RequestOptions requestOptions) {
-        return this.rawClient.get(sha256, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<GetFileResponse>> rawFuture =
+                this.rawClient.get(sha256, requestOptions);
+        CompletableFuture<GetFileResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Retrieve detailed file information including all associated instances, repositories, and metadata
      */
     public CompletableFuture<GetFileResponse> get(String sha256, GetFileRequest request) {
-        return this.rawClient.get(sha256, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<GetFileResponse>> rawFuture = this.rawClient.get(sha256, request);
+        CompletableFuture<GetFileResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -54,34 +77,71 @@ public class AsyncFileClient {
      */
     public CompletableFuture<GetFileResponse> get(
             String sha256, GetFileRequest request, RequestOptions requestOptions) {
-        return this.rawClient.get(sha256, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<GetFileResponse>> rawFuture =
+                this.rawClient.get(sha256, request, requestOptions);
+        CompletableFuture<GetFileResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Retrieve file information such as filetype, file size in bytes, and MIME type
      */
     public CompletableFuture<File> metadata(String sha256) {
-        return this.rawClient.metadata(sha256).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<File>> rawFuture = this.rawClient.metadata(sha256);
+        CompletableFuture<File> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Retrieve file information such as filetype, file size in bytes, and MIME type
      */
     public CompletableFuture<File> metadata(String sha256, RequestOptions requestOptions) {
-        return this.rawClient.metadata(sha256, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<File>> rawFuture = this.rawClient.metadata(sha256, requestOptions);
+        CompletableFuture<File> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Retrieve file information such as filetype, file size in bytes, and MIME type
      */
     public CompletableFuture<File> metadata(String sha256, MetadataFileRequest request) {
-        return this.rawClient.metadata(sha256, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<File>> rawFuture = this.rawClient.metadata(sha256, request);
+        CompletableFuture<File> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Retrieve file information such as filetype, file size in bytes, and MIME type
      */
     public CompletableFuture<File> metadata(String sha256, MetadataFileRequest request, RequestOptions requestOptions) {
-        return this.rawClient.metadata(sha256, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<File>> rawFuture =
+                this.rawClient.metadata(sha256, request, requestOptions);
+        CompletableFuture<File> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

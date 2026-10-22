@@ -86,7 +86,6 @@ public final class TagValueFilterAll {
 
         private Optional<Map<String, TagValueFilterAllDiscoveredValue>> discovered = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -127,6 +126,14 @@ public final class TagValueFilterAll {
 
         public TagValueFilterAll build() {
             return new TagValueFilterAll(custom, discovered, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("custom") || key.equalsIgnoreCase("discovered")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

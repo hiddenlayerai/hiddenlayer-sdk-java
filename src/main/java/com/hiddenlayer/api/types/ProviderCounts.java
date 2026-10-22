@@ -132,7 +132,6 @@ public final class ProviderCounts {
 
         private Optional<Integer> other = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -218,6 +217,18 @@ public final class ProviderCounts {
 
         public ProviderCounts build() {
             return new ProviderCounts(aws, azure, gcp, databricks, other, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("aws")
+                    || key.equalsIgnoreCase("azure")
+                    || key.equalsIgnoreCase("gcp")
+                    || key.equalsIgnoreCase("databricks")
+                    || key.equalsIgnoreCase("other")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

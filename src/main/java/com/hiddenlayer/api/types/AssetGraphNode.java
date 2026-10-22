@@ -171,7 +171,6 @@ public final class AssetGraphNode {
 
         private Optional<String> assetName = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -258,6 +257,17 @@ public final class AssetGraphNode {
         @java.lang.Override
         public AssetGraphNode build() {
             return new AssetGraphNode(assetId, assetName, assetType, relationships, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("asset_id")
+                    || key.equalsIgnoreCase("asset_name")
+                    || key.equalsIgnoreCase("asset_type")
+                    || key.equalsIgnoreCase("relationships")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

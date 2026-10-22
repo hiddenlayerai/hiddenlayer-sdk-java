@@ -68,7 +68,6 @@ public final class ListV1AssetsRequestProvider {
     public static final class Builder {
         private Optional<List<Provider>> in = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -91,6 +90,14 @@ public final class ListV1AssetsRequestProvider {
 
         public ListV1AssetsRequestProvider build() {
             return new ListV1AssetsRequestProvider(in, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("in")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

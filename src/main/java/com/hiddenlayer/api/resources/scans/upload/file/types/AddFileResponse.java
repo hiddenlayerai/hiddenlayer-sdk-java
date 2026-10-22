@@ -106,7 +106,6 @@ public final class AddFileResponse {
 
         private List<AddFileResponsePartsItem> parts = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -156,6 +155,14 @@ public final class AddFileResponse {
         @java.lang.Override
         public AddFileResponse build() {
             return new AddFileResponse(uploadId, parts, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("upload_id") || key.equalsIgnoreCase("parts")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

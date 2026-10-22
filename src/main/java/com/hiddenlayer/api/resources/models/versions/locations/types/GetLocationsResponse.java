@@ -97,7 +97,6 @@ public final class GetLocationsResponse {
 
         private Optional<Boolean> available = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -132,6 +131,14 @@ public final class GetLocationsResponse {
         @java.lang.Override
         public GetLocationsResponse build() {
             return new GetLocationsResponse(location, available, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("location") || key.equalsIgnoreCase("available")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

@@ -252,7 +252,6 @@ public final class FileDetailsV3 {
 
         private Optional<String> md5 = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -415,6 +414,21 @@ public final class FileDetailsV3 {
                     fileType,
                     fileTypeDetails,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("estimated_time")
+                    || key.equalsIgnoreCase("md5")
+                    || key.equalsIgnoreCase("sha256")
+                    || key.equalsIgnoreCase("tlsh")
+                    || key.equalsIgnoreCase("file_size")
+                    || key.equalsIgnoreCase("file_size_bytes")
+                    || key.equalsIgnoreCase("file_type")
+                    || key.equalsIgnoreCase("file_type_details")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

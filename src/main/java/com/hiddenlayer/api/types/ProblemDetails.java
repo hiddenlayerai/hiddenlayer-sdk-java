@@ -134,7 +134,6 @@ public final class ProblemDetails {
 
         private List<ProblemDetailsErrorsItem> errors = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -230,6 +229,18 @@ public final class ProblemDetails {
 
         public ProblemDetails build() {
             return new ProblemDetails(type, title, detail, instance, errors, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("type")
+                    || key.equalsIgnoreCase("title")
+                    || key.equalsIgnoreCase("detail")
+                    || key.equalsIgnoreCase("instance")
+                    || key.equalsIgnoreCase("errors")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

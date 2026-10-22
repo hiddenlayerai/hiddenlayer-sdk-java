@@ -81,7 +81,6 @@ public final class NamedObject implements INamedObject {
     public static final class Builder implements NameStage, _FinalStage {
         private String name;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -102,6 +101,14 @@ public final class NamedObject implements INamedObject {
         @java.lang.Override
         public NamedObject build() {
             return new NamedObject(name, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("name")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

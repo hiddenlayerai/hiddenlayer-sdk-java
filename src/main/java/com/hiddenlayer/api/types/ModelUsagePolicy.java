@@ -106,7 +106,6 @@ public final class ModelUsagePolicy {
 
         private String sha256;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -143,6 +142,14 @@ public final class ModelUsagePolicy {
         @java.lang.Override
         public ModelUsagePolicy build() {
             return new ModelUsagePolicy(name, sha256, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("name") || key.equalsIgnoreCase("sha256")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

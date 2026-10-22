@@ -151,7 +151,6 @@ public final class GuidanceScansResponseDetectionGuidanceItem {
 
         private Optional<List<String>> references = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -256,6 +255,20 @@ public final class GuidanceScansResponseDetectionGuidanceItem {
                     falsePositiveConsiderations,
                     references,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("detection_id")
+                    || key.equalsIgnoreCase("detection_category")
+                    || key.equalsIgnoreCase("severity")
+                    || key.equalsIgnoreCase("summary")
+                    || key.equalsIgnoreCase("remediation_actions")
+                    || key.equalsIgnoreCase("false_positive_considerations")
+                    || key.equalsIgnoreCase("references")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

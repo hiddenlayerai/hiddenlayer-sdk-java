@@ -362,7 +362,6 @@ public final class Contributor {
 
         private Optional<String> displayName = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -589,6 +588,25 @@ public final class Contributor {
                     createdAt,
                     updatedAt,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("handle")
+                    || key.equalsIgnoreCase("kind")
+                    || key.equalsIgnoreCase("display_name")
+                    || key.equalsIgnoreCase("homepage_url")
+                    || key.equalsIgnoreCase("trust_level")
+                    || key.equalsIgnoreCase("country")
+                    || key.equalsIgnoreCase("source")
+                    || key.equalsIgnoreCase("tags")
+                    || key.equalsIgnoreCase("metadata")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("updated_at")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

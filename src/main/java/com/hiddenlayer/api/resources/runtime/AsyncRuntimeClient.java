@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.runtime;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.runtime.requests.EvaluateRequestRuntimeRequest;
 import com.hiddenlayer.api.resources.runtime.requests.EvaluateResponseRuntimeRequest;
@@ -58,7 +59,15 @@ public class AsyncRuntimeClient {
      * the request-evaluations and response-evaluations endpoints instead.</p>
      */
     public CompletableFuture<InteractionEvaluationResponse> evaluateInteraction(InteractionEvaluationRequest request) {
-        return this.rawClient.evaluateInteraction(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<InteractionEvaluationResponse>> rawFuture =
+                this.rawClient.evaluateInteraction(request);
+        CompletableFuture<InteractionEvaluationResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -91,7 +100,15 @@ public class AsyncRuntimeClient {
      */
     public CompletableFuture<InteractionEvaluationResponse> evaluateInteraction(
             InteractionEvaluationRequest request, RequestOptions requestOptions) {
-        return this.rawClient.evaluateInteraction(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<InteractionEvaluationResponse>> rawFuture =
+                this.rawClient.evaluateInteraction(request, requestOptions);
+        CompletableFuture<InteractionEvaluationResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -112,7 +129,15 @@ public class AsyncRuntimeClient {
      * </ul>
      */
     public CompletableFuture<Map<String, Object>> evaluateRequest(Map<String, Object> body) {
-        return this.rawClient.evaluateRequest(body).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> rawFuture =
+                this.rawClient.evaluateRequest(body);
+        CompletableFuture<Map<String, Object>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -134,7 +159,15 @@ public class AsyncRuntimeClient {
      */
     public CompletableFuture<Map<String, Object>> evaluateRequest(
             Map<String, Object> body, RequestOptions requestOptions) {
-        return this.rawClient.evaluateRequest(body, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> rawFuture =
+                this.rawClient.evaluateRequest(body, requestOptions);
+        CompletableFuture<Map<String, Object>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -155,7 +188,15 @@ public class AsyncRuntimeClient {
      * </ul>
      */
     public CompletableFuture<Map<String, Object>> evaluateRequest(EvaluateRequestRuntimeRequest request) {
-        return this.rawClient.evaluateRequest(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> rawFuture =
+                this.rawClient.evaluateRequest(request);
+        CompletableFuture<Map<String, Object>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -177,7 +218,15 @@ public class AsyncRuntimeClient {
      */
     public CompletableFuture<Map<String, Object>> evaluateRequest(
             EvaluateRequestRuntimeRequest request, RequestOptions requestOptions) {
-        return this.rawClient.evaluateRequest(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> rawFuture =
+                this.rawClient.evaluateRequest(request, requestOptions);
+        CompletableFuture<Map<String, Object>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -198,7 +247,15 @@ public class AsyncRuntimeClient {
      * </ul>
      */
     public CompletableFuture<Map<String, Object>> evaluateResponse(Map<String, Object> body) {
-        return this.rawClient.evaluateResponse(body).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> rawFuture =
+                this.rawClient.evaluateResponse(body);
+        CompletableFuture<Map<String, Object>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -220,7 +277,15 @@ public class AsyncRuntimeClient {
      */
     public CompletableFuture<Map<String, Object>> evaluateResponse(
             Map<String, Object> body, RequestOptions requestOptions) {
-        return this.rawClient.evaluateResponse(body, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> rawFuture =
+                this.rawClient.evaluateResponse(body, requestOptions);
+        CompletableFuture<Map<String, Object>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -241,7 +306,15 @@ public class AsyncRuntimeClient {
      * </ul>
      */
     public CompletableFuture<Map<String, Object>> evaluateResponse(EvaluateResponseRuntimeRequest request) {
-        return this.rawClient.evaluateResponse(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> rawFuture =
+                this.rawClient.evaluateResponse(request);
+        CompletableFuture<Map<String, Object>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -263,6 +336,14 @@ public class AsyncRuntimeClient {
      */
     public CompletableFuture<Map<String, Object>> evaluateResponse(
             EvaluateResponseRuntimeRequest request, RequestOptions requestOptions) {
-        return this.rawClient.evaluateResponse(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> rawFuture =
+                this.rawClient.evaluateResponse(request, requestOptions);
+        CompletableFuture<Map<String, Object>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

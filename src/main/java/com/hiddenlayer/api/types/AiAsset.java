@@ -636,7 +636,6 @@ public final class AiAsset {
 
         private Optional<String> assetIdV2 = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -1115,6 +1114,36 @@ public final class AiAsset {
                     policyStatus,
                     tags,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("asset_id_v2")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("fingerprint")
+                    || key.equalsIgnoreCase("provider")
+                    || key.equalsIgnoreCase("account_id")
+                    || key.equalsIgnoreCase("region")
+                    || key.equalsIgnoreCase("service")
+                    || key.equalsIgnoreCase("asset_type")
+                    || key.equalsIgnoreCase("is_public")
+                    || key.equalsIgnoreCase("discovered_at")
+                    || key.equalsIgnoreCase("last_synced_at")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("configuration")
+                    || key.equalsIgnoreCase("hl_resources")
+                    || key.equalsIgnoreCase("is_retrievable")
+                    || key.equalsIgnoreCase("region_details")
+                    || key.equalsIgnoreCase("country")
+                    || key.equalsIgnoreCase("country_code")
+                    || key.equalsIgnoreCase("geographic_region")
+                    || key.equalsIgnoreCase("scans")
+                    || key.equalsIgnoreCase("policy_status")
+                    || key.equalsIgnoreCase("tags")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

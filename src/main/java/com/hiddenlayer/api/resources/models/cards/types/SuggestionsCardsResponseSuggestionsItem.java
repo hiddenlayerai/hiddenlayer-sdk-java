@@ -81,7 +81,6 @@ public final class SuggestionsCardsResponseSuggestionsItem {
     public static final class Builder implements TextStage, _FinalStage {
         private String text;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -102,6 +101,14 @@ public final class SuggestionsCardsResponseSuggestionsItem {
         @java.lang.Override
         public SuggestionsCardsResponseSuggestionsItem build() {
             return new SuggestionsCardsResponseSuggestionsItem(text, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("text")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

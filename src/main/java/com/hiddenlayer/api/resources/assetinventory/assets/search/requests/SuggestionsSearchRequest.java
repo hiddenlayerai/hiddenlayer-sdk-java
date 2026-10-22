@@ -401,7 +401,6 @@ public final class SuggestionsSearchRequest {
 
         private Optional<Long> limit = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -714,6 +713,27 @@ public final class SuggestionsSearchRequest {
                     tagDef,
                     tag,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("q")
+                    || key.equalsIgnoreCase("limit")
+                    || key.equalsIgnoreCase("bandit_arm_override")
+                    || key.equalsIgnoreCase("provider")
+                    || key.equalsIgnoreCase("account_id")
+                    || key.equalsIgnoreCase("region")
+                    || key.equalsIgnoreCase("service")
+                    || key.equalsIgnoreCase("asset_type")
+                    || key.equalsIgnoreCase("is_public")
+                    || key.equalsIgnoreCase("is_retrievable")
+                    || key.equalsIgnoreCase("policy_status")
+                    || key.equalsIgnoreCase("tag_name")
+                    || key.equalsIgnoreCase("tag_def")
+                    || key.equalsIgnoreCase("tag")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

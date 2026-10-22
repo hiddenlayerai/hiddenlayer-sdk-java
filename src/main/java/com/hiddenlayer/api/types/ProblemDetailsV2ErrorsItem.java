@@ -94,7 +94,6 @@ public final class ProblemDetailsV2ErrorsItem {
 
         private Optional<String> pointer = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -144,6 +143,14 @@ public final class ProblemDetailsV2ErrorsItem {
 
         public ProblemDetailsV2ErrorsItem build() {
             return new ProblemDetailsV2ErrorsItem(code, detail, pointer, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("code") || key.equalsIgnoreCase("detail") || key.equalsIgnoreCase("pointer")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

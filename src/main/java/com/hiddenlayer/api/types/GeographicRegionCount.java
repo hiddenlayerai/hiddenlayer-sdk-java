@@ -106,7 +106,6 @@ public final class GeographicRegionCount {
 
         private int count;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -143,6 +142,14 @@ public final class GeographicRegionCount {
         @java.lang.Override
         public GeographicRegionCount build() {
             return new GeographicRegionCount(name, count, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("name") || key.equalsIgnoreCase("count")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

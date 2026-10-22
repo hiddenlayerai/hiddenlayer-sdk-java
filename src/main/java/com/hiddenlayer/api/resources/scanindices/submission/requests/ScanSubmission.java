@@ -119,7 +119,6 @@ public final class ScanSubmission {
 
         private Map<String, Object> scanResult = new LinkedHashMap<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -173,6 +172,16 @@ public final class ScanSubmission {
         @java.lang.Override
         public ScanSubmission build() {
             return new ScanSubmission(scannerType, source, scanResult, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("scanner_type")
+                    || key.equalsIgnoreCase("source")
+                    || key.equalsIgnoreCase("scan_result")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

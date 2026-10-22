@@ -170,7 +170,6 @@ public final class InteractionPayloadMessage implements ICanonicalInteractionMes
 
         private Optional<CanonicalInteractionMessageTimestamp> timestamp = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -275,6 +274,17 @@ public final class InteractionPayloadMessage implements ICanonicalInteractionMes
         @java.lang.Override
         public InteractionPayloadMessage build() {
             return new InteractionPayloadMessage(timestamp, role, content, analysis, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("timestamp")
+                    || key.equalsIgnoreCase("role")
+                    || key.equalsIgnoreCase("content")
+                    || key.equalsIgnoreCase("analysis")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

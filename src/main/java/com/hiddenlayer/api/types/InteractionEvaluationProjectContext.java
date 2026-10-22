@@ -157,7 +157,6 @@ public final class InteractionEvaluationProjectContext {
 
         private Optional<String> projectAlias = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -228,6 +227,17 @@ public final class InteractionEvaluationProjectContext {
         public InteractionEvaluationProjectContext build() {
             return new InteractionEvaluationProjectContext(
                     projectId, projectAlias, policyId, configurationId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("project_id")
+                    || key.equalsIgnoreCase("project_alias")
+                    || key.equalsIgnoreCase("policy_id")
+                    || key.equalsIgnoreCase("configuration_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

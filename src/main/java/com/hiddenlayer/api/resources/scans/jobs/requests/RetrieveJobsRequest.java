@@ -70,7 +70,6 @@ public final class RetrieveJobsRequest {
     public static final class Builder {
         private Optional<Boolean> hasDetections = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -96,6 +95,14 @@ public final class RetrieveJobsRequest {
 
         public RetrieveJobsRequest build() {
             return new RetrieveJobsRequest(hasDetections, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("has_detections")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

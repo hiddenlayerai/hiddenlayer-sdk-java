@@ -144,7 +144,6 @@ public final class ListJobsResponse {
 
         private List<ScanReportOfRecordV3Summary> items = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -221,6 +220,17 @@ public final class ListJobsResponse {
         @java.lang.Override
         public ListJobsResponse build() {
             return new ListJobsResponse(items, total, limit, offset, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("items")
+                    || key.equalsIgnoreCase("total")
+                    || key.equalsIgnoreCase("limit")
+                    || key.equalsIgnoreCase("offset")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

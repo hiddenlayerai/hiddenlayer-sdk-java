@@ -78,7 +78,6 @@ public final class SensorSorDeployment {
 
         private Optional<Boolean> active = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -113,6 +112,14 @@ public final class SensorSorDeployment {
 
         public SensorSorDeployment build() {
             return new SensorSorDeployment(path, active, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("path") || key.equalsIgnoreCase("active")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -87,7 +87,6 @@ public final class TagDefFilterIn {
 
         private Optional<List<String>> discovered = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -128,6 +127,14 @@ public final class TagDefFilterIn {
 
         public TagDefFilterIn build() {
             return new TagDefFilterIn(custom, discovered, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("custom") || key.equalsIgnoreCase("discovered")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -203,7 +203,6 @@ public final class HiddenLayerPromptAnalyzerResponse implements IHiddenLayerProx
 
         private Optional<String> model = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -354,6 +353,23 @@ public final class HiddenLayerPromptAnalyzerResponse implements IHiddenLayerProx
                     provider,
                     model,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("verdict")
+                    || key.equalsIgnoreCase("categories")
+                    || key.equalsIgnoreCase("results")
+                    || key.equalsIgnoreCase("policy")
+                    || key.equalsIgnoreCase("frameworks")
+                    || key.equalsIgnoreCase("elapsed_ms")
+                    || key.equalsIgnoreCase("upstream_elapsed_ms")
+                    || key.equalsIgnoreCase("response")
+                    || key.equalsIgnoreCase("provider")
+                    || key.equalsIgnoreCase("model")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

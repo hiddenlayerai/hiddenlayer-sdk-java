@@ -109,7 +109,6 @@ public final class InteractionEvaluationDetection {
 
         private InteractionEvaluationDetectionRiskLevel riskLevel;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -146,6 +145,14 @@ public final class InteractionEvaluationDetection {
         @java.lang.Override
         public InteractionEvaluationDetection build() {
             return new InteractionEvaluationDetection(ruleName, riskLevel, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("rule_name") || key.equalsIgnoreCase("risk_level")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

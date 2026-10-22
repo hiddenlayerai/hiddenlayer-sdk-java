@@ -109,7 +109,6 @@ public final class PolicyPackRecommendation {
 
         private String description;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -146,6 +145,14 @@ public final class PolicyPackRecommendation {
         @java.lang.Override
         public PolicyPackRecommendation build() {
             return new PolicyPackRecommendation(id, name, description, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id") || key.equalsIgnoreCase("name") || key.equalsIgnoreCase("description")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

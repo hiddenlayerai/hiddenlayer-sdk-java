@@ -193,7 +193,6 @@ public final class PolicyPackWriteRequest {
 
         private Optional<String> description = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -325,6 +324,19 @@ public final class PolicyPackWriteRequest {
         public PolicyPackWriteRequest build() {
             return new PolicyPackWriteRequest(
                     name, description, rulePackIds, individualRules, redact, settings, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("description")
+                    || key.equalsIgnoreCase("rule_pack_ids")
+                    || key.equalsIgnoreCase("individual_rules")
+                    || key.equalsIgnoreCase("redact")
+                    || key.equalsIgnoreCase("settings")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

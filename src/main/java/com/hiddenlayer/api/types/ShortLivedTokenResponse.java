@@ -109,7 +109,6 @@ public final class ShortLivedTokenResponse {
 
         private Optional<String> expiresIn = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -155,6 +154,14 @@ public final class ShortLivedTokenResponse {
         @java.lang.Override
         public ShortLivedTokenResponse build() {
             return new ShortLivedTokenResponse(token, expiresIn, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("token") || key.equalsIgnoreCase("expires_in")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

@@ -86,7 +86,6 @@ public final class StartUploadResponse {
     public static final class Builder implements ScanIdStage, _FinalStage {
         private String scanId;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -111,6 +110,14 @@ public final class StartUploadResponse {
         @java.lang.Override
         public StartUploadResponse build() {
             return new StartUploadResponse(scanId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("scan_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

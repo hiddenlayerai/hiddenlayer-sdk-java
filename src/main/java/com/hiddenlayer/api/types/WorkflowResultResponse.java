@@ -150,7 +150,6 @@ public final class WorkflowResultResponse {
 
         private Optional<String> status = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -216,6 +215,17 @@ public final class WorkflowResultResponse {
         @java.lang.Override
         public WorkflowResultResponse build() {
             return new WorkflowResultResponse(workflowId, runId, status, result, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("workflow_id")
+                    || key.equalsIgnoreCase("run_id")
+                    || key.equalsIgnoreCase("status")
+                    || key.equalsIgnoreCase("result")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

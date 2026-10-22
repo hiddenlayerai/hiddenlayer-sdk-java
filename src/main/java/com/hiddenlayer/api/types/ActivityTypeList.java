@@ -68,7 +68,6 @@ public final class ActivityTypeList {
     public static final class Builder {
         private List<ActivityType> activityTypes = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -101,6 +100,14 @@ public final class ActivityTypeList {
 
         public ActivityTypeList build() {
             return new ActivityTypeList(activityTypes, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("activity_types")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

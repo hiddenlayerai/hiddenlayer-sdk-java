@@ -127,7 +127,6 @@ public final class AiAssetInventoryV1CountryCount {
 
         private long count;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -176,6 +175,16 @@ public final class AiAssetInventoryV1CountryCount {
         @java.lang.Override
         public AiAssetInventoryV1CountryCount build() {
             return new AiAssetInventoryV1CountryCount(country, countryCode, count, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("country")
+                    || key.equalsIgnoreCase("country_code")
+                    || key.equalsIgnoreCase("count")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

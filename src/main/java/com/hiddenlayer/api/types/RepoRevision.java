@@ -239,7 +239,6 @@ public final class RepoRevision {
 
         private Map<String, Object> metadata = new LinkedHashMap<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -361,6 +360,20 @@ public final class RepoRevision {
         public RepoRevision build() {
             return new RepoRevision(
                     id, repositoryId, commitHash, metadata, fetchedAt, createdAt, updatedAt, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("repository_id")
+                    || key.equalsIgnoreCase("commit_hash")
+                    || key.equalsIgnoreCase("metadata")
+                    || key.equalsIgnoreCase("fetched_at")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("updated_at")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

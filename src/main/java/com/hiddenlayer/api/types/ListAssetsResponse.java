@@ -202,7 +202,6 @@ public final class ListAssetsResponse implements ICursors {
 
         private Optional<String> last = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -318,6 +317,19 @@ public final class ListAssetsResponse implements ICursors {
         @java.lang.Override
         public ListAssetsResponse build() {
             return new ListAssetsResponse(first, prev, next, last, query, items, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("first")
+                    || key.equalsIgnoreCase("prev")
+                    || key.equalsIgnoreCase("next")
+                    || key.equalsIgnoreCase("last")
+                    || key.equalsIgnoreCase("query")
+                    || key.equalsIgnoreCase("items")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

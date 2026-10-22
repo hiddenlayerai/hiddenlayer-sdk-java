@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.metrics.timeseriesincidents;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.metrics.timeseriesincidents.requests.ListTimeseriesIncidentsRequest;
 import com.hiddenlayer.api.resources.metrics.timeseriesincidents.requests.ListV2TimeseriesIncidentsRequest;
@@ -29,20 +30,52 @@ public class AsyncTimeseriesIncidentsClient {
     }
 
     public CompletableFuture<IncidentTimeseriesResponseV2> listV2(ListV2TimeseriesIncidentsRequest request) {
-        return this.rawClient.listV2(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<IncidentTimeseriesResponseV2>> rawFuture =
+                this.rawClient.listV2(request);
+        CompletableFuture<IncidentTimeseriesResponseV2> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<IncidentTimeseriesResponseV2> listV2(
             ListV2TimeseriesIncidentsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.listV2(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<IncidentTimeseriesResponseV2>> rawFuture =
+                this.rawClient.listV2(request, requestOptions);
+        CompletableFuture<IncidentTimeseriesResponseV2> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<IncidentTimeseriesResponseV3> list(ListTimeseriesIncidentsRequest request) {
-        return this.rawClient.list(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<IncidentTimeseriesResponseV3>> rawFuture =
+                this.rawClient.list(request);
+        CompletableFuture<IncidentTimeseriesResponseV3> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     public CompletableFuture<IncidentTimeseriesResponseV3> list(
             ListTimeseriesIncidentsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.list(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<IncidentTimeseriesResponseV3>> rawFuture =
+                this.rawClient.list(request, requestOptions);
+        CompletableFuture<IncidentTimeseriesResponseV3> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

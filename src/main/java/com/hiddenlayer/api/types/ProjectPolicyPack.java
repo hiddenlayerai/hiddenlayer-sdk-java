@@ -218,7 +218,6 @@ public final class ProjectPolicyPack {
 
         private Optional<String> description = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -317,6 +316,20 @@ public final class ProjectPolicyPack {
                     detectRuleCount,
                     redactEntityTypeCount,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("description")
+                    || key.equalsIgnoreCase("type")
+                    || key.equalsIgnoreCase("block_rule_count")
+                    || key.equalsIgnoreCase("detect_rule_count")
+                    || key.equalsIgnoreCase("redact_entity_type_count")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

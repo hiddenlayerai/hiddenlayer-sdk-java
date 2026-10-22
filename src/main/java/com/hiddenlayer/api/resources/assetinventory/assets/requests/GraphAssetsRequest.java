@@ -70,7 +70,6 @@ public final class GraphAssetsRequest {
     public static final class Builder {
         private Optional<Integer> depth = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -96,6 +95,14 @@ public final class GraphAssetsRequest {
 
         public GraphAssetsRequest build() {
             return new GraphAssetsRequest(depth, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("depth")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

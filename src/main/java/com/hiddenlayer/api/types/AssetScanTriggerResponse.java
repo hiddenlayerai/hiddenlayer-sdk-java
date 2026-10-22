@@ -106,7 +106,6 @@ public final class AssetScanTriggerResponse {
 
         private String configurationId;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -143,6 +142,14 @@ public final class AssetScanTriggerResponse {
         @java.lang.Override
         public AssetScanTriggerResponse build() {
             return new AssetScanTriggerResponse(assetId, configurationId, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("asset_id") || key.equalsIgnoreCase("configuration_id")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

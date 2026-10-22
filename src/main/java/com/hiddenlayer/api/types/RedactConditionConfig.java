@@ -85,7 +85,6 @@ public final class RedactConditionConfig {
     public static final class Builder implements AlwaysStage, _FinalStage {
         private boolean always;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -110,6 +109,14 @@ public final class RedactConditionConfig {
         @java.lang.Override
         public RedactConditionConfig build() {
             return new RedactConditionConfig(always, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("always")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

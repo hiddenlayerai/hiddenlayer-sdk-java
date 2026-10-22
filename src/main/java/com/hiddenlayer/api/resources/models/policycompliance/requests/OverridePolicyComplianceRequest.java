@@ -85,7 +85,6 @@ public final class OverridePolicyComplianceRequest {
     public static final class Builder implements CompliantStage, _FinalStage {
         private boolean compliant;
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -110,6 +109,14 @@ public final class OverridePolicyComplianceRequest {
         @java.lang.Override
         public OverridePolicyComplianceRequest build() {
             return new OverridePolicyComplianceRequest(compliant, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("compliant")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

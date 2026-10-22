@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.assetinventory.annotations;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.assetinventory.annotations.requests.GetAnnotationsRequest;
 import com.hiddenlayer.api.types.Asset;
@@ -33,7 +34,15 @@ public class AsyncAnnotationsClient {
      * server-generated asset ID is not.</p>
      */
     public CompletableFuture<Asset> get(String annotatingService, String annotatingServiceKey) {
-        return this.rawClient.get(annotatingService, annotatingServiceKey).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Asset>> rawFuture =
+                this.rawClient.get(annotatingService, annotatingServiceKey);
+        CompletableFuture<Asset> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -44,9 +53,15 @@ public class AsyncAnnotationsClient {
      */
     public CompletableFuture<Asset> get(
             String annotatingService, String annotatingServiceKey, RequestOptions requestOptions) {
-        return this.rawClient
-                .get(annotatingService, annotatingServiceKey, requestOptions)
-                .thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Asset>> rawFuture =
+                this.rawClient.get(annotatingService, annotatingServiceKey, requestOptions);
+        CompletableFuture<Asset> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -57,9 +72,15 @@ public class AsyncAnnotationsClient {
      */
     public CompletableFuture<Asset> get(
             String annotatingService, String annotatingServiceKey, GetAnnotationsRequest request) {
-        return this.rawClient
-                .get(annotatingService, annotatingServiceKey, request)
-                .thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Asset>> rawFuture =
+                this.rawClient.get(annotatingService, annotatingServiceKey, request);
+        CompletableFuture<Asset> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -73,8 +94,14 @@ public class AsyncAnnotationsClient {
             String annotatingServiceKey,
             GetAnnotationsRequest request,
             RequestOptions requestOptions) {
-        return this.rawClient
-                .get(annotatingService, annotatingServiceKey, request, requestOptions)
-                .thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Asset>> rawFuture =
+                this.rawClient.get(annotatingService, annotatingServiceKey, request, requestOptions);
+        CompletableFuture<Asset> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

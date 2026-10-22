@@ -231,7 +231,6 @@ public final class File {
 
         private Optional<String> fileType = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -356,6 +355,20 @@ public final class File {
         public File build() {
             return new File(
                     sha256, sizeBytes, fileType, extension, mimeType, createdAt, updatedAt, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("sha256")
+                    || key.equalsIgnoreCase("size_bytes")
+                    || key.equalsIgnoreCase("file_type")
+                    || key.equalsIgnoreCase("extension")
+                    || key.equalsIgnoreCase("mime_type")
+                    || key.equalsIgnoreCase("created_at")
+                    || key.equalsIgnoreCase("updated_at")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         @java.lang.Override

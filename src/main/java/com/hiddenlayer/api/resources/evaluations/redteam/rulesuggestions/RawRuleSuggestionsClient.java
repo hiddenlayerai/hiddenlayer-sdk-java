@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.evaluations.redteam.rulesuggestions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
@@ -134,8 +135,11 @@ public class RawRuleSuggestionsClient {
                 List<RuleSuggestionListItem> result = parsedResponse.getItems();
                 return new HiddenLayerHttpResponse<>(
                         new SyncPagingIterable<RuleSuggestionListItem>(
-                                startingAfter.isPresent(), result, parsedResponse, () -> list(
-                                                workflowId, nextRequest, requestOptions)
+                                startingAfter.isPresent()
+                                        && !startingAfter.get().isEmpty(),
+                                result,
+                                parsedResponse,
+                                () -> list(workflowId, nextRequest, requestOptions)
                                         .body()),
                         response);
             }
@@ -245,7 +249,9 @@ public class RawRuleSuggestionsClient {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(request), MediaTypes.APPLICATION_JSON);
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(BodyProperties.merge(
+                            request, requestOptions != null ? requestOptions.getBodyProperties() : null)),
+                    MediaTypes.APPLICATION_JSON);
         } catch (JsonProcessingException e) {
             throw new HiddenLayerException("Failed to serialize request", e);
         }

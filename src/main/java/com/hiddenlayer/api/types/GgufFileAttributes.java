@@ -68,7 +68,6 @@ public final class GgufFileAttributes {
     public static final class Builder {
         private List<String> subtype = new ArrayList<>();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -101,6 +100,14 @@ public final class GgufFileAttributes {
 
         public GgufFileAttributes build() {
             return new GgufFileAttributes(subtype, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("subtype")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

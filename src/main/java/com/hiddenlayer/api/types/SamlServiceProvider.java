@@ -150,7 +150,6 @@ public final class SamlServiceProvider {
 
         private Optional<SsoIntegrationRequestSigning> requestSigning = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -255,6 +254,19 @@ public final class SamlServiceProvider {
                     issuer,
                     requestSigning,
                     additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("callback_acs_url_idp_initiated")
+                    || key.equalsIgnoreCase("callback_acs_url")
+                    || key.equalsIgnoreCase("metadata_url")
+                    || key.equalsIgnoreCase("logout_url")
+                    || key.equalsIgnoreCase("issuer")
+                    || key.equalsIgnoreCase("request_signing")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

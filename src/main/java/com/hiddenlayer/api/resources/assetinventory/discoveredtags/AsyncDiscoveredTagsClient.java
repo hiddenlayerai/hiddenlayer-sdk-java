@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.assetinventory.discoveredtags;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.assetinventory.discoveredtags.requests.ValuesDiscoveredTagsRequest;
@@ -31,14 +32,30 @@ public class AsyncDiscoveredTagsClient {
      * Returns a paginated list of values for a given discovered tag name.
      */
     public CompletableFuture<SyncPagingIterable<String>> valuesV1(String tagName) {
-        return this.rawClient.valuesV1(tagName).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> rawFuture =
+                this.rawClient.valuesV1(tagName);
+        CompletableFuture<SyncPagingIterable<String>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * Returns a paginated list of values for a given discovered tag name.
      */
     public CompletableFuture<SyncPagingIterable<String>> valuesV1(String tagName, RequestOptions requestOptions) {
-        return this.rawClient.valuesV1(tagName, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> rawFuture =
+                this.rawClient.valuesV1(tagName, requestOptions);
+        CompletableFuture<SyncPagingIterable<String>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -46,7 +63,15 @@ public class AsyncDiscoveredTagsClient {
      */
     public CompletableFuture<SyncPagingIterable<String>> valuesV1(
             String tagName, ValuesV1DiscoveredTagsRequest request) {
-        return this.rawClient.valuesV1(tagName, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> rawFuture =
+                this.rawClient.valuesV1(tagName, request);
+        CompletableFuture<SyncPagingIterable<String>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -54,7 +79,15 @@ public class AsyncDiscoveredTagsClient {
      */
     public CompletableFuture<SyncPagingIterable<String>> valuesV1(
             String tagName, ValuesV1DiscoveredTagsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.valuesV1(tagName, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> rawFuture =
+                this.rawClient.valuesV1(tagName, request, requestOptions);
+        CompletableFuture<SyncPagingIterable<String>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -62,7 +95,15 @@ public class AsyncDiscoveredTagsClient {
      * <p>Returns a cursor-paginated list of values for a given discovered tag name.</p>
      */
     public CompletableFuture<SyncPagingIterable<String>> values(String tagName) {
-        return this.rawClient.values(tagName).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> rawFuture =
+                this.rawClient.values(tagName);
+        CompletableFuture<SyncPagingIterable<String>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -70,7 +111,15 @@ public class AsyncDiscoveredTagsClient {
      * <p>Returns a cursor-paginated list of values for a given discovered tag name.</p>
      */
     public CompletableFuture<SyncPagingIterable<String>> values(String tagName, RequestOptions requestOptions) {
-        return this.rawClient.values(tagName, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> rawFuture =
+                this.rawClient.values(tagName, requestOptions);
+        CompletableFuture<SyncPagingIterable<String>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -78,7 +127,15 @@ public class AsyncDiscoveredTagsClient {
      * <p>Returns a cursor-paginated list of values for a given discovered tag name.</p>
      */
     public CompletableFuture<SyncPagingIterable<String>> values(String tagName, ValuesDiscoveredTagsRequest request) {
-        return this.rawClient.values(tagName, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> rawFuture =
+                this.rawClient.values(tagName, request);
+        CompletableFuture<SyncPagingIterable<String>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -87,6 +144,14 @@ public class AsyncDiscoveredTagsClient {
      */
     public CompletableFuture<SyncPagingIterable<String>> values(
             String tagName, ValuesDiscoveredTagsRequest request, RequestOptions requestOptions) {
-        return this.rawClient.values(tagName, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> rawFuture =
+                this.rawClient.values(tagName, request, requestOptions);
+        CompletableFuture<SyncPagingIterable<String>> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

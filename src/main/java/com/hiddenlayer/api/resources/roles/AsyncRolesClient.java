@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.roles;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.roles.types.ListRolesResponse;
 import java.util.concurrent.CompletableFuture;
@@ -54,7 +55,14 @@ public class AsyncRolesClient {
      * <p>Note: Some resources are restricted to specific service integrations and are not accessible through these roles.</p>
      */
     public CompletableFuture<ListRolesResponse> list() {
-        return this.rawClient.list().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ListRolesResponse>> rawFuture = this.rawClient.list();
+        CompletableFuture<ListRolesResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -86,6 +94,13 @@ public class AsyncRolesClient {
      * <p>Note: Some resources are restricted to specific service integrations and are not accessible through these roles.</p>
      */
     public CompletableFuture<ListRolesResponse> list(RequestOptions requestOptions) {
-        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<ListRolesResponse>> rawFuture = this.rawClient.list(requestOptions);
+        CompletableFuture<ListRolesResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }

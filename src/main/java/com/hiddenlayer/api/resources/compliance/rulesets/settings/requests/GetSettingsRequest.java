@@ -71,7 +71,6 @@ public final class GetSettingsRequest {
     public static final class Builder {
         private Optional<String> overlay = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -98,6 +97,14 @@ public final class GetSettingsRequest {
 
         public GetSettingsRequest build() {
             return new GetSettingsRequest(overlay, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("overlay")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

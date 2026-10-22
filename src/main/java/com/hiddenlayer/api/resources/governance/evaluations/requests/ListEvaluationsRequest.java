@@ -72,7 +72,6 @@ public final class ListEvaluationsRequest {
     public static final class Builder {
         private Optional<List<String>> artifactIds = Optional.empty();
 
-        @JsonAnySetter
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -103,6 +102,14 @@ public final class ListEvaluationsRequest {
 
         public ListEvaluationsRequest build() {
             return new ListEvaluationsRequest(artifactIds, additionalProperties);
+        }
+
+        @JsonAnySetter
+        private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("artifact_ids")) {
+                return;
+            }
+            this.additionalProperties.put(key, value);
         }
 
         public Builder additionalProperty(String key, Object value) {

@@ -4,6 +4,7 @@
 package com.hiddenlayer.api.resources.governance.policypacks;
 
 import com.hiddenlayer.api.core.ClientOptions;
+import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.governance.policypacks.requests.DeletePolicyPacksRequest;
@@ -39,7 +40,16 @@ public class AsyncPolicyPacksClient {
      * <p>Returns pack summaries without <code>settings</code> or <code>detection_rules</code>. To read those, get the policy pack by ID.</p>
      */
     public CompletableFuture<SyncPagingIterable<PolicyPackSummary>> list() {
-        return this.rawClient.list().thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>>> rawFuture =
+                this.rawClient.list();
+        CompletableFuture<SyncPagingIterable<PolicyPackSummary>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -47,7 +57,16 @@ public class AsyncPolicyPacksClient {
      * <p>Returns pack summaries without <code>settings</code> or <code>detection_rules</code>. To read those, get the policy pack by ID.</p>
      */
     public CompletableFuture<SyncPagingIterable<PolicyPackSummary>> list(RequestOptions requestOptions) {
-        return this.rawClient.list(requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>>> rawFuture =
+                this.rawClient.list(requestOptions);
+        CompletableFuture<SyncPagingIterable<PolicyPackSummary>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -55,7 +74,16 @@ public class AsyncPolicyPacksClient {
      * <p>Returns pack summaries without <code>settings</code> or <code>detection_rules</code>. To read those, get the policy pack by ID.</p>
      */
     public CompletableFuture<SyncPagingIterable<PolicyPackSummary>> list(ListPolicyPacksRequest request) {
-        return this.rawClient.list(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>>> rawFuture =
+                this.rawClient.list(request);
+        CompletableFuture<SyncPagingIterable<PolicyPackSummary>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -64,7 +92,16 @@ public class AsyncPolicyPacksClient {
      */
     public CompletableFuture<SyncPagingIterable<PolicyPackSummary>> list(
             ListPolicyPacksRequest request, RequestOptions requestOptions) {
-        return this.rawClient.list(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>>> rawFuture =
+                this.rawClient.list(request, requestOptions);
+        CompletableFuture<SyncPagingIterable<PolicyPackSummary>> future =
+                rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -72,7 +109,14 @@ public class AsyncPolicyPacksClient {
      * <p>The pack must assign at least one detection rule through <code>rule_pack_ids</code> or <code>individual_rules</code>; otherwise returns 422.</p>
      */
     public CompletableFuture<PolicyPack> create(PolicyPackWriteRequest request) {
-        return this.rawClient.create(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<PolicyPack> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -80,7 +124,15 @@ public class AsyncPolicyPacksClient {
      * <p>The pack must assign at least one detection rule through <code>rule_pack_ids</code> or <code>individual_rules</code>; otherwise returns 422.</p>
      */
     public CompletableFuture<PolicyPack> create(PolicyPackWriteRequest request, RequestOptions requestOptions) {
-        return this.rawClient.create(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture =
+                this.rawClient.create(request, requestOptions);
+        CompletableFuture<PolicyPack> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -88,7 +140,15 @@ public class AsyncPolicyPacksClient {
      * <p>To apply the recommendation, set the returned <code>id</code> as the project's <code>policy_pack_id</code>.</p>
      */
     public CompletableFuture<PolicyPackRecommendation> recommendations(PolicyPackRecommendationRequest request) {
-        return this.rawClient.recommendations(request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<PolicyPackRecommendation>> rawFuture =
+                this.rawClient.recommendations(request);
+        CompletableFuture<PolicyPackRecommendation> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -97,28 +157,58 @@ public class AsyncPolicyPacksClient {
      */
     public CompletableFuture<PolicyPackRecommendation> recommendations(
             PolicyPackRecommendationRequest request, RequestOptions requestOptions) {
-        return this.rawClient.recommendations(request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<PolicyPackRecommendation>> rawFuture =
+                this.rawClient.recommendations(request, requestOptions);
+        CompletableFuture<PolicyPackRecommendation> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<PolicyPack> get(String policyPackId) {
-        return this.rawClient.get(policyPackId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture = this.rawClient.get(policyPackId);
+        CompletableFuture<PolicyPack> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<PolicyPack> get(String policyPackId, RequestOptions requestOptions) {
-        return this.rawClient.get(policyPackId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture =
+                this.rawClient.get(policyPackId, requestOptions);
+        CompletableFuture<PolicyPack> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<PolicyPack> get(String policyPackId, GetPolicyPacksRequest request) {
-        return this.rawClient.get(policyPackId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture = this.rawClient.get(policyPackId, request);
+        CompletableFuture<PolicyPack> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -126,7 +216,15 @@ public class AsyncPolicyPacksClient {
      */
     public CompletableFuture<PolicyPack> get(
             String policyPackId, GetPolicyPacksRequest request, RequestOptions requestOptions) {
-        return this.rawClient.get(policyPackId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture =
+                this.rawClient.get(policyPackId, request, requestOptions);
+        CompletableFuture<PolicyPack> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -138,7 +236,14 @@ public class AsyncPolicyPacksClient {
      * </ul>
      */
     public CompletableFuture<PolicyPack> update(String policyPackId, UpdatePolicyPacksRequest request) {
-        return this.rawClient.update(policyPackId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture = this.rawClient.update(policyPackId, request);
+        CompletableFuture<PolicyPack> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -151,7 +256,15 @@ public class AsyncPolicyPacksClient {
      */
     public CompletableFuture<PolicyPack> update(
             String policyPackId, UpdatePolicyPacksRequest request, RequestOptions requestOptions) {
-        return this.rawClient.update(policyPackId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture =
+                this.rawClient.update(policyPackId, request, requestOptions);
+        CompletableFuture<PolicyPack> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -160,7 +273,14 @@ public class AsyncPolicyPacksClient {
      * Returns 403 when the pack is HiddenLayer-authored; only custom packs can be deleted.</p>
      */
     public CompletableFuture<Void> delete(String policyPackId) {
-        return this.rawClient.delete(policyPackId).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(policyPackId);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -169,7 +289,15 @@ public class AsyncPolicyPacksClient {
      * Returns 403 when the pack is HiddenLayer-authored; only custom packs can be deleted.</p>
      */
     public CompletableFuture<Void> delete(String policyPackId, RequestOptions requestOptions) {
-        return this.rawClient.delete(policyPackId, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(policyPackId, requestOptions);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -178,7 +306,14 @@ public class AsyncPolicyPacksClient {
      * Returns 403 when the pack is HiddenLayer-authored; only custom packs can be deleted.</p>
      */
     public CompletableFuture<Void> delete(String policyPackId, DeletePolicyPacksRequest request) {
-        return this.rawClient.delete(policyPackId, request).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(policyPackId, request);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -188,6 +323,14 @@ public class AsyncPolicyPacksClient {
      */
     public CompletableFuture<Void> delete(
             String policyPackId, DeletePolicyPacksRequest request, RequestOptions requestOptions) {
-        return this.rawClient.delete(policyPackId, request, requestOptions).thenApply(response -> response.body());
+        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(policyPackId, request, requestOptions);
+        CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 }
