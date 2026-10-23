@@ -26,7 +26,6 @@ import com.hiddenlayer.api.resources.assetinventory.customtags.requests.ValuesCu
 import com.hiddenlayer.api.resources.assetinventory.customtags.requests.ValuesV1CustomTagsRequest;
 import com.hiddenlayer.api.types.AiAssetInventoryV1TagDefinition;
 import com.hiddenlayer.api.types.AiAssetInventoryV1TagValueList;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import com.hiddenlayer.api.types.TagDefinition;
 import com.hiddenlayer.api.types.TagValueList;
 import java.io.IOException;
@@ -120,8 +119,7 @@ public class AsyncRawCustomTagsClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -278,8 +276,7 @@ public class AsyncRawCustomTagsClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -386,8 +383,7 @@ public class AsyncRawCustomTagsClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -548,8 +544,7 @@ public class AsyncRawCustomTagsClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:

@@ -18,7 +18,6 @@ import com.hiddenlayer.api.errors.UnauthorizedError;
 import com.hiddenlayer.api.errors.UnprocessableEntityError;
 import com.hiddenlayer.api.resources.metrics.timeseriesinferences.requests.ListTimeseriesInferencesRequest;
 import com.hiddenlayer.api.resources.metrics.timeseriesinferences.requests.ListV2TimeseriesInferencesRequest;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import com.hiddenlayer.api.types.InferenceTimeseriesResponseV2;
 import com.hiddenlayer.api.types.InferenceTimeseriesResponseV3;
 import java.io.IOException;
@@ -93,8 +92,7 @@ public class RawTimeseriesInferencesClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthenticationErrorModel.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 422:
                         throw new UnprocessableEntityError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
@@ -172,8 +170,7 @@ public class RawTimeseriesInferencesClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthenticationErrorModel.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 422:
                         throw new UnprocessableEntityError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);

@@ -19,7 +19,6 @@ import com.hiddenlayer.api.resources.assetinventory.tags.requests.ListTagsReques
 import com.hiddenlayer.api.resources.assetinventory.tags.requests.ListV1TagsRequest;
 import com.hiddenlayer.api.types.AiAssetInventoryV1TagDefinition;
 import com.hiddenlayer.api.types.AiAssetInventoryV1TagDefinitionList;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import com.hiddenlayer.api.types.TagDefinition;
 import com.hiddenlayer.api.types.TagDefinitionList;
 import java.io.IOException;
@@ -135,8 +134,7 @@ public class RawTagsClient {
                 switch (response.code()) {
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthenticationErrorModel.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 403:
                         throw new ForbiddenError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
@@ -253,8 +251,7 @@ public class RawTagsClient {
                 switch (response.code()) {
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthenticationErrorModel.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 403:
                         throw new ForbiddenError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);

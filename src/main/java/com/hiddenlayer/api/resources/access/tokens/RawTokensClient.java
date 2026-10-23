@@ -17,7 +17,6 @@ import com.hiddenlayer.api.errors.ForbiddenError;
 import com.hiddenlayer.api.errors.InternalServerError;
 import com.hiddenlayer.api.errors.UnauthorizedError;
 import com.hiddenlayer.api.errors.UnprocessableEntityError;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import com.hiddenlayer.api.types.ShortLivedTokenResponse;
 import java.io.IOException;
 import okhttp3.Headers;
@@ -92,8 +91,7 @@ public class RawTokensClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthenticationErrorModel.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 403:
                         throw new ForbiddenError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);

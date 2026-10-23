@@ -24,7 +24,6 @@ import com.hiddenlayer.api.resources.ssointegrations.requests.GetSsoIntegrations
 import com.hiddenlayer.api.resources.ssointegrations.requests.SsoIntegrationsCreateRequest;
 import com.hiddenlayer.api.resources.ssointegrations.requests.SsoIntegrationsUpdateRequest;
 import com.hiddenlayer.api.resources.ssointegrations.types.ListSsoIntegrationsResponse;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import com.hiddenlayer.api.types.SsoIntegrationSamlV2;
 import java.io.IOException;
 import okhttp3.Headers;
@@ -95,8 +94,7 @@ public class RawSsoIntegrationsClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthenticationErrorModel.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 403:
                         throw new ForbiddenError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
@@ -184,8 +182,7 @@ public class RawSsoIntegrationsClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthenticationErrorModel.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 403:
                         throw new ForbiddenError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
@@ -277,8 +274,7 @@ public class RawSsoIntegrationsClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthenticationErrorModel.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 404:
                         throw new NotFoundError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
@@ -385,8 +381,7 @@ public class RawSsoIntegrationsClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthenticationErrorModel.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 403:
                         throw new ForbiddenError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);

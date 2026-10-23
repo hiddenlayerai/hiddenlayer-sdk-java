@@ -29,7 +29,6 @@ import com.hiddenlayer.api.resources.evaluations.redteam.requests.RetrieveNextAc
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.RetrieveStatusRedTeamRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.SubmitTargetResponseBody;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.TerminateRedTeamRequest;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import com.hiddenlayer.api.types.NextActionResponse;
 import com.hiddenlayer.api.types.RedTeamListResultsResponse;
 import com.hiddenlayer.api.types.RedTeamResultItem;
@@ -202,8 +201,7 @@ public class AsyncRawRedTeamClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -325,8 +323,7 @@ public class AsyncRawRedTeamClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -446,8 +443,7 @@ public class AsyncRawRedTeamClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -602,8 +598,7 @@ public class AsyncRawRedTeamClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -731,8 +726,7 @@ public class AsyncRawRedTeamClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -859,8 +853,7 @@ public class AsyncRawRedTeamClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -983,8 +976,7 @@ public class AsyncRawRedTeamClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -1111,8 +1103,7 @@ public class AsyncRawRedTeamClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:

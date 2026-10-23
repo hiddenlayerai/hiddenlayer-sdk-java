@@ -4,21 +4,20 @@
 package com.hiddenlayer.api.errors;
 
 import com.hiddenlayer.api.core.HiddenLayerApiException;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import okhttp3.Response;
 
 public final class UnauthorizedError extends HiddenLayerApiException {
     /**
      * The body of the response that triggered the exception.
      */
-    private final AuthenticationErrorModel body;
+    private final Object body;
 
-    public UnauthorizedError(AuthenticationErrorModel body) {
+    public UnauthorizedError(Object body) {
         super("UnauthorizedError", 401, body);
         this.body = body;
     }
 
-    public UnauthorizedError(AuthenticationErrorModel body, Response rawResponse) {
+    public UnauthorizedError(Object body, Response rawResponse) {
         super("UnauthorizedError", 401, body, rawResponse);
         this.body = body;
     }
@@ -27,7 +26,7 @@ public final class UnauthorizedError extends HiddenLayerApiException {
      * @return the body
      */
     @java.lang.Override
-    public AuthenticationErrorModel body() {
+    public Object body() {
         return this.body;
     }
 }

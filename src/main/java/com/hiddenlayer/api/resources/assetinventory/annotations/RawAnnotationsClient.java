@@ -19,7 +19,6 @@ import com.hiddenlayer.api.errors.UnauthorizedError;
 import com.hiddenlayer.api.errors.UnprocessableEntityError;
 import com.hiddenlayer.api.resources.assetinventory.annotations.requests.GetAnnotationsRequest;
 import com.hiddenlayer.api.types.Asset;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import java.io.IOException;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
@@ -129,8 +128,7 @@ public class RawAnnotationsClient {
                 switch (response.code()) {
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthenticationErrorModel.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 403:
                         throw new ForbiddenError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);

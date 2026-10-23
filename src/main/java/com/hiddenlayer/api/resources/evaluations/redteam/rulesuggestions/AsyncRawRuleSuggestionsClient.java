@@ -24,7 +24,6 @@ import com.hiddenlayer.api.resources.evaluations.redteam.rulesuggestions.request
 import com.hiddenlayer.api.resources.evaluations.redteam.rulesuggestions.requests.ListRuleSuggestionsRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.rulesuggestions.requests.StartRuleSuggestionBody;
 import com.hiddenlayer.api.resources.evaluations.redteam.rulesuggestions.requests.StatusRuleSuggestionsRequest;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import com.hiddenlayer.api.types.RuleSuggestionListItem;
 import com.hiddenlayer.api.types.RuleSuggestionListResponse;
 import com.hiddenlayer.api.types.RuleSuggestionResultResponse;
@@ -166,8 +165,7 @@ public class AsyncRawRuleSuggestionsClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -340,8 +338,7 @@ public class AsyncRawRuleSuggestionsClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -479,8 +476,7 @@ public class AsyncRawRuleSuggestionsClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -608,8 +604,7 @@ public class AsyncRawRuleSuggestionsClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:

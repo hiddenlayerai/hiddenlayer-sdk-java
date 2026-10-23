@@ -739,6 +739,68 @@ client.users().me();
 </dl>
 </details>
 
+## Oauth2
+<details><summary><code>client.oauth2.token(request) -> AccessToken</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Exchanges the Client ID and Client Secret of an [API credential](#operation/create_credentials_api_v2_credentials_post) for an access token, using the OAuth2 client credentials grant. Send the Client ID and Client Secret as the HTTP Basic username and password.
+
+Send the token as `Authorization: Bearer <access_token>` on every other request. It expires `expires_in` seconds after it is issued, so request a new one before then.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.oauth2().token(
+    AccessTokenRequest
+        .builder()
+        .grantType(AccessTokenRequestGrantType.CLIENT_CREDENTIALS)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `AccessTokenRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## SsoIntegrations
 <details><summary><code>client.ssoIntegrations.list() -> ListSsoIntegrationsResponse</code></summary>
 <dl>
@@ -2227,6 +2289,8 @@ client.access().apiKeys().list(
 <dd>
 
 [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Prefer [API credentials](#operation/create_credentials_api_v2_credentials_post), which trade a client ID and secret for short-lived OAuth2 access tokens. Reserve Static API Keys for integrations that cannot easily support OAuth2.
 
 A tenant can have at most 100 keys that are neither revoked nor retired, including keys with no active secret.
 </dd>

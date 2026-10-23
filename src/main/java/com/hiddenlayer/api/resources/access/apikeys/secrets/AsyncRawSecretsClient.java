@@ -23,7 +23,6 @@ import com.hiddenlayer.api.errors.UnauthorizedError;
 import com.hiddenlayer.api.errors.UnprocessableEntityError;
 import com.hiddenlayer.api.resources.access.apikeys.secrets.requests.CreateSecretsRequest;
 import com.hiddenlayer.api.resources.access.apikeys.secrets.requests.DeleteSecretsRequest;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import com.hiddenlayer.api.types.StaticApiKeySecretWithValue;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -123,8 +122,7 @@ public class AsyncRawSecretsClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -255,8 +253,7 @@ public class AsyncRawSecretsClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:

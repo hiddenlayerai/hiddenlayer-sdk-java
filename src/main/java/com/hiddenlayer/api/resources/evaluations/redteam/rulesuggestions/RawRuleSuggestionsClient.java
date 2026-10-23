@@ -24,7 +24,6 @@ import com.hiddenlayer.api.resources.evaluations.redteam.rulesuggestions.request
 import com.hiddenlayer.api.resources.evaluations.redteam.rulesuggestions.requests.ListRuleSuggestionsRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.rulesuggestions.requests.StartRuleSuggestionBody;
 import com.hiddenlayer.api.resources.evaluations.redteam.rulesuggestions.requests.StatusRuleSuggestionsRequest;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import com.hiddenlayer.api.types.RuleSuggestionListItem;
 import com.hiddenlayer.api.types.RuleSuggestionListResponse;
 import com.hiddenlayer.api.types.RuleSuggestionResultResponse;
@@ -147,8 +146,7 @@ public class RawRuleSuggestionsClient {
                 switch (response.code()) {
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthenticationErrorModel.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 403:
                         throw new ForbiddenError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
@@ -290,8 +288,7 @@ public class RawRuleSuggestionsClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthenticationErrorModel.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 403:
                         throw new ForbiddenError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
@@ -399,8 +396,7 @@ public class RawRuleSuggestionsClient {
                 switch (response.code()) {
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthenticationErrorModel.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 403:
                         throw new ForbiddenError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
@@ -498,8 +494,7 @@ public class RawRuleSuggestionsClient {
                 switch (response.code()) {
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthenticationErrorModel.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 403:
                         throw new ForbiddenError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);

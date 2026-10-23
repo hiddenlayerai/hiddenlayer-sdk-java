@@ -19,6 +19,7 @@ import com.hiddenlayer.api.resources.metrics.MetricsClient;
 import com.hiddenlayer.api.resources.mitre.MitreClient;
 import com.hiddenlayer.api.resources.modelintel.ModelIntelClient;
 import com.hiddenlayer.api.resources.models.ModelsClient;
+import com.hiddenlayer.api.resources.oauth2.Oauth2Client;
 import com.hiddenlayer.api.resources.permissions.PermissionsClient;
 import com.hiddenlayer.api.resources.promptanalyzer.PromptAnalyzerClient;
 import com.hiddenlayer.api.resources.roles.RolesClient;
@@ -43,6 +44,8 @@ public class HiddenLayer implements AutoCloseable {
     protected final Supplier<RolesClient> rolesClient;
 
     protected final Supplier<UsersClient> usersClient;
+
+    protected final Supplier<Oauth2Client> oauth2Client;
 
     protected final Supplier<SsoIntegrationsClient> ssoIntegrationsClient;
 
@@ -89,6 +92,7 @@ public class HiddenLayer implements AutoCloseable {
         this.permissionsClient = Suppliers.memoize(() -> new PermissionsClient(clientOptions));
         this.rolesClient = Suppliers.memoize(() -> new RolesClient(clientOptions));
         this.usersClient = Suppliers.memoize(() -> new UsersClient(clientOptions));
+        this.oauth2Client = Suppliers.memoize(() -> new Oauth2Client(clientOptions));
         this.ssoIntegrationsClient = Suppliers.memoize(() -> new SsoIntegrationsClient(clientOptions));
         this.interactionsClient = Suppliers.memoize(() -> new InteractionsClient(clientOptions));
         this.promptAnalyzerClient = Suppliers.memoize(() -> new PromptAnalyzerClient(clientOptions));
@@ -128,6 +132,10 @@ public class HiddenLayer implements AutoCloseable {
 
     public UsersClient users() {
         return this.usersClient.get();
+    }
+
+    public Oauth2Client oauth2() {
+        return this.oauth2Client.get();
     }
 
     public SsoIntegrationsClient ssoIntegrations() {

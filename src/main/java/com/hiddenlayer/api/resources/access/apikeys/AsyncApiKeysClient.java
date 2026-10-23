@@ -100,6 +100,7 @@ public class AsyncApiKeysClient {
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Prefer <a href="#operation/create_credentials_api_v2_credentials_post">API credentials</a>, which trade a client ID and secret for short-lived OAuth2 access tokens. Reserve Static API Keys for integrations that cannot easily support OAuth2.</p>
      * <p>A tenant can have at most 100 keys that are neither revoked nor retired, including keys with no active secret.</p>
      */
     public CompletableFuture<StaticApiKeyWithValue> create(StaticApiKeyCreateRequest request) {
@@ -115,6 +116,7 @@ public class AsyncApiKeysClient {
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Prefer <a href="#operation/create_credentials_api_v2_credentials_post">API credentials</a>, which trade a client ID and secret for short-lived OAuth2 access tokens. Reserve Static API Keys for integrations that cannot easily support OAuth2.</p>
      * <p>A tenant can have at most 100 keys that are neither revoked nor retired, including keys with no active secret.</p>
      */
     public CompletableFuture<StaticApiKeyWithValue> create(

@@ -17,7 +17,6 @@ import com.hiddenlayer.api.errors.ForbiddenError;
 import com.hiddenlayer.api.errors.InternalServerError;
 import com.hiddenlayer.api.errors.UnauthorizedError;
 import com.hiddenlayer.api.errors.UnprocessableEntityError;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import com.hiddenlayer.api.types.ShortLivedTokenResponse;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -104,8 +103,7 @@ public class AsyncRawTokensClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:

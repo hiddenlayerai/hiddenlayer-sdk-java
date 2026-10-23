@@ -21,7 +21,6 @@ import com.hiddenlayer.api.resources.scans.results.requests.ListFilesResultsRequ
 import com.hiddenlayer.api.resources.scans.results.requests.RetrieveSummaryResultsRequest;
 import com.hiddenlayer.api.resources.scans.results.requests.SarifResultsRequest;
 import com.hiddenlayer.api.resources.scans.results.types.ListFilesResultsResponse;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import com.hiddenlayer.api.types.ScanFileResultWithComplianceV3;
 import com.hiddenlayer.api.types.ScanReportSummaryResponseV3;
 import java.io.IOException;
@@ -294,8 +293,7 @@ public class RawResultsClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthenticationErrorModel.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 403:
                         throw new ForbiddenError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);

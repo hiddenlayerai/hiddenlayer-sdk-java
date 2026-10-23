@@ -24,7 +24,6 @@ import com.hiddenlayer.api.resources.ssointegrations.requests.GetSsoIntegrations
 import com.hiddenlayer.api.resources.ssointegrations.requests.SsoIntegrationsCreateRequest;
 import com.hiddenlayer.api.resources.ssointegrations.requests.SsoIntegrationsUpdateRequest;
 import com.hiddenlayer.api.resources.ssointegrations.types.ListSsoIntegrationsResponse;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import com.hiddenlayer.api.types.SsoIntegrationSamlV2;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -107,8 +106,7 @@ public class AsyncRawSsoIntegrationsClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -226,8 +224,7 @@ public class AsyncRawSsoIntegrationsClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -352,8 +349,7 @@ public class AsyncRawSsoIntegrationsClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 404:
@@ -491,8 +487,7 @@ public class AsyncRawSsoIntegrationsClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:

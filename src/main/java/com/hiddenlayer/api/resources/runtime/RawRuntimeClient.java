@@ -22,7 +22,6 @@ import com.hiddenlayer.api.errors.UnprocessableEntityError;
 import com.hiddenlayer.api.resources.runtime.requests.EvaluateRequestRuntimeRequest;
 import com.hiddenlayer.api.resources.runtime.requests.EvaluateResponseRuntimeRequest;
 import com.hiddenlayer.api.resources.runtime.requests.InteractionEvaluationRequest;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import com.hiddenlayer.api.types.InteractionEvaluationResponse;
 import java.io.IOException;
 import java.util.Map;
@@ -159,8 +158,7 @@ public class RawRuntimeClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 401:
                         throw new UnauthorizedError(
-                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AuthenticationErrorModel.class),
-                                response);
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 403:
                         throw new ForbiddenError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);

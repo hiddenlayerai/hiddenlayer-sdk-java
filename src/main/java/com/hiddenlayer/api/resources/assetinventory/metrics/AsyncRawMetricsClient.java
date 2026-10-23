@@ -19,7 +19,6 @@ import com.hiddenlayer.api.errors.UnprocessableEntityError;
 import com.hiddenlayer.api.types.AiAssetInventoryV1AssetTypeCounts;
 import com.hiddenlayer.api.types.AiAssetInventoryV1ProviderCounts;
 import com.hiddenlayer.api.types.AiAssetInventoryV1RegionCounts;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import com.hiddenlayer.api.types.ProviderCounts;
 import com.hiddenlayer.api.types.RegionCounts;
 import java.io.IOException;
@@ -370,8 +369,7 @@ public class AsyncRawMetricsClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -480,8 +478,7 @@ public class AsyncRawMetricsClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -589,8 +586,7 @@ public class AsyncRawMetricsClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:

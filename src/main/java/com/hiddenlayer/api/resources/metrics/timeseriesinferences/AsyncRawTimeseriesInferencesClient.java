@@ -18,7 +18,6 @@ import com.hiddenlayer.api.errors.UnauthorizedError;
 import com.hiddenlayer.api.errors.UnprocessableEntityError;
 import com.hiddenlayer.api.resources.metrics.timeseriesinferences.requests.ListTimeseriesInferencesRequest;
 import com.hiddenlayer.api.resources.metrics.timeseriesinferences.requests.ListV2TimeseriesInferencesRequest;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import com.hiddenlayer.api.types.InferenceTimeseriesResponseV2;
 import com.hiddenlayer.api.types.InferenceTimeseriesResponseV3;
 import java.io.IOException;
@@ -106,8 +105,7 @@ public class AsyncRawTimeseriesInferencesClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 422:
@@ -215,8 +213,7 @@ public class AsyncRawTimeseriesInferencesClient {
                                 return;
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 422:

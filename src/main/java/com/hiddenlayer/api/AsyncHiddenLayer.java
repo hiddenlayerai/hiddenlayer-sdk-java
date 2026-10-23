@@ -19,6 +19,7 @@ import com.hiddenlayer.api.resources.metrics.AsyncMetricsClient;
 import com.hiddenlayer.api.resources.mitre.AsyncMitreClient;
 import com.hiddenlayer.api.resources.modelintel.AsyncModelIntelClient;
 import com.hiddenlayer.api.resources.models.AsyncModelsClient;
+import com.hiddenlayer.api.resources.oauth2.AsyncOauth2Client;
 import com.hiddenlayer.api.resources.permissions.AsyncPermissionsClient;
 import com.hiddenlayer.api.resources.promptanalyzer.AsyncPromptAnalyzerClient;
 import com.hiddenlayer.api.resources.roles.AsyncRolesClient;
@@ -43,6 +44,8 @@ public class AsyncHiddenLayer implements AutoCloseable {
     protected final Supplier<AsyncRolesClient> rolesClient;
 
     protected final Supplier<AsyncUsersClient> usersClient;
+
+    protected final Supplier<AsyncOauth2Client> oauth2Client;
 
     protected final Supplier<AsyncSsoIntegrationsClient> ssoIntegrationsClient;
 
@@ -89,6 +92,7 @@ public class AsyncHiddenLayer implements AutoCloseable {
         this.permissionsClient = Suppliers.memoize(() -> new AsyncPermissionsClient(clientOptions));
         this.rolesClient = Suppliers.memoize(() -> new AsyncRolesClient(clientOptions));
         this.usersClient = Suppliers.memoize(() -> new AsyncUsersClient(clientOptions));
+        this.oauth2Client = Suppliers.memoize(() -> new AsyncOauth2Client(clientOptions));
         this.ssoIntegrationsClient = Suppliers.memoize(() -> new AsyncSsoIntegrationsClient(clientOptions));
         this.interactionsClient = Suppliers.memoize(() -> new AsyncInteractionsClient(clientOptions));
         this.promptAnalyzerClient = Suppliers.memoize(() -> new AsyncPromptAnalyzerClient(clientOptions));
@@ -128,6 +132,10 @@ public class AsyncHiddenLayer implements AutoCloseable {
 
     public AsyncUsersClient users() {
         return this.usersClient.get();
+    }
+
+    public AsyncOauth2Client oauth2() {
+        return this.oauth2Client.get();
     }
 
     public AsyncSsoIntegrationsClient ssoIntegrations() {

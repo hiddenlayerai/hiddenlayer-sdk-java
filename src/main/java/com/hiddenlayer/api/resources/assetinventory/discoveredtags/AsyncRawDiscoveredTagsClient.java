@@ -18,7 +18,6 @@ import com.hiddenlayer.api.errors.UnauthorizedError;
 import com.hiddenlayer.api.resources.assetinventory.discoveredtags.requests.ValuesDiscoveredTagsRequest;
 import com.hiddenlayer.api.resources.assetinventory.discoveredtags.requests.ValuesV1DiscoveredTagsRequest;
 import com.hiddenlayer.api.types.AiAssetInventoryV1TagValueList;
-import com.hiddenlayer.api.types.AuthenticationErrorModel;
 import com.hiddenlayer.api.types.TagValueList;
 import java.io.IOException;
 import java.util.List;
@@ -146,8 +145,7 @@ public class AsyncRawDiscoveredTagsClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
@@ -293,8 +291,7 @@ public class AsyncRawDiscoveredTagsClient {
                         switch (response.code()) {
                             case 401:
                                 future.completeExceptionally(new UnauthorizedError(
-                                        ObjectMappers.JSON_MAPPER.readValue(
-                                                responseBodyString, AuthenticationErrorModel.class),
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;
                             case 403:
