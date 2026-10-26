@@ -38,6 +38,14 @@ public final class ContentPart {
         return new ContentPart(new ToolResultValue(value));
     }
 
+    public static ContentPart decisionQuestion(DecisionQuestionPart value) {
+        return new ContentPart(new DecisionQuestionValue(value));
+    }
+
+    public static ContentPart decisionAnswer(DecisionAnswerPart value) {
+        return new ContentPart(new DecisionAnswerValue(value));
+    }
+
     public boolean isText() {
         return value instanceof TextValue;
     }
@@ -48,6 +56,14 @@ public final class ContentPart {
 
     public boolean isToolResult() {
         return value instanceof ToolResultValue;
+    }
+
+    public boolean isDecisionQuestion() {
+        return value instanceof DecisionQuestionValue;
+    }
+
+    public boolean isDecisionAnswer() {
+        return value instanceof DecisionAnswerValue;
     }
 
     public boolean _isUnknown() {
@@ -71,6 +87,20 @@ public final class ContentPart {
     public Optional<ToolResultPart> getToolResult() {
         if (isToolResult()) {
             return Optional.of(((ToolResultValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<DecisionQuestionPart> getDecisionQuestion() {
+        if (isDecisionQuestion()) {
+            return Optional.of(((DecisionQuestionValue) value).value);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<DecisionAnswerPart> getDecisionAnswer() {
+        if (isDecisionAnswer()) {
+            return Optional.of(((DecisionAnswerValue) value).value);
         }
         return Optional.empty();
     }
@@ -110,6 +140,10 @@ public final class ContentPart {
 
         T visitToolResult(ToolResultPart toolResult);
 
+        T visitDecisionQuestion(DecisionQuestionPart decisionQuestion);
+
+        T visitDecisionAnswer(DecisionAnswerPart decisionAnswer);
+
         T _visitUnknown(Object unknownType);
     }
 
@@ -117,7 +151,9 @@ public final class ContentPart {
     @JsonSubTypes({
         @JsonSubTypes.Type(TextValue.class),
         @JsonSubTypes.Type(ToolUseValue.class),
-        @JsonSubTypes.Type(ToolResultValue.class)
+        @JsonSubTypes.Type(ToolResultValue.class),
+        @JsonSubTypes.Type(DecisionQuestionValue.class),
+        @JsonSubTypes.Type(DecisionAnswerValue.class)
     })
     @JsonIgnoreProperties(ignoreUnknown = true)
     private interface Value {
@@ -230,6 +266,86 @@ public final class ContentPart {
         }
 
         private boolean equalTo(ToolResultValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "ContentPart{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("decision_question")
+    @JsonIgnoreProperties("type")
+    private static final class DecisionQuestionValue implements Value {
+        @JsonUnwrapped
+        @JsonIgnoreProperties(value = "type", allowSetters = true)
+        private DecisionQuestionPart value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private DecisionQuestionValue() {}
+
+        private DecisionQuestionValue(DecisionQuestionPart value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitDecisionQuestion(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof DecisionQuestionValue && equalTo((DecisionQuestionValue) other);
+        }
+
+        private boolean equalTo(DecisionQuestionValue other) {
+            return value.equals(other.value);
+        }
+
+        @java.lang.Override
+        public int hashCode() {
+            return Objects.hash(this.value);
+        }
+
+        @java.lang.Override
+        public String toString() {
+            return "ContentPart{" + "value: " + value + "}";
+        }
+    }
+
+    @JsonTypeName("decision_answer")
+    @JsonIgnoreProperties("type")
+    private static final class DecisionAnswerValue implements Value {
+        @JsonUnwrapped
+        @JsonIgnoreProperties(value = "type", allowSetters = true)
+        private DecisionAnswerPart value;
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        private DecisionAnswerValue() {}
+
+        private DecisionAnswerValue(DecisionAnswerPart value) {
+            this.value = value;
+        }
+
+        @java.lang.Override
+        public <T> T visit(Visitor<T> visitor) {
+            return visitor.visitDecisionAnswer(value);
+        }
+
+        @java.lang.Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            return other instanceof DecisionAnswerValue && equalTo((DecisionAnswerValue) other);
+        }
+
+        private boolean equalTo(DecisionAnswerValue other) {
             return value.equals(other.value);
         }
 

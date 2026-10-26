@@ -62,7 +62,7 @@ public final class InteractionEvaluationRequestMetadata {
     }
 
     /**
-     * @return The LLM provider (e.g., openai, anthropic, azure, bedrock).
+     * @return The LLM provider (e.g., openai, anthropic, typesafe, azure, bedrock).
      */
     @JsonProperty("provider")
     public String getProvider() {
@@ -130,7 +130,7 @@ public final class InteractionEvaluationRequestMetadata {
 
     public interface ProviderStage {
         /**
-         * <p>The LLM provider (e.g., openai, anthropic, azure, bedrock).</p>
+         * <p>The LLM provider (e.g., openai, anthropic, typesafe, azure, bedrock).</p>
          */
         _FinalStage provider(@NotNull String provider);
     }
@@ -198,7 +198,7 @@ public final class InteractionEvaluationRequestMetadata {
         }
 
         /**
-         * <p>The LLM provider (e.g., openai, anthropic, azure, bedrock).</p>
+         * <p>The LLM provider (e.g., openai, anthropic, typesafe, azure, bedrock).</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

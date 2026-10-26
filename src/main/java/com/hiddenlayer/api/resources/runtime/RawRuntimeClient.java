@@ -57,6 +57,8 @@ public class RawRuntimeClient {
      * <li><a href="https://platform.openai.com/docs/api-reference/chat">OpenAI Chat Completions</a></li>
      * <li><a href="https://platform.openai.com/docs/api-reference/responses">OpenAI Responses</a></li>
      * <li><a href="https://docs.anthropic.com/en/api/messages">Anthropic Messages</a></li>
+     * <li><a href="https://api.typesafe.ai/openapi.json">TypeSafe System One</a>, as JSON</li>
+     * <li><a href="https://developers.openai.com/api/docs/guides/decisions">OpenAI Decisions</a></li>
      * </ul>
      * </li>
      * </ul>
@@ -90,6 +92,8 @@ public class RawRuntimeClient {
      * <li><a href="https://platform.openai.com/docs/api-reference/chat">OpenAI Chat Completions</a></li>
      * <li><a href="https://platform.openai.com/docs/api-reference/responses">OpenAI Responses</a></li>
      * <li><a href="https://docs.anthropic.com/en/api/messages">Anthropic Messages</a></li>
+     * <li><a href="https://api.typesafe.ai/openapi.json">TypeSafe System One</a>, as JSON</li>
+     * <li><a href="https://developers.openai.com/api/docs/guides/decisions">OpenAI Decisions</a></li>
      * </ul>
      * </li>
      * </ul>
@@ -187,7 +191,9 @@ public class RawRuntimeClient {
      * <p>Accepts any valid provider request payload and returns:</p>
      * <ul>
      * <li>If detect or redact action: the request payload (potentially modified) in the provider's request format</li>
-     * <li>If block action: a canned block message in the provider's response format</li>
+     * <li>If block action: a canned block message in the provider's response format. For TypeSafe
+     * System One and OpenAI Decisions it is the generic block body,
+     * <code>{&quot;error&quot;: &quot;request blocked by policy&quot;}</code>.</li>
      * </ul>
      * <p>If the project is in monitor mode, the endpoint does not block or redact. It returns the
      * request payload unchanged.</p>
@@ -197,6 +203,11 @@ public class RawRuntimeClient {
      * <li><a href="https://platform.openai.com/docs/api-reference/chat">OpenAI Chat Completions</a></li>
      * <li><a href="https://platform.openai.com/docs/api-reference/responses">OpenAI Responses</a></li>
      * <li><a href="https://docs.anthropic.com/en/api/messages">Anthropic Messages</a></li>
+     * <li><a href="https://api.typesafe.ai/openapi.json">TypeSafe System One</a>, as JSON or as
+     * <code>multipart/form-data</code> with the JSON request in its <code>request</code> part and the images in
+     * the other parts. A multipart request is returned with the same boundary and its image
+     * parts unchanged.</li>
+     * <li><a href="https://developers.openai.com/api/docs/guides/decisions">OpenAI Decisions</a></li>
      * </ul>
      */
     public HiddenLayerHttpResponse<Map<String, Object>> evaluateRequest(Map<String, Object> body) {
@@ -209,7 +220,9 @@ public class RawRuntimeClient {
      * <p>Accepts any valid provider request payload and returns:</p>
      * <ul>
      * <li>If detect or redact action: the request payload (potentially modified) in the provider's request format</li>
-     * <li>If block action: a canned block message in the provider's response format</li>
+     * <li>If block action: a canned block message in the provider's response format. For TypeSafe
+     * System One and OpenAI Decisions it is the generic block body,
+     * <code>{&quot;error&quot;: &quot;request blocked by policy&quot;}</code>.</li>
      * </ul>
      * <p>If the project is in monitor mode, the endpoint does not block or redact. It returns the
      * request payload unchanged.</p>
@@ -219,6 +232,11 @@ public class RawRuntimeClient {
      * <li><a href="https://platform.openai.com/docs/api-reference/chat">OpenAI Chat Completions</a></li>
      * <li><a href="https://platform.openai.com/docs/api-reference/responses">OpenAI Responses</a></li>
      * <li><a href="https://docs.anthropic.com/en/api/messages">Anthropic Messages</a></li>
+     * <li><a href="https://api.typesafe.ai/openapi.json">TypeSafe System One</a>, as JSON or as
+     * <code>multipart/form-data</code> with the JSON request in its <code>request</code> part and the images in
+     * the other parts. A multipart request is returned with the same boundary and its image
+     * parts unchanged.</li>
+     * <li><a href="https://developers.openai.com/api/docs/guides/decisions">OpenAI Decisions</a></li>
      * </ul>
      */
     public HiddenLayerHttpResponse<Map<String, Object>> evaluateRequest(
@@ -232,7 +250,9 @@ public class RawRuntimeClient {
      * <p>Accepts any valid provider request payload and returns:</p>
      * <ul>
      * <li>If detect or redact action: the request payload (potentially modified) in the provider's request format</li>
-     * <li>If block action: a canned block message in the provider's response format</li>
+     * <li>If block action: a canned block message in the provider's response format. For TypeSafe
+     * System One and OpenAI Decisions it is the generic block body,
+     * <code>{&quot;error&quot;: &quot;request blocked by policy&quot;}</code>.</li>
      * </ul>
      * <p>If the project is in monitor mode, the endpoint does not block or redact. It returns the
      * request payload unchanged.</p>
@@ -242,6 +262,11 @@ public class RawRuntimeClient {
      * <li><a href="https://platform.openai.com/docs/api-reference/chat">OpenAI Chat Completions</a></li>
      * <li><a href="https://platform.openai.com/docs/api-reference/responses">OpenAI Responses</a></li>
      * <li><a href="https://docs.anthropic.com/en/api/messages">Anthropic Messages</a></li>
+     * <li><a href="https://api.typesafe.ai/openapi.json">TypeSafe System One</a>, as JSON or as
+     * <code>multipart/form-data</code> with the JSON request in its <code>request</code> part and the images in
+     * the other parts. A multipart request is returned with the same boundary and its image
+     * parts unchanged.</li>
+     * <li><a href="https://developers.openai.com/api/docs/guides/decisions">OpenAI Decisions</a></li>
      * </ul>
      */
     public HiddenLayerHttpResponse<Map<String, Object>> evaluateRequest(EvaluateRequestRuntimeRequest request) {
@@ -253,7 +278,9 @@ public class RawRuntimeClient {
      * <p>Accepts any valid provider request payload and returns:</p>
      * <ul>
      * <li>If detect or redact action: the request payload (potentially modified) in the provider's request format</li>
-     * <li>If block action: a canned block message in the provider's response format</li>
+     * <li>If block action: a canned block message in the provider's response format. For TypeSafe
+     * System One and OpenAI Decisions it is the generic block body,
+     * <code>{&quot;error&quot;: &quot;request blocked by policy&quot;}</code>.</li>
      * </ul>
      * <p>If the project is in monitor mode, the endpoint does not block or redact. It returns the
      * request payload unchanged.</p>
@@ -263,6 +290,11 @@ public class RawRuntimeClient {
      * <li><a href="https://platform.openai.com/docs/api-reference/chat">OpenAI Chat Completions</a></li>
      * <li><a href="https://platform.openai.com/docs/api-reference/responses">OpenAI Responses</a></li>
      * <li><a href="https://docs.anthropic.com/en/api/messages">Anthropic Messages</a></li>
+     * <li><a href="https://api.typesafe.ai/openapi.json">TypeSafe System One</a>, as JSON or as
+     * <code>multipart/form-data</code> with the JSON request in its <code>request</code> part and the images in
+     * the other parts. A multipart request is returned with the same boundary and its image
+     * parts unchanged.</li>
+     * <li><a href="https://developers.openai.com/api/docs/guides/decisions">OpenAI Decisions</a></li>
      * </ul>
      */
     public HiddenLayerHttpResponse<Map<String, Object>> evaluateRequest(
@@ -345,7 +377,11 @@ public class RawRuntimeClient {
      * <li><a href="https://platform.openai.com/docs/api-reference/chat">OpenAI Chat Completions</a></li>
      * <li><a href="https://platform.openai.com/docs/api-reference/responses">OpenAI Responses</a></li>
      * <li><a href="https://docs.anthropic.com/en/api/messages">Anthropic Messages</a></li>
+     * <li><a href="https://api.typesafe.ai/openapi.json">TypeSafe System One</a></li>
+     * <li><a href="https://developers.openai.com/api/docs/guides/decisions">OpenAI Decisions</a></li>
      * </ul>
+     * <p>A TypeSafe System One or OpenAI Decisions response is never redacted. When blocked, it
+     * is replaced by the generic block body, <code>{&quot;error&quot;: &quot;request blocked by policy&quot;}</code>.</p>
      */
     public HiddenLayerHttpResponse<Map<String, Object>> evaluateResponse(Map<String, Object> body) {
         return evaluateResponse(
@@ -367,7 +403,11 @@ public class RawRuntimeClient {
      * <li><a href="https://platform.openai.com/docs/api-reference/chat">OpenAI Chat Completions</a></li>
      * <li><a href="https://platform.openai.com/docs/api-reference/responses">OpenAI Responses</a></li>
      * <li><a href="https://docs.anthropic.com/en/api/messages">Anthropic Messages</a></li>
+     * <li><a href="https://api.typesafe.ai/openapi.json">TypeSafe System One</a></li>
+     * <li><a href="https://developers.openai.com/api/docs/guides/decisions">OpenAI Decisions</a></li>
      * </ul>
+     * <p>A TypeSafe System One or OpenAI Decisions response is never redacted. When blocked, it
+     * is replaced by the generic block body, <code>{&quot;error&quot;: &quot;request blocked by policy&quot;}</code>.</p>
      */
     public HiddenLayerHttpResponse<Map<String, Object>> evaluateResponse(
             Map<String, Object> body, RequestOptions requestOptions) {
@@ -390,7 +430,11 @@ public class RawRuntimeClient {
      * <li><a href="https://platform.openai.com/docs/api-reference/chat">OpenAI Chat Completions</a></li>
      * <li><a href="https://platform.openai.com/docs/api-reference/responses">OpenAI Responses</a></li>
      * <li><a href="https://docs.anthropic.com/en/api/messages">Anthropic Messages</a></li>
+     * <li><a href="https://api.typesafe.ai/openapi.json">TypeSafe System One</a></li>
+     * <li><a href="https://developers.openai.com/api/docs/guides/decisions">OpenAI Decisions</a></li>
      * </ul>
+     * <p>A TypeSafe System One or OpenAI Decisions response is never redacted. When blocked, it
+     * is replaced by the generic block body, <code>{&quot;error&quot;: &quot;request blocked by policy&quot;}</code>.</p>
      */
     public HiddenLayerHttpResponse<Map<String, Object>> evaluateResponse(EvaluateResponseRuntimeRequest request) {
         return evaluateResponse(request, null);
@@ -411,7 +455,11 @@ public class RawRuntimeClient {
      * <li><a href="https://platform.openai.com/docs/api-reference/chat">OpenAI Chat Completions</a></li>
      * <li><a href="https://platform.openai.com/docs/api-reference/responses">OpenAI Responses</a></li>
      * <li><a href="https://docs.anthropic.com/en/api/messages">Anthropic Messages</a></li>
+     * <li><a href="https://api.typesafe.ai/openapi.json">TypeSafe System One</a></li>
+     * <li><a href="https://developers.openai.com/api/docs/guides/decisions">OpenAI Decisions</a></li>
      * </ul>
+     * <p>A TypeSafe System One or OpenAI Decisions response is never redacted. When blocked, it
+     * is replaced by the generic block body, <code>{&quot;error&quot;: &quot;request blocked by policy&quot;}</code>.</p>
      */
     public HiddenLayerHttpResponse<Map<String, Object>> evaluateResponse(
             EvaluateResponseRuntimeRequest request, RequestOptions requestOptions) {

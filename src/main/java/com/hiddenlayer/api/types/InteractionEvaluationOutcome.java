@@ -88,10 +88,11 @@ public final class InteractionEvaluationOutcome {
      * of the request's <code>interaction</code> field: if the request supplied the
      * canonical form (<code>CanonicalInteraction</code>), the response returns the
      * canonical form here; if the request supplied a native LLM-provider
-     * payload (OpenAI Chat Completions, OpenAI Responses, or Anthropic
-     * Messages), the response returns that same provider-native shape.
-     * Any redactions, substitutions, or tool modifications from the
-     * outcome's <code>action</code> are applied in place.
+     * payload (OpenAI Chat Completions, OpenAI Responses, Anthropic
+     * Messages, TypeSafe System One or OpenAI Decisions), the response
+     * returns that same provider-native shape. Any redactions,
+     * substitutions, or tool modifications from the outcome's <code>action</code>
+     * are applied in place.
      */
     @JsonProperty("effective_interaction")
     public InteractionEvaluationOutcomeEffectiveInteraction getEffectiveInteraction() {
@@ -165,10 +166,11 @@ public final class InteractionEvaluationOutcome {
          * of the request's <code>interaction</code> field: if the request supplied the
          * canonical form (<code>CanonicalInteraction</code>), the response returns the
          * canonical form here; if the request supplied a native LLM-provider
-         * payload (OpenAI Chat Completions, OpenAI Responses, or Anthropic
-         * Messages), the response returns that same provider-native shape.
-         * Any redactions, substitutions, or tool modifications from the
-         * outcome's <code>action</code> are applied in place.</p>
+         * payload (OpenAI Chat Completions, OpenAI Responses, Anthropic
+         * Messages, TypeSafe System One or OpenAI Decisions), the response
+         * returns that same provider-native shape. Any redactions,
+         * substitutions, or tool modifications from the outcome's <code>action</code>
+         * are applied in place.</p>
          */
         _FinalStage effectiveInteraction(
                 @NotNull InteractionEvaluationOutcomeEffectiveInteraction effectiveInteraction);
@@ -255,10 +257,11 @@ public final class InteractionEvaluationOutcome {
          * of the request's <code>interaction</code> field: if the request supplied the
          * canonical form (<code>CanonicalInteraction</code>), the response returns the
          * canonical form here; if the request supplied a native LLM-provider
-         * payload (OpenAI Chat Completions, OpenAI Responses, or Anthropic
-         * Messages), the response returns that same provider-native shape.
-         * Any redactions, substitutions, or tool modifications from the
-         * outcome's <code>action</code> are applied in place.</p>
+         * payload (OpenAI Chat Completions, OpenAI Responses, Anthropic
+         * Messages, TypeSafe System One or OpenAI Decisions), the response
+         * returns that same provider-native shape. Any redactions,
+         * substitutions, or tool modifications from the outcome's <code>action</code>
+         * are applied in place.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

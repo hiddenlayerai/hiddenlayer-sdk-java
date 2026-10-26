@@ -59,10 +59,11 @@ public final class InteractionEvaluationRequest {
      * @return The interaction to evaluate. Accepts either the canonical form
      * (<code>CanonicalInteraction</code> — <code>messages</code> and optional <code>tools_available</code>)
      * or a native LLM-provider payload passed through verbatim. Supported
-     * provider formats are OpenAI Chat Completions, OpenAI Responses, and
-     * Anthropic Messages. <code>ProviderPayload</code> is intentionally permissive
-     * (any JSON object) so callers can supply provider-native shapes
-     * without schema constraints.
+     * provider formats are OpenAI Chat Completions, OpenAI Responses,
+     * Anthropic Messages, TypeSafe System One and OpenAI Decisions.
+     * <code>ProviderPayload</code> is intentionally permissive (any JSON object) so
+     * callers can supply provider-native shapes without schema
+     * constraints.
      */
     @JsonProperty("interaction")
     public InteractionEvaluationRequestInteraction getInteraction() {
@@ -111,10 +112,11 @@ public final class InteractionEvaluationRequest {
          * <p>The interaction to evaluate. Accepts either the canonical form
          * (<code>CanonicalInteraction</code> — <code>messages</code> and optional <code>tools_available</code>)
          * or a native LLM-provider payload passed through verbatim. Supported
-         * provider formats are OpenAI Chat Completions, OpenAI Responses, and
-         * Anthropic Messages. <code>ProviderPayload</code> is intentionally permissive
-         * (any JSON object) so callers can supply provider-native shapes
-         * without schema constraints.</p>
+         * provider formats are OpenAI Chat Completions, OpenAI Responses,
+         * Anthropic Messages, TypeSafe System One and OpenAI Decisions.
+         * <code>ProviderPayload</code> is intentionally permissive (any JSON object) so
+         * callers can supply provider-native shapes without schema
+         * constraints.</p>
          */
         _FinalStage interaction(@NotNull InteractionEvaluationRequestInteraction interaction);
     }
@@ -165,10 +167,11 @@ public final class InteractionEvaluationRequest {
          * <p>The interaction to evaluate. Accepts either the canonical form
          * (<code>CanonicalInteraction</code> — <code>messages</code> and optional <code>tools_available</code>)
          * or a native LLM-provider payload passed through verbatim. Supported
-         * provider formats are OpenAI Chat Completions, OpenAI Responses, and
-         * Anthropic Messages. <code>ProviderPayload</code> is intentionally permissive
-         * (any JSON object) so callers can supply provider-native shapes
-         * without schema constraints.</p>
+         * provider formats are OpenAI Chat Completions, OpenAI Responses,
+         * Anthropic Messages, TypeSafe System One and OpenAI Decisions.
+         * <code>ProviderPayload</code> is intentionally permissive (any JSON object) so
+         * callers can supply provider-native shapes without schema
+         * constraints.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
