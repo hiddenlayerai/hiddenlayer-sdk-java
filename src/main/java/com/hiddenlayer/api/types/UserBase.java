@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = UserBase.Builder.class)
-public final class UserBase implements IUserBase {
+public final class UserBase {
     private final Optional<String> id;
 
     private final Optional<String> email;
@@ -58,7 +58,6 @@ public final class UserBase implements IUserBase {
     }
 
     @JsonProperty("id")
-    @java.lang.Override
     public Optional<String> getId() {
         return id;
     }
@@ -67,7 +66,6 @@ public final class UserBase implements IUserBase {
      * @return A user email address. This must be unique.
      */
     @JsonProperty("email")
-    @java.lang.Override
     public Optional<String> getEmail() {
         return email;
     }
@@ -76,7 +74,6 @@ public final class UserBase implements IUserBase {
      * @return A user's first name
      */
     @JsonProperty("firstname")
-    @java.lang.Override
     public Optional<String> getFirstname() {
         return firstname;
     }
@@ -85,7 +82,6 @@ public final class UserBase implements IUserBase {
      * @return A user's last name
      */
     @JsonProperty("lastname")
-    @java.lang.Override
     public Optional<String> getLastname() {
         return lastname;
     }
@@ -94,7 +90,6 @@ public final class UserBase implements IUserBase {
      * @return This field is computed as the concatenated <code>firstname</code> and <code>lastname</code>.
      */
     @JsonProperty("full_name")
-    @java.lang.Override
     public Optional<String> getFullName() {
         return fullName;
     }
@@ -103,7 +98,6 @@ public final class UserBase implements IUserBase {
      * @return The timestamp when the user was created.
      */
     @JsonProperty("created_at")
-    @java.lang.Override
     public Optional<OffsetDateTime> getCreatedAt() {
         return createdAt;
     }
@@ -112,7 +106,6 @@ public final class UserBase implements IUserBase {
      * @return A list of roles that the user has been assigned. The roles that are available for assignment include <code>org-admin</code>, <code>user-admin</code>, <code>analyst</code>, and <code>viewer</code>.
      */
     @JsonProperty("roles")
-    @java.lang.Override
     public Optional<List<String>> getRoles() {
         return roles;
     }

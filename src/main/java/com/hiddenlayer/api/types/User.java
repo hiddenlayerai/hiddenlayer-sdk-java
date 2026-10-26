@@ -13,70 +13,65 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = User.Builder.class)
-public final class User implements IUserBase {
-    private final Optional<String> id;
+public final class User {
+    private final String email;
 
-    private final Optional<String> email;
+    private final String firstname;
 
-    private final Optional<String> firstname;
+    private final String lastname;
 
-    private final Optional<String> lastname;
-
-    private final Optional<String> fullName;
-
-    private final Optional<OffsetDateTime> createdAt;
-
-    private final Optional<List<String>> roles;
+    private final List<String> roles;
 
     private final Optional<Boolean> isPasswordAuthenticationEnabled;
 
     private final Optional<Boolean> isEmailMutable;
 
+    private final Optional<String> id;
+
+    private final Optional<String> fullName;
+
+    private final Optional<OffsetDateTime> createdAt;
+
     private final Map<String, Object> additionalProperties;
 
     private User(
-            Optional<String> id,
-            Optional<String> email,
-            Optional<String> firstname,
-            Optional<String> lastname,
-            Optional<String> fullName,
-            Optional<OffsetDateTime> createdAt,
-            Optional<List<String>> roles,
+            String email,
+            String firstname,
+            String lastname,
+            List<String> roles,
             Optional<Boolean> isPasswordAuthenticationEnabled,
             Optional<Boolean> isEmailMutable,
+            Optional<String> id,
+            Optional<String> fullName,
+            Optional<OffsetDateTime> createdAt,
             Map<String, Object> additionalProperties) {
-        this.id = id;
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.fullName = fullName;
-        this.createdAt = createdAt;
         this.roles = roles;
         this.isPasswordAuthenticationEnabled = isPasswordAuthenticationEnabled;
         this.isEmailMutable = isEmailMutable;
+        this.id = id;
+        this.fullName = fullName;
+        this.createdAt = createdAt;
         this.additionalProperties = additionalProperties;
-    }
-
-    @JsonProperty("id")
-    @java.lang.Override
-    public Optional<String> getId() {
-        return id;
     }
 
     /**
      * @return A user email address. This must be unique.
      */
     @JsonProperty("email")
-    @java.lang.Override
-    public Optional<String> getEmail() {
+    public String getEmail() {
         return email;
     }
 
@@ -84,8 +79,7 @@ public final class User implements IUserBase {
      * @return A user's first name
      */
     @JsonProperty("firstname")
-    @java.lang.Override
-    public Optional<String> getFirstname() {
+    public String getFirstname() {
         return firstname;
     }
 
@@ -93,35 +87,15 @@ public final class User implements IUserBase {
      * @return A user's last name
      */
     @JsonProperty("lastname")
-    @java.lang.Override
-    public Optional<String> getLastname() {
+    public String getLastname() {
         return lastname;
-    }
-
-    /**
-     * @return This field is computed as the concatenated <code>firstname</code> and <code>lastname</code>.
-     */
-    @JsonProperty("full_name")
-    @java.lang.Override
-    public Optional<String> getFullName() {
-        return fullName;
-    }
-
-    /**
-     * @return The timestamp when the user was created.
-     */
-    @JsonProperty("created_at")
-    @java.lang.Override
-    public Optional<OffsetDateTime> getCreatedAt() {
-        return createdAt;
     }
 
     /**
      * @return A list of roles that the user has been assigned. The roles that are available for assignment include <code>org-admin</code>, <code>user-admin</code>, <code>analyst</code>, and <code>viewer</code>.
      */
     @JsonProperty("roles")
-    @java.lang.Override
-    public Optional<List<String>> getRoles() {
+    public List<String> getRoles() {
         return roles;
     }
 
@@ -141,6 +115,27 @@ public final class User implements IUserBase {
         return isEmailMutable;
     }
 
+    @JsonProperty("id")
+    public Optional<String> getId() {
+        return id;
+    }
+
+    /**
+     * @return This field is computed as the concatenated <code>firstname</code> and <code>lastname</code>.
+     */
+    @JsonProperty("full_name")
+    public Optional<String> getFullName() {
+        return fullName;
+    }
+
+    /**
+     * @return The timestamp when the user was created.
+     */
+    @JsonProperty("created_at")
+    public Optional<OffsetDateTime> getCreatedAt() {
+        return createdAt;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -153,29 +148,29 @@ public final class User implements IUserBase {
     }
 
     private boolean equalTo(User other) {
-        return id.equals(other.id)
-                && email.equals(other.email)
+        return email.equals(other.email)
                 && firstname.equals(other.firstname)
                 && lastname.equals(other.lastname)
-                && fullName.equals(other.fullName)
-                && createdAt.equals(other.createdAt)
                 && roles.equals(other.roles)
                 && isPasswordAuthenticationEnabled.equals(other.isPasswordAuthenticationEnabled)
-                && isEmailMutable.equals(other.isEmailMutable);
+                && isEmailMutable.equals(other.isEmailMutable)
+                && id.equals(other.id)
+                && fullName.equals(other.fullName)
+                && createdAt.equals(other.createdAt);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.id,
                 this.email,
                 this.firstname,
                 this.lastname,
-                this.fullName,
-                this.createdAt,
                 this.roles,
                 this.isPasswordAuthenticationEnabled,
-                this.isEmailMutable);
+                this.isEmailMutable,
+                this.id,
+                this.fullName,
+                this.createdAt);
     }
 
     @java.lang.Override
@@ -183,205 +178,319 @@ public final class User implements IUserBase {
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static EmailStage builder() {
         return new Builder();
     }
 
+    public interface EmailStage {
+        /**
+         * <p>A user email address. This must be unique.</p>
+         */
+        FirstnameStage email(@NotNull String email);
+
+        Builder from(User other);
+    }
+
+    public interface FirstnameStage {
+        /**
+         * <p>A user's first name</p>
+         */
+        LastnameStage firstname(@NotNull String firstname);
+    }
+
+    public interface LastnameStage {
+        /**
+         * <p>A user's last name</p>
+         */
+        _FinalStage lastname(@NotNull String lastname);
+    }
+
+    public interface _FinalStage {
+        User build();
+
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        /**
+         * <p>A list of roles that the user has been assigned. The roles that are available for assignment include <code>org-admin</code>, <code>user-admin</code>, <code>analyst</code>, and <code>viewer</code>.</p>
+         */
+        _FinalStage roles(List<String> roles);
+
+        _FinalStage addRoles(String roles);
+
+        _FinalStage addAllRoles(List<String> roles);
+
+        /**
+         * <p>Indicates whether or not password authentication is allowed for this user</p>
+         */
+        _FinalStage isPasswordAuthenticationEnabled(Optional<Boolean> isPasswordAuthenticationEnabled);
+
+        _FinalStage isPasswordAuthenticationEnabled(Boolean isPasswordAuthenticationEnabled);
+
+        /**
+         * <p>Indicates whether or not the user's email address can be modified</p>
+         */
+        _FinalStage isEmailMutable(Optional<Boolean> isEmailMutable);
+
+        _FinalStage isEmailMutable(Boolean isEmailMutable);
+
+        _FinalStage id(Optional<String> id);
+
+        _FinalStage id(String id);
+
+        /**
+         * <p>This field is computed as the concatenated <code>firstname</code> and <code>lastname</code>.</p>
+         */
+        _FinalStage fullName(Optional<String> fullName);
+
+        _FinalStage fullName(String fullName);
+
+        /**
+         * <p>The timestamp when the user was created.</p>
+         */
+        _FinalStage createdAt(Optional<OffsetDateTime> createdAt);
+
+        _FinalStage createdAt(OffsetDateTime createdAt);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<String> id = Optional.empty();
+    public static final class Builder implements EmailStage, FirstnameStage, LastnameStage, _FinalStage {
+        private String email;
 
-        private Optional<String> email = Optional.empty();
+        private String firstname;
 
-        private Optional<String> firstname = Optional.empty();
-
-        private Optional<String> lastname = Optional.empty();
-
-        private Optional<String> fullName = Optional.empty();
+        private String lastname;
 
         private Optional<OffsetDateTime> createdAt = Optional.empty();
 
-        private Optional<List<String>> roles = Optional.empty();
+        private Optional<String> fullName = Optional.empty();
+
+        private Optional<String> id = Optional.empty();
+
+        private Optional<Boolean> isEmailMutable = Optional.empty();
 
         private Optional<Boolean> isPasswordAuthenticationEnabled = Optional.empty();
 
-        private Optional<Boolean> isEmailMutable = Optional.empty();
+        private List<String> roles = new ArrayList<>();
 
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(User other) {
-            id(other.getId());
             email(other.getEmail());
             firstname(other.getFirstname());
             lastname(other.getLastname());
-            fullName(other.getFullName());
-            createdAt(other.getCreatedAt());
             roles(other.getRoles());
             isPasswordAuthenticationEnabled(other.getIsPasswordAuthenticationEnabled());
             isEmailMutable(other.getIsEmailMutable());
-            return this;
-        }
-
-        @JsonSetter(value = "id", nulls = Nulls.SKIP)
-        public Builder id(Optional<String> id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder id(String id) {
-            this.id = Optional.ofNullable(id);
+            id(other.getId());
+            fullName(other.getFullName());
+            createdAt(other.getCreatedAt());
             return this;
         }
 
         /**
          * <p>A user email address. This must be unique.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "email", nulls = Nulls.SKIP)
-        public Builder email(Optional<String> email) {
-            this.email = email;
-            return this;
-        }
-
-        public Builder email(String email) {
-            this.email = Optional.ofNullable(email);
+        @java.lang.Override
+        @JsonSetter("email")
+        public FirstnameStage email(@NotNull String email) {
+            this.email = Objects.requireNonNull(email, "email must not be null");
             return this;
         }
 
         /**
          * <p>A user's first name</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "firstname", nulls = Nulls.SKIP)
-        public Builder firstname(Optional<String> firstname) {
-            this.firstname = firstname;
-            return this;
-        }
-
-        public Builder firstname(String firstname) {
-            this.firstname = Optional.ofNullable(firstname);
+        @java.lang.Override
+        @JsonSetter("firstname")
+        public LastnameStage firstname(@NotNull String firstname) {
+            this.firstname = Objects.requireNonNull(firstname, "firstname must not be null");
             return this;
         }
 
         /**
          * <p>A user's last name</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "lastname", nulls = Nulls.SKIP)
-        public Builder lastname(Optional<String> lastname) {
-            this.lastname = lastname;
-            return this;
-        }
-
-        public Builder lastname(String lastname) {
-            this.lastname = Optional.ofNullable(lastname);
+        @java.lang.Override
+        @JsonSetter("lastname")
+        public _FinalStage lastname(@NotNull String lastname) {
+            this.lastname = Objects.requireNonNull(lastname, "lastname must not be null");
             return this;
         }
 
         /**
-         * <p>This field is computed as the concatenated <code>firstname</code> and <code>lastname</code>.</p>
+         * <p>The timestamp when the user was created.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "full_name", nulls = Nulls.SKIP)
-        public Builder fullName(Optional<String> fullName) {
-            this.fullName = fullName;
-            return this;
-        }
-
-        public Builder fullName(String fullName) {
-            this.fullName = Optional.ofNullable(fullName);
+        @java.lang.Override
+        public _FinalStage createdAt(OffsetDateTime createdAt) {
+            this.createdAt = Optional.ofNullable(createdAt);
             return this;
         }
 
         /**
          * <p>The timestamp when the user was created.</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "created_at", nulls = Nulls.SKIP)
-        public Builder createdAt(Optional<OffsetDateTime> createdAt) {
+        public _FinalStage createdAt(Optional<OffsetDateTime> createdAt) {
             this.createdAt = createdAt;
             return this;
         }
 
-        public Builder createdAt(OffsetDateTime createdAt) {
-            this.createdAt = Optional.ofNullable(createdAt);
+        /**
+         * <p>This field is computed as the concatenated <code>firstname</code> and <code>lastname</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage fullName(String fullName) {
+            this.fullName = Optional.ofNullable(fullName);
             return this;
         }
 
         /**
-         * <p>A list of roles that the user has been assigned. The roles that are available for assignment include <code>org-admin</code>, <code>user-admin</code>, <code>analyst</code>, and <code>viewer</code>.</p>
+         * <p>This field is computed as the concatenated <code>firstname</code> and <code>lastname</code>.</p>
          */
-        @JsonSetter(value = "roles", nulls = Nulls.SKIP)
-        public Builder roles(Optional<List<String>> roles) {
-            this.roles = roles;
+        @java.lang.Override
+        @JsonSetter(value = "full_name", nulls = Nulls.SKIP)
+        public _FinalStage fullName(Optional<String> fullName) {
+            this.fullName = fullName;
             return this;
         }
 
-        public Builder roles(List<String> roles) {
-            this.roles = Optional.ofNullable(roles);
+        @java.lang.Override
+        public _FinalStage id(String id) {
+            this.id = Optional.ofNullable(id);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "id", nulls = Nulls.SKIP)
+        public _FinalStage id(Optional<String> id) {
+            this.id = id;
             return this;
         }
 
         /**
-         * <p>Indicates whether or not password authentication is allowed for this user</p>
+         * <p>Indicates whether or not the user's email address can be modified</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "is_password_authentication_enabled", nulls = Nulls.SKIP)
-        public Builder isPasswordAuthenticationEnabled(Optional<Boolean> isPasswordAuthenticationEnabled) {
-            this.isPasswordAuthenticationEnabled = isPasswordAuthenticationEnabled;
-            return this;
-        }
-
-        public Builder isPasswordAuthenticationEnabled(Boolean isPasswordAuthenticationEnabled) {
-            this.isPasswordAuthenticationEnabled = Optional.ofNullable(isPasswordAuthenticationEnabled);
+        @java.lang.Override
+        public _FinalStage isEmailMutable(Boolean isEmailMutable) {
+            this.isEmailMutable = Optional.ofNullable(isEmailMutable);
             return this;
         }
 
         /**
          * <p>Indicates whether or not the user's email address can be modified</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "is_email_mutable", nulls = Nulls.SKIP)
-        public Builder isEmailMutable(Optional<Boolean> isEmailMutable) {
+        public _FinalStage isEmailMutable(Optional<Boolean> isEmailMutable) {
             this.isEmailMutable = isEmailMutable;
             return this;
         }
 
-        public Builder isEmailMutable(Boolean isEmailMutable) {
-            this.isEmailMutable = Optional.ofNullable(isEmailMutable);
+        /**
+         * <p>Indicates whether or not password authentication is allowed for this user</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage isPasswordAuthenticationEnabled(Boolean isPasswordAuthenticationEnabled) {
+            this.isPasswordAuthenticationEnabled = Optional.ofNullable(isPasswordAuthenticationEnabled);
             return this;
         }
 
+        /**
+         * <p>Indicates whether or not password authentication is allowed for this user</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "is_password_authentication_enabled", nulls = Nulls.SKIP)
+        public _FinalStage isPasswordAuthenticationEnabled(Optional<Boolean> isPasswordAuthenticationEnabled) {
+            this.isPasswordAuthenticationEnabled = isPasswordAuthenticationEnabled;
+            return this;
+        }
+
+        /**
+         * <p>A list of roles that the user has been assigned. The roles that are available for assignment include <code>org-admin</code>, <code>user-admin</code>, <code>analyst</code>, and <code>viewer</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addAllRoles(List<String> roles) {
+            if (roles != null) {
+                this.roles.addAll(roles);
+            }
+            return this;
+        }
+
+        /**
+         * <p>A list of roles that the user has been assigned. The roles that are available for assignment include <code>org-admin</code>, <code>user-admin</code>, <code>analyst</code>, and <code>viewer</code>.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addRoles(String roles) {
+            this.roles.add(roles);
+            return this;
+        }
+
+        /**
+         * <p>A list of roles that the user has been assigned. The roles that are available for assignment include <code>org-admin</code>, <code>user-admin</code>, <code>analyst</code>, and <code>viewer</code>.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "roles", nulls = Nulls.SKIP)
+        public _FinalStage roles(List<String> roles) {
+            this.roles.clear();
+            if (roles != null) {
+                this.roles.addAll(roles);
+            }
+            return this;
+        }
+
+        @java.lang.Override
         public User build() {
             return new User(
-                    id,
                     email,
                     firstname,
                     lastname,
-                    fullName,
-                    createdAt,
                     roles,
                     isPasswordAuthenticationEnabled,
                     isEmailMutable,
+                    id,
+                    fullName,
+                    createdAt,
                     additionalProperties);
         }
 
         @JsonAnySetter
         private void putAdditionalPropertyFromJson(String key, Object value) {
-            if (key.equalsIgnoreCase("id")
-                    || key.equalsIgnoreCase("email")
+            if (key.equalsIgnoreCase("email")
                     || key.equalsIgnoreCase("firstname")
                     || key.equalsIgnoreCase("lastname")
-                    || key.equalsIgnoreCase("full_name")
-                    || key.equalsIgnoreCase("created_at")
                     || key.equalsIgnoreCase("roles")
                     || key.equalsIgnoreCase("is_password_authentication_enabled")
-                    || key.equalsIgnoreCase("is_email_mutable")) {
+                    || key.equalsIgnoreCase("is_email_mutable")
+                    || key.equalsIgnoreCase("id")
+                    || key.equalsIgnoreCase("full_name")
+                    || key.equalsIgnoreCase("created_at")) {
                 return;
             }
             this.additionalProperties.put(key, value);
         }
 
+        @java.lang.Override
         public Builder additionalProperty(String key, Object value) {
             this.additionalProperties.put(key, value);
             return this;
         }
 
+        @java.lang.Override
         public Builder additionalProperties(Map<String, Object> additionalProperties) {
             this.additionalProperties.putAll(additionalProperties);
             return this;

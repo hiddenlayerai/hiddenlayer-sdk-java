@@ -3,4 +3,41 @@
  */
 package com.hiddenlayer.api.types;
 
-public interface IGetProjectItem extends IProjectId, IProjectAlias, IProjectDetails {}
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+public interface IGetProjectItem extends IProjectId, IProjectAlias {
+    boolean getMonitorMode();
+
+    Optional<Map<String, String>> getTags();
+
+    Optional<Map<String, String>> getSystemAnnotations();
+
+    Optional<List<AssetId>> getAssets();
+
+    Optional<OffsetDateTime> getCreatedAt();
+
+    Optional<String> getCreatedBy();
+
+    Optional<OffsetDateTime> getModifiedAt();
+
+    Optional<String> getModifiedBy();
+
+    Optional<String> getName();
+
+    Optional<String> getRuleSetId();
+
+    Optional<String> getPolicyId();
+
+    Optional<String> getPolicyPackId();
+
+    Optional<ProjectPolicyPack> getPolicyPack();
+
+    Optional<Boolean> getIsEditable();
+
+    Optional<ProjectDetailsEscalationDetails> getEscalationDetails();
+
+    Optional<ProjectDetailsRiskLevel> getRiskLevel();
+}

@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = EulaResponseValue.Builder.class)
-public final class EulaResponseValue implements IEulaResponseValue {
+public final class EulaResponseValue {
     private final Optional<EulaResponseStatus> response;
 
     private final Map<String, Object> additionalProperties;
@@ -33,7 +33,6 @@ public final class EulaResponseValue implements IEulaResponseValue {
      * @return The response to the EULA
      */
     @JsonProperty("response")
-    @java.lang.Override
     public Optional<EulaResponseStatus> getResponse() {
         return response;
     }

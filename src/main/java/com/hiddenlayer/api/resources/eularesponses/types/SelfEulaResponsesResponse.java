@@ -13,47 +13,38 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.types.EulaResponseStatus;
-import com.hiddenlayer.api.types.IEulaResponseValue;
 import com.hiddenlayer.api.types.IEulaVersion;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = SelfEulaResponsesResponse.Builder.class)
-public final class SelfEulaResponsesResponse implements IEulaResponseValue, IEulaVersion {
-    private final Optional<EulaResponseStatus> response;
-
+public final class SelfEulaResponsesResponse implements IEulaVersion {
     private final Optional<String> version;
 
     private final Optional<OffsetDateTime> modifiedAt;
 
     private final Optional<String> modifiedBy;
 
+    private final EulaResponseStatus response;
+
     private final Map<String, Object> additionalProperties;
 
     private SelfEulaResponsesResponse(
-            Optional<EulaResponseStatus> response,
             Optional<String> version,
             Optional<OffsetDateTime> modifiedAt,
             Optional<String> modifiedBy,
+            EulaResponseStatus response,
             Map<String, Object> additionalProperties) {
-        this.response = response;
         this.version = version;
         this.modifiedAt = modifiedAt;
         this.modifiedBy = modifiedBy;
+        this.response = response;
         this.additionalProperties = additionalProperties;
-    }
-
-    /**
-     * @return The response to the EULA
-     */
-    @JsonProperty("response")
-    @java.lang.Override
-    public Optional<EulaResponseStatus> getResponse() {
-        return response;
     }
 
     /**
@@ -81,6 +72,14 @@ public final class SelfEulaResponsesResponse implements IEulaResponseValue, IEul
         return modifiedBy;
     }
 
+    /**
+     * @return The response to the EULA
+     */
+    @JsonProperty("response")
+    public EulaResponseStatus getResponse() {
+        return response;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -93,15 +92,15 @@ public final class SelfEulaResponsesResponse implements IEulaResponseValue, IEul
     }
 
     private boolean equalTo(SelfEulaResponsesResponse other) {
-        return response.equals(other.response)
-                && version.equals(other.version)
+        return version.equals(other.version)
                 && modifiedAt.equals(other.modifiedAt)
-                && modifiedBy.equals(other.modifiedBy);
+                && modifiedBy.equals(other.modifiedBy)
+                && response.equals(other.response);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.response, this.version, this.modifiedAt, this.modifiedBy);
+        return Objects.hash(this.version, this.modifiedAt, this.modifiedBy, this.response);
     }
 
     @java.lang.Override
@@ -109,108 +108,165 @@ public final class SelfEulaResponsesResponse implements IEulaResponseValue, IEul
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static ResponseStage builder() {
         return new Builder();
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<EulaResponseStatus> response = Optional.empty();
+    public interface ResponseStage {
+        /**
+         * <p>The response to the EULA</p>
+         */
+        _FinalStage response(@NotNull EulaResponseStatus response);
 
-        private Optional<String> version = Optional.empty();
+        Builder from(SelfEulaResponsesResponse other);
+    }
+
+    public interface _FinalStage {
+        SelfEulaResponsesResponse build();
+
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        /**
+         * <p>The version of the EULA that the tenant administrator responded to.</p>
+         */
+        _FinalStage version(Optional<String> version);
+
+        _FinalStage version(String version);
+
+        /**
+         * <p>The date and time when the EULA response was last modified</p>
+         */
+        _FinalStage modifiedAt(Optional<OffsetDateTime> modifiedAt);
+
+        _FinalStage modifiedAt(OffsetDateTime modifiedAt);
+
+        /**
+         * <p>The tenant administrator that last modified the EULA response</p>
+         */
+        _FinalStage modifiedBy(Optional<String> modifiedBy);
+
+        _FinalStage modifiedBy(String modifiedBy);
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class Builder implements ResponseStage, _FinalStage {
+        private EulaResponseStatus response;
+
+        private Optional<String> modifiedBy = Optional.empty();
 
         private Optional<OffsetDateTime> modifiedAt = Optional.empty();
 
-        private Optional<String> modifiedBy = Optional.empty();
+        private Optional<String> version = Optional.empty();
 
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(SelfEulaResponsesResponse other) {
-            response(other.getResponse());
             version(other.getVersion());
             modifiedAt(other.getModifiedAt());
             modifiedBy(other.getModifiedBy());
+            response(other.getResponse());
             return this;
         }
 
         /**
          * <p>The response to the EULA</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "response", nulls = Nulls.SKIP)
-        public Builder response(Optional<EulaResponseStatus> response) {
-            this.response = response;
-            return this;
-        }
-
-        public Builder response(EulaResponseStatus response) {
-            this.response = Optional.ofNullable(response);
+        @java.lang.Override
+        @JsonSetter("response")
+        public _FinalStage response(@NotNull EulaResponseStatus response) {
+            this.response = Objects.requireNonNull(response, "response must not be null");
             return this;
         }
 
         /**
-         * <p>The version of the EULA that the tenant administrator responded to.</p>
+         * <p>The tenant administrator that last modified the EULA response</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "version", nulls = Nulls.SKIP)
-        public Builder version(Optional<String> version) {
-            this.version = version;
-            return this;
-        }
-
-        public Builder version(String version) {
-            this.version = Optional.ofNullable(version);
-            return this;
-        }
-
-        /**
-         * <p>The date and time when the EULA response was last modified</p>
-         */
-        @JsonSetter(value = "modified_at", nulls = Nulls.SKIP)
-        public Builder modifiedAt(Optional<OffsetDateTime> modifiedAt) {
-            this.modifiedAt = modifiedAt;
-            return this;
-        }
-
-        public Builder modifiedAt(OffsetDateTime modifiedAt) {
-            this.modifiedAt = Optional.ofNullable(modifiedAt);
+        @java.lang.Override
+        public _FinalStage modifiedBy(String modifiedBy) {
+            this.modifiedBy = Optional.ofNullable(modifiedBy);
             return this;
         }
 
         /**
          * <p>The tenant administrator that last modified the EULA response</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "modified_by", nulls = Nulls.SKIP)
-        public Builder modifiedBy(Optional<String> modifiedBy) {
+        public _FinalStage modifiedBy(Optional<String> modifiedBy) {
             this.modifiedBy = modifiedBy;
             return this;
         }
 
-        public Builder modifiedBy(String modifiedBy) {
-            this.modifiedBy = Optional.ofNullable(modifiedBy);
+        /**
+         * <p>The date and time when the EULA response was last modified</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage modifiedAt(OffsetDateTime modifiedAt) {
+            this.modifiedAt = Optional.ofNullable(modifiedAt);
             return this;
         }
 
+        /**
+         * <p>The date and time when the EULA response was last modified</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "modified_at", nulls = Nulls.SKIP)
+        public _FinalStage modifiedAt(Optional<OffsetDateTime> modifiedAt) {
+            this.modifiedAt = modifiedAt;
+            return this;
+        }
+
+        /**
+         * <p>The version of the EULA that the tenant administrator responded to.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage version(String version) {
+            this.version = Optional.ofNullable(version);
+            return this;
+        }
+
+        /**
+         * <p>The version of the EULA that the tenant administrator responded to.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "version", nulls = Nulls.SKIP)
+        public _FinalStage version(Optional<String> version) {
+            this.version = version;
+            return this;
+        }
+
+        @java.lang.Override
         public SelfEulaResponsesResponse build() {
-            return new SelfEulaResponsesResponse(response, version, modifiedAt, modifiedBy, additionalProperties);
+            return new SelfEulaResponsesResponse(version, modifiedAt, modifiedBy, response, additionalProperties);
         }
 
         @JsonAnySetter
         private void putAdditionalPropertyFromJson(String key, Object value) {
-            if (key.equalsIgnoreCase("response")
-                    || key.equalsIgnoreCase("version")
+            if (key.equalsIgnoreCase("version")
                     || key.equalsIgnoreCase("modified_at")
-                    || key.equalsIgnoreCase("modified_by")) {
+                    || key.equalsIgnoreCase("modified_by")
+                    || key.equalsIgnoreCase("response")) {
                 return;
             }
             this.additionalProperties.put(key, value);
         }
 
+        @java.lang.Override
         public Builder additionalProperty(String key, Object value) {
             this.additionalProperties.put(key, value);
             return this;
         }
 
+        @java.lang.Override
         public Builder additionalProperties(Map<String, Object> additionalProperties) {
             this.additionalProperties.putAll(additionalProperties);
             return this;

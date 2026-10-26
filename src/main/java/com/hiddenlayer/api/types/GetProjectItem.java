@@ -24,10 +24,8 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GetProjectItem.Builder.class)
-public final class GetProjectItem implements IGetProjectItem, IProjectId, IProjectAlias, IProjectDetails {
-    private final Optional<String> projectId;
-
-    private final Optional<String> projectAlias;
+public final class GetProjectItem implements IGetProjectItem, IProjectId, IProjectAlias {
+    private final boolean monitorMode;
 
     private final Optional<Map<String, String>> tags;
 
@@ -53,19 +51,20 @@ public final class GetProjectItem implements IGetProjectItem, IProjectId, IProje
 
     private final Optional<ProjectPolicyPack> policyPack;
 
-    private final Optional<Boolean> monitorMode;
-
     private final Optional<Boolean> isEditable;
 
     private final Optional<ProjectDetailsEscalationDetails> escalationDetails;
 
     private final Optional<ProjectDetailsRiskLevel> riskLevel;
 
+    private final Optional<String> projectId;
+
+    private final Optional<String> projectAlias;
+
     private final Map<String, Object> additionalProperties;
 
     private GetProjectItem(
-            Optional<String> projectId,
-            Optional<String> projectAlias,
+            boolean monitorMode,
             Optional<Map<String, String>> tags,
             Optional<Map<String, String>> systemAnnotations,
             Optional<List<AssetId>> assets,
@@ -78,13 +77,13 @@ public final class GetProjectItem implements IGetProjectItem, IProjectId, IProje
             Optional<String> policyId,
             Optional<String> policyPackId,
             Optional<ProjectPolicyPack> policyPack,
-            Optional<Boolean> monitorMode,
             Optional<Boolean> isEditable,
             Optional<ProjectDetailsEscalationDetails> escalationDetails,
             Optional<ProjectDetailsRiskLevel> riskLevel,
+            Optional<String> projectId,
+            Optional<String> projectAlias,
             Map<String, Object> additionalProperties) {
-        this.projectId = projectId;
-        this.projectAlias = projectAlias;
+        this.monitorMode = monitorMode;
         this.tags = tags;
         this.systemAnnotations = systemAnnotations;
         this.assets = assets;
@@ -97,26 +96,23 @@ public final class GetProjectItem implements IGetProjectItem, IProjectId, IProje
         this.policyId = policyId;
         this.policyPackId = policyPackId;
         this.policyPack = policyPack;
-        this.monitorMode = monitorMode;
         this.isEditable = isEditable;
         this.escalationDetails = escalationDetails;
         this.riskLevel = riskLevel;
+        this.projectId = projectId;
+        this.projectAlias = projectAlias;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("project_id")
-    @java.lang.Override
-    public Optional<String> getProjectId() {
-        return projectId;
-    }
-
     /**
-     * @return Alias to the project ID
+     * @return Enables detect-only runtime evaluation for this project without blocking or redaction.
+     * On creation, omission sets false; this setting is never inherited from the default project.
+     * On update, omission preserves the stored value; send false explicitly to disable monitor mode.
      */
-    @JsonProperty("project_alias")
+    @JsonProperty("monitor_mode")
     @java.lang.Override
-    public Optional<String> getProjectAlias() {
-        return projectAlias;
+    public boolean getMonitorMode() {
+        return monitorMode;
     }
 
     /**
@@ -220,17 +216,6 @@ public final class GetProjectItem implements IGetProjectItem, IProjectId, IProje
         return policyPack;
     }
 
-    /**
-     * @return Enables detect-only runtime evaluation for this project without blocking or redaction.
-     * On creation, omission sets false; this setting is never inherited from the default project.
-     * On update, omission preserves the stored value; send false explicitly to disable monitor mode.
-     */
-    @JsonProperty("monitor_mode")
-    @java.lang.Override
-    public Optional<Boolean> getMonitorMode() {
-        return monitorMode;
-    }
-
     @JsonProperty("is_editable")
     @java.lang.Override
     public Optional<Boolean> getIsEditable() {
@@ -248,6 +233,21 @@ public final class GetProjectItem implements IGetProjectItem, IProjectId, IProje
     @JsonProperty("risk_level")
     public Optional<ProjectDetailsRiskLevel> getRiskLevel() {
         return riskLevel;
+    }
+
+    @JsonProperty("project_id")
+    @java.lang.Override
+    public Optional<String> getProjectId() {
+        return projectId;
+    }
+
+    /**
+     * @return Alias to the project ID
+     */
+    @JsonProperty("project_alias")
+    @java.lang.Override
+    public Optional<String> getProjectAlias() {
+        return projectAlias;
     }
 
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
@@ -274,8 +274,7 @@ public final class GetProjectItem implements IGetProjectItem, IProjectId, IProje
     }
 
     private boolean equalTo(GetProjectItem other) {
-        return projectId.equals(other.projectId)
-                && projectAlias.equals(other.projectAlias)
+        return monitorMode == other.monitorMode
                 && tags.equals(other.tags)
                 && systemAnnotations.equals(other.systemAnnotations)
                 && assets.equals(other.assets)
@@ -288,17 +287,17 @@ public final class GetProjectItem implements IGetProjectItem, IProjectId, IProje
                 && policyId.equals(other.policyId)
                 && policyPackId.equals(other.policyPackId)
                 && policyPack.equals(other.policyPack)
-                && monitorMode.equals(other.monitorMode)
                 && isEditable.equals(other.isEditable)
                 && escalationDetails.equals(other.escalationDetails)
-                && riskLevel.equals(other.riskLevel);
+                && riskLevel.equals(other.riskLevel)
+                && projectId.equals(other.projectId)
+                && projectAlias.equals(other.projectAlias);
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.projectId,
-                this.projectAlias,
+                this.monitorMode,
                 this.tags,
                 this.systemAnnotations,
                 this.assets,
@@ -311,10 +310,11 @@ public final class GetProjectItem implements IGetProjectItem, IProjectId, IProje
                 this.policyId,
                 this.policyPackId,
                 this.policyPack,
-                this.monitorMode,
                 this.isEditable,
                 this.escalationDetails,
-                this.riskLevel);
+                this.riskLevel,
+                this.projectId,
+                this.projectAlias);
     }
 
     @java.lang.Override
@@ -322,55 +322,175 @@ public final class GetProjectItem implements IGetProjectItem, IProjectId, IProje
         return ObjectMappers.stringify(this);
     }
 
-    public static Builder builder() {
+    public static MonitorModeStage builder() {
         return new Builder();
     }
 
+    public interface MonitorModeStage {
+        /**
+         * <p>Enables detect-only runtime evaluation for this project without blocking or redaction.
+         * On creation, omission sets false; this setting is never inherited from the default project.
+         * On update, omission preserves the stored value; send false explicitly to disable monitor mode.</p>
+         */
+        _FinalStage monitorMode(boolean monitorMode);
+
+        Builder from(GetProjectItem other);
+    }
+
+    public interface _FinalStage {
+        GetProjectItem build();
+
+        _FinalStage additionalProperty(String key, Object value);
+
+        _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        /**
+         * <p>Deprecated - use system_annotations to read system-assigned project metadata.</p>
+         */
+        _FinalStage tags(Optional<Map<String, String>> tags);
+
+        _FinalStage tags(Map<String, String> tags);
+
+        /**
+         * <p>System-assigned project metadata.</p>
+         */
+        _FinalStage systemAnnotations(Optional<Map<String, String>> systemAnnotations);
+
+        _FinalStage systemAnnotations(Map<String, String> systemAnnotations);
+
+        _FinalStage assets(Optional<List<AssetId>> assets);
+
+        _FinalStage assets(List<AssetId> assets);
+
+        _FinalStage createdAt(Optional<OffsetDateTime> createdAt);
+
+        _FinalStage createdAt(OffsetDateTime createdAt);
+
+        _FinalStage createdBy(Optional<String> createdBy);
+
+        _FinalStage createdBy(String createdBy);
+
+        _FinalStage createdBy(Nullable<String> createdBy);
+
+        _FinalStage modifiedAt(Optional<OffsetDateTime> modifiedAt);
+
+        _FinalStage modifiedAt(OffsetDateTime modifiedAt);
+
+        _FinalStage modifiedBy(Optional<String> modifiedBy);
+
+        _FinalStage modifiedBy(String modifiedBy);
+
+        _FinalStage modifiedBy(Nullable<String> modifiedBy);
+
+        _FinalStage name(Optional<String> name);
+
+        _FinalStage name(String name);
+
+        /**
+         * <p>Deprecated - use policy_pack_id to assign a project's ruleset and policy.
+         * When creating a project, omitting this  field causes the project to inherit the default project's ruleset unless the project has a selected policy pack (in which case the policy pack takes precedence).
+         * On update, supplying this field with policy_pack_id returns 422. Otherwise, rule_set_id and policy_id replace the stored assignment, and an omitted one keeps its stored value. If the result differs from the stored ruleset and policy, the project's policy pack is removed; if it matches, the pack is kept.</p>
+         */
+        _FinalStage ruleSetId(Optional<String> ruleSetId);
+
+        _FinalStage ruleSetId(String ruleSetId);
+
+        /**
+         * <p>Deprecated - use policy_pack_id to assign a project's ruleset and policy.
+         * On creation, omission inherits the default project's policy and returns 422 if no policy is available; a selected policy pack takes precedence over this field.
+         * On update, supplying this field with policy_pack_id returns 422. Otherwise, it is applied with or without rule_set_id, as described for rule_set_id; omission preserves the current policy.</p>
+         */
+        _FinalStage policyId(Optional<String> policyId);
+
+        _FinalStage policyId(String policyId);
+
+        /**
+         * <p>Selecting a policy pack applies its ruleset and policy.
+         * On creation, a selected pack takes precedence over rule_set_id and policy_id. Omission inherits the default project's pack only when rule_set_id and policy_id are also omitted.
+         * On update, an explicit pack ID selects or switches packs and replaces the project's ruleset and policy with the pack's values. Supplying rule_set_id or policy_id alongside it returns 422.
+         * Supplying a rule_set_id or policy_id that differs from the stored value removes the project's pack. The tenant's default project always has a pack: when a change leaves it without one, the built-in Default pack is updated to its ruleset and policy and assigned to it, and projects assigned to the Default pack follow the same change.
+         * Omitting policy_pack_id, rule_set_id, and policy_id preserves the stored assignment.</p>
+         */
+        _FinalStage policyPackId(Optional<String> policyPackId);
+
+        _FinalStage policyPackId(String policyPackId);
+
+        _FinalStage policyPack(Optional<ProjectPolicyPack> policyPack);
+
+        _FinalStage policyPack(ProjectPolicyPack policyPack);
+
+        _FinalStage isEditable(Optional<Boolean> isEditable);
+
+        _FinalStage isEditable(Boolean isEditable);
+
+        _FinalStage escalationDetails(Optional<ProjectDetailsEscalationDetails> escalationDetails);
+
+        _FinalStage escalationDetails(ProjectDetailsEscalationDetails escalationDetails);
+
+        /**
+         * <p>Deprecated - this field will be removed. Do not send it, and do not depend on it in responses.</p>
+         */
+        _FinalStage riskLevel(Optional<ProjectDetailsRiskLevel> riskLevel);
+
+        _FinalStage riskLevel(ProjectDetailsRiskLevel riskLevel);
+
+        _FinalStage projectId(Optional<String> projectId);
+
+        _FinalStage projectId(String projectId);
+
+        /**
+         * <p>Alias to the project ID</p>
+         */
+        _FinalStage projectAlias(Optional<String> projectAlias);
+
+        _FinalStage projectAlias(String projectAlias);
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder {
-        private Optional<String> projectId = Optional.empty();
+    public static final class Builder implements MonitorModeStage, _FinalStage {
+        private boolean monitorMode;
 
         private Optional<String> projectAlias = Optional.empty();
 
-        private Optional<Map<String, String>> tags = Optional.empty();
+        private Optional<String> projectId = Optional.empty();
 
-        private Optional<Map<String, String>> systemAnnotations = Optional.empty();
-
-        private Optional<List<AssetId>> assets = Optional.empty();
-
-        private Optional<OffsetDateTime> createdAt = Optional.empty();
-
-        private Optional<String> createdBy = Optional.empty();
-
-        private Optional<OffsetDateTime> modifiedAt = Optional.empty();
-
-        private Optional<String> modifiedBy = Optional.empty();
-
-        private Optional<String> name = Optional.empty();
-
-        private Optional<String> ruleSetId = Optional.empty();
-
-        private Optional<String> policyId = Optional.empty();
-
-        private Optional<String> policyPackId = Optional.empty();
-
-        private Optional<ProjectPolicyPack> policyPack = Optional.empty();
-
-        private Optional<Boolean> monitorMode = Optional.empty();
-
-        private Optional<Boolean> isEditable = Optional.empty();
+        private Optional<ProjectDetailsRiskLevel> riskLevel = Optional.empty();
 
         private Optional<ProjectDetailsEscalationDetails> escalationDetails = Optional.empty();
 
-        private Optional<ProjectDetailsRiskLevel> riskLevel = Optional.empty();
+        private Optional<Boolean> isEditable = Optional.empty();
+
+        private Optional<ProjectPolicyPack> policyPack = Optional.empty();
+
+        private Optional<String> policyPackId = Optional.empty();
+
+        private Optional<String> policyId = Optional.empty();
+
+        private Optional<String> ruleSetId = Optional.empty();
+
+        private Optional<String> name = Optional.empty();
+
+        private Optional<String> modifiedBy = Optional.empty();
+
+        private Optional<OffsetDateTime> modifiedAt = Optional.empty();
+
+        private Optional<String> createdBy = Optional.empty();
+
+        private Optional<OffsetDateTime> createdAt = Optional.empty();
+
+        private Optional<List<AssetId>> assets = Optional.empty();
+
+        private Optional<Map<String, String>> systemAnnotations = Optional.empty();
+
+        private Optional<Map<String, String>> tags = Optional.empty();
 
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
+        @java.lang.Override
         public Builder from(GetProjectItem other) {
-            projectId(other.getProjectId());
-            projectAlias(other.getProjectAlias());
+            monitorMode(other.getMonitorMode());
             tags(other.getTags());
             systemAnnotations(other.getSystemAnnotations());
             assets(other.getAssets());
@@ -383,183 +503,130 @@ public final class GetProjectItem implements IGetProjectItem, IProjectId, IProje
             policyId(other.getPolicyId());
             policyPackId(other.getPolicyPackId());
             policyPack(other.getPolicyPack());
-            monitorMode(other.getMonitorMode());
             isEditable(other.getIsEditable());
             escalationDetails(other.getEscalationDetails());
             riskLevel(other.getRiskLevel());
+            projectId(other.getProjectId());
+            projectAlias(other.getProjectAlias());
             return this;
         }
 
-        @JsonSetter(value = "project_id", nulls = Nulls.SKIP)
-        public Builder projectId(Optional<String> projectId) {
-            this.projectId = projectId;
+        /**
+         * <p>Enables detect-only runtime evaluation for this project without blocking or redaction.
+         * On creation, omission sets false; this setting is never inherited from the default project.
+         * On update, omission preserves the stored value; send false explicitly to disable monitor mode.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("monitor_mode")
+        public _FinalStage monitorMode(boolean monitorMode) {
+            this.monitorMode = monitorMode;
             return this;
         }
 
-        public Builder projectId(String projectId) {
-            this.projectId = Optional.ofNullable(projectId);
+        /**
+         * <p>Alias to the project ID</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage projectAlias(String projectAlias) {
+            this.projectAlias = Optional.ofNullable(projectAlias);
             return this;
         }
 
         /**
          * <p>Alias to the project ID</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "project_alias", nulls = Nulls.SKIP)
-        public Builder projectAlias(Optional<String> projectAlias) {
+        public _FinalStage projectAlias(Optional<String> projectAlias) {
             this.projectAlias = projectAlias;
             return this;
         }
 
-        public Builder projectAlias(String projectAlias) {
-            this.projectAlias = Optional.ofNullable(projectAlias);
+        @java.lang.Override
+        public _FinalStage projectId(String projectId) {
+            this.projectId = Optional.ofNullable(projectId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "project_id", nulls = Nulls.SKIP)
+        public _FinalStage projectId(Optional<String> projectId) {
+            this.projectId = projectId;
             return this;
         }
 
         /**
-         * <p>Deprecated - use system_annotations to read system-assigned project metadata.</p>
+         * <p>Deprecated - this field will be removed. Do not send it, and do not depend on it in responses.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "tags", nulls = Nulls.SKIP)
-        public Builder tags(Optional<Map<String, String>> tags) {
-            this.tags = tags;
-            return this;
-        }
-
-        public Builder tags(Map<String, String> tags) {
-            this.tags = Optional.ofNullable(tags);
+        @java.lang.Override
+        public _FinalStage riskLevel(ProjectDetailsRiskLevel riskLevel) {
+            this.riskLevel = Optional.ofNullable(riskLevel);
             return this;
         }
 
         /**
-         * <p>System-assigned project metadata.</p>
+         * <p>Deprecated - this field will be removed. Do not send it, and do not depend on it in responses.</p>
          */
-        @JsonSetter(value = "system_annotations", nulls = Nulls.SKIP)
-        public Builder systemAnnotations(Optional<Map<String, String>> systemAnnotations) {
-            this.systemAnnotations = systemAnnotations;
+        @java.lang.Override
+        @JsonSetter(value = "risk_level", nulls = Nulls.SKIP)
+        public _FinalStage riskLevel(Optional<ProjectDetailsRiskLevel> riskLevel) {
+            this.riskLevel = riskLevel;
             return this;
         }
 
-        public Builder systemAnnotations(Map<String, String> systemAnnotations) {
-            this.systemAnnotations = Optional.ofNullable(systemAnnotations);
+        @java.lang.Override
+        public _FinalStage escalationDetails(ProjectDetailsEscalationDetails escalationDetails) {
+            this.escalationDetails = Optional.ofNullable(escalationDetails);
             return this;
         }
 
-        @JsonSetter(value = "assets", nulls = Nulls.SKIP)
-        public Builder assets(Optional<List<AssetId>> assets) {
-            this.assets = assets;
+        @java.lang.Override
+        @JsonSetter(value = "escalation_details", nulls = Nulls.SKIP)
+        public _FinalStage escalationDetails(Optional<ProjectDetailsEscalationDetails> escalationDetails) {
+            this.escalationDetails = escalationDetails;
             return this;
         }
 
-        public Builder assets(List<AssetId> assets) {
-            this.assets = Optional.ofNullable(assets);
+        @java.lang.Override
+        public _FinalStage isEditable(Boolean isEditable) {
+            this.isEditable = Optional.ofNullable(isEditable);
             return this;
         }
 
-        @JsonSetter(value = "created_at", nulls = Nulls.SKIP)
-        public Builder createdAt(Optional<OffsetDateTime> createdAt) {
-            this.createdAt = createdAt;
+        @java.lang.Override
+        @JsonSetter(value = "is_editable", nulls = Nulls.SKIP)
+        public _FinalStage isEditable(Optional<Boolean> isEditable) {
+            this.isEditable = isEditable;
             return this;
         }
 
-        public Builder createdAt(OffsetDateTime createdAt) {
-            this.createdAt = Optional.ofNullable(createdAt);
+        @java.lang.Override
+        public _FinalStage policyPack(ProjectPolicyPack policyPack) {
+            this.policyPack = Optional.ofNullable(policyPack);
             return this;
         }
 
-        @JsonSetter(value = "created_by", nulls = Nulls.SKIP)
-        public Builder createdBy(Optional<String> createdBy) {
-            this.createdBy = createdBy;
-            return this;
-        }
-
-        public Builder createdBy(String createdBy) {
-            this.createdBy = Optional.ofNullable(createdBy);
-            return this;
-        }
-
-        public Builder createdBy(Nullable<String> createdBy) {
-            if (createdBy.isNull()) {
-                this.createdBy = null;
-            } else if (createdBy.isEmpty()) {
-                this.createdBy = Optional.empty();
-            } else {
-                this.createdBy = Optional.of(createdBy.get());
-            }
-            return this;
-        }
-
-        @JsonSetter(value = "modified_at", nulls = Nulls.SKIP)
-        public Builder modifiedAt(Optional<OffsetDateTime> modifiedAt) {
-            this.modifiedAt = modifiedAt;
-            return this;
-        }
-
-        public Builder modifiedAt(OffsetDateTime modifiedAt) {
-            this.modifiedAt = Optional.ofNullable(modifiedAt);
-            return this;
-        }
-
-        @JsonSetter(value = "modified_by", nulls = Nulls.SKIP)
-        public Builder modifiedBy(Optional<String> modifiedBy) {
-            this.modifiedBy = modifiedBy;
-            return this;
-        }
-
-        public Builder modifiedBy(String modifiedBy) {
-            this.modifiedBy = Optional.ofNullable(modifiedBy);
-            return this;
-        }
-
-        public Builder modifiedBy(Nullable<String> modifiedBy) {
-            if (modifiedBy.isNull()) {
-                this.modifiedBy = null;
-            } else if (modifiedBy.isEmpty()) {
-                this.modifiedBy = Optional.empty();
-            } else {
-                this.modifiedBy = Optional.of(modifiedBy.get());
-            }
-            return this;
-        }
-
-        @JsonSetter(value = "name", nulls = Nulls.SKIP)
-        public Builder name(Optional<String> name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder name(String name) {
-            this.name = Optional.ofNullable(name);
+        @java.lang.Override
+        @JsonSetter(value = "policy_pack", nulls = Nulls.SKIP)
+        public _FinalStage policyPack(Optional<ProjectPolicyPack> policyPack) {
+            this.policyPack = policyPack;
             return this;
         }
 
         /**
-         * <p>Deprecated - use policy_pack_id to assign a project's ruleset and policy.
-         * When creating a project, omitting this  field causes the project to inherit the default project's ruleset unless the project has a selected policy pack (in which case the policy pack takes precedence).
-         * On update, supplying this field with policy_pack_id returns 422. Otherwise, rule_set_id and policy_id replace the stored assignment, and an omitted one keeps its stored value. If the result differs from the stored ruleset and policy, the project's policy pack is removed; if it matches, the pack is kept.</p>
+         * <p>Selecting a policy pack applies its ruleset and policy.
+         * On creation, a selected pack takes precedence over rule_set_id and policy_id. Omission inherits the default project's pack only when rule_set_id and policy_id are also omitted.
+         * On update, an explicit pack ID selects or switches packs and replaces the project's ruleset and policy with the pack's values. Supplying rule_set_id or policy_id alongside it returns 422.
+         * Supplying a rule_set_id or policy_id that differs from the stored value removes the project's pack. The tenant's default project always has a pack: when a change leaves it without one, the built-in Default pack is updated to its ruleset and policy and assigned to it, and projects assigned to the Default pack follow the same change.
+         * Omitting policy_pack_id, rule_set_id, and policy_id preserves the stored assignment.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "rule_set_id", nulls = Nulls.SKIP)
-        public Builder ruleSetId(Optional<String> ruleSetId) {
-            this.ruleSetId = ruleSetId;
-            return this;
-        }
-
-        public Builder ruleSetId(String ruleSetId) {
-            this.ruleSetId = Optional.ofNullable(ruleSetId);
-            return this;
-        }
-
-        /**
-         * <p>Deprecated - use policy_pack_id to assign a project's ruleset and policy.
-         * On creation, omission inherits the default project's policy and returns 422 if no policy is available; a selected policy pack takes precedence over this field.
-         * On update, supplying this field with policy_pack_id returns 422. Otherwise, it is applied with or without rule_set_id, as described for rule_set_id; omission preserves the current policy.</p>
-         */
-        @JsonSetter(value = "policy_id", nulls = Nulls.SKIP)
-        public Builder policyId(Optional<String> policyId) {
-            this.policyId = policyId;
-            return this;
-        }
-
-        public Builder policyId(String policyId) {
-            this.policyId = Optional.ofNullable(policyId);
+        @java.lang.Override
+        public _FinalStage policyPackId(String policyPackId) {
+            this.policyPackId = Optional.ofNullable(policyPackId);
             return this;
         }
 
@@ -570,84 +637,207 @@ public final class GetProjectItem implements IGetProjectItem, IProjectId, IProje
          * Supplying a rule_set_id or policy_id that differs from the stored value removes the project's pack. The tenant's default project always has a pack: when a change leaves it without one, the built-in Default pack is updated to its ruleset and policy and assigned to it, and projects assigned to the Default pack follow the same change.
          * Omitting policy_pack_id, rule_set_id, and policy_id preserves the stored assignment.</p>
          */
+        @java.lang.Override
         @JsonSetter(value = "policy_pack_id", nulls = Nulls.SKIP)
-        public Builder policyPackId(Optional<String> policyPackId) {
+        public _FinalStage policyPackId(Optional<String> policyPackId) {
             this.policyPackId = policyPackId;
             return this;
         }
 
-        public Builder policyPackId(String policyPackId) {
-            this.policyPackId = Optional.ofNullable(policyPackId);
-            return this;
-        }
-
-        @JsonSetter(value = "policy_pack", nulls = Nulls.SKIP)
-        public Builder policyPack(Optional<ProjectPolicyPack> policyPack) {
-            this.policyPack = policyPack;
-            return this;
-        }
-
-        public Builder policyPack(ProjectPolicyPack policyPack) {
-            this.policyPack = Optional.ofNullable(policyPack);
+        /**
+         * <p>Deprecated - use policy_pack_id to assign a project's ruleset and policy.
+         * On creation, omission inherits the default project's policy and returns 422 if no policy is available; a selected policy pack takes precedence over this field.
+         * On update, supplying this field with policy_pack_id returns 422. Otherwise, it is applied with or without rule_set_id, as described for rule_set_id; omission preserves the current policy.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage policyId(String policyId) {
+            this.policyId = Optional.ofNullable(policyId);
             return this;
         }
 
         /**
-         * <p>Enables detect-only runtime evaluation for this project without blocking or redaction.
-         * On creation, omission sets false; this setting is never inherited from the default project.
-         * On update, omission preserves the stored value; send false explicitly to disable monitor mode.</p>
+         * <p>Deprecated - use policy_pack_id to assign a project's ruleset and policy.
+         * On creation, omission inherits the default project's policy and returns 422 if no policy is available; a selected policy pack takes precedence over this field.
+         * On update, supplying this field with policy_pack_id returns 422. Otherwise, it is applied with or without rule_set_id, as described for rule_set_id; omission preserves the current policy.</p>
          */
-        @JsonSetter(value = "monitor_mode", nulls = Nulls.SKIP)
-        public Builder monitorMode(Optional<Boolean> monitorMode) {
-            this.monitorMode = monitorMode;
-            return this;
-        }
-
-        public Builder monitorMode(Boolean monitorMode) {
-            this.monitorMode = Optional.ofNullable(monitorMode);
-            return this;
-        }
-
-        @JsonSetter(value = "is_editable", nulls = Nulls.SKIP)
-        public Builder isEditable(Optional<Boolean> isEditable) {
-            this.isEditable = isEditable;
-            return this;
-        }
-
-        public Builder isEditable(Boolean isEditable) {
-            this.isEditable = Optional.ofNullable(isEditable);
-            return this;
-        }
-
-        @JsonSetter(value = "escalation_details", nulls = Nulls.SKIP)
-        public Builder escalationDetails(Optional<ProjectDetailsEscalationDetails> escalationDetails) {
-            this.escalationDetails = escalationDetails;
-            return this;
-        }
-
-        public Builder escalationDetails(ProjectDetailsEscalationDetails escalationDetails) {
-            this.escalationDetails = Optional.ofNullable(escalationDetails);
+        @java.lang.Override
+        @JsonSetter(value = "policy_id", nulls = Nulls.SKIP)
+        public _FinalStage policyId(Optional<String> policyId) {
+            this.policyId = policyId;
             return this;
         }
 
         /**
-         * <p>Deprecated - this field will be removed. Do not send it, and do not depend on it in responses.</p>
+         * <p>Deprecated - use policy_pack_id to assign a project's ruleset and policy.
+         * When creating a project, omitting this  field causes the project to inherit the default project's ruleset unless the project has a selected policy pack (in which case the policy pack takes precedence).
+         * On update, supplying this field with policy_pack_id returns 422. Otherwise, rule_set_id and policy_id replace the stored assignment, and an omitted one keeps its stored value. If the result differs from the stored ruleset and policy, the project's policy pack is removed; if it matches, the pack is kept.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
          */
-        @JsonSetter(value = "risk_level", nulls = Nulls.SKIP)
-        public Builder riskLevel(Optional<ProjectDetailsRiskLevel> riskLevel) {
-            this.riskLevel = riskLevel;
+        @java.lang.Override
+        public _FinalStage ruleSetId(String ruleSetId) {
+            this.ruleSetId = Optional.ofNullable(ruleSetId);
             return this;
         }
 
-        public Builder riskLevel(ProjectDetailsRiskLevel riskLevel) {
-            this.riskLevel = Optional.ofNullable(riskLevel);
+        /**
+         * <p>Deprecated - use policy_pack_id to assign a project's ruleset and policy.
+         * When creating a project, omitting this  field causes the project to inherit the default project's ruleset unless the project has a selected policy pack (in which case the policy pack takes precedence).
+         * On update, supplying this field with policy_pack_id returns 422. Otherwise, rule_set_id and policy_id replace the stored assignment, and an omitted one keeps its stored value. If the result differs from the stored ruleset and policy, the project's policy pack is removed; if it matches, the pack is kept.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "rule_set_id", nulls = Nulls.SKIP)
+        public _FinalStage ruleSetId(Optional<String> ruleSetId) {
+            this.ruleSetId = ruleSetId;
             return this;
         }
 
+        @java.lang.Override
+        public _FinalStage name(String name) {
+            this.name = Optional.ofNullable(name);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "name", nulls = Nulls.SKIP)
+        public _FinalStage name(Optional<String> name) {
+            this.name = name;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage modifiedBy(Nullable<String> modifiedBy) {
+            if (modifiedBy.isNull()) {
+                this.modifiedBy = null;
+            } else if (modifiedBy.isEmpty()) {
+                this.modifiedBy = Optional.empty();
+            } else {
+                this.modifiedBy = Optional.of(modifiedBy.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage modifiedBy(String modifiedBy) {
+            this.modifiedBy = Optional.ofNullable(modifiedBy);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "modified_by", nulls = Nulls.SKIP)
+        public _FinalStage modifiedBy(Optional<String> modifiedBy) {
+            this.modifiedBy = modifiedBy;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage modifiedAt(OffsetDateTime modifiedAt) {
+            this.modifiedAt = Optional.ofNullable(modifiedAt);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "modified_at", nulls = Nulls.SKIP)
+        public _FinalStage modifiedAt(Optional<OffsetDateTime> modifiedAt) {
+            this.modifiedAt = modifiedAt;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage createdBy(Nullable<String> createdBy) {
+            if (createdBy.isNull()) {
+                this.createdBy = null;
+            } else if (createdBy.isEmpty()) {
+                this.createdBy = Optional.empty();
+            } else {
+                this.createdBy = Optional.of(createdBy.get());
+            }
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage createdBy(String createdBy) {
+            this.createdBy = Optional.ofNullable(createdBy);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "created_by", nulls = Nulls.SKIP)
+        public _FinalStage createdBy(Optional<String> createdBy) {
+            this.createdBy = createdBy;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage createdAt(OffsetDateTime createdAt) {
+            this.createdAt = Optional.ofNullable(createdAt);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "created_at", nulls = Nulls.SKIP)
+        public _FinalStage createdAt(Optional<OffsetDateTime> createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage assets(List<AssetId> assets) {
+            this.assets = Optional.ofNullable(assets);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "assets", nulls = Nulls.SKIP)
+        public _FinalStage assets(Optional<List<AssetId>> assets) {
+            this.assets = assets;
+            return this;
+        }
+
+        /**
+         * <p>System-assigned project metadata.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage systemAnnotations(Map<String, String> systemAnnotations) {
+            this.systemAnnotations = Optional.ofNullable(systemAnnotations);
+            return this;
+        }
+
+        /**
+         * <p>System-assigned project metadata.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "system_annotations", nulls = Nulls.SKIP)
+        public _FinalStage systemAnnotations(Optional<Map<String, String>> systemAnnotations) {
+            this.systemAnnotations = systemAnnotations;
+            return this;
+        }
+
+        /**
+         * <p>Deprecated - use system_annotations to read system-assigned project metadata.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage tags(Map<String, String> tags) {
+            this.tags = Optional.ofNullable(tags);
+            return this;
+        }
+
+        /**
+         * <p>Deprecated - use system_annotations to read system-assigned project metadata.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "tags", nulls = Nulls.SKIP)
+        public _FinalStage tags(Optional<Map<String, String>> tags) {
+            this.tags = tags;
+            return this;
+        }
+
+        @java.lang.Override
         public GetProjectItem build() {
             return new GetProjectItem(
-                    projectId,
-                    projectAlias,
+                    monitorMode,
                     tags,
                     systemAnnotations,
                     assets,
@@ -660,17 +850,17 @@ public final class GetProjectItem implements IGetProjectItem, IProjectId, IProje
                     policyId,
                     policyPackId,
                     policyPack,
-                    monitorMode,
                     isEditable,
                     escalationDetails,
                     riskLevel,
+                    projectId,
+                    projectAlias,
                     additionalProperties);
         }
 
         @JsonAnySetter
         private void putAdditionalPropertyFromJson(String key, Object value) {
-            if (key.equalsIgnoreCase("project_id")
-                    || key.equalsIgnoreCase("project_alias")
+            if (key.equalsIgnoreCase("monitor_mode")
                     || key.equalsIgnoreCase("tags")
                     || key.equalsIgnoreCase("system_annotations")
                     || key.equalsIgnoreCase("assets")
@@ -683,20 +873,23 @@ public final class GetProjectItem implements IGetProjectItem, IProjectId, IProje
                     || key.equalsIgnoreCase("policy_id")
                     || key.equalsIgnoreCase("policy_pack_id")
                     || key.equalsIgnoreCase("policy_pack")
-                    || key.equalsIgnoreCase("monitor_mode")
                     || key.equalsIgnoreCase("is_editable")
                     || key.equalsIgnoreCase("escalation_details")
-                    || key.equalsIgnoreCase("risk_level")) {
+                    || key.equalsIgnoreCase("risk_level")
+                    || key.equalsIgnoreCase("project_id")
+                    || key.equalsIgnoreCase("project_alias")) {
                 return;
             }
             this.additionalProperties.put(key, value);
         }
 
+        @java.lang.Override
         public Builder additionalProperty(String key, Object value) {
             this.additionalProperties.put(key, value);
             return this;
         }
 
+        @java.lang.Override
         public Builder additionalProperties(Map<String, Object> additionalProperties) {
             this.additionalProperties.putAll(additionalProperties);
             return this;

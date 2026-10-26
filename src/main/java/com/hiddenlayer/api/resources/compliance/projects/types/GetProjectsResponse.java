@@ -19,7 +19,6 @@ import com.hiddenlayer.api.types.AssetId;
 import com.hiddenlayer.api.types.IGetProjectItem;
 import com.hiddenlayer.api.types.IIsDefaultProject;
 import com.hiddenlayer.api.types.IProjectAlias;
-import com.hiddenlayer.api.types.IProjectDetails;
 import com.hiddenlayer.api.types.IProjectId;
 import com.hiddenlayer.api.types.ProjectDetailsEscalationDetails;
 import com.hiddenlayer.api.types.ProjectDetailsRiskLevel;
@@ -33,11 +32,8 @@ import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = GetProjectsResponse.Builder.class)
-public final class GetProjectsResponse
-        implements IGetProjectItem, IProjectId, IProjectAlias, IProjectDetails, IIsDefaultProject {
-    private final Optional<String> projectId;
-
-    private final Optional<String> projectAlias;
+public final class GetProjectsResponse implements IGetProjectItem, IProjectId, IProjectAlias, IIsDefaultProject {
+    private final boolean monitorMode;
 
     private final Optional<Map<String, String>> tags;
 
@@ -63,21 +59,22 @@ public final class GetProjectsResponse
 
     private final Optional<ProjectPolicyPack> policyPack;
 
-    private final Optional<Boolean> monitorMode;
-
     private final Optional<Boolean> isEditable;
 
     private final Optional<ProjectDetailsEscalationDetails> escalationDetails;
 
     private final Optional<ProjectDetailsRiskLevel> riskLevel;
 
+    private final Optional<String> projectId;
+
+    private final Optional<String> projectAlias;
+
     private final boolean isDefault;
 
     private final Map<String, Object> additionalProperties;
 
     private GetProjectsResponse(
-            Optional<String> projectId,
-            Optional<String> projectAlias,
+            boolean monitorMode,
             Optional<Map<String, String>> tags,
             Optional<Map<String, String>> systemAnnotations,
             Optional<List<AssetId>> assets,
@@ -90,14 +87,14 @@ public final class GetProjectsResponse
             Optional<String> policyId,
             Optional<String> policyPackId,
             Optional<ProjectPolicyPack> policyPack,
-            Optional<Boolean> monitorMode,
             Optional<Boolean> isEditable,
             Optional<ProjectDetailsEscalationDetails> escalationDetails,
             Optional<ProjectDetailsRiskLevel> riskLevel,
+            Optional<String> projectId,
+            Optional<String> projectAlias,
             boolean isDefault,
             Map<String, Object> additionalProperties) {
-        this.projectId = projectId;
-        this.projectAlias = projectAlias;
+        this.monitorMode = monitorMode;
         this.tags = tags;
         this.systemAnnotations = systemAnnotations;
         this.assets = assets;
@@ -110,27 +107,24 @@ public final class GetProjectsResponse
         this.policyId = policyId;
         this.policyPackId = policyPackId;
         this.policyPack = policyPack;
-        this.monitorMode = monitorMode;
         this.isEditable = isEditable;
         this.escalationDetails = escalationDetails;
         this.riskLevel = riskLevel;
+        this.projectId = projectId;
+        this.projectAlias = projectAlias;
         this.isDefault = isDefault;
         this.additionalProperties = additionalProperties;
     }
 
-    @JsonProperty("project_id")
-    @java.lang.Override
-    public Optional<String> getProjectId() {
-        return projectId;
-    }
-
     /**
-     * @return Alias to the project ID
+     * @return Enables detect-only runtime evaluation for this project without blocking or redaction.
+     * On creation, omission sets false; this setting is never inherited from the default project.
+     * On update, omission preserves the stored value; send false explicitly to disable monitor mode.
      */
-    @JsonProperty("project_alias")
+    @JsonProperty("monitor_mode")
     @java.lang.Override
-    public Optional<String> getProjectAlias() {
-        return projectAlias;
+    public boolean getMonitorMode() {
+        return monitorMode;
     }
 
     /**
@@ -234,17 +228,6 @@ public final class GetProjectsResponse
         return policyPack;
     }
 
-    /**
-     * @return Enables detect-only runtime evaluation for this project without blocking or redaction.
-     * On creation, omission sets false; this setting is never inherited from the default project.
-     * On update, omission preserves the stored value; send false explicitly to disable monitor mode.
-     */
-    @JsonProperty("monitor_mode")
-    @java.lang.Override
-    public Optional<Boolean> getMonitorMode() {
-        return monitorMode;
-    }
-
     @JsonProperty("is_editable")
     @java.lang.Override
     public Optional<Boolean> getIsEditable() {
@@ -262,6 +245,21 @@ public final class GetProjectsResponse
     @JsonProperty("risk_level")
     public Optional<ProjectDetailsRiskLevel> getRiskLevel() {
         return riskLevel;
+    }
+
+    @JsonProperty("project_id")
+    @java.lang.Override
+    public Optional<String> getProjectId() {
+        return projectId;
+    }
+
+    /**
+     * @return Alias to the project ID
+     */
+    @JsonProperty("project_alias")
+    @java.lang.Override
+    public Optional<String> getProjectAlias() {
+        return projectAlias;
     }
 
     @JsonProperty("is_default")
@@ -294,8 +292,7 @@ public final class GetProjectsResponse
     }
 
     private boolean equalTo(GetProjectsResponse other) {
-        return projectId.equals(other.projectId)
-                && projectAlias.equals(other.projectAlias)
+        return monitorMode == other.monitorMode
                 && tags.equals(other.tags)
                 && systemAnnotations.equals(other.systemAnnotations)
                 && assets.equals(other.assets)
@@ -308,18 +305,18 @@ public final class GetProjectsResponse
                 && policyId.equals(other.policyId)
                 && policyPackId.equals(other.policyPackId)
                 && policyPack.equals(other.policyPack)
-                && monitorMode.equals(other.monitorMode)
                 && isEditable.equals(other.isEditable)
                 && escalationDetails.equals(other.escalationDetails)
                 && riskLevel.equals(other.riskLevel)
+                && projectId.equals(other.projectId)
+                && projectAlias.equals(other.projectAlias)
                 && isDefault == other.isDefault;
     }
 
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
-                this.projectId,
-                this.projectAlias,
+                this.monitorMode,
                 this.tags,
                 this.systemAnnotations,
                 this.assets,
@@ -332,10 +329,11 @@ public final class GetProjectsResponse
                 this.policyId,
                 this.policyPackId,
                 this.policyPack,
-                this.monitorMode,
                 this.isEditable,
                 this.escalationDetails,
                 this.riskLevel,
+                this.projectId,
+                this.projectAlias,
                 this.isDefault);
     }
 
@@ -344,14 +342,23 @@ public final class GetProjectsResponse
         return ObjectMappers.stringify(this);
     }
 
-    public static IsDefaultStage builder() {
+    public static MonitorModeStage builder() {
         return new Builder();
+    }
+
+    public interface MonitorModeStage {
+        /**
+         * <p>Enables detect-only runtime evaluation for this project without blocking or redaction.
+         * On creation, omission sets false; this setting is never inherited from the default project.
+         * On update, omission preserves the stored value; send false explicitly to disable monitor mode.</p>
+         */
+        IsDefaultStage monitorMode(boolean monitorMode);
+
+        Builder from(GetProjectsResponse other);
     }
 
     public interface IsDefaultStage {
         _FinalStage isDefault(boolean isDefault);
-
-        Builder from(GetProjectsResponse other);
     }
 
     public interface _FinalStage {
@@ -360,17 +367,6 @@ public final class GetProjectsResponse
         _FinalStage additionalProperty(String key, Object value);
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
-
-        _FinalStage projectId(Optional<String> projectId);
-
-        _FinalStage projectId(String projectId);
-
-        /**
-         * <p>Alias to the project ID</p>
-         */
-        _FinalStage projectAlias(Optional<String> projectAlias);
-
-        _FinalStage projectAlias(String projectAlias);
 
         /**
          * <p>Deprecated - use system_annotations to read system-assigned project metadata.</p>
@@ -447,15 +443,6 @@ public final class GetProjectsResponse
 
         _FinalStage policyPack(ProjectPolicyPack policyPack);
 
-        /**
-         * <p>Enables detect-only runtime evaluation for this project without blocking or redaction.
-         * On creation, omission sets false; this setting is never inherited from the default project.
-         * On update, omission preserves the stored value; send false explicitly to disable monitor mode.</p>
-         */
-        _FinalStage monitorMode(Optional<Boolean> monitorMode);
-
-        _FinalStage monitorMode(Boolean monitorMode);
-
         _FinalStage isEditable(Optional<Boolean> isEditable);
 
         _FinalStage isEditable(Boolean isEditable);
@@ -470,19 +457,34 @@ public final class GetProjectsResponse
         _FinalStage riskLevel(Optional<ProjectDetailsRiskLevel> riskLevel);
 
         _FinalStage riskLevel(ProjectDetailsRiskLevel riskLevel);
+
+        _FinalStage projectId(Optional<String> projectId);
+
+        _FinalStage projectId(String projectId);
+
+        /**
+         * <p>Alias to the project ID</p>
+         */
+        _FinalStage projectAlias(Optional<String> projectAlias);
+
+        _FinalStage projectAlias(String projectAlias);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static final class Builder implements IsDefaultStage, _FinalStage {
+    public static final class Builder implements MonitorModeStage, IsDefaultStage, _FinalStage {
+        private boolean monitorMode;
+
         private boolean isDefault;
+
+        private Optional<String> projectAlias = Optional.empty();
+
+        private Optional<String> projectId = Optional.empty();
 
         private Optional<ProjectDetailsRiskLevel> riskLevel = Optional.empty();
 
         private Optional<ProjectDetailsEscalationDetails> escalationDetails = Optional.empty();
 
         private Optional<Boolean> isEditable = Optional.empty();
-
-        private Optional<Boolean> monitorMode = Optional.empty();
 
         private Optional<ProjectPolicyPack> policyPack = Optional.empty();
 
@@ -508,18 +510,13 @@ public final class GetProjectsResponse
 
         private Optional<Map<String, String>> tags = Optional.empty();
 
-        private Optional<String> projectAlias = Optional.empty();
-
-        private Optional<String> projectId = Optional.empty();
-
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
         @java.lang.Override
         public Builder from(GetProjectsResponse other) {
-            projectId(other.getProjectId());
-            projectAlias(other.getProjectAlias());
+            monitorMode(other.getMonitorMode());
             tags(other.getTags());
             systemAnnotations(other.getSystemAnnotations());
             assets(other.getAssets());
@@ -532,11 +529,25 @@ public final class GetProjectsResponse
             policyId(other.getPolicyId());
             policyPackId(other.getPolicyPackId());
             policyPack(other.getPolicyPack());
-            monitorMode(other.getMonitorMode());
             isEditable(other.getIsEditable());
             escalationDetails(other.getEscalationDetails());
             riskLevel(other.getRiskLevel());
+            projectId(other.getProjectId());
+            projectAlias(other.getProjectAlias());
             isDefault(other.getIsDefault());
+            return this;
+        }
+
+        /**
+         * <p>Enables detect-only runtime evaluation for this project without blocking or redaction.
+         * On creation, omission sets false; this setting is never inherited from the default project.
+         * On update, omission preserves the stored value; send false explicitly to disable monitor mode.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("monitor_mode")
+        public IsDefaultStage monitorMode(boolean monitorMode) {
+            this.monitorMode = monitorMode;
             return this;
         }
 
@@ -544,6 +555,39 @@ public final class GetProjectsResponse
         @JsonSetter("is_default")
         public _FinalStage isDefault(boolean isDefault) {
             this.isDefault = isDefault;
+            return this;
+        }
+
+        /**
+         * <p>Alias to the project ID</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage projectAlias(String projectAlias) {
+            this.projectAlias = Optional.ofNullable(projectAlias);
+            return this;
+        }
+
+        /**
+         * <p>Alias to the project ID</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "project_alias", nulls = Nulls.SKIP)
+        public _FinalStage projectAlias(Optional<String> projectAlias) {
+            this.projectAlias = projectAlias;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage projectId(String projectId) {
+            this.projectId = Optional.ofNullable(projectId);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "project_id", nulls = Nulls.SKIP)
+        public _FinalStage projectId(Optional<String> projectId) {
+            this.projectId = projectId;
             return this;
         }
 
@@ -590,30 +634,6 @@ public final class GetProjectsResponse
         @JsonSetter(value = "is_editable", nulls = Nulls.SKIP)
         public _FinalStage isEditable(Optional<Boolean> isEditable) {
             this.isEditable = isEditable;
-            return this;
-        }
-
-        /**
-         * <p>Enables detect-only runtime evaluation for this project without blocking or redaction.
-         * On creation, omission sets false; this setting is never inherited from the default project.
-         * On update, omission preserves the stored value; send false explicitly to disable monitor mode.</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage monitorMode(Boolean monitorMode) {
-            this.monitorMode = Optional.ofNullable(monitorMode);
-            return this;
-        }
-
-        /**
-         * <p>Enables detect-only runtime evaluation for this project without blocking or redaction.
-         * On creation, omission sets false; this setting is never inherited from the default project.
-         * On update, omission preserves the stored value; send false explicitly to disable monitor mode.</p>
-         */
-        @java.lang.Override
-        @JsonSetter(value = "monitor_mode", nulls = Nulls.SKIP)
-        public _FinalStage monitorMode(Optional<Boolean> monitorMode) {
-            this.monitorMode = monitorMode;
             return this;
         }
 
@@ -848,44 +868,10 @@ public final class GetProjectsResponse
             return this;
         }
 
-        /**
-         * <p>Alias to the project ID</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage projectAlias(String projectAlias) {
-            this.projectAlias = Optional.ofNullable(projectAlias);
-            return this;
-        }
-
-        /**
-         * <p>Alias to the project ID</p>
-         */
-        @java.lang.Override
-        @JsonSetter(value = "project_alias", nulls = Nulls.SKIP)
-        public _FinalStage projectAlias(Optional<String> projectAlias) {
-            this.projectAlias = projectAlias;
-            return this;
-        }
-
-        @java.lang.Override
-        public _FinalStage projectId(String projectId) {
-            this.projectId = Optional.ofNullable(projectId);
-            return this;
-        }
-
-        @java.lang.Override
-        @JsonSetter(value = "project_id", nulls = Nulls.SKIP)
-        public _FinalStage projectId(Optional<String> projectId) {
-            this.projectId = projectId;
-            return this;
-        }
-
         @java.lang.Override
         public GetProjectsResponse build() {
             return new GetProjectsResponse(
-                    projectId,
-                    projectAlias,
+                    monitorMode,
                     tags,
                     systemAnnotations,
                     assets,
@@ -898,18 +884,18 @@ public final class GetProjectsResponse
                     policyId,
                     policyPackId,
                     policyPack,
-                    monitorMode,
                     isEditable,
                     escalationDetails,
                     riskLevel,
+                    projectId,
+                    projectAlias,
                     isDefault,
                     additionalProperties);
         }
 
         @JsonAnySetter
         private void putAdditionalPropertyFromJson(String key, Object value) {
-            if (key.equalsIgnoreCase("project_id")
-                    || key.equalsIgnoreCase("project_alias")
+            if (key.equalsIgnoreCase("monitor_mode")
                     || key.equalsIgnoreCase("tags")
                     || key.equalsIgnoreCase("system_annotations")
                     || key.equalsIgnoreCase("assets")
@@ -922,10 +908,11 @@ public final class GetProjectsResponse
                     || key.equalsIgnoreCase("policy_id")
                     || key.equalsIgnoreCase("policy_pack_id")
                     || key.equalsIgnoreCase("policy_pack")
-                    || key.equalsIgnoreCase("monitor_mode")
                     || key.equalsIgnoreCase("is_editable")
                     || key.equalsIgnoreCase("escalation_details")
                     || key.equalsIgnoreCase("risk_level")
+                    || key.equalsIgnoreCase("project_id")
+                    || key.equalsIgnoreCase("project_alias")
                     || key.equalsIgnoreCase("is_default")) {
                 return;
             }
