@@ -5,6 +5,7 @@ package com.hiddenlayer.api.resources.evaluations;
 
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.Suppliers;
+import com.hiddenlayer.api.resources.evaluations.promptsets.PromptSetsClient;
 import com.hiddenlayer.api.resources.evaluations.redteam.RedTeamClient;
 import java.util.function.Supplier;
 
@@ -13,12 +14,19 @@ public class EvaluationsClient {
 
     protected final Supplier<RedTeamClient> redTeamClient;
 
+    protected final Supplier<PromptSetsClient> promptSetsClient;
+
     public EvaluationsClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.redTeamClient = Suppliers.memoize(() -> new RedTeamClient(clientOptions));
+        this.promptSetsClient = Suppliers.memoize(() -> new PromptSetsClient(clientOptions));
     }
 
     public RedTeamClient redTeam() {
         return this.redTeamClient.get();
+    }
+
+    public PromptSetsClient promptSets() {
+        return this.promptSetsClient.get();
     }
 }

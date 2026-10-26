@@ -7,21 +7,26 @@ import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.Suppliers;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
+import com.hiddenlayer.api.resources.evaluations.redteam.configs.ConfigsClient;
+import com.hiddenlayer.api.resources.evaluations.redteam.objectives.ObjectivesClient;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.ClientRedTeamBody;
+import com.hiddenlayer.api.resources.evaluations.redteam.requests.CsvRedTeamRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.DeleteRedTeamRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.ListRedTeamRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.RetrieveEvaluationResultsRedTeamRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.RetrieveNextActionRedTeamRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.RetrieveStatusRedTeamRequest;
+import com.hiddenlayer.api.resources.evaluations.redteam.requests.StartRedTeamBody;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.SubmitTargetResponseBody;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.TerminateRedTeamRequest;
-import com.hiddenlayer.api.resources.evaluations.redteam.rulesuggestions.RuleSuggestionsClient;
 import com.hiddenlayer.api.types.NextActionResponse;
 import com.hiddenlayer.api.types.RedTeamResultItem;
 import com.hiddenlayer.api.types.StartWorkflowResponse;
 import com.hiddenlayer.api.types.SubmitTargetResponseResult;
+import com.hiddenlayer.api.types.TargetModelResponse;
 import com.hiddenlayer.api.types.WorkflowResultResponse;
 import com.hiddenlayer.api.types.WorkflowStatusResponse;
+import java.io.InputStream;
 import java.util.function.Supplier;
 
 public class RedTeamClient {
@@ -29,12 +34,15 @@ public class RedTeamClient {
 
     private final RawRedTeamClient rawClient;
 
-    protected final Supplier<RuleSuggestionsClient> ruleSuggestionsClient;
+    protected final Supplier<ObjectivesClient> objectivesClient;
+
+    protected final Supplier<ConfigsClient> configsClient;
 
     public RedTeamClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.rawClient = new RawRedTeamClient(clientOptions);
-        this.ruleSuggestionsClient = Suppliers.memoize(() -> new RuleSuggestionsClient(clientOptions));
+        this.objectivesClient = Suppliers.memoize(() -> new ObjectivesClient(clientOptions));
+        this.configsClient = Suppliers.memoize(() -> new ConfigsClient(clientOptions));
     }
 
     /**
@@ -42,6 +50,22 @@ public class RedTeamClient {
      */
     public RawRedTeamClient withRawResponse() {
         return this.rawClient;
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Returns the list of available target models for red team evaluations.</p>
+     */
+    public TargetModelResponse targetModels() {
+        return this.rawClient.targetModels().body();
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Returns the list of available target models for red team evaluations.</p>
+     */
+    public TargetModelResponse targetModels(RequestOptions requestOptions) {
+        return this.rawClient.targetModels(requestOptions).body();
     }
 
     /**
@@ -325,7 +349,59 @@ public class RedTeamClient {
         this.rawClient.terminate(workflowId, request, requestOptions).body();
     }
 
-    public RuleSuggestionsClient ruleSuggestions() {
-        return this.ruleSuggestionsClient.get();
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Start a new simulated red team workflow with a built-in target model.</p>
+     */
+    public StartWorkflowResponse simulated(StartRedTeamBody request) {
+        return this.rawClient.simulated(request).body();
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Start a new simulated red team workflow with a built-in target model.</p>
+     */
+    public StartWorkflowResponse simulated(StartRedTeamBody request, RequestOptions requestOptions) {
+        return this.rawClient.simulated(request, requestOptions).body();
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
+     */
+    public InputStream csv(String workflowId) {
+        return this.rawClient.csv(workflowId).body();
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
+     */
+    public InputStream csv(String workflowId, RequestOptions requestOptions) {
+        return this.rawClient.csv(workflowId, requestOptions).body();
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
+     */
+    public InputStream csv(String workflowId, CsvRedTeamRequest request) {
+        return this.rawClient.csv(workflowId, request).body();
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
+     */
+    public InputStream csv(String workflowId, CsvRedTeamRequest request, RequestOptions requestOptions) {
+        return this.rawClient.csv(workflowId, request, requestOptions).body();
+    }
+
+    public ObjectivesClient objectives() {
+        return this.objectivesClient.get();
+    }
+
+    public ConfigsClient configs() {
+        return this.configsClient.get();
     }
 }

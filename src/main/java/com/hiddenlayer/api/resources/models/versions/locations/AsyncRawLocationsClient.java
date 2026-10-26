@@ -11,6 +11,7 @@ import com.hiddenlayer.api.core.HiddenLayerException;
 import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
+import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
 import com.hiddenlayer.api.errors.NotFoundError;
@@ -58,9 +59,9 @@ public class AsyncRawLocationsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/models/versions")
-                .addPathSegment(versionId)
+                .addPathSegment(PathSegments.validate(versionId))
                 .addPathSegments("locations")
-                .addPathSegment(key);
+                .addPathSegment(PathSegments.validate(key));
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
@@ -142,9 +143,9 @@ public class AsyncRawLocationsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/models/versions")
-                .addPathSegment(versionId)
+                .addPathSegment(PathSegments.validate(versionId))
                 .addPathSegments("locations")
-                .addPathSegment(key);
+                .addPathSegment(PathSegments.validate(key));
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);

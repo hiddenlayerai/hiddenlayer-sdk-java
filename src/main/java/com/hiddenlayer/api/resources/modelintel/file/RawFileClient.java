@@ -9,6 +9,7 @@ import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
 import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
+import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -62,7 +63,7 @@ public class RawFileClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("model-intel/v1/file")
-                .addPathSegment(sha256);
+                .addPathSegment(PathSegments.validate(sha256));
         if (request.getPageSize().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "page_size", request.getPageSize().get(), false);
@@ -149,7 +150,7 @@ public class RawFileClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("model-intel/v1/file")
-                .addPathSegment(sha256)
+                .addPathSegment(PathSegments.validate(sha256))
                 .addPathSegments("metadata");
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {

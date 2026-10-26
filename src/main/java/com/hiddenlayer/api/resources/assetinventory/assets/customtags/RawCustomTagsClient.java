@@ -11,6 +11,7 @@ import com.hiddenlayer.api.core.HiddenLayerException;
 import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
+import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
 import com.hiddenlayer.api.errors.ForbiddenError;
@@ -55,9 +56,9 @@ public class RawCustomTagsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v1/assets")
-                .addPathSegment(assetId)
+                .addPathSegment(PathSegments.validate(assetId))
                 .addPathSegments("custom-tags")
-                .addPathSegment(tagName);
+                .addPathSegment(PathSegments.validate(tagName));
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
@@ -157,9 +158,9 @@ public class RawCustomTagsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v1/assets")
-                .addPathSegment(assetId)
+                .addPathSegment(PathSegments.validate(assetId))
                 .addPathSegments("custom-tags")
-                .addPathSegment(tagName);
+                .addPathSegment(PathSegments.validate(tagName));
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
@@ -235,9 +236,9 @@ public class RawCustomTagsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v2/assets")
-                .addPathSegment(assetId)
+                .addPathSegment(PathSegments.validate(assetId))
                 .addPathSegments("custom-tags")
-                .addPathSegment(tagName);
+                .addPathSegment(PathSegments.validate(tagName));
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
@@ -340,9 +341,9 @@ public class RawCustomTagsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v2/assets")
-                .addPathSegment(assetId)
+                .addPathSegment(PathSegments.validate(assetId))
                 .addPathSegments("custom-tags")
-                .addPathSegment(tagName);
+                .addPathSegment(PathSegments.validate(tagName));
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);

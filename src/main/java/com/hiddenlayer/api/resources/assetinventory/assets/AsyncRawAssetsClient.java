@@ -9,6 +9,7 @@ import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
 import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
+import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -220,7 +221,7 @@ public class AsyncRawAssetsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v1/assets")
-                .addPathSegment(assetId);
+                .addPathSegment(PathSegments.validate(assetId));
         if (request.getEmbed().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "embed", request.getEmbed().get(), true);
@@ -314,7 +315,7 @@ public class AsyncRawAssetsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v1/assets")
-                .addPathSegment(assetId)
+                .addPathSegment(PathSegments.validate(assetId))
                 .addPathSegments("graph");
         if (request.getDepth().isPresent()) {
             QueryStringMapper.addQueryParameter(
@@ -507,7 +508,7 @@ public class AsyncRawAssetsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v1/assets")
-                .addPathSegment(assetId)
+                .addPathSegment(PathSegments.validate(assetId))
                 .addPathSegments("tags");
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
@@ -1382,7 +1383,7 @@ public class AsyncRawAssetsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v2/assets")
-                .addPathSegment(assetId);
+                .addPathSegment(PathSegments.validate(assetId));
         if (request.getEmbed().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "embed", request.getEmbed().get(), true);
@@ -1554,7 +1555,7 @@ public class AsyncRawAssetsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v2/assets")
-                .addPathSegment(assetId)
+                .addPathSegment(PathSegments.validate(assetId))
                 .addPathSegments("discovered-graph");
         if (request.getDepth().isPresent()) {
             QueryStringMapper.addQueryParameter(
@@ -1686,7 +1687,7 @@ public class AsyncRawAssetsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v2/assets")
-                .addPathSegment(assetId)
+                .addPathSegment(PathSegments.validate(assetId))
                 .addPathSegments("tags");
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {

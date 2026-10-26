@@ -47,6 +47,8 @@ public final class OauthScope {
 
     public static final OauthScope CREDENTIAL_WRITE = new OauthScope(Value.CREDENTIAL_WRITE, "credential:write");
 
+    public static final OauthScope AAS_W = new OauthScope(Value.AAS_W, "aas:w");
+
     public static final OauthScope USER_DELETE = new OauthScope(Value.USER_DELETE, "user:delete");
 
     public static final OauthScope MODEL_DELETE = new OauthScope(Value.MODEL_DELETE, "model:delete");
@@ -65,6 +67,8 @@ public final class OauthScope {
     public static final OauthScope RULE_SET_BASE_WRITE =
             new OauthScope(Value.RULE_SET_BASE_WRITE, "rule-set:base:write");
 
+    public static final OauthScope AAS_R = new OauthScope(Value.AAS_R, "aas:r");
+
     public static final OauthScope INTEGRATION_WRITE = new OauthScope(Value.INTEGRATION_WRITE, "integration:write");
 
     public static final OauthScope RULE_SET_READ = new OauthScope(Value.RULE_SET_READ, "rule-set:read");
@@ -82,6 +86,8 @@ public final class OauthScope {
     public static final OauthScope CREDENTIAL_DELETE = new OauthScope(Value.CREDENTIAL_DELETE, "credential:delete");
 
     public static final OauthScope RUNTIME_W = new OauthScope(Value.RUNTIME_W, "runtime:w");
+
+    public static final OauthScope AAS_D = new OauthScope(Value.AAS_D, "aas:d");
 
     public static final OauthScope PROJECT_DEFAULT_WRITE =
             new OauthScope(Value.PROJECT_DEFAULT_WRITE, "project:default:write");
@@ -159,6 +165,8 @@ public final class OauthScope {
                 return visitor.visitIncidentRead();
             case CREDENTIAL_WRITE:
                 return visitor.visitCredentialWrite();
+            case AAS_W:
+                return visitor.visitAasW();
             case USER_DELETE:
                 return visitor.visitUserDelete();
             case MODEL_DELETE:
@@ -175,6 +183,8 @@ public final class OauthScope {
                 return visitor.visitUserRead();
             case RULE_SET_BASE_WRITE:
                 return visitor.visitRuleSetBaseWrite();
+            case AAS_R:
+                return visitor.visitAasR();
             case INTEGRATION_WRITE:
                 return visitor.visitIntegrationWrite();
             case RULE_SET_READ:
@@ -193,6 +203,8 @@ public final class OauthScope {
                 return visitor.visitCredentialDelete();
             case RUNTIME_W:
                 return visitor.visitRuntimeW();
+            case AAS_D:
+                return visitor.visitAasD();
             case PROJECT_DEFAULT_WRITE:
                 return visitor.visitProjectDefaultWrite();
             case AUDIT_READ:
@@ -246,6 +258,8 @@ public final class OauthScope {
                 return INCIDENT_READ;
             case "credential:write":
                 return CREDENTIAL_WRITE;
+            case "aas:w":
+                return AAS_W;
             case "user:delete":
                 return USER_DELETE;
             case "model:delete":
@@ -262,6 +276,8 @@ public final class OauthScope {
                 return USER_READ;
             case "rule-set:base:write":
                 return RULE_SET_BASE_WRITE;
+            case "aas:r":
+                return AAS_R;
             case "integration:write":
                 return INTEGRATION_WRITE;
             case "rule-set:read":
@@ -280,6 +296,8 @@ public final class OauthScope {
                 return CREDENTIAL_DELETE;
             case "runtime:w":
                 return RUNTIME_W;
+            case "aas:d":
+                return AAS_D;
             case "project:default:write":
                 return PROJECT_DEFAULT_WRITE;
             case "audit:read":
@@ -368,6 +386,12 @@ public final class OauthScope {
 
         RUNTIME_D,
 
+        AAS_R,
+
+        AAS_W,
+
+        AAS_D,
+
         UNKNOWN
     }
 
@@ -449,6 +473,12 @@ public final class OauthScope {
         T visitRuntimeW();
 
         T visitRuntimeD();
+
+        T visitAasR();
+
+        T visitAasW();
+
+        T visitAasD();
 
         T visitUnknown(String unknownType);
     }

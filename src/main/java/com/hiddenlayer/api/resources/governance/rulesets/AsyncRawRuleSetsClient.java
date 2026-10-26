@@ -11,6 +11,7 @@ import com.hiddenlayer.api.core.HiddenLayerException;
 import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
+import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -406,7 +407,7 @@ public class AsyncRawRuleSetsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("governance/v1/rule-sets")
-                .addPathSegment(ruleSetId);
+                .addPathSegment(PathSegments.validate(ruleSetId));
         if (request.getIncludeDisabled().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "include_disabled", request.getIncludeDisabled().get(), false);
@@ -535,7 +536,7 @@ public class AsyncRawRuleSetsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("governance/v1/rule-sets")
-                .addPathSegment(ruleSetId);
+                .addPathSegment(PathSegments.validate(ruleSetId));
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);

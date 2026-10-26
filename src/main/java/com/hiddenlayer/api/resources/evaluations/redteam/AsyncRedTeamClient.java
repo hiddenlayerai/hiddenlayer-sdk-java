@@ -8,21 +8,26 @@ import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.Suppliers;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
+import com.hiddenlayer.api.resources.evaluations.redteam.configs.AsyncConfigsClient;
+import com.hiddenlayer.api.resources.evaluations.redteam.objectives.AsyncObjectivesClient;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.ClientRedTeamBody;
+import com.hiddenlayer.api.resources.evaluations.redteam.requests.CsvRedTeamRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.DeleteRedTeamRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.ListRedTeamRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.RetrieveEvaluationResultsRedTeamRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.RetrieveNextActionRedTeamRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.RetrieveStatusRedTeamRequest;
+import com.hiddenlayer.api.resources.evaluations.redteam.requests.StartRedTeamBody;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.SubmitTargetResponseBody;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.TerminateRedTeamRequest;
-import com.hiddenlayer.api.resources.evaluations.redteam.rulesuggestions.AsyncRuleSuggestionsClient;
 import com.hiddenlayer.api.types.NextActionResponse;
 import com.hiddenlayer.api.types.RedTeamResultItem;
 import com.hiddenlayer.api.types.StartWorkflowResponse;
 import com.hiddenlayer.api.types.SubmitTargetResponseResult;
+import com.hiddenlayer.api.types.TargetModelResponse;
 import com.hiddenlayer.api.types.WorkflowResultResponse;
 import com.hiddenlayer.api.types.WorkflowStatusResponse;
+import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -31,12 +36,15 @@ public class AsyncRedTeamClient {
 
     private final AsyncRawRedTeamClient rawClient;
 
-    protected final Supplier<AsyncRuleSuggestionsClient> ruleSuggestionsClient;
+    protected final Supplier<AsyncObjectivesClient> objectivesClient;
+
+    protected final Supplier<AsyncConfigsClient> configsClient;
 
     public AsyncRedTeamClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.rawClient = new AsyncRawRedTeamClient(clientOptions);
-        this.ruleSuggestionsClient = Suppliers.memoize(() -> new AsyncRuleSuggestionsClient(clientOptions));
+        this.objectivesClient = Suppliers.memoize(() -> new AsyncObjectivesClient(clientOptions));
+        this.configsClient = Suppliers.memoize(() -> new AsyncConfigsClient(clientOptions));
     }
 
     /**
@@ -44,6 +52,37 @@ public class AsyncRedTeamClient {
      */
     public AsyncRawRedTeamClient withRawResponse() {
         return this.rawClient;
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Returns the list of available target models for red team evaluations.</p>
+     */
+    public CompletableFuture<TargetModelResponse> targetModels() {
+        CompletableFuture<HiddenLayerHttpResponse<TargetModelResponse>> rawFuture = this.rawClient.targetModels();
+        CompletableFuture<TargetModelResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Returns the list of available target models for red team evaluations.</p>
+     */
+    public CompletableFuture<TargetModelResponse> targetModels(RequestOptions requestOptions) {
+        CompletableFuture<HiddenLayerHttpResponse<TargetModelResponse>> rawFuture =
+                this.rawClient.targetModels(requestOptions);
+        CompletableFuture<TargetModelResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
     }
 
     /**
@@ -546,7 +585,105 @@ public class AsyncRedTeamClient {
         return future;
     }
 
-    public AsyncRuleSuggestionsClient ruleSuggestions() {
-        return this.ruleSuggestionsClient.get();
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Start a new simulated red team workflow with a built-in target model.</p>
+     */
+    public CompletableFuture<StartWorkflowResponse> simulated(StartRedTeamBody request) {
+        CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> rawFuture = this.rawClient.simulated(request);
+        CompletableFuture<StartWorkflowResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Start a new simulated red team workflow with a built-in target model.</p>
+     */
+    public CompletableFuture<StartWorkflowResponse> simulated(StartRedTeamBody request, RequestOptions requestOptions) {
+        CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> rawFuture =
+                this.rawClient.simulated(request, requestOptions);
+        CompletableFuture<StartWorkflowResponse> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
+     */
+    public CompletableFuture<InputStream> csv(String workflowId) {
+        CompletableFuture<HiddenLayerHttpResponse<InputStream>> rawFuture = this.rawClient.csv(workflowId);
+        CompletableFuture<InputStream> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
+     */
+    public CompletableFuture<InputStream> csv(String workflowId, RequestOptions requestOptions) {
+        CompletableFuture<HiddenLayerHttpResponse<InputStream>> rawFuture =
+                this.rawClient.csv(workflowId, requestOptions);
+        CompletableFuture<InputStream> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
+     */
+    public CompletableFuture<InputStream> csv(String workflowId, CsvRedTeamRequest request) {
+        CompletableFuture<HiddenLayerHttpResponse<InputStream>> rawFuture = this.rawClient.csv(workflowId, request);
+        CompletableFuture<InputStream> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
+     */
+    public CompletableFuture<InputStream> csv(
+            String workflowId, CsvRedTeamRequest request, RequestOptions requestOptions) {
+        CompletableFuture<HiddenLayerHttpResponse<InputStream>> rawFuture =
+                this.rawClient.csv(workflowId, request, requestOptions);
+        CompletableFuture<InputStream> future = rawFuture.thenApply(response -> response.body());
+        future.whenComplete((result_, throwable_) -> {
+            if (future.isCancelled()) {
+                rawFuture.cancel(true);
+            }
+        });
+        return future;
+    }
+
+    public AsyncObjectivesClient objectives() {
+        return this.objectivesClient.get();
+    }
+
+    public AsyncConfigsClient configs() {
+        return this.configsClient.get();
     }
 }

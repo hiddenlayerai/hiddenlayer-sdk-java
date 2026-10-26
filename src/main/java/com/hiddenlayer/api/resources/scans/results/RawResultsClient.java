@@ -9,6 +9,7 @@ import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
 import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
+import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -70,7 +71,7 @@ public class RawResultsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("scan/v3/results")
-                .addPathSegment(scanId)
+                .addPathSegment(PathSegments.validate(scanId))
                 .addPathSegments("files");
         if (request.getHasDetections().isPresent()) {
             QueryStringMapper.addQueryParameter(
@@ -166,7 +167,7 @@ public class RawResultsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("scan/v3/results")
-                .addPathSegment(scanId)
+                .addPathSegment(PathSegments.validate(scanId))
                 .addPathSegments("sarif");
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
@@ -252,7 +253,7 @@ public class RawResultsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("scan/v3/results")
-                .addPathSegment(scanId)
+                .addPathSegment(PathSegments.validate(scanId))
                 .addPathSegments("summary");
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {

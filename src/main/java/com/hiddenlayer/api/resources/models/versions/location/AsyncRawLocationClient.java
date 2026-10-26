@@ -9,6 +9,7 @@ import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
 import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
+import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
 import com.hiddenlayer.api.errors.NotFoundError;
@@ -52,7 +53,7 @@ public class AsyncRawLocationClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/models/versions")
-                .addPathSegment(versionId)
+                .addPathSegment(PathSegments.validate(versionId))
                 .addPathSegments("location")
                 .addPathSegments("internal");
         if (requestOptions != null) {

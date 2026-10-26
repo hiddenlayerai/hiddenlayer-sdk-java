@@ -13,9 +13,9 @@ public final class HighestSeverity {
 
     public static final HighestSeverity HIGH = new HighestSeverity(Value.HIGH, "HIGH");
 
-    public static final HighestSeverity MEDIUM = new HighestSeverity(Value.MEDIUM, "MEDIUM");
-
     public static final HighestSeverity CRITICAL = new HighestSeverity(Value.CRITICAL, "CRITICAL");
+
+    public static final HighestSeverity MEDIUM = new HighestSeverity(Value.MEDIUM, "MEDIUM");
 
     private final Value value;
 
@@ -55,10 +55,10 @@ public final class HighestSeverity {
                 return visitor.visitLow();
             case HIGH:
                 return visitor.visitHigh();
-            case MEDIUM:
-                return visitor.visitMedium();
             case CRITICAL:
                 return visitor.visitCritical();
+            case MEDIUM:
+                return visitor.visitMedium();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -74,39 +74,39 @@ public final class HighestSeverity {
                 return LOW;
             case "HIGH":
                 return HIGH;
-            case "MEDIUM":
-                return MEDIUM;
             case "CRITICAL":
                 return CRITICAL;
+            case "MEDIUM":
+                return MEDIUM;
             default:
                 return new HighestSeverity(Value.UNKNOWN, value);
         }
     }
 
     public enum Value {
-        NONE,
-
-        LOW,
-
-        MEDIUM,
+        CRITICAL,
 
         HIGH,
 
-        CRITICAL,
+        MEDIUM,
+
+        LOW,
+
+        NONE,
 
         UNKNOWN
     }
 
     public interface Visitor<T> {
-        T visitNone();
-
-        T visitLow();
-
-        T visitMedium();
+        T visitCritical();
 
         T visitHigh();
 
-        T visitCritical();
+        T visitMedium();
+
+        T visitLow();
+
+        T visitNone();
 
         T visitUnknown(String unknownType);
     }

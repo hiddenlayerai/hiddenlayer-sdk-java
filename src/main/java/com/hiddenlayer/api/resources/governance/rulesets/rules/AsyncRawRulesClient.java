@@ -11,6 +11,7 @@ import com.hiddenlayer.api.core.HiddenLayerException;
 import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
+import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
 import com.hiddenlayer.api.errors.BadRequestError;
@@ -61,7 +62,7 @@ public class AsyncRawRulesClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("governance/v1/rule-sets")
-                .addPathSegment(ruleSetId)
+                .addPathSegment(PathSegments.validate(ruleSetId))
                 .addPathSegments("rules");
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
@@ -183,9 +184,9 @@ public class AsyncRawRulesClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("governance/v1/rule-sets")
-                .addPathSegment(ruleSetId)
+                .addPathSegment(PathSegments.validate(ruleSetId))
                 .addPathSegments("rules")
-                .addPathSegment(ruleId);
+                .addPathSegment(PathSegments.validate(ruleId));
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
@@ -323,9 +324,9 @@ public class AsyncRawRulesClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("governance/v1/rule-sets")
-                .addPathSegment(ruleSetId)
+                .addPathSegment(PathSegments.validate(ruleSetId))
                 .addPathSegments("rules")
-                .addPathSegment(ruleId);
+                .addPathSegment(PathSegments.validate(ruleId));
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);

@@ -7115,6 +7115,47 @@ client.compliance().ruleSets().settings().delete(
 </details>
 
 ## Evaluations RedTeam
+<details><summary><code>client.evaluations.redTeam.targetModels() -> TargetModelResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Returns the list of available target models for red team evaluations.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeam().targetModels();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.evaluations.redTeam.list() -> SyncPagingIterable&amp;lt;RedTeamResultItem&amp;gt;</code></summary>
 <dl>
 <dd>
@@ -7435,7 +7476,7 @@ generation attempts for the attacker model per turn.
 <dl>
 <dd>
 
-**promptSetId:** `Optional<String>` — Prompt set UUID (built-in catalog or tenant DB)
+**promptSetId:** `Optional<String>` — Prompt set UUID (built-in or tenant prompt set)
     
 </dd>
 </dl>
@@ -7869,8 +7910,7 @@ client.evaluations().redTeam().terminate(
 </dl>
 </details>
 
-## Evaluations RedTeam RuleSuggestions
-<details><summary><code>client.evaluations.redTeam.ruleSuggestions.list(workflowId) -> SyncPagingIterable&amp;lt;RuleSuggestionListItem&amp;gt;</code></summary>
+<details><summary><code>client.evaluations.redTeam.simulated(request) -> StartWorkflowResponse</code></summary>
 <dl>
 <dd>
 
@@ -7884,9 +7924,7 @@ client.evaluations().redTeam().terminate(
 
 [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
 
-List rule suggestion runs generated for a red team evaluation, newest first.
-
-Each run is independent - triggering a new run does not replace or affect prior runs.
+Start a new simulated red team workflow with a built-in target model.
 </dd>
 </dl>
 </dd>
@@ -7901,10 +7939,10 @@ Each run is independent - triggering a new run does not replace or affect prior 
 <dd>
 
 ```java
-client.evaluations().redTeam().ruleSuggestions().list(
-    "workflow_id",
-    ListRuleSuggestionsRequest
+client.evaluations().redTeam().simulated(
+    StartRedTeamBody
         .builder()
+        .name("name")
         .build()
 );
 ```
@@ -7921,7 +7959,7 @@ client.evaluations().redTeam().ruleSuggestions().list(
 <dl>
 <dd>
 
-**workflowId:** `String` — The source red team evaluation's workflow identifier
+**name:** `String` — Name for this evaluation
     
 </dd>
 </dl>
@@ -7929,7 +7967,11 @@ client.evaluations().redTeam().ruleSuggestions().list(
 <dl>
 <dd>
 
-**limit:** `Optional<Integer>` — Maximum number of results to return
+**configId:** `Optional<String>` 
+
+Optional preset config (see /evaluations/v1/red-team/configs) to seed the
+workflow settings. Any field also present in this body overrides the
+corresponding value from the config.
     
 </dd>
 </dl>
@@ -7937,7 +7979,148 @@ client.evaluations().redTeam().ruleSuggestions().list(
 <dl>
 <dd>
 
-**cursor:** `Optional<String>` — Pagination cursor from previous response
+**targetModel:** `Optional<String>` 
+
+Target model identifier. Validated against the live servable-model
+catalog; an unknown or unsupported model returns 422 and an
+unavailable catalog returns 503.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**targetSystemPrompt:** `Optional<String>` — System prompt for the target
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**objectiveIds:** `Optional<List<String>>` — Objective IDs to evaluate
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**severityMapping:** `Optional<Map<String, HighestSeverity>>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**executionStrategyType:** `Optional<StartRedTeamBodyExecutionStrategyType>` — Execution strategy type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**nRandomTechniques:** `Optional<Integer>` — Number of random techniques to use
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**maxParallelTechniques:** `Optional<Integer>` — Maximum parallel techniques
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**maxTurns:** `Optional<Integer>` — Maximum conversation turns
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**attackerMaxGenerationAttempts:** `Optional<Integer>` 
+
+Internal override; service default applies if omitted. Maximum number of
+generation attempts for the attacker model per turn.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**refusalJudgeModel:** `Optional<String>` — Internal override; service default applies if omitted.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**objectiveJudgeModel:** `Optional<String>` — Internal override; service default applies if omitted.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**evaluationReportModel:** `Optional<String>` — Internal override; service default applies if omitted.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**attackerModel:** `Optional<String>` — Internal override; service default applies if omitted.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**hlProjectId:** `Optional<String>` — HiddenLayer project UUID or alias
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**promptSetId:** `Optional<String>` — Prompt set UUID (built-in or tenant prompt set)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sessionsPerTechnique:** `Optional<Integer>` — Number of sessions per technique
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**attackerGuidance:** `Optional<String>` 
+
+Optional intent-only natural-language text the operator supplies to
+focus the attacker LLM within the configured APE objectives.
+Sanitized server-side (length cap + strict character whitelist).
+See `RedTeamConfig.attacker_guidance` for full semantics. No-op
+for the `STATIC_PROMPT_SET` execution strategy.
     
 </dd>
 </dl>
@@ -7949,7 +8132,7 @@ client.evaluations().redTeam().ruleSuggestions().list(
 </dl>
 </details>
 
-<details><summary><code>client.evaluations.redTeam.ruleSuggestions.create(workflowId, request) -> StartRuleSuggestionResponse</code></summary>
+<details><summary><code>client.evaluations.redTeam.csv(workflowId) -> InputStream</code></summary>
 <dl>
 <dd>
 
@@ -7963,17 +8146,7 @@ client.evaluations().redTeam().ruleSuggestions().list(
 
 [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
 
-Start a new rule suggestion run for a completed red team evaluation. Analyzes the
-evaluation's successful attacks and generates a detection rule suggestion that can be
-reviewed and added to a project's runtime security policy.
-
-Callable multiple times for the same evaluation; each call starts an independent run.
-The response's `suggestion_id` identifies the new run - use it in the status, result,
-and list endpoints (the `{workflow_id}` path segment continues to identify the source
-red team evaluation). Client should poll /status, then fetch the full result once
-complete.
-
-An empty JSON object `{}` is the minimal valid request body.
+Export attacker/target interactions for a red team workflow as CSV (one row per message).
 </dd>
 </dl>
 </dd>
@@ -7988,9 +8161,9 @@ An empty JSON object `{}` is the minimal valid request body.
 <dd>
 
 ```java
-client.evaluations().redTeam().ruleSuggestions().create(
+client.evaluations().redTeam().csv(
     "workflow_id",
-    StartRuleSuggestionBody
+    CsvRedTeamRequest
         .builder()
         .build()
 );
@@ -8008,15 +8181,7 @@ client.evaluations().redTeam().ruleSuggestions().create(
 <dl>
 <dd>
 
-**workflowId:** `String` — The source red team evaluation's workflow identifier
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `Optional<String>` — Optional name for this rule suggestion run. When omitted, the server derives one from the source evaluation (e.g. "Rule suggestions for {evaluation name}").
+**workflowId:** `String` — The workflow identifier
     
 </dd>
 </dl>
@@ -8028,7 +8193,8 @@ client.evaluations().redTeam().ruleSuggestions().create(
 </dl>
 </details>
 
-<details><summary><code>client.evaluations.redTeam.ruleSuggestions.status(workflowId, suggestionId) -> RuleSuggestionStatusResponse</code></summary>
+## Evaluations PromptSets
+<details><summary><code>client.evaluations.promptSets.list() -> PromptSetsResponse</code></summary>
 <dl>
 <dd>
 
@@ -8042,8 +8208,11 @@ client.evaluations().redTeam().ruleSuggestions().create(
 
 [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
 
-Get current status of a rule suggestion run (polling endpoint).
-Returns immediately with current state.
+List all available prompt sets for a tenant.
+
+Returns both:
+- Built-in prompt sets
+- Tenant-specific prompt sets with their current status
 </dd>
 </dl>
 </dd>
@@ -8058,11 +8227,65 @@ Returns immediately with current state.
 <dd>
 
 ```java
-client.evaluations().redTeam().ruleSuggestions().status(
-    "workflow_id",
-    "suggestion_id",
-    StatusRuleSuggestionsRequest
+client.evaluations().promptSets().list();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.promptSets.create(request) -> CreatePromptSetResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Create a new tenant-specific prompt set.
+
+The server assigns the `prompt_set_id` (a UUID). The prompt set is stored
+with status `IN_PROGRESS` and the response returns immediately. A
+background job then tags the prompts, after applying any requested
+mutations. List the prompt sets to see when the status changes.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().promptSets().create(
+    CreatePromptSetRequest
         .builder()
+        .name("name")
+        .provider("provider")
+        .prompts(
+            Arrays.asList(
+                CreatePromptRequest
+                    .builder()
+                    .userPrompt("user_prompt")
+                    .build()
+            )
+        )
         .build()
 );
 ```
@@ -8079,7 +8302,7 @@ client.evaluations().redTeam().ruleSuggestions().status(
 <dl>
 <dd>
 
-**workflowId:** `String` — The source red team evaluation's workflow identifier
+**name:** `String` — Human-readable name for the prompt set
     
 </dd>
 </dl>
@@ -8087,7 +8310,63 @@ client.evaluations().redTeam().ruleSuggestions().status(
 <dl>
 <dd>
 
-**suggestionId:** `String` — The rule suggestion run identifier
+**provider:** `String` — Provider/source of the prompt set
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**url:** `Optional<String>` — Reference URL for the prompt set
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `Optional<String>` — Description of the prompt set
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**prompts:** `List<CreatePromptRequest>` — List of prompts in the set
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**mutations:** `Optional<List<MutationType>>` — List of mutation methods to apply
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**encodings:** `Optional<List<EncodingType>>` — List of encoding methods to apply
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**semanticTransformations:** `Optional<List<SemanticType>>` — List of semantic transformation methods to apply
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**variationsPerPrompt:** `Optional<Integer>` — Number of variations to generate per prompt
     
 </dd>
 </dl>
@@ -8099,7 +8378,7 @@ client.evaluations().redTeam().ruleSuggestions().status(
 </dl>
 </details>
 
-<details><summary><code>client.evaluations.redTeam.ruleSuggestions.get(workflowId, suggestionId) -> RuleSuggestionResultResponse</code></summary>
+<details><summary><code>client.evaluations.promptSets.mutations() -> AvailableMutationsResponse</code></summary>
 <dl>
 <dd>
 
@@ -8113,7 +8392,12 @@ client.evaluations().redTeam().ruleSuggestions().status(
 
 [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
 
-Get the complete result of a rule suggestion run, including any generated rules.
+Return static list of available mutation types by category.
+
+Returns all available mutation methods organized by category:
+- mutations: Character/word-level text mutations
+- encodings: Text encoding transformations
+- semantic_transformations: LLM-based semantic transformations
 </dd>
 </dl>
 </dd>
@@ -8128,10 +8412,50 @@ Get the complete result of a rule suggestion run, including any generated rules.
 <dd>
 
 ```java
-client.evaluations().redTeam().ruleSuggestions().get(
-    "workflow_id",
-    "suggestion_id",
-    GetRuleSuggestionsRequest
+client.evaluations().promptSets().mutations();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.promptSets.delete(promptSetId)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Delete a tenant-specific prompt set.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().promptSets().delete(
+    "prompt_set_id",
+    DeletePromptSetsRequest
         .builder()
         .build()
 );
@@ -8149,7 +8473,137 @@ client.evaluations().redTeam().ruleSuggestions().get(
 <dl>
 <dd>
 
-**workflowId:** `String` — The source red team evaluation's workflow identifier
+**promptSetId:** `String` — The prompt set identifier
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.promptSets.csv(promptSetId) -> InputStream</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Export a prompt set as CSV.
+
+Exports a built-in or tenant-specific prompt set as CSV with columns:
+prompt_id, system_prompt, user_prompt, technique_ids.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().promptSets().csv(
+    "prompt_set_id",
+    CsvPromptSetsRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**promptSetId:** `String` — The prompt set identifier
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Evaluations RedTeam Objectives
+<details><summary><code>client.evaluations.redTeam.objectives.list() -> SyncPagingIterable&amp;lt;ApeObjective&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+List the red team evaluation objectives available to the tenant.
+
+The first page is prefixed with the built-in HLO catalog (read-only,
+`HLO.NN` IDs); subsequent pages contain only the tenant's custom
+objectives (UUID IDs). The list is cursor-paginated.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeam().objectives().list(
+    ListObjectivesRequest
+        .builder()
+        .limit(50)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**limit:** `Optional<Integer>` — Limit the number of items returned
     
 </dd>
 </dl>
@@ -8157,7 +8611,914 @@ client.evaluations().redTeam().ruleSuggestions().get(
 <dl>
 <dd>
 
-**suggestionId:** `String` — The rule suggestion run identifier
+**cursor:** `Optional<String>` — Cursor for pagination, used to navigate through pages of results
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeam.objectives.create(request) -> ApeObjective</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Create a tenant custom objective. Custom objectives flow through the
+same attacker/judge pipeline as the built-in HLO catalog and are
+referenced by their UUID in `objective_ids` on a config preset or a
+start request.
+
+`objective_name`, `objective_description`, and the optional
+`attacker_guidance` are sanitized server-side (NFKC normalization plus
+a strict character whitelist). A per-tenant cap applies; exceeding it
+returns 409.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeam().objectives().create(
+    CreateCustomObjectiveRequest
+        .builder()
+        .objectiveName("objective_name")
+        .objectiveDescription("objective_description")
+        .defaultSeverity(HighestSeverity.CRITICAL)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**objectiveName:** `String` — Human-readable name for the custom objective.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**objectiveDescription:** `String` 
+
+HLO-style harm definition for the objective. Recommended format:
+`Induce the model to [harmful behavior] in a context where
+[precondition], without [missing safeguard].`
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**attackerGuidance:** `Optional<String>` 
+
+Optional objective-scoped attacker guidance used to stage reusable
+scenario or user-state preconditions for this custom objective.
+Rendered inline with this objective in attacker prompts. Sanitized
+server-side using the same rules as run/config attacker guidance.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**defaultSeverity:** `HighestSeverity` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeam.objectives.get(objectiveId) -> ApeObjective</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Return a single objective by ID. `HLO.NN` IDs return a built-in
+objective; UUIDs return one of the tenant's custom objectives.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeam().objectives().get(
+    "objective_id",
+    GetObjectivesRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**objectiveId:** `String` — The objective identifier (`HLO.NN` built-in or custom UUID)
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeam.objectives.delete(objectiveId)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Hard-delete a tenant custom objective. Past workflow runs that
+referenced this objective are unaffected: the resolved objective is
+snapshotted into the result row at start time.
+
+Built-in `HLO.NN` objectives are read-only: a DELETE against one
+returns 409.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeam().objectives().delete(
+    "objective_id",
+    DeleteObjectivesRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**objectiveId:** `String` — The custom objective UUID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeam.objectives.update(objectiveId, request) -> ApeObjective</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Partially update a tenant custom objective. Omitted fields are left
+unchanged; an explicit `""` clears `attacker_guidance`.
+
+Built-in `HLO.NN` objectives are read-only: a PATCH against one returns
+409. Use `severity_mapping` on a config or start request to tune a
+built-in's effective severity instead.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeam().objectives().update(
+    "objective_id",
+    UpdateCustomObjectiveRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**objectiveId:** `String` — The custom objective UUID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**objectiveName:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**objectiveDescription:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**attackerGuidance:** `Optional<String>` — Optional objective-scoped attacker guidance. Send `""` to clear.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**defaultSeverity:** `Optional<HighestSeverity>` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Evaluations RedTeam Configs
+<details><summary><code>client.evaluations.redTeam.configs.list() -> SyncPagingIterable&amp;lt;RedTeamConfigSummary&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+List all red team config presets for the tenant.
+
+Each config is a reusable bundle of preset-able workflow settings (target model,
+target system prompt, objective IDs, severity mapping, prompt set, project, tuning
+knobs). Configs are referenced from the start endpoints via `config_id`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeam().configs().list(
+    ListConfigsRequest
+        .builder()
+        .limit(50)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**limit:** `Optional<Integer>` — Limit the number of items returned
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `Optional<String>` — Cursor for pagination, used to navigate through pages of results
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeam.configs.create(request) -> RedTeamConfig</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Create a new red team config preset for the tenant.
+
+A config may hold any subset of the preset-able workflow settings. The
+server validates that any supplied `prompt_set_id` exists (built-in or tenant prompt set) and that any
+supplied `hl_project_id` (UUID or alias) names an existing project; an alias
+is stored as the canonical project UUID.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeam().configs().create(
+    CreateRedTeamConfigRequest
+        .builder()
+        .name("name")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `String` — Human-readable name; must be unique per tenant
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**targetModel:** `Optional<String>` 
+
+Target model identifier. Validated against the live servable-model
+catalog; an unknown or unsupported model returns 422 and an
+unavailable catalog returns 503.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**targetSystemPrompt:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**objectiveIds:** `Optional<List<String>>` 
+
+Custom objective UUIDs to evaluate in addition to the built-in HLO
+catalog. Built-in `HLO.*` objectives are always included; up to 10
+additional custom UUIDs may be supplied. `HLO.*` entries are ignored.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**severityMapping:** `Optional<Map<String, HighestSeverity>>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**executionStrategyType:** `Optional<CreateRedTeamConfigRequestExecutionStrategyType>` 
+
+Execution strategy type. When set to `STATIC_PROMPT_SET`,
+`prompt_set_id` is required (on this request, or pre-existing
+on the config for PATCH). The server returns 422 otherwise.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**nRandomTechniques:** `Optional<Integer>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**maxTurns:** `Optional<Integer>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**promptSetId:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sessionsPerTechnique:** `Optional<Integer>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**hlProjectId:** `Optional<String>` 
+
+HiddenLayer project UUID or alias. Aliases are stored as the canonical
+project UUID.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**attackerGuidance:** `Optional<String>` 
+
+Optional intent-only natural-language text to focus the attacker LLM
+within the configured APE objectives. Sanitized server-side (length
+cap + strict character whitelist after NFKC normalization). See
+`RedTeamConfig.attacker_guidance` for full semantics.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeam.configs.get(configId) -> RedTeamConfig</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Return a single red team config by ID.
+
+Includes the staleness signals `prompt_set_status` and `hl_project_status`,
+which show whether the referenced prompt set or project was deleted.
+`hl_project_status` is `unknown` when the project service is unavailable.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeam().configs().get(
+    "config_id",
+    GetConfigsRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**configId:** `String` — The config identifier
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeam.configs.delete(configId)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Delete a red team config by ID. Past workflow runs that referenced this config
+are unaffected because the resolved settings are snapshotted into the result row
+at start time.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeam().configs().delete(
+    "config_id",
+    DeleteConfigsRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**configId:** `String` — The config identifier
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeam.configs.update(configId, request) -> RedTeamConfig</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Partially update an existing red team config.
+
+Omitted fields are left unchanged.
+
+To clear a field that supports an empty value, send the explicit empty value
+for the type (`""` for strings, `[]` for arrays, `{}` for maps). The reference
+fields `prompt_set_id` and `hl_project_id` have no empty value: to clear one,
+delete the config and create it again.
+
+Cross-reference fields (`prompt_set_id`, `hl_project_id`) are re-validated
+whenever they are present in the request body with a non-empty value.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeam().configs().update(
+    "config_id",
+    UpdateRedTeamConfigRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**configId:** `String` — The config identifier
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**targetModel:** `Optional<String>` 
+
+Target model identifier. Validated against the live servable-model
+catalog; an unknown or unsupported model returns 422 and an
+unavailable catalog returns 503.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**targetSystemPrompt:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**objectiveIds:** `Optional<List<String>>` 
+
+Custom objective UUIDs to evaluate in addition to the built-in HLO
+catalog. Send `[]` to clear. Built-in `HLO.*` objectives are always
+included; up to 10 additional custom UUIDs may be supplied.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**severityMapping:** `Optional<Map<String, HighestSeverity>>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**executionStrategyType:** `Optional<UpdateRedTeamConfigRequestExecutionStrategyType>` 
+
+Execution strategy type. When set to `STATIC_PROMPT_SET`,
+`prompt_set_id` is required (on this request, or pre-existing
+on the config for PATCH). The server returns 422 otherwise.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**nRandomTechniques:** `Optional<Integer>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**maxTurns:** `Optional<Integer>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**promptSetId:** `Optional<String>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sessionsPerTechnique:** `Optional<Integer>` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**hlProjectId:** `Optional<String>` — HiddenLayer project UUID or alias.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**attackerGuidance:** `Optional<String>` 
+
+Optional intent-only natural-language text to focus the attacker LLM
+within the configured APE objectives. Send `""` to clear. Sanitized
+server-side (length cap + strict character whitelist after NFKC
+normalization). See `RedTeamConfig.attacker_guidance` for full
+semantics.
     
 </dd>
 </dl>

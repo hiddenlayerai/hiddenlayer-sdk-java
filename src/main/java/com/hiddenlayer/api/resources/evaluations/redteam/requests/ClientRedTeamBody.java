@@ -239,7 +239,7 @@ public final class ClientRedTeamBody {
     }
 
     /**
-     * @return Prompt set UUID (built-in catalog or tenant DB)
+     * @return Prompt set UUID (built-in or tenant prompt set)
      */
     @JsonProperty("prompt_set_id")
     public Optional<String> getPromptSetId() {
@@ -462,7 +462,7 @@ public final class ClientRedTeamBody {
         _FinalStage hlProjectId(String hlProjectId);
 
         /**
-         * <p>Prompt set UUID (built-in catalog or tenant DB)</p>
+         * <p>Prompt set UUID (built-in or tenant prompt set)</p>
          */
         _FinalStage promptSetId(Optional<String> promptSetId);
 
@@ -630,7 +630,7 @@ public final class ClientRedTeamBody {
         }
 
         /**
-         * <p>Prompt set UUID (built-in catalog or tenant DB)</p>
+         * <p>Prompt set UUID (built-in or tenant prompt set)</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -640,7 +640,7 @@ public final class ClientRedTeamBody {
         }
 
         /**
-         * <p>Prompt set UUID (built-in catalog or tenant DB)</p>
+         * <p>Prompt set UUID (built-in or tenant prompt set)</p>
          */
         @java.lang.Override
         @JsonSetter(value = "prompt_set_id", nulls = Nulls.SKIP)

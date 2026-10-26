@@ -11,22 +11,27 @@ import com.hiddenlayer.api.core.HiddenLayerException;
 import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
+import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
+import com.hiddenlayer.api.core.ResponseBodyInputStream;
 import com.hiddenlayer.api.core.RetryInterceptor;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.errors.BadRequestError;
 import com.hiddenlayer.api.errors.ForbiddenError;
 import com.hiddenlayer.api.errors.InternalServerError;
 import com.hiddenlayer.api.errors.NotFoundError;
+import com.hiddenlayer.api.errors.ServiceUnavailableError;
 import com.hiddenlayer.api.errors.UnauthorizedError;
 import com.hiddenlayer.api.errors.UnprocessableEntityError;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.ClientRedTeamBody;
+import com.hiddenlayer.api.resources.evaluations.redteam.requests.CsvRedTeamRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.DeleteRedTeamRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.ListRedTeamRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.RetrieveEvaluationResultsRedTeamRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.RetrieveNextActionRedTeamRequest;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.RetrieveStatusRedTeamRequest;
+import com.hiddenlayer.api.resources.evaluations.redteam.requests.StartRedTeamBody;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.SubmitTargetResponseBody;
 import com.hiddenlayer.api.resources.evaluations.redteam.requests.TerminateRedTeamRequest;
 import com.hiddenlayer.api.types.NextActionResponse;
@@ -34,9 +39,11 @@ import com.hiddenlayer.api.types.RedTeamListResultsResponse;
 import com.hiddenlayer.api.types.RedTeamResultItem;
 import com.hiddenlayer.api.types.StartWorkflowResponse;
 import com.hiddenlayer.api.types.SubmitTargetResponseResult;
+import com.hiddenlayer.api.types.TargetModelResponse;
 import com.hiddenlayer.api.types.WorkflowResultResponse;
 import com.hiddenlayer.api.types.WorkflowStatusResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import okhttp3.Headers;
@@ -52,6 +59,81 @@ public class RawRedTeamClient {
 
     public RawRedTeamClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Returns the list of available target models for red team evaluations.</p>
+     */
+    public HiddenLayerHttpResponse<TargetModelResponse> targetModels() {
+        return targetModels(null);
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Returns the list of available target models for red team evaluations.</p>
+     */
+    public HiddenLayerHttpResponse<TargetModelResponse> targetModels(RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("evaluations/v1/red-team/target-models");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        if (requestOptions != null && requestOptions.getMaxRetries().isPresent()) {
+            okhttpRequest = okhttpRequest
+                    .newBuilder()
+                    .tag(
+                            RetryInterceptor.MaxRetriesOverride.class,
+                            new RetryInterceptor.MaxRetriesOverride(
+                                    requestOptions.getMaxRetries().get()))
+                    .build();
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            if (response.isSuccessful()) {
+                return new HiddenLayerHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TargetModelResponse.class), response);
+            }
+            try {
+                switch (response.code()) {
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 403:
+                        throw new ForbiddenError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 500:
+                        throw new InternalServerError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+            throw new HiddenLayerApiException(
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
+        } catch (JsonProcessingException e) {
+            throw new HiddenLayerException("Failed to deserialize response: " + e.getMessage(), e);
+        } catch (IOException e) {
+            throw new HiddenLayerException("Network error executing HTTP request", e);
+        }
     }
 
     /**
@@ -327,7 +409,7 @@ public class RawRedTeamClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("evaluations/v1/red-team")
-                .addPathSegment(workflowId)
+                .addPathSegment(PathSegments.validate(workflowId))
                 .addPathSegments("status");
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
@@ -454,7 +536,7 @@ public class RawRedTeamClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("evaluations/v1/red-team")
-                .addPathSegment(workflowId)
+                .addPathSegment(PathSegments.validate(workflowId))
                 .addPathSegments("next-action");
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
@@ -537,7 +619,7 @@ public class RawRedTeamClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("evaluations/v1/red-team")
-                .addPathSegment(workflowId)
+                .addPathSegment(PathSegments.validate(workflowId))
                 .addPathSegments("target-response");
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
@@ -649,7 +731,7 @@ public class RawRedTeamClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("evaluations/v1/red-team")
-                .addPathSegment(workflowId);
+                .addPathSegment(PathSegments.validate(workflowId));
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
@@ -743,7 +825,7 @@ public class RawRedTeamClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("evaluations/v1/red-team")
-                .addPathSegment(workflowId);
+                .addPathSegment(PathSegments.validate(workflowId));
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
@@ -838,7 +920,7 @@ public class RawRedTeamClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("evaluations/v1/jobs")
-                .addPathSegment(workflowId)
+                .addPathSegment(PathSegments.validate(workflowId))
                 .addPathSegments("termination");
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
@@ -872,6 +954,189 @@ public class RawRedTeamClient {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
                 return new HiddenLayerHttpResponse<>(null, response);
+            }
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            try {
+                switch (response.code()) {
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 403:
+                        throw new ForbiddenError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 404:
+                        throw new NotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 422:
+                        throw new UnprocessableEntityError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+            throw new HiddenLayerApiException(
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
+        } catch (JsonProcessingException e) {
+            throw new HiddenLayerException("Failed to deserialize response: " + e.getMessage(), e);
+        } catch (IOException e) {
+            throw new HiddenLayerException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Start a new simulated red team workflow with a built-in target model.</p>
+     */
+    public HiddenLayerHttpResponse<StartWorkflowResponse> simulated(StartRedTeamBody request) {
+        return simulated(request, null);
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Start a new simulated red team workflow with a built-in target model.</p>
+     */
+    public HiddenLayerHttpResponse<StartWorkflowResponse> simulated(
+            StartRedTeamBody request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("evaluations/v1/red-team/simulated");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        RequestBody body;
+        try {
+            body = RequestBody.create(
+                    ObjectMappers.JSON_MAPPER.writeValueAsBytes(BodyProperties.merge(
+                            request, requestOptions != null ? requestOptions.getBodyProperties() : null)),
+                    MediaTypes.APPLICATION_JSON);
+        } catch (JsonProcessingException e) {
+            throw new HiddenLayerException("Failed to serialize request", e);
+        }
+        Request okhttpRequest = new Request.Builder()
+                .url(httpUrl.build())
+                .method("POST", body)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        if (requestOptions != null && requestOptions.getMaxRetries().isPresent()) {
+            okhttpRequest = okhttpRequest
+                    .newBuilder()
+                    .tag(
+                            RetryInterceptor.MaxRetriesOverride.class,
+                            new RetryInterceptor.MaxRetriesOverride(
+                                    requestOptions.getMaxRetries().get()))
+                    .build();
+        }
+        try (Response response = client.newCall(okhttpRequest).execute()) {
+            ResponseBody responseBody = response.body();
+            String responseBodyString = responseBody != null ? responseBody.string() : "{}";
+            if (response.isSuccessful()) {
+                return new HiddenLayerHttpResponse<>(
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, StartWorkflowResponse.class), response);
+            }
+            try {
+                switch (response.code()) {
+                    case 400:
+                        throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 401:
+                        throw new UnauthorizedError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 403:
+                        throw new ForbiddenError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 422:
+                        throw new UnprocessableEntityError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 503:
+                        throw new ServiceUnavailableError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                }
+            } catch (JsonProcessingException ignored) {
+                // unable to map error response, throwing generic error
+            }
+            Object errorBody = ObjectMappers.parseErrorBody(responseBodyString);
+            throw new HiddenLayerApiException(
+                    "Error with status code " + response.code(), response.code(), errorBody, response);
+        } catch (JsonProcessingException e) {
+            throw new HiddenLayerException("Failed to deserialize response: " + e.getMessage(), e);
+        } catch (IOException e) {
+            throw new HiddenLayerException("Network error executing HTTP request", e);
+        }
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
+     */
+    public HiddenLayerHttpResponse<InputStream> csv(String workflowId) {
+        return csv(workflowId, CsvRedTeamRequest.builder().build());
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
+     */
+    public HiddenLayerHttpResponse<InputStream> csv(String workflowId, RequestOptions requestOptions) {
+        return csv(workflowId, CsvRedTeamRequest.builder().build(), requestOptions);
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
+     */
+    public HiddenLayerHttpResponse<InputStream> csv(String workflowId, CsvRedTeamRequest request) {
+        return csv(workflowId, request, null);
+    }
+
+    /**
+     * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+     * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
+     */
+    public HiddenLayerHttpResponse<InputStream> csv(
+            String workflowId, CsvRedTeamRequest request, RequestOptions requestOptions) {
+        HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
+                .newBuilder()
+                .addPathSegments("evaluations/v1/red-team")
+                .addPathSegment(PathSegments.validate(workflowId))
+                .addPathSegments("csv");
+        if (requestOptions != null) {
+            requestOptions.getQueryParameters().forEach((_key, _value) -> {
+                httpUrl.addQueryParameter(_key, _value);
+            });
+        }
+        Request.Builder _requestBuilder = new Request.Builder()
+                .url(httpUrl.build())
+                .method("GET", null)
+                .headers(Headers.of(clientOptions.headers(requestOptions)))
+                .addHeader("Accept", "application/json");
+        Request okhttpRequest = _requestBuilder.build();
+        OkHttpClient client = clientOptions.httpClient();
+        if (requestOptions != null && requestOptions.getTimeout().isPresent()) {
+            client = clientOptions.httpClientWithTimeout(requestOptions);
+        }
+        if (requestOptions != null && requestOptions.getMaxRetries().isPresent()) {
+            okhttpRequest = okhttpRequest
+                    .newBuilder()
+                    .tag(
+                            RetryInterceptor.MaxRetriesOverride.class,
+                            new RetryInterceptor.MaxRetriesOverride(
+                                    requestOptions.getMaxRetries().get()))
+                    .build();
+        }
+        try {
+            Response response = client.newCall(okhttpRequest).execute();
+            ResponseBody responseBody = response.body();
+            if (response.isSuccessful()) {
+                return new HiddenLayerHttpResponse<>(new ResponseBodyInputStream(response), response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {

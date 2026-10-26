@@ -10,6 +10,7 @@ import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
 import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
+import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -162,7 +163,7 @@ public class AsyncRawJobsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("scan/v3/results")
-                .addPathSegment(scanId);
+                .addPathSegment(PathSegments.validate(scanId));
         if (request.getHasDetections().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "has_detections", request.getHasDetections().get(), false);

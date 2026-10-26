@@ -81,7 +81,7 @@ public final class NextActionResponse {
     }
 
     /**
-     * @return Type of action (e.g., &quot;attack&quot;, &quot;complete&quot;)
+     * @return Type of action: <code>attack_task</code>, <code>complete</code> or <code>failed</code>
      */
     @JsonProperty("action_type")
     public Optional<String> getActionType() {
@@ -206,7 +206,7 @@ public final class NextActionResponse {
         _FinalStage isProcessing(Boolean isProcessing);
 
         /**
-         * <p>Type of action (e.g., &quot;attack&quot;, &quot;complete&quot;)</p>
+         * <p>Type of action: <code>attack_task</code>, <code>complete</code> or <code>failed</code></p>
          */
         _FinalStage actionType(Optional<String> actionType);
 
@@ -425,7 +425,7 @@ public final class NextActionResponse {
         }
 
         /**
-         * <p>Type of action (e.g., &quot;attack&quot;, &quot;complete&quot;)</p>
+         * <p>Type of action: <code>attack_task</code>, <code>complete</code> or <code>failed</code></p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -435,7 +435,7 @@ public final class NextActionResponse {
         }
 
         /**
-         * <p>Type of action (e.g., &quot;attack&quot;, &quot;complete&quot;)</p>
+         * <p>Type of action: <code>attack_task</code>, <code>complete</code> or <code>failed</code></p>
          */
         @java.lang.Override
         @JsonSetter(value = "action_type", nulls = Nulls.SKIP)
