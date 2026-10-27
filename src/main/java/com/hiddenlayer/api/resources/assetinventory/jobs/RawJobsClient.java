@@ -17,7 +17,7 @@ import com.hiddenlayer.api.errors.ForbiddenError;
 import com.hiddenlayer.api.errors.UnauthorizedError;
 import com.hiddenlayer.api.errors.UnprocessableEntityError;
 import com.hiddenlayer.api.resources.assetinventory.jobs.requests.BulkCustomTagJobRequestV2;
-import com.hiddenlayer.api.resources.assetinventory.jobs.types.CustomTagsJobsResponse;
+import com.hiddenlayer.api.types.SyncJob;
 import java.io.IOException;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
@@ -41,7 +41,7 @@ public class RawJobsClient {
      * The request is processed synchronously: the response is the finished <code>Job</code>, always in a terminal state (<code>COMPLETED</code> or <code>FAILED</code>), with <code>matched_count</code>, <code>succeeded_count</code>, <code>failed_count</code>, and per-asset <code>failures[]</code> filled in. A filter that matches no assets returns <code>COMPLETED</code> with <code>matched_count: 0</code>. Jobs are not stored, so there is no job ID to poll — the response is the only report of the outcome.
      * A job matches at most 10,000 assets; a filter that would match more is rejected with <code>422 Unprocessable Entity</code>. Narrow the filter and retry.</p>
      */
-    public HiddenLayerHttpResponse<CustomTagsJobsResponse> customTags(BulkCustomTagJobRequestV2 request) {
+    public HiddenLayerHttpResponse<SyncJob> customTags(BulkCustomTagJobRequestV2 request) {
         return customTags(request, null);
     }
 
@@ -52,7 +52,7 @@ public class RawJobsClient {
      * The request is processed synchronously: the response is the finished <code>Job</code>, always in a terminal state (<code>COMPLETED</code> or <code>FAILED</code>), with <code>matched_count</code>, <code>succeeded_count</code>, <code>failed_count</code>, and per-asset <code>failures[]</code> filled in. A filter that matches no assets returns <code>COMPLETED</code> with <code>matched_count: 0</code>. Jobs are not stored, so there is no job ID to poll — the response is the only report of the outcome.
      * A job matches at most 10,000 assets; a filter that would match more is rejected with <code>422 Unprocessable Entity</code>. Narrow the filter and retry.</p>
      */
-    public HiddenLayerHttpResponse<CustomTagsJobsResponse> customTags(
+    public HiddenLayerHttpResponse<SyncJob> customTags(
             BulkCustomTagJobRequestV2 request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -96,8 +96,7 @@ public class RawJobsClient {
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new HiddenLayerHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CustomTagsJobsResponse.class),
-                        response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SyncJob.class), response);
             }
             try {
                 switch (response.code()) {

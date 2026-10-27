@@ -7,7 +7,7 @@ import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.assetinventory.jobs.requests.BulkCustomTagJobRequestV2;
-import com.hiddenlayer.api.resources.assetinventory.jobs.types.CustomTagsJobsResponse;
+import com.hiddenlayer.api.types.SyncJob;
 import java.util.concurrent.CompletableFuture;
 
 public class AsyncJobsClient {
@@ -34,10 +34,9 @@ public class AsyncJobsClient {
      * The request is processed synchronously: the response is the finished <code>Job</code>, always in a terminal state (<code>COMPLETED</code> or <code>FAILED</code>), with <code>matched_count</code>, <code>succeeded_count</code>, <code>failed_count</code>, and per-asset <code>failures[]</code> filled in. A filter that matches no assets returns <code>COMPLETED</code> with <code>matched_count: 0</code>. Jobs are not stored, so there is no job ID to poll — the response is the only report of the outcome.
      * A job matches at most 10,000 assets; a filter that would match more is rejected with <code>422 Unprocessable Entity</code>. Narrow the filter and retry.</p>
      */
-    public CompletableFuture<CustomTagsJobsResponse> customTags(BulkCustomTagJobRequestV2 request) {
-        CompletableFuture<HiddenLayerHttpResponse<CustomTagsJobsResponse>> rawFuture =
-                this.rawClient.customTags(request);
-        CompletableFuture<CustomTagsJobsResponse> future = rawFuture.thenApply(response -> response.body());
+    public CompletableFuture<SyncJob> customTags(BulkCustomTagJobRequestV2 request) {
+        CompletableFuture<HiddenLayerHttpResponse<SyncJob>> rawFuture = this.rawClient.customTags(request);
+        CompletableFuture<SyncJob> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
                 rawFuture.cancel(true);
@@ -53,11 +52,10 @@ public class AsyncJobsClient {
      * The request is processed synchronously: the response is the finished <code>Job</code>, always in a terminal state (<code>COMPLETED</code> or <code>FAILED</code>), with <code>matched_count</code>, <code>succeeded_count</code>, <code>failed_count</code>, and per-asset <code>failures[]</code> filled in. A filter that matches no assets returns <code>COMPLETED</code> with <code>matched_count: 0</code>. Jobs are not stored, so there is no job ID to poll — the response is the only report of the outcome.
      * A job matches at most 10,000 assets; a filter that would match more is rejected with <code>422 Unprocessable Entity</code>. Narrow the filter and retry.</p>
      */
-    public CompletableFuture<CustomTagsJobsResponse> customTags(
-            BulkCustomTagJobRequestV2 request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<CustomTagsJobsResponse>> rawFuture =
+    public CompletableFuture<SyncJob> customTags(BulkCustomTagJobRequestV2 request, RequestOptions requestOptions) {
+        CompletableFuture<HiddenLayerHttpResponse<SyncJob>> rawFuture =
                 this.rawClient.customTags(request, requestOptions);
-        CompletableFuture<CustomTagsJobsResponse> future = rawFuture.thenApply(response -> response.body());
+        CompletableFuture<SyncJob> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
                 rawFuture.cancel(true);

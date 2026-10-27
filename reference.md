@@ -5232,7 +5232,7 @@ URL-encoded if it contains special characters, including `/`.
 </details>
 
 ## AssetInventory Jobs
-<details><summary><code>client.assetInventory.jobs.customTags(request) -> CustomTagsJobsResponse</code></summary>
+<details><summary><code>client.assetInventory.jobs.customTags(request) -> SyncJob</code></summary>
 <dl>
 <dd>
 

@@ -6,7 +6,7 @@ package com.hiddenlayer.api.resources.assetinventory.jobs;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.assetinventory.jobs.requests.BulkCustomTagJobRequestV2;
-import com.hiddenlayer.api.resources.assetinventory.jobs.types.CustomTagsJobsResponse;
+import com.hiddenlayer.api.types.SyncJob;
 
 public class JobsClient {
     protected final ClientOptions clientOptions;
@@ -32,7 +32,7 @@ public class JobsClient {
      * The request is processed synchronously: the response is the finished <code>Job</code>, always in a terminal state (<code>COMPLETED</code> or <code>FAILED</code>), with <code>matched_count</code>, <code>succeeded_count</code>, <code>failed_count</code>, and per-asset <code>failures[]</code> filled in. A filter that matches no assets returns <code>COMPLETED</code> with <code>matched_count: 0</code>. Jobs are not stored, so there is no job ID to poll — the response is the only report of the outcome.
      * A job matches at most 10,000 assets; a filter that would match more is rejected with <code>422 Unprocessable Entity</code>. Narrow the filter and retry.</p>
      */
-    public CustomTagsJobsResponse customTags(BulkCustomTagJobRequestV2 request) {
+    public SyncJob customTags(BulkCustomTagJobRequestV2 request) {
         return this.rawClient.customTags(request).body();
     }
 
@@ -43,7 +43,7 @@ public class JobsClient {
      * The request is processed synchronously: the response is the finished <code>Job</code>, always in a terminal state (<code>COMPLETED</code> or <code>FAILED</code>), with <code>matched_count</code>, <code>succeeded_count</code>, <code>failed_count</code>, and per-asset <code>failures[]</code> filled in. A filter that matches no assets returns <code>COMPLETED</code> with <code>matched_count: 0</code>. Jobs are not stored, so there is no job ID to poll — the response is the only report of the outcome.
      * A job matches at most 10,000 assets; a filter that would match more is rejected with <code>422 Unprocessable Entity</code>. Narrow the filter and retry.</p>
      */
-    public CustomTagsJobsResponse customTags(BulkCustomTagJobRequestV2 request, RequestOptions requestOptions) {
+    public SyncJob customTags(BulkCustomTagJobRequestV2 request, RequestOptions requestOptions) {
         return this.rawClient.customTags(request, requestOptions).body();
     }
 }
