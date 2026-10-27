@@ -7,6 +7,8 @@ import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.Suppliers;
 import com.hiddenlayer.api.resources.evaluations.promptsets.PromptSetsClient;
 import com.hiddenlayer.api.resources.evaluations.redteam.RedTeamClient;
+import com.hiddenlayer.api.resources.evaluations.systempromptanalysis.SystemPromptAnalysisClient;
+import com.hiddenlayer.api.resources.evaluations.threatmodeling.ThreatModelingClient;
 import java.util.function.Supplier;
 
 public class EvaluationsClient {
@@ -16,10 +18,16 @@ public class EvaluationsClient {
 
     protected final Supplier<PromptSetsClient> promptSetsClient;
 
+    protected final Supplier<SystemPromptAnalysisClient> systemPromptAnalysisClient;
+
+    protected final Supplier<ThreatModelingClient> threatModelingClient;
+
     public EvaluationsClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.redTeamClient = Suppliers.memoize(() -> new RedTeamClient(clientOptions));
         this.promptSetsClient = Suppliers.memoize(() -> new PromptSetsClient(clientOptions));
+        this.systemPromptAnalysisClient = Suppliers.memoize(() -> new SystemPromptAnalysisClient(clientOptions));
+        this.threatModelingClient = Suppliers.memoize(() -> new ThreatModelingClient(clientOptions));
     }
 
     public RedTeamClient redTeam() {
@@ -28,5 +36,13 @@ public class EvaluationsClient {
 
     public PromptSetsClient promptSets() {
         return this.promptSetsClient.get();
+    }
+
+    public SystemPromptAnalysisClient systemPromptAnalysis() {
+        return this.systemPromptAnalysisClient.get();
+    }
+
+    public ThreatModelingClient threatModeling() {
+        return this.threatModelingClient.get();
     }
 }

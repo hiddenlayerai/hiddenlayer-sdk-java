@@ -6,18 +6,18 @@ package com.hiddenlayer.api.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public final class SearchResultMatchConfidence {
-    public static final SearchResultMatchConfidence LOW = new SearchResultMatchConfidence(Value.LOW, "LOW");
+public final class ImpactLevel {
+    public static final ImpactLevel LOW = new ImpactLevel(Value.LOW, "LOW");
 
-    public static final SearchResultMatchConfidence HIGH = new SearchResultMatchConfidence(Value.HIGH, "HIGH");
+    public static final ImpactLevel HIGH = new ImpactLevel(Value.HIGH, "HIGH");
 
-    public static final SearchResultMatchConfidence MEDIUM = new SearchResultMatchConfidence(Value.MEDIUM, "MEDIUM");
+    public static final ImpactLevel MEDIUM = new ImpactLevel(Value.MEDIUM, "MEDIUM");
 
     private final Value value;
 
     private final String string;
 
-    SearchResultMatchConfidence(Value value, String string) {
+    ImpactLevel(Value value, String string) {
         this.value = value;
         this.string = string;
     }
@@ -34,9 +34,7 @@ public final class SearchResultMatchConfidence {
 
     @java.lang.Override
     public boolean equals(Object other) {
-        return (this == other)
-                || (other instanceof SearchResultMatchConfidence
-                        && this.string.equals(((SearchResultMatchConfidence) other).string));
+        return (this == other) || (other instanceof ImpactLevel && this.string.equals(((ImpactLevel) other).string));
     }
 
     @java.lang.Override
@@ -59,7 +57,7 @@ public final class SearchResultMatchConfidence {
     }
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static SearchResultMatchConfidence valueOf(String value) {
+    public static ImpactLevel valueOf(String value) {
         switch (value) {
             case "LOW":
                 return LOW;
@@ -68,7 +66,7 @@ public final class SearchResultMatchConfidence {
             case "MEDIUM":
                 return MEDIUM;
             default:
-                return new SearchResultMatchConfidence(Value.UNKNOWN, value);
+                return new ImpactLevel(Value.UNKNOWN, value);
         }
     }
 

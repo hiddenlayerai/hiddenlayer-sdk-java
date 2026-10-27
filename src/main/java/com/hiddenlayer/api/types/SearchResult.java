@@ -50,7 +50,7 @@ public final class SearchResult implements IAiAssetSummary {
 
     private final Optional<SearchResultMatchType> matchType;
 
-    private final Optional<SearchResultMatchConfidence> matchConfidence;
+    private final Optional<ImpactLevel> matchConfidence;
 
     private final Map<String, Object> additionalProperties;
 
@@ -69,7 +69,7 @@ public final class SearchResult implements IAiAssetSummary {
             Optional<List<String>> highlights,
             Optional<Float> score,
             Optional<SearchResultMatchType> matchType,
-            Optional<SearchResultMatchConfidence> matchConfidence,
+            Optional<ImpactLevel> matchConfidence,
             Map<String, Object> additionalProperties) {
         this.id = id;
         this.name = name;
@@ -204,7 +204,7 @@ public final class SearchResult implements IAiAssetSummary {
     }
 
     @JsonProperty("match_confidence")
-    public Optional<SearchResultMatchConfidence> getMatchConfidence() {
+    public Optional<ImpactLevel> getMatchConfidence() {
         return matchConfidence;
     }
 
@@ -364,9 +364,9 @@ public final class SearchResult implements IAiAssetSummary {
 
         _FinalStage matchType(SearchResultMatchType matchType);
 
-        _FinalStage matchConfidence(Optional<SearchResultMatchConfidence> matchConfidence);
+        _FinalStage matchConfidence(Optional<ImpactLevel> matchConfidence);
 
-        _FinalStage matchConfidence(SearchResultMatchConfidence matchConfidence);
+        _FinalStage matchConfidence(ImpactLevel matchConfidence);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -393,7 +393,7 @@ public final class SearchResult implements IAiAssetSummary {
 
         private AssetType assetType;
 
-        private Optional<SearchResultMatchConfidence> matchConfidence = Optional.empty();
+        private Optional<ImpactLevel> matchConfidence = Optional.empty();
 
         private Optional<SearchResultMatchType> matchType = Optional.empty();
 
@@ -507,14 +507,14 @@ public final class SearchResult implements IAiAssetSummary {
         }
 
         @java.lang.Override
-        public _FinalStage matchConfidence(SearchResultMatchConfidence matchConfidence) {
+        public _FinalStage matchConfidence(ImpactLevel matchConfidence) {
             this.matchConfidence = Optional.ofNullable(matchConfidence);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "match_confidence", nulls = Nulls.SKIP)
-        public _FinalStage matchConfidence(Optional<SearchResultMatchConfidence> matchConfidence) {
+        public _FinalStage matchConfidence(Optional<ImpactLevel> matchConfidence) {
             this.matchConfidence = matchConfidence;
             return this;
         }

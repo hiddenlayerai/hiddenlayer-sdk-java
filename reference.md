@@ -8549,6 +8549,867 @@ client.evaluations().promptSets().csv(
 </dl>
 </details>
 
+## Evaluations SystemPromptAnalysis
+<details><summary><code>client.evaluations.systemPromptAnalysis.list() -> SyncPagingIterable&amp;lt;SystemPromptResultItem&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+List completed system prompt analysis results with filtering and bidirectional pagination.
+
+Results are ordered by completed_at DESC (newest first).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().systemPromptAnalysis().list(
+    ListSystemPromptAnalysisRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**targetModel:** `Optional<String>` — Filter by target model
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workflowType:** `Optional<String>` — Filter by workflow type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `Optional<String>` — Filter by workflow status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**startTimeFrom:** `Optional<OffsetDateTime>` — Filter for results started after this time
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**startTimeTo:** `Optional<OffsetDateTime>` — Filter for results started before this time
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Optional<Integer>` — Maximum number of results to return
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pageSize:** `Optional<Integer>` — Deprecated alias for `limit`. Use `limit` instead. Will be removed after SDK regen.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `Optional<String>` — Pagination cursor from previous response
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.systemPromptAnalysis.create(request) -> StartWorkflowResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Start a new system prompt analysis workflow.
+
+This immediately starts the workflow which auto-triggers question generation.
+Client should poll /status to check progress.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().systemPromptAnalysis().create(
+    StartSystemPromptWorkflowBody
+        .builder()
+        .name("name")
+        .systemPrompt("system_prompt")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `String` — Name for this analysis
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**systemPrompt:** `String` — The system prompt to analyze
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**numQuestions:** `Optional<Integer>` — Number of questions to generate
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.systemPromptAnalysis.status(workflowId) -> AnalysisStatus</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Get current status of analysis workflow (polling endpoint).
+
+This endpoint is designed to be polled by clients to track progress.
+Returns immediately with current state.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().systemPromptAnalysis().status(
+    "workflow_id",
+    StatusSystemPromptAnalysisRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workflowId:** `String` — The workflow identifier
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.systemPromptAnalysis.get(workflowId) -> AnalysisResult</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Get the final result of a completed analysis workflow.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().systemPromptAnalysis().get(
+    "workflow_id",
+    GetSystemPromptAnalysisRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workflowId:** `String` — The workflow identifier
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.systemPromptAnalysis.delete(workflowId)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Delete a system prompt analysis result from storage.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().systemPromptAnalysis().delete(
+    "workflow_id",
+    DeleteSystemPromptAnalysisRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workflowId:** `String` — The workflow identifier
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.systemPromptAnalysis.answers(workflowId, request) -> SubmitAnswersResult</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Submit answers to questions - triggers compile+validate.
+
+This endpoint accepts user answers and triggers the compile+validate
+child workflow. Returns immediately; client should poll /status for results.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().systemPromptAnalysis().answers(
+    "workflow_id",
+    SubmitAnswersBody
+        .builder()
+        .answers(
+            Arrays.asList(
+                QuestionAnswer
+                    .builder()
+                    .question("question")
+                    .answer("answer")
+                    .build()
+            )
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workflowId:** `String` — The workflow identifier
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**answers:** `List<QuestionAnswer>` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Evaluations ThreatModeling
+<details><summary><code>client.evaluations.threatModeling.list() -> SyncPagingIterable&amp;lt;ThreatModelingResultItem&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+List completed threat modeling results with filtering and bidirectional pagination.
+
+Results are ordered by completed_at DESC (newest first).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().threatModeling().list(
+    ListThreatModelingRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**targetModel:** `Optional<String>` — Filter by target model
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workflowType:** `Optional<String>` — Filter by workflow type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `Optional<String>` — Filter by workflow status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**startTimeFrom:** `Optional<OffsetDateTime>` — Filter for results started after this time
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**startTimeTo:** `Optional<OffsetDateTime>` — Filter for results started before this time
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Optional<Integer>` — Maximum number of results to return
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**pageSize:** `Optional<Integer>` — Deprecated alias for `limit`. Use `limit` instead. Will be removed after SDK regen.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `Optional<String>` — Pagination cursor from previous response
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.threatModeling.create(request) -> StartWorkflowResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Start a new threat modeling workflow.
+
+This immediately starts the workflow which auto-executes both analysis phases.
+Client should poll /status to check progress.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().threatModeling().create(
+    StartThreatModelingWorkflowBody
+        .builder()
+        .name("name")
+        .systems(
+            Arrays.asList(
+                ThreatModelingSystem
+                    .builder()
+                    .name("name")
+                    .description("description")
+                    .systemPrompt("system_prompt")
+                    .tools("tools")
+                    .model("model")
+                    .isInternetFacing(true)
+                    .isHandlingSensitiveData(true)
+                    .isUsingMemory(true)
+                    .isUsingMcp(true)
+                    .hasAuthentication(true)
+                    .hasRoleBasedAccessControl(true)
+                    .hasInputOutputValidation(true)
+                    .build()
+            )
+        )
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**name:** `String` — Name for this analysis
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**systems:** `List<ThreatModelingSystem>` — Systems to analyze
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.threatModeling.status(workflowId) -> ThreatModelingStatus</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Get current status of threat modeling workflow (polling endpoint).
+Returns immediately with current state.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().threatModeling().status(
+    "workflow_id",
+    StatusThreatModelingRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workflowId:** `String` — The workflow identifier
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.threatModeling.get(workflowId) -> ThreatModelingResult</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Get the final result of a completed threat modeling workflow.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().threatModeling().get(
+    "workflow_id",
+    GetThreatModelingRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workflowId:** `String` — The workflow identifier
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.threatModeling.delete(workflowId)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Delete a threat modeling result from storage.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().threatModeling().delete(
+    "workflow_id",
+    DeleteThreatModelingRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workflowId:** `String` — The workflow identifier
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Evaluations RedTeam Objectives
 <details><summary><code>client.evaluations.redTeam.objectives.list() -> SyncPagingIterable&amp;lt;ApeObjective&amp;gt;</code></summary>
 <dl>
