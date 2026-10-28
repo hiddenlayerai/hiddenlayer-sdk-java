@@ -9,16 +9,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = InteractionEvaluationDetection.Builder.class)
 public final class InteractionEvaluationDetection {
+    private final Optional<String> ruleId;
+
     private final String ruleName;
 
     private final InteractionEvaluationDetectionRiskLevel riskLevel;
@@ -26,12 +30,22 @@ public final class InteractionEvaluationDetection {
     private final Map<String, Object> additionalProperties;
 
     private InteractionEvaluationDetection(
+            Optional<String> ruleId,
             String ruleName,
             InteractionEvaluationDetectionRiskLevel riskLevel,
             Map<String, Object> additionalProperties) {
+        this.ruleId = ruleId;
         this.ruleName = ruleName;
         this.riskLevel = riskLevel;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return The unique identifier for the detection rule that produced this detection.
+     */
+    @JsonProperty("rule_id")
+    public Optional<String> getRuleId() {
+        return ruleId;
     }
 
     /**
@@ -62,12 +76,12 @@ public final class InteractionEvaluationDetection {
     }
 
     private boolean equalTo(InteractionEvaluationDetection other) {
-        return ruleName.equals(other.ruleName) && riskLevel.equals(other.riskLevel);
+        return ruleId.equals(other.ruleId) && ruleName.equals(other.ruleName) && riskLevel.equals(other.riskLevel);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.ruleName, this.riskLevel);
+        return Objects.hash(this.ruleId, this.ruleName, this.riskLevel);
     }
 
     @java.lang.Override
@@ -101,6 +115,13 @@ public final class InteractionEvaluationDetection {
         _FinalStage additionalProperty(String key, Object value);
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        /**
+         * <p>The unique identifier for the detection rule that produced this detection.</p>
+         */
+        _FinalStage ruleId(Optional<String> ruleId);
+
+        _FinalStage ruleId(String ruleId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -109,12 +130,15 @@ public final class InteractionEvaluationDetection {
 
         private InteractionEvaluationDetectionRiskLevel riskLevel;
 
+        private Optional<String> ruleId = Optional.empty();
+
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
         @java.lang.Override
         public Builder from(InteractionEvaluationDetection other) {
+            ruleId(other.getRuleId());
             ruleName(other.getRuleName());
             riskLevel(other.getRiskLevel());
             return this;
@@ -142,14 +166,36 @@ public final class InteractionEvaluationDetection {
             return this;
         }
 
+        /**
+         * <p>The unique identifier for the detection rule that produced this detection.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage ruleId(String ruleId) {
+            this.ruleId = Optional.ofNullable(ruleId);
+            return this;
+        }
+
+        /**
+         * <p>The unique identifier for the detection rule that produced this detection.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "rule_id", nulls = Nulls.SKIP)
+        public _FinalStage ruleId(Optional<String> ruleId) {
+            this.ruleId = ruleId;
+            return this;
+        }
+
         @java.lang.Override
         public InteractionEvaluationDetection build() {
-            return new InteractionEvaluationDetection(ruleName, riskLevel, additionalProperties);
+            return new InteractionEvaluationDetection(ruleId, ruleName, riskLevel, additionalProperties);
         }
 
         @JsonAnySetter
         private void putAdditionalPropertyFromJson(String key, Object value) {
-            if (key.equalsIgnoreCase("rule_name") || key.equalsIgnoreCase("risk_level")) {
+            if (key.equalsIgnoreCase("rule_id")
+                    || key.equalsIgnoreCase("rule_name")
+                    || key.equalsIgnoreCase("risk_level")) {
                 return;
             }
             this.additionalProperties.put(key, value);
