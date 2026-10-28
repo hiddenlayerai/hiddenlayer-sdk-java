@@ -82,7 +82,7 @@ public final class ListEntriesRequest {
     }
 
     /**
-     * @return Filter audit entries by role
+     * @return Filter audit entries by a role in <code>assigned_roles</code>
      */
     @JsonProperty("role")
     public Optional<String> getRole() {
@@ -106,7 +106,7 @@ public final class ListEntriesRequest {
     }
 
     /**
-     * @return Filter audit entries by actor_type
+     * @return Filter audit entries by actor_type. <code>CLIENT_CREDENTIAL</code> and <code>API_KEY</code> return the same entries; neither returns Static API Key actions.
      */
     @JsonProperty("actor_type")
     public Optional<ActorType> getActorType() {
@@ -243,7 +243,7 @@ public final class ListEntriesRequest {
         }
 
         /**
-         * <p>Filter audit entries by role</p>
+         * <p>Filter audit entries by a role in <code>assigned_roles</code></p>
          */
         @JsonSetter(value = "role", nulls = Nulls.SKIP)
         public Builder role(Optional<String> role) {
@@ -285,7 +285,7 @@ public final class ListEntriesRequest {
         }
 
         /**
-         * <p>Filter audit entries by actor_type</p>
+         * <p>Filter audit entries by actor_type. <code>CLIENT_CREDENTIAL</code> and <code>API_KEY</code> return the same entries; neither returns Static API Key actions.</p>
          */
         @JsonSetter(value = "actor_type", nulls = Nulls.SKIP)
         public Builder actorType(Optional<ActorType> actorType) {

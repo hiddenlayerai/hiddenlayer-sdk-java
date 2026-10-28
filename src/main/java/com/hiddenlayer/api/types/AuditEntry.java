@@ -152,7 +152,13 @@ public final class AuditEntry implements IAuditEntryBase {
     }
 
     /**
-     * @return Unique identifier for the actor
+     * @return ID of the actor, by <code>actor_type</code>:
+     * <ul>
+     * <li><code>USER</code>: the user's <code>id</code>.</li>
+     * <li><code>CLIENT_CREDENTIAL</code> and <code>API_KEY</code>: the API credential's <code>client_id</code>.</li>
+     * <li><code>STATIC_API_KEY</code>: the Static API Key's <code>id</code>, not a secret's <code>id</code>.</li>
+     * <li><code>SYSTEM</code>: an ID that HiddenLayer assigns to the process.</li>
+     * </ul>
      */
     @JsonProperty("actor_id")
     public String getActorId() {
@@ -168,7 +174,7 @@ public final class AuditEntry implements IAuditEntryBase {
     }
 
     /**
-     * @return Email address of the actor
+     * @return Email address of the actor. Empty unless <code>actor_type</code> is <code>USER</code>.
      */
     @JsonProperty("actor_email")
     public Optional<String> getActorEmail() {
@@ -176,7 +182,7 @@ public final class AuditEntry implements IAuditEntryBase {
     }
 
     /**
-     * @return Snapshot of the roles assigned to the actor at the time of the action
+     * @return Snapshot of the roles assigned to the actor at the time of the action. Empty unless <code>actor_type</code> is <code>USER</code>.
      */
     @JsonProperty("assigned_roles")
     public List<String> getAssignedRoles() {
@@ -192,7 +198,7 @@ public final class AuditEntry implements IAuditEntryBase {
     }
 
     /**
-     * @return Session ID
+     * @return ID of the user's login session. Empty unless <code>actor_type</code> is <code>USER</code>.
      */
     @JsonProperty("session_id")
     public Optional<String> getSessionId() {
@@ -288,7 +294,13 @@ public final class AuditEntry implements IAuditEntryBase {
 
     public interface ActorIdStage {
         /**
-         * <p>Unique identifier for the actor</p>
+         * <p>ID of the actor, by <code>actor_type</code>:</p>
+         * <ul>
+         * <li><code>USER</code>: the user's <code>id</code>.</li>
+         * <li><code>CLIENT_CREDENTIAL</code> and <code>API_KEY</code>: the API credential's <code>client_id</code>.</li>
+         * <li><code>STATIC_API_KEY</code>: the Static API Key's <code>id</code>, not a secret's <code>id</code>.</li>
+         * <li><code>SYSTEM</code>: an ID that HiddenLayer assigns to the process.</li>
+         * </ul>
          */
         _FinalStage actorId(@NotNull String actorId);
     }
@@ -331,14 +343,14 @@ public final class AuditEntry implements IAuditEntryBase {
         _FinalStage actorName(String actorName);
 
         /**
-         * <p>Email address of the actor</p>
+         * <p>Email address of the actor. Empty unless <code>actor_type</code> is <code>USER</code>.</p>
          */
         _FinalStage actorEmail(Optional<String> actorEmail);
 
         _FinalStage actorEmail(String actorEmail);
 
         /**
-         * <p>Snapshot of the roles assigned to the actor at the time of the action</p>
+         * <p>Snapshot of the roles assigned to the actor at the time of the action. Empty unless <code>actor_type</code> is <code>USER</code>.</p>
          */
         _FinalStage assignedRoles(List<String> assignedRoles);
 
@@ -354,7 +366,7 @@ public final class AuditEntry implements IAuditEntryBase {
         _FinalStage correlationId(String correlationId);
 
         /**
-         * <p>Session ID</p>
+         * <p>ID of the user's login session. Empty unless <code>actor_type</code> is <code>USER</code>.</p>
          */
         _FinalStage sessionId(Optional<String> sessionId);
 
@@ -469,7 +481,13 @@ public final class AuditEntry implements IAuditEntryBase {
         }
 
         /**
-         * <p>Unique identifier for the actor</p>
+         * <p>ID of the actor, by <code>actor_type</code>:</p>
+         * <ul>
+         * <li><code>USER</code>: the user's <code>id</code>.</li>
+         * <li><code>CLIENT_CREDENTIAL</code> and <code>API_KEY</code>: the API credential's <code>client_id</code>.</li>
+         * <li><code>STATIC_API_KEY</code>: the Static API Key's <code>id</code>, not a secret's <code>id</code>.</li>
+         * <li><code>SYSTEM</code>: an ID that HiddenLayer assigns to the process.</li>
+         * </ul>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -480,7 +498,7 @@ public final class AuditEntry implements IAuditEntryBase {
         }
 
         /**
-         * <p>Session ID</p>
+         * <p>ID of the user's login session. Empty unless <code>actor_type</code> is <code>USER</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -490,7 +508,7 @@ public final class AuditEntry implements IAuditEntryBase {
         }
 
         /**
-         * <p>Session ID</p>
+         * <p>ID of the user's login session. Empty unless <code>actor_type</code> is <code>USER</code>.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "session_id", nulls = Nulls.SKIP)
@@ -520,7 +538,7 @@ public final class AuditEntry implements IAuditEntryBase {
         }
 
         /**
-         * <p>Snapshot of the roles assigned to the actor at the time of the action</p>
+         * <p>Snapshot of the roles assigned to the actor at the time of the action. Empty unless <code>actor_type</code> is <code>USER</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -532,7 +550,7 @@ public final class AuditEntry implements IAuditEntryBase {
         }
 
         /**
-         * <p>Snapshot of the roles assigned to the actor at the time of the action</p>
+         * <p>Snapshot of the roles assigned to the actor at the time of the action. Empty unless <code>actor_type</code> is <code>USER</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -542,7 +560,7 @@ public final class AuditEntry implements IAuditEntryBase {
         }
 
         /**
-         * <p>Snapshot of the roles assigned to the actor at the time of the action</p>
+         * <p>Snapshot of the roles assigned to the actor at the time of the action. Empty unless <code>actor_type</code> is <code>USER</code>.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "assigned_roles", nulls = Nulls.SKIP)
@@ -555,7 +573,7 @@ public final class AuditEntry implements IAuditEntryBase {
         }
 
         /**
-         * <p>Email address of the actor</p>
+         * <p>Email address of the actor. Empty unless <code>actor_type</code> is <code>USER</code>.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -565,7 +583,7 @@ public final class AuditEntry implements IAuditEntryBase {
         }
 
         /**
-         * <p>Email address of the actor</p>
+         * <p>Email address of the actor. Empty unless <code>actor_type</code> is <code>USER</code>.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "actor_email", nulls = Nulls.SKIP)

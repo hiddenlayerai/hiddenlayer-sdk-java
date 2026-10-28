@@ -11,6 +11,12 @@ public final class ActorType {
 
     public static final ActorType API_KEY = new ActorType(Value.API_KEY, "API_KEY");
 
+    public static final ActorType SYSTEM = new ActorType(Value.SYSTEM, "SYSTEM");
+
+    public static final ActorType CLIENT_CREDENTIAL = new ActorType(Value.CLIENT_CREDENTIAL, "CLIENT_CREDENTIAL");
+
+    public static final ActorType STATIC_API_KEY = new ActorType(Value.STATIC_API_KEY, "STATIC_API_KEY");
+
     private final Value value;
 
     private final String string;
@@ -46,6 +52,12 @@ public final class ActorType {
                 return visitor.visitUser();
             case API_KEY:
                 return visitor.visitApiKey();
+            case SYSTEM:
+                return visitor.visitSystem();
+            case CLIENT_CREDENTIAL:
+                return visitor.visitClientCredential();
+            case STATIC_API_KEY:
+                return visitor.visitStaticApiKey();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -59,6 +71,12 @@ public final class ActorType {
                 return USER;
             case "API_KEY":
                 return API_KEY;
+            case "SYSTEM":
+                return SYSTEM;
+            case "CLIENT_CREDENTIAL":
+                return CLIENT_CREDENTIAL;
+            case "STATIC_API_KEY":
+                return STATIC_API_KEY;
             default:
                 return new ActorType(Value.UNKNOWN, value);
         }
@@ -67,6 +85,12 @@ public final class ActorType {
     public enum Value {
         USER,
 
+        CLIENT_CREDENTIAL,
+
+        STATIC_API_KEY,
+
+        SYSTEM,
+
         API_KEY,
 
         UNKNOWN
@@ -74,6 +98,12 @@ public final class ActorType {
 
     public interface Visitor<T> {
         T visitUser();
+
+        T visitClientCredential();
+
+        T visitStaticApiKey();
+
+        T visitSystem();
 
         T visitApiKey();
 
