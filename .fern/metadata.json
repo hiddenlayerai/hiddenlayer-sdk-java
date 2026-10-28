@@ -6,7 +6,7 @@
     "client-class-name": "HiddenLayer",
     "offset-semantics": "item-index"
   },
-  "originGitCommit": "a228812280426dd7f290a0253f2dc7f07e354016",
+  "originGitCommit": "d4e9568951cf377dd9201e14ae64775f301e2a7a",
   "originGitCommitIsDirty": true,
   "invokedBy": "ci",
   "requestedVersion": "2.5.0",
