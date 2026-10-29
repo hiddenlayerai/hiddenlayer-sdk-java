@@ -13766,7 +13766,8 @@ client.scans().results().listFiles(
 
 **sort:** `Optional<String>` 
 
-Comma-separated sort fields, each ascending (`+`) or descending (`-` or no prefix). Ties are broken by file path.
+Comma-separated sort fields, each ascending (`+`) or descending (`-` or no prefix).
+Ties are broken by file path as shown, then by file result ID, both ascending unless the sort already includes them. A hidden path sorts by its label, such as "Customer Model".
 - `compliance_verdict`: by policy verdict, alphabetically. Ascending puts files without a verdict first, then `COMPLIANT`, then `NONCOMPLIANT`; descending puts `NONCOMPLIANT` first.
 - `severity_order`: by the file's highest detection severity, as a rank. Ascending puts critical first.
 - `file_path`: by file path.

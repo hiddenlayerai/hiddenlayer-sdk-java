@@ -68,7 +68,8 @@ public final class ListFilesResultsRequest {
     }
 
     /**
-     * @return Comma-separated sort fields, each ascending (<code>+</code>) or descending (<code>-</code> or no prefix). Ties are broken by file path.
+     * @return Comma-separated sort fields, each ascending (<code>+</code>) or descending (<code>-</code> or no prefix).
+     * Ties are broken by file path as shown, then by file result ID, both ascending unless the sort already includes them. A hidden path sorts by its label, such as &quot;Customer Model&quot;.
      * <ul>
      * <li><code>compliance_verdict</code>: by policy verdict, alphabetically. Ascending puts files without a verdict first, then <code>COMPLIANT</code>, then <code>NONCOMPLIANT</code>; descending puts <code>NONCOMPLIANT</code> first.</li>
      * <li><code>severity_order</code>: by the file's highest detection severity, as a rank. Ascending puts critical first.</li>
@@ -178,7 +179,8 @@ public final class ListFilesResultsRequest {
         }
 
         /**
-         * <p>Comma-separated sort fields, each ascending (<code>+</code>) or descending (<code>-</code> or no prefix). Ties are broken by file path.</p>
+         * <p>Comma-separated sort fields, each ascending (<code>+</code>) or descending (<code>-</code> or no prefix).
+         * Ties are broken by file path as shown, then by file result ID, both ascending unless the sort already includes them. A hidden path sorts by its label, such as &quot;Customer Model&quot;.</p>
          * <ul>
          * <li><code>compliance_verdict</code>: by policy verdict, alphabetically. Ascending puts files without a verdict first, then <code>COMPLIANT</code>, then <code>NONCOMPLIANT</code>; descending puts <code>NONCOMPLIANT</code> first.</li>
          * <li><code>severity_order</code>: by the file's highest detection severity, as a rank. Ascending puts critical first.</li>
