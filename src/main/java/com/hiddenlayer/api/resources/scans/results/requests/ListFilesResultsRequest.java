@@ -26,16 +26,20 @@ public final class ListFilesResultsRequest {
 
     private final Optional<String> cursor;
 
+    private final Optional<String> sort;
+
     private final Map<String, Object> additionalProperties;
 
     private ListFilesResultsRequest(
             Optional<Boolean> hasDetections,
             Optional<Integer> pageSize,
             Optional<String> cursor,
+            Optional<String> sort,
             Map<String, Object> additionalProperties) {
         this.hasDetections = hasDetections;
         this.pageSize = pageSize;
         this.cursor = cursor;
+        this.sort = sort;
         this.additionalProperties = additionalProperties;
     }
 
@@ -63,6 +67,20 @@ public final class ListFilesResultsRequest {
         return cursor;
     }
 
+    /**
+     * @return Comma-separated sort fields, each ascending (<code>+</code>) or descending (<code>-</code> or no prefix). Ties are broken by file path.
+     * <ul>
+     * <li><code>compliance_verdict</code>: by policy verdict, alphabetically. Ascending puts files without a verdict first, then <code>COMPLIANT</code>, then <code>NONCOMPLIANT</code>; descending puts <code>NONCOMPLIANT</code> first.</li>
+     * <li><code>severity_order</code>: by the file's highest detection severity, as a rank. Ascending puts critical first.</li>
+     * <li><code>file_path</code>: by file path.
+     * An unknown sort field returns 422.</li>
+     * </ul>
+     */
+    @JsonProperty("sort")
+    public Optional<String> getSort() {
+        return sort;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -77,12 +95,13 @@ public final class ListFilesResultsRequest {
     private boolean equalTo(ListFilesResultsRequest other) {
         return hasDetections.equals(other.hasDetections)
                 && pageSize.equals(other.pageSize)
-                && cursor.equals(other.cursor);
+                && cursor.equals(other.cursor)
+                && sort.equals(other.sort);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.hasDetections, this.pageSize, this.cursor);
+        return Objects.hash(this.hasDetections, this.pageSize, this.cursor, this.sort);
     }
 
     @java.lang.Override
@@ -102,6 +121,8 @@ public final class ListFilesResultsRequest {
 
         private Optional<String> cursor = Optional.empty();
 
+        private Optional<String> sort = Optional.empty();
+
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -110,6 +131,7 @@ public final class ListFilesResultsRequest {
             hasDetections(other.getHasDetections());
             pageSize(other.getPageSize());
             cursor(other.getCursor());
+            sort(other.getSort());
             return this;
         }
 
@@ -155,15 +177,36 @@ public final class ListFilesResultsRequest {
             return this;
         }
 
+        /**
+         * <p>Comma-separated sort fields, each ascending (<code>+</code>) or descending (<code>-</code> or no prefix). Ties are broken by file path.</p>
+         * <ul>
+         * <li><code>compliance_verdict</code>: by policy verdict, alphabetically. Ascending puts files without a verdict first, then <code>COMPLIANT</code>, then <code>NONCOMPLIANT</code>; descending puts <code>NONCOMPLIANT</code> first.</li>
+         * <li><code>severity_order</code>: by the file's highest detection severity, as a rank. Ascending puts critical first.</li>
+         * <li><code>file_path</code>: by file path.
+         * An unknown sort field returns 422.</li>
+         * </ul>
+         */
+        @JsonSetter(value = "sort", nulls = Nulls.SKIP)
+        public Builder sort(Optional<String> sort) {
+            this.sort = sort;
+            return this;
+        }
+
+        public Builder sort(String sort) {
+            this.sort = Optional.ofNullable(sort);
+            return this;
+        }
+
         public ListFilesResultsRequest build() {
-            return new ListFilesResultsRequest(hasDetections, pageSize, cursor, additionalProperties);
+            return new ListFilesResultsRequest(hasDetections, pageSize, cursor, sort, additionalProperties);
         }
 
         @JsonAnySetter
         private void putAdditionalPropertyFromJson(String key, Object value) {
             if (key.equalsIgnoreCase("has_detections")
                     || key.equalsIgnoreCase("page_size")
-                    || key.equalsIgnoreCase("cursor")) {
+                    || key.equalsIgnoreCase("cursor")
+                    || key.equalsIgnoreCase("sort")) {
                 return;
             }
             this.additionalProperties.put(key, value);

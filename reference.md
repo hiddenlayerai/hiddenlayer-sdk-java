@@ -13715,6 +13715,7 @@ client.scans().results().listFiles(
     ListFilesResultsRequest
         .builder()
         .pageSize(50)
+        .sort("-compliance_verdict,+severity_order")
         .build()
 );
 ```
@@ -13756,6 +13757,20 @@ client.scans().results().listFiles(
 <dd>
 
 **cursor:** `Optional<String>` — Cursor for pagination, used to navigate through pages of results
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sort:** `Optional<String>` 
+
+Comma-separated sort fields, each ascending (`+`) or descending (`-` or no prefix). Ties are broken by file path.
+- `compliance_verdict`: by policy verdict, alphabetically. Ascending puts files without a verdict first, then `COMPLIANT`, then `NONCOMPLIANT`; descending puts `NONCOMPLIANT` first.
+- `severity_order`: by the file's highest detection severity, as a rank. Ascending puts critical first.
+- `file_path`: by file path.
+An unknown sort field returns 422.
     
 </dd>
 </dl>

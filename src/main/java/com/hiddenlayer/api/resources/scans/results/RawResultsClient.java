@@ -18,6 +18,7 @@ import com.hiddenlayer.api.errors.BadRequestError;
 import com.hiddenlayer.api.errors.ForbiddenError;
 import com.hiddenlayer.api.errors.NotFoundError;
 import com.hiddenlayer.api.errors.UnauthorizedError;
+import com.hiddenlayer.api.errors.UnprocessableEntityError;
 import com.hiddenlayer.api.resources.scans.results.requests.ListFilesResultsRequest;
 import com.hiddenlayer.api.resources.scans.results.requests.RetrieveSummaryResultsRequest;
 import com.hiddenlayer.api.resources.scans.results.requests.SarifResultsRequest;
@@ -85,6 +86,10 @@ public class RawResultsClient {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "cursor", request.getCursor().get(), false);
         }
+        if (request.getSort().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "sort", request.getSort().get(), false);
+        }
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
@@ -135,6 +140,9 @@ public class RawResultsClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 404:
                         throw new NotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 422:
+                        throw new UnprocessableEntityError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                 }
             } catch (JsonProcessingException ignored) {
