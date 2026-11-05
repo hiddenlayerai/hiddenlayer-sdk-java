@@ -188,7 +188,7 @@ public final class CreateCsvRequest {
     }
 
     /**
-     * @return Filter by severity levels (comma-separated)
+     * @return Comma-separated severities. A scan matches when its highest detection severity is a listed severity. Advisories don't count.
      */
     @JsonProperty("severity")
     public Optional<CreateCsvRequestSeverity> getSeverity() {
@@ -561,7 +561,7 @@ public final class CreateCsvRequest {
         }
 
         /**
-         * <p>Filter by severity levels (comma-separated)</p>
+         * <p>Comma-separated severities. A scan matches when its highest detection severity is a listed severity. Advisories don't count.</p>
          */
         @JsonSetter(value = "severity", nulls = Nulls.SKIP)
         public Builder severity(Optional<CreateCsvRequestSeverity> severity) {

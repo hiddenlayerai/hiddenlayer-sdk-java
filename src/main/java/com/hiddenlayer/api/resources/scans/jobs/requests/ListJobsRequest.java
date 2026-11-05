@@ -184,7 +184,7 @@ public final class ListJobsRequest {
     }
 
     /**
-     * @return Severities
+     * @return Comma-separated severities. A scan matches when its highest detection severity is a listed severity. Advisories don't count.
      */
     @JsonProperty("severity")
     public Optional<ListJobsRequestSeverity> getSeverity() {
@@ -552,7 +552,7 @@ public final class ListJobsRequest {
         }
 
         /**
-         * <p>Severities</p>
+         * <p>Comma-separated severities. A scan matches when its highest detection severity is a listed severity. Advisories don't count.</p>
          */
         @JsonSetter(value = "severity", nulls = Nulls.SKIP)
         public Builder severity(Optional<ListJobsRequestSeverity> severity) {

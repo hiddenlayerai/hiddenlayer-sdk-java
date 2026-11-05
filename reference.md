@@ -13448,7 +13448,7 @@ client.scans().jobs().list(
 <dl>
 <dd>
 
-**severity:** `Optional<ListJobsRequestSeverity>` — Severities
+**severity:** `Optional<ListJobsRequestSeverity>` — Comma-separated severities. A scan matches when its highest detection severity is a listed severity. Advisories don't count.
     
 </dd>
 </dl>
@@ -14239,7 +14239,7 @@ If not specified, defaults to: name, detections, scanned_on, policy_status, orig
 <dl>
 <dd>
 
-**severity:** `Optional<CreateCsvRequestSeverity>` — Filter by severity levels (comma-separated)
+**severity:** `Optional<CreateCsvRequestSeverity>` — Comma-separated severities. A scan matches when its highest detection severity is a listed severity. Advisories don't count.
     
 </dd>
 </dl>
