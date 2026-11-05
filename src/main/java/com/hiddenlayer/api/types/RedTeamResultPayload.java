@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,13 +27,17 @@ public final class RedTeamResultPayload {
 
     private final Optional<String> evaluationReport;
 
-    private final Optional<Map<String, Object>> settings;
+    private final Optional<EvaluationRequestSource> requestSource;
 
-    private final Optional<Map<String, Object>> attackerResults;
+    private final Optional<RedTeamResultSettings> settings;
+
+    private final Optional<List<RedTeamAttackerSessionResult>> attackerResults;
 
     private final Optional<Map<String, Object>> usage;
 
-    private final Optional<Map<String, Object>> report;
+    private final Optional<RedTeamReport> report;
+
+    private final Optional<RedTeamAnalysis> analysis;
 
     private final Map<String, Object> additionalProperties;
 
@@ -40,18 +45,22 @@ public final class RedTeamResultPayload {
             Optional<String> name,
             Optional<String> targetContext,
             Optional<String> evaluationReport,
-            Optional<Map<String, Object>> settings,
-            Optional<Map<String, Object>> attackerResults,
+            Optional<EvaluationRequestSource> requestSource,
+            Optional<RedTeamResultSettings> settings,
+            Optional<List<RedTeamAttackerSessionResult>> attackerResults,
             Optional<Map<String, Object>> usage,
-            Optional<Map<String, Object>> report,
+            Optional<RedTeamReport> report,
+            Optional<RedTeamAnalysis> analysis,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.targetContext = targetContext;
         this.evaluationReport = evaluationReport;
+        this.requestSource = requestSource;
         this.settings = settings;
         this.attackerResults = attackerResults;
         this.usage = usage;
         this.report = report;
+        this.analysis = analysis;
         this.additionalProperties = additionalProperties;
     }
 
@@ -80,18 +89,23 @@ public final class RedTeamResultPayload {
     }
 
     /**
-     * @return Workflow configuration settings used for this evaluation
+     * @return Where the request that started the evaluation came from.
      */
+    @JsonProperty("request_source")
+    public Optional<EvaluationRequestSource> getRequestSource() {
+        return requestSource;
+    }
+
     @JsonProperty("settings")
-    public Optional<Map<String, Object>> getSettings() {
+    public Optional<RedTeamResultSettings> getSettings() {
         return settings;
     }
 
     /**
-     * @return Detailed attacker session results including prompts, responses, and judgements
+     * @return One result per attack session, with its transcript and objective verdicts
      */
     @JsonProperty("attacker_results")
-    public Optional<Map<String, Object>> getAttackerResults() {
+    public Optional<List<RedTeamAttackerSessionResult>> getAttackerResults() {
         return attackerResults;
     }
 
@@ -103,12 +117,14 @@ public final class RedTeamResultPayload {
         return usage;
     }
 
-    /**
-     * @return Structured evaluation report with metrics and analysis
-     */
     @JsonProperty("report")
-    public Optional<Map<String, Object>> getReport() {
+    public Optional<RedTeamReport> getReport() {
         return report;
+    }
+
+    @JsonProperty("analysis")
+    public Optional<RedTeamAnalysis> getAnalysis() {
+        return analysis;
     }
 
     @java.lang.Override
@@ -126,10 +142,12 @@ public final class RedTeamResultPayload {
         return name.equals(other.name)
                 && targetContext.equals(other.targetContext)
                 && evaluationReport.equals(other.evaluationReport)
+                && requestSource.equals(other.requestSource)
                 && settings.equals(other.settings)
                 && attackerResults.equals(other.attackerResults)
                 && usage.equals(other.usage)
-                && report.equals(other.report);
+                && report.equals(other.report)
+                && analysis.equals(other.analysis);
     }
 
     @java.lang.Override
@@ -138,10 +156,12 @@ public final class RedTeamResultPayload {
                 this.name,
                 this.targetContext,
                 this.evaluationReport,
+                this.requestSource,
                 this.settings,
                 this.attackerResults,
                 this.usage,
-                this.report);
+                this.report,
+                this.analysis);
     }
 
     @java.lang.Override
@@ -161,13 +181,17 @@ public final class RedTeamResultPayload {
 
         private Optional<String> evaluationReport = Optional.empty();
 
-        private Optional<Map<String, Object>> settings = Optional.empty();
+        private Optional<EvaluationRequestSource> requestSource = Optional.empty();
 
-        private Optional<Map<String, Object>> attackerResults = Optional.empty();
+        private Optional<RedTeamResultSettings> settings = Optional.empty();
+
+        private Optional<List<RedTeamAttackerSessionResult>> attackerResults = Optional.empty();
 
         private Optional<Map<String, Object>> usage = Optional.empty();
 
-        private Optional<Map<String, Object>> report = Optional.empty();
+        private Optional<RedTeamReport> report = Optional.empty();
+
+        private Optional<RedTeamAnalysis> analysis = Optional.empty();
 
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -177,10 +201,12 @@ public final class RedTeamResultPayload {
             name(other.getName());
             targetContext(other.getTargetContext());
             evaluationReport(other.getEvaluationReport());
+            requestSource(other.getRequestSource());
             settings(other.getSettings());
             attackerResults(other.getAttackerResults());
             usage(other.getUsage());
             report(other.getReport());
+            analysis(other.getAnalysis());
             return this;
         }
 
@@ -227,29 +253,40 @@ public final class RedTeamResultPayload {
         }
 
         /**
-         * <p>Workflow configuration settings used for this evaluation</p>
+         * <p>Where the request that started the evaluation came from.</p>
          */
+        @JsonSetter(value = "request_source", nulls = Nulls.SKIP)
+        public Builder requestSource(Optional<EvaluationRequestSource> requestSource) {
+            this.requestSource = requestSource;
+            return this;
+        }
+
+        public Builder requestSource(EvaluationRequestSource requestSource) {
+            this.requestSource = Optional.ofNullable(requestSource);
+            return this;
+        }
+
         @JsonSetter(value = "settings", nulls = Nulls.SKIP)
-        public Builder settings(Optional<Map<String, Object>> settings) {
+        public Builder settings(Optional<RedTeamResultSettings> settings) {
             this.settings = settings;
             return this;
         }
 
-        public Builder settings(Map<String, Object> settings) {
+        public Builder settings(RedTeamResultSettings settings) {
             this.settings = Optional.ofNullable(settings);
             return this;
         }
 
         /**
-         * <p>Detailed attacker session results including prompts, responses, and judgements</p>
+         * <p>One result per attack session, with its transcript and objective verdicts</p>
          */
         @JsonSetter(value = "attacker_results", nulls = Nulls.SKIP)
-        public Builder attackerResults(Optional<Map<String, Object>> attackerResults) {
+        public Builder attackerResults(Optional<List<RedTeamAttackerSessionResult>> attackerResults) {
             this.attackerResults = attackerResults;
             return this;
         }
 
-        public Builder attackerResults(Map<String, Object> attackerResults) {
+        public Builder attackerResults(List<RedTeamAttackerSessionResult> attackerResults) {
             this.attackerResults = Optional.ofNullable(attackerResults);
             return this;
         }
@@ -268,17 +305,25 @@ public final class RedTeamResultPayload {
             return this;
         }
 
-        /**
-         * <p>Structured evaluation report with metrics and analysis</p>
-         */
         @JsonSetter(value = "report", nulls = Nulls.SKIP)
-        public Builder report(Optional<Map<String, Object>> report) {
+        public Builder report(Optional<RedTeamReport> report) {
             this.report = report;
             return this;
         }
 
-        public Builder report(Map<String, Object> report) {
+        public Builder report(RedTeamReport report) {
             this.report = Optional.ofNullable(report);
+            return this;
+        }
+
+        @JsonSetter(value = "analysis", nulls = Nulls.SKIP)
+        public Builder analysis(Optional<RedTeamAnalysis> analysis) {
+            this.analysis = analysis;
+            return this;
+        }
+
+        public Builder analysis(RedTeamAnalysis analysis) {
+            this.analysis = Optional.ofNullable(analysis);
             return this;
         }
 
@@ -287,10 +332,12 @@ public final class RedTeamResultPayload {
                     name,
                     targetContext,
                     evaluationReport,
+                    requestSource,
                     settings,
                     attackerResults,
                     usage,
                     report,
+                    analysis,
                     additionalProperties);
         }
 
@@ -299,10 +346,12 @@ public final class RedTeamResultPayload {
             if (key.equalsIgnoreCase("name")
                     || key.equalsIgnoreCase("target_context")
                     || key.equalsIgnoreCase("evaluation_report")
+                    || key.equalsIgnoreCase("request_source")
                     || key.equalsIgnoreCase("settings")
                     || key.equalsIgnoreCase("attacker_results")
                     || key.equalsIgnoreCase("usage")
-                    || key.equalsIgnoreCase("report")) {
+                    || key.equalsIgnoreCase("report")
+                    || key.equalsIgnoreCase("analysis")) {
                 return;
             }
             this.additionalProperties.put(key, value);

@@ -5,12 +5,15 @@ package com.hiddenlayer.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.hiddenlayer.api.core.Nullable;
+import com.hiddenlayer.api.core.NullableNonemptyFilter;
 import com.hiddenlayer.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -34,9 +37,13 @@ public final class RedTeamResultItem {
 
     private final List<String> objectiveIds;
 
+    private final Optional<List<RedTeamObjectiveSummary>> objectives;
+
     private final OffsetDateTime startedAt;
 
     private final OffsetDateTime completedAt;
+
+    private final Optional<EvaluationRequestSource> requestSource;
 
     private final Optional<Double> attackSuccessRate;
 
@@ -52,8 +59,10 @@ public final class RedTeamResultItem {
             String name,
             String targetModel,
             List<String> objectiveIds,
+            Optional<List<RedTeamObjectiveSummary>> objectives,
             OffsetDateTime startedAt,
             OffsetDateTime completedAt,
+            Optional<EvaluationRequestSource> requestSource,
             Optional<Double> attackSuccessRate,
             Optional<HighestSeverity> highestSeverity,
             Optional<String> hlProjectId,
@@ -63,8 +72,10 @@ public final class RedTeamResultItem {
         this.name = name;
         this.targetModel = targetModel;
         this.objectiveIds = objectiveIds;
+        this.objectives = objectives;
         this.startedAt = startedAt;
         this.completedAt = completedAt;
+        this.requestSource = requestSource;
         this.attackSuccessRate = attackSuccessRate;
         this.highestSeverity = highestSeverity;
         this.hlProjectId = hlProjectId;
@@ -112,6 +123,17 @@ public final class RedTeamResultItem {
     }
 
     /**
+     * @return Objectives evaluated, in <code>objective_ids</code> order. Null when <code>objective_ids</code> is empty.
+     */
+    @JsonIgnore
+    public Optional<List<RedTeamObjectiveSummary>> getObjectives() {
+        if (objectives == null) {
+            return Optional.empty();
+        }
+        return objectives;
+    }
+
+    /**
      * @return When the workflow started
      */
     @JsonProperty("started_at")
@@ -125,6 +147,14 @@ public final class RedTeamResultItem {
     @JsonProperty("completed_at")
     public OffsetDateTime getCompletedAt() {
         return completedAt;
+    }
+
+    /**
+     * @return Where the request that started the evaluation came from.
+     */
+    @JsonProperty("request_source")
+    public Optional<EvaluationRequestSource> getRequestSource() {
+        return requestSource;
     }
 
     /**
@@ -152,6 +182,12 @@ public final class RedTeamResultItem {
         return hlProjectId;
     }
 
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("objectives")
+    private Optional<List<RedTeamObjectiveSummary>> _getObjectives() {
+        return objectives;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -169,8 +205,10 @@ public final class RedTeamResultItem {
                 && name.equals(other.name)
                 && targetModel.equals(other.targetModel)
                 && objectiveIds.equals(other.objectiveIds)
+                && objectives.equals(other.objectives)
                 && startedAt.equals(other.startedAt)
                 && completedAt.equals(other.completedAt)
+                && requestSource.equals(other.requestSource)
                 && attackSuccessRate.equals(other.attackSuccessRate)
                 && highestSeverity.equals(other.highestSeverity)
                 && hlProjectId.equals(other.hlProjectId);
@@ -184,8 +222,10 @@ public final class RedTeamResultItem {
                 this.name,
                 this.targetModel,
                 this.objectiveIds,
+                this.objectives,
                 this.startedAt,
                 this.completedAt,
+                this.requestSource,
                 this.attackSuccessRate,
                 this.highestSeverity,
                 this.hlProjectId);
@@ -261,6 +301,22 @@ public final class RedTeamResultItem {
         _FinalStage addAllObjectiveIds(List<String> objectiveIds);
 
         /**
+         * <p>Objectives evaluated, in <code>objective_ids</code> order. Null when <code>objective_ids</code> is empty.</p>
+         */
+        _FinalStage objectives(Optional<List<RedTeamObjectiveSummary>> objectives);
+
+        _FinalStage objectives(List<RedTeamObjectiveSummary> objectives);
+
+        _FinalStage objectives(Nullable<List<RedTeamObjectiveSummary>> objectives);
+
+        /**
+         * <p>Where the request that started the evaluation came from.</p>
+         */
+        _FinalStage requestSource(Optional<EvaluationRequestSource> requestSource);
+
+        _FinalStage requestSource(EvaluationRequestSource requestSource);
+
+        /**
          * <p>Attack success rate as a percentage (0 to 100)</p>
          */
         _FinalStage attackSuccessRate(Optional<Double> attackSuccessRate);
@@ -310,6 +366,10 @@ public final class RedTeamResultItem {
 
         private Optional<Double> attackSuccessRate = Optional.empty();
 
+        private Optional<EvaluationRequestSource> requestSource = Optional.empty();
+
+        private Optional<List<RedTeamObjectiveSummary>> objectives = Optional.empty();
+
         private List<String> objectiveIds = new ArrayList<>();
 
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -323,8 +383,10 @@ public final class RedTeamResultItem {
             name(other.getName());
             targetModel(other.getTargetModel());
             objectiveIds(other.getObjectiveIds());
+            objectives(other.getObjectives());
             startedAt(other.getStartedAt());
             completedAt(other.getCompletedAt());
+            requestSource(other.getRequestSource());
             attackSuccessRate(other.getAttackSuccessRate());
             highestSeverity(other.getHighestSeverity());
             hlProjectId(other.getHlProjectId());
@@ -460,6 +522,62 @@ public final class RedTeamResultItem {
         }
 
         /**
+         * <p>Where the request that started the evaluation came from.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage requestSource(EvaluationRequestSource requestSource) {
+            this.requestSource = Optional.ofNullable(requestSource);
+            return this;
+        }
+
+        /**
+         * <p>Where the request that started the evaluation came from.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "request_source", nulls = Nulls.SKIP)
+        public _FinalStage requestSource(Optional<EvaluationRequestSource> requestSource) {
+            this.requestSource = requestSource;
+            return this;
+        }
+
+        /**
+         * <p>Objectives evaluated, in <code>objective_ids</code> order. Null when <code>objective_ids</code> is empty.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage objectives(Nullable<List<RedTeamObjectiveSummary>> objectives) {
+            if (objectives.isNull()) {
+                this.objectives = null;
+            } else if (objectives.isEmpty()) {
+                this.objectives = Optional.empty();
+            } else {
+                this.objectives = Optional.of(objectives.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Objectives evaluated, in <code>objective_ids</code> order. Null when <code>objective_ids</code> is empty.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage objectives(List<RedTeamObjectiveSummary> objectives) {
+            this.objectives = Optional.ofNullable(objectives);
+            return this;
+        }
+
+        /**
+         * <p>Objectives evaluated, in <code>objective_ids</code> order. Null when <code>objective_ids</code> is empty.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "objectives", nulls = Nulls.SKIP)
+        public _FinalStage objectives(Optional<List<RedTeamObjectiveSummary>> objectives) {
+            this.objectives = objectives;
+            return this;
+        }
+
+        /**
          * <p>Objective IDs evaluated</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -502,8 +620,10 @@ public final class RedTeamResultItem {
                     name,
                     targetModel,
                     objectiveIds,
+                    objectives,
                     startedAt,
                     completedAt,
+                    requestSource,
                     attackSuccessRate,
                     highestSeverity,
                     hlProjectId,
@@ -517,8 +637,10 @@ public final class RedTeamResultItem {
                     || key.equalsIgnoreCase("name")
                     || key.equalsIgnoreCase("target_model")
                     || key.equalsIgnoreCase("objective_ids")
+                    || key.equalsIgnoreCase("objectives")
                     || key.equalsIgnoreCase("started_at")
                     || key.equalsIgnoreCase("completed_at")
+                    || key.equalsIgnoreCase("request_source")
                     || key.equalsIgnoreCase("attack_success_rate")
                     || key.equalsIgnoreCase("highest_severity")
                     || key.equalsIgnoreCase("hl_project_id")) {

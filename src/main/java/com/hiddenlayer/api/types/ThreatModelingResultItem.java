@@ -9,12 +9,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
@@ -30,6 +32,8 @@ public final class ThreatModelingResultItem {
 
     private final OffsetDateTime completedAt;
 
+    private final Optional<EvaluationRequestSource> requestSource;
+
     private final Map<String, Object> additionalProperties;
 
     private ThreatModelingResultItem(
@@ -38,12 +42,14 @@ public final class ThreatModelingResultItem {
             String name,
             OffsetDateTime startedAt,
             OffsetDateTime completedAt,
+            Optional<EvaluationRequestSource> requestSource,
             Map<String, Object> additionalProperties) {
         this.workflowId = workflowId;
         this.runId = runId;
         this.name = name;
         this.startedAt = startedAt;
         this.completedAt = completedAt;
+        this.requestSource = requestSource;
         this.additionalProperties = additionalProperties;
     }
 
@@ -87,6 +93,14 @@ public final class ThreatModelingResultItem {
         return completedAt;
     }
 
+    /**
+     * @return Where the request that started the evaluation came from.
+     */
+    @JsonProperty("request_source")
+    public Optional<EvaluationRequestSource> getRequestSource() {
+        return requestSource;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -103,12 +117,14 @@ public final class ThreatModelingResultItem {
                 && runId.equals(other.runId)
                 && name.equals(other.name)
                 && startedAt.equals(other.startedAt)
-                && completedAt.equals(other.completedAt);
+                && completedAt.equals(other.completedAt)
+                && requestSource.equals(other.requestSource);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.workflowId, this.runId, this.name, this.startedAt, this.completedAt);
+        return Objects.hash(
+                this.workflowId, this.runId, this.name, this.startedAt, this.completedAt, this.requestSource);
     }
 
     @java.lang.Override
@@ -163,6 +179,13 @@ public final class ThreatModelingResultItem {
         _FinalStage additionalProperty(String key, Object value);
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        /**
+         * <p>Where the request that started the evaluation came from.</p>
+         */
+        _FinalStage requestSource(Optional<EvaluationRequestSource> requestSource);
+
+        _FinalStage requestSource(EvaluationRequestSource requestSource);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -178,6 +201,8 @@ public final class ThreatModelingResultItem {
 
         private OffsetDateTime completedAt;
 
+        private Optional<EvaluationRequestSource> requestSource = Optional.empty();
+
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -189,6 +214,7 @@ public final class ThreatModelingResultItem {
             name(other.getName());
             startedAt(other.getStartedAt());
             completedAt(other.getCompletedAt());
+            requestSource(other.getRequestSource());
             return this;
         }
 
@@ -247,9 +273,30 @@ public final class ThreatModelingResultItem {
             return this;
         }
 
+        /**
+         * <p>Where the request that started the evaluation came from.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage requestSource(EvaluationRequestSource requestSource) {
+            this.requestSource = Optional.ofNullable(requestSource);
+            return this;
+        }
+
+        /**
+         * <p>Where the request that started the evaluation came from.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "request_source", nulls = Nulls.SKIP)
+        public _FinalStage requestSource(Optional<EvaluationRequestSource> requestSource) {
+            this.requestSource = requestSource;
+            return this;
+        }
+
         @java.lang.Override
         public ThreatModelingResultItem build() {
-            return new ThreatModelingResultItem(workflowId, runId, name, startedAt, completedAt, additionalProperties);
+            return new ThreatModelingResultItem(
+                    workflowId, runId, name, startedAt, completedAt, requestSource, additionalProperties);
         }
 
         @JsonAnySetter
@@ -258,7 +305,8 @@ public final class ThreatModelingResultItem {
                     || key.equalsIgnoreCase("run_id")
                     || key.equalsIgnoreCase("name")
                     || key.equalsIgnoreCase("started_at")
-                    || key.equalsIgnoreCase("completed_at")) {
+                    || key.equalsIgnoreCase("completed_at")
+                    || key.equalsIgnoreCase("request_source")) {
                 return;
             }
             this.additionalProperties.put(key, value);

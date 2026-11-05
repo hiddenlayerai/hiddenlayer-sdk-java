@@ -34,6 +34,8 @@ public final class SystemPromptResultItem {
 
     private final Optional<String> hlProjectId;
 
+    private final Optional<EvaluationRequestSource> requestSource;
+
     private final Map<String, Object> additionalProperties;
 
     private SystemPromptResultItem(
@@ -43,6 +45,7 @@ public final class SystemPromptResultItem {
             OffsetDateTime startedAt,
             OffsetDateTime completedAt,
             Optional<String> hlProjectId,
+            Optional<EvaluationRequestSource> requestSource,
             Map<String, Object> additionalProperties) {
         this.workflowId = workflowId;
         this.runId = runId;
@@ -50,6 +53,7 @@ public final class SystemPromptResultItem {
         this.startedAt = startedAt;
         this.completedAt = completedAt;
         this.hlProjectId = hlProjectId;
+        this.requestSource = requestSource;
         this.additionalProperties = additionalProperties;
     }
 
@@ -102,6 +106,14 @@ public final class SystemPromptResultItem {
         return hlProjectId;
     }
 
+    /**
+     * @return Where the request that started the evaluation came from.
+     */
+    @JsonProperty("request_source")
+    public Optional<EvaluationRequestSource> getRequestSource() {
+        return requestSource;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -119,12 +131,20 @@ public final class SystemPromptResultItem {
                 && name.equals(other.name)
                 && startedAt.equals(other.startedAt)
                 && completedAt.equals(other.completedAt)
-                && hlProjectId.equals(other.hlProjectId);
+                && hlProjectId.equals(other.hlProjectId)
+                && requestSource.equals(other.requestSource);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.workflowId, this.runId, this.name, this.startedAt, this.completedAt, this.hlProjectId);
+        return Objects.hash(
+                this.workflowId,
+                this.runId,
+                this.name,
+                this.startedAt,
+                this.completedAt,
+                this.hlProjectId,
+                this.requestSource);
     }
 
     @java.lang.Override
@@ -187,6 +207,13 @@ public final class SystemPromptResultItem {
         _FinalStage hlProjectId(Optional<String> hlProjectId);
 
         _FinalStage hlProjectId(String hlProjectId);
+
+        /**
+         * <p>Where the request that started the evaluation came from.</p>
+         */
+        _FinalStage requestSource(Optional<EvaluationRequestSource> requestSource);
+
+        _FinalStage requestSource(EvaluationRequestSource requestSource);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -202,6 +229,8 @@ public final class SystemPromptResultItem {
 
         private OffsetDateTime completedAt;
 
+        private Optional<EvaluationRequestSource> requestSource = Optional.empty();
+
         private Optional<String> hlProjectId = Optional.empty();
 
         private Map<String, Object> additionalProperties = new HashMap<>();
@@ -216,6 +245,7 @@ public final class SystemPromptResultItem {
             startedAt(other.getStartedAt());
             completedAt(other.getCompletedAt());
             hlProjectId(other.getHlProjectId());
+            requestSource(other.getRequestSource());
             return this;
         }
 
@@ -275,6 +305,26 @@ public final class SystemPromptResultItem {
         }
 
         /**
+         * <p>Where the request that started the evaluation came from.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage requestSource(EvaluationRequestSource requestSource) {
+            this.requestSource = Optional.ofNullable(requestSource);
+            return this;
+        }
+
+        /**
+         * <p>Where the request that started the evaluation came from.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "request_source", nulls = Nulls.SKIP)
+        public _FinalStage requestSource(Optional<EvaluationRequestSource> requestSource) {
+            this.requestSource = requestSource;
+            return this;
+        }
+
+        /**
          * <p>HiddenLayer project UUID the analysis was started under. Omitted
          * when the analysis has no project.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
@@ -299,7 +349,7 @@ public final class SystemPromptResultItem {
         @java.lang.Override
         public SystemPromptResultItem build() {
             return new SystemPromptResultItem(
-                    workflowId, runId, name, startedAt, completedAt, hlProjectId, additionalProperties);
+                    workflowId, runId, name, startedAt, completedAt, hlProjectId, requestSource, additionalProperties);
         }
 
         @JsonAnySetter
@@ -309,7 +359,8 @@ public final class SystemPromptResultItem {
                     || key.equalsIgnoreCase("name")
                     || key.equalsIgnoreCase("started_at")
                     || key.equalsIgnoreCase("completed_at")
-                    || key.equalsIgnoreCase("hl_project_id")) {
+                    || key.equalsIgnoreCase("hl_project_id")
+                    || key.equalsIgnoreCase("request_source")) {
                 return;
             }
             this.additionalProperties.put(key, value);
