@@ -9,12 +9,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
@@ -30,6 +32,8 @@ public final class SystemPromptResultItem {
 
     private final OffsetDateTime completedAt;
 
+    private final Optional<String> hlProjectId;
+
     private final Map<String, Object> additionalProperties;
 
     private SystemPromptResultItem(
@@ -38,12 +42,14 @@ public final class SystemPromptResultItem {
             String name,
             OffsetDateTime startedAt,
             OffsetDateTime completedAt,
+            Optional<String> hlProjectId,
             Map<String, Object> additionalProperties) {
         this.workflowId = workflowId;
         this.runId = runId;
         this.name = name;
         this.startedAt = startedAt;
         this.completedAt = completedAt;
+        this.hlProjectId = hlProjectId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -87,6 +93,15 @@ public final class SystemPromptResultItem {
         return completedAt;
     }
 
+    /**
+     * @return HiddenLayer project UUID the analysis was started under. Omitted
+     * when the analysis has no project.
+     */
+    @JsonProperty("hl_project_id")
+    public Optional<String> getHlProjectId() {
+        return hlProjectId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -103,12 +118,13 @@ public final class SystemPromptResultItem {
                 && runId.equals(other.runId)
                 && name.equals(other.name)
                 && startedAt.equals(other.startedAt)
-                && completedAt.equals(other.completedAt);
+                && completedAt.equals(other.completedAt)
+                && hlProjectId.equals(other.hlProjectId);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.workflowId, this.runId, this.name, this.startedAt, this.completedAt);
+        return Objects.hash(this.workflowId, this.runId, this.name, this.startedAt, this.completedAt, this.hlProjectId);
     }
 
     @java.lang.Override
@@ -163,6 +179,14 @@ public final class SystemPromptResultItem {
         _FinalStage additionalProperty(String key, Object value);
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        /**
+         * <p>HiddenLayer project UUID the analysis was started under. Omitted
+         * when the analysis has no project.</p>
+         */
+        _FinalStage hlProjectId(Optional<String> hlProjectId);
+
+        _FinalStage hlProjectId(String hlProjectId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -178,6 +202,8 @@ public final class SystemPromptResultItem {
 
         private OffsetDateTime completedAt;
 
+        private Optional<String> hlProjectId = Optional.empty();
+
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -189,6 +215,7 @@ public final class SystemPromptResultItem {
             name(other.getName());
             startedAt(other.getStartedAt());
             completedAt(other.getCompletedAt());
+            hlProjectId(other.getHlProjectId());
             return this;
         }
 
@@ -247,9 +274,32 @@ public final class SystemPromptResultItem {
             return this;
         }
 
+        /**
+         * <p>HiddenLayer project UUID the analysis was started under. Omitted
+         * when the analysis has no project.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage hlProjectId(String hlProjectId) {
+            this.hlProjectId = Optional.ofNullable(hlProjectId);
+            return this;
+        }
+
+        /**
+         * <p>HiddenLayer project UUID the analysis was started under. Omitted
+         * when the analysis has no project.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "hl_project_id", nulls = Nulls.SKIP)
+        public _FinalStage hlProjectId(Optional<String> hlProjectId) {
+            this.hlProjectId = hlProjectId;
+            return this;
+        }
+
         @java.lang.Override
         public SystemPromptResultItem build() {
-            return new SystemPromptResultItem(workflowId, runId, name, startedAt, completedAt, additionalProperties);
+            return new SystemPromptResultItem(
+                    workflowId, runId, name, startedAt, completedAt, hlProjectId, additionalProperties);
         }
 
         @JsonAnySetter
@@ -258,7 +308,8 @@ public final class SystemPromptResultItem {
                     || key.equalsIgnoreCase("run_id")
                     || key.equalsIgnoreCase("name")
                     || key.equalsIgnoreCase("started_at")
-                    || key.equalsIgnoreCase("completed_at")) {
+                    || key.equalsIgnoreCase("completed_at")
+                    || key.equalsIgnoreCase("hl_project_id")) {
                 return;
             }
             this.additionalProperties.put(key, value);

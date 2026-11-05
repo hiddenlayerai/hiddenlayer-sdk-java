@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
@@ -36,6 +37,8 @@ public final class AnalysisResult {
 
     private final List<String> validationErrors;
 
+    private final Optional<String> hlProjectId;
+
     private final Map<String, Object> additionalProperties;
 
     private AnalysisResult(
@@ -46,6 +49,7 @@ public final class AnalysisResult {
             String compiledSystemPrompt,
             boolean isValid,
             List<String> validationErrors,
+            Optional<String> hlProjectId,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.originalSystemPrompt = originalSystemPrompt;
@@ -54,6 +58,7 @@ public final class AnalysisResult {
         this.compiledSystemPrompt = compiledSystemPrompt;
         this.isValid = isValid;
         this.validationErrors = validationErrors;
+        this.hlProjectId = hlProjectId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -113,6 +118,15 @@ public final class AnalysisResult {
         return validationErrors;
     }
 
+    /**
+     * @return HiddenLayer project UUID the analysis was started under. Omitted
+     * when the analysis has no project.
+     */
+    @JsonProperty("hl_project_id")
+    public Optional<String> getHlProjectId() {
+        return hlProjectId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -131,7 +145,8 @@ public final class AnalysisResult {
                 && questionAnswers.equals(other.questionAnswers)
                 && compiledSystemPrompt.equals(other.compiledSystemPrompt)
                 && isValid == other.isValid
-                && validationErrors.equals(other.validationErrors);
+                && validationErrors.equals(other.validationErrors)
+                && hlProjectId.equals(other.hlProjectId);
     }
 
     @java.lang.Override
@@ -143,7 +158,8 @@ public final class AnalysisResult {
                 this.questionAnswers,
                 this.compiledSystemPrompt,
                 this.isValid,
-                this.validationErrors);
+                this.validationErrors,
+                this.hlProjectId);
     }
 
     @java.lang.Override
@@ -218,6 +234,14 @@ public final class AnalysisResult {
         _FinalStage addValidationErrors(String validationErrors);
 
         _FinalStage addAllValidationErrors(List<String> validationErrors);
+
+        /**
+         * <p>HiddenLayer project UUID the analysis was started under. Omitted
+         * when the analysis has no project.</p>
+         */
+        _FinalStage hlProjectId(Optional<String> hlProjectId);
+
+        _FinalStage hlProjectId(String hlProjectId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -230,6 +254,8 @@ public final class AnalysisResult {
         private String compiledSystemPrompt;
 
         private boolean isValid;
+
+        private Optional<String> hlProjectId = Optional.empty();
 
         private List<String> validationErrors = new ArrayList<>();
 
@@ -250,6 +276,7 @@ public final class AnalysisResult {
             compiledSystemPrompt(other.getCompiledSystemPrompt());
             isValid(other.getIsValid());
             validationErrors(other.getValidationErrors());
+            hlProjectId(other.getHlProjectId());
             return this;
         }
 
@@ -296,6 +323,28 @@ public final class AnalysisResult {
         @JsonSetter("is_valid")
         public _FinalStage isValid(boolean isValid) {
             this.isValid = isValid;
+            return this;
+        }
+
+        /**
+         * <p>HiddenLayer project UUID the analysis was started under. Omitted
+         * when the analysis has no project.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage hlProjectId(String hlProjectId) {
+            this.hlProjectId = Optional.ofNullable(hlProjectId);
+            return this;
+        }
+
+        /**
+         * <p>HiddenLayer project UUID the analysis was started under. Omitted
+         * when the analysis has no project.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "hl_project_id", nulls = Nulls.SKIP)
+        public _FinalStage hlProjectId(Optional<String> hlProjectId) {
+            this.hlProjectId = hlProjectId;
             return this;
         }
 
@@ -414,6 +463,7 @@ public final class AnalysisResult {
                     compiledSystemPrompt,
                     isValid,
                     validationErrors,
+                    hlProjectId,
                     additionalProperties);
         }
 
@@ -425,7 +475,8 @@ public final class AnalysisResult {
                     || key.equalsIgnoreCase("question_answers")
                     || key.equalsIgnoreCase("compiled_system_prompt")
                     || key.equalsIgnoreCase("is_valid")
-                    || key.equalsIgnoreCase("validation_errors")) {
+                    || key.equalsIgnoreCase("validation_errors")
+                    || key.equalsIgnoreCase("hl_project_id")) {
                 return;
             }
             this.additionalProperties.put(key, value);

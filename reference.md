@@ -8640,6 +8640,17 @@ client.evaluations().systemPromptAnalysis().list(
 <dl>
 <dd>
 
+**projectId:** `Optional<ListSystemPromptAnalysisRequestProjectId>` 
+
+Filter to analyses started under any of the given HiddenLayer
+projects. Analyses without a project never match.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **limit:** `Optional<Integer>` — Maximum number of results to return
     
 </dd>
@@ -8738,6 +8749,18 @@ client.evaluations().systemPromptAnalysis().create(
 <dd>
 
 **numQuestions:** `Optional<Integer>` — Number of questions to generate
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**hlProjectId:** `Optional<String>` 
+
+HiddenLayer project UUID or alias to start the analysis under. The
+analysis stores the project's UUID. A project that does not exist
+for the tenant returns 422.
     
 </dd>
 </dl>

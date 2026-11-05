@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
+import com.hiddenlayer.api.types.ListSystemPromptAnalysisRequestProjectId;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +32,8 @@ public final class ListSystemPromptAnalysisRequest {
 
     private final Optional<OffsetDateTime> startTimeTo;
 
+    private final Optional<ListSystemPromptAnalysisRequestProjectId> projectId;
+
     private final Optional<Integer> limit;
 
     private final Optional<Integer> pageSize;
@@ -45,6 +48,7 @@ public final class ListSystemPromptAnalysisRequest {
             Optional<String> status,
             Optional<OffsetDateTime> startTimeFrom,
             Optional<OffsetDateTime> startTimeTo,
+            Optional<ListSystemPromptAnalysisRequestProjectId> projectId,
             Optional<Integer> limit,
             Optional<Integer> pageSize,
             Optional<String> cursor,
@@ -54,6 +58,7 @@ public final class ListSystemPromptAnalysisRequest {
         this.status = status;
         this.startTimeFrom = startTimeFrom;
         this.startTimeTo = startTimeTo;
+        this.projectId = projectId;
         this.limit = limit;
         this.pageSize = pageSize;
         this.cursor = cursor;
@@ -101,6 +106,15 @@ public final class ListSystemPromptAnalysisRequest {
     }
 
     /**
+     * @return Filter to analyses started under any of the given HiddenLayer
+     * projects. Analyses without a project never match.
+     */
+    @JsonProperty("project_id")
+    public Optional<ListSystemPromptAnalysisRequestProjectId> getProjectId() {
+        return projectId;
+    }
+
+    /**
      * @return Maximum number of results to return
      */
     @JsonProperty("limit")
@@ -141,6 +155,7 @@ public final class ListSystemPromptAnalysisRequest {
                 && status.equals(other.status)
                 && startTimeFrom.equals(other.startTimeFrom)
                 && startTimeTo.equals(other.startTimeTo)
+                && projectId.equals(other.projectId)
                 && limit.equals(other.limit)
                 && pageSize.equals(other.pageSize)
                 && cursor.equals(other.cursor);
@@ -154,6 +169,7 @@ public final class ListSystemPromptAnalysisRequest {
                 this.status,
                 this.startTimeFrom,
                 this.startTimeTo,
+                this.projectId,
                 this.limit,
                 this.pageSize,
                 this.cursor);
@@ -180,6 +196,8 @@ public final class ListSystemPromptAnalysisRequest {
 
         private Optional<OffsetDateTime> startTimeTo = Optional.empty();
 
+        private Optional<ListSystemPromptAnalysisRequestProjectId> projectId = Optional.empty();
+
         private Optional<Integer> limit = Optional.empty();
 
         private Optional<Integer> pageSize = Optional.empty();
@@ -196,6 +214,7 @@ public final class ListSystemPromptAnalysisRequest {
             status(other.getStatus());
             startTimeFrom(other.getStartTimeFrom());
             startTimeTo(other.getStartTimeTo());
+            projectId(other.getProjectId());
             limit(other.getLimit());
             pageSize(other.getPageSize());
             cursor(other.getCursor());
@@ -273,6 +292,21 @@ public final class ListSystemPromptAnalysisRequest {
         }
 
         /**
+         * <p>Filter to analyses started under any of the given HiddenLayer
+         * projects. Analyses without a project never match.</p>
+         */
+        @JsonSetter(value = "project_id", nulls = Nulls.SKIP)
+        public Builder projectId(Optional<ListSystemPromptAnalysisRequestProjectId> projectId) {
+            this.projectId = projectId;
+            return this;
+        }
+
+        public Builder projectId(ListSystemPromptAnalysisRequestProjectId projectId) {
+            this.projectId = Optional.ofNullable(projectId);
+            return this;
+        }
+
+        /**
          * <p>Maximum number of results to return</p>
          */
         @JsonSetter(value = "limit", nulls = Nulls.SKIP)
@@ -321,6 +355,7 @@ public final class ListSystemPromptAnalysisRequest {
                     status,
                     startTimeFrom,
                     startTimeTo,
+                    projectId,
                     limit,
                     pageSize,
                     cursor,
@@ -334,6 +369,7 @@ public final class ListSystemPromptAnalysisRequest {
                     || key.equalsIgnoreCase("status")
                     || key.equalsIgnoreCase("start_time_from")
                     || key.equalsIgnoreCase("start_time_to")
+                    || key.equalsIgnoreCase("project_id")
                     || key.equalsIgnoreCase("limit")
                     || key.equalsIgnoreCase("page_size")
                     || key.equalsIgnoreCase("cursor")) {

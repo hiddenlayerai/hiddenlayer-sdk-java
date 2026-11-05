@@ -110,6 +110,10 @@ public class RawSystemPromptAnalysisClient {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "start_time_to", request.getStartTimeTo().get(), false);
         }
+        if (request.getProjectId().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "project_id", request.getProjectId().get(), false);
+        }
         if (request.getLimit().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "limit", request.getLimit().get(), false);

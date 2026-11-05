@@ -27,16 +27,20 @@ public final class StartSystemPromptWorkflowBody {
 
     private final Optional<Integer> numQuestions;
 
+    private final Optional<String> hlProjectId;
+
     private final Map<String, Object> additionalProperties;
 
     private StartSystemPromptWorkflowBody(
             String name,
             String systemPrompt,
             Optional<Integer> numQuestions,
+            Optional<String> hlProjectId,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.systemPrompt = systemPrompt;
         this.numQuestions = numQuestions;
+        this.hlProjectId = hlProjectId;
         this.additionalProperties = additionalProperties;
     }
 
@@ -64,6 +68,16 @@ public final class StartSystemPromptWorkflowBody {
         return numQuestions;
     }
 
+    /**
+     * @return HiddenLayer project UUID or alias to start the analysis under. The
+     * analysis stores the project's UUID. A project that does not exist
+     * for the tenant returns 422.
+     */
+    @JsonProperty("hl_project_id")
+    public Optional<String> getHlProjectId() {
+        return hlProjectId;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -78,12 +92,13 @@ public final class StartSystemPromptWorkflowBody {
     private boolean equalTo(StartSystemPromptWorkflowBody other) {
         return name.equals(other.name)
                 && systemPrompt.equals(other.systemPrompt)
-                && numQuestions.equals(other.numQuestions);
+                && numQuestions.equals(other.numQuestions)
+                && hlProjectId.equals(other.hlProjectId);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.name, this.systemPrompt, this.numQuestions);
+        return Objects.hash(this.name, this.systemPrompt, this.numQuestions, this.hlProjectId);
     }
 
     @java.lang.Override
@@ -124,6 +139,15 @@ public final class StartSystemPromptWorkflowBody {
         _FinalStage numQuestions(Optional<Integer> numQuestions);
 
         _FinalStage numQuestions(Integer numQuestions);
+
+        /**
+         * <p>HiddenLayer project UUID or alias to start the analysis under. The
+         * analysis stores the project's UUID. A project that does not exist
+         * for the tenant returns 422.</p>
+         */
+        _FinalStage hlProjectId(Optional<String> hlProjectId);
+
+        _FinalStage hlProjectId(String hlProjectId);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -131,6 +155,8 @@ public final class StartSystemPromptWorkflowBody {
         private String name;
 
         private String systemPrompt;
+
+        private Optional<String> hlProjectId = Optional.empty();
 
         private Optional<Integer> numQuestions = Optional.empty();
 
@@ -143,6 +169,7 @@ public final class StartSystemPromptWorkflowBody {
             name(other.getName());
             systemPrompt(other.getSystemPrompt());
             numQuestions(other.getNumQuestions());
+            hlProjectId(other.getHlProjectId());
             return this;
         }
 
@@ -169,6 +196,30 @@ public final class StartSystemPromptWorkflowBody {
         }
 
         /**
+         * <p>HiddenLayer project UUID or alias to start the analysis under. The
+         * analysis stores the project's UUID. A project that does not exist
+         * for the tenant returns 422.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage hlProjectId(String hlProjectId) {
+            this.hlProjectId = Optional.ofNullable(hlProjectId);
+            return this;
+        }
+
+        /**
+         * <p>HiddenLayer project UUID or alias to start the analysis under. The
+         * analysis stores the project's UUID. A project that does not exist
+         * for the tenant returns 422.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "hl_project_id", nulls = Nulls.SKIP)
+        public _FinalStage hlProjectId(Optional<String> hlProjectId) {
+            this.hlProjectId = hlProjectId;
+            return this;
+        }
+
+        /**
          * <p>Number of questions to generate</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
@@ -190,14 +241,16 @@ public final class StartSystemPromptWorkflowBody {
 
         @java.lang.Override
         public StartSystemPromptWorkflowBody build() {
-            return new StartSystemPromptWorkflowBody(name, systemPrompt, numQuestions, additionalProperties);
+            return new StartSystemPromptWorkflowBody(
+                    name, systemPrompt, numQuestions, hlProjectId, additionalProperties);
         }
 
         @JsonAnySetter
         private void putAdditionalPropertyFromJson(String key, Object value) {
             if (key.equalsIgnoreCase("name")
                     || key.equalsIgnoreCase("system_prompt")
-                    || key.equalsIgnoreCase("num_questions")) {
+                    || key.equalsIgnoreCase("num_questions")
+                    || key.equalsIgnoreCase("hl_project_id")) {
                 return;
             }
             this.additionalProperties.put(key, value);
