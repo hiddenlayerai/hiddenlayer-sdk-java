@@ -2326,6 +2326,9 @@ client.access().apiKeys().create(
     StaticApiKeyCreateRequest
         .builder()
         .name("ci-pipeline")
+        .permissions(
+            Arrays.asList("model:read", "model:write")
+        )
         .build()
 );
 ```
@@ -2350,7 +2353,7 @@ client.access().apiKeys().create(
 <dl>
 <dd>
 
-**permissions:** `Optional<List<String>>` — Each permission must be one the caller holds, outside the `credential` area: a key can never hold `credential:*` permissions. If omitted, the key gets every such permission, which may be none.
+**permissions:** `List<String>` — Each permission must be one the caller holds, outside the `credential` area: a key can never hold `credential:*` permissions.
     
 </dd>
 </dl>

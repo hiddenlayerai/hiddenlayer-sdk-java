@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.types.IStaticApiKeySecretCreateRequest;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,14 +29,14 @@ public final class StaticApiKeyCreateRequest implements IStaticApiKeySecretCreat
 
     private final String name;
 
-    private final Optional<List<String>> permissions;
+    private final List<String> permissions;
 
     private final Map<String, Object> additionalProperties;
 
     private StaticApiKeyCreateRequest(
             Optional<OffsetDateTime> expiresAt,
             String name,
-            Optional<List<String>> permissions,
+            List<String> permissions,
             Map<String, Object> additionalProperties) {
         this.expiresAt = expiresAt;
         this.name = name;
@@ -59,10 +60,10 @@ public final class StaticApiKeyCreateRequest implements IStaticApiKeySecretCreat
     }
 
     /**
-     * @return Each permission must be one the caller holds, outside the <code>credential</code> area: a key can never hold <code>credential:*</code> permissions. If omitted, the key gets every such permission, which may be none.
+     * @return Each permission must be one the caller holds, outside the <code>credential</code> area: a key can never hold <code>credential:*</code> permissions.
      */
     @JsonProperty("permissions")
-    public Optional<List<String>> getPermissions() {
+    public List<String> getPermissions() {
         return permissions;
     }
 
@@ -117,18 +118,20 @@ public final class StaticApiKeyCreateRequest implements IStaticApiKeySecretCreat
         _FinalStage expiresAt(OffsetDateTime expiresAt);
 
         /**
-         * <p>Each permission must be one the caller holds, outside the <code>credential</code> area: a key can never hold <code>credential:*</code> permissions. If omitted, the key gets every such permission, which may be none.</p>
+         * <p>Each permission must be one the caller holds, outside the <code>credential</code> area: a key can never hold <code>credential:*</code> permissions.</p>
          */
-        _FinalStage permissions(Optional<List<String>> permissions);
-
         _FinalStage permissions(List<String> permissions);
+
+        _FinalStage addPermissions(String permissions);
+
+        _FinalStage addAllPermissions(List<String> permissions);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements NameStage, _FinalStage {
         private String name;
 
-        private Optional<List<String>> permissions = Optional.empty();
+        private List<String> permissions = new ArrayList<>();
 
         private Optional<OffsetDateTime> expiresAt = Optional.empty();
 
@@ -152,22 +155,37 @@ public final class StaticApiKeyCreateRequest implements IStaticApiKeySecretCreat
         }
 
         /**
-         * <p>Each permission must be one the caller holds, outside the <code>credential</code> area: a key can never hold <code>credential:*</code> permissions. If omitted, the key gets every such permission, which may be none.</p>
+         * <p>Each permission must be one the caller holds, outside the <code>credential</code> area: a key can never hold <code>credential:*</code> permissions.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage permissions(List<String> permissions) {
-            this.permissions = Optional.ofNullable(permissions);
+        public _FinalStage addAllPermissions(List<String> permissions) {
+            if (permissions != null) {
+                this.permissions.addAll(permissions);
+            }
             return this;
         }
 
         /**
-         * <p>Each permission must be one the caller holds, outside the <code>credential</code> area: a key can never hold <code>credential:*</code> permissions. If omitted, the key gets every such permission, which may be none.</p>
+         * <p>Each permission must be one the caller holds, outside the <code>credential</code> area: a key can never hold <code>credential:*</code> permissions.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage addPermissions(String permissions) {
+            this.permissions.add(permissions);
+            return this;
+        }
+
+        /**
+         * <p>Each permission must be one the caller holds, outside the <code>credential</code> area: a key can never hold <code>credential:*</code> permissions.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "permissions", nulls = Nulls.SKIP)
-        public _FinalStage permissions(Optional<List<String>> permissions) {
-            this.permissions = permissions;
+        public _FinalStage permissions(List<String> permissions) {
+            this.permissions.clear();
+            if (permissions != null) {
+                this.permissions.addAll(permissions);
+            }
             return this;
         }
 
