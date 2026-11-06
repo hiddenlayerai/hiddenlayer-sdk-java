@@ -29,6 +29,7 @@ import com.hiddenlayer.api.resources.scans.ScansClient;
 import com.hiddenlayer.api.resources.sensors.SensorsClient;
 import com.hiddenlayer.api.resources.ssointegrations.SsoIntegrationsClient;
 import com.hiddenlayer.api.resources.supplychain.SupplyChainClient;
+import com.hiddenlayer.api.resources.triage.TriageClient;
 import com.hiddenlayer.api.resources.users.UsersClient;
 import java.util.function.Supplier;
 
@@ -85,6 +86,8 @@ public class HiddenLayer implements AutoCloseable {
 
     protected final Supplier<SupplyChainClient> supplyChainClient;
 
+    protected final Supplier<TriageClient> triageClient;
+
     public HiddenLayer(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.eulaResponsesClient = Suppliers.memoize(() -> new EulaResponsesClient(clientOptions));
@@ -112,6 +115,7 @@ public class HiddenLayer implements AutoCloseable {
         this.scanIndicesClient = Suppliers.memoize(() -> new ScanIndicesClient(clientOptions));
         this.scansClient = Suppliers.memoize(() -> new ScansClient(clientOptions));
         this.supplyChainClient = Suppliers.memoize(() -> new SupplyChainClient(clientOptions));
+        this.triageClient = Suppliers.memoize(() -> new TriageClient(clientOptions));
     }
 
     public EulaResponsesClient eulaResponses() {
@@ -212,6 +216,10 @@ public class HiddenLayer implements AutoCloseable {
 
     public SupplyChainClient supplyChain() {
         return this.supplyChainClient.get();
+    }
+
+    public TriageClient triage() {
+        return this.triageClient.get();
     }
 
     /**

@@ -25,14 +25,14 @@ public final class InteractionEvaluationDetection {
 
     private final String ruleName;
 
-    private final InteractionEvaluationDetectionRiskLevel riskLevel;
+    private final TriageSeverity riskLevel;
 
     private final Map<String, Object> additionalProperties;
 
     private InteractionEvaluationDetection(
             Optional<String> ruleId,
             String ruleName,
-            InteractionEvaluationDetectionRiskLevel riskLevel,
+            TriageSeverity riskLevel,
             Map<String, Object> additionalProperties) {
         this.ruleId = ruleId;
         this.ruleName = ruleName;
@@ -60,7 +60,7 @@ public final class InteractionEvaluationDetection {
      * @return Categorical risk level for this detection.
      */
     @JsonProperty("risk_level")
-    public InteractionEvaluationDetectionRiskLevel getRiskLevel() {
+    public TriageSeverity getRiskLevel() {
         return riskLevel;
     }
 
@@ -106,7 +106,7 @@ public final class InteractionEvaluationDetection {
         /**
          * <p>Categorical risk level for this detection.</p>
          */
-        _FinalStage riskLevel(@NotNull InteractionEvaluationDetectionRiskLevel riskLevel);
+        _FinalStage riskLevel(@NotNull TriageSeverity riskLevel);
     }
 
     public interface _FinalStage {
@@ -128,7 +128,7 @@ public final class InteractionEvaluationDetection {
     public static final class Builder implements RuleNameStage, RiskLevelStage, _FinalStage {
         private String ruleName;
 
-        private InteractionEvaluationDetectionRiskLevel riskLevel;
+        private TriageSeverity riskLevel;
 
         private Optional<String> ruleId = Optional.empty();
 
@@ -161,7 +161,7 @@ public final class InteractionEvaluationDetection {
          */
         @java.lang.Override
         @JsonSetter("risk_level")
-        public _FinalStage riskLevel(@NotNull InteractionEvaluationDetectionRiskLevel riskLevel) {
+        public _FinalStage riskLevel(@NotNull TriageSeverity riskLevel) {
             this.riskLevel = Objects.requireNonNull(riskLevel, "riskLevel must not be null");
             return this;
         }

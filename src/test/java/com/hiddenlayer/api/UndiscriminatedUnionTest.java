@@ -8,9 +8,30 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.types.FileDetailsV3FileTypeDetails;
 import com.hiddenlayer.api.types.GgufFileAttributes;
+import com.hiddenlayer.api.types.TriageIssuePatch;
+import com.hiddenlayer.api.types.TriageIssuePatchSeverity;
+import com.hiddenlayer.api.types.TriageIssuePatchStatus;
 import org.junit.jupiter.api.Test;
 
 public final class UndiscriminatedUnionTest {
+    @Test
+    public void testTriageIssuePatch_TriageIssuePatchStatus() throws Exception {
+        String json = "{\"status\":{}}";
+        TriageIssuePatch union = ObjectMappers.JSON_MAPPER.readValue(json, TriageIssuePatch.class);
+        assertTrue(
+                union.get() instanceof TriageIssuePatchStatus,
+                "Expected TriageIssuePatchStatus but got different variant");
+    }
+
+    @Test
+    public void testTriageIssuePatch_TriageIssuePatchSeverity() throws Exception {
+        String json = "{\"severity\":{}}";
+        TriageIssuePatch union = ObjectMappers.JSON_MAPPER.readValue(json, TriageIssuePatch.class);
+        assertTrue(
+                union.get() instanceof TriageIssuePatchSeverity,
+                "Expected TriageIssuePatchSeverity but got different variant");
+    }
+
     @Test
     public void testFileDetailsV3FileTypeDetails_GgufFileAttributes() throws Exception {
         String json = "{\"subtype\":[]}";

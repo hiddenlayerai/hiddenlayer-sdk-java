@@ -6,24 +6,20 @@ package com.hiddenlayer.api.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public final class InteractionEvaluationDetectionRiskLevel {
-    public static final InteractionEvaluationDetectionRiskLevel LOW =
-            new InteractionEvaluationDetectionRiskLevel(Value.LOW, "LOW");
+public final class TriageSeverity {
+    public static final TriageSeverity LOW = new TriageSeverity(Value.LOW, "LOW");
 
-    public static final InteractionEvaluationDetectionRiskLevel HIGH =
-            new InteractionEvaluationDetectionRiskLevel(Value.HIGH, "HIGH");
+    public static final TriageSeverity HIGH = new TriageSeverity(Value.HIGH, "HIGH");
 
-    public static final InteractionEvaluationDetectionRiskLevel MEDIUM =
-            new InteractionEvaluationDetectionRiskLevel(Value.MEDIUM, "MEDIUM");
+    public static final TriageSeverity CRITICAL = new TriageSeverity(Value.CRITICAL, "CRITICAL");
 
-    public static final InteractionEvaluationDetectionRiskLevel CRITICAL =
-            new InteractionEvaluationDetectionRiskLevel(Value.CRITICAL, "CRITICAL");
+    public static final TriageSeverity MEDIUM = new TriageSeverity(Value.MEDIUM, "MEDIUM");
 
     private final Value value;
 
     private final String string;
 
-    InteractionEvaluationDetectionRiskLevel(Value value, String string) {
+    TriageSeverity(Value value, String string) {
         this.value = value;
         this.string = string;
     }
@@ -41,8 +37,7 @@ public final class InteractionEvaluationDetectionRiskLevel {
     @java.lang.Override
     public boolean equals(Object other) {
         return (this == other)
-                || (other instanceof InteractionEvaluationDetectionRiskLevel
-                        && this.string.equals(((InteractionEvaluationDetectionRiskLevel) other).string));
+                || (other instanceof TriageSeverity && this.string.equals(((TriageSeverity) other).string));
     }
 
     @java.lang.Override
@@ -56,10 +51,10 @@ public final class InteractionEvaluationDetectionRiskLevel {
                 return visitor.visitLow();
             case HIGH:
                 return visitor.visitHigh();
-            case MEDIUM:
-                return visitor.visitMedium();
             case CRITICAL:
                 return visitor.visitCritical();
+            case MEDIUM:
+                return visitor.visitMedium();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -67,41 +62,41 @@ public final class InteractionEvaluationDetectionRiskLevel {
     }
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static InteractionEvaluationDetectionRiskLevel valueOf(String value) {
+    public static TriageSeverity valueOf(String value) {
         switch (value) {
             case "LOW":
                 return LOW;
             case "HIGH":
                 return HIGH;
-            case "MEDIUM":
-                return MEDIUM;
             case "CRITICAL":
                 return CRITICAL;
+            case "MEDIUM":
+                return MEDIUM;
             default:
-                return new InteractionEvaluationDetectionRiskLevel(Value.UNKNOWN, value);
+                return new TriageSeverity(Value.UNKNOWN, value);
         }
     }
 
     public enum Value {
-        LOW,
-
-        MEDIUM,
+        CRITICAL,
 
         HIGH,
 
-        CRITICAL,
+        MEDIUM,
+
+        LOW,
 
         UNKNOWN
     }
 
     public interface Visitor<T> {
-        T visitLow();
-
-        T visitMedium();
+        T visitCritical();
 
         T visitHigh();
 
-        T visitCritical();
+        T visitMedium();
+
+        T visitLow();
 
         T visitUnknown(String unknownType);
     }

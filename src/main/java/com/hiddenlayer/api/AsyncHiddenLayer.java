@@ -29,6 +29,7 @@ import com.hiddenlayer.api.resources.scans.AsyncScansClient;
 import com.hiddenlayer.api.resources.sensors.AsyncSensorsClient;
 import com.hiddenlayer.api.resources.ssointegrations.AsyncSsoIntegrationsClient;
 import com.hiddenlayer.api.resources.supplychain.AsyncSupplyChainClient;
+import com.hiddenlayer.api.resources.triage.AsyncTriageClient;
 import com.hiddenlayer.api.resources.users.AsyncUsersClient;
 import java.util.function.Supplier;
 
@@ -85,6 +86,8 @@ public class AsyncHiddenLayer implements AutoCloseable {
 
     protected final Supplier<AsyncSupplyChainClient> supplyChainClient;
 
+    protected final Supplier<AsyncTriageClient> triageClient;
+
     public AsyncHiddenLayer(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.eulaResponsesClient = Suppliers.memoize(() -> new AsyncEulaResponsesClient(clientOptions));
@@ -112,6 +115,7 @@ public class AsyncHiddenLayer implements AutoCloseable {
         this.scanIndicesClient = Suppliers.memoize(() -> new AsyncScanIndicesClient(clientOptions));
         this.scansClient = Suppliers.memoize(() -> new AsyncScansClient(clientOptions));
         this.supplyChainClient = Suppliers.memoize(() -> new AsyncSupplyChainClient(clientOptions));
+        this.triageClient = Suppliers.memoize(() -> new AsyncTriageClient(clientOptions));
     }
 
     public AsyncEulaResponsesClient eulaResponses() {
@@ -212,6 +216,10 @@ public class AsyncHiddenLayer implements AutoCloseable {
 
     public AsyncSupplyChainClient supplyChain() {
         return this.supplyChainClient.get();
+    }
+
+    public AsyncTriageClient triage() {
+        return this.triageClient.get();
     }
 
     /**
