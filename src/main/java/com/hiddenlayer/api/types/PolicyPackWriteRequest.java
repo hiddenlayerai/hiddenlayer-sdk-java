@@ -89,7 +89,7 @@ public final class PolicyPackWriteRequest {
     }
 
     /**
-     * @return Settings categories to apply, identified by settings_id, using the existing ruleset settings payload format
+     * @return Settings categories to apply, identified by settings_id, using the existing ruleset settings payload format. The array must have one <code>aidr-genai</code> entry.
      */
     @JsonProperty("settings")
     public List<PolicyPackWriteRequestSettingsItem> getSettings() {
@@ -170,7 +170,7 @@ public final class PolicyPackWriteRequest {
         _FinalStage redact(RedactConfig redact);
 
         /**
-         * <p>Settings categories to apply, identified by settings_id, using the existing ruleset settings payload format</p>
+         * <p>Settings categories to apply, identified by settings_id, using the existing ruleset settings payload format. The array must have one <code>aidr-genai</code> entry.</p>
          */
         _FinalStage settings(List<PolicyPackWriteRequestSettingsItem> settings);
 
@@ -220,7 +220,7 @@ public final class PolicyPackWriteRequest {
         }
 
         /**
-         * <p>Settings categories to apply, identified by settings_id, using the existing ruleset settings payload format</p>
+         * <p>Settings categories to apply, identified by settings_id, using the existing ruleset settings payload format. The array must have one <code>aidr-genai</code> entry.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -232,7 +232,7 @@ public final class PolicyPackWriteRequest {
         }
 
         /**
-         * <p>Settings categories to apply, identified by settings_id, using the existing ruleset settings payload format</p>
+         * <p>Settings categories to apply, identified by settings_id, using the existing ruleset settings payload format. The array must have one <code>aidr-genai</code> entry.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -242,7 +242,7 @@ public final class PolicyPackWriteRequest {
         }
 
         /**
-         * <p>Settings categories to apply, identified by settings_id, using the existing ruleset settings payload format</p>
+         * <p>Settings categories to apply, identified by settings_id, using the existing ruleset settings payload format. The array must have one <code>aidr-genai</code> entry.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "settings", nulls = Nulls.SKIP)

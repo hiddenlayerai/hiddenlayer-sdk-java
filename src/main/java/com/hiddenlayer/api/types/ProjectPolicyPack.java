@@ -29,6 +29,8 @@ public final class ProjectPolicyPack {
 
     private final PolicyPackType type;
 
+    private final boolean isBuiltIn;
+
     private final int blockRuleCount;
 
     private final int detectRuleCount;
@@ -42,6 +44,7 @@ public final class ProjectPolicyPack {
             String name,
             Optional<String> description,
             PolicyPackType type,
+            boolean isBuiltIn,
             int blockRuleCount,
             int detectRuleCount,
             int redactEntityTypeCount,
@@ -50,6 +53,7 @@ public final class ProjectPolicyPack {
         this.name = name;
         this.description = description;
         this.type = type;
+        this.isBuiltIn = isBuiltIn;
         this.blockRuleCount = blockRuleCount;
         this.detectRuleCount = detectRuleCount;
         this.redactEntityTypeCount = redactEntityTypeCount;
@@ -77,6 +81,14 @@ public final class ProjectPolicyPack {
     @JsonProperty("type")
     public PolicyPackType getType() {
         return type;
+    }
+
+    /**
+     * @return True when the policy pack is provided by HiddenLayer to all tenants. When true, pack is read-only.
+     */
+    @JsonProperty("is_built_in")
+    public boolean getIsBuiltIn() {
+        return isBuiltIn;
     }
 
     /**
@@ -119,6 +131,7 @@ public final class ProjectPolicyPack {
                 && name.equals(other.name)
                 && description.equals(other.description)
                 && type.equals(other.type)
+                && isBuiltIn == other.isBuiltIn
                 && blockRuleCount == other.blockRuleCount
                 && detectRuleCount == other.detectRuleCount
                 && redactEntityTypeCount == other.redactEntityTypeCount;
@@ -131,6 +144,7 @@ public final class ProjectPolicyPack {
                 this.name,
                 this.description,
                 this.type,
+                this.isBuiltIn,
                 this.blockRuleCount,
                 this.detectRuleCount,
                 this.redactEntityTypeCount);
@@ -159,7 +173,14 @@ public final class ProjectPolicyPack {
         /**
          * <p>PROFILE and APPLICATION packs are HiddenLayer-authored; APPLICATION packs are tuned to an application type; CUSTOM packs are tenant-authored</p>
          */
-        BlockRuleCountStage type(@NotNull PolicyPackType type);
+        IsBuiltInStage type(@NotNull PolicyPackType type);
+    }
+
+    public interface IsBuiltInStage {
+        /**
+         * <p>True when the policy pack is provided by HiddenLayer to all tenants. When true, pack is read-only.</p>
+         */
+        BlockRuleCountStage isBuiltIn(boolean isBuiltIn);
     }
 
     public interface BlockRuleCountStage {
@@ -200,6 +221,7 @@ public final class ProjectPolicyPack {
             implements IdStage,
                     NameStage,
                     TypeStage,
+                    IsBuiltInStage,
                     BlockRuleCountStage,
                     DetectRuleCountStage,
                     RedactEntityTypeCountStage,
@@ -209,6 +231,8 @@ public final class ProjectPolicyPack {
         private String name;
 
         private PolicyPackType type;
+
+        private boolean isBuiltIn;
 
         private int blockRuleCount;
 
@@ -228,6 +252,7 @@ public final class ProjectPolicyPack {
             name(other.getName());
             description(other.getDescription());
             type(other.getType());
+            isBuiltIn(other.getIsBuiltIn());
             blockRuleCount(other.getBlockRuleCount());
             detectRuleCount(other.getDetectRuleCount());
             redactEntityTypeCount(other.getRedactEntityTypeCount());
@@ -254,8 +279,19 @@ public final class ProjectPolicyPack {
          */
         @java.lang.Override
         @JsonSetter("type")
-        public BlockRuleCountStage type(@NotNull PolicyPackType type) {
+        public IsBuiltInStage type(@NotNull PolicyPackType type) {
             this.type = Objects.requireNonNull(type, "type must not be null");
+            return this;
+        }
+
+        /**
+         * <p>True when the policy pack is provided by HiddenLayer to all tenants. When true, pack is read-only.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        @JsonSetter("is_built_in")
+        public BlockRuleCountStage isBuiltIn(boolean isBuiltIn) {
+            this.isBuiltIn = isBuiltIn;
             return this;
         }
 
@@ -312,6 +348,7 @@ public final class ProjectPolicyPack {
                     name,
                     description,
                     type,
+                    isBuiltIn,
                     blockRuleCount,
                     detectRuleCount,
                     redactEntityTypeCount,
@@ -324,6 +361,7 @@ public final class ProjectPolicyPack {
                     || key.equalsIgnoreCase("name")
                     || key.equalsIgnoreCase("description")
                     || key.equalsIgnoreCase("type")
+                    || key.equalsIgnoreCase("is_built_in")
                     || key.equalsIgnoreCase("block_rule_count")
                     || key.equalsIgnoreCase("detect_rule_count")
                     || key.equalsIgnoreCase("redact_entity_type_count")) {

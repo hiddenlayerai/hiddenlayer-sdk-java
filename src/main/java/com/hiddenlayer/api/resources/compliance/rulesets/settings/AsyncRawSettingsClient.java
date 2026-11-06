@@ -15,6 +15,7 @@ import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
 import com.hiddenlayer.api.errors.BadRequestError;
+import com.hiddenlayer.api.errors.ConflictError;
 import com.hiddenlayer.api.errors.InternalServerError;
 import com.hiddenlayer.api.errors.NotFoundError;
 import com.hiddenlayer.api.errors.PreconditionFailedError;
@@ -581,6 +582,11 @@ public class AsyncRawSettingsClient {
                                 return;
                             case 404:
                                 future.completeExceptionally(new NotFoundError(
+                                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
+                                        response));
+                                return;
+                            case 409:
+                                future.completeExceptionally(new ConflictError(
                                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class),
                                         response));
                                 return;

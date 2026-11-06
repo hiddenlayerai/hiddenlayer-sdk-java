@@ -15,6 +15,7 @@ import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
 import com.hiddenlayer.api.errors.BadRequestError;
+import com.hiddenlayer.api.errors.ConflictError;
 import com.hiddenlayer.api.errors.InternalServerError;
 import com.hiddenlayer.api.errors.NotFoundError;
 import com.hiddenlayer.api.errors.PreconditionFailedError;
@@ -451,6 +452,9 @@ public class RawSettingsClient {
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 404:
                         throw new NotFoundError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 409:
+                        throw new ConflictError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 500:
                         throw new InternalServerError(

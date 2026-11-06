@@ -32,6 +32,8 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
 
     private final Optional<PolicyPackType> type;
 
+    private final Optional<Boolean> isBuiltIn;
+
     private final Optional<Integer> blockRuleCount;
 
     private final Optional<Integer> detectRuleCount;
@@ -67,6 +69,7 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
             String name,
             Optional<String> description,
             Optional<PolicyPackType> type,
+            Optional<Boolean> isBuiltIn,
             Optional<Integer> blockRuleCount,
             Optional<Integer> detectRuleCount,
             Optional<Integer> redactEntityTypeCount,
@@ -86,6 +89,7 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
         this.name = name;
         this.description = description;
         this.type = type;
+        this.isBuiltIn = isBuiltIn;
         this.blockRuleCount = blockRuleCount;
         this.detectRuleCount = detectRuleCount;
         this.redactEntityTypeCount = redactEntityTypeCount;
@@ -131,6 +135,15 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
     }
 
     /**
+     * @return True when the policy pack is provided by HiddenLayer to all tenants. When true, pack is read-only.
+     */
+    @JsonProperty("is_built_in")
+    @java.lang.Override
+    public Optional<Boolean> getIsBuiltIn() {
+        return isBuiltIn;
+    }
+
+    /**
      * @return Number of detection rules in <code>block</code>
      */
     @JsonProperty("block_rule_count")
@@ -149,7 +162,7 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
     }
 
     /**
-     * @return Number of entity types in <code>redact</code>
+     * @return Number of entity types that are redacted.
      */
     @JsonProperty("redact_entity_type_count")
     @java.lang.Override
@@ -167,7 +180,7 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
     }
 
     /**
-     * @return Rules added individually, in display order. For the built-in Default pack, which wraps the tenant's existing policy, this lists that policy's current rules.
+     * @return Rules added individually, in order.
      */
     @JsonProperty("individual_rules")
     @java.lang.Override
@@ -266,6 +279,7 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
                 && name.equals(other.name)
                 && description.equals(other.description)
                 && type.equals(other.type)
+                && isBuiltIn.equals(other.isBuiltIn)
                 && blockRuleCount.equals(other.blockRuleCount)
                 && detectRuleCount.equals(other.detectRuleCount)
                 && redactEntityTypeCount.equals(other.redactEntityTypeCount)
@@ -289,6 +303,7 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
                 this.name,
                 this.description,
                 this.type,
+                this.isBuiltIn,
                 this.blockRuleCount,
                 this.detectRuleCount,
                 this.redactEntityTypeCount,
@@ -343,6 +358,13 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
         _FinalStage type(PolicyPackType type);
 
         /**
+         * <p>True when the policy pack is provided by HiddenLayer to all tenants. When true, pack is read-only.</p>
+         */
+        _FinalStage isBuiltIn(Optional<Boolean> isBuiltIn);
+
+        _FinalStage isBuiltIn(Boolean isBuiltIn);
+
+        /**
          * <p>Number of detection rules in <code>block</code></p>
          */
         _FinalStage blockRuleCount(Optional<Integer> blockRuleCount);
@@ -357,7 +379,7 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
         _FinalStage detectRuleCount(Integer detectRuleCount);
 
         /**
-         * <p>Number of entity types in <code>redact</code></p>
+         * <p>Number of entity types that are redacted.</p>
          */
         _FinalStage redactEntityTypeCount(Optional<Integer> redactEntityTypeCount);
 
@@ -373,7 +395,7 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
         _FinalStage addAllRulePackIds(List<String> rulePackIds);
 
         /**
-         * <p>Rules added individually, in display order. For the built-in Default pack, which wraps the tenant's existing policy, this lists that policy's current rules.</p>
+         * <p>Rules added individually, in order.</p>
          */
         _FinalStage individualRules(List<PolicyPackRuleAssignment> individualRules);
 
@@ -471,6 +493,8 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
 
         private Optional<Integer> blockRuleCount = Optional.empty();
 
+        private Optional<Boolean> isBuiltIn = Optional.empty();
+
         private Optional<PolicyPackType> type = Optional.empty();
 
         private Optional<String> description = Optional.empty();
@@ -487,6 +511,7 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
             name(other.getName());
             description(other.getDescription());
             type(other.getType());
+            isBuiltIn(other.getIsBuiltIn());
             blockRuleCount(other.getBlockRuleCount());
             detectRuleCount(other.getDetectRuleCount());
             redactEntityTypeCount(other.getRedactEntityTypeCount());
@@ -682,7 +707,7 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
         }
 
         /**
-         * <p>Rules added individually, in display order. For the built-in Default pack, which wraps the tenant's existing policy, this lists that policy's current rules.</p>
+         * <p>Rules added individually, in order.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -694,7 +719,7 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
         }
 
         /**
-         * <p>Rules added individually, in display order. For the built-in Default pack, which wraps the tenant's existing policy, this lists that policy's current rules.</p>
+         * <p>Rules added individually, in order.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -704,7 +729,7 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
         }
 
         /**
-         * <p>Rules added individually, in display order. For the built-in Default pack, which wraps the tenant's existing policy, this lists that policy's current rules.</p>
+         * <p>Rules added individually, in order.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "individual_rules", nulls = Nulls.SKIP)
@@ -752,7 +777,7 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
         }
 
         /**
-         * <p>Number of entity types in <code>redact</code></p>
+         * <p>Number of entity types that are redacted.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -762,7 +787,7 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
         }
 
         /**
-         * <p>Number of entity types in <code>redact</code></p>
+         * <p>Number of entity types that are redacted.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "redact_entity_type_count", nulls = Nulls.SKIP)
@@ -808,6 +833,26 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
         @JsonSetter(value = "block_rule_count", nulls = Nulls.SKIP)
         public _FinalStage blockRuleCount(Optional<Integer> blockRuleCount) {
             this.blockRuleCount = blockRuleCount;
+            return this;
+        }
+
+        /**
+         * <p>True when the policy pack is provided by HiddenLayer to all tenants. When true, pack is read-only.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage isBuiltIn(Boolean isBuiltIn) {
+            this.isBuiltIn = Optional.ofNullable(isBuiltIn);
+            return this;
+        }
+
+        /**
+         * <p>True when the policy pack is provided by HiddenLayer to all tenants. When true, pack is read-only.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "is_built_in", nulls = Nulls.SKIP)
+        public _FinalStage isBuiltIn(Optional<Boolean> isBuiltIn) {
+            this.isBuiltIn = isBuiltIn;
             return this;
         }
 
@@ -857,6 +902,7 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
                     name,
                     description,
                     type,
+                    isBuiltIn,
                     blockRuleCount,
                     detectRuleCount,
                     redactEntityTypeCount,
@@ -880,6 +926,7 @@ public final class PolicyPackSummary implements IPolicyPackSummary {
                     || key.equalsIgnoreCase("name")
                     || key.equalsIgnoreCase("description")
                     || key.equalsIgnoreCase("type")
+                    || key.equalsIgnoreCase("is_built_in")
                     || key.equalsIgnoreCase("block_rule_count")
                     || key.equalsIgnoreCase("detect_rule_count")
                     || key.equalsIgnoreCase("redact_entity_type_count")

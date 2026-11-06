@@ -32,6 +32,8 @@ public final class PolicyPack implements IPolicyPackSummary {
 
     private final Optional<PolicyPackType> type;
 
+    private final Optional<Boolean> isBuiltIn;
+
     private final Optional<Integer> blockRuleCount;
 
     private final Optional<Integer> detectRuleCount;
@@ -73,6 +75,7 @@ public final class PolicyPack implements IPolicyPackSummary {
             String name,
             Optional<String> description,
             Optional<PolicyPackType> type,
+            Optional<Boolean> isBuiltIn,
             Optional<Integer> blockRuleCount,
             Optional<Integer> detectRuleCount,
             Optional<Integer> redactEntityTypeCount,
@@ -95,6 +98,7 @@ public final class PolicyPack implements IPolicyPackSummary {
         this.name = name;
         this.description = description;
         this.type = type;
+        this.isBuiltIn = isBuiltIn;
         this.blockRuleCount = blockRuleCount;
         this.detectRuleCount = detectRuleCount;
         this.redactEntityTypeCount = redactEntityTypeCount;
@@ -143,6 +147,15 @@ public final class PolicyPack implements IPolicyPackSummary {
     }
 
     /**
+     * @return True when the policy pack is provided by HiddenLayer to all tenants. When true, pack is read-only.
+     */
+    @JsonProperty("is_built_in")
+    @java.lang.Override
+    public Optional<Boolean> getIsBuiltIn() {
+        return isBuiltIn;
+    }
+
+    /**
      * @return Number of detection rules in <code>block</code>
      */
     @JsonProperty("block_rule_count")
@@ -161,7 +174,7 @@ public final class PolicyPack implements IPolicyPackSummary {
     }
 
     /**
-     * @return Number of entity types in <code>redact</code>
+     * @return Number of entity types that are redacted.
      */
     @JsonProperty("redact_entity_type_count")
     @java.lang.Override
@@ -179,7 +192,7 @@ public final class PolicyPack implements IPolicyPackSummary {
     }
 
     /**
-     * @return Rules added individually, in display order. For the built-in Default pack, which wraps the tenant's existing policy, this lists that policy's current rules.
+     * @return Rules added individually, in order.
      */
     @JsonProperty("individual_rules")
     @java.lang.Override
@@ -263,7 +276,8 @@ public final class PolicyPack implements IPolicyPackSummary {
     }
 
     /**
-     * @return Settings categories in the same format returned by the ruleset settings endpoints
+     * @return The settings categories that are stored for the ruleset of the pack. The array always has one <code>aidr-genai</code> entry.
+     * When <code>is_built_in</code> is true, these are uneditable. Custom entities included under <code>personally_identifiable_information</code> are detected only, not redacted.
      */
     @JsonProperty("settings")
     public List<SettingsDetailsWithSchema> getSettings() {
@@ -302,6 +316,7 @@ public final class PolicyPack implements IPolicyPackSummary {
                 && name.equals(other.name)
                 && description.equals(other.description)
                 && type.equals(other.type)
+                && isBuiltIn.equals(other.isBuiltIn)
                 && blockRuleCount.equals(other.blockRuleCount)
                 && detectRuleCount.equals(other.detectRuleCount)
                 && redactEntityTypeCount.equals(other.redactEntityTypeCount)
@@ -328,6 +343,7 @@ public final class PolicyPack implements IPolicyPackSummary {
                 this.name,
                 this.description,
                 this.type,
+                this.isBuiltIn,
                 this.blockRuleCount,
                 this.detectRuleCount,
                 this.redactEntityTypeCount,
@@ -385,6 +401,13 @@ public final class PolicyPack implements IPolicyPackSummary {
         _FinalStage type(PolicyPackType type);
 
         /**
+         * <p>True when the policy pack is provided by HiddenLayer to all tenants. When true, pack is read-only.</p>
+         */
+        _FinalStage isBuiltIn(Optional<Boolean> isBuiltIn);
+
+        _FinalStage isBuiltIn(Boolean isBuiltIn);
+
+        /**
          * <p>Number of detection rules in <code>block</code></p>
          */
         _FinalStage blockRuleCount(Optional<Integer> blockRuleCount);
@@ -399,7 +422,7 @@ public final class PolicyPack implements IPolicyPackSummary {
         _FinalStage detectRuleCount(Integer detectRuleCount);
 
         /**
-         * <p>Number of entity types in <code>redact</code></p>
+         * <p>Number of entity types that are redacted.</p>
          */
         _FinalStage redactEntityTypeCount(Optional<Integer> redactEntityTypeCount);
 
@@ -415,7 +438,7 @@ public final class PolicyPack implements IPolicyPackSummary {
         _FinalStage addAllRulePackIds(List<String> rulePackIds);
 
         /**
-         * <p>Rules added individually, in display order. For the built-in Default pack, which wraps the tenant's existing policy, this lists that policy's current rules.</p>
+         * <p>Rules added individually, in order.</p>
          */
         _FinalStage individualRules(List<PolicyPackRuleAssignment> individualRules);
 
@@ -481,7 +504,8 @@ public final class PolicyPack implements IPolicyPackSummary {
         _FinalStage updatedBy(String updatedBy);
 
         /**
-         * <p>Settings categories in the same format returned by the ruleset settings endpoints</p>
+         * <p>The settings categories that are stored for the ruleset of the pack. The array always has one <code>aidr-genai</code> entry.
+         * When <code>is_built_in</code> is true, these are uneditable. Custom entities included under <code>personally_identifiable_information</code> are detected only, not redacted.</p>
          */
         _FinalStage settings(List<SettingsDetailsWithSchema> settings);
 
@@ -542,6 +566,8 @@ public final class PolicyPack implements IPolicyPackSummary {
 
         private Optional<Integer> blockRuleCount = Optional.empty();
 
+        private Optional<Boolean> isBuiltIn = Optional.empty();
+
         private Optional<PolicyPackType> type = Optional.empty();
 
         private Optional<String> description = Optional.empty();
@@ -558,6 +584,7 @@ public final class PolicyPack implements IPolicyPackSummary {
             name(other.getName());
             description(other.getDescription());
             type(other.getType());
+            isBuiltIn(other.getIsBuiltIn());
             blockRuleCount(other.getBlockRuleCount());
             detectRuleCount(other.getDetectRuleCount());
             redactEntityTypeCount(other.getRedactEntityTypeCount());
@@ -630,7 +657,8 @@ public final class PolicyPack implements IPolicyPackSummary {
         }
 
         /**
-         * <p>Settings categories in the same format returned by the ruleset settings endpoints</p>
+         * <p>The settings categories that are stored for the ruleset of the pack. The array always has one <code>aidr-genai</code> entry.
+         * When <code>is_built_in</code> is true, these are uneditable. Custom entities included under <code>personally_identifiable_information</code> are detected only, not redacted.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -642,7 +670,8 @@ public final class PolicyPack implements IPolicyPackSummary {
         }
 
         /**
-         * <p>Settings categories in the same format returned by the ruleset settings endpoints</p>
+         * <p>The settings categories that are stored for the ruleset of the pack. The array always has one <code>aidr-genai</code> entry.
+         * When <code>is_built_in</code> is true, these are uneditable. Custom entities included under <code>personally_identifiable_information</code> are detected only, not redacted.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -652,7 +681,8 @@ public final class PolicyPack implements IPolicyPackSummary {
         }
 
         /**
-         * <p>Settings categories in the same format returned by the ruleset settings endpoints</p>
+         * <p>The settings categories that are stored for the ruleset of the pack. The array always has one <code>aidr-genai</code> entry.
+         * When <code>is_built_in</code> is true, these are uneditable. Custom entities included under <code>personally_identifiable_information</code> are detected only, not redacted.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "settings", nulls = Nulls.SKIP)
@@ -831,7 +861,7 @@ public final class PolicyPack implements IPolicyPackSummary {
         }
 
         /**
-         * <p>Rules added individually, in display order. For the built-in Default pack, which wraps the tenant's existing policy, this lists that policy's current rules.</p>
+         * <p>Rules added individually, in order.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -843,7 +873,7 @@ public final class PolicyPack implements IPolicyPackSummary {
         }
 
         /**
-         * <p>Rules added individually, in display order. For the built-in Default pack, which wraps the tenant's existing policy, this lists that policy's current rules.</p>
+         * <p>Rules added individually, in order.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -853,7 +883,7 @@ public final class PolicyPack implements IPolicyPackSummary {
         }
 
         /**
-         * <p>Rules added individually, in display order. For the built-in Default pack, which wraps the tenant's existing policy, this lists that policy's current rules.</p>
+         * <p>Rules added individually, in order.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "individual_rules", nulls = Nulls.SKIP)
@@ -901,7 +931,7 @@ public final class PolicyPack implements IPolicyPackSummary {
         }
 
         /**
-         * <p>Number of entity types in <code>redact</code></p>
+         * <p>Number of entity types that are redacted.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -911,7 +941,7 @@ public final class PolicyPack implements IPolicyPackSummary {
         }
 
         /**
-         * <p>Number of entity types in <code>redact</code></p>
+         * <p>Number of entity types that are redacted.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "redact_entity_type_count", nulls = Nulls.SKIP)
@@ -957,6 +987,26 @@ public final class PolicyPack implements IPolicyPackSummary {
         @JsonSetter(value = "block_rule_count", nulls = Nulls.SKIP)
         public _FinalStage blockRuleCount(Optional<Integer> blockRuleCount) {
             this.blockRuleCount = blockRuleCount;
+            return this;
+        }
+
+        /**
+         * <p>True when the policy pack is provided by HiddenLayer to all tenants. When true, pack is read-only.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage isBuiltIn(Boolean isBuiltIn) {
+            this.isBuiltIn = Optional.ofNullable(isBuiltIn);
+            return this;
+        }
+
+        /**
+         * <p>True when the policy pack is provided by HiddenLayer to all tenants. When true, pack is read-only.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "is_built_in", nulls = Nulls.SKIP)
+        public _FinalStage isBuiltIn(Optional<Boolean> isBuiltIn) {
+            this.isBuiltIn = isBuiltIn;
             return this;
         }
 
@@ -1006,6 +1056,7 @@ public final class PolicyPack implements IPolicyPackSummary {
                     name,
                     description,
                     type,
+                    isBuiltIn,
                     blockRuleCount,
                     detectRuleCount,
                     redactEntityTypeCount,
@@ -1032,6 +1083,7 @@ public final class PolicyPack implements IPolicyPackSummary {
                     || key.equalsIgnoreCase("name")
                     || key.equalsIgnoreCase("description")
                     || key.equalsIgnoreCase("type")
+                    || key.equalsIgnoreCase("is_built_in")
                     || key.equalsIgnoreCase("block_rule_count")
                     || key.equalsIgnoreCase("detect_rule_count")
                     || key.equalsIgnoreCase("redact_entity_type_count")

@@ -106,7 +106,7 @@ public class AsyncPolicyPacksClient {
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
-     * <p>The pack must assign at least one detection rule through <code>rule_pack_ids</code> or <code>individual_rules</code>; otherwise returns 422.</p>
+     * <p>Creates a custom policy pack from the rule packs, individual rules, redaction configuration, and settings in the request.</p>
      */
     public CompletableFuture<PolicyPack> create(PolicyPackWriteRequest request) {
         CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture = this.rawClient.create(request);
@@ -121,7 +121,7 @@ public class AsyncPolicyPacksClient {
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
-     * <p>The pack must assign at least one detection rule through <code>rule_pack_ids</code> or <code>individual_rules</code>; otherwise returns 422.</p>
+     * <p>Creates a custom policy pack from the rule packs, individual rules, redaction configuration, and settings in the request.</p>
      */
     public CompletableFuture<PolicyPack> create(PolicyPackWriteRequest request, RequestOptions requestOptions) {
         CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture =
@@ -230,10 +230,6 @@ public class AsyncPolicyPacksClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Replaces the entire pack, including <code>settings</code>; omitted optional fields are cleared.</p>
-     * <ul>
-     * <li><strong>403</strong> when the pack is HiddenLayer-authored; only custom packs can be modified.</li>
-     * <li><strong>422</strong> when the pack would assign no detection rules.</li>
-     * </ul>
      */
     public CompletableFuture<PolicyPack> update(String policyPackId, UpdatePolicyPacksRequest request) {
         CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture = this.rawClient.update(policyPackId, request);
@@ -249,10 +245,6 @@ public class AsyncPolicyPacksClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Replaces the entire pack, including <code>settings</code>; omitted optional fields are cleared.</p>
-     * <ul>
-     * <li><strong>403</strong> when the pack is HiddenLayer-authored; only custom packs can be modified.</li>
-     * <li><strong>422</strong> when the pack would assign no detection rules.</li>
-     * </ul>
      */
     public CompletableFuture<PolicyPack> update(
             String policyPackId, UpdatePolicyPacksRequest request, RequestOptions requestOptions) {

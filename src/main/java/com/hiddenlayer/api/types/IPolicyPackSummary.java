@@ -16,6 +16,8 @@ public interface IPolicyPackSummary {
 
     Optional<PolicyPackType> getType();
 
+    Optional<Boolean> getIsBuiltIn();
+
     Optional<Integer> getBlockRuleCount();
 
     Optional<Integer> getDetectRuleCount();
