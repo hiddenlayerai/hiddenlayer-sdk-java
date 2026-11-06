@@ -5,14 +5,16 @@ package com.hiddenlayer.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.hiddenlayer.api.core.Nullable;
+import com.hiddenlayer.api.core.NullableNonemptyFilter;
 import com.hiddenlayer.api.core.ObjectMappers;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,15 +29,15 @@ public final class AnalysisResult {
 
     private final String originalSystemPrompt;
 
-    private final List<String> questions;
+    private final Optional<List<String>> questions;
 
-    private final List<QuestionAnswer> questionAnswers;
+    private final Optional<List<QuestionAnswer>> questionAnswers;
 
     private final String compiledSystemPrompt;
 
     private final boolean isValid;
 
-    private final List<String> validationErrors;
+    private final Optional<List<String>> validationErrors;
 
     private final Optional<String> hlProjectId;
 
@@ -44,11 +46,11 @@ public final class AnalysisResult {
     private AnalysisResult(
             String name,
             String originalSystemPrompt,
-            List<String> questions,
-            List<QuestionAnswer> questionAnswers,
+            Optional<List<String>> questions,
+            Optional<List<QuestionAnswer>> questionAnswers,
             String compiledSystemPrompt,
             boolean isValid,
-            List<String> validationErrors,
+            Optional<List<String>> validationErrors,
             Optional<String> hlProjectId,
             Map<String, Object> additionalProperties) {
         this.name = name;
@@ -79,18 +81,24 @@ public final class AnalysisResult {
     }
 
     /**
-     * @return Generated questions
+     * @return Generated questions. Null when none were generated.
      */
-    @JsonProperty("questions")
-    public List<String> getQuestions() {
+    @JsonIgnore
+    public Optional<List<String>> getQuestions() {
+        if (questions == null) {
+            return Optional.empty();
+        }
         return questions;
     }
 
     /**
-     * @return Question-answer pairs
+     * @return Question-answer pairs. Null when no answers were stored.
      */
-    @JsonProperty("question_answers")
-    public List<QuestionAnswer> getQuestionAnswers() {
+    @JsonIgnore
+    public Optional<List<QuestionAnswer>> getQuestionAnswers() {
+        if (questionAnswers == null) {
+            return Optional.empty();
+        }
         return questionAnswers;
     }
 
@@ -111,10 +119,13 @@ public final class AnalysisResult {
     }
 
     /**
-     * @return Validation error messages
+     * @return Validation error messages. Null when validation found no errors.
      */
-    @JsonProperty("validation_errors")
-    public List<String> getValidationErrors() {
+    @JsonIgnore
+    public Optional<List<String>> getValidationErrors() {
+        if (validationErrors == null) {
+            return Optional.empty();
+        }
         return validationErrors;
     }
 
@@ -125,6 +136,24 @@ public final class AnalysisResult {
     @JsonProperty("hl_project_id")
     public Optional<String> getHlProjectId() {
         return hlProjectId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("questions")
+    private Optional<List<String>> _getQuestions() {
+        return questions;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("question_answers")
+    private Optional<List<QuestionAnswer>> _getQuestionAnswers() {
+        return questionAnswers;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("validation_errors")
+    private Optional<List<String>> _getValidationErrors() {
+        return validationErrors;
     }
 
     @java.lang.Override
@@ -209,31 +238,31 @@ public final class AnalysisResult {
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
         /**
-         * <p>Generated questions</p>
+         * <p>Generated questions. Null when none were generated.</p>
          */
+        _FinalStage questions(Optional<List<String>> questions);
+
         _FinalStage questions(List<String> questions);
 
-        _FinalStage addQuestions(String questions);
-
-        _FinalStage addAllQuestions(List<String> questions);
+        _FinalStage questions(Nullable<List<String>> questions);
 
         /**
-         * <p>Question-answer pairs</p>
+         * <p>Question-answer pairs. Null when no answers were stored.</p>
          */
+        _FinalStage questionAnswers(Optional<List<QuestionAnswer>> questionAnswers);
+
         _FinalStage questionAnswers(List<QuestionAnswer> questionAnswers);
 
-        _FinalStage addQuestionAnswers(QuestionAnswer questionAnswers);
-
-        _FinalStage addAllQuestionAnswers(List<QuestionAnswer> questionAnswers);
+        _FinalStage questionAnswers(Nullable<List<QuestionAnswer>> questionAnswers);
 
         /**
-         * <p>Validation error messages</p>
+         * <p>Validation error messages. Null when validation found no errors.</p>
          */
+        _FinalStage validationErrors(Optional<List<String>> validationErrors);
+
         _FinalStage validationErrors(List<String> validationErrors);
 
-        _FinalStage addValidationErrors(String validationErrors);
-
-        _FinalStage addAllValidationErrors(List<String> validationErrors);
+        _FinalStage validationErrors(Nullable<List<String>> validationErrors);
 
         /**
          * <p>HiddenLayer project UUID the analysis was started under. Omitted
@@ -257,11 +286,11 @@ public final class AnalysisResult {
 
         private Optional<String> hlProjectId = Optional.empty();
 
-        private List<String> validationErrors = new ArrayList<>();
+        private Optional<List<String>> validationErrors = Optional.empty();
 
-        private List<QuestionAnswer> questionAnswers = new ArrayList<>();
+        private Optional<List<QuestionAnswer>> questionAnswers = Optional.empty();
 
-        private List<String> questions = new ArrayList<>();
+        private Optional<List<String>> questions = Optional.empty();
 
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -349,107 +378,110 @@ public final class AnalysisResult {
         }
 
         /**
-         * <p>Validation error messages</p>
+         * <p>Validation error messages. Null when validation found no errors.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage addAllValidationErrors(List<String> validationErrors) {
-            if (validationErrors != null) {
-                this.validationErrors.addAll(validationErrors);
+        public _FinalStage validationErrors(Nullable<List<String>> validationErrors) {
+            if (validationErrors.isNull()) {
+                this.validationErrors = null;
+            } else if (validationErrors.isEmpty()) {
+                this.validationErrors = Optional.empty();
+            } else {
+                this.validationErrors = Optional.of(validationErrors.get());
             }
             return this;
         }
 
         /**
-         * <p>Validation error messages</p>
+         * <p>Validation error messages. Null when validation found no errors.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage addValidationErrors(String validationErrors) {
-            this.validationErrors.add(validationErrors);
+        public _FinalStage validationErrors(List<String> validationErrors) {
+            this.validationErrors = Optional.ofNullable(validationErrors);
             return this;
         }
 
         /**
-         * <p>Validation error messages</p>
+         * <p>Validation error messages. Null when validation found no errors.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "validation_errors", nulls = Nulls.SKIP)
-        public _FinalStage validationErrors(List<String> validationErrors) {
-            this.validationErrors.clear();
-            if (validationErrors != null) {
-                this.validationErrors.addAll(validationErrors);
+        public _FinalStage validationErrors(Optional<List<String>> validationErrors) {
+            this.validationErrors = validationErrors;
+            return this;
+        }
+
+        /**
+         * <p>Question-answer pairs. Null when no answers were stored.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage questionAnswers(Nullable<List<QuestionAnswer>> questionAnswers) {
+            if (questionAnswers.isNull()) {
+                this.questionAnswers = null;
+            } else if (questionAnswers.isEmpty()) {
+                this.questionAnswers = Optional.empty();
+            } else {
+                this.questionAnswers = Optional.of(questionAnswers.get());
             }
             return this;
         }
 
         /**
-         * <p>Question-answer pairs</p>
+         * <p>Question-answer pairs. Null when no answers were stored.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage addAllQuestionAnswers(List<QuestionAnswer> questionAnswers) {
-            if (questionAnswers != null) {
-                this.questionAnswers.addAll(questionAnswers);
-            }
+        public _FinalStage questionAnswers(List<QuestionAnswer> questionAnswers) {
+            this.questionAnswers = Optional.ofNullable(questionAnswers);
             return this;
         }
 
         /**
-         * <p>Question-answer pairs</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage addQuestionAnswers(QuestionAnswer questionAnswers) {
-            this.questionAnswers.add(questionAnswers);
-            return this;
-        }
-
-        /**
-         * <p>Question-answer pairs</p>
+         * <p>Question-answer pairs. Null when no answers were stored.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "question_answers", nulls = Nulls.SKIP)
-        public _FinalStage questionAnswers(List<QuestionAnswer> questionAnswers) {
-            this.questionAnswers.clear();
-            if (questionAnswers != null) {
-                this.questionAnswers.addAll(questionAnswers);
+        public _FinalStage questionAnswers(Optional<List<QuestionAnswer>> questionAnswers) {
+            this.questionAnswers = questionAnswers;
+            return this;
+        }
+
+        /**
+         * <p>Generated questions. Null when none were generated.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage questions(Nullable<List<String>> questions) {
+            if (questions.isNull()) {
+                this.questions = null;
+            } else if (questions.isEmpty()) {
+                this.questions = Optional.empty();
+            } else {
+                this.questions = Optional.of(questions.get());
             }
             return this;
         }
 
         /**
-         * <p>Generated questions</p>
+         * <p>Generated questions. Null when none were generated.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage addAllQuestions(List<String> questions) {
-            if (questions != null) {
-                this.questions.addAll(questions);
-            }
+        public _FinalStage questions(List<String> questions) {
+            this.questions = Optional.ofNullable(questions);
             return this;
         }
 
         /**
-         * <p>Generated questions</p>
-         * @return Reference to {@code this} so that method calls can be chained together.
-         */
-        @java.lang.Override
-        public _FinalStage addQuestions(String questions) {
-            this.questions.add(questions);
-            return this;
-        }
-
-        /**
-         * <p>Generated questions</p>
+         * <p>Generated questions. Null when none were generated.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "questions", nulls = Nulls.SKIP)
-        public _FinalStage questions(List<String> questions) {
-            this.questions.clear();
-            if (questions != null) {
-                this.questions.addAll(questions);
-            }
+        public _FinalStage questions(Optional<List<String>> questions) {
+            this.questions = questions;
             return this;
         }
 
