@@ -5,16 +5,18 @@ package com.hiddenlayer.api.types;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.hiddenlayer.api.core.Nullable;
+import com.hiddenlayer.api.core.NullableNonemptyFilter;
 import com.hiddenlayer.api.core.ObjectMappers;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -37,7 +39,7 @@ public final class SensorSorItemResponse {
 
     private final boolean active;
 
-    private final Map<String, Object> tags;
+    private final Optional<Map<String, Object>> tags;
 
     private final Optional<Boolean> adhoc;
 
@@ -51,7 +53,7 @@ public final class SensorSorItemResponse {
             OffsetDateTime createdAt,
             Optional<Integer> version,
             boolean active,
-            Map<String, Object> tags,
+            Optional<Map<String, Object>> tags,
             Optional<Boolean> adhoc,
             Map<String, Object> additionalProperties) {
         this.tenantId = tenantId;
@@ -101,14 +103,23 @@ public final class SensorSorItemResponse {
         return active;
     }
 
-    @JsonProperty("tags")
-    public Map<String, Object> getTags() {
+    @JsonIgnore
+    public Optional<Map<String, Object>> getTags() {
+        if (tags == null) {
+            return Optional.empty();
+        }
         return tags;
     }
 
     @JsonProperty("adhoc")
     public Optional<Boolean> getAdhoc() {
         return adhoc;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("tags")
+    private Optional<Map<String, Object>> _getTags() {
+        return tags;
     }
 
     @java.lang.Override
@@ -194,11 +205,11 @@ public final class SensorSorItemResponse {
 
         _FinalStage version(Integer version);
 
+        _FinalStage tags(Optional<Map<String, Object>> tags);
+
         _FinalStage tags(Map<String, Object> tags);
 
-        _FinalStage putAllTags(Map<String, Object> tags);
-
-        _FinalStage tags(String key, Object value);
+        _FinalStage tags(Nullable<Map<String, Object>> tags);
 
         _FinalStage adhoc(Optional<Boolean> adhoc);
 
@@ -228,7 +239,7 @@ public final class SensorSorItemResponse {
 
         private Optional<Boolean> adhoc = Optional.empty();
 
-        private Map<String, Object> tags = new LinkedHashMap<>();
+        private Optional<Map<String, Object>> tags = Optional.empty();
 
         private Optional<Integer> version = Optional.empty();
 
@@ -306,26 +317,27 @@ public final class SensorSorItemResponse {
         }
 
         @java.lang.Override
-        public _FinalStage tags(String key, Object value) {
-            this.tags.put(key, value);
+        public _FinalStage tags(Nullable<Map<String, Object>> tags) {
+            if (tags.isNull()) {
+                this.tags = null;
+            } else if (tags.isEmpty()) {
+                this.tags = Optional.empty();
+            } else {
+                this.tags = Optional.of(tags.get());
+            }
             return this;
         }
 
         @java.lang.Override
-        public _FinalStage putAllTags(Map<String, Object> tags) {
-            if (tags != null) {
-                this.tags.putAll(tags);
-            }
+        public _FinalStage tags(Map<String, Object> tags) {
+            this.tags = Optional.ofNullable(tags);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "tags", nulls = Nulls.SKIP)
-        public _FinalStage tags(Map<String, Object> tags) {
-            this.tags.clear();
-            if (tags != null) {
-                this.tags.putAll(tags);
-            }
+        public _FinalStage tags(Optional<Map<String, Object>> tags) {
+            this.tags = tags;
             return this;
         }
 
