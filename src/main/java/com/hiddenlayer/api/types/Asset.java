@@ -27,6 +27,8 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = Asset.Builder.class)
 public final class Asset {
+    private final Optional<String> name;
+
     private final Optional<String> id;
 
     private final String assetType;
@@ -48,6 +50,7 @@ public final class Asset {
     private final Map<String, Object> additionalProperties;
 
     private Asset(
+            Optional<String> name,
             Optional<String> id,
             String assetType,
             Optional<PolicyStatus> policyStatus,
@@ -58,6 +61,7 @@ public final class Asset {
             Optional<AssetTagMap> tags,
             Optional<List<String>> projects,
             Map<String, Object> additionalProperties) {
+        this.name = name;
         this.id = id;
         this.assetType = assetType;
         this.policyStatus = policyStatus;
@@ -68,6 +72,19 @@ public final class Asset {
         this.tags = tags;
         this.projects = projects;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return Display name computed on asset responses from the first non-empty
+     * string in this precedence order: the supply-chain annotation's
+     * <code>attributes.model_card.name</code>, the discovery annotation's
+     * <code>attributes.name</code>, then the workstation-discovery annotation's
+     * <code>attributes.name</code>. Missing, null, and non-string values are skipped.
+     * Omitted when no annotation supplies a name.
+     */
+    @JsonProperty("name")
+    public Optional<String> getName() {
+        return name;
     }
 
     /**
@@ -201,7 +218,8 @@ public final class Asset {
     }
 
     private boolean equalTo(Asset other) {
-        return id.equals(other.id)
+        return name.equals(other.name)
+                && id.equals(other.id)
                 && assetType.equals(other.assetType)
                 && policyStatus.equals(other.policyStatus)
                 && createdAt.equals(other.createdAt)
@@ -215,6 +233,7 @@ public final class Asset {
     @java.lang.Override
     public int hashCode() {
         return Objects.hash(
+                this.name,
                 this.id,
                 this.assetType,
                 this.policyStatus,
@@ -256,6 +275,18 @@ public final class Asset {
         _FinalStage additionalProperty(String key, Object value);
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        /**
+         * <p>Display name computed on asset responses from the first non-empty
+         * string in this precedence order: the supply-chain annotation's
+         * <code>attributes.model_card.name</code>, the discovery annotation's
+         * <code>attributes.name</code>, then the workstation-discovery annotation's
+         * <code>attributes.name</code>. Missing, null, and non-string values are skipped.
+         * Omitted when no annotation supplies a name.</p>
+         */
+        _FinalStage name(Optional<String> name);
+
+        _FinalStage name(String name);
 
         /**
          * <p>Server-generated UUID for the asset. Assigned at creation time
@@ -370,12 +401,15 @@ public final class Asset {
 
         private Optional<String> id = Optional.empty();
 
+        private Optional<String> name = Optional.empty();
+
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
         @java.lang.Override
         public Builder from(Asset other) {
+            name(other.getName());
             id(other.getId());
             assetType(other.getAssetType());
             policyStatus(other.getPolicyStatus());
@@ -674,9 +708,40 @@ public final class Asset {
             return this;
         }
 
+        /**
+         * <p>Display name computed on asset responses from the first non-empty
+         * string in this precedence order: the supply-chain annotation's
+         * <code>attributes.model_card.name</code>, the discovery annotation's
+         * <code>attributes.name</code>, then the workstation-discovery annotation's
+         * <code>attributes.name</code>. Missing, null, and non-string values are skipped.
+         * Omitted when no annotation supplies a name.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage name(String name) {
+            this.name = Optional.ofNullable(name);
+            return this;
+        }
+
+        /**
+         * <p>Display name computed on asset responses from the first non-empty
+         * string in this precedence order: the supply-chain annotation's
+         * <code>attributes.model_card.name</code>, the discovery annotation's
+         * <code>attributes.name</code>, then the workstation-discovery annotation's
+         * <code>attributes.name</code>. Missing, null, and non-string values are skipped.
+         * Omitted when no annotation supplies a name.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "name", nulls = Nulls.SKIP)
+        public _FinalStage name(Optional<String> name) {
+            this.name = name;
+            return this;
+        }
+
         @java.lang.Override
         public Asset build() {
             return new Asset(
+                    name,
                     id,
                     assetType,
                     policyStatus,
@@ -691,7 +756,8 @@ public final class Asset {
 
         @JsonAnySetter
         private void putAdditionalPropertyFromJson(String key, Object value) {
-            if (key.equalsIgnoreCase("id")
+            if (key.equalsIgnoreCase("name")
+                    || key.equalsIgnoreCase("id")
                     || key.equalsIgnoreCase("asset_type")
                     || key.equalsIgnoreCase("policy_status")
                     || key.equalsIgnoreCase("created_at")
