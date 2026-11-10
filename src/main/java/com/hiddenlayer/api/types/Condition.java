@@ -54,7 +54,7 @@ public final class Condition {
     }
 
     /**
-     * @return Operator to apply for the condition. <code>equals</code>/<code>not_equals</code> compare against <code>field_value</code>. <code>any_of</code>/<code>none_of</code> compare against <code>field_values</code>: <code>any_of</code> matches when the field's value equals any entry in the list, <code>none_of</code> matches when it equals none of them. For fields that can hold several values for one artifact (<code>license</code> and <code>category</code>), <code>none_of</code> matches only when none of the values is in <code>field_values</code>; every other operator matches when at least one of the values satisfies it.
+     * @return Operator to apply for the condition. <code>equals</code>/<code>not_equals</code> compare against <code>field_value</code>. <code>any_of</code>/<code>none_of</code> compare against <code>field_values</code>: <code>any_of</code> matches when the field's value equals any entry in the list, <code>none_of</code> matches when it equals none of them. For fields that can hold several values for one artifact (<code>license</code>, <code>category</code>, and <code>threat_type</code>), <code>none_of</code> matches only when none of the values is in <code>field_values</code>; every other operator matches when at least one of the values satisfies it.
      */
     @JsonProperty("condition_operator")
     public ConditionConditionOperator getConditionOperator() {
@@ -120,7 +120,7 @@ public final class Condition {
 
     public interface ConditionOperatorStage {
         /**
-         * <p>Operator to apply for the condition. <code>equals</code>/<code>not_equals</code> compare against <code>field_value</code>. <code>any_of</code>/<code>none_of</code> compare against <code>field_values</code>: <code>any_of</code> matches when the field's value equals any entry in the list, <code>none_of</code> matches when it equals none of them. For fields that can hold several values for one artifact (<code>license</code> and <code>category</code>), <code>none_of</code> matches only when none of the values is in <code>field_values</code>; every other operator matches when at least one of the values satisfies it.</p>
+         * <p>Operator to apply for the condition. <code>equals</code>/<code>not_equals</code> compare against <code>field_value</code>. <code>any_of</code>/<code>none_of</code> compare against <code>field_values</code>: <code>any_of</code> matches when the field's value equals any entry in the list, <code>none_of</code> matches when it equals none of them. For fields that can hold several values for one artifact (<code>license</code>, <code>category</code>, and <code>threat_type</code>), <code>none_of</code> matches only when none of the values is in <code>field_values</code>; every other operator matches when at least one of the values satisfies it.</p>
          */
         _FinalStage conditionOperator(@NotNull ConditionConditionOperator conditionOperator);
     }
@@ -182,7 +182,7 @@ public final class Condition {
         }
 
         /**
-         * <p>Operator to apply for the condition. <code>equals</code>/<code>not_equals</code> compare against <code>field_value</code>. <code>any_of</code>/<code>none_of</code> compare against <code>field_values</code>: <code>any_of</code> matches when the field's value equals any entry in the list, <code>none_of</code> matches when it equals none of them. For fields that can hold several values for one artifact (<code>license</code> and <code>category</code>), <code>none_of</code> matches only when none of the values is in <code>field_values</code>; every other operator matches when at least one of the values satisfies it.</p>
+         * <p>Operator to apply for the condition. <code>equals</code>/<code>not_equals</code> compare against <code>field_value</code>. <code>any_of</code>/<code>none_of</code> compare against <code>field_values</code>: <code>any_of</code> matches when the field's value equals any entry in the list, <code>none_of</code> matches when it equals none of them. For fields that can hold several values for one artifact (<code>license</code>, <code>category</code>, and <code>threat_type</code>), <code>none_of</code> matches only when none of the values is in <code>field_values</code>; every other operator matches when at least one of the values satisfies it.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

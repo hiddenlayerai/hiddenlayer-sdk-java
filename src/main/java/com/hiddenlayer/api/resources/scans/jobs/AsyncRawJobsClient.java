@@ -168,6 +168,13 @@ public class AsyncRawJobsClient {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "has_detections", request.getHasDetections().get(), false);
         }
+        if (request.getIncludeThreatTypes().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "include_threat_types",
+                    request.getIncludeThreatTypes().get(),
+                    false);
+        }
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
@@ -265,6 +272,13 @@ public class AsyncRawJobsClient {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("scan/v3/results");
+        if (request.getIncludeThreatTypes().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "include_threat_types",
+                    request.getIncludeThreatTypes().get(),
+                    false);
+        }
         if (request.getStartTime().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "start_time", request.getStartTime().get(), false);
@@ -326,6 +340,14 @@ public class AsyncRawJobsClient {
         if (request.getModelIds().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "model_ids", request.getModelIds().get(), true);
+        }
+        if (request.getThreatType().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "threat_type", request.getThreatType().get(), true);
+        }
+        if (request.getFindingSeverity().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl, "finding_severity", request.getFindingSeverity().get(), true);
         }
         if (request.getStatus().isPresent()) {
             QueryStringMapper.addQueryParameter(

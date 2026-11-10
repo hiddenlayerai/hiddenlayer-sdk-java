@@ -28,66 +28,126 @@ public class RulesClient {
     }
 
     /**
-     * Add a new rule to an existing rule set. This endpoint allows you to define a rule with its compliance criteria and conditions.
+     * This operation remains supported at least as long as the legacy policy editor.
+     * For new integrations, use <a href="#operation/create_governance_rule_set">Create a rule set</a>
+     * (<code>POST /governance/v1/rule-sets?replace_active_policy=true</code>) to submit the complete policy
+     * with the new rule included. Preserve existing rules, their order, and disabled states;
+     * submitting only the new rule would replace the active policy with an incomplete rule set.
+     * Provide <code>previous_rule_set_id</code> to reject stale replacements and <code>previous_rule_id</code> for
+     * each retained rule; omit <code>previous_rule_id</code> only for newly added rules.
+     * <p>Add a new rule to an existing rule set. This endpoint allows you to
+     * define a rule with its compliance criteria and conditions.
      * The new rule will be appended to the existing rules in the specified rule set.
-     * If the rule set does not exist, a 404 Not Found error is returned.
+     * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
     public RuleSet create(String ruleSetId, CreateRulesRequest request) {
         return this.rawClient.create(ruleSetId, request).body();
     }
 
     /**
-     * Add a new rule to an existing rule set. This endpoint allows you to define a rule with its compliance criteria and conditions.
+     * This operation remains supported at least as long as the legacy policy editor.
+     * For new integrations, use <a href="#operation/create_governance_rule_set">Create a rule set</a>
+     * (<code>POST /governance/v1/rule-sets?replace_active_policy=true</code>) to submit the complete policy
+     * with the new rule included. Preserve existing rules, their order, and disabled states;
+     * submitting only the new rule would replace the active policy with an incomplete rule set.
+     * Provide <code>previous_rule_set_id</code> to reject stale replacements and <code>previous_rule_id</code> for
+     * each retained rule; omit <code>previous_rule_id</code> only for newly added rules.
+     * <p>Add a new rule to an existing rule set. This endpoint allows you to
+     * define a rule with its compliance criteria and conditions.
      * The new rule will be appended to the existing rules in the specified rule set.
-     * If the rule set does not exist, a 404 Not Found error is returned.
+     * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
     public RuleSet create(String ruleSetId, CreateRulesRequest request, RequestOptions requestOptions) {
         return this.rawClient.create(ruleSetId, request, requestOptions).body();
     }
 
     /**
-     * Replace an existing rule in a rule set with a new definition. This endpoint allows you to update the compliance criteria and conditions of a rule, preserving
-     * the rule's order in the rule set. If the rule set or the rule does not exist, a 404 Not Found error is returned.
+     * Use <a href="#operation/create_governance_rule_set">Create a rule set</a>
+     * (<code>POST /governance/v1/rule-sets?replace_active_policy=true</code>) to submit the complete updated policy.
+     * Preserve all rules, their order, and disabled states, and provide <code>previous_rule_set_id</code>
+     * and applicable <code>previous_rule_id</code> values to link the replacement to the previous policy.
+     * This creates a replacement rule set rather than updating a single rule in place;
+     * submitting only the modified rule would discard the rest of the active policy.
+     * <p>Replace an existing rule in a rule set with a new definition. This endpoint allows you to update the compliance criteria and conditions of a rule, preserving
+     * the rule's order in the rule set. If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
     public RuleSet update(String ruleSetId, String ruleId, UpdateRulesRequest request) {
         return this.rawClient.update(ruleSetId, ruleId, request).body();
     }
 
     /**
-     * Replace an existing rule in a rule set with a new definition. This endpoint allows you to update the compliance criteria and conditions of a rule, preserving
-     * the rule's order in the rule set. If the rule set or the rule does not exist, a 404 Not Found error is returned.
+     * Use <a href="#operation/create_governance_rule_set">Create a rule set</a>
+     * (<code>POST /governance/v1/rule-sets?replace_active_policy=true</code>) to submit the complete updated policy.
+     * Preserve all rules, their order, and disabled states, and provide <code>previous_rule_set_id</code>
+     * and applicable <code>previous_rule_id</code> values to link the replacement to the previous policy.
+     * This creates a replacement rule set rather than updating a single rule in place;
+     * submitting only the modified rule would discard the rest of the active policy.
+     * <p>Replace an existing rule in a rule set with a new definition. This endpoint allows you to update the compliance criteria and conditions of a rule, preserving
+     * the rule's order in the rule set. If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
     public RuleSet update(String ruleSetId, String ruleId, UpdateRulesRequest request, RequestOptions requestOptions) {
         return this.rawClient.update(ruleSetId, ruleId, request, requestOptions).body();
     }
 
     /**
-     * Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
-     * If the rule set or the rule does not exist, a 404 Not Found error is returned.
+     * This operation remains supported at least as long as the legacy policy editor.
+     * For new integrations, use <a href="#operation/create_governance_rule_set">Create a rule set</a>
+     * (<code>POST /governance/v1/rule-sets?replace_active_policy=true</code>) to submit the complete policy
+     * with the target rule marked <code>is_disabled: true</code>. Preserve the remaining rules, their order,
+     * and disabled states. Provide <code>previous_rule_set_id</code> to reject stale replacements and
+     * <code>previous_rule_id</code> for each retained rule, including the rule being disabled; omit
+     * <code>previous_rule_id</code> only for newly added rules. To reset the entire policy to defaults, use
+     * <code>DELETE /governance/v1/rule-sets/{rule_set_id}</code>.
+     * <p>Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
+     * If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
     public RuleSet delete(String ruleSetId, String ruleId) {
         return this.rawClient.delete(ruleSetId, ruleId).body();
     }
 
     /**
-     * Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
-     * If the rule set or the rule does not exist, a 404 Not Found error is returned.
+     * This operation remains supported at least as long as the legacy policy editor.
+     * For new integrations, use <a href="#operation/create_governance_rule_set">Create a rule set</a>
+     * (<code>POST /governance/v1/rule-sets?replace_active_policy=true</code>) to submit the complete policy
+     * with the target rule marked <code>is_disabled: true</code>. Preserve the remaining rules, their order,
+     * and disabled states. Provide <code>previous_rule_set_id</code> to reject stale replacements and
+     * <code>previous_rule_id</code> for each retained rule, including the rule being disabled; omit
+     * <code>previous_rule_id</code> only for newly added rules. To reset the entire policy to defaults, use
+     * <code>DELETE /governance/v1/rule-sets/{rule_set_id}</code>.
+     * <p>Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
+     * If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
     public RuleSet delete(String ruleSetId, String ruleId, RequestOptions requestOptions) {
         return this.rawClient.delete(ruleSetId, ruleId, requestOptions).body();
     }
 
     /**
-     * Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
-     * If the rule set or the rule does not exist, a 404 Not Found error is returned.
+     * This operation remains supported at least as long as the legacy policy editor.
+     * For new integrations, use <a href="#operation/create_governance_rule_set">Create a rule set</a>
+     * (<code>POST /governance/v1/rule-sets?replace_active_policy=true</code>) to submit the complete policy
+     * with the target rule marked <code>is_disabled: true</code>. Preserve the remaining rules, their order,
+     * and disabled states. Provide <code>previous_rule_set_id</code> to reject stale replacements and
+     * <code>previous_rule_id</code> for each retained rule, including the rule being disabled; omit
+     * <code>previous_rule_id</code> only for newly added rules. To reset the entire policy to defaults, use
+     * <code>DELETE /governance/v1/rule-sets/{rule_set_id}</code>.
+     * <p>Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
+     * If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
     public RuleSet delete(String ruleSetId, String ruleId, DeleteRulesRequest request) {
         return this.rawClient.delete(ruleSetId, ruleId, request).body();
     }
 
     /**
-     * Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
-     * If the rule set or the rule does not exist, a 404 Not Found error is returned.
+     * This operation remains supported at least as long as the legacy policy editor.
+     * For new integrations, use <a href="#operation/create_governance_rule_set">Create a rule set</a>
+     * (<code>POST /governance/v1/rule-sets?replace_active_policy=true</code>) to submit the complete policy
+     * with the target rule marked <code>is_disabled: true</code>. Preserve the remaining rules, their order,
+     * and disabled states. Provide <code>previous_rule_set_id</code> to reject stale replacements and
+     * <code>previous_rule_id</code> for each retained rule, including the rule being disabled; omit
+     * <code>previous_rule_id</code> only for newly added rules. To reset the entire policy to defaults, use
+     * <code>DELETE /governance/v1/rule-sets/{rule_set_id}</code>.
+     * <p>Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
+     * If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
     public RuleSet delete(String ruleSetId, String ruleId, DeleteRulesRequest request, RequestOptions requestOptions) {
         return this.rawClient.delete(ruleSetId, ruleId, request, requestOptions).body();

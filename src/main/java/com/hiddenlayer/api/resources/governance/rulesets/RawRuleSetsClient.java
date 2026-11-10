@@ -28,6 +28,7 @@ import com.hiddenlayer.api.resources.governance.rulesets.requests.GetRuleSetsReq
 import com.hiddenlayer.api.resources.governance.rulesets.requests.ListRuleSetsRequest;
 import com.hiddenlayer.api.resources.governance.rulesets.types.ListRuleSetsResponse;
 import com.hiddenlayer.api.types.RuleSet;
+import com.hiddenlayer.api.types.RuleSetResponse;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +52,7 @@ public class RawRuleSetsClient {
      * This endpoint supports pagination with the <code>page_size</code> and <code>cursor</code> parameters.
      * Rule sets are ordered by their creation time, with the oldest rule sets listed first.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<RuleSet>> list() {
+    public HiddenLayerHttpResponse<SyncPagingIterable<RuleSetResponse>> list() {
         return list(ListRuleSetsRequest.builder().build());
     }
 
@@ -60,7 +61,7 @@ public class RawRuleSetsClient {
      * This endpoint supports pagination with the <code>page_size</code> and <code>cursor</code> parameters.
      * Rule sets are ordered by their creation time, with the oldest rule sets listed first.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<RuleSet>> list(RequestOptions requestOptions) {
+    public HiddenLayerHttpResponse<SyncPagingIterable<RuleSetResponse>> list(RequestOptions requestOptions) {
         return list(ListRuleSetsRequest.builder().build(), requestOptions);
     }
 
@@ -69,7 +70,7 @@ public class RawRuleSetsClient {
      * This endpoint supports pagination with the <code>page_size</code> and <code>cursor</code> parameters.
      * Rule sets are ordered by their creation time, with the oldest rule sets listed first.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<RuleSet>> list(ListRuleSetsRequest request) {
+    public HiddenLayerHttpResponse<SyncPagingIterable<RuleSetResponse>> list(ListRuleSetsRequest request) {
         return list(request, null);
     }
 
@@ -78,7 +79,7 @@ public class RawRuleSetsClient {
      * This endpoint supports pagination with the <code>page_size</code> and <code>cursor</code> parameters.
      * Rule sets are ordered by their creation time, with the oldest rule sets listed first.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<RuleSet>> list(
+    public HiddenLayerHttpResponse<SyncPagingIterable<RuleSetResponse>> list(
             ListRuleSetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -130,11 +131,12 @@ public class RawRuleSetsClient {
                         .from(request)
                         .cursor(startingAfter)
                         .build();
-                List<RuleSet> result = parsedResponse.getItems().orElse(Collections.emptyList());
+                List<RuleSetResponse> result = parsedResponse.getItems().orElse(Collections.emptyList());
                 return new HiddenLayerHttpResponse<>(
-                        new SyncPagingIterable<RuleSet>(!startingAfter.isEmpty(), result, parsedResponse, () -> list(
-                                        nextRequest, requestOptions)
-                                .body()),
+                        new SyncPagingIterable<RuleSetResponse>(
+                                !startingAfter.isEmpty(), result, parsedResponse, () -> list(
+                                                nextRequest, requestOptions)
+                                        .body()),
                         response);
             }
             try {
@@ -173,7 +175,7 @@ public class RawRuleSetsClient {
      * becomes the tenant's sole active custom policy. The default rule set is never disabled
      * by this operation.</p>
      */
-    public HiddenLayerHttpResponse<RuleSet> create(RuleSet body) {
+    public HiddenLayerHttpResponse<RuleSetResponse> create(RuleSet body) {
         return create(CreateRuleSetsRequest.builder().body(body).build());
     }
 
@@ -188,7 +190,7 @@ public class RawRuleSetsClient {
      * becomes the tenant's sole active custom policy. The default rule set is never disabled
      * by this operation.</p>
      */
-    public HiddenLayerHttpResponse<RuleSet> create(RuleSet body, RequestOptions requestOptions) {
+    public HiddenLayerHttpResponse<RuleSetResponse> create(RuleSet body, RequestOptions requestOptions) {
         return create(CreateRuleSetsRequest.builder().body(body).build(), requestOptions);
     }
 
@@ -203,7 +205,7 @@ public class RawRuleSetsClient {
      * becomes the tenant's sole active custom policy. The default rule set is never disabled
      * by this operation.</p>
      */
-    public HiddenLayerHttpResponse<RuleSet> create(CreateRuleSetsRequest request) {
+    public HiddenLayerHttpResponse<RuleSetResponse> create(CreateRuleSetsRequest request) {
         return create(request, null);
     }
 
@@ -218,7 +220,8 @@ public class RawRuleSetsClient {
      * becomes the tenant's sole active custom policy. The default rule set is never disabled
      * by this operation.</p>
      */
-    public HiddenLayerHttpResponse<RuleSet> create(CreateRuleSetsRequest request, RequestOptions requestOptions) {
+    public HiddenLayerHttpResponse<RuleSetResponse> create(
+            CreateRuleSetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("governance/v1/rule-sets");
@@ -268,7 +271,7 @@ public class RawRuleSetsClient {
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new HiddenLayerHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RuleSet.class), response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RuleSetResponse.class), response);
             }
             try {
                 switch (response.code()) {
@@ -302,38 +305,62 @@ public class RawRuleSetsClient {
     }
 
     /**
-     * Retrieve a specific rule set by its unique identifier. This endpoint returns the details of the rule set, including its rules and compliance criteria.
+     * For active policy views, use <a href="#operation/get_governance_rule_sets">Retrieve rule sets</a>
+     * (<code>GET /governance/v1/rule-sets</code>) and select the required rule set from the paginated results.
+     * Use <code>include_disabled=true</code> when disabled rules are needed. This parameter includes disabled
+     * rules within returned rule sets; it does not guarantee access to disabled or historical rule sets.
+     * Contact support before migrating workflows that require historical rule-set retrieval.
+     * <p>Retrieve a specific rule set by its unique identifier. This endpoint returns
+     * the details of the rule set, including its rules and compliance criteria.
      * The response includes the rule set's ID, display name, and the list of rules it contains.
-     * If the rule set does not exist, a 404 Not Found error is returned.
+     * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
-    public HiddenLayerHttpResponse<RuleSet> get(String ruleSetId) {
+    public HiddenLayerHttpResponse<RuleSetResponse> get(String ruleSetId) {
         return get(ruleSetId, GetRuleSetsRequest.builder().build());
     }
 
     /**
-     * Retrieve a specific rule set by its unique identifier. This endpoint returns the details of the rule set, including its rules and compliance criteria.
+     * For active policy views, use <a href="#operation/get_governance_rule_sets">Retrieve rule sets</a>
+     * (<code>GET /governance/v1/rule-sets</code>) and select the required rule set from the paginated results.
+     * Use <code>include_disabled=true</code> when disabled rules are needed. This parameter includes disabled
+     * rules within returned rule sets; it does not guarantee access to disabled or historical rule sets.
+     * Contact support before migrating workflows that require historical rule-set retrieval.
+     * <p>Retrieve a specific rule set by its unique identifier. This endpoint returns
+     * the details of the rule set, including its rules and compliance criteria.
      * The response includes the rule set's ID, display name, and the list of rules it contains.
-     * If the rule set does not exist, a 404 Not Found error is returned.
+     * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
-    public HiddenLayerHttpResponse<RuleSet> get(String ruleSetId, RequestOptions requestOptions) {
+    public HiddenLayerHttpResponse<RuleSetResponse> get(String ruleSetId, RequestOptions requestOptions) {
         return get(ruleSetId, GetRuleSetsRequest.builder().build(), requestOptions);
     }
 
     /**
-     * Retrieve a specific rule set by its unique identifier. This endpoint returns the details of the rule set, including its rules and compliance criteria.
+     * For active policy views, use <a href="#operation/get_governance_rule_sets">Retrieve rule sets</a>
+     * (<code>GET /governance/v1/rule-sets</code>) and select the required rule set from the paginated results.
+     * Use <code>include_disabled=true</code> when disabled rules are needed. This parameter includes disabled
+     * rules within returned rule sets; it does not guarantee access to disabled or historical rule sets.
+     * Contact support before migrating workflows that require historical rule-set retrieval.
+     * <p>Retrieve a specific rule set by its unique identifier. This endpoint returns
+     * the details of the rule set, including its rules and compliance criteria.
      * The response includes the rule set's ID, display name, and the list of rules it contains.
-     * If the rule set does not exist, a 404 Not Found error is returned.
+     * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
-    public HiddenLayerHttpResponse<RuleSet> get(String ruleSetId, GetRuleSetsRequest request) {
+    public HiddenLayerHttpResponse<RuleSetResponse> get(String ruleSetId, GetRuleSetsRequest request) {
         return get(ruleSetId, request, null);
     }
 
     /**
-     * Retrieve a specific rule set by its unique identifier. This endpoint returns the details of the rule set, including its rules and compliance criteria.
+     * For active policy views, use <a href="#operation/get_governance_rule_sets">Retrieve rule sets</a>
+     * (<code>GET /governance/v1/rule-sets</code>) and select the required rule set from the paginated results.
+     * Use <code>include_disabled=true</code> when disabled rules are needed. This parameter includes disabled
+     * rules within returned rule sets; it does not guarantee access to disabled or historical rule sets.
+     * Contact support before migrating workflows that require historical rule-set retrieval.
+     * <p>Retrieve a specific rule set by its unique identifier. This endpoint returns
+     * the details of the rule set, including its rules and compliance criteria.
      * The response includes the rule set's ID, display name, and the list of rules it contains.
-     * If the rule set does not exist, a 404 Not Found error is returned.
+     * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
-    public HiddenLayerHttpResponse<RuleSet> get(
+    public HiddenLayerHttpResponse<RuleSetResponse> get(
             String ruleSetId, GetRuleSetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -372,7 +399,7 @@ public class RawRuleSetsClient {
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
                 return new HiddenLayerHttpResponse<>(
-                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RuleSet.class), response);
+                        ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RuleSetResponse.class), response);
             }
             try {
                 switch (response.code()) {

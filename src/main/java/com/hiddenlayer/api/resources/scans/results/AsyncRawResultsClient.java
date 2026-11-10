@@ -80,6 +80,13 @@ public class AsyncRawResultsClient {
                 .addPathSegments("scan/v3/results")
                 .addPathSegment(PathSegments.validate(scanId))
                 .addPathSegments("files");
+        if (request.getIncludeThreatTypes().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "include_threat_types",
+                    request.getIncludeThreatTypes().get(),
+                    false);
+        }
         if (request.getHasDetections().isPresent()) {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "has_detections", request.getHasDetections().get(), false);
@@ -216,6 +223,13 @@ public class AsyncRawResultsClient {
                 .addPathSegments("scan/v3/results")
                 .addPathSegment(PathSegments.validate(scanId))
                 .addPathSegments("sarif");
+        if (request.getIncludeThreatTypes().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "include_threat_types",
+                    request.getIncludeThreatTypes().get(),
+                    false);
+        }
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
@@ -326,6 +340,13 @@ public class AsyncRawResultsClient {
                 .addPathSegments("scan/v3/results")
                 .addPathSegment(PathSegments.validate(scanId))
                 .addPathSegments("summary");
+        if (request.getIncludeThreatTypes().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "include_threat_types",
+                    request.getIncludeThreatTypes().get(),
+                    false);
+        }
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);

@@ -14,6 +14,7 @@ import com.hiddenlayer.api.resources.governance.rulesets.requests.GetRuleSetsReq
 import com.hiddenlayer.api.resources.governance.rulesets.requests.ListRuleSetsRequest;
 import com.hiddenlayer.api.resources.governance.rulesets.rules.AsyncRulesClient;
 import com.hiddenlayer.api.types.RuleSet;
+import com.hiddenlayer.api.types.RuleSetResponse;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -42,9 +43,11 @@ public class AsyncRuleSetsClient {
      * This endpoint supports pagination with the <code>page_size</code> and <code>cursor</code> parameters.
      * Rule sets are ordered by their creation time, with the oldest rule sets listed first.
      */
-    public CompletableFuture<SyncPagingIterable<RuleSet>> list() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RuleSet>>> rawFuture = this.rawClient.list();
-        CompletableFuture<SyncPagingIterable<RuleSet>> future = rawFuture.thenApply(response -> response.body());
+    public CompletableFuture<SyncPagingIterable<RuleSetResponse>> list() {
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RuleSetResponse>>> rawFuture =
+                this.rawClient.list();
+        CompletableFuture<SyncPagingIterable<RuleSetResponse>> future =
+                rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
                 rawFuture.cancel(true);
@@ -58,10 +61,11 @@ public class AsyncRuleSetsClient {
      * This endpoint supports pagination with the <code>page_size</code> and <code>cursor</code> parameters.
      * Rule sets are ordered by their creation time, with the oldest rule sets listed first.
      */
-    public CompletableFuture<SyncPagingIterable<RuleSet>> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RuleSet>>> rawFuture =
+    public CompletableFuture<SyncPagingIterable<RuleSetResponse>> list(RequestOptions requestOptions) {
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RuleSetResponse>>> rawFuture =
                 this.rawClient.list(requestOptions);
-        CompletableFuture<SyncPagingIterable<RuleSet>> future = rawFuture.thenApply(response -> response.body());
+        CompletableFuture<SyncPagingIterable<RuleSetResponse>> future =
+                rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
                 rawFuture.cancel(true);
@@ -75,10 +79,11 @@ public class AsyncRuleSetsClient {
      * This endpoint supports pagination with the <code>page_size</code> and <code>cursor</code> parameters.
      * Rule sets are ordered by their creation time, with the oldest rule sets listed first.
      */
-    public CompletableFuture<SyncPagingIterable<RuleSet>> list(ListRuleSetsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RuleSet>>> rawFuture =
+    public CompletableFuture<SyncPagingIterable<RuleSetResponse>> list(ListRuleSetsRequest request) {
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RuleSetResponse>>> rawFuture =
                 this.rawClient.list(request);
-        CompletableFuture<SyncPagingIterable<RuleSet>> future = rawFuture.thenApply(response -> response.body());
+        CompletableFuture<SyncPagingIterable<RuleSetResponse>> future =
+                rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
                 rawFuture.cancel(true);
@@ -92,11 +97,12 @@ public class AsyncRuleSetsClient {
      * This endpoint supports pagination with the <code>page_size</code> and <code>cursor</code> parameters.
      * Rule sets are ordered by their creation time, with the oldest rule sets listed first.
      */
-    public CompletableFuture<SyncPagingIterable<RuleSet>> list(
+    public CompletableFuture<SyncPagingIterable<RuleSetResponse>> list(
             ListRuleSetsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RuleSet>>> rawFuture =
+        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RuleSetResponse>>> rawFuture =
                 this.rawClient.list(request, requestOptions);
-        CompletableFuture<SyncPagingIterable<RuleSet>> future = rawFuture.thenApply(response -> response.body());
+        CompletableFuture<SyncPagingIterable<RuleSetResponse>> future =
+                rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
                 rawFuture.cancel(true);
@@ -116,9 +122,9 @@ public class AsyncRuleSetsClient {
      * becomes the tenant's sole active custom policy. The default rule set is never disabled
      * by this operation.</p>
      */
-    public CompletableFuture<RuleSet> create(RuleSet body) {
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture = this.rawClient.create(body);
-        CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
+    public CompletableFuture<RuleSetResponse> create(RuleSet body) {
+        CompletableFuture<HiddenLayerHttpResponse<RuleSetResponse>> rawFuture = this.rawClient.create(body);
+        CompletableFuture<RuleSetResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
                 rawFuture.cancel(true);
@@ -138,9 +144,10 @@ public class AsyncRuleSetsClient {
      * becomes the tenant's sole active custom policy. The default rule set is never disabled
      * by this operation.</p>
      */
-    public CompletableFuture<RuleSet> create(RuleSet body, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture = this.rawClient.create(body, requestOptions);
-        CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
+    public CompletableFuture<RuleSetResponse> create(RuleSet body, RequestOptions requestOptions) {
+        CompletableFuture<HiddenLayerHttpResponse<RuleSetResponse>> rawFuture =
+                this.rawClient.create(body, requestOptions);
+        CompletableFuture<RuleSetResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
                 rawFuture.cancel(true);
@@ -160,9 +167,9 @@ public class AsyncRuleSetsClient {
      * becomes the tenant's sole active custom policy. The default rule set is never disabled
      * by this operation.</p>
      */
-    public CompletableFuture<RuleSet> create(CreateRuleSetsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture = this.rawClient.create(request);
-        CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
+    public CompletableFuture<RuleSetResponse> create(CreateRuleSetsRequest request) {
+        CompletableFuture<HiddenLayerHttpResponse<RuleSetResponse>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<RuleSetResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
                 rawFuture.cancel(true);
@@ -182,9 +189,10 @@ public class AsyncRuleSetsClient {
      * becomes the tenant's sole active custom policy. The default rule set is never disabled
      * by this operation.</p>
      */
-    public CompletableFuture<RuleSet> create(CreateRuleSetsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture = this.rawClient.create(request, requestOptions);
-        CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
+    public CompletableFuture<RuleSetResponse> create(CreateRuleSetsRequest request, RequestOptions requestOptions) {
+        CompletableFuture<HiddenLayerHttpResponse<RuleSetResponse>> rawFuture =
+                this.rawClient.create(request, requestOptions);
+        CompletableFuture<RuleSetResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
                 rawFuture.cancel(true);
@@ -194,13 +202,19 @@ public class AsyncRuleSetsClient {
     }
 
     /**
-     * Retrieve a specific rule set by its unique identifier. This endpoint returns the details of the rule set, including its rules and compliance criteria.
+     * For active policy views, use <a href="#operation/get_governance_rule_sets">Retrieve rule sets</a>
+     * (<code>GET /governance/v1/rule-sets</code>) and select the required rule set from the paginated results.
+     * Use <code>include_disabled=true</code> when disabled rules are needed. This parameter includes disabled
+     * rules within returned rule sets; it does not guarantee access to disabled or historical rule sets.
+     * Contact support before migrating workflows that require historical rule-set retrieval.
+     * <p>Retrieve a specific rule set by its unique identifier. This endpoint returns
+     * the details of the rule set, including its rules and compliance criteria.
      * The response includes the rule set's ID, display name, and the list of rules it contains.
-     * If the rule set does not exist, a 404 Not Found error is returned.
+     * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
-    public CompletableFuture<RuleSet> get(String ruleSetId) {
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture = this.rawClient.get(ruleSetId);
-        CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
+    public CompletableFuture<RuleSetResponse> get(String ruleSetId) {
+        CompletableFuture<HiddenLayerHttpResponse<RuleSetResponse>> rawFuture = this.rawClient.get(ruleSetId);
+        CompletableFuture<RuleSetResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
                 rawFuture.cancel(true);
@@ -210,13 +224,20 @@ public class AsyncRuleSetsClient {
     }
 
     /**
-     * Retrieve a specific rule set by its unique identifier. This endpoint returns the details of the rule set, including its rules and compliance criteria.
+     * For active policy views, use <a href="#operation/get_governance_rule_sets">Retrieve rule sets</a>
+     * (<code>GET /governance/v1/rule-sets</code>) and select the required rule set from the paginated results.
+     * Use <code>include_disabled=true</code> when disabled rules are needed. This parameter includes disabled
+     * rules within returned rule sets; it does not guarantee access to disabled or historical rule sets.
+     * Contact support before migrating workflows that require historical rule-set retrieval.
+     * <p>Retrieve a specific rule set by its unique identifier. This endpoint returns
+     * the details of the rule set, including its rules and compliance criteria.
      * The response includes the rule set's ID, display name, and the list of rules it contains.
-     * If the rule set does not exist, a 404 Not Found error is returned.
+     * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
-    public CompletableFuture<RuleSet> get(String ruleSetId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture = this.rawClient.get(ruleSetId, requestOptions);
-        CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
+    public CompletableFuture<RuleSetResponse> get(String ruleSetId, RequestOptions requestOptions) {
+        CompletableFuture<HiddenLayerHttpResponse<RuleSetResponse>> rawFuture =
+                this.rawClient.get(ruleSetId, requestOptions);
+        CompletableFuture<RuleSetResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
                 rawFuture.cancel(true);
@@ -226,13 +247,19 @@ public class AsyncRuleSetsClient {
     }
 
     /**
-     * Retrieve a specific rule set by its unique identifier. This endpoint returns the details of the rule set, including its rules and compliance criteria.
+     * For active policy views, use <a href="#operation/get_governance_rule_sets">Retrieve rule sets</a>
+     * (<code>GET /governance/v1/rule-sets</code>) and select the required rule set from the paginated results.
+     * Use <code>include_disabled=true</code> when disabled rules are needed. This parameter includes disabled
+     * rules within returned rule sets; it does not guarantee access to disabled or historical rule sets.
+     * Contact support before migrating workflows that require historical rule-set retrieval.
+     * <p>Retrieve a specific rule set by its unique identifier. This endpoint returns
+     * the details of the rule set, including its rules and compliance criteria.
      * The response includes the rule set's ID, display name, and the list of rules it contains.
-     * If the rule set does not exist, a 404 Not Found error is returned.
+     * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
-    public CompletableFuture<RuleSet> get(String ruleSetId, GetRuleSetsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture = this.rawClient.get(ruleSetId, request);
-        CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
+    public CompletableFuture<RuleSetResponse> get(String ruleSetId, GetRuleSetsRequest request) {
+        CompletableFuture<HiddenLayerHttpResponse<RuleSetResponse>> rawFuture = this.rawClient.get(ruleSetId, request);
+        CompletableFuture<RuleSetResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
                 rawFuture.cancel(true);
@@ -242,14 +269,21 @@ public class AsyncRuleSetsClient {
     }
 
     /**
-     * Retrieve a specific rule set by its unique identifier. This endpoint returns the details of the rule set, including its rules and compliance criteria.
+     * For active policy views, use <a href="#operation/get_governance_rule_sets">Retrieve rule sets</a>
+     * (<code>GET /governance/v1/rule-sets</code>) and select the required rule set from the paginated results.
+     * Use <code>include_disabled=true</code> when disabled rules are needed. This parameter includes disabled
+     * rules within returned rule sets; it does not guarantee access to disabled or historical rule sets.
+     * Contact support before migrating workflows that require historical rule-set retrieval.
+     * <p>Retrieve a specific rule set by its unique identifier. This endpoint returns
+     * the details of the rule set, including its rules and compliance criteria.
      * The response includes the rule set's ID, display name, and the list of rules it contains.
-     * If the rule set does not exist, a 404 Not Found error is returned.
+     * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
-    public CompletableFuture<RuleSet> get(String ruleSetId, GetRuleSetsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture =
+    public CompletableFuture<RuleSetResponse> get(
+            String ruleSetId, GetRuleSetsRequest request, RequestOptions requestOptions) {
+        CompletableFuture<HiddenLayerHttpResponse<RuleSetResponse>> rawFuture =
                 this.rawClient.get(ruleSetId, request, requestOptions);
-        CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
+        CompletableFuture<RuleSetResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
                 rawFuture.cancel(true);

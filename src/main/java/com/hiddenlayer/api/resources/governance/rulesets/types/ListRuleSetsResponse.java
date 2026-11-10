@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.types.ICursors;
-import com.hiddenlayer.api.types.RuleSet;
+import com.hiddenlayer.api.types.RuleSetResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +32,7 @@ public final class ListRuleSetsResponse implements ICursors {
 
     private final Optional<String> last;
 
-    private final Optional<List<RuleSet>> items;
+    private final Optional<List<RuleSetResponse>> items;
 
     private final Map<String, Object> additionalProperties;
 
@@ -41,7 +41,7 @@ public final class ListRuleSetsResponse implements ICursors {
             String prev,
             String next,
             Optional<String> last,
-            Optional<List<RuleSet>> items,
+            Optional<List<RuleSetResponse>> items,
             Map<String, Object> additionalProperties) {
         this.first = first;
         this.prev = prev;
@@ -88,7 +88,7 @@ public final class ListRuleSetsResponse implements ICursors {
     }
 
     @JsonProperty("items")
-    public Optional<List<RuleSet>> getItems() {
+    public Optional<List<RuleSetResponse>> getItems() {
         return items;
     }
 
@@ -162,9 +162,9 @@ public final class ListRuleSetsResponse implements ICursors {
 
         _FinalStage last(String last);
 
-        _FinalStage items(Optional<List<RuleSet>> items);
+        _FinalStage items(Optional<List<RuleSetResponse>> items);
 
-        _FinalStage items(List<RuleSet> items);
+        _FinalStage items(List<RuleSetResponse> items);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -175,7 +175,7 @@ public final class ListRuleSetsResponse implements ICursors {
 
         private String next;
 
-        private Optional<List<RuleSet>> items = Optional.empty();
+        private Optional<List<RuleSetResponse>> items = Optional.empty();
 
         private Optional<String> last = Optional.empty();
 
@@ -227,14 +227,14 @@ public final class ListRuleSetsResponse implements ICursors {
         }
 
         @java.lang.Override
-        public _FinalStage items(List<RuleSet> items) {
+        public _FinalStage items(List<RuleSetResponse> items) {
             this.items = Optional.ofNullable(items);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "items", nulls = Nulls.SKIP)
-        public _FinalStage items(Optional<List<RuleSet>> items) {
+        public _FinalStage items(Optional<List<RuleSetResponse>> items) {
             this.items = items;
             return this;
         }

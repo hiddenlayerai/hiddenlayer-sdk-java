@@ -11,6 +11,7 @@ import com.hiddenlayer.api.core.HiddenLayerException;
 import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
+import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
 import com.hiddenlayer.api.errors.BadRequestError;
@@ -55,6 +56,13 @@ public class RawScansClient {
                 .newBuilder()
                 .addPathSegments("supply-chain/v3/scans")
                 .addPathSegment(PathSegments.validate(scanId));
+        if (request.getIncludeThreatTypes().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "include_threat_types",
+                    request.getIncludeThreatTypes().get(),
+                    false);
+        }
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);

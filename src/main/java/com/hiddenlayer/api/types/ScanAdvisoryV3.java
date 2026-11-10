@@ -9,11 +9,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
@@ -27,6 +30,14 @@ public final class ScanAdvisoryV3 {
 
     private final String description;
 
+    private final Optional<ScanDetectionSeverity> severity;
+
+    private final Optional<ScanThreatType> threatType;
+
+    private final Optional<List<ScanOwaspIssuesItem>> owaspIssues;
+
+    private final Optional<ScanFindingEvidence> evidence;
+
     private final Map<String, Object> additionalProperties;
 
     private ScanAdvisoryV3(
@@ -34,11 +45,19 @@ public final class ScanAdvisoryV3 {
             String ruleId,
             String category,
             String description,
+            Optional<ScanDetectionSeverity> severity,
+            Optional<ScanThreatType> threatType,
+            Optional<List<ScanOwaspIssuesItem>> owaspIssues,
+            Optional<ScanFindingEvidence> evidence,
             Map<String, Object> additionalProperties) {
         this.advisoryId = advisoryId;
         this.ruleId = ruleId;
         this.category = category;
         this.description = description;
+        this.severity = severity;
+        this.threatType = threatType;
+        this.owaspIssues = owaspIssues;
+        this.evidence = evidence;
         this.additionalProperties = additionalProperties;
     }
 
@@ -74,6 +93,26 @@ public final class ScanAdvisoryV3 {
         return description;
     }
 
+    @JsonProperty("severity")
+    public Optional<ScanDetectionSeverity> getSeverity() {
+        return severity;
+    }
+
+    @JsonProperty("threat_type")
+    public Optional<ScanThreatType> getThreatType() {
+        return threatType;
+    }
+
+    @JsonProperty("owasp_issues")
+    public Optional<List<ScanOwaspIssuesItem>> getOwaspIssues() {
+        return owaspIssues;
+    }
+
+    @JsonProperty("evidence")
+    public Optional<ScanFindingEvidence> getEvidence() {
+        return evidence;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -89,12 +128,24 @@ public final class ScanAdvisoryV3 {
         return advisoryId.equals(other.advisoryId)
                 && ruleId.equals(other.ruleId)
                 && category.equals(other.category)
-                && description.equals(other.description);
+                && description.equals(other.description)
+                && severity.equals(other.severity)
+                && threatType.equals(other.threatType)
+                && owaspIssues.equals(other.owaspIssues)
+                && evidence.equals(other.evidence);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.advisoryId, this.ruleId, this.category, this.description);
+        return Objects.hash(
+                this.advisoryId,
+                this.ruleId,
+                this.category,
+                this.description,
+                this.severity,
+                this.threatType,
+                this.owaspIssues,
+                this.evidence);
     }
 
     @java.lang.Override
@@ -142,6 +193,22 @@ public final class ScanAdvisoryV3 {
         _FinalStage additionalProperty(String key, Object value);
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        _FinalStage severity(Optional<ScanDetectionSeverity> severity);
+
+        _FinalStage severity(ScanDetectionSeverity severity);
+
+        _FinalStage threatType(Optional<ScanThreatType> threatType);
+
+        _FinalStage threatType(ScanThreatType threatType);
+
+        _FinalStage owaspIssues(Optional<List<ScanOwaspIssuesItem>> owaspIssues);
+
+        _FinalStage owaspIssues(List<ScanOwaspIssuesItem> owaspIssues);
+
+        _FinalStage evidence(Optional<ScanFindingEvidence> evidence);
+
+        _FinalStage evidence(ScanFindingEvidence evidence);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -155,6 +222,14 @@ public final class ScanAdvisoryV3 {
 
         private String description;
 
+        private Optional<ScanFindingEvidence> evidence = Optional.empty();
+
+        private Optional<List<ScanOwaspIssuesItem>> owaspIssues = Optional.empty();
+
+        private Optional<ScanThreatType> threatType = Optional.empty();
+
+        private Optional<ScanDetectionSeverity> severity = Optional.empty();
+
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -165,6 +240,10 @@ public final class ScanAdvisoryV3 {
             ruleId(other.getRuleId());
             category(other.getCategory());
             description(other.getDescription());
+            severity(other.getSeverity());
+            threatType(other.getThreatType());
+            owaspIssues(other.getOwaspIssues());
+            evidence(other.getEvidence());
             return this;
         }
 
@@ -213,8 +292,69 @@ public final class ScanAdvisoryV3 {
         }
 
         @java.lang.Override
+        public _FinalStage evidence(ScanFindingEvidence evidence) {
+            this.evidence = Optional.ofNullable(evidence);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "evidence", nulls = Nulls.SKIP)
+        public _FinalStage evidence(Optional<ScanFindingEvidence> evidence) {
+            this.evidence = evidence;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage owaspIssues(List<ScanOwaspIssuesItem> owaspIssues) {
+            this.owaspIssues = Optional.ofNullable(owaspIssues);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "owasp_issues", nulls = Nulls.SKIP)
+        public _FinalStage owaspIssues(Optional<List<ScanOwaspIssuesItem>> owaspIssues) {
+            this.owaspIssues = owaspIssues;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage threatType(ScanThreatType threatType) {
+            this.threatType = Optional.ofNullable(threatType);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "threat_type", nulls = Nulls.SKIP)
+        public _FinalStage threatType(Optional<ScanThreatType> threatType) {
+            this.threatType = threatType;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage severity(ScanDetectionSeverity severity) {
+            this.severity = Optional.ofNullable(severity);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "severity", nulls = Nulls.SKIP)
+        public _FinalStage severity(Optional<ScanDetectionSeverity> severity) {
+            this.severity = severity;
+            return this;
+        }
+
+        @java.lang.Override
         public ScanAdvisoryV3 build() {
-            return new ScanAdvisoryV3(advisoryId, ruleId, category, description, additionalProperties);
+            return new ScanAdvisoryV3(
+                    advisoryId,
+                    ruleId,
+                    category,
+                    description,
+                    severity,
+                    threatType,
+                    owaspIssues,
+                    evidence,
+                    additionalProperties);
         }
 
         @JsonAnySetter
@@ -222,7 +362,11 @@ public final class ScanAdvisoryV3 {
             if (key.equalsIgnoreCase("advisory_id")
                     || key.equalsIgnoreCase("rule_id")
                     || key.equalsIgnoreCase("category")
-                    || key.equalsIgnoreCase("description")) {
+                    || key.equalsIgnoreCase("description")
+                    || key.equalsIgnoreCase("severity")
+                    || key.equalsIgnoreCase("threat_type")
+                    || key.equalsIgnoreCase("owasp_issues")
+                    || key.equalsIgnoreCase("evidence")) {
                 return;
             }
             this.additionalProperties.put(key, value);

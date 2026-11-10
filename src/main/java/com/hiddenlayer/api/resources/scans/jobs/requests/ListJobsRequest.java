@@ -12,11 +12,13 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
+import com.hiddenlayer.api.resources.scans.jobs.types.ListJobsRequestFindingSeverityItem;
 import com.hiddenlayer.api.types.ListJobsRequestModelName;
 import com.hiddenlayer.api.types.ListJobsRequestSeverity;
 import com.hiddenlayer.api.types.ListJobsRequestSource;
 import com.hiddenlayer.api.types.PolicyStatus;
 import com.hiddenlayer.api.types.ScanJobRequestSource;
+import com.hiddenlayer.api.types.ScanTopThreatType;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,6 +34,10 @@ public final class ListJobsRequest {
 
     private final Optional<List<String>> modelIds;
 
+    private final Optional<List<ScanTopThreatType>> threatType;
+
+    private final Optional<List<ListJobsRequestFindingSeverityItem>> findingSeverity;
+
     private final Optional<List<String>> status;
 
     private final Optional<List<ScanJobRequestSource>> requestSource;
@@ -41,6 +47,8 @@ public final class ListJobsRequest {
     private final Optional<List<String>> provider;
 
     private final Optional<List<PolicyStatus>> complianceStatus;
+
+    private final Optional<Boolean> includeThreatTypes;
 
     private final Optional<OffsetDateTime> startTime;
 
@@ -71,11 +79,14 @@ public final class ListJobsRequest {
     private ListJobsRequest(
             Optional<List<String>> modelVersionIds,
             Optional<List<String>> modelIds,
+            Optional<List<ScanTopThreatType>> threatType,
+            Optional<List<ListJobsRequestFindingSeverityItem>> findingSeverity,
             Optional<List<String>> status,
             Optional<List<ScanJobRequestSource>> requestSource,
             Optional<List<String>> region,
             Optional<List<String>> provider,
             Optional<List<PolicyStatus>> complianceStatus,
+            Optional<Boolean> includeThreatTypes,
             Optional<OffsetDateTime> startTime,
             Optional<OffsetDateTime> endTime,
             Optional<ListJobsRequestSeverity> severity,
@@ -91,11 +102,14 @@ public final class ListJobsRequest {
             Map<String, Object> additionalProperties) {
         this.modelVersionIds = modelVersionIds;
         this.modelIds = modelIds;
+        this.threatType = threatType;
+        this.findingSeverity = findingSeverity;
         this.status = status;
         this.requestSource = requestSource;
         this.region = region;
         this.provider = provider;
         this.complianceStatus = complianceStatus;
+        this.includeThreatTypes = includeThreatTypes;
         this.startTime = startTime;
         this.endTime = endTime;
         this.severity = severity;
@@ -125,6 +139,30 @@ public final class ListJobsRequest {
     @JsonProperty("model_ids")
     public Optional<List<String>> getModelIds() {
         return modelIds;
+    }
+
+    /**
+     * @return Comma-separated threat types. Returns 400 for an unknown value, when threat types are disabled, or with <code>severity</code>.
+     * A scan matches when it has a finding of a listed type. <code>none</code> matches a done scan with no findings.
+     * <code>unclassified</code> matches a scan with at least one detection that has no threat type, whatever its top threat type.
+     * <code>finding_severity</code> pairs with this filter: a scan matches when a listed threat type's highest severity is a listed severity.
+     * <code>sort</code> also accepts <code>threat_type</code>, which orders scans by top threat type. Descending puts them in the order that ranks the top threat type: malicious, suspicious, unclassified, vulnerable, advisory, none.
+     * <code>sort</code> also accepts <code>top_severity</code>, which orders scans by the highest severity across all findings. Sorting by <code>severity</code> uses the scan's highest detection severity.
+     */
+    @JsonProperty("threat_type")
+    public Optional<List<ScanTopThreatType>> getThreatType() {
+        return threatType;
+    }
+
+    /**
+     * @return Comma-separated severities: critical, high, medium, low, safe. Returns 400 for any other value, when threat types are disabled, or with <code>severity</code>.
+     * Alone it matches when any of the scan's threat types has a listed highest severity.
+     * Paired with <code>threat_type</code>, a scan matches when a listed threat type's highest severity is a listed severity.
+     * <code>safe</code> means findings without a severity. Alone it matches scans whose findings all lack one, and scans with no findings and a <code>safe</code> severity. Paired with <code>threat_type</code>, it matches a listed type whose findings all lack one.
+     */
+    @JsonProperty("finding_severity")
+    public Optional<List<ListJobsRequestFindingSeverityItem>> getFindingSeverity() {
+        return findingSeverity;
     }
 
     /**
@@ -165,6 +203,14 @@ public final class ListJobsRequest {
     @JsonProperty("compliance_status")
     public Optional<List<PolicyStatus>> getComplianceStatus() {
         return complianceStatus;
+    }
+
+    /**
+     * @return With true, the response keeps findings' threat types and advisories' severities, each file's <code>top_threat_type</code> and <code>top_severity</code> on the files endpoint, and each scan's <code>top_threat_type</code>, <code>findings_count</code> and <code>threat_types</code>, SARIF reports advisories that have a threat type, and the supply chain CSV export fills its <code>threat_type</code> column. Without it, they are left out, as they were before threat types. Ignored when threat types are disabled. Filters and sorts on threat types work without it. Any value other than true or false returns 400. Even with true, findings from scanners that predate threat types may have no <code>threat_type</code>.
+     */
+    @JsonProperty("include_threat_types")
+    public Optional<Boolean> getIncludeThreatTypes() {
+        return includeThreatTypes;
     }
 
     /**
@@ -271,11 +317,14 @@ public final class ListJobsRequest {
     private boolean equalTo(ListJobsRequest other) {
         return modelVersionIds.equals(other.modelVersionIds)
                 && modelIds.equals(other.modelIds)
+                && threatType.equals(other.threatType)
+                && findingSeverity.equals(other.findingSeverity)
                 && status.equals(other.status)
                 && requestSource.equals(other.requestSource)
                 && region.equals(other.region)
                 && provider.equals(other.provider)
                 && complianceStatus.equals(other.complianceStatus)
+                && includeThreatTypes.equals(other.includeThreatTypes)
                 && startTime.equals(other.startTime)
                 && endTime.equals(other.endTime)
                 && severity.equals(other.severity)
@@ -295,11 +344,14 @@ public final class ListJobsRequest {
         return Objects.hash(
                 this.modelVersionIds,
                 this.modelIds,
+                this.threatType,
+                this.findingSeverity,
                 this.status,
                 this.requestSource,
                 this.region,
                 this.provider,
                 this.complianceStatus,
+                this.includeThreatTypes,
                 this.startTime,
                 this.endTime,
                 this.severity,
@@ -329,6 +381,10 @@ public final class ListJobsRequest {
 
         private Optional<List<String>> modelIds = Optional.empty();
 
+        private Optional<List<ScanTopThreatType>> threatType = Optional.empty();
+
+        private Optional<List<ListJobsRequestFindingSeverityItem>> findingSeverity = Optional.empty();
+
         private Optional<List<String>> status = Optional.empty();
 
         private Optional<List<ScanJobRequestSource>> requestSource = Optional.empty();
@@ -338,6 +394,8 @@ public final class ListJobsRequest {
         private Optional<List<String>> provider = Optional.empty();
 
         private Optional<List<PolicyStatus>> complianceStatus = Optional.empty();
+
+        private Optional<Boolean> includeThreatTypes = Optional.empty();
 
         private Optional<OffsetDateTime> startTime = Optional.empty();
 
@@ -370,11 +428,14 @@ public final class ListJobsRequest {
         public Builder from(ListJobsRequest other) {
             modelVersionIds(other.getModelVersionIds());
             modelIds(other.getModelIds());
+            threatType(other.getThreatType());
+            findingSeverity(other.getFindingSeverity());
             status(other.getStatus());
             requestSource(other.getRequestSource());
             region(other.getRegion());
             provider(other.getProvider());
             complianceStatus(other.getComplianceStatus());
+            includeThreatTypes(other.getIncludeThreatTypes());
             startTime(other.getStartTime());
             endTime(other.getEndTime());
             severity(other.getSeverity());
@@ -425,6 +486,52 @@ public final class ListJobsRequest {
 
         public Builder modelIds(String modelIds) {
             this.modelIds = Optional.of(Collections.singletonList(modelIds));
+            return this;
+        }
+
+        /**
+         * <p>Comma-separated threat types. Returns 400 for an unknown value, when threat types are disabled, or with <code>severity</code>.
+         * A scan matches when it has a finding of a listed type. <code>none</code> matches a done scan with no findings.
+         * <code>unclassified</code> matches a scan with at least one detection that has no threat type, whatever its top threat type.
+         * <code>finding_severity</code> pairs with this filter: a scan matches when a listed threat type's highest severity is a listed severity.
+         * <code>sort</code> also accepts <code>threat_type</code>, which orders scans by top threat type. Descending puts them in the order that ranks the top threat type: malicious, suspicious, unclassified, vulnerable, advisory, none.
+         * <code>sort</code> also accepts <code>top_severity</code>, which orders scans by the highest severity across all findings. Sorting by <code>severity</code> uses the scan's highest detection severity.</p>
+         */
+        @JsonSetter(value = "threat_type", nulls = Nulls.SKIP)
+        public Builder threatType(Optional<List<ScanTopThreatType>> threatType) {
+            this.threatType = threatType;
+            return this;
+        }
+
+        public Builder threatType(List<ScanTopThreatType> threatType) {
+            this.threatType = Optional.ofNullable(threatType);
+            return this;
+        }
+
+        public Builder threatType(ScanTopThreatType threatType) {
+            this.threatType = Optional.of(Collections.singletonList(threatType));
+            return this;
+        }
+
+        /**
+         * <p>Comma-separated severities: critical, high, medium, low, safe. Returns 400 for any other value, when threat types are disabled, or with <code>severity</code>.
+         * Alone it matches when any of the scan's threat types has a listed highest severity.
+         * Paired with <code>threat_type</code>, a scan matches when a listed threat type's highest severity is a listed severity.
+         * <code>safe</code> means findings without a severity. Alone it matches scans whose findings all lack one, and scans with no findings and a <code>safe</code> severity. Paired with <code>threat_type</code>, it matches a listed type whose findings all lack one.</p>
+         */
+        @JsonSetter(value = "finding_severity", nulls = Nulls.SKIP)
+        public Builder findingSeverity(Optional<List<ListJobsRequestFindingSeverityItem>> findingSeverity) {
+            this.findingSeverity = findingSeverity;
+            return this;
+        }
+
+        public Builder findingSeverity(List<ListJobsRequestFindingSeverityItem> findingSeverity) {
+            this.findingSeverity = Optional.ofNullable(findingSeverity);
+            return this;
+        }
+
+        public Builder findingSeverity(ListJobsRequestFindingSeverityItem findingSeverity) {
+            this.findingSeverity = Optional.of(Collections.singletonList(findingSeverity));
             return this;
         }
 
@@ -520,6 +627,20 @@ public final class ListJobsRequest {
 
         public Builder complianceStatus(PolicyStatus complianceStatus) {
             this.complianceStatus = Optional.of(Collections.singletonList(complianceStatus));
+            return this;
+        }
+
+        /**
+         * <p>With true, the response keeps findings' threat types and advisories' severities, each file's <code>top_threat_type</code> and <code>top_severity</code> on the files endpoint, and each scan's <code>top_threat_type</code>, <code>findings_count</code> and <code>threat_types</code>, SARIF reports advisories that have a threat type, and the supply chain CSV export fills its <code>threat_type</code> column. Without it, they are left out, as they were before threat types. Ignored when threat types are disabled. Filters and sorts on threat types work without it. Any value other than true or false returns 400. Even with true, findings from scanners that predate threat types may have no <code>threat_type</code>.</p>
+         */
+        @JsonSetter(value = "include_threat_types", nulls = Nulls.SKIP)
+        public Builder includeThreatTypes(Optional<Boolean> includeThreatTypes) {
+            this.includeThreatTypes = includeThreatTypes;
+            return this;
+        }
+
+        public Builder includeThreatTypes(Boolean includeThreatTypes) {
+            this.includeThreatTypes = Optional.ofNullable(includeThreatTypes);
             return this;
         }
 
@@ -689,11 +810,14 @@ public final class ListJobsRequest {
             return new ListJobsRequest(
                     modelVersionIds,
                     modelIds,
+                    threatType,
+                    findingSeverity,
                     status,
                     requestSource,
                     region,
                     provider,
                     complianceStatus,
+                    includeThreatTypes,
                     startTime,
                     endTime,
                     severity,
@@ -713,11 +837,14 @@ public final class ListJobsRequest {
         private void putAdditionalPropertyFromJson(String key, Object value) {
             if (key.equalsIgnoreCase("model_version_ids")
                     || key.equalsIgnoreCase("model_ids")
+                    || key.equalsIgnoreCase("threat_type")
+                    || key.equalsIgnoreCase("finding_severity")
                     || key.equalsIgnoreCase("status")
                     || key.equalsIgnoreCase("request_source")
                     || key.equalsIgnoreCase("region")
                     || key.equalsIgnoreCase("provider")
                     || key.equalsIgnoreCase("compliance_status")
+                    || key.equalsIgnoreCase("include_threat_types")
                     || key.equalsIgnoreCase("start_time")
                     || key.equalsIgnoreCase("end_time")
                     || key.equalsIgnoreCase("severity")

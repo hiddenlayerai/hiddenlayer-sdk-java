@@ -43,6 +43,12 @@ public final class ScanReportSummaryV3Summary {
 
     private final Optional<List<ScanReportSummaryV3SummaryMitreAtlasItem>> mitreAtlas;
 
+    private final Optional<ScanTopThreatType> topThreatType;
+
+    private final Optional<Integer> findingsCount;
+
+    private final Optional<Map<String, ScanThreatTypeSummary>> threatTypes;
+
     private final Map<String, Object> additionalProperties;
 
     private ScanReportSummaryV3Summary(
@@ -57,6 +63,9 @@ public final class ScanReportSummaryV3Summary {
             Optional<Integer> filesFailedToScan,
             Optional<Integer> unknownFiles,
             Optional<List<ScanReportSummaryV3SummaryMitreAtlasItem>> mitreAtlas,
+            Optional<ScanTopThreatType> topThreatType,
+            Optional<Integer> findingsCount,
+            Optional<Map<String, ScanThreatTypeSummary>> threatTypes,
             Map<String, Object> additionalProperties) {
         this.severity = severity;
         this.highestSeverity = highestSeverity;
@@ -69,6 +78,9 @@ public final class ScanReportSummaryV3Summary {
         this.filesFailedToScan = filesFailedToScan;
         this.unknownFiles = unknownFiles;
         this.mitreAtlas = mitreAtlas;
+        this.topThreatType = topThreatType;
+        this.findingsCount = findingsCount;
+        this.threatTypes = threatTypes;
         this.additionalProperties = additionalProperties;
     }
 
@@ -77,13 +89,16 @@ public final class ScanReportSummaryV3Summary {
         return severity;
     }
 
+    /**
+     * @return Highest severity among detections only, excluding advisories.
+     */
     @JsonProperty("highest_severity")
     public Optional<ScanHighestDetectionSeverity> getHighestSeverity() {
         return highestSeverity;
     }
 
     /**
-     * @return total number of detections found
+     * @return Total detections, excluding advisories. Counts findings rather than distinct files.
      */
     @JsonProperty("detection_count")
     public Optional<Integer> getDetectionCount() {
@@ -91,7 +106,7 @@ public final class ScanReportSummaryV3Summary {
     }
 
     /**
-     * @return total number of advisories found
+     * @return Total advisories, excluding detections.
      */
     @JsonProperty("advisory_count")
     public Optional<Integer> getAdvisoryCount() {
@@ -99,7 +114,7 @@ public final class ScanReportSummaryV3Summary {
     }
 
     /**
-     * @return total number of files scanned
+     * @return Total file results counted by the scan, including failed files and unknown file types; not a count of successfully analyzed files.
      */
     @JsonProperty("file_count")
     public Optional<Integer> getFileCount() {
@@ -107,7 +122,7 @@ public final class ScanReportSummaryV3Summary {
     }
 
     /**
-     * @return number of files that contain detections
+     * @return Number of files containing detections; files with only advisories do not contribute.
      */
     @JsonProperty("files_with_detections_count")
     public Optional<Integer> getFilesWithDetectionsCount() {
@@ -154,6 +169,30 @@ public final class ScanReportSummaryV3Summary {
         return mitreAtlas;
     }
 
+    /**
+     * @return The scan's top threat type. Absent while the scan has no findings and has not completed.
+     */
+    @JsonProperty("top_threat_type")
+    public Optional<ScanTopThreatType> getTopThreatType() {
+        return topThreatType;
+    }
+
+    /**
+     * @return Findings in the scan, detections and advisories together. Absent until the scan completes, and for scans completed before threat types.
+     */
+    @JsonProperty("findings_count")
+    public Optional<Integer> getFindingsCount() {
+        return findingsCount;
+    }
+
+    /**
+     * @return The scan's findings by threat type, keyed by malicious, suspicious, vulnerable, advisory or unclassified. Absent until the scan completes, for scans completed before threat types, and for scans without findings.
+     */
+    @JsonProperty("threat_types")
+    public Optional<Map<String, ScanThreatTypeSummary>> getThreatTypes() {
+        return threatTypes;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -176,7 +215,10 @@ public final class ScanReportSummaryV3Summary {
                 && advisoryCategories.equals(other.advisoryCategories)
                 && filesFailedToScan.equals(other.filesFailedToScan)
                 && unknownFiles.equals(other.unknownFiles)
-                && mitreAtlas.equals(other.mitreAtlas);
+                && mitreAtlas.equals(other.mitreAtlas)
+                && topThreatType.equals(other.topThreatType)
+                && findingsCount.equals(other.findingsCount)
+                && threatTypes.equals(other.threatTypes);
     }
 
     @java.lang.Override
@@ -192,7 +234,10 @@ public final class ScanReportSummaryV3Summary {
                 this.advisoryCategories,
                 this.filesFailedToScan,
                 this.unknownFiles,
-                this.mitreAtlas);
+                this.mitreAtlas,
+                this.topThreatType,
+                this.findingsCount,
+                this.threatTypes);
     }
 
     @java.lang.Override
@@ -228,6 +273,12 @@ public final class ScanReportSummaryV3Summary {
 
         private Optional<List<ScanReportSummaryV3SummaryMitreAtlasItem>> mitreAtlas = Optional.empty();
 
+        private Optional<ScanTopThreatType> topThreatType = Optional.empty();
+
+        private Optional<Integer> findingsCount = Optional.empty();
+
+        private Optional<Map<String, ScanThreatTypeSummary>> threatTypes = Optional.empty();
+
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -244,6 +295,9 @@ public final class ScanReportSummaryV3Summary {
             filesFailedToScan(other.getFilesFailedToScan());
             unknownFiles(other.getUnknownFiles());
             mitreAtlas(other.getMitreAtlas());
+            topThreatType(other.getTopThreatType());
+            findingsCount(other.getFindingsCount());
+            threatTypes(other.getThreatTypes());
             return this;
         }
 
@@ -258,6 +312,9 @@ public final class ScanReportSummaryV3Summary {
             return this;
         }
 
+        /**
+         * <p>Highest severity among detections only, excluding advisories.</p>
+         */
         @JsonSetter(value = "highest_severity", nulls = Nulls.SKIP)
         public Builder highestSeverity(Optional<ScanHighestDetectionSeverity> highestSeverity) {
             this.highestSeverity = highestSeverity;
@@ -270,7 +327,7 @@ public final class ScanReportSummaryV3Summary {
         }
 
         /**
-         * <p>total number of detections found</p>
+         * <p>Total detections, excluding advisories. Counts findings rather than distinct files.</p>
          */
         @JsonSetter(value = "detection_count", nulls = Nulls.SKIP)
         public Builder detectionCount(Optional<Integer> detectionCount) {
@@ -284,7 +341,7 @@ public final class ScanReportSummaryV3Summary {
         }
 
         /**
-         * <p>total number of advisories found</p>
+         * <p>Total advisories, excluding detections.</p>
          */
         @JsonSetter(value = "advisory_count", nulls = Nulls.SKIP)
         public Builder advisoryCount(Optional<Integer> advisoryCount) {
@@ -298,7 +355,7 @@ public final class ScanReportSummaryV3Summary {
         }
 
         /**
-         * <p>total number of files scanned</p>
+         * <p>Total file results counted by the scan, including failed files and unknown file types; not a count of successfully analyzed files.</p>
          */
         @JsonSetter(value = "file_count", nulls = Nulls.SKIP)
         public Builder fileCount(Optional<Integer> fileCount) {
@@ -312,7 +369,7 @@ public final class ScanReportSummaryV3Summary {
         }
 
         /**
-         * <p>number of files that contain detections</p>
+         * <p>Number of files containing detections; files with only advisories do not contribute.</p>
          */
         @JsonSetter(value = "files_with_detections_count", nulls = Nulls.SKIP)
         public Builder filesWithDetectionsCount(Optional<Integer> filesWithDetectionsCount) {
@@ -395,6 +452,48 @@ public final class ScanReportSummaryV3Summary {
             return this;
         }
 
+        /**
+         * <p>The scan's top threat type. Absent while the scan has no findings and has not completed.</p>
+         */
+        @JsonSetter(value = "top_threat_type", nulls = Nulls.SKIP)
+        public Builder topThreatType(Optional<ScanTopThreatType> topThreatType) {
+            this.topThreatType = topThreatType;
+            return this;
+        }
+
+        public Builder topThreatType(ScanTopThreatType topThreatType) {
+            this.topThreatType = Optional.ofNullable(topThreatType);
+            return this;
+        }
+
+        /**
+         * <p>Findings in the scan, detections and advisories together. Absent until the scan completes, and for scans completed before threat types.</p>
+         */
+        @JsonSetter(value = "findings_count", nulls = Nulls.SKIP)
+        public Builder findingsCount(Optional<Integer> findingsCount) {
+            this.findingsCount = findingsCount;
+            return this;
+        }
+
+        public Builder findingsCount(Integer findingsCount) {
+            this.findingsCount = Optional.ofNullable(findingsCount);
+            return this;
+        }
+
+        /**
+         * <p>The scan's findings by threat type, keyed by malicious, suspicious, vulnerable, advisory or unclassified. Absent until the scan completes, for scans completed before threat types, and for scans without findings.</p>
+         */
+        @JsonSetter(value = "threat_types", nulls = Nulls.SKIP)
+        public Builder threatTypes(Optional<Map<String, ScanThreatTypeSummary>> threatTypes) {
+            this.threatTypes = threatTypes;
+            return this;
+        }
+
+        public Builder threatTypes(Map<String, ScanThreatTypeSummary> threatTypes) {
+            this.threatTypes = Optional.ofNullable(threatTypes);
+            return this;
+        }
+
         public ScanReportSummaryV3Summary build() {
             return new ScanReportSummaryV3Summary(
                     severity,
@@ -408,6 +507,9 @@ public final class ScanReportSummaryV3Summary {
                     filesFailedToScan,
                     unknownFiles,
                     mitreAtlas,
+                    topThreatType,
+                    findingsCount,
+                    threatTypes,
                     additionalProperties);
         }
 
@@ -423,7 +525,10 @@ public final class ScanReportSummaryV3Summary {
                     || key.equalsIgnoreCase("advisory_categories")
                     || key.equalsIgnoreCase("files_failed_to_scan")
                     || key.equalsIgnoreCase("unknown_files")
-                    || key.equalsIgnoreCase("mitre_atlas")) {
+                    || key.equalsIgnoreCase("mitre_atlas")
+                    || key.equalsIgnoreCase("top_threat_type")
+                    || key.equalsIgnoreCase("findings_count")
+                    || key.equalsIgnoreCase("threat_types")) {
                 return;
             }
             this.additionalProperties.put(key, value);

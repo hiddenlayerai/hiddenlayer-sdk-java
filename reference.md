@@ -10582,7 +10582,7 @@ client.governance().licenses().list();
 </details>
 
 ## Governance RuleSets
-<details><summary><code>client.governance.ruleSets.list() -> SyncPagingIterable&amp;lt;RuleSet&amp;gt;</code></summary>
+<details><summary><code>client.governance.ruleSets.list() -> SyncPagingIterable&amp;lt;RuleSetResponse&amp;gt;</code></summary>
 <dl>
 <dd>
 
@@ -10659,7 +10659,7 @@ client.governance().ruleSets().list(
 </dl>
 </details>
 
-<details><summary><code>client.governance.ruleSets.create(request) -> RuleSet</code></summary>
+<details><summary><code>client.governance.ruleSets.create(request) -> RuleSetResponse</code></summary>
 <dl>
 <dd>
 
@@ -10701,18 +10701,20 @@ client.governance().ruleSets().create(
         .body(
             RuleSet
                 .builder()
-                .displayName("display_name")
+                .displayName("License policy")
                 .rules(
                     Arrays.asList(
                         Rule
                             .builder()
                             .isCompliantWhenConditionsMet(true)
+                            .displayName("Allow MIT licensed models")
                             .conditions(
                                 Arrays.asList(
                                     Condition
                                         .builder()
-                                        .field("field")
+                                        .field("license")
                                         .conditionOperator(ConditionConditionOperator.EQUALS)
+                                        .fieldValue("mit")
                                         .build()
                                 )
                             )
@@ -10757,7 +10759,7 @@ client.governance().ruleSets().create(
 </dl>
 </details>
 
-<details><summary><code>client.governance.ruleSets.get(ruleSetId) -> RuleSet</code></summary>
+<details><summary><code>client.governance.ruleSets.get(ruleSetId) -> RuleSetResponse</code></summary>
 <dl>
 <dd>
 
@@ -10769,7 +10771,14 @@ client.governance().ruleSets().create(
 <dl>
 <dd>
 
-Retrieve a specific rule set by its unique identifier. This endpoint returns the details of the rule set, including its rules and compliance criteria.
+For active policy views, use [Retrieve rule sets](#operation/get_governance_rule_sets)
+(`GET /governance/v1/rule-sets`) and select the required rule set from the paginated results.
+Use `include_disabled=true` when disabled rules are needed. This parameter includes disabled
+rules within returned rule sets; it does not guarantee access to disabled or historical rule sets.
+Contact support before migrating workflows that require historical rule-set retrieval.
+
+Retrieve a specific rule set by its unique identifier. This endpoint returns
+the details of the rule set, including its rules and compliance criteria.
 The response includes the rule set's ID, display name, and the list of rules it contains.
 If the rule set does not exist, a 404 Not Found error is returned.
 </dd>
@@ -11454,7 +11463,16 @@ client.governance().rulePacks().list(
 <dl>
 <dd>
 
-Add a new rule to an existing rule set. This endpoint allows you to define a rule with its compliance criteria and conditions.
+This operation remains supported at least as long as the legacy policy editor.
+For new integrations, use [Create a rule set](#operation/create_governance_rule_set)
+(`POST /governance/v1/rule-sets?replace_active_policy=true`) to submit the complete policy
+with the new rule included. Preserve existing rules, their order, and disabled states;
+submitting only the new rule would replace the active policy with an incomplete rule set.
+Provide `previous_rule_set_id` to reject stale replacements and `previous_rule_id` for
+each retained rule; omit `previous_rule_id` only for newly added rules.
+
+Add a new rule to an existing rule set. This endpoint allows you to
+define a rule with its compliance criteria and conditions.
 The new rule will be appended to the existing rules in the specified rule set.
 If the rule set does not exist, a 404 Not Found error is returned.
 </dd>
@@ -11537,6 +11555,13 @@ client.governance().ruleSets().rules().create(
 
 <dl>
 <dd>
+
+Use [Create a rule set](#operation/create_governance_rule_set)
+(`POST /governance/v1/rule-sets?replace_active_policy=true`) to submit the complete updated policy.
+Preserve all rules, their order, and disabled states, and provide `previous_rule_set_id`
+and applicable `previous_rule_id` values to link the replacement to the previous policy.
+This creates a replacement rule set rather than updating a single rule in place;
+submitting only the modified rule would discard the rest of the active policy.
 
 Replace an existing rule in a rule set with a new definition. This endpoint allows you to update the compliance criteria and conditions of a rule, preserving
  the rule's order in the rule set. If the rule set or the rule does not exist, a 404 Not Found error is returned.
@@ -11629,6 +11654,15 @@ client.governance().ruleSets().rules().update(
 
 <dl>
 <dd>
+
+This operation remains supported at least as long as the legacy policy editor.
+For new integrations, use [Create a rule set](#operation/create_governance_rule_set)
+(`POST /governance/v1/rule-sets?replace_active_policy=true`) to submit the complete policy
+with the target rule marked `is_disabled: true`. Preserve the remaining rules, their order,
+and disabled states. Provide `previous_rule_set_id` to reject stale replacements and
+`previous_rule_id` for each retained rule, including the rule being disabled; omit
+`previous_rule_id` only for newly added rules. To reset the entire policy to defaults, use
+`DELETE /governance/v1/rule-sets/{rule_set_id}`.
 
 Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
 If the rule set or the rule does not exist, a 404 Not Found error is returned.
@@ -13373,6 +13407,14 @@ client.scans().jobs().retrieve(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**includeThreatTypes:** `Optional<Boolean>` — With true, the response keeps findings' threat types and advisories' severities, each file's `top_threat_type` and `top_severity` on the files endpoint, and each scan's `top_threat_type`, `findings_count` and `threat_types`, SARIF reports advisories that have a threat type, and the supply chain CSV export fills its `threat_type` column. Without it, they are left out, as they were before threat types. Ignored when threat types are disabled. Filters and sorts on threat types work without it. Any value other than true or false returns 400. Even with true, findings from scanners that predate threat types may have no `threat_type`.
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -13417,6 +13459,14 @@ client.scans().jobs().list(
 <dl>
 <dd>
 
+**includeThreatTypes:** `Optional<Boolean>` — With true, the response keeps findings' threat types and advisories' severities, each file's `top_threat_type` and `top_severity` on the files endpoint, and each scan's `top_threat_type`, `findings_count` and `threat_types`, SARIF reports advisories that have a threat type, and the supply chain CSV export fills its `threat_type` column. Without it, they are left out, as they were before threat types. Ignored when threat types are disabled. Filters and sorts on threat types work without it. Any value other than true or false returns 400. Even with true, findings from scanners that predate threat types may have no `threat_type`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **modelVersionIds:** `Optional<String>` — Model Version IDs
     
 </dd>
@@ -13450,6 +13500,34 @@ client.scans().jobs().list(
 <dd>
 
 **severity:** `Optional<ListJobsRequestSeverity>` — Comma-separated severities. A scan matches when its highest detection severity is a listed severity. Advisories don't count.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**threatType:** `Optional<ScanTopThreatType>` 
+
+Comma-separated threat types. Returns 400 for an unknown value, when threat types are disabled, or with `severity`.
+A scan matches when it has a finding of a listed type. `none` matches a done scan with no findings.
+`unclassified` matches a scan with at least one detection that has no threat type, whatever its top threat type.
+`finding_severity` pairs with this filter: a scan matches when a listed threat type's highest severity is a listed severity.
+`sort` also accepts `threat_type`, which orders scans by top threat type. Descending puts them in the order that ranks the top threat type: malicious, suspicious, unclassified, vulnerable, advisory, none.
+`sort` also accepts `top_severity`, which orders scans by the highest severity across all findings. Sorting by `severity` uses the scan's highest detection severity.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**findingSeverity:** `Optional<ListJobsRequestFindingSeverityItem>` 
+
+Comma-separated severities: critical, high, medium, low, safe. Returns 400 for any other value, when threat types are disabled, or with `severity`.
+Alone it matches when any of the scan's threat types has a listed highest severity.
+Paired with `threat_type`, a scan matches when a listed threat type's highest severity is a listed severity.
+`safe` means findings without a severity. Alone it matches scans whose findings all lack one, and scans with no findings and a `safe` severity. Paired with `threat_type`, it matches a listed type whose findings all lack one.
     
 </dd>
 </dl>
@@ -13764,6 +13842,14 @@ client.scans().results().listFiles(
 <dl>
 <dd>
 
+**includeThreatTypes:** `Optional<Boolean>` — With true, the response keeps findings' threat types and advisories' severities, each file's `top_threat_type` and `top_severity` on the files endpoint, and each scan's `top_threat_type`, `findings_count` and `threat_types`, SARIF reports advisories that have a threat type, and the supply chain CSV export fills its `threat_type` column. Without it, they are left out, as they were before threat types. Ignored when threat types are disabled. Filters and sorts on threat types work without it. Any value other than true or false returns 400. Even with true, findings from scanners that predate threat types may have no `threat_type`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **hasDetections:** `Optional<Boolean>` — When true, only return files that have detections
     
 </dd>
@@ -13844,6 +13930,14 @@ client.scans().results().sarif(
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**includeThreatTypes:** `Optional<Boolean>` — With true, the response keeps findings' threat types and advisories' severities, each file's `top_threat_type` and `top_severity` on the files endpoint, and each scan's `top_threat_type`, `findings_count` and `threat_types`, SARIF reports advisories that have a threat type, and the supply chain CSV export fills its `threat_type` column. Without it, they are left out, as they were before threat types. Ignored when threat types are disabled. Filters and sorts on threat types work without it. Any value other than true or false returns 400. Even with true, findings from scanners that predate threat types may have no `threat_type`.
+    
+</dd>
+</dl>
 </dd>
 </dl>
 
@@ -13900,6 +13994,14 @@ client.scans().results().retrieveSummary(
 <dd>
 
 **scanId:** `String` — A Model Scan ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**includeThreatTypes:** `Optional<Boolean>` — With true, the response keeps findings' threat types and advisories' severities, each file's `top_threat_type` and `top_severity` on the files endpoint, and each scan's `top_threat_type`, `findings_count` and `threat_types`, SARIF reports advisories that have a threat type, and the supply chain CSV export fills its `threat_type` column. Without it, they are left out, as they were before threat types. Ignored when threat types are disabled. Filters and sorts on threat types work without it. Any value other than true or false returns 400. Even with true, findings from scanners that predate threat types may have no `threat_type`.
     
 </dd>
 </dl>
@@ -14196,6 +14298,14 @@ client.scans().reports().supplyChain().csv().create(
 <dl>
 <dd>
 
+**includeThreatTypes:** `Optional<Boolean>` — With true, the response keeps findings' threat types and advisories' severities, each file's `top_threat_type` and `top_severity` on the files endpoint, and each scan's `top_threat_type`, `findings_count` and `threat_types`, SARIF reports advisories that have a threat type, and the supply chain CSV export fills its `threat_type` column. Without it, they are left out, as they were before threat types. Ignored when threat types are disabled. Filters and sorts on threat types work without it. Any value other than true or false returns 400. Even with true, findings from scanners that predate threat types may have no `threat_type`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **columnList:** `Optional<String>` 
 
 Comma-separated list of columns to include in the CSV export.
@@ -14241,6 +14351,35 @@ If not specified, defaults to: name, detections, scanned_on, policy_status, orig
 <dd>
 
 **severity:** `Optional<CreateCsvRequestSeverity>` — Comma-separated severities. A scan matches when its highest detection severity is a listed severity. Advisories don't count.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**threatType:** `Optional<ScanTopThreatType>` 
+
+Comma-separated threat types. Returns 400 for an unknown value, when threat types are disabled, or with `severity`.
+A scan matches when it has a finding of a listed type. `none` matches a done scan with no findings.
+`unclassified` matches a scan with at least one detection that has no threat type, whatever its top threat type.
+`finding_severity` pairs with this filter: a scan matches when a listed threat type's highest severity is a listed severity.
+`sort` also accepts `threat_type`, which orders scans by top threat type. Descending puts them in the order that ranks the top threat type: malicious, suspicious, unclassified, vulnerable, advisory, none.
+`sort` also accepts `top_severity`, which orders scans by the highest severity across all findings. Sorting by `severity` or `threat_level` uses the scan's highest detection severity.
+`column_list` also accepts `threat_type`, with the header Threat Type: the scan's top threat type, as the scan list returns it. Its cells are empty unless `include_threat_types` is true and threat types are enabled. It is not a default column.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**findingSeverity:** `Optional<CreateCsvRequestFindingSeverityItem>` 
+
+Comma-separated severities: critical, high, medium, low, safe. Returns 400 for any other value, when threat types are disabled, or with `severity`.
+Alone it matches when any of the scan's threat types has a listed highest severity.
+Paired with `threat_type`, a scan matches when a listed threat type's highest severity is a listed severity.
+`safe` means findings without a severity. Alone it matches scans whose findings all lack one, and scans with no findings and a `safe` severity. Paired with `threat_type`, it matches a listed type whose findings all lack one.
     
 </dd>
 </dl>
@@ -14589,6 +14728,14 @@ client.supplyChain().scans().get(
 <dd>
 
 **scanId:** `String` — A Model Scan ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**includeThreatTypes:** `Optional<Boolean>` — With true, returns the AIBOM that keeps threat types and rates advisories with their own severity, or the usual AIBOM for a scan saved without one. Without it, the AIBOM leaves threat types out and rates advisories `info`, as it did before threat types. Ignored when threat types are disabled. Any value other than true or false returns 400.
     
 </dd>
 </dl>

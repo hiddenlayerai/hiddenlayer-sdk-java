@@ -41,6 +41,9 @@ public final class ScanRulesetComplianceV3Compliance {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * @return Policy evaluation outcome, separate from scan severity and threat classification. An absent compliance result does not imply COMPLIANT.
+     */
     @JsonProperty("status")
     public Optional<PolicyStatus> getStatus() {
         return status;
@@ -112,6 +115,9 @@ public final class ScanRulesetComplianceV3Compliance {
             return this;
         }
 
+        /**
+         * <p>Policy evaluation outcome, separate from scan severity and threat classification. An absent compliance result does not imply COMPLIANT.</p>
+         */
         @JsonSetter(value = "status", nulls = Nulls.SKIP)
         public Builder status(Optional<PolicyStatus> status) {
             this.status = status;

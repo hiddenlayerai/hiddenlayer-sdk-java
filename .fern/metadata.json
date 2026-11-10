@@ -1,12 +1,12 @@
 {
   "cliVersion": "5.191.2",
   "generatorName": "fernapi/fern-java-sdk",
-  "generatorVersion": "4.33.0",
+  "generatorVersion": "4.37.12",
   "generatorConfig": {
     "client-class-name": "HiddenLayer",
     "offset-semantics": "item-index"
   },
-  "originGitCommit": "551239b573a761540fe80ec4f80b723a3c64312d",
+  "originGitCommit": "f355dc9163dd2b30a5b35b62f0fa055d6ad0a7f1",
   "originGitCommitIsDirty": true,
   "invokedBy": "ci",
   "requestedVersion": "2.5.0",

@@ -46,6 +46,8 @@ public final class ScanFileResultWithComplianceV3 implements IScanFileResultV3 {
 
     private final Optional<ScanFileResultWithComplianceV3Compliance> compliance;
 
+    private final Optional<ScanDetectionSeverity> topSeverity;
+
     private final Map<String, Object> additionalProperties;
 
     private ScanFileResultWithComplianceV3(
@@ -60,6 +62,7 @@ public final class ScanFileResultWithComplianceV3 implements IScanFileResultV3 {
             Optional<List<ScanAdvisoryV3>> advisories,
             Optional<List<String>> fileError,
             Optional<ScanFileResultWithComplianceV3Compliance> compliance,
+            Optional<ScanDetectionSeverity> topSeverity,
             Map<String, Object> additionalProperties) {
         this.fileInstanceId = fileInstanceId;
         this.fileLocation = fileLocation;
@@ -72,6 +75,7 @@ public final class ScanFileResultWithComplianceV3 implements IScanFileResultV3 {
         this.advisories = advisories;
         this.fileError = fileError;
         this.compliance = compliance;
+        this.topSeverity = topSeverity;
         this.additionalProperties = additionalProperties;
     }
 
@@ -163,6 +167,14 @@ public final class ScanFileResultWithComplianceV3 implements IScanFileResultV3 {
         return compliance;
     }
 
+    /**
+     * @return The highest severity across the file's detections and advisories. Absent when no finding has a severity. The scan files endpoint groups files by threat level with <code>sort=top_severity_order</code>, as <code>ScanFileThreatLevelCountsV3</code> describes.
+     */
+    @JsonProperty("top_severity")
+    public Optional<ScanDetectionSeverity> getTopSeverity() {
+        return topSeverity;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -185,7 +197,8 @@ public final class ScanFileResultWithComplianceV3 implements IScanFileResultV3 {
                 && detections.equals(other.detections)
                 && advisories.equals(other.advisories)
                 && fileError.equals(other.fileError)
-                && compliance.equals(other.compliance);
+                && compliance.equals(other.compliance)
+                && topSeverity.equals(other.topSeverity);
     }
 
     @java.lang.Override
@@ -201,7 +214,8 @@ public final class ScanFileResultWithComplianceV3 implements IScanFileResultV3 {
                 this.detections,
                 this.advisories,
                 this.fileError,
-                this.compliance);
+                this.compliance,
+                this.topSeverity);
     }
 
     @java.lang.Override
@@ -291,6 +305,13 @@ public final class ScanFileResultWithComplianceV3 implements IScanFileResultV3 {
         _FinalStage compliance(Optional<ScanFileResultWithComplianceV3Compliance> compliance);
 
         _FinalStage compliance(ScanFileResultWithComplianceV3Compliance compliance);
+
+        /**
+         * <p>The highest severity across the file's detections and advisories. Absent when no finding has a severity. The scan files endpoint groups files by threat level with <code>sort=top_severity_order</code>, as <code>ScanFileThreatLevelCountsV3</code> describes.</p>
+         */
+        _FinalStage topSeverity(Optional<ScanDetectionSeverity> topSeverity);
+
+        _FinalStage topSeverity(ScanDetectionSeverity topSeverity);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -317,6 +338,8 @@ public final class ScanFileResultWithComplianceV3 implements IScanFileResultV3 {
 
         private OffsetDateTime seen;
 
+        private Optional<ScanDetectionSeverity> topSeverity = Optional.empty();
+
         private Optional<ScanFileResultWithComplianceV3Compliance> compliance = Optional.empty();
 
         private Optional<List<String>> fileError = Optional.empty();
@@ -342,6 +365,7 @@ public final class ScanFileResultWithComplianceV3 implements IScanFileResultV3 {
             advisories(other.getAdvisories());
             fileError(other.getFileError());
             compliance(other.getCompliance());
+            topSeverity(other.getTopSeverity());
             return this;
         }
 
@@ -415,6 +439,26 @@ public final class ScanFileResultWithComplianceV3 implements IScanFileResultV3 {
         @JsonSetter("seen")
         public _FinalStage seen(@NotNull OffsetDateTime seen) {
             this.seen = Objects.requireNonNull(seen, "seen must not be null");
+            return this;
+        }
+
+        /**
+         * <p>The highest severity across the file's detections and advisories. Absent when no finding has a severity. The scan files endpoint groups files by threat level with <code>sort=top_severity_order</code>, as <code>ScanFileThreatLevelCountsV3</code> describes.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage topSeverity(ScanDetectionSeverity topSeverity) {
+            this.topSeverity = Optional.ofNullable(topSeverity);
+            return this;
+        }
+
+        /**
+         * <p>The highest severity across the file's detections and advisories. Absent when no finding has a severity. The scan files endpoint groups files by threat level with <code>sort=top_severity_order</code>, as <code>ScanFileThreatLevelCountsV3</code> describes.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "top_severity", nulls = Nulls.SKIP)
+        public _FinalStage topSeverity(Optional<ScanDetectionSeverity> topSeverity) {
+            this.topSeverity = topSeverity;
             return this;
         }
 
@@ -509,6 +553,7 @@ public final class ScanFileResultWithComplianceV3 implements IScanFileResultV3 {
                     advisories,
                     fileError,
                     compliance,
+                    topSeverity,
                     additionalProperties);
         }
 
@@ -524,7 +569,8 @@ public final class ScanFileResultWithComplianceV3 implements IScanFileResultV3 {
                     || key.equalsIgnoreCase("detections")
                     || key.equalsIgnoreCase("advisories")
                     || key.equalsIgnoreCase("file_error")
-                    || key.equalsIgnoreCase("compliance")) {
+                    || key.equalsIgnoreCase("compliance")
+                    || key.equalsIgnoreCase("top_severity")) {
                 return;
             }
             this.additionalProperties.put(key, value);

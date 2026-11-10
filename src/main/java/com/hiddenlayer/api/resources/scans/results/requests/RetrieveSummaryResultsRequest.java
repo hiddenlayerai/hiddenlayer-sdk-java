@@ -7,29 +7,55 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = RetrieveSummaryResultsRequest.Builder.class)
 public final class RetrieveSummaryResultsRequest {
+    private final Optional<Boolean> includeThreatTypes;
+
     private final Map<String, Object> additionalProperties;
 
-    private RetrieveSummaryResultsRequest(Map<String, Object> additionalProperties) {
+    private RetrieveSummaryResultsRequest(
+            Optional<Boolean> includeThreatTypes, Map<String, Object> additionalProperties) {
+        this.includeThreatTypes = includeThreatTypes;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return With true, the response keeps findings' threat types and advisories' severities, each file's <code>top_threat_type</code> and <code>top_severity</code> on the files endpoint, and each scan's <code>top_threat_type</code>, <code>findings_count</code> and <code>threat_types</code>, SARIF reports advisories that have a threat type, and the supply chain CSV export fills its <code>threat_type</code> column. Without it, they are left out, as they were before threat types. Ignored when threat types are disabled. Filters and sorts on threat types work without it. Any value other than true or false returns 400. Even with true, findings from scanners that predate threat types may have no <code>threat_type</code>.
+     */
+    @JsonProperty("include_threat_types")
+    public Optional<Boolean> getIncludeThreatTypes() {
+        return includeThreatTypes;
     }
 
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
-        return other instanceof RetrieveSummaryResultsRequest;
+        return other instanceof RetrieveSummaryResultsRequest && equalTo((RetrieveSummaryResultsRequest) other);
     }
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
+    }
+
+    private boolean equalTo(RetrieveSummaryResultsRequest other) {
+        return includeThreatTypes.equals(other.includeThreatTypes);
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+        return Objects.hash(this.includeThreatTypes);
     }
 
     @java.lang.Override
@@ -43,20 +69,40 @@ public final class RetrieveSummaryResultsRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<Boolean> includeThreatTypes = Optional.empty();
+
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
         public Builder from(RetrieveSummaryResultsRequest other) {
+            includeThreatTypes(other.getIncludeThreatTypes());
+            return this;
+        }
+
+        /**
+         * <p>With true, the response keeps findings' threat types and advisories' severities, each file's <code>top_threat_type</code> and <code>top_severity</code> on the files endpoint, and each scan's <code>top_threat_type</code>, <code>findings_count</code> and <code>threat_types</code>, SARIF reports advisories that have a threat type, and the supply chain CSV export fills its <code>threat_type</code> column. Without it, they are left out, as they were before threat types. Ignored when threat types are disabled. Filters and sorts on threat types work without it. Any value other than true or false returns 400. Even with true, findings from scanners that predate threat types may have no <code>threat_type</code>.</p>
+         */
+        @JsonSetter(value = "include_threat_types", nulls = Nulls.SKIP)
+        public Builder includeThreatTypes(Optional<Boolean> includeThreatTypes) {
+            this.includeThreatTypes = includeThreatTypes;
+            return this;
+        }
+
+        public Builder includeThreatTypes(Boolean includeThreatTypes) {
+            this.includeThreatTypes = Optional.ofNullable(includeThreatTypes);
             return this;
         }
 
         public RetrieveSummaryResultsRequest build() {
-            return new RetrieveSummaryResultsRequest(additionalProperties);
+            return new RetrieveSummaryResultsRequest(includeThreatTypes, additionalProperties);
         }
 
         @JsonAnySetter
         private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("include_threat_types")) {
+                return;
+            }
             this.additionalProperties.put(key, value);
         }
 

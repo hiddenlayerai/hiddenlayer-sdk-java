@@ -39,11 +39,17 @@ public final class ScanDetectionV3 {
 
     private final ScanDetectionSeverity severity;
 
+    private final Optional<ScanThreatType> threatType;
+
     private final Optional<List<ScanDetectionV3RuleDetailsItem>> ruleDetails;
 
     private final List<ScanDetectionV3MitreAtlasItem> mitreAtlas;
 
     private final List<String> owasp;
+
+    private final Optional<List<ScanOwaspIssuesItem>> owaspIssues;
+
+    private final Optional<ScanFindingEvidence> evidence;
 
     private final List<String> cve;
 
@@ -66,9 +72,12 @@ public final class ScanDetectionV3 {
             String likelihood,
             String impact,
             ScanDetectionSeverity severity,
+            Optional<ScanThreatType> threatType,
             Optional<List<ScanDetectionV3RuleDetailsItem>> ruleDetails,
             List<ScanDetectionV3MitreAtlasItem> mitreAtlas,
             List<String> owasp,
+            Optional<List<ScanOwaspIssuesItem>> owaspIssues,
+            Optional<ScanFindingEvidence> evidence,
             List<String> cve,
             String cwe,
             String cweHref,
@@ -83,9 +92,12 @@ public final class ScanDetectionV3 {
         this.likelihood = likelihood;
         this.impact = impact;
         this.severity = severity;
+        this.threatType = threatType;
         this.ruleDetails = ruleDetails;
         this.mitreAtlas = mitreAtlas;
         this.owasp = owasp;
+        this.owaspIssues = owaspIssues;
+        this.evidence = evidence;
         this.cve = cve;
         this.cwe = cwe;
         this.cweHref = cweHref;
@@ -111,7 +123,7 @@ public final class ScanDetectionV3 {
     }
 
     /**
-     * @return detection risk
+     * @return Legacy risk classification. Use threat_type instead.
      */
     @JsonProperty("risk")
     public ScanDetectionV3Risk getRisk() {
@@ -155,6 +167,11 @@ public final class ScanDetectionV3 {
         return severity;
     }
 
+    @JsonProperty("threat_type")
+    public Optional<ScanThreatType> getThreatType() {
+        return threatType;
+    }
+
     @JsonProperty("rule_details")
     public Optional<List<ScanDetectionV3RuleDetailsItem>> getRuleDetails() {
         return ruleDetails;
@@ -165,9 +182,22 @@ public final class ScanDetectionV3 {
         return mitreAtlas;
     }
 
+    /**
+     * @return Legacy OWASP identifiers. Use owasp_issues for identifiers and reference links.
+     */
     @JsonProperty("owasp")
     public List<String> getOwasp() {
         return owasp;
+    }
+
+    @JsonProperty("owasp_issues")
+    public Optional<List<ScanOwaspIssuesItem>> getOwaspIssues() {
+        return owaspIssues;
+    }
+
+    @JsonProperty("evidence")
+    public Optional<ScanFindingEvidence> getEvidence() {
+        return evidence;
     }
 
     @JsonProperty("cve")
@@ -224,9 +254,12 @@ public final class ScanDetectionV3 {
                 && likelihood.equals(other.likelihood)
                 && impact.equals(other.impact)
                 && severity.equals(other.severity)
+                && threatType.equals(other.threatType)
                 && ruleDetails.equals(other.ruleDetails)
                 && mitreAtlas.equals(other.mitreAtlas)
                 && owasp.equals(other.owasp)
+                && owaspIssues.equals(other.owaspIssues)
+                && evidence.equals(other.evidence)
                 && cve.equals(other.cve)
                 && cwe.equals(other.cwe)
                 && cweHref.equals(other.cweHref)
@@ -245,9 +278,12 @@ public final class ScanDetectionV3 {
                 this.likelihood,
                 this.impact,
                 this.severity,
+                this.threatType,
                 this.ruleDetails,
                 this.mitreAtlas,
                 this.owasp,
+                this.owaspIssues,
+                this.evidence,
                 this.cve,
                 this.cwe,
                 this.cweHref,
@@ -282,7 +318,7 @@ public final class ScanDetectionV3 {
 
     public interface RiskStage {
         /**
-         * <p>detection risk</p>
+         * <p>Legacy risk classification. Use threat_type instead.</p>
          */
         CategoryStage risk(@NotNull ScanDetectionV3Risk risk);
     }
@@ -337,6 +373,10 @@ public final class ScanDetectionV3 {
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
+        _FinalStage threatType(Optional<ScanThreatType> threatType);
+
+        _FinalStage threatType(ScanThreatType threatType);
+
         _FinalStage ruleDetails(Optional<List<ScanDetectionV3RuleDetailsItem>> ruleDetails);
 
         _FinalStage ruleDetails(List<ScanDetectionV3RuleDetailsItem> ruleDetails);
@@ -347,11 +387,22 @@ public final class ScanDetectionV3 {
 
         _FinalStage addAllMitreAtlas(List<ScanDetectionV3MitreAtlasItem> mitreAtlas);
 
+        /**
+         * <p>Legacy OWASP identifiers. Use owasp_issues for identifiers and reference links.</p>
+         */
         _FinalStage owasp(List<String> owasp);
 
         _FinalStage addOwasp(String owasp);
 
         _FinalStage addAllOwasp(List<String> owasp);
+
+        _FinalStage owaspIssues(Optional<List<ScanOwaspIssuesItem>> owaspIssues);
+
+        _FinalStage owaspIssues(List<ScanOwaspIssuesItem> owaspIssues);
+
+        _FinalStage evidence(Optional<ScanFindingEvidence> evidence);
+
+        _FinalStage evidence(ScanFindingEvidence evidence);
 
         _FinalStage cve(List<String> cve);
 
@@ -413,11 +464,17 @@ public final class ScanDetectionV3 {
 
         private List<String> cve = new ArrayList<>();
 
+        private Optional<ScanFindingEvidence> evidence = Optional.empty();
+
+        private Optional<List<ScanOwaspIssuesItem>> owaspIssues = Optional.empty();
+
         private List<String> owasp = new ArrayList<>();
 
         private List<ScanDetectionV3MitreAtlasItem> mitreAtlas = new ArrayList<>();
 
         private Optional<List<ScanDetectionV3RuleDetailsItem>> ruleDetails = Optional.empty();
+
+        private Optional<ScanThreatType> threatType = Optional.empty();
 
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -433,9 +490,12 @@ public final class ScanDetectionV3 {
             likelihood(other.getLikelihood());
             impact(other.getImpact());
             severity(other.getSeverity());
+            threatType(other.getThreatType());
             ruleDetails(other.getRuleDetails());
             mitreAtlas(other.getMitreAtlas());
             owasp(other.getOwasp());
+            owaspIssues(other.getOwaspIssues());
+            evidence(other.getEvidence());
             cve(other.getCve());
             cwe(other.getCwe());
             cweHref(other.getCweHref());
@@ -467,7 +527,7 @@ public final class ScanDetectionV3 {
         }
 
         /**
-         * <p>detection risk</p>
+         * <p>Legacy risk classification. Use threat_type instead.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -611,6 +671,36 @@ public final class ScanDetectionV3 {
         }
 
         @java.lang.Override
+        public _FinalStage evidence(ScanFindingEvidence evidence) {
+            this.evidence = Optional.ofNullable(evidence);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "evidence", nulls = Nulls.SKIP)
+        public _FinalStage evidence(Optional<ScanFindingEvidence> evidence) {
+            this.evidence = evidence;
+            return this;
+        }
+
+        @java.lang.Override
+        public _FinalStage owaspIssues(List<ScanOwaspIssuesItem> owaspIssues) {
+            this.owaspIssues = Optional.ofNullable(owaspIssues);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "owasp_issues", nulls = Nulls.SKIP)
+        public _FinalStage owaspIssues(Optional<List<ScanOwaspIssuesItem>> owaspIssues) {
+            this.owaspIssues = owaspIssues;
+            return this;
+        }
+
+        /**
+         * <p>Legacy OWASP identifiers. Use owasp_issues for identifiers and reference links.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
         public _FinalStage addAllOwasp(List<String> owasp) {
             if (owasp != null) {
                 this.owasp.addAll(owasp);
@@ -618,12 +708,19 @@ public final class ScanDetectionV3 {
             return this;
         }
 
+        /**
+         * <p>Legacy OWASP identifiers. Use owasp_issues for identifiers and reference links.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
         @java.lang.Override
         public _FinalStage addOwasp(String owasp) {
             this.owasp.add(owasp);
             return this;
         }
 
+        /**
+         * <p>Legacy OWASP identifiers. Use owasp_issues for identifiers and reference links.</p>
+         */
         @java.lang.Override
         @JsonSetter(value = "owasp", nulls = Nulls.SKIP)
         public _FinalStage owasp(List<String> owasp) {
@@ -672,6 +769,19 @@ public final class ScanDetectionV3 {
         }
 
         @java.lang.Override
+        public _FinalStage threatType(ScanThreatType threatType) {
+            this.threatType = Optional.ofNullable(threatType);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "threat_type", nulls = Nulls.SKIP)
+        public _FinalStage threatType(Optional<ScanThreatType> threatType) {
+            this.threatType = threatType;
+            return this;
+        }
+
+        @java.lang.Override
         public ScanDetectionV3 build() {
             return new ScanDetectionV3(
                     detectionId,
@@ -682,9 +792,12 @@ public final class ScanDetectionV3 {
                     likelihood,
                     impact,
                     severity,
+                    threatType,
                     ruleDetails,
                     mitreAtlas,
                     owasp,
+                    owaspIssues,
+                    evidence,
                     cve,
                     cwe,
                     cweHref,
@@ -703,9 +816,12 @@ public final class ScanDetectionV3 {
                     || key.equalsIgnoreCase("likelihood")
                     || key.equalsIgnoreCase("impact")
                     || key.equalsIgnoreCase("severity")
+                    || key.equalsIgnoreCase("threat_type")
                     || key.equalsIgnoreCase("rule_details")
                     || key.equalsIgnoreCase("mitre_atlas")
                     || key.equalsIgnoreCase("owasp")
+                    || key.equalsIgnoreCase("owasp_issues")
+                    || key.equalsIgnoreCase("evidence")
                     || key.equalsIgnoreCase("cve")
                     || key.equalsIgnoreCase("cwe")
                     || key.equalsIgnoreCase("cwe_href")

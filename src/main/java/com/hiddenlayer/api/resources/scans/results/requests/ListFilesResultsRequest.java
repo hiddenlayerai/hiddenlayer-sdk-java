@@ -20,6 +20,8 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ListFilesResultsRequest.Builder.class)
 public final class ListFilesResultsRequest {
+    private final Optional<Boolean> includeThreatTypes;
+
     private final Optional<Boolean> hasDetections;
 
     private final Optional<Integer> pageSize;
@@ -31,16 +33,26 @@ public final class ListFilesResultsRequest {
     private final Map<String, Object> additionalProperties;
 
     private ListFilesResultsRequest(
+            Optional<Boolean> includeThreatTypes,
             Optional<Boolean> hasDetections,
             Optional<Integer> pageSize,
             Optional<String> cursor,
             Optional<String> sort,
             Map<String, Object> additionalProperties) {
+        this.includeThreatTypes = includeThreatTypes;
         this.hasDetections = hasDetections;
         this.pageSize = pageSize;
         this.cursor = cursor;
         this.sort = sort;
         this.additionalProperties = additionalProperties;
+    }
+
+    /**
+     * @return With true, the response keeps findings' threat types and advisories' severities, each file's <code>top_threat_type</code> and <code>top_severity</code> on the files endpoint, and each scan's <code>top_threat_type</code>, <code>findings_count</code> and <code>threat_types</code>, SARIF reports advisories that have a threat type, and the supply chain CSV export fills its <code>threat_type</code> column. Without it, they are left out, as they were before threat types. Ignored when threat types are disabled. Filters and sorts on threat types work without it. Any value other than true or false returns 400. Even with true, findings from scanners that predate threat types may have no <code>threat_type</code>.
+     */
+    @JsonProperty("include_threat_types")
+    public Optional<Boolean> getIncludeThreatTypes() {
+        return includeThreatTypes;
     }
 
     /**
@@ -94,7 +106,8 @@ public final class ListFilesResultsRequest {
     }
 
     private boolean equalTo(ListFilesResultsRequest other) {
-        return hasDetections.equals(other.hasDetections)
+        return includeThreatTypes.equals(other.includeThreatTypes)
+                && hasDetections.equals(other.hasDetections)
                 && pageSize.equals(other.pageSize)
                 && cursor.equals(other.cursor)
                 && sort.equals(other.sort);
@@ -102,7 +115,7 @@ public final class ListFilesResultsRequest {
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.hasDetections, this.pageSize, this.cursor, this.sort);
+        return Objects.hash(this.includeThreatTypes, this.hasDetections, this.pageSize, this.cursor, this.sort);
     }
 
     @java.lang.Override
@@ -116,6 +129,8 @@ public final class ListFilesResultsRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
+        private Optional<Boolean> includeThreatTypes = Optional.empty();
+
         private Optional<Boolean> hasDetections = Optional.empty();
 
         private Optional<Integer> pageSize = Optional.empty();
@@ -129,10 +144,25 @@ public final class ListFilesResultsRequest {
         private Builder() {}
 
         public Builder from(ListFilesResultsRequest other) {
+            includeThreatTypes(other.getIncludeThreatTypes());
             hasDetections(other.getHasDetections());
             pageSize(other.getPageSize());
             cursor(other.getCursor());
             sort(other.getSort());
+            return this;
+        }
+
+        /**
+         * <p>With true, the response keeps findings' threat types and advisories' severities, each file's <code>top_threat_type</code> and <code>top_severity</code> on the files endpoint, and each scan's <code>top_threat_type</code>, <code>findings_count</code> and <code>threat_types</code>, SARIF reports advisories that have a threat type, and the supply chain CSV export fills its <code>threat_type</code> column. Without it, they are left out, as they were before threat types. Ignored when threat types are disabled. Filters and sorts on threat types work without it. Any value other than true or false returns 400. Even with true, findings from scanners that predate threat types may have no <code>threat_type</code>.</p>
+         */
+        @JsonSetter(value = "include_threat_types", nulls = Nulls.SKIP)
+        public Builder includeThreatTypes(Optional<Boolean> includeThreatTypes) {
+            this.includeThreatTypes = includeThreatTypes;
+            return this;
+        }
+
+        public Builder includeThreatTypes(Boolean includeThreatTypes) {
+            this.includeThreatTypes = Optional.ofNullable(includeThreatTypes);
             return this;
         }
 
@@ -200,12 +230,14 @@ public final class ListFilesResultsRequest {
         }
 
         public ListFilesResultsRequest build() {
-            return new ListFilesResultsRequest(hasDetections, pageSize, cursor, sort, additionalProperties);
+            return new ListFilesResultsRequest(
+                    includeThreatTypes, hasDetections, pageSize, cursor, sort, additionalProperties);
         }
 
         @JsonAnySetter
         private void putAdditionalPropertyFromJson(String key, Object value) {
-            if (key.equalsIgnoreCase("has_detections")
+            if (key.equalsIgnoreCase("include_threat_types")
+                    || key.equalsIgnoreCase("has_detections")
                     || key.equalsIgnoreCase("page_size")
                     || key.equalsIgnoreCase("cursor")
                     || key.equalsIgnoreCase("sort")) {

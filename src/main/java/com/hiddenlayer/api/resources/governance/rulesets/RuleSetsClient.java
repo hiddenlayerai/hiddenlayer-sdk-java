@@ -13,6 +13,7 @@ import com.hiddenlayer.api.resources.governance.rulesets.requests.GetRuleSetsReq
 import com.hiddenlayer.api.resources.governance.rulesets.requests.ListRuleSetsRequest;
 import com.hiddenlayer.api.resources.governance.rulesets.rules.RulesClient;
 import com.hiddenlayer.api.types.RuleSet;
+import com.hiddenlayer.api.types.RuleSetResponse;
 import java.util.function.Supplier;
 
 public class RuleSetsClient {
@@ -40,7 +41,7 @@ public class RuleSetsClient {
      * This endpoint supports pagination with the <code>page_size</code> and <code>cursor</code> parameters.
      * Rule sets are ordered by their creation time, with the oldest rule sets listed first.
      */
-    public SyncPagingIterable<RuleSet> list() {
+    public SyncPagingIterable<RuleSetResponse> list() {
         return this.rawClient.list().body();
     }
 
@@ -49,7 +50,7 @@ public class RuleSetsClient {
      * This endpoint supports pagination with the <code>page_size</code> and <code>cursor</code> parameters.
      * Rule sets are ordered by their creation time, with the oldest rule sets listed first.
      */
-    public SyncPagingIterable<RuleSet> list(RequestOptions requestOptions) {
+    public SyncPagingIterable<RuleSetResponse> list(RequestOptions requestOptions) {
         return this.rawClient.list(requestOptions).body();
     }
 
@@ -58,7 +59,7 @@ public class RuleSetsClient {
      * This endpoint supports pagination with the <code>page_size</code> and <code>cursor</code> parameters.
      * Rule sets are ordered by their creation time, with the oldest rule sets listed first.
      */
-    public SyncPagingIterable<RuleSet> list(ListRuleSetsRequest request) {
+    public SyncPagingIterable<RuleSetResponse> list(ListRuleSetsRequest request) {
         return this.rawClient.list(request).body();
     }
 
@@ -67,7 +68,7 @@ public class RuleSetsClient {
      * This endpoint supports pagination with the <code>page_size</code> and <code>cursor</code> parameters.
      * Rule sets are ordered by their creation time, with the oldest rule sets listed first.
      */
-    public SyncPagingIterable<RuleSet> list(ListRuleSetsRequest request, RequestOptions requestOptions) {
+    public SyncPagingIterable<RuleSetResponse> list(ListRuleSetsRequest request, RequestOptions requestOptions) {
         return this.rawClient.list(request, requestOptions).body();
     }
 
@@ -82,7 +83,7 @@ public class RuleSetsClient {
      * becomes the tenant's sole active custom policy. The default rule set is never disabled
      * by this operation.</p>
      */
-    public RuleSet create(RuleSet body) {
+    public RuleSetResponse create(RuleSet body) {
         return this.rawClient.create(body).body();
     }
 
@@ -97,7 +98,7 @@ public class RuleSetsClient {
      * becomes the tenant's sole active custom policy. The default rule set is never disabled
      * by this operation.</p>
      */
-    public RuleSet create(RuleSet body, RequestOptions requestOptions) {
+    public RuleSetResponse create(RuleSet body, RequestOptions requestOptions) {
         return this.rawClient.create(body, requestOptions).body();
     }
 
@@ -112,7 +113,7 @@ public class RuleSetsClient {
      * becomes the tenant's sole active custom policy. The default rule set is never disabled
      * by this operation.</p>
      */
-    public RuleSet create(CreateRuleSetsRequest request) {
+    public RuleSetResponse create(CreateRuleSetsRequest request) {
         return this.rawClient.create(request).body();
     }
 
@@ -127,43 +128,67 @@ public class RuleSetsClient {
      * becomes the tenant's sole active custom policy. The default rule set is never disabled
      * by this operation.</p>
      */
-    public RuleSet create(CreateRuleSetsRequest request, RequestOptions requestOptions) {
+    public RuleSetResponse create(CreateRuleSetsRequest request, RequestOptions requestOptions) {
         return this.rawClient.create(request, requestOptions).body();
     }
 
     /**
-     * Retrieve a specific rule set by its unique identifier. This endpoint returns the details of the rule set, including its rules and compliance criteria.
+     * For active policy views, use <a href="#operation/get_governance_rule_sets">Retrieve rule sets</a>
+     * (<code>GET /governance/v1/rule-sets</code>) and select the required rule set from the paginated results.
+     * Use <code>include_disabled=true</code> when disabled rules are needed. This parameter includes disabled
+     * rules within returned rule sets; it does not guarantee access to disabled or historical rule sets.
+     * Contact support before migrating workflows that require historical rule-set retrieval.
+     * <p>Retrieve a specific rule set by its unique identifier. This endpoint returns
+     * the details of the rule set, including its rules and compliance criteria.
      * The response includes the rule set's ID, display name, and the list of rules it contains.
-     * If the rule set does not exist, a 404 Not Found error is returned.
+     * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
-    public RuleSet get(String ruleSetId) {
+    public RuleSetResponse get(String ruleSetId) {
         return this.rawClient.get(ruleSetId).body();
     }
 
     /**
-     * Retrieve a specific rule set by its unique identifier. This endpoint returns the details of the rule set, including its rules and compliance criteria.
+     * For active policy views, use <a href="#operation/get_governance_rule_sets">Retrieve rule sets</a>
+     * (<code>GET /governance/v1/rule-sets</code>) and select the required rule set from the paginated results.
+     * Use <code>include_disabled=true</code> when disabled rules are needed. This parameter includes disabled
+     * rules within returned rule sets; it does not guarantee access to disabled or historical rule sets.
+     * Contact support before migrating workflows that require historical rule-set retrieval.
+     * <p>Retrieve a specific rule set by its unique identifier. This endpoint returns
+     * the details of the rule set, including its rules and compliance criteria.
      * The response includes the rule set's ID, display name, and the list of rules it contains.
-     * If the rule set does not exist, a 404 Not Found error is returned.
+     * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
-    public RuleSet get(String ruleSetId, RequestOptions requestOptions) {
+    public RuleSetResponse get(String ruleSetId, RequestOptions requestOptions) {
         return this.rawClient.get(ruleSetId, requestOptions).body();
     }
 
     /**
-     * Retrieve a specific rule set by its unique identifier. This endpoint returns the details of the rule set, including its rules and compliance criteria.
+     * For active policy views, use <a href="#operation/get_governance_rule_sets">Retrieve rule sets</a>
+     * (<code>GET /governance/v1/rule-sets</code>) and select the required rule set from the paginated results.
+     * Use <code>include_disabled=true</code> when disabled rules are needed. This parameter includes disabled
+     * rules within returned rule sets; it does not guarantee access to disabled or historical rule sets.
+     * Contact support before migrating workflows that require historical rule-set retrieval.
+     * <p>Retrieve a specific rule set by its unique identifier. This endpoint returns
+     * the details of the rule set, including its rules and compliance criteria.
      * The response includes the rule set's ID, display name, and the list of rules it contains.
-     * If the rule set does not exist, a 404 Not Found error is returned.
+     * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
-    public RuleSet get(String ruleSetId, GetRuleSetsRequest request) {
+    public RuleSetResponse get(String ruleSetId, GetRuleSetsRequest request) {
         return this.rawClient.get(ruleSetId, request).body();
     }
 
     /**
-     * Retrieve a specific rule set by its unique identifier. This endpoint returns the details of the rule set, including its rules and compliance criteria.
+     * For active policy views, use <a href="#operation/get_governance_rule_sets">Retrieve rule sets</a>
+     * (<code>GET /governance/v1/rule-sets</code>) and select the required rule set from the paginated results.
+     * Use <code>include_disabled=true</code> when disabled rules are needed. This parameter includes disabled
+     * rules within returned rule sets; it does not guarantee access to disabled or historical rule sets.
+     * Contact support before migrating workflows that require historical rule-set retrieval.
+     * <p>Retrieve a specific rule set by its unique identifier. This endpoint returns
+     * the details of the rule set, including its rules and compliance criteria.
      * The response includes the rule set's ID, display name, and the list of rules it contains.
-     * If the rule set does not exist, a 404 Not Found error is returned.
+     * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
-    public RuleSet get(String ruleSetId, GetRuleSetsRequest request, RequestOptions requestOptions) {
+    public RuleSetResponse get(String ruleSetId, GetRuleSetsRequest request, RequestOptions requestOptions) {
         return this.rawClient.get(ruleSetId, request, requestOptions).body();
     }
 

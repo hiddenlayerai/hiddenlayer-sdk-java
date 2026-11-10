@@ -12,11 +12,13 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
+import com.hiddenlayer.api.resources.scans.reports.supplychain.csv.types.CreateCsvRequestFindingSeverityItem;
 import com.hiddenlayer.api.types.CreateCsvRequestModelName;
 import com.hiddenlayer.api.types.CreateCsvRequestSeverity;
 import com.hiddenlayer.api.types.CreateCsvRequestSource;
 import com.hiddenlayer.api.types.PolicyStatus;
 import com.hiddenlayer.api.types.ScanJobRequestSource;
+import com.hiddenlayer.api.types.ScanTopThreatType;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,6 +34,10 @@ public final class CreateCsvRequest {
 
     private final Optional<List<String>> modelIds;
 
+    private final Optional<List<ScanTopThreatType>> threatType;
+
+    private final Optional<List<CreateCsvRequestFindingSeverityItem>> findingSeverity;
+
     private final Optional<List<String>> status;
 
     private final Optional<List<PolicyStatus>> complianceStatus;
@@ -39,6 +45,8 @@ public final class CreateCsvRequest {
     private final Optional<List<ScanJobRequestSource>> requestSource;
 
     private final Optional<List<String>> sort;
+
+    private final Optional<Boolean> includeThreatTypes;
 
     private final Optional<String> columnList;
 
@@ -71,10 +79,13 @@ public final class CreateCsvRequest {
     private CreateCsvRequest(
             Optional<List<String>> modelVersionIds,
             Optional<List<String>> modelIds,
+            Optional<List<ScanTopThreatType>> threatType,
+            Optional<List<CreateCsvRequestFindingSeverityItem>> findingSeverity,
             Optional<List<String>> status,
             Optional<List<PolicyStatus>> complianceStatus,
             Optional<List<ScanJobRequestSource>> requestSource,
             Optional<List<String>> sort,
+            Optional<Boolean> includeThreatTypes,
             Optional<String> columnList,
             Optional<OffsetDateTime> startTime,
             Optional<OffsetDateTime> endTime,
@@ -91,10 +102,13 @@ public final class CreateCsvRequest {
             Map<String, Object> additionalProperties) {
         this.modelVersionIds = modelVersionIds;
         this.modelIds = modelIds;
+        this.threatType = threatType;
+        this.findingSeverity = findingSeverity;
         this.status = status;
         this.complianceStatus = complianceStatus;
         this.requestSource = requestSource;
         this.sort = sort;
+        this.includeThreatTypes = includeThreatTypes;
         this.columnList = columnList;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -125,6 +139,31 @@ public final class CreateCsvRequest {
     @JsonProperty("model_ids")
     public Optional<List<String>> getModelIds() {
         return modelIds;
+    }
+
+    /**
+     * @return Comma-separated threat types. Returns 400 for an unknown value, when threat types are disabled, or with <code>severity</code>.
+     * A scan matches when it has a finding of a listed type. <code>none</code> matches a done scan with no findings.
+     * <code>unclassified</code> matches a scan with at least one detection that has no threat type, whatever its top threat type.
+     * <code>finding_severity</code> pairs with this filter: a scan matches when a listed threat type's highest severity is a listed severity.
+     * <code>sort</code> also accepts <code>threat_type</code>, which orders scans by top threat type. Descending puts them in the order that ranks the top threat type: malicious, suspicious, unclassified, vulnerable, advisory, none.
+     * <code>sort</code> also accepts <code>top_severity</code>, which orders scans by the highest severity across all findings. Sorting by <code>severity</code> or <code>threat_level</code> uses the scan's highest detection severity.
+     * <code>column_list</code> also accepts <code>threat_type</code>, with the header Threat Type: the scan's top threat type, as the scan list returns it. Its cells are empty unless <code>include_threat_types</code> is true and threat types are enabled. It is not a default column.
+     */
+    @JsonProperty("threat_type")
+    public Optional<List<ScanTopThreatType>> getThreatType() {
+        return threatType;
+    }
+
+    /**
+     * @return Comma-separated severities: critical, high, medium, low, safe. Returns 400 for any other value, when threat types are disabled, or with <code>severity</code>.
+     * Alone it matches when any of the scan's threat types has a listed highest severity.
+     * Paired with <code>threat_type</code>, a scan matches when a listed threat type's highest severity is a listed severity.
+     * <code>safe</code> means findings without a severity. Alone it matches scans whose findings all lack one, and scans with no findings and a <code>safe</code> severity. Paired with <code>threat_type</code>, it matches a listed type whose findings all lack one.
+     */
+    @JsonProperty("finding_severity")
+    public Optional<List<CreateCsvRequestFindingSeverityItem>> getFindingSeverity() {
+        return findingSeverity;
     }
 
     /**
@@ -159,6 +198,14 @@ public final class CreateCsvRequest {
     @JsonProperty("sort")
     public Optional<List<String>> getSort() {
         return sort;
+    }
+
+    /**
+     * @return With true, the response keeps findings' threat types and advisories' severities, each file's <code>top_threat_type</code> and <code>top_severity</code> on the files endpoint, and each scan's <code>top_threat_type</code>, <code>findings_count</code> and <code>threat_types</code>, SARIF reports advisories that have a threat type, and the supply chain CSV export fills its <code>threat_type</code> column. Without it, they are left out, as they were before threat types. Ignored when threat types are disabled. Filters and sorts on threat types work without it. Any value other than true or false returns 400. Even with true, findings from scanners that predate threat types may have no <code>threat_type</code>.
+     */
+    @JsonProperty("include_threat_types")
+    public Optional<Boolean> getIncludeThreatTypes() {
+        return includeThreatTypes;
     }
 
     /**
@@ -281,10 +328,13 @@ public final class CreateCsvRequest {
     private boolean equalTo(CreateCsvRequest other) {
         return modelVersionIds.equals(other.modelVersionIds)
                 && modelIds.equals(other.modelIds)
+                && threatType.equals(other.threatType)
+                && findingSeverity.equals(other.findingSeverity)
                 && status.equals(other.status)
                 && complianceStatus.equals(other.complianceStatus)
                 && requestSource.equals(other.requestSource)
                 && sort.equals(other.sort)
+                && includeThreatTypes.equals(other.includeThreatTypes)
                 && columnList.equals(other.columnList)
                 && startTime.equals(other.startTime)
                 && endTime.equals(other.endTime)
@@ -305,10 +355,13 @@ public final class CreateCsvRequest {
         return Objects.hash(
                 this.modelVersionIds,
                 this.modelIds,
+                this.threatType,
+                this.findingSeverity,
                 this.status,
                 this.complianceStatus,
                 this.requestSource,
                 this.sort,
+                this.includeThreatTypes,
                 this.columnList,
                 this.startTime,
                 this.endTime,
@@ -339,6 +392,10 @@ public final class CreateCsvRequest {
 
         private Optional<List<String>> modelIds = Optional.empty();
 
+        private Optional<List<ScanTopThreatType>> threatType = Optional.empty();
+
+        private Optional<List<CreateCsvRequestFindingSeverityItem>> findingSeverity = Optional.empty();
+
         private Optional<List<String>> status = Optional.empty();
 
         private Optional<List<PolicyStatus>> complianceStatus = Optional.empty();
@@ -346,6 +403,8 @@ public final class CreateCsvRequest {
         private Optional<List<ScanJobRequestSource>> requestSource = Optional.empty();
 
         private Optional<List<String>> sort = Optional.empty();
+
+        private Optional<Boolean> includeThreatTypes = Optional.empty();
 
         private Optional<String> columnList = Optional.empty();
 
@@ -380,10 +439,13 @@ public final class CreateCsvRequest {
         public Builder from(CreateCsvRequest other) {
             modelVersionIds(other.getModelVersionIds());
             modelIds(other.getModelIds());
+            threatType(other.getThreatType());
+            findingSeverity(other.getFindingSeverity());
             status(other.getStatus());
             complianceStatus(other.getComplianceStatus());
             requestSource(other.getRequestSource());
             sort(other.getSort());
+            includeThreatTypes(other.getIncludeThreatTypes());
             columnList(other.getColumnList());
             startTime(other.getStartTime());
             endTime(other.getEndTime());
@@ -435,6 +497,53 @@ public final class CreateCsvRequest {
 
         public Builder modelIds(String modelIds) {
             this.modelIds = Optional.of(Collections.singletonList(modelIds));
+            return this;
+        }
+
+        /**
+         * <p>Comma-separated threat types. Returns 400 for an unknown value, when threat types are disabled, or with <code>severity</code>.
+         * A scan matches when it has a finding of a listed type. <code>none</code> matches a done scan with no findings.
+         * <code>unclassified</code> matches a scan with at least one detection that has no threat type, whatever its top threat type.
+         * <code>finding_severity</code> pairs with this filter: a scan matches when a listed threat type's highest severity is a listed severity.
+         * <code>sort</code> also accepts <code>threat_type</code>, which orders scans by top threat type. Descending puts them in the order that ranks the top threat type: malicious, suspicious, unclassified, vulnerable, advisory, none.
+         * <code>sort</code> also accepts <code>top_severity</code>, which orders scans by the highest severity across all findings. Sorting by <code>severity</code> or <code>threat_level</code> uses the scan's highest detection severity.
+         * <code>column_list</code> also accepts <code>threat_type</code>, with the header Threat Type: the scan's top threat type, as the scan list returns it. Its cells are empty unless <code>include_threat_types</code> is true and threat types are enabled. It is not a default column.</p>
+         */
+        @JsonSetter(value = "threat_type", nulls = Nulls.SKIP)
+        public Builder threatType(Optional<List<ScanTopThreatType>> threatType) {
+            this.threatType = threatType;
+            return this;
+        }
+
+        public Builder threatType(List<ScanTopThreatType> threatType) {
+            this.threatType = Optional.ofNullable(threatType);
+            return this;
+        }
+
+        public Builder threatType(ScanTopThreatType threatType) {
+            this.threatType = Optional.of(Collections.singletonList(threatType));
+            return this;
+        }
+
+        /**
+         * <p>Comma-separated severities: critical, high, medium, low, safe. Returns 400 for any other value, when threat types are disabled, or with <code>severity</code>.
+         * Alone it matches when any of the scan's threat types has a listed highest severity.
+         * Paired with <code>threat_type</code>, a scan matches when a listed threat type's highest severity is a listed severity.
+         * <code>safe</code> means findings without a severity. Alone it matches scans whose findings all lack one, and scans with no findings and a <code>safe</code> severity. Paired with <code>threat_type</code>, it matches a listed type whose findings all lack one.</p>
+         */
+        @JsonSetter(value = "finding_severity", nulls = Nulls.SKIP)
+        public Builder findingSeverity(Optional<List<CreateCsvRequestFindingSeverityItem>> findingSeverity) {
+            this.findingSeverity = findingSeverity;
+            return this;
+        }
+
+        public Builder findingSeverity(List<CreateCsvRequestFindingSeverityItem> findingSeverity) {
+            this.findingSeverity = Optional.ofNullable(findingSeverity);
+            return this;
+        }
+
+        public Builder findingSeverity(CreateCsvRequestFindingSeverityItem findingSeverity) {
+            this.findingSeverity = Optional.of(Collections.singletonList(findingSeverity));
             return this;
         }
 
@@ -513,6 +622,20 @@ public final class CreateCsvRequest {
 
         public Builder sort(String sort) {
             this.sort = Optional.of(Collections.singletonList(sort));
+            return this;
+        }
+
+        /**
+         * <p>With true, the response keeps findings' threat types and advisories' severities, each file's <code>top_threat_type</code> and <code>top_severity</code> on the files endpoint, and each scan's <code>top_threat_type</code>, <code>findings_count</code> and <code>threat_types</code>, SARIF reports advisories that have a threat type, and the supply chain CSV export fills its <code>threat_type</code> column. Without it, they are left out, as they were before threat types. Ignored when threat types are disabled. Filters and sorts on threat types work without it. Any value other than true or false returns 400. Even with true, findings from scanners that predate threat types may have no <code>threat_type</code>.</p>
+         */
+        @JsonSetter(value = "include_threat_types", nulls = Nulls.SKIP)
+        public Builder includeThreatTypes(Optional<Boolean> includeThreatTypes) {
+            this.includeThreatTypes = includeThreatTypes;
+            return this;
+        }
+
+        public Builder includeThreatTypes(Boolean includeThreatTypes) {
+            this.includeThreatTypes = Optional.ofNullable(includeThreatTypes);
             return this;
         }
 
@@ -704,10 +827,13 @@ public final class CreateCsvRequest {
             return new CreateCsvRequest(
                     modelVersionIds,
                     modelIds,
+                    threatType,
+                    findingSeverity,
                     status,
                     complianceStatus,
                     requestSource,
                     sort,
+                    includeThreatTypes,
                     columnList,
                     startTime,
                     endTime,
@@ -728,10 +854,13 @@ public final class CreateCsvRequest {
         private void putAdditionalPropertyFromJson(String key, Object value) {
             if (key.equalsIgnoreCase("model_version_ids")
                     || key.equalsIgnoreCase("model_ids")
+                    || key.equalsIgnoreCase("threat_type")
+                    || key.equalsIgnoreCase("finding_severity")
                     || key.equalsIgnoreCase("status")
                     || key.equalsIgnoreCase("compliance_status")
                     || key.equalsIgnoreCase("request_source")
                     || key.equalsIgnoreCase("sort")
+                    || key.equalsIgnoreCase("include_threat_types")
                     || key.equalsIgnoreCase("column_list")
                     || key.equalsIgnoreCase("start_time")
                     || key.equalsIgnoreCase("end_time")

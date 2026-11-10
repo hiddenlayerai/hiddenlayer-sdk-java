@@ -8,6 +8,9 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.resources.supplychain.scans.types.GetScansRequestAccept;
@@ -21,16 +24,30 @@ import java.util.Optional;
 public final class GetScansRequest {
     private final Optional<GetScansRequestAccept> accept;
 
+    private final Optional<Boolean> includeThreatTypes;
+
     private final Map<String, Object> additionalProperties;
 
-    private GetScansRequest(Optional<GetScansRequestAccept> accept, Map<String, Object> additionalProperties) {
+    private GetScansRequest(
+            Optional<GetScansRequestAccept> accept,
+            Optional<Boolean> includeThreatTypes,
+            Map<String, Object> additionalProperties) {
         this.accept = accept;
+        this.includeThreatTypes = includeThreatTypes;
         this.additionalProperties = additionalProperties;
     }
 
     @JsonIgnore
     public Optional<GetScansRequestAccept> getAccept() {
         return accept;
+    }
+
+    /**
+     * @return With true, returns the AIBOM that keeps threat types and rates advisories with their own severity, or the usual AIBOM for a scan saved without one. Without it, the AIBOM leaves threat types out and rates advisories <code>info</code>, as it did before threat types. Ignored when threat types are disabled. Any value other than true or false returns 400.
+     */
+    @JsonProperty("include_threat_types")
+    public Optional<Boolean> getIncludeThreatTypes() {
+        return includeThreatTypes;
     }
 
     @java.lang.Override
@@ -45,12 +62,12 @@ public final class GetScansRequest {
     }
 
     private boolean equalTo(GetScansRequest other) {
-        return accept.equals(other.accept);
+        return accept.equals(other.accept) && includeThreatTypes.equals(other.includeThreatTypes);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.accept);
+        return Objects.hash(this.accept, this.includeThreatTypes);
     }
 
     @java.lang.Override
@@ -66,12 +83,15 @@ public final class GetScansRequest {
     public static final class Builder {
         private Optional<GetScansRequestAccept> accept = Optional.empty();
 
+        private Optional<Boolean> includeThreatTypes = Optional.empty();
+
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
 
         public Builder from(GetScansRequest other) {
             accept(other.getAccept());
+            includeThreatTypes(other.getIncludeThreatTypes());
             return this;
         }
 
@@ -85,12 +105,29 @@ public final class GetScansRequest {
             return this;
         }
 
+        /**
+         * <p>With true, returns the AIBOM that keeps threat types and rates advisories with their own severity, or the usual AIBOM for a scan saved without one. Without it, the AIBOM leaves threat types out and rates advisories <code>info</code>, as it did before threat types. Ignored when threat types are disabled. Any value other than true or false returns 400.</p>
+         */
+        @JsonSetter(value = "include_threat_types", nulls = Nulls.SKIP)
+        public Builder includeThreatTypes(Optional<Boolean> includeThreatTypes) {
+            this.includeThreatTypes = includeThreatTypes;
+            return this;
+        }
+
+        public Builder includeThreatTypes(Boolean includeThreatTypes) {
+            this.includeThreatTypes = Optional.ofNullable(includeThreatTypes);
+            return this;
+        }
+
         public GetScansRequest build() {
-            return new GetScansRequest(accept, additionalProperties);
+            return new GetScansRequest(accept, includeThreatTypes, additionalProperties);
         }
 
         @JsonAnySetter
         private void putAdditionalPropertyFromJson(String key, Object value) {
+            if (key.equalsIgnoreCase("include_threat_types")) {
+                return;
+            }
             this.additionalProperties.put(key, value);
         }
 
