@@ -375,12 +375,11 @@ public class AsyncRawIssuesClient {
      * <ul>
      * <li><strong>422</strong>: the status changes to <code>ESCALATED</code> or <code>FALSE_POSITIVE</code> and
      * the request carries no <code>note</code> explaining why.</li>
-     * <li><strong>409</strong>: the change reopens the issue, moving it from <code>CLOSED</code> or
-     * <code>FALSE_POSITIVE</code> to <code>NEW</code>, <code>INVESTIGATING</code> or <code>ESCALATED</code>, while
-     * another of the tenant's open issues holds the same correlation key.</li>
+     * <li><strong>409</strong>: the change moves the issue from <code>ESCALATED</code>, <code>CLOSED</code> or
+     * <code>FALSE_POSITIVE</code> back to <code>NEW</code> or <code>INVESTIGATING</code> while another of
+     * the tenant's <code>NEW</code> or <code>INVESTIGATING</code> issues holds the same
+     * correlation key.</li>
      * </ul>
-     * <p>The note check runs first, so a reopen straight to <code>ESCALATED</code>
-     * without a note gets 422 even when it would also conflict.</p>
      * <p><strong>Retries are safe.</strong> A field whose value already matches the issue
      * is not a change. When neither status nor severity changes, the
      * request writes nothing (no change note, no caller <code>note</code>, no
@@ -419,12 +418,11 @@ public class AsyncRawIssuesClient {
      * <ul>
      * <li><strong>422</strong>: the status changes to <code>ESCALATED</code> or <code>FALSE_POSITIVE</code> and
      * the request carries no <code>note</code> explaining why.</li>
-     * <li><strong>409</strong>: the change reopens the issue, moving it from <code>CLOSED</code> or
-     * <code>FALSE_POSITIVE</code> to <code>NEW</code>, <code>INVESTIGATING</code> or <code>ESCALATED</code>, while
-     * another of the tenant's open issues holds the same correlation key.</li>
+     * <li><strong>409</strong>: the change moves the issue from <code>ESCALATED</code>, <code>CLOSED</code> or
+     * <code>FALSE_POSITIVE</code> back to <code>NEW</code> or <code>INVESTIGATING</code> while another of
+     * the tenant's <code>NEW</code> or <code>INVESTIGATING</code> issues holds the same
+     * correlation key.</li>
      * </ul>
-     * <p>The note check runs first, so a reopen straight to <code>ESCALATED</code>
-     * without a note gets 422 even when it would also conflict.</p>
      * <p><strong>Retries are safe.</strong> A field whose value already matches the issue
      * is not a change. When neither status nor severity changes, the
      * request writes nothing (no change note, no caller <code>note</code>, no
@@ -717,9 +715,9 @@ public class AsyncRawIssuesClient {
      * category and an affected asset, so these can span many sessions or
      * scans. This list, not the issue's first alert, is where the spread
      * shows.</li>
-     * <li><strong>Scope</strong> — this issue only, not its correlation key. A key can pass
-     * to a new issue once the first is closed; alerts correlated into that
-     * earlier issue are not returned.</li>
+     * <li><strong>Scope</strong> — this issue only, not its correlation key. A key passes
+     * to a new issue once the first is escalated or closed; alerts
+     * correlated into that earlier issue are not returned.</li>
      * <li><strong>Ordering</strong> — correlation time descending, fixed; there is no
      * <code>sort</code>.</li>
      * <li><strong>Paging</strong> — lenient: an unrecognised or stale <code>cursor</code> restarts
@@ -744,9 +742,9 @@ public class AsyncRawIssuesClient {
      * category and an affected asset, so these can span many sessions or
      * scans. This list, not the issue's first alert, is where the spread
      * shows.</li>
-     * <li><strong>Scope</strong> — this issue only, not its correlation key. A key can pass
-     * to a new issue once the first is closed; alerts correlated into that
-     * earlier issue are not returned.</li>
+     * <li><strong>Scope</strong> — this issue only, not its correlation key. A key passes
+     * to a new issue once the first is escalated or closed; alerts
+     * correlated into that earlier issue are not returned.</li>
      * <li><strong>Ordering</strong> — correlation time descending, fixed; there is no
      * <code>sort</code>.</li>
      * <li><strong>Paging</strong> — lenient: an unrecognised or stale <code>cursor</code> restarts
@@ -771,9 +769,9 @@ public class AsyncRawIssuesClient {
      * category and an affected asset, so these can span many sessions or
      * scans. This list, not the issue's first alert, is where the spread
      * shows.</li>
-     * <li><strong>Scope</strong> — this issue only, not its correlation key. A key can pass
-     * to a new issue once the first is closed; alerts correlated into that
-     * earlier issue are not returned.</li>
+     * <li><strong>Scope</strong> — this issue only, not its correlation key. A key passes
+     * to a new issue once the first is escalated or closed; alerts
+     * correlated into that earlier issue are not returned.</li>
      * <li><strong>Ordering</strong> — correlation time descending, fixed; there is no
      * <code>sort</code>.</li>
      * <li><strong>Paging</strong> — lenient: an unrecognised or stale <code>cursor</code> restarts
@@ -798,9 +796,9 @@ public class AsyncRawIssuesClient {
      * category and an affected asset, so these can span many sessions or
      * scans. This list, not the issue's first alert, is where the spread
      * shows.</li>
-     * <li><strong>Scope</strong> — this issue only, not its correlation key. A key can pass
-     * to a new issue once the first is closed; alerts correlated into that
-     * earlier issue are not returned.</li>
+     * <li><strong>Scope</strong> — this issue only, not its correlation key. A key passes
+     * to a new issue once the first is escalated or closed; alerts
+     * correlated into that earlier issue are not returned.</li>
      * <li><strong>Ordering</strong> — correlation time descending, fixed; there is no
      * <code>sort</code>.</li>
      * <li><strong>Paging</strong> — lenient: an unrecognised or stale <code>cursor</code> restarts
