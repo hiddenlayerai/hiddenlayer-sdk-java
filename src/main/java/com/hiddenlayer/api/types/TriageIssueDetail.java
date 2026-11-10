@@ -117,7 +117,7 @@ public final class TriageIssueDetail implements ITriageIssue {
     }
 
     /**
-     * @return Detection category of the source alert. The value follows the convention of the platform source the issue came from and is not drawn from a fixed vocabulary: a model-scan issue carries the scanner's category for the most severe finding that the policy rules failing the scan matched, and takes its severity from the same finding. When no rule matched a finding, as with rules on file type, license, country or trust level, it uses the most severe detection in the files that failed policy instead, and severity LOW when there is no detection either. Among equally severe findings it takes the alphabetically first category; when none has one, the alphabetically first category in the scan summary, and <code>policy_violation</code> when there is none. A runtime issue carries the name of the first detection on the outcome, or, when the outcome has no detections, the policy action lowercased.
+     * @return Detection category of the source alert. The value follows the convention of the platform source the issue came from and is not drawn from a fixed vocabulary: a model-scan issue carries the scanner's category for the most severe finding that the policy rules failing the scan matched, and takes its severity from the same finding. When no rule matched a finding, as with rules on file type, license, country or trust level, it uses the most severe detection in the files that failed policy instead, and severity LOW when there is no detection either. Among equally severe findings it takes the alphabetically first category; when none has one, the alphabetically first category in the scan summary, and <code>policy_violation</code> when there is none. A runtime issue carries the name of the first detection on the outcome, or, when the outcome has no detections, the policy action lowercased. A Runtime v1 issue (<code>RUNTIME_V1</code>) carries the conviction's detection category, or <code>conviction</code> when the conviction has none.
      */
     @JsonProperty("detection_category")
     @java.lang.Override
@@ -126,7 +126,7 @@ public final class TriageIssueDetail implements ITriageIssue {
     }
 
     /**
-     * @return The affected asset, in whichever form the platform source the issue came from supplies. A model-scan issue carries a readable <code>name:version</code> for the scanned model. A runtime issue carries the identifier of the project the session ran under, which is a UUID and not a display name. When the source did not supply a project, a session- or event-derived identifier is used instead.
+     * @return The affected asset, in whichever form the platform source the issue came from supplies. A model-scan issue carries a readable <code>name:version</code> for the scanned model. A runtime issue carries the identifier of the project the session ran under, which is a UUID and not a display name. When the source did not supply a project, a session- or event-derived identifier is used instead. A Runtime v1 issue (<code>RUNTIME_V1</code>) carries the identifier of the sensor that raised the conviction; without one, <code>requester:</code> followed by the requester identifier, and without that, <code>conviction:</code> followed by the conviction identifier.
      */
     @JsonProperty("asset")
     @java.lang.Override
@@ -275,14 +275,14 @@ public final class TriageIssueDetail implements ITriageIssue {
 
     public interface DetectionCategoryStage {
         /**
-         * <p>Detection category of the source alert. The value follows the convention of the platform source the issue came from and is not drawn from a fixed vocabulary: a model-scan issue carries the scanner's category for the most severe finding that the policy rules failing the scan matched, and takes its severity from the same finding. When no rule matched a finding, as with rules on file type, license, country or trust level, it uses the most severe detection in the files that failed policy instead, and severity LOW when there is no detection either. Among equally severe findings it takes the alphabetically first category; when none has one, the alphabetically first category in the scan summary, and <code>policy_violation</code> when there is none. A runtime issue carries the name of the first detection on the outcome, or, when the outcome has no detections, the policy action lowercased.</p>
+         * <p>Detection category of the source alert. The value follows the convention of the platform source the issue came from and is not drawn from a fixed vocabulary: a model-scan issue carries the scanner's category for the most severe finding that the policy rules failing the scan matched, and takes its severity from the same finding. When no rule matched a finding, as with rules on file type, license, country or trust level, it uses the most severe detection in the files that failed policy instead, and severity LOW when there is no detection either. Among equally severe findings it takes the alphabetically first category; when none has one, the alphabetically first category in the scan summary, and <code>policy_violation</code> when there is none. A runtime issue carries the name of the first detection on the outcome, or, when the outcome has no detections, the policy action lowercased. A Runtime v1 issue (<code>RUNTIME_V1</code>) carries the conviction's detection category, or <code>conviction</code> when the conviction has none.</p>
          */
         AssetStage detectionCategory(@NotNull String detectionCategory);
     }
 
     public interface AssetStage {
         /**
-         * <p>The affected asset, in whichever form the platform source the issue came from supplies. A model-scan issue carries a readable <code>name:version</code> for the scanned model. A runtime issue carries the identifier of the project the session ran under, which is a UUID and not a display name. When the source did not supply a project, a session- or event-derived identifier is used instead.</p>
+         * <p>The affected asset, in whichever form the platform source the issue came from supplies. A model-scan issue carries a readable <code>name:version</code> for the scanned model. A runtime issue carries the identifier of the project the session ran under, which is a UUID and not a display name. When the source did not supply a project, a session- or event-derived identifier is used instead. A Runtime v1 issue (<code>RUNTIME_V1</code>) carries the identifier of the sensor that raised the conviction; without one, <code>requester:</code> followed by the requester identifier, and without that, <code>conviction:</code> followed by the conviction identifier.</p>
          */
         SourceStage asset(@NotNull String asset);
     }
@@ -445,7 +445,7 @@ public final class TriageIssueDetail implements ITriageIssue {
         }
 
         /**
-         * <p>Detection category of the source alert. The value follows the convention of the platform source the issue came from and is not drawn from a fixed vocabulary: a model-scan issue carries the scanner's category for the most severe finding that the policy rules failing the scan matched, and takes its severity from the same finding. When no rule matched a finding, as with rules on file type, license, country or trust level, it uses the most severe detection in the files that failed policy instead, and severity LOW when there is no detection either. Among equally severe findings it takes the alphabetically first category; when none has one, the alphabetically first category in the scan summary, and <code>policy_violation</code> when there is none. A runtime issue carries the name of the first detection on the outcome, or, when the outcome has no detections, the policy action lowercased.</p>
+         * <p>Detection category of the source alert. The value follows the convention of the platform source the issue came from and is not drawn from a fixed vocabulary: a model-scan issue carries the scanner's category for the most severe finding that the policy rules failing the scan matched, and takes its severity from the same finding. When no rule matched a finding, as with rules on file type, license, country or trust level, it uses the most severe detection in the files that failed policy instead, and severity LOW when there is no detection either. Among equally severe findings it takes the alphabetically first category; when none has one, the alphabetically first category in the scan summary, and <code>policy_violation</code> when there is none. A runtime issue carries the name of the first detection on the outcome, or, when the outcome has no detections, the policy action lowercased. A Runtime v1 issue (<code>RUNTIME_V1</code>) carries the conviction's detection category, or <code>conviction</code> when the conviction has none.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -456,7 +456,7 @@ public final class TriageIssueDetail implements ITriageIssue {
         }
 
         /**
-         * <p>The affected asset, in whichever form the platform source the issue came from supplies. A model-scan issue carries a readable <code>name:version</code> for the scanned model. A runtime issue carries the identifier of the project the session ran under, which is a UUID and not a display name. When the source did not supply a project, a session- or event-derived identifier is used instead.</p>
+         * <p>The affected asset, in whichever form the platform source the issue came from supplies. A model-scan issue carries a readable <code>name:version</code> for the scanned model. A runtime issue carries the identifier of the project the session ran under, which is a UUID and not a display name. When the source did not supply a project, a session- or event-derived identifier is used instead. A Runtime v1 issue (<code>RUNTIME_V1</code>) carries the identifier of the sensor that raised the conviction; without one, <code>requester:</code> followed by the requester identifier, and without that, <code>conviction:</code> followed by the conviction identifier.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override

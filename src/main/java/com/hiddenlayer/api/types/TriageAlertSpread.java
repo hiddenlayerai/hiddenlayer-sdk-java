@@ -58,7 +58,7 @@ public final class TriageAlertSpread {
     }
 
     /**
-     * @return Number of distinct runtime sessions represented. Present only on runtime issues, and counts only alerts that carried a session identifier. Omitted when no correlated alert carried one, so an absent field means either a non-runtime issue or a count of zero.
+     * @return Number of distinct runtime sessions represented. Present only on runtime issues (<code>RUNTIME</code>), and counts only alerts that carried a session identifier. Omitted when no correlated alert carried one, so an absent field means either another source or a count of zero. Runtime v1 convictions carry no session identifier, so <code>RUNTIME_V1</code> issues never have it.
      */
     @JsonProperty("distinct_sessions")
     public Optional<Integer> getDistinctSessions() {
@@ -120,7 +120,7 @@ public final class TriageAlertSpread {
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
         /**
-         * <p>Number of distinct runtime sessions represented. Present only on runtime issues, and counts only alerts that carried a session identifier. Omitted when no correlated alert carried one, so an absent field means either a non-runtime issue or a count of zero.</p>
+         * <p>Number of distinct runtime sessions represented. Present only on runtime issues (<code>RUNTIME</code>), and counts only alerts that carried a session identifier. Omitted when no correlated alert carried one, so an absent field means either another source or a count of zero. Runtime v1 convictions carry no session identifier, so <code>RUNTIME_V1</code> issues never have it.</p>
          */
         _FinalStage distinctSessions(Optional<Integer> distinctSessions);
 
@@ -170,7 +170,7 @@ public final class TriageAlertSpread {
         }
 
         /**
-         * <p>Number of distinct runtime sessions represented. Present only on runtime issues, and counts only alerts that carried a session identifier. Omitted when no correlated alert carried one, so an absent field means either a non-runtime issue or a count of zero.</p>
+         * <p>Number of distinct runtime sessions represented. Present only on runtime issues (<code>RUNTIME</code>), and counts only alerts that carried a session identifier. Omitted when no correlated alert carried one, so an absent field means either another source or a count of zero. Runtime v1 convictions carry no session identifier, so <code>RUNTIME_V1</code> issues never have it.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
@@ -180,7 +180,7 @@ public final class TriageAlertSpread {
         }
 
         /**
-         * <p>Number of distinct runtime sessions represented. Present only on runtime issues, and counts only alerts that carried a session identifier. Omitted when no correlated alert carried one, so an absent field means either a non-runtime issue or a count of zero.</p>
+         * <p>Number of distinct runtime sessions represented. Present only on runtime issues (<code>RUNTIME</code>), and counts only alerts that carried a session identifier. Omitted when no correlated alert carried one, so an absent field means either another source or a count of zero. Runtime v1 convictions carry no session identifier, so <code>RUNTIME_V1</code> issues never have it.</p>
          */
         @java.lang.Override
         @JsonSetter(value = "distinct_sessions", nulls = Nulls.SKIP)

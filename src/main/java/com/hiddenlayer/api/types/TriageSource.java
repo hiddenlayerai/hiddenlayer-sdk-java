@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public final class TriageSource {
     public static final TriageSource RUNTIME = new TriageSource(Value.RUNTIME, "RUNTIME");
 
+    public static final TriageSource RUNTIME_V1 = new TriageSource(Value.RUNTIME_V1, "RUNTIME_V1");
+
     public static final TriageSource SUPPLY_CHAIN = new TriageSource(Value.SUPPLY_CHAIN, "SUPPLY_CHAIN");
 
     private final Value value;
@@ -44,6 +46,8 @@ public final class TriageSource {
         switch (value) {
             case RUNTIME:
                 return visitor.visitRuntime();
+            case RUNTIME_V1:
+                return visitor.visitRuntimeV1();
             case SUPPLY_CHAIN:
                 return visitor.visitSupplyChain();
             case UNKNOWN:
@@ -57,6 +61,8 @@ public final class TriageSource {
         switch (value) {
             case "RUNTIME":
                 return RUNTIME;
+            case "RUNTIME_V1":
+                return RUNTIME_V1;
             case "SUPPLY_CHAIN":
                 return SUPPLY_CHAIN;
             default:
@@ -69,6 +75,8 @@ public final class TriageSource {
 
         SUPPLY_CHAIN,
 
+        RUNTIME_V1,
+
         UNKNOWN
     }
 
@@ -76,6 +84,8 @@ public final class TriageSource {
         T visitRuntime();
 
         T visitSupplyChain();
+
+        T visitRuntimeV1();
 
         T visitUnknown(String unknownType);
     }
