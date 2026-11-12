@@ -248,7 +248,8 @@ public final class ListJobsRequest {
     }
 
     /**
-     * @return allow sorting by model name, status, severity, scan start time, asset region, or model provider ascending (+) or the default descending (-)
+     * @return allow sorting by model name, status, severity, scan start time, asset region, model provider, or policy status ascending (+) or the default descending (-)
+     * <p><code>policy_status</code> sorts by the scan's policy verdict. Descending puts <code>NONCOMPLIANT</code> first, then <code>COMPLIANT</code>, then scans without a verdict; ascending is the reverse.</p>
      */
     @JsonProperty("sort")
     public Optional<String> getSort() {
@@ -709,7 +710,8 @@ public final class ListJobsRequest {
         }
 
         /**
-         * <p>allow sorting by model name, status, severity, scan start time, asset region, or model provider ascending (+) or the default descending (-)</p>
+         * <p>allow sorting by model name, status, severity, scan start time, asset region, model provider, or policy status ascending (+) or the default descending (-)</p>
+         * <p><code>policy_status</code> sorts by the scan's policy verdict. Descending puts <code>NONCOMPLIANT</code> first, then <code>COMPLIANT</code>, then scans without a verdict; ascending is the reverse.</p>
          */
         @JsonSetter(value = "sort", nulls = Nulls.SKIP)
         public Builder sort(Optional<String> sort) {

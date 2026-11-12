@@ -13583,7 +13583,11 @@ Paired with `threat_type`, a scan matches when a listed threat type's highest se
 <dl>
 <dd>
 
-**sort:** `Optional<String>` — allow sorting by model name, status, severity, scan start time, asset region, or model provider ascending (+) or the default descending (-)
+**sort:** `Optional<String>` 
+
+allow sorting by model name, status, severity, scan start time, asset region, model provider, or policy status ascending (+) or the default descending (-)
+
+`policy_status` sorts by the scan's policy verdict. Descending puts `NONCOMPLIANT` first, then `COMPLIANT`, then scans without a verdict; ascending is the reverse.
     
 </dd>
 </dl>
