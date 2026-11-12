@@ -9,11 +9,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
@@ -21,10 +23,20 @@ import org.jetbrains.annotations.NotNull;
 public final class AccessTokenRequest {
     private final AccessTokenRequestGrantType grantType;
 
+    private final Optional<String> clientId;
+
+    private final Optional<String> clientSecret;
+
     private final Map<String, Object> additionalProperties;
 
-    private AccessTokenRequest(AccessTokenRequestGrantType grantType, Map<String, Object> additionalProperties) {
+    private AccessTokenRequest(
+            AccessTokenRequestGrantType grantType,
+            Optional<String> clientId,
+            Optional<String> clientSecret,
+            Map<String, Object> additionalProperties) {
         this.grantType = grantType;
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
         this.additionalProperties = additionalProperties;
     }
 
@@ -34,6 +46,22 @@ public final class AccessTokenRequest {
     @JsonProperty("grant_type")
     public AccessTokenRequestGrantType getGrantType() {
         return grantType;
+    }
+
+    /**
+     * @return The Client ID, when it isn't sent as the HTTP Basic username.
+     */
+    @JsonProperty("client_id")
+    public Optional<String> getClientId() {
+        return clientId;
+    }
+
+    /**
+     * @return The Client Secret, when it isn't sent as the HTTP Basic password.
+     */
+    @JsonProperty("client_secret")
+    public Optional<String> getClientSecret() {
+        return clientSecret;
     }
 
     @java.lang.Override
@@ -48,12 +76,14 @@ public final class AccessTokenRequest {
     }
 
     private boolean equalTo(AccessTokenRequest other) {
-        return grantType.equals(other.grantType);
+        return grantType.equals(other.grantType)
+                && clientId.equals(other.clientId)
+                && clientSecret.equals(other.clientSecret);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.grantType);
+        return Objects.hash(this.grantType, this.clientId, this.clientSecret);
     }
 
     @java.lang.Override
@@ -80,11 +110,29 @@ public final class AccessTokenRequest {
         _FinalStage additionalProperty(String key, Object value);
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+        /**
+         * <p>The Client ID, when it isn't sent as the HTTP Basic username.</p>
+         */
+        _FinalStage clientId(Optional<String> clientId);
+
+        _FinalStage clientId(String clientId);
+
+        /**
+         * <p>The Client Secret, when it isn't sent as the HTTP Basic password.</p>
+         */
+        _FinalStage clientSecret(Optional<String> clientSecret);
+
+        _FinalStage clientSecret(String clientSecret);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements GrantTypeStage, _FinalStage {
         private AccessTokenRequestGrantType grantType;
+
+        private Optional<String> clientSecret = Optional.empty();
+
+        private Optional<String> clientId = Optional.empty();
 
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -93,6 +141,8 @@ public final class AccessTokenRequest {
         @java.lang.Override
         public Builder from(AccessTokenRequest other) {
             grantType(other.getGrantType());
+            clientId(other.getClientId());
+            clientSecret(other.getClientSecret());
             return this;
         }
 
@@ -107,14 +157,56 @@ public final class AccessTokenRequest {
             return this;
         }
 
+        /**
+         * <p>The Client Secret, when it isn't sent as the HTTP Basic password.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage clientSecret(String clientSecret) {
+            this.clientSecret = Optional.ofNullable(clientSecret);
+            return this;
+        }
+
+        /**
+         * <p>The Client Secret, when it isn't sent as the HTTP Basic password.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "client_secret", nulls = Nulls.SKIP)
+        public _FinalStage clientSecret(Optional<String> clientSecret) {
+            this.clientSecret = clientSecret;
+            return this;
+        }
+
+        /**
+         * <p>The Client ID, when it isn't sent as the HTTP Basic username.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage clientId(String clientId) {
+            this.clientId = Optional.ofNullable(clientId);
+            return this;
+        }
+
+        /**
+         * <p>The Client ID, when it isn't sent as the HTTP Basic username.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "client_id", nulls = Nulls.SKIP)
+        public _FinalStage clientId(Optional<String> clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
         @java.lang.Override
         public AccessTokenRequest build() {
-            return new AccessTokenRequest(grantType, additionalProperties);
+            return new AccessTokenRequest(grantType, clientId, clientSecret, additionalProperties);
         }
 
         @JsonAnySetter
         private void putAdditionalPropertyFromJson(String key, Object value) {
-            if (key.equalsIgnoreCase("grant_type")) {
+            if (key.equalsIgnoreCase("grant_type")
+                    || key.equalsIgnoreCase("client_id")
+                    || key.equalsIgnoreCase("client_secret")) {
                 return;
             }
             this.additionalProperties.put(key, value);

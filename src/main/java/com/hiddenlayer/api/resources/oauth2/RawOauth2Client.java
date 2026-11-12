@@ -36,7 +36,7 @@ public class RawOauth2Client {
     }
 
     /**
-     * Exchanges the Client ID and Client Secret of an <a href="#operation/create_credentials_api_v2_credentials_post">API credential</a> for an access token, using the OAuth2 client credentials grant. Send the Client ID and Client Secret as the HTTP Basic username and password.
+     * Exchanges the Client ID and Client Secret of an <a href="#operation/create_credentials_api_v2_credentials_post">API credential</a> for an access token, using the OAuth2 client credentials grant. Send the Client ID and Client Secret either as the HTTP Basic username and password, or as the <code>client_id</code> and <code>client_secret</code> form fields.
      * <p>Send the token as <code>Authorization: Bearer &lt;access_token&gt;</code> on every other request. It expires <code>expires_in</code> seconds after it is issued, so request a new one before then.</p>
      */
     public HiddenLayerHttpResponse<AccessToken> token(AccessTokenRequest request) {
@@ -44,7 +44,7 @@ public class RawOauth2Client {
     }
 
     /**
-     * Exchanges the Client ID and Client Secret of an <a href="#operation/create_credentials_api_v2_credentials_post">API credential</a> for an access token, using the OAuth2 client credentials grant. Send the Client ID and Client Secret as the HTTP Basic username and password.
+     * Exchanges the Client ID and Client Secret of an <a href="#operation/create_credentials_api_v2_credentials_post">API credential</a> for an access token, using the OAuth2 client credentials grant. Send the Client ID and Client Secret either as the HTTP Basic username and password, or as the <code>client_id</code> and <code>client_secret</code> form fields.
      * <p>Send the token as <code>Authorization: Bearer &lt;access_token&gt;</code> on every other request. It expires <code>expires_in</code> seconds after it is issued, so request a new one before then.</p>
      */
     public HiddenLayerHttpResponse<AccessToken> token(AccessTokenRequest request, RequestOptions requestOptions) {
