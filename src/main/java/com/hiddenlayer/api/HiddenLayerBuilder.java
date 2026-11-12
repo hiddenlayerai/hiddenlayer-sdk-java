@@ -6,6 +6,8 @@ package com.hiddenlayer.api;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.Environment;
 import com.hiddenlayer.api.core.LogConfig;
+import com.hiddenlayer.api.core.OAuthTokenSupplier;
+import com.hiddenlayer.api.resources.oauth2.Oauth2Client;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,20 +37,44 @@ public class HiddenLayerBuilder {
 
     private final Map<String, String> customHeaders = new HashMap<>();
 
-    private String token = null;
-
-    private Environment environment = Environment.PROD_US;
+    protected Environment environment = Environment.PROD_US;
 
     private OkHttpClient httpClient;
 
     private Optional<LogConfig> logging = Optional.empty();
 
     /**
-     * Sets token
+     * Creates a builder that uses a pre-generated access token for authentication.
+     * Use this when you already have a valid access token and want to bypass
+     * the OAuth client credentials flow.
+     *
+     * @param token The access token to use for Authorization header
+     * @return A builder configured for token authentication
      */
-    public HiddenLayerBuilder token(String token) {
-        this.token = token;
-        return this;
+    public static _TokenAuth withToken(String token) {
+        return new _TokenAuth(token);
+    }
+
+    /**
+     * Creates a builder that uses OAuth client credentials for authentication.
+     * The builder will automatically handle token acquisition and refresh.
+     *
+     * @param clientId The OAuth client ID
+     * @param clientSecret The OAuth client secret
+     * @return A builder configured for OAuth client credentials authentication
+     */
+    public static _CredentialsAuth withCredentials(String clientId, String clientSecret) {
+        return new _CredentialsAuth(clientId, clientSecret);
+    }
+
+    /**
+     * Creates a new client builder.
+     * Use this method to start building a client with the classic builder pattern.
+     *
+     * @return A builder for configuring authentication and creating the client
+     */
+    public static _Builder builder() {
+        return new _Builder();
     }
 
     public HiddenLayerBuilder environment(Environment environment) {
@@ -206,11 +232,7 @@ public class HiddenLayerBuilder {
      * }
      * }</pre>
      */
-    protected void setAuthentication(ClientOptions.Builder builder) {
-        if (this.token != null) {
-            builder.addHeader("Authorization", "Bearer " + this.token);
-        }
-    }
+    protected void setAuthentication(ClientOptions.Builder builder) {}
 
     /**
      * Sets the request timeout configuration.
@@ -324,10 +346,265 @@ public class HiddenLayerBuilder {
     protected void validateConfiguration() {}
 
     public HiddenLayer build() {
-        if (token == null) {
-            throw new RuntimeException("Please provide token");
-        }
         validateConfiguration();
         return new HiddenLayer(buildClientOptions());
+    }
+
+    public static final class _TokenAuth extends HiddenLayerBuilder {
+        private final String token;
+
+        _TokenAuth(String token) {
+            this.token = token;
+        }
+
+        @Override
+        protected void setAuthentication(ClientOptions.Builder builder) {
+            builder.addHeader("Authorization", "Bearer " + this.token);
+        }
+    }
+
+    public static final class _CredentialsAuth extends HiddenLayerBuilder {
+        private final String clientId;
+
+        private final String clientSecret;
+
+        _CredentialsAuth(String clientId, String clientSecret) {
+            this.clientId = clientId;
+            this.clientSecret = clientSecret;
+        }
+
+        @Override
+        public HiddenLayer build() {
+            validateConfiguration();
+            ClientOptions baseOptions = buildClientOptions();
+            Oauth2Client authClient = new Oauth2Client(baseOptions);
+            OAuthTokenSupplier oAuthTokenSupplier =
+                    new OAuthTokenSupplier(this.clientId, this.clientSecret, authClient);
+            ClientOptions finalOptions = ClientOptions.Builder.from(baseOptions)
+                    .addHeader("Authorization", oAuthTokenSupplier)
+                    .build();
+            return new HiddenLayer(finalOptions);
+        }
+    }
+
+    public static final class _Builder {
+        private Environment environment;
+
+        private Optional<Integer> timeout = Optional.empty();
+
+        private Optional<Integer> maxRetries = Optional.empty();
+
+        private Optional<Integer> maxConcurrentRequests = Optional.empty();
+
+        private Optional<Set<Integer>> retryOnStatusCodes = Optional.empty();
+
+        private Optional<List<Duration>> retryDelays = Optional.empty();
+
+        private Optional<Long> initialRetryDelayMillis = Optional.empty();
+
+        private Optional<Long> maxRetryDelayMillis = Optional.empty();
+
+        private Optional<Double> retryJitterFactor = Optional.empty();
+
+        private OkHttpClient httpClient;
+
+        private final Map<String, String> headers = new HashMap<>();
+
+        public _Builder environment(Environment environment) {
+            this.environment = environment;
+            return this;
+        }
+
+        public _Builder url(String url) {
+            this.environment = Environment.custom(url);
+            return this;
+        }
+
+        /**
+         * Sets the timeout (in seconds) for the client. Defaults to 60 seconds.
+         */
+        public _Builder timeout(int timeout) {
+            this.timeout = Optional.of(timeout);
+            return this;
+        }
+
+        /**
+         * Sets the maximum number of retries for the client. Defaults to 2 retries.
+         */
+        public _Builder maxRetries(int maxRetries) {
+            this.maxRetries = Optional.of(maxRetries);
+            return this;
+        }
+
+        /**
+         * Caps the number of in-flight requests (sync and async) the client will have at once. Unlimited unless set; must be positive.
+         */
+        public _Builder maxConcurrentRequests(int maxConcurrentRequests) {
+            this.maxConcurrentRequests = Optional.of(maxConcurrentRequests);
+            return this;
+        }
+
+        /**
+         * Restricts automatic retries to responses with one of the given HTTP status codes (for example {@code 429} only, or {@code 429} and {@code 503}), replacing the default set of 408, 429 and 5xx. Codes not listed are returned as-is. Retry-After handling and the other retry settings are unchanged.
+         */
+        public _Builder retryOnStatusCodes(Set<Integer> retryOnStatusCodes) {
+            if (retryOnStatusCodes == null) {
+                throw new IllegalArgumentException("retryOnStatusCodes must not be null");
+            }
+            this.retryOnStatusCodes = Optional.of(retryOnStatusCodes);
+            return this;
+        }
+
+        /**
+         * Sets an explicit retry schedule: the n-th retry waits for the n-th duration and the request stops retrying once the list is exhausted, so the list size replaces {@code maxRetries} and the exponential backoff settings. Delays are used as-is (no jitter); a {@code Retry-After} / {@code X-RateLimit-Reset} header still takes precedence for that attempt.
+         */
+        public _Builder retryDelays(List<Duration> retryDelays) {
+            if (retryDelays == null) {
+                throw new IllegalArgumentException("retryDelays must not be null");
+            }
+            for (Duration delay : retryDelays) {
+                if (delay == null || delay.isNegative()) {
+                    throw new IllegalArgumentException(
+                            "retryDelays must only contain non-negative durations: " + delay);
+                }
+            }
+            this.retryDelays = Optional.of(Collections.unmodifiableList(new ArrayList<>(retryDelays)));
+            return this;
+        }
+
+        /**
+         * Sets the initial delay (in milliseconds) used for exponential backoff between retries. Defaults to 1000 milliseconds.
+         */
+        public _Builder initialRetryDelayMillis(long initialRetryDelayMillis) {
+            this.initialRetryDelayMillis = Optional.of(initialRetryDelayMillis);
+            return this;
+        }
+
+        /**
+         * Sets the maximum delay (in milliseconds) between retries. Defaults to 60000 milliseconds.
+         */
+        public _Builder maxRetryDelayMillis(long maxRetryDelayMillis) {
+            this.maxRetryDelayMillis = Optional.of(maxRetryDelayMillis);
+            return this;
+        }
+
+        /**
+         * Sets the jitter factor (between 0 and 1) applied to retry delays. Defaults to 0.2.
+         */
+        public _Builder retryJitterFactor(double retryJitterFactor) {
+            this.retryJitterFactor = Optional.of(retryJitterFactor);
+            return this;
+        }
+
+        /**
+         * Sets the underlying OkHttp client
+         */
+        public _Builder httpClient(OkHttpClient httpClient) {
+            this.httpClient = httpClient;
+            return this;
+        }
+
+        /**
+         * Add a custom header to be sent with all requests.
+         * @param name The header name
+         * @param value The header value
+         * @return This builder for method chaining
+         */
+        public _Builder addHeader(String name, String value) {
+            this.headers.put(name, value);
+            return this;
+        }
+
+        /**
+         * Configure the client to use a pre-generated access token for authentication.
+         * Use this when you already have a valid access token and want to bypass
+         * the OAuth client credentials flow.
+         *
+         * @param token The access token to use for Authorization header
+         * @return A builder configured for token authentication
+         */
+        public _TokenAuth token(String token) {
+            _TokenAuth auth = new _TokenAuth(token);
+            if (this.environment != null) {
+                auth.environment = this.environment;
+            }
+            if (this.timeout.isPresent()) {
+                auth.timeout(this.timeout.get());
+            }
+            if (this.maxRetries.isPresent()) {
+                auth.maxRetries(this.maxRetries.get());
+            }
+            if (this.maxConcurrentRequests.isPresent()) {
+                auth.maxConcurrentRequests(this.maxConcurrentRequests.get());
+            }
+            if (this.retryOnStatusCodes.isPresent()) {
+                auth.retryOnStatusCodes(this.retryOnStatusCodes.get());
+            }
+            if (this.retryDelays.isPresent()) {
+                auth.retryDelays(this.retryDelays.get());
+            }
+            if (this.initialRetryDelayMillis.isPresent()) {
+                auth.initialRetryDelayMillis(this.initialRetryDelayMillis.get());
+            }
+            if (this.maxRetryDelayMillis.isPresent()) {
+                auth.maxRetryDelayMillis(this.maxRetryDelayMillis.get());
+            }
+            if (this.retryJitterFactor.isPresent()) {
+                auth.retryJitterFactor(this.retryJitterFactor.get());
+            }
+            if (this.httpClient != null) {
+                auth.httpClient(this.httpClient);
+            }
+            for (Map.Entry<String, String> header : this.headers.entrySet()) {
+                auth.addHeader(header.getKey(), header.getValue());
+            }
+            return auth;
+        }
+
+        /**
+         * Configure the client to use OAuth client credentials for authentication.
+         * The builder will automatically handle token acquisition and refresh.
+         *
+         * @param clientId The OAuth client ID
+         * @param clientSecret The OAuth client secret
+         * @return A builder configured for OAuth client credentials authentication
+         */
+        public _CredentialsAuth credentials(String clientId, String clientSecret) {
+            _CredentialsAuth auth = new _CredentialsAuth(clientId, clientSecret);
+            if (this.environment != null) {
+                auth.environment = this.environment;
+            }
+            if (this.timeout.isPresent()) {
+                auth.timeout(this.timeout.get());
+            }
+            if (this.maxRetries.isPresent()) {
+                auth.maxRetries(this.maxRetries.get());
+            }
+            if (this.maxConcurrentRequests.isPresent()) {
+                auth.maxConcurrentRequests(this.maxConcurrentRequests.get());
+            }
+            if (this.retryOnStatusCodes.isPresent()) {
+                auth.retryOnStatusCodes(this.retryOnStatusCodes.get());
+            }
+            if (this.retryDelays.isPresent()) {
+                auth.retryDelays(this.retryDelays.get());
+            }
+            if (this.initialRetryDelayMillis.isPresent()) {
+                auth.initialRetryDelayMillis(this.initialRetryDelayMillis.get());
+            }
+            if (this.maxRetryDelayMillis.isPresent()) {
+                auth.maxRetryDelayMillis(this.maxRetryDelayMillis.get());
+            }
+            if (this.retryJitterFactor.isPresent()) {
+                auth.retryJitterFactor(this.retryJitterFactor.get());
+            }
+            if (this.httpClient != null) {
+                auth.httpClient(this.httpClient);
+            }
+            for (Map.Entry<String, String> header : this.headers.entrySet()) {
+                auth.addHeader(header.getKey(), header.getValue());
+            }
+            return auth;
+        }
     }
 }

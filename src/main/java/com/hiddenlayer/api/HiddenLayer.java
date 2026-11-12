@@ -232,7 +232,30 @@ public class HiddenLayer implements AutoCloseable {
         this.clientOptions.close();
     }
 
-    public static HiddenLayerBuilder builder() {
-        return new HiddenLayerBuilder();
+    /**
+     * Creates a client builder using a pre-generated access token.
+     * @param token The access token to use for authentication
+     * @return A builder configured for token authentication
+     */
+    public static HiddenLayerBuilder._TokenAuth withToken(String token) {
+        return HiddenLayerBuilder.withToken(token);
+    }
+
+    /**
+     * Creates a client builder using OAuth client credentials.
+     * @param clientId The OAuth client ID
+     * @param clientSecret The OAuth client secret
+     * @return A builder configured for OAuth authentication
+     */
+    public static HiddenLayerBuilder._CredentialsAuth withCredentials(String clientId, String clientSecret) {
+        return HiddenLayerBuilder.withCredentials(clientId, clientSecret);
+    }
+
+    /**
+     * Creates a new client builder.
+     * @return A builder for configuring and creating the client
+     */
+    public static HiddenLayerBuilder._Builder builder() {
+        return HiddenLayerBuilder.builder();
     }
 }

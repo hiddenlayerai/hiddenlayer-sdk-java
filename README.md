@@ -28,6 +28,7 @@ The Hiddenlayer Java library provides convenient access to the Hiddenlayer APIs 
 - [Environments](#environments)
 - [Base Url](#base-url)
 - [Exception Handling](#exception-handling)
+- [Authentication](#authentication)
 - [Advanced](#advanced)
   - [Custom Client](#custom-client)
   - [Retries](#retries)
@@ -86,10 +87,9 @@ import com.hiddenlayer.api.resources.credentials.requests.CredentialsCreateReque
 
 public class Example {
     public static void main(String[] args) {
-        HiddenLayer client = HiddenLayer
-            .builder()
-            .token("<token>")
-            .build();
+        HiddenLayer client = HiddenLayer.withCredentials("<clientId>", "<clientSecret>")
+            .build()
+        ;
 
         client.credentials().create(
             CredentialsCreateRequestV2
@@ -909,6 +909,32 @@ try{
 } catch (HiddenLayerApiException e){
     // Do something with the API exception...
 }
+```
+
+## Authentication
+
+This SDK supports two authentication methods:
+
+### Option 1: Direct Bearer Token
+
+If you already have a valid access token, you can use it directly:
+
+```java
+HiddenLayer client = HiddenLayer.builder()
+    .token("your-access-token")
+    .url("https://api.example.com")
+    .build();
+```
+
+### Option 2: OAuth Client Credentials
+
+The SDK can automatically handle token acquisition and refresh:
+
+```java
+HiddenLayer client = HiddenLayer.builder()
+    .credentials("client-id", "client-secret")
+    .url("https://api.example.com")
+    .build();
 ```
 
 ## Advanced
