@@ -158,6 +158,7 @@ public final class AuditEntry implements IAuditEntryBase {
      * <li><code>CLIENT_CREDENTIAL</code> and <code>API_KEY</code>: the API credential's <code>client_id</code>.</li>
      * <li><code>STATIC_API_KEY</code>: the Static API Key's <code>id</code>, not a secret's <code>id</code>.</li>
      * <li><code>SYSTEM</code>: an ID that HiddenLayer assigns to the process.</li>
+     * <li><code>THIRD_PARTY_TOKEN</code>: the third-party token link's <code>id</code>.</li>
      * </ul>
      */
     @JsonProperty("actor_id")
@@ -300,6 +301,7 @@ public final class AuditEntry implements IAuditEntryBase {
          * <li><code>CLIENT_CREDENTIAL</code> and <code>API_KEY</code>: the API credential's <code>client_id</code>.</li>
          * <li><code>STATIC_API_KEY</code>: the Static API Key's <code>id</code>, not a secret's <code>id</code>.</li>
          * <li><code>SYSTEM</code>: an ID that HiddenLayer assigns to the process.</li>
+         * <li><code>THIRD_PARTY_TOKEN</code>: the third-party token link's <code>id</code>.</li>
          * </ul>
          */
         _FinalStage actorId(@NotNull String actorId);
@@ -487,6 +489,7 @@ public final class AuditEntry implements IAuditEntryBase {
          * <li><code>CLIENT_CREDENTIAL</code> and <code>API_KEY</code>: the API credential's <code>client_id</code>.</li>
          * <li><code>STATIC_API_KEY</code>: the Static API Key's <code>id</code>, not a secret's <code>id</code>.</li>
          * <li><code>SYSTEM</code>: an ID that HiddenLayer assigns to the process.</li>
+         * <li><code>THIRD_PARTY_TOKEN</code>: the third-party token link's <code>id</code>.</li>
          * </ul>
          * @return Reference to {@code this} so that method calls can be chained together.
          */

@@ -13,6 +13,8 @@ public final class ActorType {
 
     public static final ActorType SYSTEM = new ActorType(Value.SYSTEM, "SYSTEM");
 
+    public static final ActorType THIRD_PARTY_TOKEN = new ActorType(Value.THIRD_PARTY_TOKEN, "THIRD_PARTY_TOKEN");
+
     public static final ActorType CLIENT_CREDENTIAL = new ActorType(Value.CLIENT_CREDENTIAL, "CLIENT_CREDENTIAL");
 
     public static final ActorType STATIC_API_KEY = new ActorType(Value.STATIC_API_KEY, "STATIC_API_KEY");
@@ -54,6 +56,8 @@ public final class ActorType {
                 return visitor.visitApiKey();
             case SYSTEM:
                 return visitor.visitSystem();
+            case THIRD_PARTY_TOKEN:
+                return visitor.visitThirdPartyToken();
             case CLIENT_CREDENTIAL:
                 return visitor.visitClientCredential();
             case STATIC_API_KEY:
@@ -73,6 +77,8 @@ public final class ActorType {
                 return API_KEY;
             case "SYSTEM":
                 return SYSTEM;
+            case "THIRD_PARTY_TOKEN":
+                return THIRD_PARTY_TOKEN;
             case "CLIENT_CREDENTIAL":
                 return CLIENT_CREDENTIAL;
             case "STATIC_API_KEY":
@@ -93,6 +99,8 @@ public final class ActorType {
 
         API_KEY,
 
+        THIRD_PARTY_TOKEN,
+
         UNKNOWN
     }
 
@@ -106,6 +114,8 @@ public final class ActorType {
         T visitSystem();
 
         T visitApiKey();
+
+        T visitThirdPartyToken();
 
         T visitUnknown(String unknownType);
     }
