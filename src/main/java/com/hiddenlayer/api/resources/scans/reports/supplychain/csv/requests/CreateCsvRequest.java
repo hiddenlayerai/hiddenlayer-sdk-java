@@ -191,8 +191,9 @@ public final class CreateCsvRequest {
     }
 
     /**
-     * @return Sort results by specified field. Prefix with <code>-</code> for descending order, <code>+</code> or no prefix for ascending.
+     * @return Sort results by specified field. Prefix with <code>+</code> for ascending order, <code>-</code> or no prefix for descending.
      * Supported fields: name, detections, scanned_on, policy_status, origin, region, provider, threat_level, start_time, model_name, severity, status.
+     * <p><code>policy_status</code> sorts by the scan's policy verdict. Descending puts <code>NONCOMPLIANT</code> first, then <code>COMPLIANT</code>, then scans without a verdict; ascending is the reverse.</p>
      * <p>Note: If multiple sort parameters are provided, only the first one will be applied.</p>
      */
     @JsonProperty("sort")
@@ -605,8 +606,9 @@ public final class CreateCsvRequest {
         }
 
         /**
-         * <p>Sort results by specified field. Prefix with <code>-</code> for descending order, <code>+</code> or no prefix for ascending.
+         * <p>Sort results by specified field. Prefix with <code>+</code> for ascending order, <code>-</code> or no prefix for descending.
          * Supported fields: name, detections, scanned_on, policy_status, origin, region, provider, threat_level, start_time, model_name, severity, status.</p>
+         * <p><code>policy_status</code> sorts by the scan's policy verdict. Descending puts <code>NONCOMPLIANT</code> first, then <code>COMPLIANT</code>, then scans without a verdict; ascending is the reverse.</p>
          * <p>Note: If multiple sort parameters are provided, only the first one will be applied.</p>
          */
         @JsonSetter(value = "sort", nulls = Nulls.SKIP)
