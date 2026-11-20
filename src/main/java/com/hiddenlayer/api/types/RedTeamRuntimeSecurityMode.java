@@ -6,17 +6,16 @@ package com.hiddenlayer.api.types;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public final class RedTeamRunOutcomeRunStatus {
-    public static final RedTeamRunOutcomeRunStatus FAILED = new RedTeamRunOutcomeRunStatus(Value.FAILED, "FAILED");
+public final class RedTeamRuntimeSecurityMode {
+    public static final RedTeamRuntimeSecurityMode V1 = new RedTeamRuntimeSecurityMode(Value.V1, "V1");
 
-    public static final RedTeamRunOutcomeRunStatus COMPLETED =
-            new RedTeamRunOutcomeRunStatus(Value.COMPLETED, "COMPLETED");
+    public static final RedTeamRuntimeSecurityMode V2 = new RedTeamRuntimeSecurityMode(Value.V2, "V2");
 
     private final Value value;
 
     private final String string;
 
-    RedTeamRunOutcomeRunStatus(Value value, String string) {
+    RedTeamRuntimeSecurityMode(Value value, String string) {
         this.value = value;
         this.string = string;
     }
@@ -34,8 +33,8 @@ public final class RedTeamRunOutcomeRunStatus {
     @java.lang.Override
     public boolean equals(Object other) {
         return (this == other)
-                || (other instanceof RedTeamRunOutcomeRunStatus
-                        && this.string.equals(((RedTeamRunOutcomeRunStatus) other).string));
+                || (other instanceof RedTeamRuntimeSecurityMode
+                        && this.string.equals(((RedTeamRuntimeSecurityMode) other).string));
     }
 
     @java.lang.Override
@@ -45,10 +44,10 @@ public final class RedTeamRunOutcomeRunStatus {
 
     public <T> T visit(Visitor<T> visitor) {
         switch (value) {
-            case FAILED:
-                return visitor.visitFailed();
-            case COMPLETED:
-                return visitor.visitCompleted();
+            case V1:
+                return visitor.visitV1();
+            case V2:
+                return visitor.visitV2();
             case UNKNOWN:
             default:
                 return visitor.visitUnknown(string);
@@ -56,29 +55,29 @@ public final class RedTeamRunOutcomeRunStatus {
     }
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static RedTeamRunOutcomeRunStatus valueOf(String value) {
+    public static RedTeamRuntimeSecurityMode valueOf(String value) {
         switch (value) {
-            case "FAILED":
-                return FAILED;
-            case "COMPLETED":
-                return COMPLETED;
+            case "V1":
+                return V1;
+            case "V2":
+                return V2;
             default:
-                return new RedTeamRunOutcomeRunStatus(Value.UNKNOWN, value);
+                return new RedTeamRuntimeSecurityMode(Value.UNKNOWN, value);
         }
     }
 
     public enum Value {
-        COMPLETED,
+        V1,
 
-        FAILED,
+        V2,
 
         UNKNOWN
     }
 
     public interface Visitor<T> {
-        T visitCompleted();
+        T visitV1();
 
-        T visitFailed();
+        T visitV2();
 
         T visitUnknown(String unknownType);
     }

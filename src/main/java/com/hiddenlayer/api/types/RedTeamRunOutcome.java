@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = RedTeamRunOutcome.Builder.class)
 public final class RedTeamRunOutcome {
-    private final RedTeamRunOutcomeRunStatus runStatus;
+    private final RedTeamRunStatus runStatus;
 
     private final Optional<String> failureReason;
 
@@ -38,7 +38,7 @@ public final class RedTeamRunOutcome {
     private final Map<String, Object> additionalProperties;
 
     private RedTeamRunOutcome(
-            RedTeamRunOutcomeRunStatus runStatus,
+            RedTeamRunStatus runStatus,
             Optional<String> failureReason,
             Optional<String> failureMessage,
             int sessionsPlanned,
@@ -60,7 +60,7 @@ public final class RedTeamRunOutcome {
      * @return Run verdict
      */
     @JsonProperty("run_status")
-    public RedTeamRunOutcomeRunStatus getRunStatus() {
+    public RedTeamRunStatus getRunStatus() {
         return runStatus;
     }
 
@@ -158,7 +158,7 @@ public final class RedTeamRunOutcome {
         /**
          * <p>Run verdict</p>
          */
-        SessionsPlannedStage runStatus(@NotNull RedTeamRunOutcomeRunStatus runStatus);
+        SessionsPlannedStage runStatus(@NotNull RedTeamRunStatus runStatus);
 
         Builder from(RedTeamRunOutcome other);
     }
@@ -221,7 +221,7 @@ public final class RedTeamRunOutcome {
                     MeasuredRatioStage,
                     MinMeasuredRatioStage,
                     _FinalStage {
-        private RedTeamRunOutcomeRunStatus runStatus;
+        private RedTeamRunStatus runStatus;
 
         private int sessionsPlanned;
 
@@ -257,7 +257,7 @@ public final class RedTeamRunOutcome {
          */
         @java.lang.Override
         @JsonSetter("run_status")
-        public SessionsPlannedStage runStatus(@NotNull RedTeamRunOutcomeRunStatus runStatus) {
+        public SessionsPlannedStage runStatus(@NotNull RedTeamRunStatus runStatus) {
             this.runStatus = Objects.requireNonNull(runStatus, "runStatus must not be null");
             return this;
         }

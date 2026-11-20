@@ -9436,6 +9436,678 @@ client.evaluations().threatModeling().delete(
 </dl>
 </details>
 
+## Evaluations RedTeamV2
+<details><summary><code>client.evaluations.redTeamV2.list() -> SyncPagingIterable&amp;lt;RedTeamRunListItem&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Lists finished runs, newest first. A cursor is valid only with the filters it was issued for.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeamV2().list(
+    ListRedTeamV2Request
+        .builder()
+        .limit(50)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**targetModel:** `Optional<String>` — Only runs against this target model
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `Optional<RedTeamRunStatus>` — Only runs with this status
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workflowType:** `Optional<RedTeamWorkflowType>` — Only runs of this workflow type
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**startTimeFrom:** `Optional<OffsetDateTime>` — Only runs started at or after this time
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**startTimeTo:** `Optional<OffsetDateTime>` — Only runs started at or before this time
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**projectId:** `Optional<ListRedTeamV2RequestProjectId>` — Only runs started under one of these HiddenLayer projects
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Optional<Integer>` — Limit the number of items returned
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `Optional<String>` — Cursor for pagination, used to navigate through pages of results
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeamV2.create(request) -> RedTeamRunCreated</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Starts a run against a target that the client calls. Poll `next-action` for each attack prompt and post the target's reply to `target-response` until `action_type` is `COMPLETED` or `FAILED`.
+The body's fields depend on `execution_strategy_type`; a field that strategy does not use is a 422. `is_runtime_trace_enabled: true` also requires the `inference:read` scope.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeamV2().create(
+    RedTeamCreateRunRequest.single(
+        RedTeamCreateSingleRun
+            .builder()
+            .name("name")
+            .build()
+    )
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `RedTeamCreateRunRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeamV2.simulated(request) -> RedTeamRunCreated</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Starts a run that attacks a built-in target model, with no client calls after this one. `target_model` must be in the target model catalog.
+The body's fields depend on `execution_strategy_type`; a field that strategy does not use is a 422. `is_runtime_trace_enabled: true` also requires the `inference:read` scope.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeamV2().simulated(
+    RedTeamCreateRunRequest.single(
+        RedTeamCreateSingleRun
+            .builder()
+            .name("name")
+            .build()
+    )
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `RedTeamCreateRunRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeamV2.settings() -> RedTeamTenantSettings</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Returns the settings the calling tenant's next run uses.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeamV2().settings();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeamV2.get(workflowId) -> RedTeamRun</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Returns a finished run without its sessions; a run that has not finished is a 404. Read its sessions from the sessions sub-collection.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeamV2().get(
+    "workflow_id",
+    GetRedTeamV2Request
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workflowId:** `String` — The run's workflow ID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeamV2.delete(workflowId)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeamV2().delete(
+    "workflow_id",
+    DeleteRedTeamV2Request
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workflowId:** `String` — The run's workflow ID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeamV2.status(workflowId) -> RedTeamRunProgress</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Returns a run's progress, whether or not it has finished. Once the run's result is stored, `status` and `phase` are the run's status, `COMPLETED` or `FAILED`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeamV2().status(
+    "workflow_id",
+    StatusRedTeamV2Request
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workflowId:** `String` — The run's workflow ID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeamV2.nextAction(workflowId) -> RedTeamNextAction</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Returns the next step of a client-driven run. Poll it until `action_type` is `COMPLETED` or `FAILED`:
+- **`ATTACK_TASK`**: send `attack_prompt` to the target, then post its reply to `target-response`.
+- **null with `is_processing`**: no prompt is ready yet; poll again.
+- **`COMPLETED` or `FAILED`**: the run has ended; `FAILED` carries the failure in `message`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeamV2().nextAction(
+    "workflow_id",
+    NextActionRedTeamV2Request
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workflowId:** `String` — The run's workflow ID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeamV2.targetResponse(workflowId, request) -> RedTeamTargetResponseResult</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Submits the target's reply to the attack prompt of a `next-action` `ATTACK_TASK`; poll `next-action` again afterwards. A session that is not waiting for a reply is a 422.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeamV2().targetResponse(
+    "workflow_id",
+    RedTeamTargetResponse
+        .builder()
+        .sessionId("session_id")
+        .targetResponse("target_response")
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workflowId:** `String` — The run's workflow ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sessionId:** `String` — The session of the attack task.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**targetResponse:** `String` — The target's reply.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeamV2.csv(workflowId) -> InputStream</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Exports one row per message of every session of a finished run, in one response. Each of the run's objectives adds four columns, prefixed with its objective ID. To read a run in pages, use `GET /evaluations/v2/red-team/{workflow_id}/sessions`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeamV2().csv(
+    "workflow_id",
+    CsvRedTeamV2Request
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workflowId:** `String` — The run's workflow ID
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Evaluations RedTeam Objectives
 <details><summary><code>client.evaluations.redTeam.objectives.list() -> SyncPagingIterable&amp;lt;ApeObjective&amp;gt;</code></summary>
 <dl>
@@ -10406,6 +11078,223 @@ within the configured APE objectives. Send `""` to clear. Sanitized
 server-side (length cap + strict character whitelist after NFKC
 normalization). See `RedTeamConfig.attacker_guidance` for full
 semantics.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Evaluations RedTeamV2 Sessions
+<details><summary><code>client.evaluations.redTeamV2.sessions.list(workflowId) -> SyncPagingIterable&amp;lt;RedTeamSession&amp;gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Lists a finished run's sessions in run order, without their messages. Get a single session for its messages.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeamV2().sessions().list(
+    "workflow_id",
+    ListSessionsRequest
+        .builder()
+        .limit(50)
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workflowId:** `String` — The run's workflow ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**limit:** `Optional<Integer>` — Limit the number of items returned
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cursor:** `Optional<String>` — Cursor for pagination, used to navigate through pages of results
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeamV2.sessions.get(workflowId, sessionId) -> RedTeamSessionDetail</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeamV2().sessions().get(
+    "workflow_id",
+    "session_id",
+    GetSessionsRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workflowId:** `String` — The run's workflow ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sessionId:** `String` — The session's ID within the run
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.evaluations.redTeamV2.sessions.runtimeSession(workflowId, sessionId) -> RedTeamRuntimeSessionLookup</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+[BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
+
+Returns the Runtime Security session ID of one session of a finished run, or the reason it has none. Only `NOT_FOUND` can change on a later call.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.evaluations().redTeamV2().sessions().runtimeSession(
+    "workflow_id",
+    "session_id",
+    RuntimeSessionSessionsRequest
+        .builder()
+        .build()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**workflowId:** `String` — The run's workflow ID
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sessionId:** `String` — The session's ID within the run
     
 </dd>
 </dl>
