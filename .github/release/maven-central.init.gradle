@@ -1,0 +1,55 @@
+// Adds the Maven Central publication that Fern leaves out of build.gradle when
+// its generator has no output block, staged to build/staging-deploy for the
+// publish job to sign and upload. group and version come from
+// gradle.properties, which scripts/sync-version.mjs keeps at the ledger version.
+//
+// It also compiles with --release 8. Fern sets source and target 1.8, which a
+// newer JDK applies to the language but not to the class library, so a jar
+// built on JDK 17 could link to a method Java 8 doesn't have.
+//
+// Usage: ./gradlew --init-script .github/release/maven-central.init.gradle publishMavenPublicationToStagingRepository
+//
+// From hl-sdk-gen's template/.
+rootProject {
+    tasks.withType(JavaCompile).configureEach {
+        options.release = 8
+    }
+    pluginManager.withPlugin('maven-publish') {
+        publishing {
+            publications {
+                maven(MavenPublication) {
+                    from components.java
+                    artifactId = 'hiddenlayer-java'
+                    pom {
+                        name = 'HiddenLayer Java SDK'
+                        description = 'The Java SDK for the HiddenLayer API.'
+                        url = 'https://github.com/hiddenlayerai/hiddenlayer-sdk-java'
+                        licenses {
+                            license {
+                                name = 'Apache-2.0'
+                                url = 'https://www.apache.org/licenses/LICENSE-2.0'
+                            }
+                        }
+                        developers {
+                            developer {
+                                name = 'HiddenLayer'
+                                email = 'sdks@hiddenlayer.com'
+                            }
+                        }
+                        scm {
+                            connection = 'scm:git:git://github.com/hiddenlayerai/hiddenlayer-sdk-java.git'
+                            developerConnection = 'scm:git:ssh://github.com/hiddenlayerai/hiddenlayer-sdk-java.git'
+                            url = 'https://github.com/hiddenlayerai/hiddenlayer-sdk-java'
+                        }
+                    }
+                }
+            }
+            repositories {
+                maven {
+                    name = 'staging'
+                    url = layout.buildDirectory.dir('staging-deploy')
+                }
+            }
+        }
+    }
+}

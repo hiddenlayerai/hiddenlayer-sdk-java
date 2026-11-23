@@ -1,0 +1,19 @@
+{
+  "cliVersion": "5.191.2",
+  "generatorName": "fernapi/fern-java-sdk",
+  "generatorVersion": "4.38.1",
+  "generatorConfig": {
+    "client-class-name": "BaseHiddenLayerClient",
+    "base-api-exception-class-name": "HiddenLayerApiException",
+    "base-exception-class-name": "HiddenLayerException",
+    "enable-extensible-builders": true,
+    "custom-interceptors": true,
+    "offset-semantics": "item-index"
+  },
+  "originGitCommit": "0af6be07d3debaad106afd527df2ac2fce2c866d",
+  "originGitCommitIsDirty": true,
+  "invokedBy": "ci",
+  "requestedVersion": "2.5.0",
+  "ciProvider": "github",
+  "sdkVersion": "2.5.0"
+}
