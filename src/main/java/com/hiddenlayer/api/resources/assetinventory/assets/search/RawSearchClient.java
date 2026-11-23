@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.assetinventory.assets.search;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -37,11 +37,11 @@ public class RawSearchClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<SearchResult>> list(ListSearchRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SearchResult>> list(ListSearchRequest request) {
         return list(request, null);
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<SearchResult>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SearchResult>> list(
             ListSearchRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -155,7 +155,7 @@ public class RawSearchClient {
                         .from(request)
                         .offset(newPageNumber)
                         .build();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<SearchResult>(
                                 true, result, parsedResponse, () -> list(nextRequest, requestOptions)
                                         .body()),
@@ -183,11 +183,11 @@ public class RawSearchClient {
         }
     }
 
-    public HiddenLayerHttpResponse<SearchSuggestionsResponse> suggestions(SuggestionsSearchRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SearchSuggestionsResponse> suggestions(SuggestionsSearchRequest request) {
         return suggestions(request, null);
     }
 
-    public HiddenLayerHttpResponse<SearchSuggestionsResponse> suggestions(
+    public BaseHiddenLayerClientHttpResponse<SearchSuggestionsResponse> suggestions(
             SuggestionsSearchRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -275,7 +275,7 @@ public class RawSearchClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SearchSuggestionsResponse.class),
                         response);
             }

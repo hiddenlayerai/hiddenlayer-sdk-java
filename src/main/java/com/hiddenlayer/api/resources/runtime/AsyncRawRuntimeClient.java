@@ -5,11 +5,11 @@ package com.hiddenlayer.api.resources.runtime;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -74,7 +74,7 @@ public class AsyncRawRuntimeClient {
      * (provider request/response payloads returned in the same provider format), use
      * the request-evaluations and response-evaluations endpoints instead.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<InteractionEvaluationResponse>> evaluateInteraction(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InteractionEvaluationResponse>> evaluateInteraction(
             InteractionEvaluationRequest request) {
         return evaluateInteraction(request, null);
     }
@@ -109,7 +109,7 @@ public class AsyncRawRuntimeClient {
      * (provider request/response payloads returned in the same provider format), use
      * the request-evaluations and response-evaluations endpoints instead.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<InteractionEvaluationResponse>> evaluateInteraction(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InteractionEvaluationResponse>> evaluateInteraction(
             InteractionEvaluationRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -151,7 +151,8 @@ public class AsyncRawRuntimeClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<InteractionEvaluationResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InteractionEvaluationResponse>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -159,7 +160,7 @@ public class AsyncRawRuntimeClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, InteractionEvaluationResponse.class),
                                 response));
@@ -245,7 +246,8 @@ public class AsyncRawRuntimeClient {
      * <li><a href="https://developers.openai.com/api/docs/guides/decisions">OpenAI Decisions</a></li>
      * </ul>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> evaluateRequest(Map<String, Object> body) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> evaluateRequest(
+            Map<String, Object> body) {
         return evaluateRequest(
                 EvaluateRequestRuntimeRequest.builder().body(body).build());
     }
@@ -274,7 +276,7 @@ public class AsyncRawRuntimeClient {
      * <li><a href="https://developers.openai.com/api/docs/guides/decisions">OpenAI Decisions</a></li>
      * </ul>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> evaluateRequest(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> evaluateRequest(
             Map<String, Object> body, RequestOptions requestOptions) {
         return evaluateRequest(
                 EvaluateRequestRuntimeRequest.builder().body(body).build(), requestOptions);
@@ -304,7 +306,7 @@ public class AsyncRawRuntimeClient {
      * <li><a href="https://developers.openai.com/api/docs/guides/decisions">OpenAI Decisions</a></li>
      * </ul>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> evaluateRequest(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> evaluateRequest(
             EvaluateRequestRuntimeRequest request) {
         return evaluateRequest(request, null);
     }
@@ -333,7 +335,7 @@ public class AsyncRawRuntimeClient {
      * <li><a href="https://developers.openai.com/api/docs/guides/decisions">OpenAI Decisions</a></li>
      * </ul>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> evaluateRequest(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> evaluateRequest(
             EvaluateRequestRuntimeRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -379,7 +381,7 @@ public class AsyncRawRuntimeClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -387,7 +389,7 @@ public class AsyncRawRuntimeClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));
@@ -439,7 +441,8 @@ public class AsyncRawRuntimeClient {
      * <p>A TypeSafe System One or OpenAI Decisions response is never redacted. When blocked, it
      * is replaced by the generic block body, <code>{&quot;error&quot;: &quot;request blocked by policy&quot;}</code>.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> evaluateResponse(Map<String, Object> body) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> evaluateResponse(
+            Map<String, Object> body) {
         return evaluateResponse(
                 EvaluateResponseRuntimeRequest.builder().body(body).build());
     }
@@ -465,7 +468,7 @@ public class AsyncRawRuntimeClient {
      * <p>A TypeSafe System One or OpenAI Decisions response is never redacted. When blocked, it
      * is replaced by the generic block body, <code>{&quot;error&quot;: &quot;request blocked by policy&quot;}</code>.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> evaluateResponse(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> evaluateResponse(
             Map<String, Object> body, RequestOptions requestOptions) {
         return evaluateResponse(
                 EvaluateResponseRuntimeRequest.builder().body(body).build(), requestOptions);
@@ -492,7 +495,7 @@ public class AsyncRawRuntimeClient {
      * <p>A TypeSafe System One or OpenAI Decisions response is never redacted. When blocked, it
      * is replaced by the generic block body, <code>{&quot;error&quot;: &quot;request blocked by policy&quot;}</code>.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> evaluateResponse(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> evaluateResponse(
             EvaluateResponseRuntimeRequest request) {
         return evaluateResponse(request, null);
     }
@@ -518,7 +521,7 @@ public class AsyncRawRuntimeClient {
      * <p>A TypeSafe System One or OpenAI Decisions response is never redacted. When blocked, it
      * is replaced by the generic block body, <code>{&quot;error&quot;: &quot;request blocked by policy&quot;}</code>.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> evaluateResponse(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> evaluateResponse(
             EvaluateResponseRuntimeRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -564,7 +567,7 @@ public class AsyncRawRuntimeClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -572,7 +575,7 @@ public class AsyncRawRuntimeClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Object>>() {}),
                                 response));

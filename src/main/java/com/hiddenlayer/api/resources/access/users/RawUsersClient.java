@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.access.users;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -39,28 +39,28 @@ public class RawUsersClient {
     /**
      * Returns the list of users belonging to the authenticated user's tenant. Use the <code>cursor</code> parameter to navigate through pages of results. Replaces the deprecated <code>GET /api/v2/users</code> endpoint.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<User>> list() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<User>> list() {
         return list(ListUsersRequest.builder().build());
     }
 
     /**
      * Returns the list of users belonging to the authenticated user's tenant. Use the <code>cursor</code> parameter to navigate through pages of results. Replaces the deprecated <code>GET /api/v2/users</code> endpoint.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<User>> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<User>> list(RequestOptions requestOptions) {
         return list(ListUsersRequest.builder().build(), requestOptions);
     }
 
     /**
      * Returns the list of users belonging to the authenticated user's tenant. Use the <code>cursor</code> parameter to navigate through pages of results. Replaces the deprecated <code>GET /api/v2/users</code> endpoint.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<User>> list(ListUsersRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<User>> list(ListUsersRequest request) {
         return list(request, null);
     }
 
     /**
      * Returns the list of users belonging to the authenticated user's tenant. Use the <code>cursor</code> parameter to navigate through pages of results. Replaces the deprecated <code>GET /api/v2/users</code> endpoint.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<User>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<User>> list(
             ListUsersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -113,7 +113,7 @@ public class RawUsersClient {
                         .cursor(startingAfter)
                         .build();
                 List<User> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<User>(!startingAfter.isEmpty(), result, parsedResponse, () -> list(
                                         nextRequest, requestOptions)
                                 .body()),

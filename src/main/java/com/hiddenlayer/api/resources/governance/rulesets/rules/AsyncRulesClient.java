@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.governance.rulesets.rules;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.governance.rulesets.rules.requests.CreateRulesRequest;
 import com.hiddenlayer.api.resources.governance.rulesets.rules.requests.DeleteRulesRequest;
@@ -43,7 +43,8 @@ public class AsyncRulesClient {
      * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
     public CompletableFuture<RuleSet> create(String ruleSetId, CreateRulesRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture = this.rawClient.create(ruleSetId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> rawFuture =
+                this.rawClient.create(ruleSetId, request);
         CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -68,7 +69,7 @@ public class AsyncRulesClient {
      */
     public CompletableFuture<RuleSet> create(
             String ruleSetId, CreateRulesRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> rawFuture =
                 this.rawClient.create(ruleSetId, request, requestOptions);
         CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -90,7 +91,7 @@ public class AsyncRulesClient {
      * the rule's order in the rule set. If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
     public CompletableFuture<RuleSet> update(String ruleSetId, String ruleId, UpdateRulesRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> rawFuture =
                 this.rawClient.update(ruleSetId, ruleId, request);
         CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -113,7 +114,7 @@ public class AsyncRulesClient {
      */
     public CompletableFuture<RuleSet> update(
             String ruleSetId, String ruleId, UpdateRulesRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> rawFuture =
                 this.rawClient.update(ruleSetId, ruleId, request, requestOptions);
         CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -137,7 +138,8 @@ public class AsyncRulesClient {
      * If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
     public CompletableFuture<RuleSet> delete(String ruleSetId, String ruleId) {
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture = this.rawClient.delete(ruleSetId, ruleId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> rawFuture =
+                this.rawClient.delete(ruleSetId, ruleId);
         CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -160,7 +162,7 @@ public class AsyncRulesClient {
      * If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
     public CompletableFuture<RuleSet> delete(String ruleSetId, String ruleId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> rawFuture =
                 this.rawClient.delete(ruleSetId, ruleId, requestOptions);
         CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -184,7 +186,7 @@ public class AsyncRulesClient {
      * If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
     public CompletableFuture<RuleSet> delete(String ruleSetId, String ruleId, DeleteRulesRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> rawFuture =
                 this.rawClient.delete(ruleSetId, ruleId, request);
         CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -209,7 +211,7 @@ public class AsyncRulesClient {
      */
     public CompletableFuture<RuleSet> delete(
             String ruleSetId, String ruleId, DeleteRulesRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> rawFuture =
                 this.rawClient.delete(ruleSetId, ruleId, request, requestOptions);
         CompletableFuture<RuleSet> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.assetinventory.scans;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.assetinventory.scans.requests.GetScansRequest;
 import com.hiddenlayer.api.types.AssetScan;
@@ -28,7 +28,7 @@ public class AsyncScansClient {
     }
 
     public CompletableFuture<AssetScan> get(String scanId) {
-        CompletableFuture<HiddenLayerHttpResponse<AssetScan>> rawFuture = this.rawClient.get(scanId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetScan>> rawFuture = this.rawClient.get(scanId);
         CompletableFuture<AssetScan> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -39,7 +39,8 @@ public class AsyncScansClient {
     }
 
     public CompletableFuture<AssetScan> get(String scanId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<AssetScan>> rawFuture = this.rawClient.get(scanId, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetScan>> rawFuture =
+                this.rawClient.get(scanId, requestOptions);
         CompletableFuture<AssetScan> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -50,7 +51,7 @@ public class AsyncScansClient {
     }
 
     public CompletableFuture<AssetScan> get(String scanId, GetScansRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<AssetScan>> rawFuture = this.rawClient.get(scanId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetScan>> rawFuture = this.rawClient.get(scanId, request);
         CompletableFuture<AssetScan> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -61,7 +62,7 @@ public class AsyncScansClient {
     }
 
     public CompletableFuture<AssetScan> get(String scanId, GetScansRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<AssetScan>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetScan>> rawFuture =
                 this.rawClient.get(scanId, request, requestOptions);
         CompletableFuture<AssetScan> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

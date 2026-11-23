@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.interactions;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.interactions.requests.InteractionsRequest;
 import com.hiddenlayer.api.types.EnrichedResponse;
@@ -31,7 +31,8 @@ public class AsyncInteractionsClient {
      * Performs a detailed security analysis of the input and/or output of LLM interactions.
      */
     public CompletableFuture<EnrichedResponse> analyze(InteractionsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<EnrichedResponse>> rawFuture = this.rawClient.analyze(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<EnrichedResponse>> rawFuture =
+                this.rawClient.analyze(request);
         CompletableFuture<EnrichedResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -45,7 +46,7 @@ public class AsyncInteractionsClient {
      * Performs a detailed security analysis of the input and/or output of LLM interactions.
      */
     public CompletableFuture<EnrichedResponse> analyze(InteractionsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<EnrichedResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<EnrichedResponse>> rawFuture =
                 this.rawClient.analyze(request, requestOptions);
         CompletableFuture<EnrichedResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

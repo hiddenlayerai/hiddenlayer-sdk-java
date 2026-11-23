@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.evaluations.redteam.configs;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -60,7 +60,7 @@ public class AsyncRawConfigsClient {
      * target system prompt, objective IDs, severity mapping, prompt set, project, tuning
      * knobs). Configs are referenced from the start endpoints via <code>config_id</code>.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> list() {
         return list(ListConfigsRequest.builder().build());
     }
 
@@ -71,7 +71,7 @@ public class AsyncRawConfigsClient {
      * target system prompt, objective IDs, severity mapping, prompt set, project, tuning
      * knobs). Configs are referenced from the start endpoints via <code>config_id</code>.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> list(
             RequestOptions requestOptions) {
         return list(ListConfigsRequest.builder().build(), requestOptions);
     }
@@ -83,7 +83,7 @@ public class AsyncRawConfigsClient {
      * target system prompt, objective IDs, severity mapping, prompt set, project, tuning
      * knobs). Configs are referenced from the start endpoints via <code>config_id</code>.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> list(
             ListConfigsRequest request) {
         return list(request, null);
     }
@@ -95,7 +95,7 @@ public class AsyncRawConfigsClient {
      * target system prompt, objective IDs, severity mapping, prompt set, project, tuning
      * knobs). Configs are referenced from the start endpoints via <code>config_id</code>.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> list(
             ListConfigsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -132,7 +132,7 @@ public class AsyncRawConfigsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> future =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> future =
                 new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
@@ -149,7 +149,7 @@ public class AsyncRawConfigsClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<RedTeamConfigSummary> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<RedTeamConfigSummary>(
                                         !startingAfter.isEmpty(), result, parsedResponse, () -> {
                                             try {
@@ -222,7 +222,8 @@ public class AsyncRawConfigsClient {
      * supplied <code>hl_project_id</code> (UUID or alias) names an existing project; an alias
      * is stored as the canonical project UUID.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> create(CreateRedTeamConfigRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> create(
+            CreateRedTeamConfigRequest request) {
         return create(request, null);
     }
 
@@ -234,7 +235,7 @@ public class AsyncRawConfigsClient {
      * supplied <code>hl_project_id</code> (UUID or alias) names an existing project; an alias
      * is stored as the canonical project UUID.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> create(
             CreateRedTeamConfigRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -273,7 +274,7 @@ public class AsyncRawConfigsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -281,7 +282,7 @@ public class AsyncRawConfigsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RedTeamConfig.class),
                                 response));
                         return;
@@ -354,7 +355,7 @@ public class AsyncRawConfigsClient {
      * which show whether the referenced prompt set or project was deleted.
      * <code>hl_project_status</code> is <code>unknown</code> when the project service is unavailable.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> get(String configId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> get(String configId) {
         return get(configId, GetConfigsRequest.builder().build());
     }
 
@@ -365,7 +366,7 @@ public class AsyncRawConfigsClient {
      * which show whether the referenced prompt set or project was deleted.
      * <code>hl_project_status</code> is <code>unknown</code> when the project service is unavailable.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> get(
             String configId, RequestOptions requestOptions) {
         return get(configId, GetConfigsRequest.builder().build(), requestOptions);
     }
@@ -377,7 +378,8 @@ public class AsyncRawConfigsClient {
      * which show whether the referenced prompt set or project was deleted.
      * <code>hl_project_status</code> is <code>unknown</code> when the project service is unavailable.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> get(String configId, GetConfigsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> get(
+            String configId, GetConfigsRequest request) {
         return get(configId, request, null);
     }
 
@@ -388,7 +390,7 @@ public class AsyncRawConfigsClient {
      * which show whether the referenced prompt set or project was deleted.
      * <code>hl_project_status</code> is <code>unknown</code> when the project service is unavailable.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> get(
             String configId, GetConfigsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -418,7 +420,7 @@ public class AsyncRawConfigsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -426,7 +428,7 @@ public class AsyncRawConfigsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RedTeamConfig.class),
                                 response));
                         return;
@@ -488,7 +490,7 @@ public class AsyncRawConfigsClient {
      * are unaffected because the resolved settings are snapshotted into the result row
      * at start time.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String configId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String configId) {
         return delete(configId, DeleteConfigsRequest.builder().build());
     }
 
@@ -498,7 +500,8 @@ public class AsyncRawConfigsClient {
      * are unaffected because the resolved settings are snapshotted into the result row
      * at start time.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String configId, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
+            String configId, RequestOptions requestOptions) {
         return delete(configId, DeleteConfigsRequest.builder().build(), requestOptions);
     }
 
@@ -508,7 +511,8 @@ public class AsyncRawConfigsClient {
      * are unaffected because the resolved settings are snapshotted into the result row
      * at start time.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String configId, DeleteConfigsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
+            String configId, DeleteConfigsRequest request) {
         return delete(configId, request, null);
     }
 
@@ -518,7 +522,7 @@ public class AsyncRawConfigsClient {
      * are unaffected because the resolved settings are snapshotted into the result row
      * at start time.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String configId, DeleteConfigsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -551,14 +555,14 @@ public class AsyncRawConfigsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
@@ -624,7 +628,7 @@ public class AsyncRawConfigsClient {
      * <p>Cross-reference fields (<code>prompt_set_id</code>, <code>hl_project_id</code>) are re-validated
      * whenever they are present in the request body with a non-empty value.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> update(String configId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> update(String configId) {
         return update(configId, UpdateRedTeamConfigRequest.builder().build());
     }
 
@@ -639,7 +643,7 @@ public class AsyncRawConfigsClient {
      * <p>Cross-reference fields (<code>prompt_set_id</code>, <code>hl_project_id</code>) are re-validated
      * whenever they are present in the request body with a non-empty value.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> update(
             String configId, RequestOptions requestOptions) {
         return update(configId, UpdateRedTeamConfigRequest.builder().build(), requestOptions);
     }
@@ -655,7 +659,7 @@ public class AsyncRawConfigsClient {
      * <p>Cross-reference fields (<code>prompt_set_id</code>, <code>hl_project_id</code>) are re-validated
      * whenever they are present in the request body with a non-empty value.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> update(
             String configId, UpdateRedTeamConfigRequest request) {
         return update(configId, request, null);
     }
@@ -671,7 +675,7 @@ public class AsyncRawConfigsClient {
      * <p>Cross-reference fields (<code>prompt_set_id</code>, <code>hl_project_id</code>) are re-validated
      * whenever they are present in the request body with a non-empty value.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> update(
             String configId, UpdateRedTeamConfigRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -711,7 +715,7 @@ public class AsyncRawConfigsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -719,7 +723,7 @@ public class AsyncRawConfigsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RedTeamConfig.class),
                                 response));
                         return;

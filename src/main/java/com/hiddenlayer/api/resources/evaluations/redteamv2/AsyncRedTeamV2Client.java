@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.evaluations.redteamv2;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.Suppliers;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
@@ -53,7 +53,7 @@ public class AsyncRedTeamV2Client {
      * <p>Lists finished runs, newest first. A cursor is valid only with the filters it was issued for.</p>
      */
     public CompletableFuture<SyncPagingIterable<RedTeamRunListItem>> list() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamRunListItem>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamRunListItem>>> rawFuture =
                 this.rawClient.list();
         CompletableFuture<SyncPagingIterable<RedTeamRunListItem>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -70,7 +70,7 @@ public class AsyncRedTeamV2Client {
      * <p>Lists finished runs, newest first. A cursor is valid only with the filters it was issued for.</p>
      */
     public CompletableFuture<SyncPagingIterable<RedTeamRunListItem>> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamRunListItem>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamRunListItem>>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<SyncPagingIterable<RedTeamRunListItem>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -87,7 +87,7 @@ public class AsyncRedTeamV2Client {
      * <p>Lists finished runs, newest first. A cursor is valid only with the filters it was issued for.</p>
      */
     public CompletableFuture<SyncPagingIterable<RedTeamRunListItem>> list(ListRedTeamV2Request request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamRunListItem>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamRunListItem>>> rawFuture =
                 this.rawClient.list(request);
         CompletableFuture<SyncPagingIterable<RedTeamRunListItem>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -105,7 +105,7 @@ public class AsyncRedTeamV2Client {
      */
     public CompletableFuture<SyncPagingIterable<RedTeamRunListItem>> list(
             ListRedTeamV2Request request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamRunListItem>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamRunListItem>>> rawFuture =
                 this.rawClient.list(request, requestOptions);
         CompletableFuture<SyncPagingIterable<RedTeamRunListItem>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -123,7 +123,8 @@ public class AsyncRedTeamV2Client {
      * The body's fields depend on <code>execution_strategy_type</code>; a field that strategy does not use is a 422. <code>is_runtime_trace_enabled: true</code> also requires the <code>inference:read</code> scope.</p>
      */
     public CompletableFuture<RedTeamRunCreated> create(RedTeamCreateRunRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRunCreated>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRunCreated>> rawFuture =
+                this.rawClient.create(request);
         CompletableFuture<RedTeamRunCreated> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -139,7 +140,7 @@ public class AsyncRedTeamV2Client {
      * The body's fields depend on <code>execution_strategy_type</code>; a field that strategy does not use is a 422. <code>is_runtime_trace_enabled: true</code> also requires the <code>inference:read</code> scope.</p>
      */
     public CompletableFuture<RedTeamRunCreated> create(RedTeamCreateRunRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRunCreated>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRunCreated>> rawFuture =
                 this.rawClient.create(request, requestOptions);
         CompletableFuture<RedTeamRunCreated> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -156,7 +157,8 @@ public class AsyncRedTeamV2Client {
      * The body's fields depend on <code>execution_strategy_type</code>; a field that strategy does not use is a 422. <code>is_runtime_trace_enabled: true</code> also requires the <code>inference:read</code> scope.</p>
      */
     public CompletableFuture<RedTeamRunCreated> simulated(RedTeamCreateRunRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRunCreated>> rawFuture = this.rawClient.simulated(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRunCreated>> rawFuture =
+                this.rawClient.simulated(request);
         CompletableFuture<RedTeamRunCreated> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -173,7 +175,7 @@ public class AsyncRedTeamV2Client {
      */
     public CompletableFuture<RedTeamRunCreated> simulated(
             RedTeamCreateRunRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRunCreated>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRunCreated>> rawFuture =
                 this.rawClient.simulated(request, requestOptions);
         CompletableFuture<RedTeamRunCreated> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -189,7 +191,8 @@ public class AsyncRedTeamV2Client {
      * <p>Returns the settings the calling tenant's next run uses.</p>
      */
     public CompletableFuture<RedTeamTenantSettings> settings() {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamTenantSettings>> rawFuture = this.rawClient.settings();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamTenantSettings>> rawFuture =
+                this.rawClient.settings();
         CompletableFuture<RedTeamTenantSettings> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -204,7 +207,7 @@ public class AsyncRedTeamV2Client {
      * <p>Returns the settings the calling tenant's next run uses.</p>
      */
     public CompletableFuture<RedTeamTenantSettings> settings(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamTenantSettings>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamTenantSettings>> rawFuture =
                 this.rawClient.settings(requestOptions);
         CompletableFuture<RedTeamTenantSettings> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -220,7 +223,7 @@ public class AsyncRedTeamV2Client {
      * <p>Returns a finished run without its sessions; a run that has not finished is a 404. Read its sessions from the sessions sub-collection.</p>
      */
     public CompletableFuture<RedTeamRun> get(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRun>> rawFuture = this.rawClient.get(workflowId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRun>> rawFuture = this.rawClient.get(workflowId);
         CompletableFuture<RedTeamRun> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -235,7 +238,7 @@ public class AsyncRedTeamV2Client {
      * <p>Returns a finished run without its sessions; a run that has not finished is a 404. Read its sessions from the sessions sub-collection.</p>
      */
     public CompletableFuture<RedTeamRun> get(String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRun>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRun>> rawFuture =
                 this.rawClient.get(workflowId, requestOptions);
         CompletableFuture<RedTeamRun> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -251,7 +254,8 @@ public class AsyncRedTeamV2Client {
      * <p>Returns a finished run without its sessions; a run that has not finished is a 404. Read its sessions from the sessions sub-collection.</p>
      */
     public CompletableFuture<RedTeamRun> get(String workflowId, GetRedTeamV2Request request) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRun>> rawFuture = this.rawClient.get(workflowId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRun>> rawFuture =
+                this.rawClient.get(workflowId, request);
         CompletableFuture<RedTeamRun> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -267,7 +271,7 @@ public class AsyncRedTeamV2Client {
      */
     public CompletableFuture<RedTeamRun> get(
             String workflowId, GetRedTeamV2Request request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRun>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRun>> rawFuture =
                 this.rawClient.get(workflowId, request, requestOptions);
         CompletableFuture<RedTeamRun> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -282,7 +286,7 @@ public class AsyncRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<Void> delete(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -296,7 +300,8 @@ public class AsyncRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<Void> delete(String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(workflowId, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -310,7 +315,8 @@ public class AsyncRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<Void> delete(String workflowId, DeleteRedTeamV2Request request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(workflowId, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -325,7 +331,7 @@ public class AsyncRedTeamV2Client {
      */
     public CompletableFuture<Void> delete(
             String workflowId, DeleteRedTeamV2Request request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.delete(workflowId, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -341,7 +347,8 @@ public class AsyncRedTeamV2Client {
      * <p>Returns a run's progress, whether or not it has finished. Once the run's result is stored, <code>status</code> and <code>phase</code> are the run's status, <code>COMPLETED</code> or <code>FAILED</code>.</p>
      */
     public CompletableFuture<RedTeamRunProgress> status(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRunProgress>> rawFuture = this.rawClient.status(workflowId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRunProgress>> rawFuture =
+                this.rawClient.status(workflowId);
         CompletableFuture<RedTeamRunProgress> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -356,7 +363,7 @@ public class AsyncRedTeamV2Client {
      * <p>Returns a run's progress, whether or not it has finished. Once the run's result is stored, <code>status</code> and <code>phase</code> are the run's status, <code>COMPLETED</code> or <code>FAILED</code>.</p>
      */
     public CompletableFuture<RedTeamRunProgress> status(String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRunProgress>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRunProgress>> rawFuture =
                 this.rawClient.status(workflowId, requestOptions);
         CompletableFuture<RedTeamRunProgress> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -372,7 +379,7 @@ public class AsyncRedTeamV2Client {
      * <p>Returns a run's progress, whether or not it has finished. Once the run's result is stored, <code>status</code> and <code>phase</code> are the run's status, <code>COMPLETED</code> or <code>FAILED</code>.</p>
      */
     public CompletableFuture<RedTeamRunProgress> status(String workflowId, StatusRedTeamV2Request request) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRunProgress>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRunProgress>> rawFuture =
                 this.rawClient.status(workflowId, request);
         CompletableFuture<RedTeamRunProgress> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -389,7 +396,7 @@ public class AsyncRedTeamV2Client {
      */
     public CompletableFuture<RedTeamRunProgress> status(
             String workflowId, StatusRedTeamV2Request request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRunProgress>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRunProgress>> rawFuture =
                 this.rawClient.status(workflowId, request, requestOptions);
         CompletableFuture<RedTeamRunProgress> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -410,7 +417,8 @@ public class AsyncRedTeamV2Client {
      * </ul>
      */
     public CompletableFuture<RedTeamNextAction> nextAction(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamNextAction>> rawFuture = this.rawClient.nextAction(workflowId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamNextAction>> rawFuture =
+                this.rawClient.nextAction(workflowId);
         CompletableFuture<RedTeamNextAction> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -430,7 +438,7 @@ public class AsyncRedTeamV2Client {
      * </ul>
      */
     public CompletableFuture<RedTeamNextAction> nextAction(String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamNextAction>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamNextAction>> rawFuture =
                 this.rawClient.nextAction(workflowId, requestOptions);
         CompletableFuture<RedTeamNextAction> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -451,7 +459,7 @@ public class AsyncRedTeamV2Client {
      * </ul>
      */
     public CompletableFuture<RedTeamNextAction> nextAction(String workflowId, NextActionRedTeamV2Request request) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamNextAction>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamNextAction>> rawFuture =
                 this.rawClient.nextAction(workflowId, request);
         CompletableFuture<RedTeamNextAction> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -473,7 +481,7 @@ public class AsyncRedTeamV2Client {
      */
     public CompletableFuture<RedTeamNextAction> nextAction(
             String workflowId, NextActionRedTeamV2Request request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamNextAction>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamNextAction>> rawFuture =
                 this.rawClient.nextAction(workflowId, request, requestOptions);
         CompletableFuture<RedTeamNextAction> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -490,7 +498,7 @@ public class AsyncRedTeamV2Client {
      */
     public CompletableFuture<RedTeamTargetResponseResult> targetResponse(
             String workflowId, RedTeamTargetResponse request) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamTargetResponseResult>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamTargetResponseResult>> rawFuture =
                 this.rawClient.targetResponse(workflowId, request);
         CompletableFuture<RedTeamTargetResponseResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -507,7 +515,7 @@ public class AsyncRedTeamV2Client {
      */
     public CompletableFuture<RedTeamTargetResponseResult> targetResponse(
             String workflowId, RedTeamTargetResponse request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamTargetResponseResult>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamTargetResponseResult>> rawFuture =
                 this.rawClient.targetResponse(workflowId, request, requestOptions);
         CompletableFuture<RedTeamTargetResponseResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -523,7 +531,7 @@ public class AsyncRedTeamV2Client {
      * <p>Exports one row per message of every session of a finished run, in one response. Each of the run's objectives adds four columns, prefixed with its objective ID. To read a run in pages, use <code>GET /evaluations/v2/red-team/{workflow_id}/sessions</code>.</p>
      */
     public CompletableFuture<InputStream> csv(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<InputStream>> rawFuture = this.rawClient.csv(workflowId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> rawFuture = this.rawClient.csv(workflowId);
         CompletableFuture<InputStream> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -538,7 +546,7 @@ public class AsyncRedTeamV2Client {
      * <p>Exports one row per message of every session of a finished run, in one response. Each of the run's objectives adds four columns, prefixed with its objective ID. To read a run in pages, use <code>GET /evaluations/v2/red-team/{workflow_id}/sessions</code>.</p>
      */
     public CompletableFuture<InputStream> csv(String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<InputStream>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> rawFuture =
                 this.rawClient.csv(workflowId, requestOptions);
         CompletableFuture<InputStream> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -554,7 +562,8 @@ public class AsyncRedTeamV2Client {
      * <p>Exports one row per message of every session of a finished run, in one response. Each of the run's objectives adds four columns, prefixed with its objective ID. To read a run in pages, use <code>GET /evaluations/v2/red-team/{workflow_id}/sessions</code>.</p>
      */
     public CompletableFuture<InputStream> csv(String workflowId, CsvRedTeamV2Request request) {
-        CompletableFuture<HiddenLayerHttpResponse<InputStream>> rawFuture = this.rawClient.csv(workflowId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> rawFuture =
+                this.rawClient.csv(workflowId, request);
         CompletableFuture<InputStream> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -570,7 +579,7 @@ public class AsyncRedTeamV2Client {
      */
     public CompletableFuture<InputStream> csv(
             String workflowId, CsvRedTeamV2Request request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<InputStream>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> rawFuture =
                 this.rawClient.csv(workflowId, request, requestOptions);
         CompletableFuture<InputStream> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

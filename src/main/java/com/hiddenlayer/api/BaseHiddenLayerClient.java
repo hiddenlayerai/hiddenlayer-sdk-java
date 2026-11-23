@@ -33,7 +33,7 @@ import com.hiddenlayer.api.resources.triage.TriageClient;
 import com.hiddenlayer.api.resources.users.UsersClient;
 import java.util.function.Supplier;
 
-public class HiddenLayer implements AutoCloseable {
+public class BaseHiddenLayerClient implements AutoCloseable {
     protected final ClientOptions clientOptions;
 
     protected final Supplier<EulaResponsesClient> eulaResponsesClient;
@@ -88,7 +88,7 @@ public class HiddenLayer implements AutoCloseable {
 
     protected final Supplier<TriageClient> triageClient;
 
-    public HiddenLayer(ClientOptions clientOptions) {
+    public BaseHiddenLayerClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.eulaResponsesClient = Suppliers.memoize(() -> new EulaResponsesClient(clientOptions));
         this.credentialsClient = Suppliers.memoize(() -> new CredentialsClient(clientOptions));
@@ -232,30 +232,7 @@ public class HiddenLayer implements AutoCloseable {
         this.clientOptions.close();
     }
 
-    /**
-     * Creates a client builder using a pre-generated access token.
-     * @param token The access token to use for authentication
-     * @return A builder configured for token authentication
-     */
-    public static HiddenLayerBuilder._TokenAuth withToken(String token) {
-        return HiddenLayerBuilder.withToken(token);
-    }
-
-    /**
-     * Creates a client builder using OAuth client credentials.
-     * @param clientId The OAuth client ID
-     * @param clientSecret The OAuth client secret
-     * @return A builder configured for OAuth authentication
-     */
-    public static HiddenLayerBuilder._CredentialsAuth withCredentials(String clientId, String clientSecret) {
-        return HiddenLayerBuilder.withCredentials(clientId, clientSecret);
-    }
-
-    /**
-     * Creates a new client builder.
-     * @return A builder for configuring and creating the client
-     */
-    public static HiddenLayerBuilder._Builder builder() {
-        return HiddenLayerBuilder.builder();
+    public static BaseHiddenLayerClientBuilder.Impl builder() {
+        return new BaseHiddenLayerClientBuilder.Impl();
     }
 }

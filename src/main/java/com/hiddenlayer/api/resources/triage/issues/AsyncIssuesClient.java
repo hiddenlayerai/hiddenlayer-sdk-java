@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.triage.issues;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.triage.issues.requests.GetIssuesRequest;
@@ -40,7 +40,8 @@ public class AsyncIssuesClient {
      * <p>Lists the tenant's triage issues in the requested sort order. Pass the response's <code>next</code> back as <code>cursor</code> to read the following page; there is no offset. The cursor is a keyset position, so issues inserted or deleted elsewhere in the list do not shift the page boundary and do not cause a skip or a repeat. It is not stable against updates to the column being sorted on: an issue whose severity, status, or <code>updated_at</code> changes while a traversal is in progress moves relative to the cursor, and can be skipped or returned on more than one page. Callers that need exact handling should de-duplicate on issue <code>id</code> and treat a full traversal as approximate.</p>
      */
     public CompletableFuture<SyncPagingIterable<TriageIssue>> list() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageIssue>>> rawFuture = this.rawClient.list();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageIssue>>> rawFuture =
+                this.rawClient.list();
         CompletableFuture<SyncPagingIterable<TriageIssue>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -55,7 +56,7 @@ public class AsyncIssuesClient {
      * <p>Lists the tenant's triage issues in the requested sort order. Pass the response's <code>next</code> back as <code>cursor</code> to read the following page; there is no offset. The cursor is a keyset position, so issues inserted or deleted elsewhere in the list do not shift the page boundary and do not cause a skip or a repeat. It is not stable against updates to the column being sorted on: an issue whose severity, status, or <code>updated_at</code> changes while a traversal is in progress moves relative to the cursor, and can be skipped or returned on more than one page. Callers that need exact handling should de-duplicate on issue <code>id</code> and treat a full traversal as approximate.</p>
      */
     public CompletableFuture<SyncPagingIterable<TriageIssue>> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageIssue>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageIssue>>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<SyncPagingIterable<TriageIssue>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -71,7 +72,7 @@ public class AsyncIssuesClient {
      * <p>Lists the tenant's triage issues in the requested sort order. Pass the response's <code>next</code> back as <code>cursor</code> to read the following page; there is no offset. The cursor is a keyset position, so issues inserted or deleted elsewhere in the list do not shift the page boundary and do not cause a skip or a repeat. It is not stable against updates to the column being sorted on: an issue whose severity, status, or <code>updated_at</code> changes while a traversal is in progress moves relative to the cursor, and can be skipped or returned on more than one page. Callers that need exact handling should de-duplicate on issue <code>id</code> and treat a full traversal as approximate.</p>
      */
     public CompletableFuture<SyncPagingIterable<TriageIssue>> list(ListIssuesRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageIssue>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageIssue>>> rawFuture =
                 this.rawClient.list(request);
         CompletableFuture<SyncPagingIterable<TriageIssue>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -88,7 +89,7 @@ public class AsyncIssuesClient {
      */
     public CompletableFuture<SyncPagingIterable<TriageIssue>> list(
             ListIssuesRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageIssue>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageIssue>>> rawFuture =
                 this.rawClient.list(request, requestOptions);
         CompletableFuture<SyncPagingIterable<TriageIssue>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -104,7 +105,7 @@ public class AsyncIssuesClient {
      * <p>Returns one issue with its full note history and <code>alert_spread</code>, the range of the alerts correlated into it. Read this before changing an issue: its <code>status</code> decides whether a <code>PATCH</code> is a change, a no-op or a reopen.</p>
      */
     public CompletableFuture<TriageIssueDetail> get(String issueId) {
-        CompletableFuture<HiddenLayerHttpResponse<TriageIssueDetail>> rawFuture = this.rawClient.get(issueId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageIssueDetail>> rawFuture = this.rawClient.get(issueId);
         CompletableFuture<TriageIssueDetail> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -119,7 +120,7 @@ public class AsyncIssuesClient {
      * <p>Returns one issue with its full note history and <code>alert_spread</code>, the range of the alerts correlated into it. Read this before changing an issue: its <code>status</code> decides whether a <code>PATCH</code> is a change, a no-op or a reopen.</p>
      */
     public CompletableFuture<TriageIssueDetail> get(String issueId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<TriageIssueDetail>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageIssueDetail>> rawFuture =
                 this.rawClient.get(issueId, requestOptions);
         CompletableFuture<TriageIssueDetail> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -135,7 +136,8 @@ public class AsyncIssuesClient {
      * <p>Returns one issue with its full note history and <code>alert_spread</code>, the range of the alerts correlated into it. Read this before changing an issue: its <code>status</code> decides whether a <code>PATCH</code> is a change, a no-op or a reopen.</p>
      */
     public CompletableFuture<TriageIssueDetail> get(String issueId, GetIssuesRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<TriageIssueDetail>> rawFuture = this.rawClient.get(issueId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageIssueDetail>> rawFuture =
+                this.rawClient.get(issueId, request);
         CompletableFuture<TriageIssueDetail> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -151,7 +153,7 @@ public class AsyncIssuesClient {
      */
     public CompletableFuture<TriageIssueDetail> get(
             String issueId, GetIssuesRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<TriageIssueDetail>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageIssueDetail>> rawFuture =
                 this.rawClient.get(issueId, request, requestOptions);
         CompletableFuture<TriageIssueDetail> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -201,7 +203,7 @@ public class AsyncIssuesClient {
      * cleared.</p>
      */
     public CompletableFuture<TriageIssueDetail> update(String issueId, UpdateIssuesRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<TriageIssueDetail>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageIssueDetail>> rawFuture =
                 this.rawClient.update(issueId, request);
         CompletableFuture<TriageIssueDetail> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -252,7 +254,7 @@ public class AsyncIssuesClient {
      */
     public CompletableFuture<TriageIssueDetail> update(
             String issueId, UpdateIssuesRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<TriageIssueDetail>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageIssueDetail>> rawFuture =
                 this.rawClient.update(issueId, request, requestOptions);
         CompletableFuture<TriageIssueDetail> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -268,7 +270,8 @@ public class AsyncIssuesClient {
      * <p>Appends a note to an issue without changing its status or severity. Works on an issue in any status, including <code>CLOSED</code> and <code>FALSE_POSITIVE</code>. Notes are immutable and attributed to the caller. Unlike <code>PATCH</code>, this is not retry-safe: each successful call adds a note, so a retried request can record the same text twice. To record the reason for an escalation or a false-positive verdict, send it as <code>note</code> on the <code>PATCH</code> that makes the change instead.</p>
      */
     public CompletableFuture<TriageNote> notes(String issueId, NotesIssuesRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<TriageNote>> rawFuture = this.rawClient.notes(issueId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageNote>> rawFuture =
+                this.rawClient.notes(issueId, request);
         CompletableFuture<TriageNote> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -284,7 +287,7 @@ public class AsyncIssuesClient {
      */
     public CompletableFuture<TriageNote> notes(
             String issueId, NotesIssuesRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<TriageNote>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageNote>> rawFuture =
                 this.rawClient.notes(issueId, request, requestOptions);
         CompletableFuture<TriageNote> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -318,7 +321,7 @@ public class AsyncIssuesClient {
      * raised by a platform capability.</p>
      */
     public CompletableFuture<SyncPagingIterable<TriageSourceEvent>> sourceEvents(String issueId) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageSourceEvent>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageSourceEvent>>> rawFuture =
                 this.rawClient.sourceEvents(issueId);
         CompletableFuture<SyncPagingIterable<TriageSourceEvent>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -354,7 +357,7 @@ public class AsyncIssuesClient {
      */
     public CompletableFuture<SyncPagingIterable<TriageSourceEvent>> sourceEvents(
             String issueId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageSourceEvent>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageSourceEvent>>> rawFuture =
                 this.rawClient.sourceEvents(issueId, requestOptions);
         CompletableFuture<SyncPagingIterable<TriageSourceEvent>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -390,7 +393,7 @@ public class AsyncIssuesClient {
      */
     public CompletableFuture<SyncPagingIterable<TriageSourceEvent>> sourceEvents(
             String issueId, SourceEventsIssuesRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageSourceEvent>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageSourceEvent>>> rawFuture =
                 this.rawClient.sourceEvents(issueId, request);
         CompletableFuture<SyncPagingIterable<TriageSourceEvent>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -426,7 +429,7 @@ public class AsyncIssuesClient {
      */
     public CompletableFuture<SyncPagingIterable<TriageSourceEvent>> sourceEvents(
             String issueId, SourceEventsIssuesRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageSourceEvent>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageSourceEvent>>> rawFuture =
                 this.rawClient.sourceEvents(issueId, request, requestOptions);
         CompletableFuture<SyncPagingIterable<TriageSourceEvent>> future =
                 rawFuture.thenApply(response -> response.body());

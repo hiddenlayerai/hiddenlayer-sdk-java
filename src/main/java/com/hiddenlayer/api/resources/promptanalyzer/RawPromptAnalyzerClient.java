@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.promptanalyzer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -34,14 +34,14 @@ public class RawPromptAnalyzerClient {
     /**
      * Analyze LLM Prompt and Response
      */
-    public HiddenLayerHttpResponse<HiddenLayerPromptAnalyzerResponse> create(PromptAnalyzerRequest request) {
+    public BaseHiddenLayerClientHttpResponse<HiddenLayerPromptAnalyzerResponse> create(PromptAnalyzerRequest request) {
         return create(request, null);
     }
 
     /**
      * Analyze LLM Prompt and Response
      */
-    public HiddenLayerHttpResponse<HiddenLayerPromptAnalyzerResponse> create(
+    public BaseHiddenLayerClientHttpResponse<HiddenLayerPromptAnalyzerResponse> create(
             PromptAnalyzerRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -90,7 +90,7 @@ public class RawPromptAnalyzerClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, HiddenLayerPromptAnalyzerResponse.class),
                         response);

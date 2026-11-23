@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.assetinventory.resources;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.assetinventory.resources.requests.ListResourcesRequest;
@@ -29,8 +29,8 @@ public class AsyncResourcesClient {
     }
 
     public CompletableFuture<SyncPagingIterable<ListResourcesResponseItemsItem>> list() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>> rawFuture =
-                this.rawClient.list();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>>
+                rawFuture = this.rawClient.list();
         CompletableFuture<SyncPagingIterable<ListResourcesResponseItemsItem>> future =
                 rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -42,8 +42,8 @@ public class AsyncResourcesClient {
     }
 
     public CompletableFuture<SyncPagingIterable<ListResourcesResponseItemsItem>> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>> rawFuture =
-                this.rawClient.list(requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>>
+                rawFuture = this.rawClient.list(requestOptions);
         CompletableFuture<SyncPagingIterable<ListResourcesResponseItemsItem>> future =
                 rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -55,8 +55,8 @@ public class AsyncResourcesClient {
     }
 
     public CompletableFuture<SyncPagingIterable<ListResourcesResponseItemsItem>> list(ListResourcesRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>> rawFuture =
-                this.rawClient.list(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>>
+                rawFuture = this.rawClient.list(request);
         CompletableFuture<SyncPagingIterable<ListResourcesResponseItemsItem>> future =
                 rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -69,8 +69,8 @@ public class AsyncResourcesClient {
 
     public CompletableFuture<SyncPagingIterable<ListResourcesResponseItemsItem>> list(
             ListResourcesRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>> rawFuture =
-                this.rawClient.list(request, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>>
+                rawFuture = this.rawClient.list(request, requestOptions);
         CompletableFuture<SyncPagingIterable<ListResourcesResponseItemsItem>> future =
                 rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

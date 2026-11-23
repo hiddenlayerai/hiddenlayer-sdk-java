@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.access.apikeys;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.Suppliers;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
@@ -42,7 +42,8 @@ public class AsyncApiKeysClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<SyncPagingIterable<StaticApiKey>> list() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<StaticApiKey>>> rawFuture = this.rawClient.list();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<StaticApiKey>>> rawFuture =
+                this.rawClient.list();
         CompletableFuture<SyncPagingIterable<StaticApiKey>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -56,7 +57,7 @@ public class AsyncApiKeysClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<SyncPagingIterable<StaticApiKey>> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<StaticApiKey>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<StaticApiKey>>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<SyncPagingIterable<StaticApiKey>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -71,7 +72,7 @@ public class AsyncApiKeysClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<SyncPagingIterable<StaticApiKey>> list(ListApiKeysRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<StaticApiKey>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<StaticApiKey>>> rawFuture =
                 this.rawClient.list(request);
         CompletableFuture<SyncPagingIterable<StaticApiKey>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -87,7 +88,7 @@ public class AsyncApiKeysClient {
      */
     public CompletableFuture<SyncPagingIterable<StaticApiKey>> list(
             ListApiKeysRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<StaticApiKey>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<StaticApiKey>>> rawFuture =
                 this.rawClient.list(request, requestOptions);
         CompletableFuture<SyncPagingIterable<StaticApiKey>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -104,7 +105,8 @@ public class AsyncApiKeysClient {
      * <p>A tenant can have at most 100 keys that are neither revoked nor retired, including keys with no active secret.</p>
      */
     public CompletableFuture<StaticApiKeyWithValue> create(StaticApiKeyCreateRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<StaticApiKeyWithValue>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StaticApiKeyWithValue>> rawFuture =
+                this.rawClient.create(request);
         CompletableFuture<StaticApiKeyWithValue> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -121,7 +123,7 @@ public class AsyncApiKeysClient {
      */
     public CompletableFuture<StaticApiKeyWithValue> create(
             StaticApiKeyCreateRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<StaticApiKeyWithValue>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StaticApiKeyWithValue>> rawFuture =
                 this.rawClient.create(request, requestOptions);
         CompletableFuture<StaticApiKeyWithValue> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -136,7 +138,7 @@ public class AsyncApiKeysClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<StaticApiKey> get(String id) {
-        CompletableFuture<HiddenLayerHttpResponse<StaticApiKey>> rawFuture = this.rawClient.get(id);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StaticApiKey>> rawFuture = this.rawClient.get(id);
         CompletableFuture<StaticApiKey> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -150,7 +152,8 @@ public class AsyncApiKeysClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<StaticApiKey> get(String id, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<StaticApiKey>> rawFuture = this.rawClient.get(id, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StaticApiKey>> rawFuture =
+                this.rawClient.get(id, requestOptions);
         CompletableFuture<StaticApiKey> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -164,7 +167,7 @@ public class AsyncApiKeysClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<StaticApiKey> get(String id, GetApiKeysRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<StaticApiKey>> rawFuture = this.rawClient.get(id, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StaticApiKey>> rawFuture = this.rawClient.get(id, request);
         CompletableFuture<StaticApiKey> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -178,7 +181,7 @@ public class AsyncApiKeysClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<StaticApiKey> get(String id, GetApiKeysRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<StaticApiKey>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StaticApiKey>> rawFuture =
                 this.rawClient.get(id, request, requestOptions);
         CompletableFuture<StaticApiKey> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -194,7 +197,7 @@ public class AsyncApiKeysClient {
      * <p>Revokes the key and all its secrets. Revoking a key that is already revoked returns <code>204</code>, whatever the <code>If-Match</code> value.</p>
      */
     public CompletableFuture<Void> delete(String id, DeleteApiKeysRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(id, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(id, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -209,7 +212,8 @@ public class AsyncApiKeysClient {
      * <p>Revokes the key and all its secrets. Revoking a key that is already revoked returns <code>204</code>, whatever the <code>If-Match</code> value.</p>
      */
     public CompletableFuture<Void> delete(String id, DeleteApiKeysRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(id, request, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(id, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {

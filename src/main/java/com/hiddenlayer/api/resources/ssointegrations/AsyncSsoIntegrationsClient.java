@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.ssointegrations;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.ssointegrations.requests.GetSsoIntegrationsRequest;
 import com.hiddenlayer.api.resources.ssointegrations.requests.SsoIntegrationsCreateRequest;
@@ -34,7 +34,8 @@ public class AsyncSsoIntegrationsClient {
      * Returns the list of SSO integrations associated with the requester's tenant. The results will be sorted by age in descending order (i.e. newest to oldest).
      */
     public CompletableFuture<ListSsoIntegrationsResponse> list() {
-        CompletableFuture<HiddenLayerHttpResponse<ListSsoIntegrationsResponse>> rawFuture = this.rawClient.list();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListSsoIntegrationsResponse>> rawFuture =
+                this.rawClient.list();
         CompletableFuture<ListSsoIntegrationsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -48,7 +49,7 @@ public class AsyncSsoIntegrationsClient {
      * Returns the list of SSO integrations associated with the requester's tenant. The results will be sorted by age in descending order (i.e. newest to oldest).
      */
     public CompletableFuture<ListSsoIntegrationsResponse> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ListSsoIntegrationsResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListSsoIntegrationsResponse>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<ListSsoIntegrationsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -65,7 +66,8 @@ public class AsyncSsoIntegrationsClient {
      * and the Identity Provider (IdP).
      */
     public CompletableFuture<SsoIntegrationSamlV2> create(SsoIntegrationsCreateRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SsoIntegrationSamlV2>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2>> rawFuture =
+                this.rawClient.create(request);
         CompletableFuture<SsoIntegrationSamlV2> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -82,7 +84,7 @@ public class AsyncSsoIntegrationsClient {
      */
     public CompletableFuture<SsoIntegrationSamlV2> create(
             SsoIntegrationsCreateRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SsoIntegrationSamlV2>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2>> rawFuture =
                 this.rawClient.create(request, requestOptions);
         CompletableFuture<SsoIntegrationSamlV2> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -97,7 +99,7 @@ public class AsyncSsoIntegrationsClient {
      * Get SSO Integration
      */
     public CompletableFuture<SsoIntegrationSamlV2> get(String id) {
-        CompletableFuture<HiddenLayerHttpResponse<SsoIntegrationSamlV2>> rawFuture = this.rawClient.get(id);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2>> rawFuture = this.rawClient.get(id);
         CompletableFuture<SsoIntegrationSamlV2> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -111,7 +113,7 @@ public class AsyncSsoIntegrationsClient {
      * Get SSO Integration
      */
     public CompletableFuture<SsoIntegrationSamlV2> get(String id, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SsoIntegrationSamlV2>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2>> rawFuture =
                 this.rawClient.get(id, requestOptions);
         CompletableFuture<SsoIntegrationSamlV2> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -126,7 +128,8 @@ public class AsyncSsoIntegrationsClient {
      * Get SSO Integration
      */
     public CompletableFuture<SsoIntegrationSamlV2> get(String id, GetSsoIntegrationsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SsoIntegrationSamlV2>> rawFuture = this.rawClient.get(id, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2>> rawFuture =
+                this.rawClient.get(id, request);
         CompletableFuture<SsoIntegrationSamlV2> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -141,7 +144,7 @@ public class AsyncSsoIntegrationsClient {
      */
     public CompletableFuture<SsoIntegrationSamlV2> get(
             String id, GetSsoIntegrationsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SsoIntegrationSamlV2>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2>> rawFuture =
                 this.rawClient.get(id, request, requestOptions);
         CompletableFuture<SsoIntegrationSamlV2> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -158,7 +161,8 @@ public class AsyncSsoIntegrationsClient {
      * and the Identity Provider (IdP).
      */
     public CompletableFuture<SsoIntegrationSamlV2> update(String id) {
-        CompletableFuture<HiddenLayerHttpResponse<SsoIntegrationSamlV2>> rawFuture = this.rawClient.update(id);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2>> rawFuture =
+                this.rawClient.update(id);
         CompletableFuture<SsoIntegrationSamlV2> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -174,7 +178,7 @@ public class AsyncSsoIntegrationsClient {
      * and the Identity Provider (IdP).
      */
     public CompletableFuture<SsoIntegrationSamlV2> update(String id, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SsoIntegrationSamlV2>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2>> rawFuture =
                 this.rawClient.update(id, requestOptions);
         CompletableFuture<SsoIntegrationSamlV2> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -191,7 +195,8 @@ public class AsyncSsoIntegrationsClient {
      * and the Identity Provider (IdP).
      */
     public CompletableFuture<SsoIntegrationSamlV2> update(String id, SsoIntegrationsUpdateRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SsoIntegrationSamlV2>> rawFuture = this.rawClient.update(id, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2>> rawFuture =
+                this.rawClient.update(id, request);
         CompletableFuture<SsoIntegrationSamlV2> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -208,7 +213,7 @@ public class AsyncSsoIntegrationsClient {
      */
     public CompletableFuture<SsoIntegrationSamlV2> update(
             String id, SsoIntegrationsUpdateRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SsoIntegrationSamlV2>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2>> rawFuture =
                 this.rawClient.update(id, request, requestOptions);
         CompletableFuture<SsoIntegrationSamlV2> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

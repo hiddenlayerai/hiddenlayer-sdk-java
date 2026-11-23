@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.evaluations.redteam;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.Suppliers;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
@@ -59,7 +59,8 @@ public class AsyncRedTeamClient {
      * <p>Returns the list of available target models for red team evaluations.</p>
      */
     public CompletableFuture<TargetModelResponse> targetModels() {
-        CompletableFuture<HiddenLayerHttpResponse<TargetModelResponse>> rawFuture = this.rawClient.targetModels();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TargetModelResponse>> rawFuture =
+                this.rawClient.targetModels();
         CompletableFuture<TargetModelResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -74,7 +75,7 @@ public class AsyncRedTeamClient {
      * <p>Returns the list of available target models for red team evaluations.</p>
      */
     public CompletableFuture<TargetModelResponse> targetModels(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<TargetModelResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TargetModelResponse>> rawFuture =
                 this.rawClient.targetModels(requestOptions);
         CompletableFuture<TargetModelResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -92,7 +93,7 @@ public class AsyncRedTeamClient {
      * Returns metadata only - use GET /evaluations/v1/red-team/{workflow_id} for full payload.</p>
      */
     public CompletableFuture<SyncPagingIterable<RedTeamResultItem>> list() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamResultItem>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamResultItem>>> rawFuture =
                 this.rawClient.list();
         CompletableFuture<SyncPagingIterable<RedTeamResultItem>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -111,7 +112,7 @@ public class AsyncRedTeamClient {
      * Returns metadata only - use GET /evaluations/v1/red-team/{workflow_id} for full payload.</p>
      */
     public CompletableFuture<SyncPagingIterable<RedTeamResultItem>> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamResultItem>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamResultItem>>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<SyncPagingIterable<RedTeamResultItem>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -130,7 +131,7 @@ public class AsyncRedTeamClient {
      * Returns metadata only - use GET /evaluations/v1/red-team/{workflow_id} for full payload.</p>
      */
     public CompletableFuture<SyncPagingIterable<RedTeamResultItem>> list(ListRedTeamRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamResultItem>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamResultItem>>> rawFuture =
                 this.rawClient.list(request);
         CompletableFuture<SyncPagingIterable<RedTeamResultItem>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -150,7 +151,7 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<SyncPagingIterable<RedTeamResultItem>> list(
             ListRedTeamRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamResultItem>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamResultItem>>> rawFuture =
                 this.rawClient.list(request, requestOptions);
         CompletableFuture<SyncPagingIterable<RedTeamResultItem>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -168,7 +169,8 @@ public class AsyncRedTeamClient {
      * Auto-triggers planning phase. Client should then poll /next-action.</p>
      */
     public CompletableFuture<StartWorkflowResponse> create(ClientRedTeamBody request) {
-        CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> rawFuture =
+                this.rawClient.create(request);
         CompletableFuture<StartWorkflowResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -184,7 +186,7 @@ public class AsyncRedTeamClient {
      * Auto-triggers planning phase. Client should then poll /next-action.</p>
      */
     public CompletableFuture<StartWorkflowResponse> create(ClientRedTeamBody request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> rawFuture =
                 this.rawClient.create(request, requestOptions);
         CompletableFuture<StartWorkflowResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -200,7 +202,7 @@ public class AsyncRedTeamClient {
      * <p>Get current status of a red team workflow.</p>
      */
     public CompletableFuture<WorkflowStatusResponse> retrieveStatus(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<WorkflowStatusResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowStatusResponse>> rawFuture =
                 this.rawClient.retrieveStatus(workflowId);
         CompletableFuture<WorkflowStatusResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -216,7 +218,7 @@ public class AsyncRedTeamClient {
      * <p>Get current status of a red team workflow.</p>
      */
     public CompletableFuture<WorkflowStatusResponse> retrieveStatus(String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<WorkflowStatusResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowStatusResponse>> rawFuture =
                 this.rawClient.retrieveStatus(workflowId, requestOptions);
         CompletableFuture<WorkflowStatusResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -233,7 +235,7 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<WorkflowStatusResponse> retrieveStatus(
             String workflowId, RetrieveStatusRedTeamRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<WorkflowStatusResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowStatusResponse>> rawFuture =
                 this.rawClient.retrieveStatus(workflowId, request);
         CompletableFuture<WorkflowStatusResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -250,7 +252,7 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<WorkflowStatusResponse> retrieveStatus(
             String workflowId, RetrieveStatusRedTeamRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<WorkflowStatusResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowStatusResponse>> rawFuture =
                 this.rawClient.retrieveStatus(workflowId, request, requestOptions);
         CompletableFuture<WorkflowStatusResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -273,7 +275,7 @@ public class AsyncRedTeamClient {
      * </ul>
      */
     public CompletableFuture<NextActionResponse> retrieveNextAction(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<NextActionResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<NextActionResponse>> rawFuture =
                 this.rawClient.retrieveNextAction(workflowId);
         CompletableFuture<NextActionResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -296,7 +298,7 @@ public class AsyncRedTeamClient {
      * </ul>
      */
     public CompletableFuture<NextActionResponse> retrieveNextAction(String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<NextActionResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<NextActionResponse>> rawFuture =
                 this.rawClient.retrieveNextAction(workflowId, requestOptions);
         CompletableFuture<NextActionResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -320,7 +322,7 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<NextActionResponse> retrieveNextAction(
             String workflowId, RetrieveNextActionRedTeamRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<NextActionResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<NextActionResponse>> rawFuture =
                 this.rawClient.retrieveNextAction(workflowId, request);
         CompletableFuture<NextActionResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -344,7 +346,7 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<NextActionResponse> retrieveNextAction(
             String workflowId, RetrieveNextActionRedTeamRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<NextActionResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<NextActionResponse>> rawFuture =
                 this.rawClient.retrieveNextAction(workflowId, request, requestOptions);
         CompletableFuture<NextActionResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -363,7 +365,7 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<SubmitTargetResponseResult> submitTargetResponse(
             String workflowId, SubmitTargetResponseBody request) {
-        CompletableFuture<HiddenLayerHttpResponse<SubmitTargetResponseResult>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SubmitTargetResponseResult>> rawFuture =
                 this.rawClient.submitTargetResponse(workflowId, request);
         CompletableFuture<SubmitTargetResponseResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -382,7 +384,7 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<SubmitTargetResponseResult> submitTargetResponse(
             String workflowId, SubmitTargetResponseBody request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SubmitTargetResponseResult>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SubmitTargetResponseResult>> rawFuture =
                 this.rawClient.submitTargetResponse(workflowId, request, requestOptions);
         CompletableFuture<SubmitTargetResponseResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -398,7 +400,7 @@ public class AsyncRedTeamClient {
      * <p>Get the complete result of a red team workflow.</p>
      */
     public CompletableFuture<WorkflowResultResponse> retrieveEvaluationResults(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<WorkflowResultResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowResultResponse>> rawFuture =
                 this.rawClient.retrieveEvaluationResults(workflowId);
         CompletableFuture<WorkflowResultResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -415,7 +417,7 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<WorkflowResultResponse> retrieveEvaluationResults(
             String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<WorkflowResultResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowResultResponse>> rawFuture =
                 this.rawClient.retrieveEvaluationResults(workflowId, requestOptions);
         CompletableFuture<WorkflowResultResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -432,7 +434,7 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<WorkflowResultResponse> retrieveEvaluationResults(
             String workflowId, RetrieveEvaluationResultsRedTeamRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<WorkflowResultResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowResultResponse>> rawFuture =
                 this.rawClient.retrieveEvaluationResults(workflowId, request);
         CompletableFuture<WorkflowResultResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -449,7 +451,7 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<WorkflowResultResponse> retrieveEvaluationResults(
             String workflowId, RetrieveEvaluationResultsRedTeamRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<WorkflowResultResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowResultResponse>> rawFuture =
                 this.rawClient.retrieveEvaluationResults(workflowId, request, requestOptions);
         CompletableFuture<WorkflowResultResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -465,7 +467,7 @@ public class AsyncRedTeamClient {
      * <p>Delete a red team workflow result from storage.</p>
      */
     public CompletableFuture<Void> delete(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -480,7 +482,8 @@ public class AsyncRedTeamClient {
      * <p>Delete a red team workflow result from storage.</p>
      */
     public CompletableFuture<Void> delete(String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(workflowId, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -495,7 +498,8 @@ public class AsyncRedTeamClient {
      * <p>Delete a red team workflow result from storage.</p>
      */
     public CompletableFuture<Void> delete(String workflowId, DeleteRedTeamRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(workflowId, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -511,7 +515,7 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<Void> delete(
             String workflowId, DeleteRedTeamRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.delete(workflowId, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -527,7 +531,7 @@ public class AsyncRedTeamClient {
      * <p>Terminate a running workflow job.</p>
      */
     public CompletableFuture<Void> terminate(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.terminate(workflowId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.terminate(workflowId);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -542,7 +546,7 @@ public class AsyncRedTeamClient {
      * <p>Terminate a running workflow job.</p>
      */
     public CompletableFuture<Void> terminate(String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.terminate(workflowId, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -558,7 +562,8 @@ public class AsyncRedTeamClient {
      * <p>Terminate a running workflow job.</p>
      */
     public CompletableFuture<Void> terminate(String workflowId, TerminateRedTeamRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.terminate(workflowId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.terminate(workflowId, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -574,7 +579,7 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<Void> terminate(
             String workflowId, TerminateRedTeamRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.terminate(workflowId, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -590,7 +595,8 @@ public class AsyncRedTeamClient {
      * <p>Start a new simulated red team workflow with a built-in target model.</p>
      */
     public CompletableFuture<StartWorkflowResponse> simulated(StartRedTeamBody request) {
-        CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> rawFuture = this.rawClient.simulated(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> rawFuture =
+                this.rawClient.simulated(request);
         CompletableFuture<StartWorkflowResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -605,7 +611,7 @@ public class AsyncRedTeamClient {
      * <p>Start a new simulated red team workflow with a built-in target model.</p>
      */
     public CompletableFuture<StartWorkflowResponse> simulated(StartRedTeamBody request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> rawFuture =
                 this.rawClient.simulated(request, requestOptions);
         CompletableFuture<StartWorkflowResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -621,7 +627,7 @@ public class AsyncRedTeamClient {
      * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
      */
     public CompletableFuture<InputStream> csv(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<InputStream>> rawFuture = this.rawClient.csv(workflowId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> rawFuture = this.rawClient.csv(workflowId);
         CompletableFuture<InputStream> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -636,7 +642,7 @@ public class AsyncRedTeamClient {
      * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
      */
     public CompletableFuture<InputStream> csv(String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<InputStream>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> rawFuture =
                 this.rawClient.csv(workflowId, requestOptions);
         CompletableFuture<InputStream> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -652,7 +658,8 @@ public class AsyncRedTeamClient {
      * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
      */
     public CompletableFuture<InputStream> csv(String workflowId, CsvRedTeamRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<InputStream>> rawFuture = this.rawClient.csv(workflowId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> rawFuture =
+                this.rawClient.csv(workflowId, request);
         CompletableFuture<InputStream> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -668,7 +675,7 @@ public class AsyncRedTeamClient {
      */
     public CompletableFuture<InputStream> csv(
             String workflowId, CsvRedTeamRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<InputStream>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> rawFuture =
                 this.rawClient.csv(workflowId, request, requestOptions);
         CompletableFuture<InputStream> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

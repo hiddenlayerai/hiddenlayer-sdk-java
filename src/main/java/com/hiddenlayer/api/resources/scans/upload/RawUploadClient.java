@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.scans.upload;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -36,11 +36,11 @@ public class RawUploadClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<StartUploadResponse> start(MultiFileUploadRequestV3 request) {
+    public BaseHiddenLayerClientHttpResponse<StartUploadResponse> start(MultiFileUploadRequestV3 request) {
         return start(request, null);
     }
 
-    public HiddenLayerHttpResponse<StartUploadResponse> start(
+    public BaseHiddenLayerClientHttpResponse<StartUploadResponse> start(
             MultiFileUploadRequestV3 request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -83,7 +83,7 @@ public class RawUploadClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, StartUploadResponse.class), response);
             }
             try {
@@ -108,21 +108,21 @@ public class RawUploadClient {
         }
     }
 
-    public HiddenLayerHttpResponse<CompleteAllUploadResponse> completeAll(String scanId) {
+    public BaseHiddenLayerClientHttpResponse<CompleteAllUploadResponse> completeAll(String scanId) {
         return completeAll(scanId, CompleteAllUploadRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<CompleteAllUploadResponse> completeAll(
+    public BaseHiddenLayerClientHttpResponse<CompleteAllUploadResponse> completeAll(
             String scanId, RequestOptions requestOptions) {
         return completeAll(scanId, CompleteAllUploadRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<CompleteAllUploadResponse> completeAll(
+    public BaseHiddenLayerClientHttpResponse<CompleteAllUploadResponse> completeAll(
             String scanId, CompleteAllUploadRequest request) {
         return completeAll(scanId, request, null);
     }
 
-    public HiddenLayerHttpResponse<CompleteAllUploadResponse> completeAll(
+    public BaseHiddenLayerClientHttpResponse<CompleteAllUploadResponse> completeAll(
             String scanId, CompleteAllUploadRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -160,7 +160,7 @@ public class RawUploadClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CompleteAllUploadResponse.class),
                         response);
             }

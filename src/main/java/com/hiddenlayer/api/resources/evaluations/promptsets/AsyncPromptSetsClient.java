@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.evaluations.promptsets;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.evaluations.promptsets.requests.CreatePromptSetRequest;
 import com.hiddenlayer.api.resources.evaluations.promptsets.requests.CsvPromptSetsRequest;
@@ -42,7 +42,7 @@ public class AsyncPromptSetsClient {
      * </ul>
      */
     public CompletableFuture<PromptSetsResponse> list() {
-        CompletableFuture<HiddenLayerHttpResponse<PromptSetsResponse>> rawFuture = this.rawClient.list();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PromptSetsResponse>> rawFuture = this.rawClient.list();
         CompletableFuture<PromptSetsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -62,7 +62,8 @@ public class AsyncPromptSetsClient {
      * </ul>
      */
     public CompletableFuture<PromptSetsResponse> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<PromptSetsResponse>> rawFuture = this.rawClient.list(requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PromptSetsResponse>> rawFuture =
+                this.rawClient.list(requestOptions);
         CompletableFuture<PromptSetsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -81,7 +82,8 @@ public class AsyncPromptSetsClient {
      * mutations. List the prompt sets to see when the status changes.</p>
      */
     public CompletableFuture<CreatePromptSetResponse> create(CreatePromptSetRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<CreatePromptSetResponse>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<CreatePromptSetResponse>> rawFuture =
+                this.rawClient.create(request);
         CompletableFuture<CreatePromptSetResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -101,7 +103,7 @@ public class AsyncPromptSetsClient {
      */
     public CompletableFuture<CreatePromptSetResponse> create(
             CreatePromptSetRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<CreatePromptSetResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<CreatePromptSetResponse>> rawFuture =
                 this.rawClient.create(request, requestOptions);
         CompletableFuture<CreatePromptSetResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -123,7 +125,8 @@ public class AsyncPromptSetsClient {
      * </ul>
      */
     public CompletableFuture<AvailableMutationsResponse> mutations() {
-        CompletableFuture<HiddenLayerHttpResponse<AvailableMutationsResponse>> rawFuture = this.rawClient.mutations();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AvailableMutationsResponse>> rawFuture =
+                this.rawClient.mutations();
         CompletableFuture<AvailableMutationsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -144,7 +147,7 @@ public class AsyncPromptSetsClient {
      * </ul>
      */
     public CompletableFuture<AvailableMutationsResponse> mutations(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<AvailableMutationsResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AvailableMutationsResponse>> rawFuture =
                 this.rawClient.mutations(requestOptions);
         CompletableFuture<AvailableMutationsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -160,7 +163,7 @@ public class AsyncPromptSetsClient {
      * <p>Delete a tenant-specific prompt set.</p>
      */
     public CompletableFuture<Void> delete(String promptSetId) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(promptSetId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(promptSetId);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -175,7 +178,8 @@ public class AsyncPromptSetsClient {
      * <p>Delete a tenant-specific prompt set.</p>
      */
     public CompletableFuture<Void> delete(String promptSetId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(promptSetId, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(promptSetId, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -190,7 +194,8 @@ public class AsyncPromptSetsClient {
      * <p>Delete a tenant-specific prompt set.</p>
      */
     public CompletableFuture<Void> delete(String promptSetId, DeletePromptSetsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(promptSetId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(promptSetId, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -206,7 +211,7 @@ public class AsyncPromptSetsClient {
      */
     public CompletableFuture<Void> delete(
             String promptSetId, DeletePromptSetsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.delete(promptSetId, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -224,7 +229,7 @@ public class AsyncPromptSetsClient {
      * prompt_id, system_prompt, user_prompt, technique_ids.</p>
      */
     public CompletableFuture<InputStream> csv(String promptSetId) {
-        CompletableFuture<HiddenLayerHttpResponse<InputStream>> rawFuture = this.rawClient.csv(promptSetId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> rawFuture = this.rawClient.csv(promptSetId);
         CompletableFuture<InputStream> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -241,7 +246,7 @@ public class AsyncPromptSetsClient {
      * prompt_id, system_prompt, user_prompt, technique_ids.</p>
      */
     public CompletableFuture<InputStream> csv(String promptSetId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<InputStream>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> rawFuture =
                 this.rawClient.csv(promptSetId, requestOptions);
         CompletableFuture<InputStream> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -259,7 +264,8 @@ public class AsyncPromptSetsClient {
      * prompt_id, system_prompt, user_prompt, technique_ids.</p>
      */
     public CompletableFuture<InputStream> csv(String promptSetId, CsvPromptSetsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<InputStream>> rawFuture = this.rawClient.csv(promptSetId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> rawFuture =
+                this.rawClient.csv(promptSetId, request);
         CompletableFuture<InputStream> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -277,7 +283,7 @@ public class AsyncPromptSetsClient {
      */
     public CompletableFuture<InputStream> csv(
             String promptSetId, CsvPromptSetsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<InputStream>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> rawFuture =
                 this.rawClient.csv(promptSetId, request, requestOptions);
         CompletableFuture<InputStream> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

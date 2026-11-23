@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.evaluations.redteamv2.sessions;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.evaluations.redteamv2.sessions.requests.GetSessionsRequest;
@@ -37,7 +37,7 @@ public class AsyncSessionsClient {
      * <p>Lists a finished run's sessions in run order, without their messages. Get a single session for its messages.</p>
      */
     public CompletableFuture<SyncPagingIterable<RedTeamSession>> list(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamSession>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamSession>>> rawFuture =
                 this.rawClient.list(workflowId);
         CompletableFuture<SyncPagingIterable<RedTeamSession>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -54,7 +54,7 @@ public class AsyncSessionsClient {
      */
     public CompletableFuture<SyncPagingIterable<RedTeamSession>> list(
             String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamSession>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamSession>>> rawFuture =
                 this.rawClient.list(workflowId, requestOptions);
         CompletableFuture<SyncPagingIterable<RedTeamSession>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -70,7 +70,7 @@ public class AsyncSessionsClient {
      * <p>Lists a finished run's sessions in run order, without their messages. Get a single session for its messages.</p>
      */
     public CompletableFuture<SyncPagingIterable<RedTeamSession>> list(String workflowId, ListSessionsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamSession>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamSession>>> rawFuture =
                 this.rawClient.list(workflowId, request);
         CompletableFuture<SyncPagingIterable<RedTeamSession>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -87,7 +87,7 @@ public class AsyncSessionsClient {
      */
     public CompletableFuture<SyncPagingIterable<RedTeamSession>> list(
             String workflowId, ListSessionsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamSession>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamSession>>> rawFuture =
                 this.rawClient.list(workflowId, request, requestOptions);
         CompletableFuture<SyncPagingIterable<RedTeamSession>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -102,7 +102,7 @@ public class AsyncSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<RedTeamSessionDetail> get(String workflowId, String sessionId) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamSessionDetail>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamSessionDetail>> rawFuture =
                 this.rawClient.get(workflowId, sessionId);
         CompletableFuture<RedTeamSessionDetail> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -118,7 +118,7 @@ public class AsyncSessionsClient {
      */
     public CompletableFuture<RedTeamSessionDetail> get(
             String workflowId, String sessionId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamSessionDetail>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamSessionDetail>> rawFuture =
                 this.rawClient.get(workflowId, sessionId, requestOptions);
         CompletableFuture<RedTeamSessionDetail> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -134,7 +134,7 @@ public class AsyncSessionsClient {
      */
     public CompletableFuture<RedTeamSessionDetail> get(
             String workflowId, String sessionId, GetSessionsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamSessionDetail>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamSessionDetail>> rawFuture =
                 this.rawClient.get(workflowId, sessionId, request);
         CompletableFuture<RedTeamSessionDetail> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -150,7 +150,7 @@ public class AsyncSessionsClient {
      */
     public CompletableFuture<RedTeamSessionDetail> get(
             String workflowId, String sessionId, GetSessionsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamSessionDetail>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamSessionDetail>> rawFuture =
                 this.rawClient.get(workflowId, sessionId, request, requestOptions);
         CompletableFuture<RedTeamSessionDetail> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -166,7 +166,7 @@ public class AsyncSessionsClient {
      * <p>Returns the Runtime Security session ID of one session of a finished run, or the reason it has none. Only <code>NOT_FOUND</code> can change on a later call.</p>
      */
     public CompletableFuture<RedTeamRuntimeSessionLookup> runtimeSession(String workflowId, String sessionId) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRuntimeSessionLookup>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRuntimeSessionLookup>> rawFuture =
                 this.rawClient.runtimeSession(workflowId, sessionId);
         CompletableFuture<RedTeamRuntimeSessionLookup> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -183,7 +183,7 @@ public class AsyncSessionsClient {
      */
     public CompletableFuture<RedTeamRuntimeSessionLookup> runtimeSession(
             String workflowId, String sessionId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRuntimeSessionLookup>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRuntimeSessionLookup>> rawFuture =
                 this.rawClient.runtimeSession(workflowId, sessionId, requestOptions);
         CompletableFuture<RedTeamRuntimeSessionLookup> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -200,7 +200,7 @@ public class AsyncSessionsClient {
      */
     public CompletableFuture<RedTeamRuntimeSessionLookup> runtimeSession(
             String workflowId, String sessionId, RuntimeSessionSessionsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRuntimeSessionLookup>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRuntimeSessionLookup>> rawFuture =
                 this.rawClient.runtimeSession(workflowId, sessionId, request);
         CompletableFuture<RedTeamRuntimeSessionLookup> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -217,7 +217,7 @@ public class AsyncSessionsClient {
      */
     public CompletableFuture<RedTeamRuntimeSessionLookup> runtimeSession(
             String workflowId, String sessionId, RuntimeSessionSessionsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRuntimeSessionLookup>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRuntimeSessionLookup>> rawFuture =
                 this.rawClient.runtimeSession(workflowId, sessionId, request, requestOptions);
         CompletableFuture<RedTeamRuntimeSessionLookup> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

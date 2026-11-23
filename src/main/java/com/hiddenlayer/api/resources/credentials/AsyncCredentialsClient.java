@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.credentials;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.credentials.requests.CredentialsCreateRequestV2;
 import com.hiddenlayer.api.resources.credentials.requests.DeleteCredentialsRequest;
@@ -34,7 +34,7 @@ public class AsyncCredentialsClient {
      * Lists all API credentials for the requester's tenant. API credentials can be used to authenticate automated processes and integrations with the HiddenLayer API. The list includes both active and inactive credentials, along with their associated metadata. If the <code>embed</code> parameter is used with <code>created_by_user</code>, the response will also include details about the user who created each credential. The response includes up to 1000 items.
      */
     public CompletableFuture<ListCredentialsResponse> list() {
-        CompletableFuture<HiddenLayerHttpResponse<ListCredentialsResponse>> rawFuture = this.rawClient.list();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListCredentialsResponse>> rawFuture = this.rawClient.list();
         CompletableFuture<ListCredentialsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -48,7 +48,7 @@ public class AsyncCredentialsClient {
      * Lists all API credentials for the requester's tenant. API credentials can be used to authenticate automated processes and integrations with the HiddenLayer API. The list includes both active and inactive credentials, along with their associated metadata. If the <code>embed</code> parameter is used with <code>created_by_user</code>, the response will also include details about the user who created each credential. The response includes up to 1000 items.
      */
     public CompletableFuture<ListCredentialsResponse> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ListCredentialsResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListCredentialsResponse>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<ListCredentialsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -63,7 +63,8 @@ public class AsyncCredentialsClient {
      * Lists all API credentials for the requester's tenant. API credentials can be used to authenticate automated processes and integrations with the HiddenLayer API. The list includes both active and inactive credentials, along with their associated metadata. If the <code>embed</code> parameter is used with <code>created_by_user</code>, the response will also include details about the user who created each credential. The response includes up to 1000 items.
      */
     public CompletableFuture<ListCredentialsResponse> list(ListCredentialsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<ListCredentialsResponse>> rawFuture = this.rawClient.list(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListCredentialsResponse>> rawFuture =
+                this.rawClient.list(request);
         CompletableFuture<ListCredentialsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -78,7 +79,7 @@ public class AsyncCredentialsClient {
      */
     public CompletableFuture<ListCredentialsResponse> list(
             ListCredentialsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ListCredentialsResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListCredentialsResponse>> rawFuture =
                 this.rawClient.list(request, requestOptions);
         CompletableFuture<ListCredentialsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -97,7 +98,8 @@ public class AsyncCredentialsClient {
      * The available permissions can be found by calling <a href="#operation/list_permissions_api_v2_permissions_get"><code>GET /api/v2/permissions</code></a>.</p>
      */
     public CompletableFuture<CredentialsWithSecret> create(CredentialsCreateRequestV2 request) {
-        CompletableFuture<HiddenLayerHttpResponse<CredentialsWithSecret>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<CredentialsWithSecret>> rawFuture =
+                this.rawClient.create(request);
         CompletableFuture<CredentialsWithSecret> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -116,7 +118,7 @@ public class AsyncCredentialsClient {
      */
     public CompletableFuture<CredentialsWithSecret> create(
             CredentialsCreateRequestV2 request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<CredentialsWithSecret>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<CredentialsWithSecret>> rawFuture =
                 this.rawClient.create(request, requestOptions);
         CompletableFuture<CredentialsWithSecret> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -131,7 +133,7 @@ public class AsyncCredentialsClient {
      * Permanently deletes an API credential. Once deleted, the credential can no longer be used to authenticate with the HiddenLayer API.
      */
     public CompletableFuture<Void> delete(String id) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(id);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(id);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -145,7 +147,8 @@ public class AsyncCredentialsClient {
      * Permanently deletes an API credential. Once deleted, the credential can no longer be used to authenticate with the HiddenLayer API.
      */
     public CompletableFuture<Void> delete(String id, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(id, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(id, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -159,7 +162,7 @@ public class AsyncCredentialsClient {
      * Permanently deletes an API credential. Once deleted, the credential can no longer be used to authenticate with the HiddenLayer API.
      */
     public CompletableFuture<Void> delete(String id, DeleteCredentialsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(id, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(id, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -173,7 +176,8 @@ public class AsyncCredentialsClient {
      * Permanently deletes an API credential. Once deleted, the credential can no longer be used to authenticate with the HiddenLayer API.
      */
     public CompletableFuture<Void> delete(String id, DeleteCredentialsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(id, request, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(id, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {

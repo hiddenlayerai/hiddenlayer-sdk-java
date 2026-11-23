@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.promptanalyzer;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.promptanalyzer.requests.PromptAnalyzerRequest;
 import com.hiddenlayer.api.types.HiddenLayerPromptAnalyzerResponse;
@@ -31,7 +31,7 @@ public class AsyncPromptAnalyzerClient {
      * Analyze LLM Prompt and Response
      */
     public CompletableFuture<HiddenLayerPromptAnalyzerResponse> create(PromptAnalyzerRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<HiddenLayerPromptAnalyzerResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<HiddenLayerPromptAnalyzerResponse>> rawFuture =
                 this.rawClient.create(request);
         CompletableFuture<HiddenLayerPromptAnalyzerResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -47,7 +47,7 @@ public class AsyncPromptAnalyzerClient {
      */
     public CompletableFuture<HiddenLayerPromptAnalyzerResponse> create(
             PromptAnalyzerRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<HiddenLayerPromptAnalyzerResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<HiddenLayerPromptAnalyzerResponse>> rawFuture =
                 this.rawClient.create(request, requestOptions);
         CompletableFuture<HiddenLayerPromptAnalyzerResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

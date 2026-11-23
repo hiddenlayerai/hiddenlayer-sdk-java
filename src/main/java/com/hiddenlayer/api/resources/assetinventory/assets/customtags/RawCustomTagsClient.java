@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.assetinventory.assets.customtags;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -43,7 +43,7 @@ public class RawCustomTagsClient {
     /**
      * Assigns a custom tag to an asset. If the tag already exists on the asset, its value is updated.
      */
-    public HiddenLayerHttpResponse<AiAssetInventoryV1TagValue> updateV1(
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1TagValue> updateV1(
             String assetId, String tagName, UpdateV1CustomTagsRequest request) {
         return updateV1(assetId, tagName, request, null);
     }
@@ -51,7 +51,7 @@ public class RawCustomTagsClient {
     /**
      * Assigns a custom tag to an asset. If the tag already exists on the asset, its value is updated.
      */
-    public HiddenLayerHttpResponse<AiAssetInventoryV1TagValue> updateV1(
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1TagValue> updateV1(
             String assetId, String tagName, UpdateV1CustomTagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -97,7 +97,7 @@ public class RawCustomTagsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AiAssetInventoryV1TagValue.class),
                         response);
             }
@@ -132,28 +132,30 @@ public class RawCustomTagsClient {
     /**
      * Removes a custom tag assignment from an asset.
      */
-    public HiddenLayerHttpResponse<Void> deleteV1(String assetId, String tagName) {
+    public BaseHiddenLayerClientHttpResponse<Void> deleteV1(String assetId, String tagName) {
         return deleteV1(assetId, tagName, DeleteV1CustomTagsRequest.builder().build());
     }
 
     /**
      * Removes a custom tag assignment from an asset.
      */
-    public HiddenLayerHttpResponse<Void> deleteV1(String assetId, String tagName, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> deleteV1(
+            String assetId, String tagName, RequestOptions requestOptions) {
         return deleteV1(assetId, tagName, DeleteV1CustomTagsRequest.builder().build(), requestOptions);
     }
 
     /**
      * Removes a custom tag assignment from an asset.
      */
-    public HiddenLayerHttpResponse<Void> deleteV1(String assetId, String tagName, DeleteV1CustomTagsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> deleteV1(
+            String assetId, String tagName, DeleteV1CustomTagsRequest request) {
         return deleteV1(assetId, tagName, request, null);
     }
 
     /**
      * Removes a custom tag assignment from an asset.
      */
-    public HiddenLayerHttpResponse<Void> deleteV1(
+    public BaseHiddenLayerClientHttpResponse<Void> deleteV1(
             String assetId, String tagName, DeleteV1CustomTagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -191,7 +193,7 @@ public class RawCustomTagsClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -223,7 +225,8 @@ public class RawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Assigns a custom tag to an asset. If the tag already exists on the asset, its value is updated.</p>
      */
-    public HiddenLayerHttpResponse<TagValue> update(String assetId, String tagName, UpdateCustomTagsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<TagValue> update(
+            String assetId, String tagName, UpdateCustomTagsRequest request) {
         return update(assetId, tagName, request, null);
     }
 
@@ -231,7 +234,7 @@ public class RawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Assigns a custom tag to an asset. If the tag already exists on the asset, its value is updated.</p>
      */
-    public HiddenLayerHttpResponse<TagValue> update(
+    public BaseHiddenLayerClientHttpResponse<TagValue> update(
             String assetId, String tagName, UpdateCustomTagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -277,7 +280,7 @@ public class RawCustomTagsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TagValue.class), response);
             }
             try {
@@ -312,7 +315,7 @@ public class RawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Removes a custom tag assignment from an asset.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String assetId, String tagName) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String assetId, String tagName) {
         return delete(assetId, tagName, DeleteCustomTagsRequest.builder().build());
     }
 
@@ -320,7 +323,8 @@ public class RawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Removes a custom tag assignment from an asset.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String assetId, String tagName, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
+            String assetId, String tagName, RequestOptions requestOptions) {
         return delete(assetId, tagName, DeleteCustomTagsRequest.builder().build(), requestOptions);
     }
 
@@ -328,7 +332,8 @@ public class RawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Removes a custom tag assignment from an asset.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String assetId, String tagName, DeleteCustomTagsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
+            String assetId, String tagName, DeleteCustomTagsRequest request) {
         return delete(assetId, tagName, request, null);
     }
 
@@ -336,7 +341,7 @@ public class RawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Removes a custom tag assignment from an asset.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
             String assetId, String tagName, DeleteCustomTagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -374,7 +379,7 @@ public class RawCustomTagsClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {

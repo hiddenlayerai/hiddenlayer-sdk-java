@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.triage.reports;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -65,7 +65,7 @@ public class AsyncRawReportsClient {
      * window and a closed status at read time.</li>
      * </ul>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<TriageReport>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageReport>> list() {
         return list(null);
     }
 
@@ -98,7 +98,7 @@ public class AsyncRawReportsClient {
      * window and a closed status at read time.</li>
      * </ul>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<TriageReport>> list(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageReport>> list(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("triage/v1/reports");
@@ -126,7 +126,7 @@ public class AsyncRawReportsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<TriageReport>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageReport>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -134,7 +134,7 @@ public class AsyncRawReportsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TriageReport.class), response));
                         return;
                     }

@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.scanindices.submission;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -35,11 +35,11 @@ public class AsyncRawSubmissionClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> create(ScanSubmission request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> create(ScanSubmission request) {
         return create(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> create(
             ScanSubmission request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -78,14 +78,14 @@ public class AsyncRawSubmissionClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";

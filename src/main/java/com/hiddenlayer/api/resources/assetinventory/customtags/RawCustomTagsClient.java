@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.assetinventory.customtags;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -49,7 +49,7 @@ public class RawCustomTagsClient {
     /**
      * Updates a tag definition. Only the name can be changed at this time.
      */
-    public HiddenLayerHttpResponse<AiAssetInventoryV1TagDefinition> updateV1(
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1TagDefinition> updateV1(
             String tagName, AiAssetInventoryV1TagDefinitionUpdate request) {
         return updateV1(tagName, request, null);
     }
@@ -57,7 +57,7 @@ public class RawCustomTagsClient {
     /**
      * Updates a tag definition. Only the name can be changed at this time.
      */
-    public HiddenLayerHttpResponse<AiAssetInventoryV1TagDefinition> updateV1(
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1TagDefinition> updateV1(
             String tagName, AiAssetInventoryV1TagDefinitionUpdate request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -101,7 +101,7 @@ public class RawCustomTagsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AiAssetInventoryV1TagDefinition.class),
                         response);
             }
@@ -139,21 +139,22 @@ public class RawCustomTagsClient {
     /**
      * Returns a paginated list of values for a given custom tag name.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<String>> valuesV1(String tagName) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>> valuesV1(String tagName) {
         return valuesV1(tagName, ValuesV1CustomTagsRequest.builder().build());
     }
 
     /**
      * Returns a paginated list of values for a given custom tag name.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<String>> valuesV1(String tagName, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>> valuesV1(
+            String tagName, RequestOptions requestOptions) {
         return valuesV1(tagName, ValuesV1CustomTagsRequest.builder().build(), requestOptions);
     }
 
     /**
      * Returns a paginated list of values for a given custom tag name.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<String>> valuesV1(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>> valuesV1(
             String tagName, ValuesV1CustomTagsRequest request) {
         return valuesV1(tagName, request, null);
     }
@@ -161,7 +162,7 @@ public class RawCustomTagsClient {
     /**
      * Returns a paginated list of values for a given custom tag name.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<String>> valuesV1(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>> valuesV1(
             String tagName, ValuesV1CustomTagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -219,7 +220,7 @@ public class RawCustomTagsClient {
                         .cursor(startingAfter)
                         .build();
                 List<String> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<String>(!startingAfter.isEmpty(), result, parsedResponse, () -> valuesV1(
                                         tagName, nextRequest, requestOptions)
                                 .body()),
@@ -251,7 +252,7 @@ public class RawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Updates a tag definition. Only the name can be changed at this time.</p>
      */
-    public HiddenLayerHttpResponse<TagDefinition> update(String tagName, TagDefinitionUpdate request) {
+    public BaseHiddenLayerClientHttpResponse<TagDefinition> update(String tagName, TagDefinitionUpdate request) {
         return update(tagName, request, null);
     }
 
@@ -259,7 +260,7 @@ public class RawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Updates a tag definition. Only the name can be changed at this time.</p>
      */
-    public HiddenLayerHttpResponse<TagDefinition> update(
+    public BaseHiddenLayerClientHttpResponse<TagDefinition> update(
             String tagName, TagDefinitionUpdate request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -303,7 +304,7 @@ public class RawCustomTagsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TagDefinition.class), response);
             }
             try {
@@ -341,7 +342,7 @@ public class RawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of values for a given custom tag name.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<String>> values(String tagName) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>> values(String tagName) {
         return values(tagName, ValuesCustomTagsRequest.builder().build());
     }
 
@@ -349,7 +350,8 @@ public class RawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of values for a given custom tag name.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<String>> values(String tagName, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>> values(
+            String tagName, RequestOptions requestOptions) {
         return values(tagName, ValuesCustomTagsRequest.builder().build(), requestOptions);
     }
 
@@ -357,7 +359,8 @@ public class RawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of values for a given custom tag name.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<String>> values(String tagName, ValuesCustomTagsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>> values(
+            String tagName, ValuesCustomTagsRequest request) {
         return values(tagName, request, null);
     }
 
@@ -365,7 +368,7 @@ public class RawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of values for a given custom tag name.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<String>> values(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>> values(
             String tagName, ValuesCustomTagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -423,7 +426,7 @@ public class RawCustomTagsClient {
                         .cursor(startingAfter)
                         .build();
                 List<String> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<String>(!startingAfter.isEmpty(), result, parsedResponse, () -> values(
                                         tagName, nextRequest, requestOptions)
                                 .body()),

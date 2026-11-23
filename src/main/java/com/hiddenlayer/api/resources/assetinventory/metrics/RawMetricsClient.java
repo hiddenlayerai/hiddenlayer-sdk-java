@@ -5,10 +5,10 @@ package com.hiddenlayer.api.resources.assetinventory.metrics;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -37,11 +37,12 @@ public class RawMetricsClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<AiAssetInventoryV1ProviderCounts> providerCountsV1() {
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1ProviderCounts> providerCountsV1() {
         return providerCountsV1(null);
     }
 
-    public HiddenLayerHttpResponse<AiAssetInventoryV1ProviderCounts> providerCountsV1(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1ProviderCounts> providerCountsV1(
+            RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v1/metrics/provider-counts");
@@ -73,7 +74,7 @@ public class RawMetricsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AiAssetInventoryV1ProviderCounts.class),
                         response);
             }
@@ -99,11 +100,12 @@ public class RawMetricsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<AiAssetInventoryV1RegionCounts> regionCountsV1() {
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1RegionCounts> regionCountsV1() {
         return regionCountsV1(null);
     }
 
-    public HiddenLayerHttpResponse<AiAssetInventoryV1RegionCounts> regionCountsV1(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1RegionCounts> regionCountsV1(
+            RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v1/metrics/region-counts");
@@ -135,7 +137,7 @@ public class RawMetricsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AiAssetInventoryV1RegionCounts.class),
                         response);
             }
@@ -161,11 +163,12 @@ public class RawMetricsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<AiAssetInventoryV1AssetTypeCounts> assetTypeCountsV1() {
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetTypeCounts> assetTypeCountsV1() {
         return assetTypeCountsV1(null);
     }
 
-    public HiddenLayerHttpResponse<AiAssetInventoryV1AssetTypeCounts> assetTypeCountsV1(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetTypeCounts> assetTypeCountsV1(
+            RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v1/metrics/asset-type-counts");
@@ -197,7 +200,7 @@ public class RawMetricsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, AiAssetInventoryV1AssetTypeCounts.class),
                         response);
@@ -231,7 +234,7 @@ public class RawMetricsClient {
      * Assets from providers outside this set are counted under
      * <code>other</code>.</p>
      */
-    public HiddenLayerHttpResponse<ProviderCounts> providerCounts() {
+    public BaseHiddenLayerClientHttpResponse<ProviderCounts> providerCounts() {
         return providerCounts(null);
     }
 
@@ -242,7 +245,7 @@ public class RawMetricsClient {
      * Assets from providers outside this set are counted under
      * <code>other</code>.</p>
      */
-    public HiddenLayerHttpResponse<ProviderCounts> providerCounts(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ProviderCounts> providerCounts(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v2/metrics/provider-counts");
@@ -274,7 +277,7 @@ public class RawMetricsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ProviderCounts.class), response);
             }
             try {
@@ -312,7 +315,7 @@ public class RawMetricsClient {
      * higher-level geographic region (for example, North America or
      * Europe).</p>
      */
-    public HiddenLayerHttpResponse<RegionCounts> regionCounts() {
+    public BaseHiddenLayerClientHttpResponse<RegionCounts> regionCounts() {
         return regionCounts(null);
     }
 
@@ -323,7 +326,7 @@ public class RawMetricsClient {
      * higher-level geographic region (for example, North America or
      * Europe).</p>
      */
-    public HiddenLayerHttpResponse<RegionCounts> regionCounts(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<RegionCounts> regionCounts(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v2/metrics/region-counts");
@@ -355,7 +358,7 @@ public class RawMetricsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RegionCounts.class), response);
             }
             try {
@@ -391,7 +394,7 @@ public class RawMetricsClient {
      * <p>Return the number of AI assets in your inventory grouped by
      * asset type (for example, model, endpoint, or agent).</p>
      */
-    public HiddenLayerHttpResponse<Map<String, Integer>> assetTypeCounts() {
+    public BaseHiddenLayerClientHttpResponse<Map<String, Integer>> assetTypeCounts() {
         return assetTypeCounts(null);
     }
 
@@ -400,7 +403,7 @@ public class RawMetricsClient {
      * <p>Return the number of AI assets in your inventory grouped by
      * asset type (for example, model, endpoint, or agent).</p>
      */
-    public HiddenLayerHttpResponse<Map<String, Integer>> assetTypeCounts(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Map<String, Integer>> assetTypeCounts(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v2/metrics/asset-type-counts");
@@ -432,7 +435,7 @@ public class RawMetricsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, new TypeReference<Map<String, Integer>>() {}),
                         response);

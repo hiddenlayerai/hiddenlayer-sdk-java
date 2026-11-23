@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.scanindices.submission;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -31,11 +31,11 @@ public class RawSubmissionClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<Void> create(ScanSubmission request) {
+    public BaseHiddenLayerClientHttpResponse<Void> create(ScanSubmission request) {
         return create(request, null);
     }
 
-    public HiddenLayerHttpResponse<Void> create(ScanSubmission request, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> create(ScanSubmission request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("scan-indices/v3/submission");
@@ -76,7 +76,7 @@ public class RawSubmissionClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {

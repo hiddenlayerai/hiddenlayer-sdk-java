@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.assetinventory.relationships;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -31,21 +31,21 @@ public class RawRelationshipsClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship> get(String relationshipId) {
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetRelationship> get(String relationshipId) {
         return get(relationshipId, GetRelationshipsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship> get(
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetRelationship> get(
             String relationshipId, RequestOptions requestOptions) {
         return get(relationshipId, GetRelationshipsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship> get(
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetRelationship> get(
             String relationshipId, GetRelationshipsRequest request) {
         return get(relationshipId, request, null);
     }
 
-    public HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship> get(
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetRelationship> get(
             String relationshipId, GetRelationshipsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -79,7 +79,7 @@ public class RawRelationshipsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, AiAssetInventoryV1AssetRelationship.class),
                         response);

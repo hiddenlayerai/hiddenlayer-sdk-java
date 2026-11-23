@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.runtime;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.runtime.requests.EvaluateRequestRuntimeRequest;
 import com.hiddenlayer.api.resources.runtime.requests.EvaluateResponseRuntimeRequest;
@@ -61,7 +61,7 @@ public class AsyncRuntimeClient {
      * the request-evaluations and response-evaluations endpoints instead.</p>
      */
     public CompletableFuture<InteractionEvaluationResponse> evaluateInteraction(InteractionEvaluationRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<InteractionEvaluationResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InteractionEvaluationResponse>> rawFuture =
                 this.rawClient.evaluateInteraction(request);
         CompletableFuture<InteractionEvaluationResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -104,7 +104,7 @@ public class AsyncRuntimeClient {
      */
     public CompletableFuture<InteractionEvaluationResponse> evaluateInteraction(
             InteractionEvaluationRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<InteractionEvaluationResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InteractionEvaluationResponse>> rawFuture =
                 this.rawClient.evaluateInteraction(request, requestOptions);
         CompletableFuture<InteractionEvaluationResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -140,7 +140,7 @@ public class AsyncRuntimeClient {
      * </ul>
      */
     public CompletableFuture<Map<String, Object>> evaluateRequest(Map<String, Object> body) {
-        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> rawFuture =
                 this.rawClient.evaluateRequest(body);
         CompletableFuture<Map<String, Object>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -177,7 +177,7 @@ public class AsyncRuntimeClient {
      */
     public CompletableFuture<Map<String, Object>> evaluateRequest(
             Map<String, Object> body, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> rawFuture =
                 this.rawClient.evaluateRequest(body, requestOptions);
         CompletableFuture<Map<String, Object>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -213,7 +213,7 @@ public class AsyncRuntimeClient {
      * </ul>
      */
     public CompletableFuture<Map<String, Object>> evaluateRequest(EvaluateRequestRuntimeRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> rawFuture =
                 this.rawClient.evaluateRequest(request);
         CompletableFuture<Map<String, Object>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -250,7 +250,7 @@ public class AsyncRuntimeClient {
      */
     public CompletableFuture<Map<String, Object>> evaluateRequest(
             EvaluateRequestRuntimeRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> rawFuture =
                 this.rawClient.evaluateRequest(request, requestOptions);
         CompletableFuture<Map<String, Object>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -283,7 +283,7 @@ public class AsyncRuntimeClient {
      * is replaced by the generic block body, <code>{&quot;error&quot;: &quot;request blocked by policy&quot;}</code>.</p>
      */
     public CompletableFuture<Map<String, Object>> evaluateResponse(Map<String, Object> body) {
-        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> rawFuture =
                 this.rawClient.evaluateResponse(body);
         CompletableFuture<Map<String, Object>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -317,7 +317,7 @@ public class AsyncRuntimeClient {
      */
     public CompletableFuture<Map<String, Object>> evaluateResponse(
             Map<String, Object> body, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> rawFuture =
                 this.rawClient.evaluateResponse(body, requestOptions);
         CompletableFuture<Map<String, Object>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -350,7 +350,7 @@ public class AsyncRuntimeClient {
      * is replaced by the generic block body, <code>{&quot;error&quot;: &quot;request blocked by policy&quot;}</code>.</p>
      */
     public CompletableFuture<Map<String, Object>> evaluateResponse(EvaluateResponseRuntimeRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> rawFuture =
                 this.rawClient.evaluateResponse(request);
         CompletableFuture<Map<String, Object>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -384,7 +384,7 @@ public class AsyncRuntimeClient {
      */
     public CompletableFuture<Map<String, Object>> evaluateResponse(
             EvaluateResponseRuntimeRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Map<String, Object>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Object>>> rawFuture =
                 this.rawClient.evaluateResponse(request, requestOptions);
         CompletableFuture<Map<String, Object>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

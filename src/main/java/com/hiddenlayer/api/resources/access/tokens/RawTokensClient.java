@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.access.tokens;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -37,14 +37,14 @@ public class RawTokensClient {
     /**
      * Exchange a valid user access token for a short-lived JWT with minimal scopes. This endpoint is suitable for scenarios where a long-lived or broad-scope token is inappropriate. A typical use case is authenticating WebSocket connections, where the token may be passed via query parameters.
      */
-    public HiddenLayerHttpResponse<ShortLivedTokenResponse> shortLived() {
+    public BaseHiddenLayerClientHttpResponse<ShortLivedTokenResponse> shortLived() {
         return shortLived(null);
     }
 
     /**
      * Exchange a valid user access token for a short-lived JWT with minimal scopes. This endpoint is suitable for scenarios where a long-lived or broad-scope token is inappropriate. A typical use case is authenticating WebSocket connections, where the token may be passed via query parameters.
      */
-    public HiddenLayerHttpResponse<ShortLivedTokenResponse> shortLived(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ShortLivedTokenResponse> shortLived(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("access/v2/tokens/short-lived");
@@ -80,7 +80,7 @@ public class RawTokensClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ShortLivedTokenResponse.class),
                         response);
             }

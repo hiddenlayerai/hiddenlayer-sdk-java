@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.governance.policypacks;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -59,7 +59,7 @@ public class AsyncRawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns pack summaries without <code>settings</code> or <code>detection_rules</code>. To read those, get the policy pack by ID.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<PolicyPackSummary>>> list() {
         return list(ListPolicyPacksRequest.builder().build());
     }
 
@@ -67,7 +67,7 @@ public class AsyncRawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns pack summaries without <code>settings</code> or <code>detection_rules</code>. To read those, get the policy pack by ID.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<PolicyPackSummary>>> list(
             RequestOptions requestOptions) {
         return list(ListPolicyPacksRequest.builder().build(), requestOptions);
     }
@@ -76,7 +76,7 @@ public class AsyncRawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns pack summaries without <code>settings</code> or <code>detection_rules</code>. To read those, get the policy pack by ID.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<PolicyPackSummary>>> list(
             ListPolicyPacksRequest request) {
         return list(request, null);
     }
@@ -85,7 +85,7 @@ public class AsyncRawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns pack summaries without <code>settings</code> or <code>detection_rules</code>. To read those, get the policy pack by ID.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<PolicyPackSummary>>> list(
             ListPolicyPacksRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -141,7 +141,7 @@ public class AsyncRawPolicyPacksClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>>> future =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<PolicyPackSummary>>> future =
                 new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
@@ -158,7 +158,7 @@ public class AsyncRawPolicyPacksClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<PolicyPackSummary> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<PolicyPackSummary>(
                                         !startingAfter.isEmpty(), result, parsedResponse, () -> {
                                             try {
@@ -227,7 +227,7 @@ public class AsyncRawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Creates a custom policy pack from the rule packs, individual rules, redaction configuration, and settings in the request.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> create(PolicyPackWriteRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> create(PolicyPackWriteRequest request) {
         return create(request, null);
     }
 
@@ -235,7 +235,7 @@ public class AsyncRawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Creates a custom policy pack from the rule packs, individual rules, redaction configuration, and settings in the request.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> create(
             PolicyPackWriteRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -274,7 +274,7 @@ public class AsyncRawPolicyPacksClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -282,7 +282,7 @@ public class AsyncRawPolicyPacksClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PolicyPack.class), response));
                         return;
                     }
@@ -351,7 +351,7 @@ public class AsyncRawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>To apply the recommendation, set the returned <code>id</code> as the project's <code>policy_pack_id</code>.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<PolicyPackRecommendation>> recommendations(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPackRecommendation>> recommendations(
             PolicyPackRecommendationRequest request) {
         return recommendations(request, null);
     }
@@ -360,7 +360,7 @@ public class AsyncRawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>To apply the recommendation, set the returned <code>id</code> as the project's <code>policy_pack_id</code>.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<PolicyPackRecommendation>> recommendations(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPackRecommendation>> recommendations(
             PolicyPackRecommendationRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -399,7 +399,8 @@ public class AsyncRawPolicyPacksClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<PolicyPackRecommendation>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPackRecommendation>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -407,7 +408,7 @@ public class AsyncRawPolicyPacksClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PolicyPackRecommendation.class),
                                 response));
                         return;
@@ -471,14 +472,14 @@ public class AsyncRawPolicyPacksClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> get(String policyPackId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> get(String policyPackId) {
         return get(policyPackId, GetPolicyPacksRequest.builder().build());
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> get(
             String policyPackId, RequestOptions requestOptions) {
         return get(policyPackId, GetPolicyPacksRequest.builder().build(), requestOptions);
     }
@@ -486,7 +487,7 @@ public class AsyncRawPolicyPacksClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> get(
             String policyPackId, GetPolicyPacksRequest request) {
         return get(policyPackId, request, null);
     }
@@ -494,7 +495,7 @@ public class AsyncRawPolicyPacksClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> get(
             String policyPackId, GetPolicyPacksRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -524,7 +525,7 @@ public class AsyncRawPolicyPacksClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -532,7 +533,7 @@ public class AsyncRawPolicyPacksClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PolicyPack.class), response));
                         return;
                     }
@@ -591,7 +592,7 @@ public class AsyncRawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Replaces the entire pack, including <code>settings</code>; omitted optional fields are cleared.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> update(
             String policyPackId, UpdatePolicyPacksRequest request) {
         return update(policyPackId, request, null);
     }
@@ -600,7 +601,7 @@ public class AsyncRawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Replaces the entire pack, including <code>settings</code>; omitted optional fields are cleared.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> update(
             String policyPackId, UpdatePolicyPacksRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -640,7 +641,7 @@ public class AsyncRawPolicyPacksClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -648,7 +649,7 @@ public class AsyncRawPolicyPacksClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PolicyPack.class), response));
                         return;
                     }
@@ -723,7 +724,7 @@ public class AsyncRawPolicyPacksClient {
      * <p>Projects using the pack are moved to the pack assigned to the tenant's default project. The pack's policy, ruleset, and ruleset settings are also deleted unless another project or pack still references them.
      * Returns 403 when the pack is HiddenLayer-authored; only custom packs can be deleted.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String policyPackId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String policyPackId) {
         return delete(policyPackId, DeletePolicyPacksRequest.builder().build());
     }
 
@@ -732,7 +733,8 @@ public class AsyncRawPolicyPacksClient {
      * <p>Projects using the pack are moved to the pack assigned to the tenant's default project. The pack's policy, ruleset, and ruleset settings are also deleted unless another project or pack still references them.
      * Returns 403 when the pack is HiddenLayer-authored; only custom packs can be deleted.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String policyPackId, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
+            String policyPackId, RequestOptions requestOptions) {
         return delete(policyPackId, DeletePolicyPacksRequest.builder().build(), requestOptions);
     }
 
@@ -741,7 +743,7 @@ public class AsyncRawPolicyPacksClient {
      * <p>Projects using the pack are moved to the pack assigned to the tenant's default project. The pack's policy, ruleset, and ruleset settings are also deleted unless another project or pack still references them.
      * Returns 403 when the pack is HiddenLayer-authored; only custom packs can be deleted.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String policyPackId, DeletePolicyPacksRequest request) {
         return delete(policyPackId, request, null);
     }
@@ -751,7 +753,7 @@ public class AsyncRawPolicyPacksClient {
      * <p>Projects using the pack are moved to the pack assigned to the tenant's default project. The pack's policy, ruleset, and ruleset settings are also deleted unless another project or pack still references them.
      * Returns 403 when the pack is HiddenLayer-authored; only custom packs can be deleted.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String policyPackId, DeletePolicyPacksRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -784,14 +786,14 @@ public class AsyncRawPolicyPacksClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";

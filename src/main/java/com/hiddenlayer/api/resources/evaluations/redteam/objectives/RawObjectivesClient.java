@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.evaluations.redteam.objectives;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -53,7 +53,7 @@ public class RawObjectivesClient {
      * <code>HLO.NN</code> IDs); subsequent pages contain only the tenant's custom
      * objectives (UUID IDs). The list is cursor-paginated.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<ApeObjective>> list() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ApeObjective>> list() {
         return list(ListObjectivesRequest.builder().build());
     }
 
@@ -64,7 +64,7 @@ public class RawObjectivesClient {
      * <code>HLO.NN</code> IDs); subsequent pages contain only the tenant's custom
      * objectives (UUID IDs). The list is cursor-paginated.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<ApeObjective>> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ApeObjective>> list(RequestOptions requestOptions) {
         return list(ListObjectivesRequest.builder().build(), requestOptions);
     }
 
@@ -75,7 +75,7 @@ public class RawObjectivesClient {
      * <code>HLO.NN</code> IDs); subsequent pages contain only the tenant's custom
      * objectives (UUID IDs). The list is cursor-paginated.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<ApeObjective>> list(ListObjectivesRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ApeObjective>> list(ListObjectivesRequest request) {
         return list(request, null);
     }
 
@@ -86,7 +86,7 @@ public class RawObjectivesClient {
      * <code>HLO.NN</code> IDs); subsequent pages contain only the tenant's custom
      * objectives (UUID IDs). The list is cursor-paginated.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<ApeObjective>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ApeObjective>> list(
             ListObjectivesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -135,7 +135,7 @@ public class RawObjectivesClient {
                         .cursor(startingAfter)
                         .build();
                 List<ApeObjective> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<ApeObjective>(
                                 !startingAfter.isEmpty(), result, parsedResponse, () -> list(
                                                 nextRequest, requestOptions)
@@ -181,7 +181,7 @@ public class RawObjectivesClient {
      * a strict character whitelist). A per-tenant cap applies; exceeding it
      * returns 409.</p>
      */
-    public HiddenLayerHttpResponse<ApeObjective> create(CreateCustomObjectiveRequest request) {
+    public BaseHiddenLayerClientHttpResponse<ApeObjective> create(CreateCustomObjectiveRequest request) {
         return create(request, null);
     }
 
@@ -196,7 +196,7 @@ public class RawObjectivesClient {
      * a strict character whitelist). A per-tenant cap applies; exceeding it
      * returns 409.</p>
      */
-    public HiddenLayerHttpResponse<ApeObjective> create(
+    public BaseHiddenLayerClientHttpResponse<ApeObjective> create(
             CreateCustomObjectiveRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -239,7 +239,7 @@ public class RawObjectivesClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ApeObjective.class), response);
             }
             try {
@@ -278,7 +278,7 @@ public class RawObjectivesClient {
      * <p>Return a single objective by ID. <code>HLO.NN</code> IDs return a built-in
      * objective; UUIDs return one of the tenant's custom objectives.</p>
      */
-    public HiddenLayerHttpResponse<ApeObjective> get(String objectiveId) {
+    public BaseHiddenLayerClientHttpResponse<ApeObjective> get(String objectiveId) {
         return get(objectiveId, GetObjectivesRequest.builder().build());
     }
 
@@ -287,7 +287,7 @@ public class RawObjectivesClient {
      * <p>Return a single objective by ID. <code>HLO.NN</code> IDs return a built-in
      * objective; UUIDs return one of the tenant's custom objectives.</p>
      */
-    public HiddenLayerHttpResponse<ApeObjective> get(String objectiveId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ApeObjective> get(String objectiveId, RequestOptions requestOptions) {
         return get(objectiveId, GetObjectivesRequest.builder().build(), requestOptions);
     }
 
@@ -296,7 +296,7 @@ public class RawObjectivesClient {
      * <p>Return a single objective by ID. <code>HLO.NN</code> IDs return a built-in
      * objective; UUIDs return one of the tenant's custom objectives.</p>
      */
-    public HiddenLayerHttpResponse<ApeObjective> get(String objectiveId, GetObjectivesRequest request) {
+    public BaseHiddenLayerClientHttpResponse<ApeObjective> get(String objectiveId, GetObjectivesRequest request) {
         return get(objectiveId, request, null);
     }
 
@@ -305,7 +305,7 @@ public class RawObjectivesClient {
      * <p>Return a single objective by ID. <code>HLO.NN</code> IDs return a built-in
      * objective; UUIDs return one of the tenant's custom objectives.</p>
      */
-    public HiddenLayerHttpResponse<ApeObjective> get(
+    public BaseHiddenLayerClientHttpResponse<ApeObjective> get(
             String objectiveId, GetObjectivesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -339,7 +339,7 @@ public class RawObjectivesClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ApeObjective.class), response);
             }
             try {
@@ -378,7 +378,7 @@ public class RawObjectivesClient {
      * <p>Built-in <code>HLO.NN</code> objectives are read-only: a DELETE against one
      * returns 409.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String objectiveId) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String objectiveId) {
         return delete(objectiveId, DeleteObjectivesRequest.builder().build());
     }
 
@@ -390,7 +390,7 @@ public class RawObjectivesClient {
      * <p>Built-in <code>HLO.NN</code> objectives are read-only: a DELETE against one
      * returns 409.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String objectiveId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String objectiveId, RequestOptions requestOptions) {
         return delete(objectiveId, DeleteObjectivesRequest.builder().build(), requestOptions);
     }
 
@@ -402,7 +402,7 @@ public class RawObjectivesClient {
      * <p>Built-in <code>HLO.NN</code> objectives are read-only: a DELETE against one
      * returns 409.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String objectiveId, DeleteObjectivesRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String objectiveId, DeleteObjectivesRequest request) {
         return delete(objectiveId, request, null);
     }
 
@@ -414,7 +414,7 @@ public class RawObjectivesClient {
      * <p>Built-in <code>HLO.NN</code> objectives are read-only: a DELETE against one
      * returns 409.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
             String objectiveId, DeleteObjectivesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -450,7 +450,7 @@ public class RawObjectivesClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -492,7 +492,7 @@ public class RawObjectivesClient {
      * 409. Use <code>severity_mapping</code> on a config or start request to tune a
      * built-in's effective severity instead.</p>
      */
-    public HiddenLayerHttpResponse<ApeObjective> update(String objectiveId) {
+    public BaseHiddenLayerClientHttpResponse<ApeObjective> update(String objectiveId) {
         return update(objectiveId, UpdateCustomObjectiveRequest.builder().build());
     }
 
@@ -504,7 +504,7 @@ public class RawObjectivesClient {
      * 409. Use <code>severity_mapping</code> on a config or start request to tune a
      * built-in's effective severity instead.</p>
      */
-    public HiddenLayerHttpResponse<ApeObjective> update(String objectiveId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ApeObjective> update(String objectiveId, RequestOptions requestOptions) {
         return update(objectiveId, UpdateCustomObjectiveRequest.builder().build(), requestOptions);
     }
 
@@ -516,7 +516,8 @@ public class RawObjectivesClient {
      * 409. Use <code>severity_mapping</code> on a config or start request to tune a
      * built-in's effective severity instead.</p>
      */
-    public HiddenLayerHttpResponse<ApeObjective> update(String objectiveId, UpdateCustomObjectiveRequest request) {
+    public BaseHiddenLayerClientHttpResponse<ApeObjective> update(
+            String objectiveId, UpdateCustomObjectiveRequest request) {
         return update(objectiveId, request, null);
     }
 
@@ -528,7 +529,7 @@ public class RawObjectivesClient {
      * 409. Use <code>severity_mapping</code> on a config or start request to tune a
      * built-in's effective severity instead.</p>
      */
-    public HiddenLayerHttpResponse<ApeObjective> update(
+    public BaseHiddenLayerClientHttpResponse<ApeObjective> update(
             String objectiveId, UpdateCustomObjectiveRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -572,7 +573,7 @@ public class RawObjectivesClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ApeObjective.class), response);
             }
             try {

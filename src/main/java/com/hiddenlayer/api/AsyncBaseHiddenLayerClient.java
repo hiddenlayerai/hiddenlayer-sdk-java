@@ -33,7 +33,7 @@ import com.hiddenlayer.api.resources.triage.AsyncTriageClient;
 import com.hiddenlayer.api.resources.users.AsyncUsersClient;
 import java.util.function.Supplier;
 
-public class AsyncHiddenLayer implements AutoCloseable {
+public class AsyncBaseHiddenLayerClient implements AutoCloseable {
     protected final ClientOptions clientOptions;
 
     protected final Supplier<AsyncEulaResponsesClient> eulaResponsesClient;
@@ -88,7 +88,7 @@ public class AsyncHiddenLayer implements AutoCloseable {
 
     protected final Supplier<AsyncTriageClient> triageClient;
 
-    public AsyncHiddenLayer(ClientOptions clientOptions) {
+    public AsyncBaseHiddenLayerClient(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         this.eulaResponsesClient = Suppliers.memoize(() -> new AsyncEulaResponsesClient(clientOptions));
         this.credentialsClient = Suppliers.memoize(() -> new AsyncCredentialsClient(clientOptions));
@@ -232,30 +232,7 @@ public class AsyncHiddenLayer implements AutoCloseable {
         this.clientOptions.close();
     }
 
-    /**
-     * Creates a client builder using a pre-generated access token.
-     * @param token The access token to use for authentication
-     * @return A builder configured for token authentication
-     */
-    public static AsyncHiddenLayerBuilder._TokenAuth withToken(String token) {
-        return AsyncHiddenLayerBuilder.withToken(token);
-    }
-
-    /**
-     * Creates a client builder using OAuth client credentials.
-     * @param clientId The OAuth client ID
-     * @param clientSecret The OAuth client secret
-     * @return A builder configured for OAuth authentication
-     */
-    public static AsyncHiddenLayerBuilder._CredentialsAuth withCredentials(String clientId, String clientSecret) {
-        return AsyncHiddenLayerBuilder.withCredentials(clientId, clientSecret);
-    }
-
-    /**
-     * Creates a new client builder.
-     * @return A builder for configuring and creating the client
-     */
-    public static AsyncHiddenLayerBuilder._Builder builder() {
-        return AsyncHiddenLayerBuilder.builder();
+    public static AsyncBaseHiddenLayerClientBuilder.Impl builder() {
+        return new AsyncBaseHiddenLayerClientBuilder.Impl();
     }
 }

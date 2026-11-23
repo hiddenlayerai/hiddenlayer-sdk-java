@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.scans.results;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -49,32 +49,32 @@ public class AsyncRawResultsClient {
     /**
      * Returns a cursor-paginated list of file results for a given scan. Results are sorted by compliance status, then highest detection severity, then file path.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>> listFiles(
-            String scanId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>>
+            listFiles(String scanId) {
         return listFiles(scanId, ListFilesResultsRequest.builder().build());
     }
 
     /**
      * Returns a cursor-paginated list of file results for a given scan. Results are sorted by compliance status, then highest detection severity, then file path.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>> listFiles(
-            String scanId, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>>
+            listFiles(String scanId, RequestOptions requestOptions) {
         return listFiles(scanId, ListFilesResultsRequest.builder().build(), requestOptions);
     }
 
     /**
      * Returns a cursor-paginated list of file results for a given scan. Results are sorted by compliance status, then highest detection severity, then file path.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>> listFiles(
-            String scanId, ListFilesResultsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>>
+            listFiles(String scanId, ListFilesResultsRequest request) {
         return listFiles(scanId, request, null);
     }
 
     /**
      * Returns a cursor-paginated list of file results for a given scan. Results are sorted by compliance status, then highest detection severity, then file path.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>> listFiles(
-            String scanId, ListFilesResultsRequest request, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>>
+            listFiles(String scanId, ListFilesResultsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("scan/v3/results")
@@ -127,8 +127,8 @@ public class AsyncRawResultsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>> future =
-                new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>>
+                future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -144,7 +144,7 @@ public class AsyncRawResultsClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<ScanFileResultWithComplianceV3> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<ScanFileResultWithComplianceV3>(
                                         !startingAfter.isEmpty(), result, parsedResponse, () -> {
                                             try {
@@ -204,19 +204,21 @@ public class AsyncRawResultsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<String>> sarif(String scanId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<String>> sarif(String scanId) {
         return sarif(scanId, SarifResultsRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<String>> sarif(String scanId, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<String>> sarif(
+            String scanId, RequestOptions requestOptions) {
         return sarif(scanId, SarifResultsRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<String>> sarif(String scanId, SarifResultsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<String>> sarif(
+            String scanId, SarifResultsRequest request) {
         return sarif(scanId, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<String>> sarif(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<String>> sarif(
             String scanId, SarifResultsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -254,7 +256,7 @@ public class AsyncRawResultsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<String>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<String>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -262,7 +264,7 @@ public class AsyncRawResultsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, String.class), response));
                         return;
                     }
@@ -310,14 +312,15 @@ public class AsyncRawResultsClient {
     /**
      * Returns aggregated summary information for a scan without file-level results.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ScanReportSummaryResponseV3>> retrieveSummary(String scanId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportSummaryResponseV3>> retrieveSummary(
+            String scanId) {
         return retrieveSummary(scanId, RetrieveSummaryResultsRequest.builder().build());
     }
 
     /**
      * Returns aggregated summary information for a scan without file-level results.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ScanReportSummaryResponseV3>> retrieveSummary(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportSummaryResponseV3>> retrieveSummary(
             String scanId, RequestOptions requestOptions) {
         return retrieveSummary(scanId, RetrieveSummaryResultsRequest.builder().build(), requestOptions);
     }
@@ -325,7 +328,7 @@ public class AsyncRawResultsClient {
     /**
      * Returns aggregated summary information for a scan without file-level results.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ScanReportSummaryResponseV3>> retrieveSummary(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportSummaryResponseV3>> retrieveSummary(
             String scanId, RetrieveSummaryResultsRequest request) {
         return retrieveSummary(scanId, request, null);
     }
@@ -333,7 +336,7 @@ public class AsyncRawResultsClient {
     /**
      * Returns aggregated summary information for a scan without file-level results.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ScanReportSummaryResponseV3>> retrieveSummary(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportSummaryResponseV3>> retrieveSummary(
             String scanId, RetrieveSummaryResultsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -371,7 +374,8 @@ public class AsyncRawResultsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ScanReportSummaryResponseV3>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportSummaryResponseV3>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -379,7 +383,7 @@ public class AsyncRawResultsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, ScanReportSummaryResponseV3.class),
                                 response));

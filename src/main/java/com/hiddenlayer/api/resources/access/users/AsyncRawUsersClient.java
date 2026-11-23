@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.access.users;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -44,28 +44,30 @@ public class AsyncRawUsersClient {
     /**
      * Returns the list of users belonging to the authenticated user's tenant. Use the <code>cursor</code> parameter to navigate through pages of results. Replaces the deprecated <code>GET /api/v2/users</code> endpoint.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<User>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<User>>> list() {
         return list(ListUsersRequest.builder().build());
     }
 
     /**
      * Returns the list of users belonging to the authenticated user's tenant. Use the <code>cursor</code> parameter to navigate through pages of results. Replaces the deprecated <code>GET /api/v2/users</code> endpoint.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<User>>> list(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<User>>> list(
+            RequestOptions requestOptions) {
         return list(ListUsersRequest.builder().build(), requestOptions);
     }
 
     /**
      * Returns the list of users belonging to the authenticated user's tenant. Use the <code>cursor</code> parameter to navigate through pages of results. Replaces the deprecated <code>GET /api/v2/users</code> endpoint.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<User>>> list(ListUsersRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<User>>> list(
+            ListUsersRequest request) {
         return list(request, null);
     }
 
     /**
      * Returns the list of users belonging to the authenticated user's tenant. Use the <code>cursor</code> parameter to navigate through pages of results. Replaces the deprecated <code>GET /api/v2/users</code> endpoint.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<User>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<User>>> list(
             ListUsersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -106,7 +108,8 @@ public class AsyncRawUsersClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<User>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<User>>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -122,7 +125,7 @@ public class AsyncRawUsersClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<User> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<User>(!startingAfter.isEmpty(), result, parsedResponse, () -> {
                                     try {
                                         return list(nextRequest, requestOptions)

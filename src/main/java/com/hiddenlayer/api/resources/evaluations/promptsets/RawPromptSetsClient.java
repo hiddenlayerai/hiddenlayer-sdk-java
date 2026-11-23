@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.evaluations.promptsets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -53,7 +53,7 @@ public class RawPromptSetsClient {
      * <li>Tenant-specific prompt sets with their current status</li>
      * </ul>
      */
-    public HiddenLayerHttpResponse<PromptSetsResponse> list() {
+    public BaseHiddenLayerClientHttpResponse<PromptSetsResponse> list() {
         return list(null);
     }
 
@@ -66,7 +66,7 @@ public class RawPromptSetsClient {
      * <li>Tenant-specific prompt sets with their current status</li>
      * </ul>
      */
-    public HiddenLayerHttpResponse<PromptSetsResponse> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<PromptSetsResponse> list(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("evaluations/v1/prompt-sets");
@@ -98,7 +98,7 @@ public class RawPromptSetsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PromptSetsResponse.class), response);
             }
             try {
@@ -134,7 +134,7 @@ public class RawPromptSetsClient {
      * background job then tags the prompts, after applying any requested
      * mutations. List the prompt sets to see when the status changes.</p>
      */
-    public HiddenLayerHttpResponse<CreatePromptSetResponse> create(CreatePromptSetRequest request) {
+    public BaseHiddenLayerClientHttpResponse<CreatePromptSetResponse> create(CreatePromptSetRequest request) {
         return create(request, null);
     }
 
@@ -146,7 +146,7 @@ public class RawPromptSetsClient {
      * background job then tags the prompts, after applying any requested
      * mutations. List the prompt sets to see when the status changes.</p>
      */
-    public HiddenLayerHttpResponse<CreatePromptSetResponse> create(
+    public BaseHiddenLayerClientHttpResponse<CreatePromptSetResponse> create(
             CreatePromptSetRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -189,7 +189,7 @@ public class RawPromptSetsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CreatePromptSetResponse.class),
                         response);
             }
@@ -234,7 +234,7 @@ public class RawPromptSetsClient {
      * <li>semantic_transformations: LLM-based semantic transformations</li>
      * </ul>
      */
-    public HiddenLayerHttpResponse<AvailableMutationsResponse> mutations() {
+    public BaseHiddenLayerClientHttpResponse<AvailableMutationsResponse> mutations() {
         return mutations(null);
     }
 
@@ -248,7 +248,7 @@ public class RawPromptSetsClient {
      * <li>semantic_transformations: LLM-based semantic transformations</li>
      * </ul>
      */
-    public HiddenLayerHttpResponse<AvailableMutationsResponse> mutations(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<AvailableMutationsResponse> mutations(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("evaluations/v1/prompt-sets/mutations");
@@ -280,7 +280,7 @@ public class RawPromptSetsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AvailableMutationsResponse.class),
                         response);
             }
@@ -313,7 +313,7 @@ public class RawPromptSetsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a tenant-specific prompt set.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String promptSetId) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String promptSetId) {
         return delete(promptSetId, DeletePromptSetsRequest.builder().build());
     }
 
@@ -321,7 +321,7 @@ public class RawPromptSetsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a tenant-specific prompt set.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String promptSetId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String promptSetId, RequestOptions requestOptions) {
         return delete(promptSetId, DeletePromptSetsRequest.builder().build(), requestOptions);
     }
 
@@ -329,7 +329,7 @@ public class RawPromptSetsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a tenant-specific prompt set.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String promptSetId, DeletePromptSetsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String promptSetId, DeletePromptSetsRequest request) {
         return delete(promptSetId, request, null);
     }
 
@@ -337,7 +337,7 @@ public class RawPromptSetsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a tenant-specific prompt set.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
             String promptSetId, DeletePromptSetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -373,7 +373,7 @@ public class RawPromptSetsClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -410,7 +410,7 @@ public class RawPromptSetsClient {
      * <p>Exports a built-in or tenant-specific prompt set as CSV with columns:
      * prompt_id, system_prompt, user_prompt, technique_ids.</p>
      */
-    public HiddenLayerHttpResponse<InputStream> csv(String promptSetId) {
+    public BaseHiddenLayerClientHttpResponse<InputStream> csv(String promptSetId) {
         return csv(promptSetId, CsvPromptSetsRequest.builder().build());
     }
 
@@ -420,7 +420,7 @@ public class RawPromptSetsClient {
      * <p>Exports a built-in or tenant-specific prompt set as CSV with columns:
      * prompt_id, system_prompt, user_prompt, technique_ids.</p>
      */
-    public HiddenLayerHttpResponse<InputStream> csv(String promptSetId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<InputStream> csv(String promptSetId, RequestOptions requestOptions) {
         return csv(promptSetId, CsvPromptSetsRequest.builder().build(), requestOptions);
     }
 
@@ -430,7 +430,7 @@ public class RawPromptSetsClient {
      * <p>Exports a built-in or tenant-specific prompt set as CSV with columns:
      * prompt_id, system_prompt, user_prompt, technique_ids.</p>
      */
-    public HiddenLayerHttpResponse<InputStream> csv(String promptSetId, CsvPromptSetsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<InputStream> csv(String promptSetId, CsvPromptSetsRequest request) {
         return csv(promptSetId, request, null);
     }
 
@@ -440,7 +440,7 @@ public class RawPromptSetsClient {
      * <p>Exports a built-in or tenant-specific prompt set as CSV with columns:
      * prompt_id, system_prompt, user_prompt, technique_ids.</p>
      */
-    public HiddenLayerHttpResponse<InputStream> csv(
+    public BaseHiddenLayerClientHttpResponse<InputStream> csv(
             String promptSetId, CsvPromptSetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -475,7 +475,7 @@ public class RawPromptSetsClient {
             Response response = client.newCall(okhttpRequest).execute();
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(new ResponseBodyInputStream(response), response);
+                return new BaseHiddenLayerClientHttpResponse<>(new ResponseBodyInputStream(response), response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {

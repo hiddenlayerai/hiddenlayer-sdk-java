@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.assetinventory.annotations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -45,7 +45,7 @@ public class AsyncRawAnnotationsClient {
      * <code>key</code>. Use this when the producer's identifier is known but the
      * server-generated asset ID is not.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Asset>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Asset>> get(
             String annotatingService, String annotatingServiceKey) {
         return get(
                 annotatingService,
@@ -59,7 +59,7 @@ public class AsyncRawAnnotationsClient {
      * <code>key</code>. Use this when the producer's identifier is known but the
      * server-generated asset ID is not.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Asset>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Asset>> get(
             String annotatingService, String annotatingServiceKey, RequestOptions requestOptions) {
         return get(
                 annotatingService,
@@ -74,7 +74,7 @@ public class AsyncRawAnnotationsClient {
      * <code>key</code>. Use this when the producer's identifier is known but the
      * server-generated asset ID is not.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Asset>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Asset>> get(
             String annotatingService, String annotatingServiceKey, GetAnnotationsRequest request) {
         return get(annotatingService, annotatingServiceKey, request, null);
     }
@@ -85,7 +85,7 @@ public class AsyncRawAnnotationsClient {
      * <code>key</code>. Use this when the producer's identifier is known but the
      * server-generated asset ID is not.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Asset>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Asset>> get(
             String annotatingService,
             String annotatingServiceKey,
             GetAnnotationsRequest request,
@@ -123,7 +123,7 @@ public class AsyncRawAnnotationsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Asset>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Asset>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -131,7 +131,7 @@ public class AsyncRawAnnotationsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Asset.class), response));
                         return;
                     }

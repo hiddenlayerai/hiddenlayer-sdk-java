@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.metrics.timeseriesincidents;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -35,11 +35,12 @@ public class RawTimeseriesIncidentsClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<IncidentTimeseriesResponseV2> listV2(ListV2TimeseriesIncidentsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<IncidentTimeseriesResponseV2> listV2(
+            ListV2TimeseriesIncidentsRequest request) {
         return listV2(request, null);
     }
 
-    public HiddenLayerHttpResponse<IncidentTimeseriesResponseV2> listV2(
+    public BaseHiddenLayerClientHttpResponse<IncidentTimeseriesResponseV2> listV2(
             ListV2TimeseriesIncidentsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -81,7 +82,7 @@ public class RawTimeseriesIncidentsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, IncidentTimeseriesResponseV2.class),
                         response);
             }
@@ -113,11 +114,12 @@ public class RawTimeseriesIncidentsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<IncidentTimeseriesResponseV3> list(ListTimeseriesIncidentsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<IncidentTimeseriesResponseV3> list(
+            ListTimeseriesIncidentsRequest request) {
         return list(request, null);
     }
 
-    public HiddenLayerHttpResponse<IncidentTimeseriesResponseV3> list(
+    public BaseHiddenLayerClientHttpResponse<IncidentTimeseriesResponseV3> list(
             ListTimeseriesIncidentsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -159,7 +161,7 @@ public class RawTimeseriesIncidentsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, IncidentTimeseriesResponseV3.class),
                         response);
             }

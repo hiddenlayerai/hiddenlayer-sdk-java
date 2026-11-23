@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.scans.results;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -44,14 +44,15 @@ public class RawResultsClient {
     /**
      * Returns a cursor-paginated list of file results for a given scan. Results are sorted by compliance status, then highest detection severity, then file path.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>> listFiles(String scanId) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>> listFiles(
+            String scanId) {
         return listFiles(scanId, ListFilesResultsRequest.builder().build());
     }
 
     /**
      * Returns a cursor-paginated list of file results for a given scan. Results are sorted by compliance status, then highest detection severity, then file path.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>> listFiles(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>> listFiles(
             String scanId, RequestOptions requestOptions) {
         return listFiles(scanId, ListFilesResultsRequest.builder().build(), requestOptions);
     }
@@ -59,7 +60,7 @@ public class RawResultsClient {
     /**
      * Returns a cursor-paginated list of file results for a given scan. Results are sorted by compliance status, then highest detection severity, then file path.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>> listFiles(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>> listFiles(
             String scanId, ListFilesResultsRequest request) {
         return listFiles(scanId, request, null);
     }
@@ -67,7 +68,7 @@ public class RawResultsClient {
     /**
      * Returns a cursor-paginated list of file results for a given scan. Results are sorted by compliance status, then highest detection severity, then file path.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>> listFiles(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>> listFiles(
             String scanId, ListFilesResultsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -133,7 +134,7 @@ public class RawResultsClient {
                         .cursor(startingAfter)
                         .build();
                 List<ScanFileResultWithComplianceV3> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<ScanFileResultWithComplianceV3>(
                                 !startingAfter.isEmpty(), result, parsedResponse, () -> listFiles(
                                                 scanId, nextRequest, requestOptions)
@@ -165,19 +166,19 @@ public class RawResultsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<String> sarif(String scanId) {
+    public BaseHiddenLayerClientHttpResponse<String> sarif(String scanId) {
         return sarif(scanId, SarifResultsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<String> sarif(String scanId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<String> sarif(String scanId, RequestOptions requestOptions) {
         return sarif(scanId, SarifResultsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<String> sarif(String scanId, SarifResultsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<String> sarif(String scanId, SarifResultsRequest request) {
         return sarif(scanId, request, null);
     }
 
-    public HiddenLayerHttpResponse<String> sarif(
+    public BaseHiddenLayerClientHttpResponse<String> sarif(
             String scanId, SarifResultsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -219,7 +220,7 @@ public class RawResultsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, String.class), response);
             }
             try {
@@ -247,14 +248,14 @@ public class RawResultsClient {
     /**
      * Returns aggregated summary information for a scan without file-level results.
      */
-    public HiddenLayerHttpResponse<ScanReportSummaryResponseV3> retrieveSummary(String scanId) {
+    public BaseHiddenLayerClientHttpResponse<ScanReportSummaryResponseV3> retrieveSummary(String scanId) {
         return retrieveSummary(scanId, RetrieveSummaryResultsRequest.builder().build());
     }
 
     /**
      * Returns aggregated summary information for a scan without file-level results.
      */
-    public HiddenLayerHttpResponse<ScanReportSummaryResponseV3> retrieveSummary(
+    public BaseHiddenLayerClientHttpResponse<ScanReportSummaryResponseV3> retrieveSummary(
             String scanId, RequestOptions requestOptions) {
         return retrieveSummary(scanId, RetrieveSummaryResultsRequest.builder().build(), requestOptions);
     }
@@ -262,7 +263,7 @@ public class RawResultsClient {
     /**
      * Returns aggregated summary information for a scan without file-level results.
      */
-    public HiddenLayerHttpResponse<ScanReportSummaryResponseV3> retrieveSummary(
+    public BaseHiddenLayerClientHttpResponse<ScanReportSummaryResponseV3> retrieveSummary(
             String scanId, RetrieveSummaryResultsRequest request) {
         return retrieveSummary(scanId, request, null);
     }
@@ -270,7 +271,7 @@ public class RawResultsClient {
     /**
      * Returns aggregated summary information for a scan without file-level results.
      */
-    public HiddenLayerHttpResponse<ScanReportSummaryResponseV3> retrieveSummary(
+    public BaseHiddenLayerClientHttpResponse<ScanReportSummaryResponseV3> retrieveSummary(
             String scanId, RetrieveSummaryResultsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -312,7 +313,7 @@ public class RawResultsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ScanReportSummaryResponseV3.class),
                         response);
             }

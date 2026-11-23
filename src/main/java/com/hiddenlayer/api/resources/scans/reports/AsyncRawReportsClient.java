@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.scans.reports;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -42,14 +42,14 @@ public class AsyncRawReportsClient {
     /**
      * Returns a cursor-paginated list of scan reports.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReport>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReport>>> list() {
         return list(ListReportsRequest.builder().build());
     }
 
     /**
      * Returns a cursor-paginated list of scan reports.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReport>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReport>>> list(
             RequestOptions requestOptions) {
         return list(ListReportsRequest.builder().build(), requestOptions);
     }
@@ -57,14 +57,15 @@ public class AsyncRawReportsClient {
     /**
      * Returns a cursor-paginated list of scan reports.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReport>>> list(ListReportsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReport>>> list(
+            ListReportsRequest request) {
         return list(request, null);
     }
 
     /**
      * Returns a cursor-paginated list of scan reports.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReport>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReport>>> list(
             ListReportsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -109,7 +110,8 @@ public class AsyncRawReportsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReport>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReport>>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -125,7 +127,7 @@ public class AsyncRawReportsClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<ScanReport> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<ScanReport>(
                                         !startingAfter.isEmpty(), result, parsedResponse, () -> {
                                             try {

@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.assetinventory.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -41,22 +41,23 @@ public class AsyncRawResourcesClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>>
+            list() {
         return list(ListResourcesRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>> list(
-            RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>>
+            list(RequestOptions requestOptions) {
         return list(ListResourcesRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>> list(
-            ListResourcesRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>>
+            list(ListResourcesRequest request) {
         return list(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>> list(
-            ListResourcesRequest request, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>>
+            list(ListResourcesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v1/resources");
@@ -108,8 +109,8 @@ public class AsyncRawResourcesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>> future =
-                new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>>>
+                future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -126,7 +127,7 @@ public class AsyncRawResourcesClient {
                                 .build();
                         List<ListResourcesResponseItemsItem> result =
                                 parsedResponse.getItems().orElse(Collections.emptyList());
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<ListResourcesResponseItemsItem>(
                                         !startingAfter.isEmpty(), result, parsedResponse, () -> {
                                             try {

@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.governance.policypacks;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.governance.policypacks.requests.DeletePolicyPacksRequest;
@@ -40,7 +40,7 @@ public class AsyncPolicyPacksClient {
      * <p>Returns pack summaries without <code>settings</code> or <code>detection_rules</code>. To read those, get the policy pack by ID.</p>
      */
     public CompletableFuture<SyncPagingIterable<PolicyPackSummary>> list() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<PolicyPackSummary>>> rawFuture =
                 this.rawClient.list();
         CompletableFuture<SyncPagingIterable<PolicyPackSummary>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -57,7 +57,7 @@ public class AsyncPolicyPacksClient {
      * <p>Returns pack summaries without <code>settings</code> or <code>detection_rules</code>. To read those, get the policy pack by ID.</p>
      */
     public CompletableFuture<SyncPagingIterable<PolicyPackSummary>> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<PolicyPackSummary>>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<SyncPagingIterable<PolicyPackSummary>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -74,7 +74,7 @@ public class AsyncPolicyPacksClient {
      * <p>Returns pack summaries without <code>settings</code> or <code>detection_rules</code>. To read those, get the policy pack by ID.</p>
      */
     public CompletableFuture<SyncPagingIterable<PolicyPackSummary>> list(ListPolicyPacksRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<PolicyPackSummary>>> rawFuture =
                 this.rawClient.list(request);
         CompletableFuture<SyncPagingIterable<PolicyPackSummary>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -92,7 +92,7 @@ public class AsyncPolicyPacksClient {
      */
     public CompletableFuture<SyncPagingIterable<PolicyPackSummary>> list(
             ListPolicyPacksRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<PolicyPackSummary>>> rawFuture =
                 this.rawClient.list(request, requestOptions);
         CompletableFuture<SyncPagingIterable<PolicyPackSummary>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -109,7 +109,7 @@ public class AsyncPolicyPacksClient {
      * <p>Creates a custom policy pack from the rule packs, individual rules, redaction configuration, and settings in the request.</p>
      */
     public CompletableFuture<PolicyPack> create(PolicyPackWriteRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> rawFuture = this.rawClient.create(request);
         CompletableFuture<PolicyPack> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -124,7 +124,7 @@ public class AsyncPolicyPacksClient {
      * <p>Creates a custom policy pack from the rule packs, individual rules, redaction configuration, and settings in the request.</p>
      */
     public CompletableFuture<PolicyPack> create(PolicyPackWriteRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> rawFuture =
                 this.rawClient.create(request, requestOptions);
         CompletableFuture<PolicyPack> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -140,7 +140,7 @@ public class AsyncPolicyPacksClient {
      * <p>To apply the recommendation, set the returned <code>id</code> as the project's <code>policy_pack_id</code>.</p>
      */
     public CompletableFuture<PolicyPackRecommendation> recommendations(PolicyPackRecommendationRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<PolicyPackRecommendation>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPackRecommendation>> rawFuture =
                 this.rawClient.recommendations(request);
         CompletableFuture<PolicyPackRecommendation> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -157,7 +157,7 @@ public class AsyncPolicyPacksClient {
      */
     public CompletableFuture<PolicyPackRecommendation> recommendations(
             PolicyPackRecommendationRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<PolicyPackRecommendation>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPackRecommendation>> rawFuture =
                 this.rawClient.recommendations(request, requestOptions);
         CompletableFuture<PolicyPackRecommendation> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -172,7 +172,7 @@ public class AsyncPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<PolicyPack> get(String policyPackId) {
-        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture = this.rawClient.get(policyPackId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> rawFuture = this.rawClient.get(policyPackId);
         CompletableFuture<PolicyPack> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -186,7 +186,7 @@ public class AsyncPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<PolicyPack> get(String policyPackId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> rawFuture =
                 this.rawClient.get(policyPackId, requestOptions);
         CompletableFuture<PolicyPack> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -201,7 +201,8 @@ public class AsyncPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<PolicyPack> get(String policyPackId, GetPolicyPacksRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture = this.rawClient.get(policyPackId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> rawFuture =
+                this.rawClient.get(policyPackId, request);
         CompletableFuture<PolicyPack> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -216,7 +217,7 @@ public class AsyncPolicyPacksClient {
      */
     public CompletableFuture<PolicyPack> get(
             String policyPackId, GetPolicyPacksRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> rawFuture =
                 this.rawClient.get(policyPackId, request, requestOptions);
         CompletableFuture<PolicyPack> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -232,7 +233,8 @@ public class AsyncPolicyPacksClient {
      * <p>Replaces the entire pack, including <code>settings</code>; omitted optional fields are cleared.</p>
      */
     public CompletableFuture<PolicyPack> update(String policyPackId, UpdatePolicyPacksRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture = this.rawClient.update(policyPackId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> rawFuture =
+                this.rawClient.update(policyPackId, request);
         CompletableFuture<PolicyPack> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -248,7 +250,7 @@ public class AsyncPolicyPacksClient {
      */
     public CompletableFuture<PolicyPack> update(
             String policyPackId, UpdatePolicyPacksRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<PolicyPack>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PolicyPack>> rawFuture =
                 this.rawClient.update(policyPackId, request, requestOptions);
         CompletableFuture<PolicyPack> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -265,7 +267,7 @@ public class AsyncPolicyPacksClient {
      * Returns 403 when the pack is HiddenLayer-authored; only custom packs can be deleted.</p>
      */
     public CompletableFuture<Void> delete(String policyPackId) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(policyPackId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(policyPackId);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -281,7 +283,7 @@ public class AsyncPolicyPacksClient {
      * Returns 403 when the pack is HiddenLayer-authored; only custom packs can be deleted.</p>
      */
     public CompletableFuture<Void> delete(String policyPackId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.delete(policyPackId, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -298,7 +300,8 @@ public class AsyncPolicyPacksClient {
      * Returns 403 when the pack is HiddenLayer-authored; only custom packs can be deleted.</p>
      */
     public CompletableFuture<Void> delete(String policyPackId, DeletePolicyPacksRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(policyPackId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(policyPackId, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -315,7 +318,7 @@ public class AsyncPolicyPacksClient {
      */
     public CompletableFuture<Void> delete(
             String policyPackId, DeletePolicyPacksRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.delete(policyPackId, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

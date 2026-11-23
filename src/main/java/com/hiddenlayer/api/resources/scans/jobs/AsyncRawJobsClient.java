@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.scans.jobs;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -48,11 +48,11 @@ public class AsyncRawJobsClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<ScanJob>> request(ScanJobRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanJob>> request(ScanJobRequest request) {
         return request(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<ScanJob>> request(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanJob>> request(
             ScanJobRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -91,7 +91,7 @@ public class AsyncRawJobsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ScanJob>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanJob>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -99,7 +99,7 @@ public class AsyncRawJobsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ScanJob.class), response));
                         return;
                     }
@@ -144,21 +144,21 @@ public class AsyncRawJobsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<ScanReportOfRecordV3>> retrieve(String scanId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportOfRecordV3>> retrieve(String scanId) {
         return retrieve(scanId, RetrieveJobsRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<ScanReportOfRecordV3>> retrieve(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportOfRecordV3>> retrieve(
             String scanId, RequestOptions requestOptions) {
         return retrieve(scanId, RetrieveJobsRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<ScanReportOfRecordV3>> retrieve(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportOfRecordV3>> retrieve(
             String scanId, RetrieveJobsRequest request) {
         return retrieve(scanId, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<ScanReportOfRecordV3>> retrieve(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportOfRecordV3>> retrieve(
             String scanId, RetrieveJobsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -199,7 +199,7 @@ public class AsyncRawJobsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ScanReportOfRecordV3>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportOfRecordV3>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -207,7 +207,7 @@ public class AsyncRawJobsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ScanReportOfRecordV3.class),
                                 response));
                         return;
@@ -253,21 +253,22 @@ public class AsyncRawJobsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>>
+            list() {
         return list(ListJobsRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> list(
             RequestOptions requestOptions) {
         return list(ListJobsRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> list(
             ListJobsRequest request) {
         return list(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> list(
             ListJobsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -393,7 +394,7 @@ public class AsyncRawJobsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> future =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> future =
                 new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
@@ -412,7 +413,7 @@ public class AsyncRawJobsClient {
                                 .from(request)
                                 .offset(newPageNumber)
                                 .build();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<ScanReportOfRecordV3Summary>(
                                         true, result, parsedResponse, () -> {
                                             try {

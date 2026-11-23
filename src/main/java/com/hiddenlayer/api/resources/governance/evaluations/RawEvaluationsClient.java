@@ -5,10 +5,10 @@ package com.hiddenlayer.api.resources.governance.evaluations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -42,7 +42,7 @@ public class RawEvaluationsClient {
      * Retrieve the governance evaluation results for multiple artifacts by their unique identifiers.
      * Each artifact will have a corresponding status to indicate whether evaluation results exist for that ID.
      */
-    public HiddenLayerHttpResponse<Map<String, EvaluationResult>> list() {
+    public BaseHiddenLayerClientHttpResponse<Map<String, EvaluationResult>> list() {
         return list(ListEvaluationsRequest.builder().build());
     }
 
@@ -50,7 +50,7 @@ public class RawEvaluationsClient {
      * Retrieve the governance evaluation results for multiple artifacts by their unique identifiers.
      * Each artifact will have a corresponding status to indicate whether evaluation results exist for that ID.
      */
-    public HiddenLayerHttpResponse<Map<String, EvaluationResult>> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Map<String, EvaluationResult>> list(RequestOptions requestOptions) {
         return list(ListEvaluationsRequest.builder().build(), requestOptions);
     }
 
@@ -58,7 +58,7 @@ public class RawEvaluationsClient {
      * Retrieve the governance evaluation results for multiple artifacts by their unique identifiers.
      * Each artifact will have a corresponding status to indicate whether evaluation results exist for that ID.
      */
-    public HiddenLayerHttpResponse<Map<String, EvaluationResult>> list(ListEvaluationsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Map<String, EvaluationResult>> list(ListEvaluationsRequest request) {
         return list(request, null);
     }
 
@@ -66,7 +66,7 @@ public class RawEvaluationsClient {
      * Retrieve the governance evaluation results for multiple artifacts by their unique identifiers.
      * Each artifact will have a corresponding status to indicate whether evaluation results exist for that ID.
      */
-    public HiddenLayerHttpResponse<Map<String, EvaluationResult>> list(
+    public BaseHiddenLayerClientHttpResponse<Map<String, EvaluationResult>> list(
             ListEvaluationsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -103,7 +103,7 @@ public class RawEvaluationsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, new TypeReference<Map<String, EvaluationResult>>() {}),
                         response);
@@ -140,7 +140,7 @@ public class RawEvaluationsClient {
      * Retrieve the governance evaluation results for a specific artifact by its unique identifier.
      * The response includes whether the artifact is compliant with the defined policies and an explanation of the evaluation.
      */
-    public HiddenLayerHttpResponse<EvaluationResult> get(String artifactId) {
+    public BaseHiddenLayerClientHttpResponse<EvaluationResult> get(String artifactId) {
         return get(artifactId, GetEvaluationsRequest.builder().build());
     }
 
@@ -148,7 +148,7 @@ public class RawEvaluationsClient {
      * Retrieve the governance evaluation results for a specific artifact by its unique identifier.
      * The response includes whether the artifact is compliant with the defined policies and an explanation of the evaluation.
      */
-    public HiddenLayerHttpResponse<EvaluationResult> get(String artifactId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<EvaluationResult> get(String artifactId, RequestOptions requestOptions) {
         return get(artifactId, GetEvaluationsRequest.builder().build(), requestOptions);
     }
 
@@ -156,7 +156,7 @@ public class RawEvaluationsClient {
      * Retrieve the governance evaluation results for a specific artifact by its unique identifier.
      * The response includes whether the artifact is compliant with the defined policies and an explanation of the evaluation.
      */
-    public HiddenLayerHttpResponse<EvaluationResult> get(String artifactId, GetEvaluationsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<EvaluationResult> get(String artifactId, GetEvaluationsRequest request) {
         return get(artifactId, request, null);
     }
 
@@ -164,7 +164,7 @@ public class RawEvaluationsClient {
      * Retrieve the governance evaluation results for a specific artifact by its unique identifier.
      * The response includes whether the artifact is compliant with the defined policies and an explanation of the evaluation.
      */
-    public HiddenLayerHttpResponse<EvaluationResult> get(
+    public BaseHiddenLayerClientHttpResponse<EvaluationResult> get(
             String artifactId, GetEvaluationsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -198,7 +198,7 @@ public class RawEvaluationsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, EvaluationResult.class), response);
             }
             try {

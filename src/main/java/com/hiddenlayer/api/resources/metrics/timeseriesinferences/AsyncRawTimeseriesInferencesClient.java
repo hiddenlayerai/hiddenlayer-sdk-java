@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.metrics.timeseriesinferences;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -39,12 +39,12 @@ public class AsyncRawTimeseriesInferencesClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<InferenceTimeseriesResponseV2>> listV2(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InferenceTimeseriesResponseV2>> listV2(
             ListV2TimeseriesInferencesRequest request) {
         return listV2(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<InferenceTimeseriesResponseV2>> listV2(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InferenceTimeseriesResponseV2>> listV2(
             ListV2TimeseriesInferencesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -82,7 +82,8 @@ public class AsyncRawTimeseriesInferencesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<InferenceTimeseriesResponseV2>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InferenceTimeseriesResponseV2>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -90,7 +91,7 @@ public class AsyncRawTimeseriesInferencesClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, InferenceTimeseriesResponseV2.class),
                                 response));
@@ -147,12 +148,12 @@ public class AsyncRawTimeseriesInferencesClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<InferenceTimeseriesResponseV3>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InferenceTimeseriesResponseV3>> list(
             ListTimeseriesInferencesRequest request) {
         return list(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<InferenceTimeseriesResponseV3>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InferenceTimeseriesResponseV3>> list(
             ListTimeseriesInferencesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -190,7 +191,8 @@ public class AsyncRawTimeseriesInferencesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<InferenceTimeseriesResponseV3>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InferenceTimeseriesResponseV3>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -198,7 +200,7 @@ public class AsyncRawTimeseriesInferencesClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, InferenceTimeseriesResponseV3.class),
                                 response));

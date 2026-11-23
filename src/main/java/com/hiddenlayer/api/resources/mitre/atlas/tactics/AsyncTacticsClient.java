@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.mitre.atlas.tactics;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.mitre.atlas.tactics.requests.GetTacticsRequest;
 import com.hiddenlayer.api.types.MitreAtlasTacticV1;
@@ -28,7 +28,8 @@ public class AsyncTacticsClient {
     }
 
     public CompletableFuture<MitreAtlasTacticV1> get(String tacticId) {
-        CompletableFuture<HiddenLayerHttpResponse<MitreAtlasTacticV1>> rawFuture = this.rawClient.get(tacticId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<MitreAtlasTacticV1>> rawFuture =
+                this.rawClient.get(tacticId);
         CompletableFuture<MitreAtlasTacticV1> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -39,7 +40,7 @@ public class AsyncTacticsClient {
     }
 
     public CompletableFuture<MitreAtlasTacticV1> get(String tacticId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<MitreAtlasTacticV1>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<MitreAtlasTacticV1>> rawFuture =
                 this.rawClient.get(tacticId, requestOptions);
         CompletableFuture<MitreAtlasTacticV1> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -51,7 +52,7 @@ public class AsyncTacticsClient {
     }
 
     public CompletableFuture<MitreAtlasTacticV1> get(String tacticId, GetTacticsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<MitreAtlasTacticV1>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<MitreAtlasTacticV1>> rawFuture =
                 this.rawClient.get(tacticId, request);
         CompletableFuture<MitreAtlasTacticV1> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -64,7 +65,7 @@ public class AsyncTacticsClient {
 
     public CompletableFuture<MitreAtlasTacticV1> get(
             String tacticId, GetTacticsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<MitreAtlasTacticV1>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<MitreAtlasTacticV1>> rawFuture =
                 this.rawClient.get(tacticId, request, requestOptions);
         CompletableFuture<MitreAtlasTacticV1> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

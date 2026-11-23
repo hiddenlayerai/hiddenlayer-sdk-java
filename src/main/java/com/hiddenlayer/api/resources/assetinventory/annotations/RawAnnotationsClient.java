@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.assetinventory.annotations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -41,7 +41,7 @@ public class RawAnnotationsClient {
      * <code>key</code>. Use this when the producer's identifier is known but the
      * server-generated asset ID is not.</p>
      */
-    public HiddenLayerHttpResponse<Asset> get(String annotatingService, String annotatingServiceKey) {
+    public BaseHiddenLayerClientHttpResponse<Asset> get(String annotatingService, String annotatingServiceKey) {
         return get(
                 annotatingService,
                 annotatingServiceKey,
@@ -54,7 +54,7 @@ public class RawAnnotationsClient {
      * <code>key</code>. Use this when the producer's identifier is known but the
      * server-generated asset ID is not.</p>
      */
-    public HiddenLayerHttpResponse<Asset> get(
+    public BaseHiddenLayerClientHttpResponse<Asset> get(
             String annotatingService, String annotatingServiceKey, RequestOptions requestOptions) {
         return get(
                 annotatingService,
@@ -69,7 +69,7 @@ public class RawAnnotationsClient {
      * <code>key</code>. Use this when the producer's identifier is known but the
      * server-generated asset ID is not.</p>
      */
-    public HiddenLayerHttpResponse<Asset> get(
+    public BaseHiddenLayerClientHttpResponse<Asset> get(
             String annotatingService, String annotatingServiceKey, GetAnnotationsRequest request) {
         return get(annotatingService, annotatingServiceKey, request, null);
     }
@@ -80,7 +80,7 @@ public class RawAnnotationsClient {
      * <code>key</code>. Use this when the producer's identifier is known but the
      * server-generated asset ID is not.</p>
      */
-    public HiddenLayerHttpResponse<Asset> get(
+    public BaseHiddenLayerClientHttpResponse<Asset> get(
             String annotatingService,
             String annotatingServiceKey,
             GetAnnotationsRequest request,
@@ -122,7 +122,7 @@ public class RawAnnotationsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Asset.class), response);
             }
             try {

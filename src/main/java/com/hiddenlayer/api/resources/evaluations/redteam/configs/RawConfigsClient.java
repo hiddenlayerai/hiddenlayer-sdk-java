@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.evaluations.redteam.configs;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -55,7 +55,7 @@ public class RawConfigsClient {
      * target system prompt, objective IDs, severity mapping, prompt set, project, tuning
      * knobs). Configs are referenced from the start endpoints via <code>config_id</code>.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<RedTeamConfigSummary>> list() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamConfigSummary>> list() {
         return list(ListConfigsRequest.builder().build());
     }
 
@@ -66,7 +66,8 @@ public class RawConfigsClient {
      * target system prompt, objective IDs, severity mapping, prompt set, project, tuning
      * knobs). Configs are referenced from the start endpoints via <code>config_id</code>.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<RedTeamConfigSummary>> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamConfigSummary>> list(
+            RequestOptions requestOptions) {
         return list(ListConfigsRequest.builder().build(), requestOptions);
     }
 
@@ -77,7 +78,8 @@ public class RawConfigsClient {
      * target system prompt, objective IDs, severity mapping, prompt set, project, tuning
      * knobs). Configs are referenced from the start endpoints via <code>config_id</code>.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<RedTeamConfigSummary>> list(ListConfigsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamConfigSummary>> list(
+            ListConfigsRequest request) {
         return list(request, null);
     }
 
@@ -88,7 +90,7 @@ public class RawConfigsClient {
      * target system prompt, objective IDs, severity mapping, prompt set, project, tuning
      * knobs). Configs are referenced from the start endpoints via <code>config_id</code>.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<RedTeamConfigSummary>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamConfigSummary>> list(
             ListConfigsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -137,7 +139,7 @@ public class RawConfigsClient {
                         .cursor(startingAfter)
                         .build();
                 List<RedTeamConfigSummary> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<RedTeamConfigSummary>(
                                 !startingAfter.isEmpty(), result, parsedResponse, () -> list(
                                                 nextRequest, requestOptions)
@@ -180,7 +182,7 @@ public class RawConfigsClient {
      * supplied <code>hl_project_id</code> (UUID or alias) names an existing project; an alias
      * is stored as the canonical project UUID.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamConfig> create(CreateRedTeamConfigRequest request) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamConfig> create(CreateRedTeamConfigRequest request) {
         return create(request, null);
     }
 
@@ -192,7 +194,7 @@ public class RawConfigsClient {
      * supplied <code>hl_project_id</code> (UUID or alias) names an existing project; an alias
      * is stored as the canonical project UUID.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamConfig> create(
+    public BaseHiddenLayerClientHttpResponse<RedTeamConfig> create(
             CreateRedTeamConfigRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -235,7 +237,7 @@ public class RawConfigsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RedTeamConfig.class), response);
             }
             try {
@@ -279,7 +281,7 @@ public class RawConfigsClient {
      * which show whether the referenced prompt set or project was deleted.
      * <code>hl_project_status</code> is <code>unknown</code> when the project service is unavailable.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamConfig> get(String configId) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamConfig> get(String configId) {
         return get(configId, GetConfigsRequest.builder().build());
     }
 
@@ -290,7 +292,7 @@ public class RawConfigsClient {
      * which show whether the referenced prompt set or project was deleted.
      * <code>hl_project_status</code> is <code>unknown</code> when the project service is unavailable.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamConfig> get(String configId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamConfig> get(String configId, RequestOptions requestOptions) {
         return get(configId, GetConfigsRequest.builder().build(), requestOptions);
     }
 
@@ -301,7 +303,7 @@ public class RawConfigsClient {
      * which show whether the referenced prompt set or project was deleted.
      * <code>hl_project_status</code> is <code>unknown</code> when the project service is unavailable.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamConfig> get(String configId, GetConfigsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamConfig> get(String configId, GetConfigsRequest request) {
         return get(configId, request, null);
     }
 
@@ -312,7 +314,7 @@ public class RawConfigsClient {
      * which show whether the referenced prompt set or project was deleted.
      * <code>hl_project_status</code> is <code>unknown</code> when the project service is unavailable.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamConfig> get(
+    public BaseHiddenLayerClientHttpResponse<RedTeamConfig> get(
             String configId, GetConfigsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -346,7 +348,7 @@ public class RawConfigsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RedTeamConfig.class), response);
             }
             try {
@@ -383,7 +385,7 @@ public class RawConfigsClient {
      * are unaffected because the resolved settings are snapshotted into the result row
      * at start time.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String configId) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String configId) {
         return delete(configId, DeleteConfigsRequest.builder().build());
     }
 
@@ -393,7 +395,7 @@ public class RawConfigsClient {
      * are unaffected because the resolved settings are snapshotted into the result row
      * at start time.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String configId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String configId, RequestOptions requestOptions) {
         return delete(configId, DeleteConfigsRequest.builder().build(), requestOptions);
     }
 
@@ -403,7 +405,7 @@ public class RawConfigsClient {
      * are unaffected because the resolved settings are snapshotted into the result row
      * at start time.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String configId, DeleteConfigsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String configId, DeleteConfigsRequest request) {
         return delete(configId, request, null);
     }
 
@@ -413,7 +415,7 @@ public class RawConfigsClient {
      * are unaffected because the resolved settings are snapshotted into the result row
      * at start time.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
             String configId, DeleteConfigsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -449,7 +451,7 @@ public class RawConfigsClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -491,7 +493,7 @@ public class RawConfigsClient {
      * <p>Cross-reference fields (<code>prompt_set_id</code>, <code>hl_project_id</code>) are re-validated
      * whenever they are present in the request body with a non-empty value.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamConfig> update(String configId) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamConfig> update(String configId) {
         return update(configId, UpdateRedTeamConfigRequest.builder().build());
     }
 
@@ -506,7 +508,7 @@ public class RawConfigsClient {
      * <p>Cross-reference fields (<code>prompt_set_id</code>, <code>hl_project_id</code>) are re-validated
      * whenever they are present in the request body with a non-empty value.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamConfig> update(String configId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamConfig> update(String configId, RequestOptions requestOptions) {
         return update(configId, UpdateRedTeamConfigRequest.builder().build(), requestOptions);
     }
 
@@ -521,7 +523,8 @@ public class RawConfigsClient {
      * <p>Cross-reference fields (<code>prompt_set_id</code>, <code>hl_project_id</code>) are re-validated
      * whenever they are present in the request body with a non-empty value.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamConfig> update(String configId, UpdateRedTeamConfigRequest request) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamConfig> update(
+            String configId, UpdateRedTeamConfigRequest request) {
         return update(configId, request, null);
     }
 
@@ -536,7 +539,7 @@ public class RawConfigsClient {
      * <p>Cross-reference fields (<code>prompt_set_id</code>, <code>hl_project_id</code>) are re-validated
      * whenever they are present in the request body with a non-empty value.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamConfig> update(
+    public BaseHiddenLayerClientHttpResponse<RedTeamConfig> update(
             String configId, UpdateRedTeamConfigRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -580,7 +583,7 @@ public class RawConfigsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RedTeamConfig.class), response);
             }
             try {

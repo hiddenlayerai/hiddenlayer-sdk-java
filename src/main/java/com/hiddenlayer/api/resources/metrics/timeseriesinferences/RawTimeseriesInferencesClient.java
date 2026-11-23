@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.metrics.timeseriesinferences;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -35,11 +35,12 @@ public class RawTimeseriesInferencesClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<InferenceTimeseriesResponseV2> listV2(ListV2TimeseriesInferencesRequest request) {
+    public BaseHiddenLayerClientHttpResponse<InferenceTimeseriesResponseV2> listV2(
+            ListV2TimeseriesInferencesRequest request) {
         return listV2(request, null);
     }
 
-    public HiddenLayerHttpResponse<InferenceTimeseriesResponseV2> listV2(
+    public BaseHiddenLayerClientHttpResponse<InferenceTimeseriesResponseV2> listV2(
             ListV2TimeseriesInferencesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -81,7 +82,7 @@ public class RawTimeseriesInferencesClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, InferenceTimeseriesResponseV2.class),
                         response);
             }
@@ -113,11 +114,12 @@ public class RawTimeseriesInferencesClient {
         }
     }
 
-    public HiddenLayerHttpResponse<InferenceTimeseriesResponseV3> list(ListTimeseriesInferencesRequest request) {
+    public BaseHiddenLayerClientHttpResponse<InferenceTimeseriesResponseV3> list(
+            ListTimeseriesInferencesRequest request) {
         return list(request, null);
     }
 
-    public HiddenLayerHttpResponse<InferenceTimeseriesResponseV3> list(
+    public BaseHiddenLayerClientHttpResponse<InferenceTimeseriesResponseV3> list(
             ListTimeseriesInferencesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -159,7 +161,7 @@ public class RawTimeseriesInferencesClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, InferenceTimeseriesResponseV3.class),
                         response);
             }

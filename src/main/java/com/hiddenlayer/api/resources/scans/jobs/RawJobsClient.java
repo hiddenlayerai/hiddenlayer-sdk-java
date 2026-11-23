@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.scans.jobs;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -43,11 +43,11 @@ public class RawJobsClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<ScanJob> request(ScanJobRequest request) {
+    public BaseHiddenLayerClientHttpResponse<ScanJob> request(ScanJobRequest request) {
         return request(request, null);
     }
 
-    public HiddenLayerHttpResponse<ScanJob> request(ScanJobRequest request, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ScanJob> request(ScanJobRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("scan/v3/jobs");
@@ -89,7 +89,7 @@ public class RawJobsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ScanJob.class), response);
             }
             try {
@@ -114,19 +114,21 @@ public class RawJobsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<ScanReportOfRecordV3> retrieve(String scanId) {
+    public BaseHiddenLayerClientHttpResponse<ScanReportOfRecordV3> retrieve(String scanId) {
         return retrieve(scanId, RetrieveJobsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<ScanReportOfRecordV3> retrieve(String scanId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ScanReportOfRecordV3> retrieve(
+            String scanId, RequestOptions requestOptions) {
         return retrieve(scanId, RetrieveJobsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<ScanReportOfRecordV3> retrieve(String scanId, RetrieveJobsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<ScanReportOfRecordV3> retrieve(
+            String scanId, RetrieveJobsRequest request) {
         return retrieve(scanId, request, null);
     }
 
-    public HiddenLayerHttpResponse<ScanReportOfRecordV3> retrieve(
+    public BaseHiddenLayerClientHttpResponse<ScanReportOfRecordV3> retrieve(
             String scanId, RetrieveJobsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -171,7 +173,7 @@ public class RawJobsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ScanReportOfRecordV3.class), response);
             }
             try {
@@ -196,20 +198,21 @@ public class RawJobsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>> list() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>> list() {
         return list(ListJobsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>> list(
             RequestOptions requestOptions) {
         return list(ListJobsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>> list(ListJobsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>> list(
+            ListJobsRequest request) {
         return list(request, null);
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>> list(
             ListJobsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -349,7 +352,7 @@ public class RawJobsClient {
                         .from(request)
                         .offset(newPageNumber)
                         .build();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<ScanReportOfRecordV3Summary>(
                                 true, result, parsedResponse, () -> list(nextRequest, requestOptions)
                                         .body()),

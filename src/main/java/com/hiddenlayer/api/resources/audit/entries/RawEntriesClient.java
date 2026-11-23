@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.audit.entries;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -37,28 +37,28 @@ public class RawEntriesClient {
     /**
      * Returns audit log entries for the tenant, sorted by time with the most recent first. Results can be filtered by time range, actor, role, action, and resource type, or searched by free text.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<AuditEntry>> list() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AuditEntry>> list() {
         return list(ListEntriesRequest.builder().build());
     }
 
     /**
      * Returns audit log entries for the tenant, sorted by time with the most recent first. Results can be filtered by time range, actor, role, action, and resource type, or searched by free text.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<AuditEntry>> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AuditEntry>> list(RequestOptions requestOptions) {
         return list(ListEntriesRequest.builder().build(), requestOptions);
     }
 
     /**
      * Returns audit log entries for the tenant, sorted by time with the most recent first. Results can be filtered by time range, actor, role, action, and resource type, or searched by free text.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<AuditEntry>> list(ListEntriesRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AuditEntry>> list(ListEntriesRequest request) {
         return list(request, null);
     }
 
     /**
      * Returns audit log entries for the tenant, sorted by time with the most recent first. Results can be filtered by time range, actor, role, action, and resource type, or searched by free text.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<AuditEntry>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AuditEntry>> list(
             ListEntriesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -137,7 +137,7 @@ public class RawEntriesClient {
                         .from(request)
                         .offset(newPageNumber)
                         .build();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<AuditEntry>(
                                 true, result, parsedResponse, () -> list(nextRequest, requestOptions)
                                         .body()),

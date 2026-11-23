@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.assetinventory.annotations;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.assetinventory.annotations.requests.GetAnnotationsRequest;
 import com.hiddenlayer.api.types.Asset;
@@ -34,7 +34,7 @@ public class AsyncAnnotationsClient {
      * server-generated asset ID is not.</p>
      */
     public CompletableFuture<Asset> get(String annotatingService, String annotatingServiceKey) {
-        CompletableFuture<HiddenLayerHttpResponse<Asset>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Asset>> rawFuture =
                 this.rawClient.get(annotatingService, annotatingServiceKey);
         CompletableFuture<Asset> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -53,7 +53,7 @@ public class AsyncAnnotationsClient {
      */
     public CompletableFuture<Asset> get(
             String annotatingService, String annotatingServiceKey, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Asset>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Asset>> rawFuture =
                 this.rawClient.get(annotatingService, annotatingServiceKey, requestOptions);
         CompletableFuture<Asset> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -72,7 +72,7 @@ public class AsyncAnnotationsClient {
      */
     public CompletableFuture<Asset> get(
             String annotatingService, String annotatingServiceKey, GetAnnotationsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Asset>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Asset>> rawFuture =
                 this.rawClient.get(annotatingService, annotatingServiceKey, request);
         CompletableFuture<Asset> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -94,7 +94,7 @@ public class AsyncAnnotationsClient {
             String annotatingServiceKey,
             GetAnnotationsRequest request,
             RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Asset>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Asset>> rawFuture =
                 this.rawClient.get(annotatingService, annotatingServiceKey, request, requestOptions);
         CompletableFuture<Asset> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

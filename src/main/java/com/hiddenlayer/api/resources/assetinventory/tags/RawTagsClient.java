@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.assetinventory.tags;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -40,14 +40,14 @@ public class RawTagsClient {
     /**
      * Returns a paginated list of tag definitions. Optionally filter by source.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>> listV1() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>> listV1() {
         return listV1(ListV1TagsRequest.builder().build());
     }
 
     /**
      * Returns a paginated list of tag definitions. Optionally filter by source.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>> listV1(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>> listV1(
             RequestOptions requestOptions) {
         return listV1(ListV1TagsRequest.builder().build(), requestOptions);
     }
@@ -55,7 +55,7 @@ public class RawTagsClient {
     /**
      * Returns a paginated list of tag definitions. Optionally filter by source.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>> listV1(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>> listV1(
             ListV1TagsRequest request) {
         return listV1(request, null);
     }
@@ -63,7 +63,7 @@ public class RawTagsClient {
     /**
      * Returns a paginated list of tag definitions. Optionally filter by source.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>> listV1(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>> listV1(
             ListV1TagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -123,7 +123,7 @@ public class RawTagsClient {
                         .cursor(startingAfter)
                         .build();
                 List<AiAssetInventoryV1TagDefinition> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<AiAssetInventoryV1TagDefinition>(
                                 !startingAfter.isEmpty(), result, parsedResponse, () -> listV1(
                                                 nextRequest, requestOptions)
@@ -156,7 +156,7 @@ public class RawTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of tag definitions. Optionally filter by source.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<TagDefinition>> list() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TagDefinition>> list() {
         return list(ListTagsRequest.builder().build());
     }
 
@@ -164,7 +164,7 @@ public class RawTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of tag definitions. Optionally filter by source.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<TagDefinition>> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TagDefinition>> list(RequestOptions requestOptions) {
         return list(ListTagsRequest.builder().build(), requestOptions);
     }
 
@@ -172,7 +172,7 @@ public class RawTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of tag definitions. Optionally filter by source.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<TagDefinition>> list(ListTagsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TagDefinition>> list(ListTagsRequest request) {
         return list(request, null);
     }
 
@@ -180,7 +180,7 @@ public class RawTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of tag definitions. Optionally filter by source.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<TagDefinition>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TagDefinition>> list(
             ListTagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -240,7 +240,7 @@ public class RawTagsClient {
                         .cursor(startingAfter)
                         .build();
                 List<TagDefinition> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<TagDefinition>(
                                 !startingAfter.isEmpty(), result, parsedResponse, () -> list(
                                                 nextRequest, requestOptions)

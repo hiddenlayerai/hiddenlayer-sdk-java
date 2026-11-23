@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.compliance.rulesets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -46,19 +46,19 @@ public class RawRuleSetsClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<GetRuleSetItem>> list() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<GetRuleSetItem>> list() {
         return list(ListRuleSetsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<GetRuleSetItem>> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<GetRuleSetItem>> list(RequestOptions requestOptions) {
         return list(ListRuleSetsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<GetRuleSetItem>> list(ListRuleSetsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<GetRuleSetItem>> list(ListRuleSetsRequest request) {
         return list(request, null);
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<GetRuleSetItem>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<GetRuleSetItem>> list(
             ListRuleSetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -126,7 +126,7 @@ public class RawRuleSetsClient {
                         .cursor(startingAfter)
                         .build();
                 List<GetRuleSetItem> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<GetRuleSetItem>(
                                 !startingAfter.isEmpty(), result, parsedResponse, () -> list(
                                                 nextRequest, requestOptions)
@@ -158,11 +158,12 @@ public class RawRuleSetsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<GetRuleSetItem> create(RuleSetDetails request) {
+    public BaseHiddenLayerClientHttpResponse<GetRuleSetItem> create(RuleSetDetails request) {
         return create(request, null);
     }
 
-    public HiddenLayerHttpResponse<GetRuleSetItem> create(RuleSetDetails request, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<GetRuleSetItem> create(
+            RuleSetDetails request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("compliance/v1/rule-sets");
@@ -204,7 +205,7 @@ public class RawRuleSetsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetRuleSetItem.class), response);
             }
             try {
@@ -235,19 +236,19 @@ public class RawRuleSetsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<GetRuleSetItem> get(String id) {
+    public BaseHiddenLayerClientHttpResponse<GetRuleSetItem> get(String id) {
         return get(id, GetRuleSetsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<GetRuleSetItem> get(String id, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<GetRuleSetItem> get(String id, RequestOptions requestOptions) {
         return get(id, GetRuleSetsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<GetRuleSetItem> get(String id, GetRuleSetsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<GetRuleSetItem> get(String id, GetRuleSetsRequest request) {
         return get(id, request, null);
     }
 
-    public HiddenLayerHttpResponse<GetRuleSetItem> get(
+    public BaseHiddenLayerClientHttpResponse<GetRuleSetItem> get(
             String id, GetRuleSetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -281,7 +282,7 @@ public class RawRuleSetsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetRuleSetItem.class), response);
             }
             try {
@@ -312,19 +313,20 @@ public class RawRuleSetsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<Void> update(String id, RuleSetDetails body) {
+    public BaseHiddenLayerClientHttpResponse<Void> update(String id, RuleSetDetails body) {
         return update(id, UpdateRuleSetsRequest.builder().body(body).build());
     }
 
-    public HiddenLayerHttpResponse<Void> update(String id, RuleSetDetails body, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> update(
+            String id, RuleSetDetails body, RequestOptions requestOptions) {
         return update(id, UpdateRuleSetsRequest.builder().body(body).build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<Void> update(String id, UpdateRuleSetsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> update(String id, UpdateRuleSetsRequest request) {
         return update(id, request, null);
     }
 
-    public HiddenLayerHttpResponse<Void> update(
+    public BaseHiddenLayerClientHttpResponse<Void> update(
             String id, UpdateRuleSetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -371,7 +373,7 @@ public class RawRuleSetsClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -408,19 +410,19 @@ public class RawRuleSetsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<Void> delete(String id) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id) {
         return delete(id, DeleteRuleSetsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<Void> delete(String id, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id, RequestOptions requestOptions) {
         return delete(id, DeleteRuleSetsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<Void> delete(String id, DeleteRuleSetsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id, DeleteRuleSetsRequest request) {
         return delete(id, request, null);
     }
 
-    public HiddenLayerHttpResponse<Void> delete(
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
             String id, DeleteRuleSetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -456,7 +458,7 @@ public class RawRuleSetsClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {

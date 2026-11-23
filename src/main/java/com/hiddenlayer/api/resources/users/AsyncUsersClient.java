@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.users;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.users.requests.DeleteUsersRequest;
 import com.hiddenlayer.api.resources.users.requests.GetUsersRequest;
@@ -40,7 +40,7 @@ public class AsyncUsersClient {
      * Returns all users belonging to the authenticated user's tenant. The response includes up to 1000 items. <strong>Deprecated</strong> — use <a href="#tag/Users/operation/list_users_access_v2_users_get">List Users (paginated)</a> instead.
      */
     public CompletableFuture<ListUsersResponse> list() {
-        CompletableFuture<HiddenLayerHttpResponse<ListUsersResponse>> rawFuture = this.rawClient.list();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListUsersResponse>> rawFuture = this.rawClient.list();
         CompletableFuture<ListUsersResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -54,7 +54,8 @@ public class AsyncUsersClient {
      * Returns all users belonging to the authenticated user's tenant. The response includes up to 1000 items. <strong>Deprecated</strong> — use <a href="#tag/Users/operation/list_users_access_v2_users_get">List Users (paginated)</a> instead.
      */
     public CompletableFuture<ListUsersResponse> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ListUsersResponse>> rawFuture = this.rawClient.list(requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListUsersResponse>> rawFuture =
+                this.rawClient.list(requestOptions);
         CompletableFuture<ListUsersResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -68,7 +69,7 @@ public class AsyncUsersClient {
      * Creates a new user in the tenant. The user's email address must be unique within the tenant.
      */
     public CompletableFuture<CreateUsersResponse> create() {
-        CompletableFuture<HiddenLayerHttpResponse<CreateUsersResponse>> rawFuture = this.rawClient.create();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<CreateUsersResponse>> rawFuture = this.rawClient.create();
         CompletableFuture<CreateUsersResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -82,7 +83,7 @@ public class AsyncUsersClient {
      * Creates a new user in the tenant. The user's email address must be unique within the tenant.
      */
     public CompletableFuture<CreateUsersResponse> create(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<CreateUsersResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<CreateUsersResponse>> rawFuture =
                 this.rawClient.create(requestOptions);
         CompletableFuture<CreateUsersResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -97,7 +98,8 @@ public class AsyncUsersClient {
      * Creates a new user in the tenant. The user's email address must be unique within the tenant.
      */
     public CompletableFuture<CreateUsersResponse> create(UserBase request) {
-        CompletableFuture<HiddenLayerHttpResponse<CreateUsersResponse>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<CreateUsersResponse>> rawFuture =
+                this.rawClient.create(request);
         CompletableFuture<CreateUsersResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -111,7 +113,7 @@ public class AsyncUsersClient {
      * Creates a new user in the tenant. The user's email address must be unique within the tenant.
      */
     public CompletableFuture<CreateUsersResponse> create(UserBase request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<CreateUsersResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<CreateUsersResponse>> rawFuture =
                 this.rawClient.create(request, requestOptions);
         CompletableFuture<CreateUsersResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -126,7 +128,7 @@ public class AsyncUsersClient {
      * Retrieves details for the specified user.
      */
     public CompletableFuture<GetUsersResponse> get(String id) {
-        CompletableFuture<HiddenLayerHttpResponse<GetUsersResponse>> rawFuture = this.rawClient.get(id);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<GetUsersResponse>> rawFuture = this.rawClient.get(id);
         CompletableFuture<GetUsersResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -140,7 +142,8 @@ public class AsyncUsersClient {
      * Retrieves details for the specified user.
      */
     public CompletableFuture<GetUsersResponse> get(String id, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<GetUsersResponse>> rawFuture = this.rawClient.get(id, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<GetUsersResponse>> rawFuture =
+                this.rawClient.get(id, requestOptions);
         CompletableFuture<GetUsersResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -154,7 +157,8 @@ public class AsyncUsersClient {
      * Retrieves details for the specified user.
      */
     public CompletableFuture<GetUsersResponse> get(String id, GetUsersRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<GetUsersResponse>> rawFuture = this.rawClient.get(id, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<GetUsersResponse>> rawFuture =
+                this.rawClient.get(id, request);
         CompletableFuture<GetUsersResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -168,7 +172,7 @@ public class AsyncUsersClient {
      * Retrieves details for the specified user.
      */
     public CompletableFuture<GetUsersResponse> get(String id, GetUsersRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<GetUsersResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<GetUsersResponse>> rawFuture =
                 this.rawClient.get(id, request, requestOptions);
         CompletableFuture<GetUsersResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -183,7 +187,7 @@ public class AsyncUsersClient {
      * Updates details for the specified user. The user's email address must remain unique within the tenant.
      */
     public CompletableFuture<User> update(String id, UpdateUsersRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<User>> rawFuture = this.rawClient.update(id, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<User>> rawFuture = this.rawClient.update(id, request);
         CompletableFuture<User> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -197,7 +201,8 @@ public class AsyncUsersClient {
      * Updates details for the specified user. The user's email address must remain unique within the tenant.
      */
     public CompletableFuture<User> update(String id, UpdateUsersRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<User>> rawFuture = this.rawClient.update(id, request, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<User>> rawFuture =
+                this.rawClient.update(id, request, requestOptions);
         CompletableFuture<User> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -211,7 +216,7 @@ public class AsyncUsersClient {
      * Permanently removes the specified user from the tenant.
      */
     public CompletableFuture<Void> delete(String id) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(id);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(id);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -225,7 +230,8 @@ public class AsyncUsersClient {
      * Permanently removes the specified user from the tenant.
      */
     public CompletableFuture<Void> delete(String id, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(id, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(id, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -239,7 +245,7 @@ public class AsyncUsersClient {
      * Permanently removes the specified user from the tenant.
      */
     public CompletableFuture<Void> delete(String id, DeleteUsersRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(id, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(id, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -253,7 +259,8 @@ public class AsyncUsersClient {
      * Permanently removes the specified user from the tenant.
      */
     public CompletableFuture<Void> delete(String id, DeleteUsersRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(id, request, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(id, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -269,7 +276,8 @@ public class AsyncUsersClient {
      * The <code>password</code> field in the response is deprecated and included only for backwards compatibility.
      */
     public CompletableFuture<ResetUsersResponse> reset(ResetUsersRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<ResetUsersResponse>> rawFuture = this.rawClient.reset(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ResetUsersResponse>> rawFuture =
+                this.rawClient.reset(request);
         CompletableFuture<ResetUsersResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -285,7 +293,7 @@ public class AsyncUsersClient {
      * The <code>password</code> field in the response is deprecated and included only for backwards compatibility.
      */
     public CompletableFuture<ResetUsersResponse> reset(ResetUsersRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ResetUsersResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ResetUsersResponse>> rawFuture =
                 this.rawClient.reset(request, requestOptions);
         CompletableFuture<ResetUsersResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -300,7 +308,7 @@ public class AsyncUsersClient {
      * Retrieves profile and role details for the currently authenticated user.
      */
     public CompletableFuture<MeUsersResponse> me() {
-        CompletableFuture<HiddenLayerHttpResponse<MeUsersResponse>> rawFuture = this.rawClient.me();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<MeUsersResponse>> rawFuture = this.rawClient.me();
         CompletableFuture<MeUsersResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -314,7 +322,8 @@ public class AsyncUsersClient {
      * Retrieves profile and role details for the currently authenticated user.
      */
     public CompletableFuture<MeUsersResponse> me(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<MeUsersResponse>> rawFuture = this.rawClient.me(requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<MeUsersResponse>> rawFuture =
+                this.rawClient.me(requestOptions);
         CompletableFuture<MeUsersResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {

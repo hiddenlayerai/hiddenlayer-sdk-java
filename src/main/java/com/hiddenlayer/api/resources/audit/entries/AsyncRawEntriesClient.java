@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.audit.entries;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -42,14 +42,14 @@ public class AsyncRawEntriesClient {
     /**
      * Returns audit log entries for the tenant, sorted by time with the most recent first. Results can be filtered by time range, actor, role, action, and resource type, or searched by free text.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<AuditEntry>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AuditEntry>>> list() {
         return list(ListEntriesRequest.builder().build());
     }
 
     /**
      * Returns audit log entries for the tenant, sorted by time with the most recent first. Results can be filtered by time range, actor, role, action, and resource type, or searched by free text.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<AuditEntry>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AuditEntry>>> list(
             RequestOptions requestOptions) {
         return list(ListEntriesRequest.builder().build(), requestOptions);
     }
@@ -57,14 +57,15 @@ public class AsyncRawEntriesClient {
     /**
      * Returns audit log entries for the tenant, sorted by time with the most recent first. Results can be filtered by time range, actor, role, action, and resource type, or searched by free text.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<AuditEntry>>> list(ListEntriesRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AuditEntry>>> list(
+            ListEntriesRequest request) {
         return list(request, null);
     }
 
     /**
      * Returns audit log entries for the tenant, sorted by time with the most recent first. Results can be filtered by time range, actor, role, action, and resource type, or searched by free text.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<AuditEntry>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AuditEntry>>> list(
             ListEntriesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -129,7 +130,8 @@ public class AsyncRawEntriesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<AuditEntry>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AuditEntry>>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -147,7 +149,7 @@ public class AsyncRawEntriesClient {
                                 .from(request)
                                 .offset(newPageNumber)
                                 .build();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<AuditEntry>(true, result, parsedResponse, () -> {
                                     try {
                                         return list(nextRequest, requestOptions)

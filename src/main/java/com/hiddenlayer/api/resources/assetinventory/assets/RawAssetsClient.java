@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.assetinventory.assets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -56,19 +56,19 @@ public class RawAssetsClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<ListV1AssetsResponse> listV1() {
+    public BaseHiddenLayerClientHttpResponse<ListV1AssetsResponse> listV1() {
         return listV1(ListV1AssetsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<ListV1AssetsResponse> listV1(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ListV1AssetsResponse> listV1(RequestOptions requestOptions) {
         return listV1(ListV1AssetsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<ListV1AssetsResponse> listV1(ListV1AssetsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<ListV1AssetsResponse> listV1(ListV1AssetsRequest request) {
         return listV1(request, null);
     }
 
-    public HiddenLayerHttpResponse<ListV1AssetsResponse> listV1(
+    public BaseHiddenLayerClientHttpResponse<ListV1AssetsResponse> listV1(
             ListV1AssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -156,7 +156,7 @@ public class RawAssetsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ListV1AssetsResponse.class), response);
             }
             try {
@@ -177,19 +177,19 @@ public class RawAssetsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<AiAsset> getV1(String assetId) {
+    public BaseHiddenLayerClientHttpResponse<AiAsset> getV1(String assetId) {
         return getV1(assetId, GetV1AssetsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<AiAsset> getV1(String assetId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<AiAsset> getV1(String assetId, RequestOptions requestOptions) {
         return getV1(assetId, GetV1AssetsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<AiAsset> getV1(String assetId, GetV1AssetsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<AiAsset> getV1(String assetId, GetV1AssetsRequest request) {
         return getV1(assetId, request, null);
     }
 
-    public HiddenLayerHttpResponse<AiAsset> getV1(
+    public BaseHiddenLayerClientHttpResponse<AiAsset> getV1(
             String assetId, GetV1AssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -227,7 +227,7 @@ public class RawAssetsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AiAsset.class), response);
             }
             try {
@@ -248,20 +248,21 @@ public class RawAssetsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<AiAssetInventoryV1AssetGraphNode> graph(String assetId) {
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetGraphNode> graph(String assetId) {
         return graph(assetId, GraphAssetsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<AiAssetInventoryV1AssetGraphNode> graph(
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetGraphNode> graph(
             String assetId, RequestOptions requestOptions) {
         return graph(assetId, GraphAssetsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<AiAssetInventoryV1AssetGraphNode> graph(String assetId, GraphAssetsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetGraphNode> graph(
+            String assetId, GraphAssetsRequest request) {
         return graph(assetId, request, null);
     }
 
-    public HiddenLayerHttpResponse<AiAssetInventoryV1AssetGraphNode> graph(
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetGraphNode> graph(
             String assetId, GraphAssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -300,7 +301,7 @@ public class RawAssetsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AiAssetInventoryV1AssetGraphNode.class),
                         response);
             }
@@ -329,14 +330,14 @@ public class RawAssetsClient {
     /**
      * Returns the available filter fields and their values. Tag names are included as a filter field.
      */
-    public HiddenLayerHttpResponse<FiltersV1AssetsResponse> filtersV1() {
+    public BaseHiddenLayerClientHttpResponse<FiltersV1AssetsResponse> filtersV1() {
         return filtersV1(null);
     }
 
     /**
      * Returns the available filter fields and their values. Tag names are included as a filter field.
      */
-    public HiddenLayerHttpResponse<FiltersV1AssetsResponse> filtersV1(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<FiltersV1AssetsResponse> filtersV1(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v1/assets/filters");
@@ -368,7 +369,7 @@ public class RawAssetsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, FiltersV1AssetsResponse.class),
                         response);
             }
@@ -385,14 +386,14 @@ public class RawAssetsClient {
     /**
      * Returns all custom and discovered tags assigned to the given asset.
      */
-    public HiddenLayerHttpResponse<AiAssetInventoryV1AssetTagMap> tagsV1(String assetId) {
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetTagMap> tagsV1(String assetId) {
         return tagsV1(assetId, TagsV1AssetsRequest.builder().build());
     }
 
     /**
      * Returns all custom and discovered tags assigned to the given asset.
      */
-    public HiddenLayerHttpResponse<AiAssetInventoryV1AssetTagMap> tagsV1(
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetTagMap> tagsV1(
             String assetId, RequestOptions requestOptions) {
         return tagsV1(assetId, TagsV1AssetsRequest.builder().build(), requestOptions);
     }
@@ -400,14 +401,15 @@ public class RawAssetsClient {
     /**
      * Returns all custom and discovered tags assigned to the given asset.
      */
-    public HiddenLayerHttpResponse<AiAssetInventoryV1AssetTagMap> tagsV1(String assetId, TagsV1AssetsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetTagMap> tagsV1(
+            String assetId, TagsV1AssetsRequest request) {
         return tagsV1(assetId, request, null);
     }
 
     /**
      * Returns all custom and discovered tags assigned to the given asset.
      */
-    public HiddenLayerHttpResponse<AiAssetInventoryV1AssetTagMap> tagsV1(
+    public BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetTagMap> tagsV1(
             String assetId, TagsV1AssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -442,7 +444,7 @@ public class RawAssetsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AiAssetInventoryV1AssetTagMap.class),
                         response);
             }
@@ -496,7 +498,7 @@ public class RawAssetsClient {
      * sort over a very large tenant — receives <code>422 Unprocessable Entity</code> with a &quot;query exceeds allowed cost/time limit&quot; message
      * suggesting index-backed sort fields to retry with.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<Asset>> list() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<Asset>> list() {
         return list(ListAssetsRequest.builder().build());
     }
 
@@ -525,7 +527,7 @@ public class RawAssetsClient {
      * sort over a very large tenant — receives <code>422 Unprocessable Entity</code> with a &quot;query exceeds allowed cost/time limit&quot; message
      * suggesting index-backed sort fields to retry with.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<Asset>> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<Asset>> list(RequestOptions requestOptions) {
         return list(ListAssetsRequest.builder().build(), requestOptions);
     }
 
@@ -554,7 +556,7 @@ public class RawAssetsClient {
      * sort over a very large tenant — receives <code>422 Unprocessable Entity</code> with a &quot;query exceeds allowed cost/time limit&quot; message
      * suggesting index-backed sort fields to retry with.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<Asset>> list(ListAssetsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<Asset>> list(ListAssetsRequest request) {
         return list(request, null);
     }
 
@@ -583,7 +585,7 @@ public class RawAssetsClient {
      * sort over a very large tenant — receives <code>422 Unprocessable Entity</code> with a &quot;query exceeds allowed cost/time limit&quot; message
      * suggesting index-backed sort fields to retry with.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<Asset>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<Asset>> list(
             ListAssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -693,7 +695,7 @@ public class RawAssetsClient {
                         .cursor(startingAfter)
                         .build();
                 List<Asset> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<Asset>(!startingAfter.isEmpty(), result, parsedResponse, () -> list(
                                         nextRequest, requestOptions)
                                 .body()),
@@ -735,7 +737,7 @@ public class RawAssetsClient {
      * suggestions. Filtering by <code>project_id</code> additionally requires the
      * <code>project:read</code> scope.</p>
      */
-    public HiddenLayerHttpResponse<SuggestionsAssetsResponse> suggestions(SuggestionsAssetsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SuggestionsAssetsResponse> suggestions(SuggestionsAssetsRequest request) {
         return suggestions(request, null);
     }
 
@@ -747,7 +749,7 @@ public class RawAssetsClient {
      * suggestions. Filtering by <code>project_id</code> additionally requires the
      * <code>project:read</code> scope.</p>
      */
-    public HiddenLayerHttpResponse<SuggestionsAssetsResponse> suggestions(
+    public BaseHiddenLayerClientHttpResponse<SuggestionsAssetsResponse> suggestions(
             SuggestionsAssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -835,7 +837,7 @@ public class RawAssetsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SuggestionsAssetsResponse.class),
                         response);
             }
@@ -907,7 +909,7 @@ public class RawAssetsClient {
      * &quot;query exceeds allowed cost/time limit&quot; message rather than an
      * unbounded query.</p>
      */
-    public HiddenLayerHttpResponse<FilterFacetsResponse> filters() {
+    public BaseHiddenLayerClientHttpResponse<FilterFacetsResponse> filters() {
         return filters(FiltersAssetsRequest.builder().build());
     }
 
@@ -951,7 +953,7 @@ public class RawAssetsClient {
      * &quot;query exceeds allowed cost/time limit&quot; message rather than an
      * unbounded query.</p>
      */
-    public HiddenLayerHttpResponse<FilterFacetsResponse> filters(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<FilterFacetsResponse> filters(RequestOptions requestOptions) {
         return filters(FiltersAssetsRequest.builder().build(), requestOptions);
     }
 
@@ -995,7 +997,7 @@ public class RawAssetsClient {
      * &quot;query exceeds allowed cost/time limit&quot; message rather than an
      * unbounded query.</p>
      */
-    public HiddenLayerHttpResponse<FilterFacetsResponse> filters(FiltersAssetsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<FilterFacetsResponse> filters(FiltersAssetsRequest request) {
         return filters(request, null);
     }
 
@@ -1039,7 +1041,7 @@ public class RawAssetsClient {
      * &quot;query exceeds allowed cost/time limit&quot; message rather than an
      * unbounded query.</p>
      */
-    public HiddenLayerHttpResponse<FilterFacetsResponse> filters(
+    public BaseHiddenLayerClientHttpResponse<FilterFacetsResponse> filters(
             FiltersAssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1083,7 +1085,7 @@ public class RawAssetsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, FilterFacetsResponse.class), response);
             }
             try {
@@ -1123,7 +1125,7 @@ public class RawAssetsClient {
      * map holding the details that service observed.</p>
      * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
-    public HiddenLayerHttpResponse<Asset> get(String assetId) {
+    public BaseHiddenLayerClientHttpResponse<Asset> get(String assetId) {
         return get(assetId, GetAssetsRequest.builder().build());
     }
 
@@ -1136,7 +1138,7 @@ public class RawAssetsClient {
      * map holding the details that service observed.</p>
      * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
-    public HiddenLayerHttpResponse<Asset> get(String assetId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Asset> get(String assetId, RequestOptions requestOptions) {
         return get(assetId, GetAssetsRequest.builder().build(), requestOptions);
     }
 
@@ -1149,7 +1151,7 @@ public class RawAssetsClient {
      * map holding the details that service observed.</p>
      * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
-    public HiddenLayerHttpResponse<Asset> get(String assetId, GetAssetsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Asset> get(String assetId, GetAssetsRequest request) {
         return get(assetId, request, null);
     }
 
@@ -1162,7 +1164,8 @@ public class RawAssetsClient {
      * map holding the details that service observed.</p>
      * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
-    public HiddenLayerHttpResponse<Asset> get(String assetId, GetAssetsRequest request, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Asset> get(
+            String assetId, GetAssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v2/assets")
@@ -1199,7 +1202,7 @@ public class RawAssetsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Asset.class), response);
             }
             try {
@@ -1247,7 +1250,7 @@ public class RawAssetsClient {
      * have been reached.</p>
      * <p>Requires the <code>asset:read</code> scope.</p>
      */
-    public HiddenLayerHttpResponse<AssetGraphNode> discoveredGraph(String assetId) {
+    public BaseHiddenLayerClientHttpResponse<AssetGraphNode> discoveredGraph(String assetId) {
         return discoveredGraph(assetId, DiscoveredGraphAssetsRequest.builder().build());
     }
 
@@ -1265,7 +1268,8 @@ public class RawAssetsClient {
      * have been reached.</p>
      * <p>Requires the <code>asset:read</code> scope.</p>
      */
-    public HiddenLayerHttpResponse<AssetGraphNode> discoveredGraph(String assetId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<AssetGraphNode> discoveredGraph(
+            String assetId, RequestOptions requestOptions) {
         return discoveredGraph(assetId, DiscoveredGraphAssetsRequest.builder().build(), requestOptions);
     }
 
@@ -1283,7 +1287,7 @@ public class RawAssetsClient {
      * have been reached.</p>
      * <p>Requires the <code>asset:read</code> scope.</p>
      */
-    public HiddenLayerHttpResponse<AssetGraphNode> discoveredGraph(
+    public BaseHiddenLayerClientHttpResponse<AssetGraphNode> discoveredGraph(
             String assetId, DiscoveredGraphAssetsRequest request) {
         return discoveredGraph(assetId, request, null);
     }
@@ -1302,7 +1306,7 @@ public class RawAssetsClient {
      * have been reached.</p>
      * <p>Requires the <code>asset:read</code> scope.</p>
      */
-    public HiddenLayerHttpResponse<AssetGraphNode> discoveredGraph(
+    public BaseHiddenLayerClientHttpResponse<AssetGraphNode> discoveredGraph(
             String assetId, DiscoveredGraphAssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1341,7 +1345,7 @@ public class RawAssetsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AssetGraphNode.class), response);
             }
             try {
@@ -1379,7 +1383,7 @@ public class RawAssetsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns all custom and discovered tags assigned to the given asset.</p>
      */
-    public HiddenLayerHttpResponse<AssetTagMap> tags(String assetId) {
+    public BaseHiddenLayerClientHttpResponse<AssetTagMap> tags(String assetId) {
         return tags(assetId, TagsAssetsRequest.builder().build());
     }
 
@@ -1387,7 +1391,7 @@ public class RawAssetsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns all custom and discovered tags assigned to the given asset.</p>
      */
-    public HiddenLayerHttpResponse<AssetTagMap> tags(String assetId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<AssetTagMap> tags(String assetId, RequestOptions requestOptions) {
         return tags(assetId, TagsAssetsRequest.builder().build(), requestOptions);
     }
 
@@ -1395,7 +1399,7 @@ public class RawAssetsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns all custom and discovered tags assigned to the given asset.</p>
      */
-    public HiddenLayerHttpResponse<AssetTagMap> tags(String assetId, TagsAssetsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<AssetTagMap> tags(String assetId, TagsAssetsRequest request) {
         return tags(assetId, request, null);
     }
 
@@ -1403,7 +1407,7 @@ public class RawAssetsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns all custom and discovered tags assigned to the given asset.</p>
      */
-    public HiddenLayerHttpResponse<AssetTagMap> tags(
+    public BaseHiddenLayerClientHttpResponse<AssetTagMap> tags(
             String assetId, TagsAssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1438,7 +1442,7 @@ public class RawAssetsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AssetTagMap.class), response);
             }
             try {

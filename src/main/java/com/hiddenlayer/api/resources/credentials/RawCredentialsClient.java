@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.credentials;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -43,28 +43,28 @@ public class RawCredentialsClient {
     /**
      * Lists all API credentials for the requester's tenant. API credentials can be used to authenticate automated processes and integrations with the HiddenLayer API. The list includes both active and inactive credentials, along with their associated metadata. If the <code>embed</code> parameter is used with <code>created_by_user</code>, the response will also include details about the user who created each credential. The response includes up to 1000 items.
      */
-    public HiddenLayerHttpResponse<ListCredentialsResponse> list() {
+    public BaseHiddenLayerClientHttpResponse<ListCredentialsResponse> list() {
         return list(ListCredentialsRequest.builder().build());
     }
 
     /**
      * Lists all API credentials for the requester's tenant. API credentials can be used to authenticate automated processes and integrations with the HiddenLayer API. The list includes both active and inactive credentials, along with their associated metadata. If the <code>embed</code> parameter is used with <code>created_by_user</code>, the response will also include details about the user who created each credential. The response includes up to 1000 items.
      */
-    public HiddenLayerHttpResponse<ListCredentialsResponse> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ListCredentialsResponse> list(RequestOptions requestOptions) {
         return list(ListCredentialsRequest.builder().build(), requestOptions);
     }
 
     /**
      * Lists all API credentials for the requester's tenant. API credentials can be used to authenticate automated processes and integrations with the HiddenLayer API. The list includes both active and inactive credentials, along with their associated metadata. If the <code>embed</code> parameter is used with <code>created_by_user</code>, the response will also include details about the user who created each credential. The response includes up to 1000 items.
      */
-    public HiddenLayerHttpResponse<ListCredentialsResponse> list(ListCredentialsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<ListCredentialsResponse> list(ListCredentialsRequest request) {
         return list(request, null);
     }
 
     /**
      * Lists all API credentials for the requester's tenant. API credentials can be used to authenticate automated processes and integrations with the HiddenLayer API. The list includes both active and inactive credentials, along with their associated metadata. If the <code>embed</code> parameter is used with <code>created_by_user</code>, the response will also include details about the user who created each credential. The response includes up to 1000 items.
      */
-    public HiddenLayerHttpResponse<ListCredentialsResponse> list(
+    public BaseHiddenLayerClientHttpResponse<ListCredentialsResponse> list(
             ListCredentialsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -101,7 +101,7 @@ public class RawCredentialsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ListCredentialsResponse.class),
                         response);
             }
@@ -137,7 +137,7 @@ public class RawCredentialsClient {
      * <p>By default, if no permissions are specified, the credential will be granted all available permissions. To restrict the credential to specific permissions, provide a list of permission identifiers (scopes).
      * The available permissions can be found by calling <a href="#operation/list_permissions_api_v2_permissions_get"><code>GET /api/v2/permissions</code></a>.</p>
      */
-    public HiddenLayerHttpResponse<CredentialsWithSecret> create(CredentialsCreateRequestV2 request) {
+    public BaseHiddenLayerClientHttpResponse<CredentialsWithSecret> create(CredentialsCreateRequestV2 request) {
         return create(request, null);
     }
 
@@ -148,7 +148,7 @@ public class RawCredentialsClient {
      * <p>By default, if no permissions are specified, the credential will be granted all available permissions. To restrict the credential to specific permissions, provide a list of permission identifiers (scopes).
      * The available permissions can be found by calling <a href="#operation/list_permissions_api_v2_permissions_get"><code>GET /api/v2/permissions</code></a>.</p>
      */
-    public HiddenLayerHttpResponse<CredentialsWithSecret> create(
+    public BaseHiddenLayerClientHttpResponse<CredentialsWithSecret> create(
             CredentialsCreateRequestV2 request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -191,7 +191,7 @@ public class RawCredentialsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CredentialsWithSecret.class), response);
             }
             try {
@@ -222,28 +222,28 @@ public class RawCredentialsClient {
     /**
      * Permanently deletes an API credential. Once deleted, the credential can no longer be used to authenticate with the HiddenLayer API.
      */
-    public HiddenLayerHttpResponse<Void> delete(String id) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id) {
         return delete(id, DeleteCredentialsRequest.builder().build());
     }
 
     /**
      * Permanently deletes an API credential. Once deleted, the credential can no longer be used to authenticate with the HiddenLayer API.
      */
-    public HiddenLayerHttpResponse<Void> delete(String id, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id, RequestOptions requestOptions) {
         return delete(id, DeleteCredentialsRequest.builder().build(), requestOptions);
     }
 
     /**
      * Permanently deletes an API credential. Once deleted, the credential can no longer be used to authenticate with the HiddenLayer API.
      */
-    public HiddenLayerHttpResponse<Void> delete(String id, DeleteCredentialsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id, DeleteCredentialsRequest request) {
         return delete(id, request, null);
     }
 
     /**
      * Permanently deletes an API credential. Once deleted, the credential can no longer be used to authenticate with the HiddenLayer API.
      */
-    public HiddenLayerHttpResponse<Void> delete(
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
             String id, DeleteCredentialsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -279,7 +279,7 @@ public class RawCredentialsClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {

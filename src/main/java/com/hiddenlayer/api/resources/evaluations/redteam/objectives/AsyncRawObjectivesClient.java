@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.evaluations.redteam.objectives;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -58,7 +58,7 @@ public class AsyncRawObjectivesClient {
      * <code>HLO.NN</code> IDs); subsequent pages contain only the tenant's custom
      * objectives (UUID IDs). The list is cursor-paginated.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ApeObjective>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ApeObjective>>> list() {
         return list(ListObjectivesRequest.builder().build());
     }
 
@@ -69,7 +69,7 @@ public class AsyncRawObjectivesClient {
      * <code>HLO.NN</code> IDs); subsequent pages contain only the tenant's custom
      * objectives (UUID IDs). The list is cursor-paginated.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ApeObjective>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ApeObjective>>> list(
             RequestOptions requestOptions) {
         return list(ListObjectivesRequest.builder().build(), requestOptions);
     }
@@ -81,7 +81,7 @@ public class AsyncRawObjectivesClient {
      * <code>HLO.NN</code> IDs); subsequent pages contain only the tenant's custom
      * objectives (UUID IDs). The list is cursor-paginated.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ApeObjective>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ApeObjective>>> list(
             ListObjectivesRequest request) {
         return list(request, null);
     }
@@ -93,7 +93,7 @@ public class AsyncRawObjectivesClient {
      * <code>HLO.NN</code> IDs); subsequent pages contain only the tenant's custom
      * objectives (UUID IDs). The list is cursor-paginated.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ApeObjective>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ApeObjective>>> list(
             ListObjectivesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -130,7 +130,8 @@ public class AsyncRawObjectivesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ApeObjective>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ApeObjective>>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -146,7 +147,7 @@ public class AsyncRawObjectivesClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<ApeObjective> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<ApeObjective>(
                                         !startingAfter.isEmpty(), result, parsedResponse, () -> {
                                             try {
@@ -222,7 +223,8 @@ public class AsyncRawObjectivesClient {
      * a strict character whitelist). A per-tenant cap applies; exceeding it
      * returns 409.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> create(CreateCustomObjectiveRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> create(
+            CreateCustomObjectiveRequest request) {
         return create(request, null);
     }
 
@@ -237,7 +239,7 @@ public class AsyncRawObjectivesClient {
      * a strict character whitelist). A per-tenant cap applies; exceeding it
      * returns 409.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> create(
             CreateCustomObjectiveRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -276,7 +278,7 @@ public class AsyncRawObjectivesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -284,7 +286,7 @@ public class AsyncRawObjectivesClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ApeObjective.class), response));
                         return;
                     }
@@ -349,7 +351,7 @@ public class AsyncRawObjectivesClient {
      * <p>Return a single objective by ID. <code>HLO.NN</code> IDs return a built-in
      * objective; UUIDs return one of the tenant's custom objectives.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> get(String objectiveId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> get(String objectiveId) {
         return get(objectiveId, GetObjectivesRequest.builder().build());
     }
 
@@ -358,7 +360,7 @@ public class AsyncRawObjectivesClient {
      * <p>Return a single objective by ID. <code>HLO.NN</code> IDs return a built-in
      * objective; UUIDs return one of the tenant's custom objectives.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> get(
             String objectiveId, RequestOptions requestOptions) {
         return get(objectiveId, GetObjectivesRequest.builder().build(), requestOptions);
     }
@@ -368,7 +370,7 @@ public class AsyncRawObjectivesClient {
      * <p>Return a single objective by ID. <code>HLO.NN</code> IDs return a built-in
      * objective; UUIDs return one of the tenant's custom objectives.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> get(
             String objectiveId, GetObjectivesRequest request) {
         return get(objectiveId, request, null);
     }
@@ -378,7 +380,7 @@ public class AsyncRawObjectivesClient {
      * <p>Return a single objective by ID. <code>HLO.NN</code> IDs return a built-in
      * objective; UUIDs return one of the tenant's custom objectives.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> get(
             String objectiveId, GetObjectivesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -408,7 +410,7 @@ public class AsyncRawObjectivesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -416,7 +418,7 @@ public class AsyncRawObjectivesClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ApeObjective.class), response));
                         return;
                     }
@@ -479,7 +481,7 @@ public class AsyncRawObjectivesClient {
      * <p>Built-in <code>HLO.NN</code> objectives are read-only: a DELETE against one
      * returns 409.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String objectiveId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String objectiveId) {
         return delete(objectiveId, DeleteObjectivesRequest.builder().build());
     }
 
@@ -491,7 +493,8 @@ public class AsyncRawObjectivesClient {
      * <p>Built-in <code>HLO.NN</code> objectives are read-only: a DELETE against one
      * returns 409.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String objectiveId, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
+            String objectiveId, RequestOptions requestOptions) {
         return delete(objectiveId, DeleteObjectivesRequest.builder().build(), requestOptions);
     }
 
@@ -503,7 +506,7 @@ public class AsyncRawObjectivesClient {
      * <p>Built-in <code>HLO.NN</code> objectives are read-only: a DELETE against one
      * returns 409.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String objectiveId, DeleteObjectivesRequest request) {
         return delete(objectiveId, request, null);
     }
@@ -516,7 +519,7 @@ public class AsyncRawObjectivesClient {
      * <p>Built-in <code>HLO.NN</code> objectives are read-only: a DELETE against one
      * returns 409.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String objectiveId, DeleteObjectivesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -549,14 +552,14 @@ public class AsyncRawObjectivesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
@@ -624,7 +627,7 @@ public class AsyncRawObjectivesClient {
      * 409. Use <code>severity_mapping</code> on a config or start request to tune a
      * built-in's effective severity instead.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> update(String objectiveId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> update(String objectiveId) {
         return update(objectiveId, UpdateCustomObjectiveRequest.builder().build());
     }
 
@@ -636,7 +639,7 @@ public class AsyncRawObjectivesClient {
      * 409. Use <code>severity_mapping</code> on a config or start request to tune a
      * built-in's effective severity instead.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> update(
             String objectiveId, RequestOptions requestOptions) {
         return update(objectiveId, UpdateCustomObjectiveRequest.builder().build(), requestOptions);
     }
@@ -649,7 +652,7 @@ public class AsyncRawObjectivesClient {
      * 409. Use <code>severity_mapping</code> on a config or start request to tune a
      * built-in's effective severity instead.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> update(
             String objectiveId, UpdateCustomObjectiveRequest request) {
         return update(objectiveId, request, null);
     }
@@ -662,7 +665,7 @@ public class AsyncRawObjectivesClient {
      * 409. Use <code>severity_mapping</code> on a config or start request to tune a
      * built-in's effective severity instead.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> update(
             String objectiveId, UpdateCustomObjectiveRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -702,7 +705,7 @@ public class AsyncRawObjectivesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -710,7 +713,7 @@ public class AsyncRawObjectivesClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ApeObjective.class), response));
                         return;
                     }

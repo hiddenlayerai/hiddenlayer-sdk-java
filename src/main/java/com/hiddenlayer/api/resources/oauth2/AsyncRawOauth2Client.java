@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.oauth2;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -43,7 +43,7 @@ public class AsyncRawOauth2Client {
      * Exchanges the Client ID and Client Secret of an <a href="#operation/create_credentials_api_v2_credentials_post">API credential</a> for an access token, using the OAuth2 client credentials grant. Send the Client ID and Client Secret either as the HTTP Basic username and password, or as the <code>client_id</code> and <code>client_secret</code> form fields.
      * <p>Send the token as <code>Authorization: Bearer &lt;access_token&gt;</code> on every other request. It expires <code>expires_in</code> seconds after it is issued, so request a new one before then.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AccessToken>> token(AccessTokenRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AccessToken>> token(AccessTokenRequest request) {
         return token(request, null);
     }
 
@@ -51,7 +51,7 @@ public class AsyncRawOauth2Client {
      * Exchanges the Client ID and Client Secret of an <a href="#operation/create_credentials_api_v2_credentials_post">API credential</a> for an access token, using the OAuth2 client credentials grant. Send the Client ID and Client Secret either as the HTTP Basic username and password, or as the <code>client_id</code> and <code>client_secret</code> form fields.
      * <p>Send the token as <code>Authorization: Bearer &lt;access_token&gt;</code> on every other request. It expires <code>expires_in</code> seconds after it is issued, so request a new one before then.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AccessToken>> token(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AccessToken>> token(
             AccessTokenRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -97,7 +97,7 @@ public class AsyncRawOauth2Client {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<AccessToken>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AccessToken>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -105,7 +105,7 @@ public class AsyncRawOauth2Client {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AccessToken.class), response));
                         return;
                     }

@@ -5,10 +5,10 @@ package com.hiddenlayer.api.resources.supplychain.scans;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -38,19 +38,21 @@ public class RawScansClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<Optional<Map<String, Object>>> get(String scanId) {
+    public BaseHiddenLayerClientHttpResponse<Optional<Map<String, Object>>> get(String scanId) {
         return get(scanId, GetScansRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<Optional<Map<String, Object>>> get(String scanId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Optional<Map<String, Object>>> get(
+            String scanId, RequestOptions requestOptions) {
         return get(scanId, GetScansRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<Optional<Map<String, Object>>> get(String scanId, GetScansRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Optional<Map<String, Object>>> get(
+            String scanId, GetScansRequest request) {
         return get(scanId, request, null);
     }
 
-    public HiddenLayerHttpResponse<Optional<Map<String, Object>>> get(
+    public BaseHiddenLayerClientHttpResponse<Optional<Map<String, Object>>> get(
             String scanId, GetScansRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -94,7 +96,7 @@ public class RawScansClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, new TypeReference<Optional<Map<String, Object>>>() {}),
                         response);
@@ -129,7 +131,7 @@ public class RawScansClient {
      * <p>Remediation guidance is generated on-demand with AI assistance and may not be
      * immediately available.</p>
      */
-    public HiddenLayerHttpResponse<GuidanceScansResponse> guidance(String scanId) {
+    public BaseHiddenLayerClientHttpResponse<GuidanceScansResponse> guidance(String scanId) {
         return guidance(scanId, GuidanceScansRequest.builder().build());
     }
 
@@ -138,7 +140,8 @@ public class RawScansClient {
      * <p>Remediation guidance is generated on-demand with AI assistance and may not be
      * immediately available.</p>
      */
-    public HiddenLayerHttpResponse<GuidanceScansResponse> guidance(String scanId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<GuidanceScansResponse> guidance(
+            String scanId, RequestOptions requestOptions) {
         return guidance(scanId, GuidanceScansRequest.builder().build(), requestOptions);
     }
 
@@ -147,7 +150,8 @@ public class RawScansClient {
      * <p>Remediation guidance is generated on-demand with AI assistance and may not be
      * immediately available.</p>
      */
-    public HiddenLayerHttpResponse<GuidanceScansResponse> guidance(String scanId, GuidanceScansRequest request) {
+    public BaseHiddenLayerClientHttpResponse<GuidanceScansResponse> guidance(
+            String scanId, GuidanceScansRequest request) {
         return guidance(scanId, request, null);
     }
 
@@ -156,7 +160,7 @@ public class RawScansClient {
      * <p>Remediation guidance is generated on-demand with AI assistance and may not be
      * immediately available.</p>
      */
-    public HiddenLayerHttpResponse<GuidanceScansResponse> guidance(
+    public BaseHiddenLayerClientHttpResponse<GuidanceScansResponse> guidance(
             String scanId, GuidanceScansRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -191,7 +195,7 @@ public class RawScansClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GuidanceScansResponse.class), response);
             }
             try {

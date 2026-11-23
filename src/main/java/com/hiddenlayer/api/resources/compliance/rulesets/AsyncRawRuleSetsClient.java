@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.compliance.rulesets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -51,21 +51,21 @@ public class AsyncRawRuleSetsClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<GetRuleSetItem>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<GetRuleSetItem>>> list() {
         return list(ListRuleSetsRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<GetRuleSetItem>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<GetRuleSetItem>>> list(
             RequestOptions requestOptions) {
         return list(ListRuleSetsRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<GetRuleSetItem>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<GetRuleSetItem>>> list(
             ListRuleSetsRequest request) {
         return list(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<GetRuleSetItem>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<GetRuleSetItem>>> list(
             ListRuleSetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -121,7 +121,7 @@ public class AsyncRawRuleSetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<GetRuleSetItem>>> future =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<GetRuleSetItem>>> future =
                 new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
@@ -138,7 +138,7 @@ public class AsyncRawRuleSetsClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<GetRuleSetItem> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<GetRuleSetItem>(
                                         !startingAfter.isEmpty(), result, parsedResponse, () -> {
                                             try {
@@ -198,11 +198,11 @@ public class AsyncRawRuleSetsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<GetRuleSetItem>> create(RuleSetDetails request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GetRuleSetItem>> create(RuleSetDetails request) {
         return create(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<GetRuleSetItem>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GetRuleSetItem>> create(
             RuleSetDetails request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -241,7 +241,7 @@ public class AsyncRawRuleSetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<GetRuleSetItem>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<GetRuleSetItem>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -249,7 +249,7 @@ public class AsyncRawRuleSetsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetRuleSetItem.class),
                                 response));
                         return;
@@ -305,19 +305,21 @@ public class AsyncRawRuleSetsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<GetRuleSetItem>> get(String id) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GetRuleSetItem>> get(String id) {
         return get(id, GetRuleSetsRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<GetRuleSetItem>> get(String id, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GetRuleSetItem>> get(
+            String id, RequestOptions requestOptions) {
         return get(id, GetRuleSetsRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<GetRuleSetItem>> get(String id, GetRuleSetsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GetRuleSetItem>> get(
+            String id, GetRuleSetsRequest request) {
         return get(id, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<GetRuleSetItem>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GetRuleSetItem>> get(
             String id, GetRuleSetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -347,7 +349,7 @@ public class AsyncRawRuleSetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<GetRuleSetItem>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<GetRuleSetItem>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -355,7 +357,7 @@ public class AsyncRawRuleSetsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetRuleSetItem.class),
                                 response));
                         return;
@@ -411,20 +413,20 @@ public class AsyncRawRuleSetsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> update(String id, RuleSetDetails body) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> update(String id, RuleSetDetails body) {
         return update(id, UpdateRuleSetsRequest.builder().body(body).build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> update(
             String id, RuleSetDetails body, RequestOptions requestOptions) {
         return update(id, UpdateRuleSetsRequest.builder().body(body).build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> update(String id, UpdateRuleSetsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> update(String id, UpdateRuleSetsRequest request) {
         return update(id, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> update(
             String id, UpdateRuleSetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -468,14 +470,14 @@ public class AsyncRawRuleSetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
@@ -540,19 +542,19 @@ public class AsyncRawRuleSetsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String id) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String id) {
         return delete(id, DeleteRuleSetsRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String id, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String id, RequestOptions requestOptions) {
         return delete(id, DeleteRuleSetsRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String id, DeleteRuleSetsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String id, DeleteRuleSetsRequest request) {
         return delete(id, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String id, DeleteRuleSetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -585,14 +587,14 @@ public class AsyncRawRuleSetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";

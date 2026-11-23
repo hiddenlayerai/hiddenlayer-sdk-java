@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.permissions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -38,7 +38,7 @@ public class RawPermissionsClient {
      * </ul>
      * <p>Hypothetical Example: <code>model-version:read</code> would grant permission to read model versions.</p>
      */
-    public HiddenLayerHttpResponse<ListPermissionsResponse> list() {
+    public BaseHiddenLayerClientHttpResponse<ListPermissionsResponse> list() {
         return list(null);
     }
 
@@ -52,7 +52,7 @@ public class RawPermissionsClient {
      * </ul>
      * <p>Hypothetical Example: <code>model-version:read</code> would grant permission to read model versions.</p>
      */
-    public HiddenLayerHttpResponse<ListPermissionsResponse> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ListPermissionsResponse> list(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/permissions");
@@ -84,7 +84,7 @@ public class RawPermissionsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ListPermissionsResponse.class),
                         response);
             }

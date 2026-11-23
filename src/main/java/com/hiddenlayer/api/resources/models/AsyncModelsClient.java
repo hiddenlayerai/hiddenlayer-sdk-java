@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.models;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.Suppliers;
 import com.hiddenlayer.api.resources.models.cards.AsyncCardsClient;
@@ -45,7 +45,8 @@ public class AsyncModelsClient {
     }
 
     public CompletableFuture<SensorSorModel> retrieve(String modelId) {
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorModel>> rawFuture = this.rawClient.retrieve(modelId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorModel>> rawFuture =
+                this.rawClient.retrieve(modelId);
         CompletableFuture<SensorSorModel> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -56,7 +57,7 @@ public class AsyncModelsClient {
     }
 
     public CompletableFuture<SensorSorModel> retrieve(String modelId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorModel>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorModel>> rawFuture =
                 this.rawClient.retrieve(modelId, requestOptions);
         CompletableFuture<SensorSorModel> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -68,7 +69,7 @@ public class AsyncModelsClient {
     }
 
     public CompletableFuture<SensorSorModel> retrieve(String modelId, RetrieveModelsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorModel>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorModel>> rawFuture =
                 this.rawClient.retrieve(modelId, request);
         CompletableFuture<SensorSorModel> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -81,7 +82,7 @@ public class AsyncModelsClient {
 
     public CompletableFuture<SensorSorModel> retrieve(
             String modelId, RetrieveModelsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorModel>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorModel>> rawFuture =
                 this.rawClient.retrieve(modelId, request, requestOptions);
         CompletableFuture<SensorSorModel> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -93,7 +94,7 @@ public class AsyncModelsClient {
     }
 
     public CompletableFuture<Void> delete(String modelId) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(modelId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(modelId);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -104,7 +105,8 @@ public class AsyncModelsClient {
     }
 
     public CompletableFuture<Void> delete(String modelId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(modelId, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(modelId, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -115,7 +117,7 @@ public class AsyncModelsClient {
     }
 
     public CompletableFuture<Void> delete(String modelId, DeleteModelsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(modelId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(modelId, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -126,7 +128,7 @@ public class AsyncModelsClient {
     }
 
     public CompletableFuture<Void> delete(String modelId, DeleteModelsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.delete(modelId, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -138,7 +140,7 @@ public class AsyncModelsClient {
     }
 
     public CompletableFuture<List<SensorSorModel>> list() {
-        CompletableFuture<HiddenLayerHttpResponse<List<SensorSorModel>>> rawFuture = this.rawClient.list();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<List<SensorSorModel>>> rawFuture = this.rawClient.list();
         CompletableFuture<List<SensorSorModel>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -149,7 +151,7 @@ public class AsyncModelsClient {
     }
 
     public CompletableFuture<List<SensorSorModel>> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<List<SensorSorModel>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<List<SensorSorModel>>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<List<SensorSorModel>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -161,7 +163,8 @@ public class AsyncModelsClient {
     }
 
     public CompletableFuture<UpdateModelsResponse> update(List<SensorSorModel> request) {
-        CompletableFuture<HiddenLayerHttpResponse<UpdateModelsResponse>> rawFuture = this.rawClient.update(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<UpdateModelsResponse>> rawFuture =
+                this.rawClient.update(request);
         CompletableFuture<UpdateModelsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -172,7 +175,7 @@ public class AsyncModelsClient {
     }
 
     public CompletableFuture<UpdateModelsResponse> update(List<SensorSorModel> request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<UpdateModelsResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<UpdateModelsResponse>> rawFuture =
                 this.rawClient.update(request, requestOptions);
         CompletableFuture<UpdateModelsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

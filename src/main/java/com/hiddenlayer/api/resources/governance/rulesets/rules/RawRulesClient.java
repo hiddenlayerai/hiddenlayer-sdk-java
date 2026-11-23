@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.governance.rulesets.rules;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -52,7 +52,7 @@ public class RawRulesClient {
      * The new rule will be appended to the existing rules in the specified rule set.
      * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
-    public HiddenLayerHttpResponse<RuleSet> create(String ruleSetId, CreateRulesRequest request) {
+    public BaseHiddenLayerClientHttpResponse<RuleSet> create(String ruleSetId, CreateRulesRequest request) {
         return create(ruleSetId, request, null);
     }
 
@@ -69,7 +69,7 @@ public class RawRulesClient {
      * The new rule will be appended to the existing rules in the specified rule set.
      * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
-    public HiddenLayerHttpResponse<RuleSet> create(
+    public BaseHiddenLayerClientHttpResponse<RuleSet> create(
             String ruleSetId, CreateRulesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -114,7 +114,7 @@ public class RawRulesClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RuleSet.class), response);
             }
             try {
@@ -158,7 +158,8 @@ public class RawRulesClient {
      * <p>Replace an existing rule in a rule set with a new definition. This endpoint allows you to update the compliance criteria and conditions of a rule, preserving
      * the rule's order in the rule set. If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
-    public HiddenLayerHttpResponse<RuleSet> update(String ruleSetId, String ruleId, UpdateRulesRequest request) {
+    public BaseHiddenLayerClientHttpResponse<RuleSet> update(
+            String ruleSetId, String ruleId, UpdateRulesRequest request) {
         return update(ruleSetId, ruleId, request, null);
     }
 
@@ -172,7 +173,7 @@ public class RawRulesClient {
      * <p>Replace an existing rule in a rule set with a new definition. This endpoint allows you to update the compliance criteria and conditions of a rule, preserving
      * the rule's order in the rule set. If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
-    public HiddenLayerHttpResponse<RuleSet> update(
+    public BaseHiddenLayerClientHttpResponse<RuleSet> update(
             String ruleSetId, String ruleId, UpdateRulesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -218,7 +219,7 @@ public class RawRulesClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RuleSet.class), response);
             }
             try {
@@ -264,7 +265,7 @@ public class RawRulesClient {
      * <p>Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
      * If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
-    public HiddenLayerHttpResponse<RuleSet> delete(String ruleSetId, String ruleId) {
+    public BaseHiddenLayerClientHttpResponse<RuleSet> delete(String ruleSetId, String ruleId) {
         return delete(ruleSetId, ruleId, DeleteRulesRequest.builder().build());
     }
 
@@ -280,7 +281,8 @@ public class RawRulesClient {
      * <p>Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
      * If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
-    public HiddenLayerHttpResponse<RuleSet> delete(String ruleSetId, String ruleId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<RuleSet> delete(
+            String ruleSetId, String ruleId, RequestOptions requestOptions) {
         return delete(ruleSetId, ruleId, DeleteRulesRequest.builder().build(), requestOptions);
     }
 
@@ -296,7 +298,8 @@ public class RawRulesClient {
      * <p>Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
      * If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
-    public HiddenLayerHttpResponse<RuleSet> delete(String ruleSetId, String ruleId, DeleteRulesRequest request) {
+    public BaseHiddenLayerClientHttpResponse<RuleSet> delete(
+            String ruleSetId, String ruleId, DeleteRulesRequest request) {
         return delete(ruleSetId, ruleId, request, null);
     }
 
@@ -312,7 +315,7 @@ public class RawRulesClient {
      * <p>Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
      * If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
-    public HiddenLayerHttpResponse<RuleSet> delete(
+    public BaseHiddenLayerClientHttpResponse<RuleSet> delete(
             String ruleSetId, String ruleId, DeleteRulesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -351,7 +354,7 @@ public class RawRulesClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RuleSet.class), response);
             }
             try {

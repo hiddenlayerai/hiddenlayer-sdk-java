@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.ssointegrations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -45,14 +45,14 @@ public class RawSsoIntegrationsClient {
     /**
      * Returns the list of SSO integrations associated with the requester's tenant. The results will be sorted by age in descending order (i.e. newest to oldest).
      */
-    public HiddenLayerHttpResponse<ListSsoIntegrationsResponse> list() {
+    public BaseHiddenLayerClientHttpResponse<ListSsoIntegrationsResponse> list() {
         return list(null);
     }
 
     /**
      * Returns the list of SSO integrations associated with the requester's tenant. The results will be sorted by age in descending order (i.e. newest to oldest).
      */
-    public HiddenLayerHttpResponse<ListSsoIntegrationsResponse> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ListSsoIntegrationsResponse> list(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/sso-integrations");
@@ -84,7 +84,7 @@ public class RawSsoIntegrationsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ListSsoIntegrationsResponse.class),
                         response);
             }
@@ -121,7 +121,7 @@ public class RawSsoIntegrationsClient {
      * cannot be enabled until all required information is populated to form a trusted connection between the HiddenLayer
      * and the Identity Provider (IdP).
      */
-    public HiddenLayerHttpResponse<SsoIntegrationSamlV2> create(SsoIntegrationsCreateRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2> create(SsoIntegrationsCreateRequest request) {
         return create(request, null);
     }
 
@@ -130,7 +130,7 @@ public class RawSsoIntegrationsClient {
      * cannot be enabled until all required information is populated to form a trusted connection between the HiddenLayer
      * and the Identity Provider (IdP).
      */
-    public HiddenLayerHttpResponse<SsoIntegrationSamlV2> create(
+    public BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2> create(
             SsoIntegrationsCreateRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -173,7 +173,7 @@ public class RawSsoIntegrationsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SsoIntegrationSamlV2.class), response);
             }
             try {
@@ -210,28 +210,28 @@ public class RawSsoIntegrationsClient {
     /**
      * Get SSO Integration
      */
-    public HiddenLayerHttpResponse<SsoIntegrationSamlV2> get(String id) {
+    public BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2> get(String id) {
         return get(id, GetSsoIntegrationsRequest.builder().build());
     }
 
     /**
      * Get SSO Integration
      */
-    public HiddenLayerHttpResponse<SsoIntegrationSamlV2> get(String id, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2> get(String id, RequestOptions requestOptions) {
         return get(id, GetSsoIntegrationsRequest.builder().build(), requestOptions);
     }
 
     /**
      * Get SSO Integration
      */
-    public HiddenLayerHttpResponse<SsoIntegrationSamlV2> get(String id, GetSsoIntegrationsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2> get(String id, GetSsoIntegrationsRequest request) {
         return get(id, request, null);
     }
 
     /**
      * Get SSO Integration
      */
-    public HiddenLayerHttpResponse<SsoIntegrationSamlV2> get(
+    public BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2> get(
             String id, GetSsoIntegrationsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -265,7 +265,7 @@ public class RawSsoIntegrationsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SsoIntegrationSamlV2.class), response);
             }
             try {
@@ -301,7 +301,7 @@ public class RawSsoIntegrationsClient {
      * cannot be enabled until all required information is populated to form a trusted connection between the HiddenLayer
      * and the Identity Provider (IdP).
      */
-    public HiddenLayerHttpResponse<SsoIntegrationSamlV2> update(String id) {
+    public BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2> update(String id) {
         return update(id, SsoIntegrationsUpdateRequest.builder().build());
     }
 
@@ -310,7 +310,7 @@ public class RawSsoIntegrationsClient {
      * cannot be enabled until all required information is populated to form a trusted connection between the HiddenLayer
      * and the Identity Provider (IdP).
      */
-    public HiddenLayerHttpResponse<SsoIntegrationSamlV2> update(String id, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2> update(String id, RequestOptions requestOptions) {
         return update(id, SsoIntegrationsUpdateRequest.builder().build(), requestOptions);
     }
 
@@ -319,7 +319,8 @@ public class RawSsoIntegrationsClient {
      * cannot be enabled until all required information is populated to form a trusted connection between the HiddenLayer
      * and the Identity Provider (IdP).
      */
-    public HiddenLayerHttpResponse<SsoIntegrationSamlV2> update(String id, SsoIntegrationsUpdateRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2> update(
+            String id, SsoIntegrationsUpdateRequest request) {
         return update(id, request, null);
     }
 
@@ -328,7 +329,7 @@ public class RawSsoIntegrationsClient {
      * cannot be enabled until all required information is populated to form a trusted connection between the HiddenLayer
      * and the Identity Provider (IdP).
      */
-    public HiddenLayerHttpResponse<SsoIntegrationSamlV2> update(
+    public BaseHiddenLayerClientHttpResponse<SsoIntegrationSamlV2> update(
             String id, SsoIntegrationsUpdateRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -372,7 +373,7 @@ public class RawSsoIntegrationsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SsoIntegrationSamlV2.class), response);
             }
             try {

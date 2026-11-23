@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.triage.issues;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -63,7 +63,7 @@ public class AsyncRawIssuesClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Lists the tenant's triage issues in the requested sort order. Pass the response's <code>next</code> back as <code>cursor</code> to read the following page; there is no offset. The cursor is a keyset position, so issues inserted or deleted elsewhere in the list do not shift the page boundary and do not cause a skip or a repeat. It is not stable against updates to the column being sorted on: an issue whose severity, status, or <code>updated_at</code> changes while a traversal is in progress moves relative to the cursor, and can be skipped or returned on more than one page. Callers that need exact handling should de-duplicate on issue <code>id</code> and treat a full traversal as approximate.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageIssue>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageIssue>>> list() {
         return list(ListIssuesRequest.builder().build());
     }
 
@@ -71,7 +71,7 @@ public class AsyncRawIssuesClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Lists the tenant's triage issues in the requested sort order. Pass the response's <code>next</code> back as <code>cursor</code> to read the following page; there is no offset. The cursor is a keyset position, so issues inserted or deleted elsewhere in the list do not shift the page boundary and do not cause a skip or a repeat. It is not stable against updates to the column being sorted on: an issue whose severity, status, or <code>updated_at</code> changes while a traversal is in progress moves relative to the cursor, and can be skipped or returned on more than one page. Callers that need exact handling should de-duplicate on issue <code>id</code> and treat a full traversal as approximate.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageIssue>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageIssue>>> list(
             RequestOptions requestOptions) {
         return list(ListIssuesRequest.builder().build(), requestOptions);
     }
@@ -80,7 +80,8 @@ public class AsyncRawIssuesClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Lists the tenant's triage issues in the requested sort order. Pass the response's <code>next</code> back as <code>cursor</code> to read the following page; there is no offset. The cursor is a keyset position, so issues inserted or deleted elsewhere in the list do not shift the page boundary and do not cause a skip or a repeat. It is not stable against updates to the column being sorted on: an issue whose severity, status, or <code>updated_at</code> changes while a traversal is in progress moves relative to the cursor, and can be skipped or returned on more than one page. Callers that need exact handling should de-duplicate on issue <code>id</code> and treat a full traversal as approximate.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageIssue>>> list(ListIssuesRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageIssue>>> list(
+            ListIssuesRequest request) {
         return list(request, null);
     }
 
@@ -88,7 +89,7 @@ public class AsyncRawIssuesClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Lists the tenant's triage issues in the requested sort order. Pass the response's <code>next</code> back as <code>cursor</code> to read the following page; there is no offset. The cursor is a keyset position, so issues inserted or deleted elsewhere in the list do not shift the page boundary and do not cause a skip or a repeat. It is not stable against updates to the column being sorted on: an issue whose severity, status, or <code>updated_at</code> changes while a traversal is in progress moves relative to the cursor, and can be skipped or returned on more than one page. Callers that need exact handling should de-duplicate on issue <code>id</code> and treat a full traversal as approximate.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageIssue>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageIssue>>> list(
             ListIssuesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -140,7 +141,8 @@ public class AsyncRawIssuesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageIssue>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageIssue>>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -156,7 +158,7 @@ public class AsyncRawIssuesClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<TriageIssue> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<TriageIssue>(
                                         !startingAfter.isEmpty(), result, parsedResponse, () -> {
                                             try {
@@ -235,7 +237,7 @@ public class AsyncRawIssuesClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns one issue with its full note history and <code>alert_spread</code>, the range of the alerts correlated into it. Read this before changing an issue: its <code>status</code> decides whether a <code>PATCH</code> is a change, a no-op or a reopen.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<TriageIssueDetail>> get(String issueId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageIssueDetail>> get(String issueId) {
         return get(issueId, GetIssuesRequest.builder().build());
     }
 
@@ -243,7 +245,7 @@ public class AsyncRawIssuesClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns one issue with its full note history and <code>alert_spread</code>, the range of the alerts correlated into it. Read this before changing an issue: its <code>status</code> decides whether a <code>PATCH</code> is a change, a no-op or a reopen.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<TriageIssueDetail>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageIssueDetail>> get(
             String issueId, RequestOptions requestOptions) {
         return get(issueId, GetIssuesRequest.builder().build(), requestOptions);
     }
@@ -252,7 +254,8 @@ public class AsyncRawIssuesClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns one issue with its full note history and <code>alert_spread</code>, the range of the alerts correlated into it. Read this before changing an issue: its <code>status</code> decides whether a <code>PATCH</code> is a change, a no-op or a reopen.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<TriageIssueDetail>> get(String issueId, GetIssuesRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageIssueDetail>> get(
+            String issueId, GetIssuesRequest request) {
         return get(issueId, request, null);
     }
 
@@ -260,7 +263,7 @@ public class AsyncRawIssuesClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns one issue with its full note history and <code>alert_spread</code>, the range of the alerts correlated into it. Read this before changing an issue: its <code>status</code> decides whether a <code>PATCH</code> is a change, a no-op or a reopen.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<TriageIssueDetail>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageIssueDetail>> get(
             String issueId, GetIssuesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -290,7 +293,7 @@ public class AsyncRawIssuesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<TriageIssueDetail>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageIssueDetail>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -298,7 +301,7 @@ public class AsyncRawIssuesClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TriageIssueDetail.class),
                                 response));
                         return;
@@ -402,7 +405,7 @@ public class AsyncRawIssuesClient {
      * field that is absent or <code>null</code> is left as it is; neither field can be
      * cleared.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<TriageIssueDetail>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageIssueDetail>> update(
             String issueId, UpdateIssuesRequest request) {
         return update(issueId, request, null);
     }
@@ -445,7 +448,7 @@ public class AsyncRawIssuesClient {
      * field that is absent or <code>null</code> is left as it is; neither field can be
      * cleared.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<TriageIssueDetail>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageIssueDetail>> update(
             String issueId, UpdateIssuesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -485,7 +488,7 @@ public class AsyncRawIssuesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<TriageIssueDetail>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageIssueDetail>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -493,7 +496,7 @@ public class AsyncRawIssuesClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TriageIssueDetail.class),
                                 response));
                         return;
@@ -578,7 +581,8 @@ public class AsyncRawIssuesClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Appends a note to an issue without changing its status or severity. Works on an issue in any status, including <code>CLOSED</code> and <code>FALSE_POSITIVE</code>. Notes are immutable and attributed to the caller. Unlike <code>PATCH</code>, this is not retry-safe: each successful call adds a note, so a retried request can record the same text twice. To record the reason for an escalation or a false-positive verdict, send it as <code>note</code> on the <code>PATCH</code> that makes the change instead.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<TriageNote>> notes(String issueId, NotesIssuesRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageNote>> notes(
+            String issueId, NotesIssuesRequest request) {
         return notes(issueId, request, null);
     }
 
@@ -586,7 +590,7 @@ public class AsyncRawIssuesClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Appends a note to an issue without changing its status or severity. Works on an issue in any status, including <code>CLOSED</code> and <code>FALSE_POSITIVE</code>. Notes are immutable and attributed to the caller. Unlike <code>PATCH</code>, this is not retry-safe: each successful call adds a note, so a retried request can record the same text twice. To record the reason for an escalation or a false-positive verdict, send it as <code>note</code> on the <code>PATCH</code> that makes the change instead.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<TriageNote>> notes(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageNote>> notes(
             String issueId, NotesIssuesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -627,7 +631,7 @@ public class AsyncRawIssuesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<TriageNote>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageNote>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -635,7 +639,7 @@ public class AsyncRawIssuesClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TriageNote.class), response));
                         return;
                     }
@@ -727,7 +731,7 @@ public class AsyncRawIssuesClient {
      * <p>&quot;Source event&quot; and &quot;alert&quot; name the same thing: a single detection
      * raised by a platform capability.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageSourceEvent>>> sourceEvents(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageSourceEvent>>> sourceEvents(
             String issueId) {
         return sourceEvents(issueId, SourceEventsIssuesRequest.builder().build());
     }
@@ -754,7 +758,7 @@ public class AsyncRawIssuesClient {
      * <p>&quot;Source event&quot; and &quot;alert&quot; name the same thing: a single detection
      * raised by a platform capability.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageSourceEvent>>> sourceEvents(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageSourceEvent>>> sourceEvents(
             String issueId, RequestOptions requestOptions) {
         return sourceEvents(issueId, SourceEventsIssuesRequest.builder().build(), requestOptions);
     }
@@ -781,7 +785,7 @@ public class AsyncRawIssuesClient {
      * <p>&quot;Source event&quot; and &quot;alert&quot; name the same thing: a single detection
      * raised by a platform capability.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageSourceEvent>>> sourceEvents(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageSourceEvent>>> sourceEvents(
             String issueId, SourceEventsIssuesRequest request) {
         return sourceEvents(issueId, request, null);
     }
@@ -808,7 +812,7 @@ public class AsyncRawIssuesClient {
      * <p>&quot;Source event&quot; and &quot;alert&quot; name the same thing: a single detection
      * raised by a platform capability.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageSourceEvent>>> sourceEvents(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageSourceEvent>>> sourceEvents(
             String issueId, SourceEventsIssuesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -847,7 +851,7 @@ public class AsyncRawIssuesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TriageSourceEvent>>> future =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TriageSourceEvent>>> future =
                 new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
@@ -864,7 +868,7 @@ public class AsyncRawIssuesClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<TriageSourceEvent> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<TriageSourceEvent>(
                                         !startingAfter.isEmpty(), result, parsedResponse, () -> {
                                             try {

@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.access.apikeys;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -51,28 +51,28 @@ public class RawApiKeysClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<StaticApiKey>> list() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<StaticApiKey>> list() {
         return list(ListApiKeysRequest.builder().build());
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<StaticApiKey>> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<StaticApiKey>> list(RequestOptions requestOptions) {
         return list(ListApiKeysRequest.builder().build(), requestOptions);
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<StaticApiKey>> list(ListApiKeysRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<StaticApiKey>> list(ListApiKeysRequest request) {
         return list(request, null);
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<StaticApiKey>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<StaticApiKey>> list(
             ListApiKeysRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -121,7 +121,7 @@ public class RawApiKeysClient {
                         .cursor(startingAfter)
                         .build();
                 List<StaticApiKey> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<StaticApiKey>(
                                 !startingAfter.isEmpty(), result, parsedResponse, () -> list(
                                                 nextRequest, requestOptions)
@@ -161,7 +161,7 @@ public class RawApiKeysClient {
      * <p>Prefer <a href="#operation/create_credentials_api_v2_credentials_post">API credentials</a>, which trade a client ID and secret for short-lived OAuth2 access tokens. Reserve Static API Keys for integrations that cannot easily support OAuth2.</p>
      * <p>A tenant can have at most 100 keys that are neither revoked nor retired, including keys with no active secret.</p>
      */
-    public HiddenLayerHttpResponse<StaticApiKeyWithValue> create(StaticApiKeyCreateRequest request) {
+    public BaseHiddenLayerClientHttpResponse<StaticApiKeyWithValue> create(StaticApiKeyCreateRequest request) {
         return create(request, null);
     }
 
@@ -170,7 +170,7 @@ public class RawApiKeysClient {
      * <p>Prefer <a href="#operation/create_credentials_api_v2_credentials_post">API credentials</a>, which trade a client ID and secret for short-lived OAuth2 access tokens. Reserve Static API Keys for integrations that cannot easily support OAuth2.</p>
      * <p>A tenant can have at most 100 keys that are neither revoked nor retired, including keys with no active secret.</p>
      */
-    public HiddenLayerHttpResponse<StaticApiKeyWithValue> create(
+    public BaseHiddenLayerClientHttpResponse<StaticApiKeyWithValue> create(
             StaticApiKeyCreateRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -213,7 +213,7 @@ public class RawApiKeysClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, StaticApiKeyWithValue.class), response);
             }
             try {
@@ -253,28 +253,28 @@ public class RawApiKeysClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<StaticApiKey> get(String id) {
+    public BaseHiddenLayerClientHttpResponse<StaticApiKey> get(String id) {
         return get(id, GetApiKeysRequest.builder().build());
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<StaticApiKey> get(String id, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<StaticApiKey> get(String id, RequestOptions requestOptions) {
         return get(id, GetApiKeysRequest.builder().build(), requestOptions);
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<StaticApiKey> get(String id, GetApiKeysRequest request) {
+    public BaseHiddenLayerClientHttpResponse<StaticApiKey> get(String id, GetApiKeysRequest request) {
         return get(id, request, null);
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<StaticApiKey> get(
+    public BaseHiddenLayerClientHttpResponse<StaticApiKey> get(
             String id, GetApiKeysRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -308,7 +308,7 @@ public class RawApiKeysClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, StaticApiKey.class), response);
             }
             try {
@@ -346,7 +346,7 @@ public class RawApiKeysClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Revokes the key and all its secrets. Revoking a key that is already revoked returns <code>204</code>, whatever the <code>If-Match</code> value.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String id, DeleteApiKeysRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id, DeleteApiKeysRequest request) {
         return delete(id, request, null);
     }
 
@@ -354,7 +354,7 @@ public class RawApiKeysClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Revokes the key and all its secrets. Revoking a key that is already revoked returns <code>204</code>, whatever the <code>If-Match</code> value.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
             String id, DeleteApiKeysRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -391,7 +391,7 @@ public class RawApiKeysClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {

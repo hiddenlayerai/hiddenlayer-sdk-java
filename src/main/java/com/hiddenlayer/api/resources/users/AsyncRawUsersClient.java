@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.users;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -55,14 +55,14 @@ public class AsyncRawUsersClient {
     /**
      * Returns all users belonging to the authenticated user's tenant. The response includes up to 1000 items. <strong>Deprecated</strong> — use <a href="#tag/Users/operation/list_users_access_v2_users_get">List Users (paginated)</a> instead.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ListUsersResponse>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ListUsersResponse>> list() {
         return list(null);
     }
 
     /**
      * Returns all users belonging to the authenticated user's tenant. The response includes up to 1000 items. <strong>Deprecated</strong> — use <a href="#tag/Users/operation/list_users_access_v2_users_get">List Users (paginated)</a> instead.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ListUsersResponse>> list(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ListUsersResponse>> list(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/users");
@@ -90,7 +90,7 @@ public class AsyncRawUsersClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ListUsersResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListUsersResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -98,7 +98,7 @@ public class AsyncRawUsersClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ListUsersResponse.class),
                                 response));
                         return;
@@ -147,28 +147,29 @@ public class AsyncRawUsersClient {
     /**
      * Creates a new user in the tenant. The user's email address must be unique within the tenant.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<CreateUsersResponse>> create() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<CreateUsersResponse>> create() {
         return create(UserBase.builder().build());
     }
 
     /**
      * Creates a new user in the tenant. The user's email address must be unique within the tenant.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<CreateUsersResponse>> create(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<CreateUsersResponse>> create(
+            RequestOptions requestOptions) {
         return create(UserBase.builder().build(), requestOptions);
     }
 
     /**
      * Creates a new user in the tenant. The user's email address must be unique within the tenant.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<CreateUsersResponse>> create(UserBase request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<CreateUsersResponse>> create(UserBase request) {
         return create(request, null);
     }
 
     /**
      * Creates a new user in the tenant. The user's email address must be unique within the tenant.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<CreateUsersResponse>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<CreateUsersResponse>> create(
             UserBase request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -207,7 +208,7 @@ public class AsyncRawUsersClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<CreateUsersResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<CreateUsersResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -215,7 +216,7 @@ public class AsyncRawUsersClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CreateUsersResponse.class),
                                 response));
                         return;
@@ -269,28 +270,30 @@ public class AsyncRawUsersClient {
     /**
      * Retrieves details for the specified user.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<GetUsersResponse>> get(String id) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GetUsersResponse>> get(String id) {
         return get(id, GetUsersRequest.builder().build());
     }
 
     /**
      * Retrieves details for the specified user.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<GetUsersResponse>> get(String id, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GetUsersResponse>> get(
+            String id, RequestOptions requestOptions) {
         return get(id, GetUsersRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieves details for the specified user.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<GetUsersResponse>> get(String id, GetUsersRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GetUsersResponse>> get(
+            String id, GetUsersRequest request) {
         return get(id, request, null);
     }
 
     /**
      * Retrieves details for the specified user.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<GetUsersResponse>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GetUsersResponse>> get(
             String id, GetUsersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -320,7 +323,7 @@ public class AsyncRawUsersClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<GetUsersResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<GetUsersResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -328,7 +331,7 @@ public class AsyncRawUsersClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetUsersResponse.class),
                                 response));
                         return;
@@ -382,14 +385,14 @@ public class AsyncRawUsersClient {
     /**
      * Updates details for the specified user. The user's email address must remain unique within the tenant.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<User>> update(String id, UpdateUsersRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<User>> update(String id, UpdateUsersRequest request) {
         return update(id, request, null);
     }
 
     /**
      * Updates details for the specified user. The user's email address must remain unique within the tenant.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<User>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<User>> update(
             String id, UpdateUsersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -429,7 +432,7 @@ public class AsyncRawUsersClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<User>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<User>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -437,7 +440,7 @@ public class AsyncRawUsersClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, User.class), response));
                         return;
                     }
@@ -500,28 +503,28 @@ public class AsyncRawUsersClient {
     /**
      * Permanently removes the specified user from the tenant.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String id) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String id) {
         return delete(id, DeleteUsersRequest.builder().build());
     }
 
     /**
      * Permanently removes the specified user from the tenant.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String id, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String id, RequestOptions requestOptions) {
         return delete(id, DeleteUsersRequest.builder().build(), requestOptions);
     }
 
     /**
      * Permanently removes the specified user from the tenant.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String id, DeleteUsersRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String id, DeleteUsersRequest request) {
         return delete(id, request, null);
     }
 
     /**
      * Permanently removes the specified user from the tenant.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String id, DeleteUsersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -554,14 +557,14 @@ public class AsyncRawUsersClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
@@ -621,7 +624,7 @@ public class AsyncRawUsersClient {
      * The user must complete the reset workflow themselves via the link in the email.
      * The <code>password</code> field in the response is deprecated and included only for backwards compatibility.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ResetUsersResponse>> reset(ResetUsersRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ResetUsersResponse>> reset(ResetUsersRequest request) {
         return reset(request, null);
     }
 
@@ -630,7 +633,7 @@ public class AsyncRawUsersClient {
      * The user must complete the reset workflow themselves via the link in the email.
      * The <code>password</code> field in the response is deprecated and included only for backwards compatibility.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ResetUsersResponse>> reset(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ResetUsersResponse>> reset(
             ResetUsersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -669,7 +672,7 @@ public class AsyncRawUsersClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ResetUsersResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ResetUsersResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -677,7 +680,7 @@ public class AsyncRawUsersClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ResetUsersResponse.class),
                                 response));
                         return;
@@ -726,14 +729,14 @@ public class AsyncRawUsersClient {
     /**
      * Retrieves profile and role details for the currently authenticated user.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<MeUsersResponse>> me() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<MeUsersResponse>> me() {
         return me(null);
     }
 
     /**
      * Retrieves profile and role details for the currently authenticated user.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<MeUsersResponse>> me(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<MeUsersResponse>> me(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/users/me");
@@ -761,7 +764,7 @@ public class AsyncRawUsersClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<MeUsersResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<MeUsersResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -769,7 +772,7 @@ public class AsyncRawUsersClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, MeUsersResponse.class),
                                 response));
                         return;

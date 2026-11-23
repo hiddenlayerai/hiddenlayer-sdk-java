@@ -5,11 +5,11 @@ package com.hiddenlayer.api.resources.models;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -40,19 +40,19 @@ public class RawModelsClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<SensorSorModel> retrieve(String modelId) {
+    public BaseHiddenLayerClientHttpResponse<SensorSorModel> retrieve(String modelId) {
         return retrieve(modelId, RetrieveModelsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<SensorSorModel> retrieve(String modelId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SensorSorModel> retrieve(String modelId, RequestOptions requestOptions) {
         return retrieve(modelId, RetrieveModelsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<SensorSorModel> retrieve(String modelId, RetrieveModelsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SensorSorModel> retrieve(String modelId, RetrieveModelsRequest request) {
         return retrieve(modelId, request, null);
     }
 
-    public HiddenLayerHttpResponse<SensorSorModel> retrieve(
+    public BaseHiddenLayerClientHttpResponse<SensorSorModel> retrieve(
             String modelId, RetrieveModelsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -86,7 +86,7 @@ public class RawModelsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SensorSorModel.class), response);
             }
             try {
@@ -111,19 +111,19 @@ public class RawModelsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<Void> delete(String modelId) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String modelId) {
         return delete(modelId, DeleteModelsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<Void> delete(String modelId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String modelId, RequestOptions requestOptions) {
         return delete(modelId, DeleteModelsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<Void> delete(String modelId, DeleteModelsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String modelId, DeleteModelsRequest request) {
         return delete(modelId, request, null);
     }
 
-    public HiddenLayerHttpResponse<Void> delete(
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
             String modelId, DeleteModelsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -159,7 +159,7 @@ public class RawModelsClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -190,11 +190,11 @@ public class RawModelsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<List<SensorSorModel>> list() {
+    public BaseHiddenLayerClientHttpResponse<List<SensorSorModel>> list() {
         return list(null);
     }
 
-    public HiddenLayerHttpResponse<List<SensorSorModel>> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<List<SensorSorModel>> list(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/models");
@@ -226,7 +226,7 @@ public class RawModelsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(
                                 responseBodyString, new TypeReference<List<SensorSorModel>>() {}),
                         response);
@@ -253,11 +253,11 @@ public class RawModelsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<UpdateModelsResponse> update(List<SensorSorModel> request) {
+    public BaseHiddenLayerClientHttpResponse<UpdateModelsResponse> update(List<SensorSorModel> request) {
         return update(request, null);
     }
 
-    public HiddenLayerHttpResponse<UpdateModelsResponse> update(
+    public BaseHiddenLayerClientHttpResponse<UpdateModelsResponse> update(
             List<SensorSorModel> request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -300,7 +300,7 @@ public class RawModelsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, UpdateModelsResponse.class), response);
             }
             try {

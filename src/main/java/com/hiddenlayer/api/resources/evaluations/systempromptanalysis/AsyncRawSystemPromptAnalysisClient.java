@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.evaluations.systempromptanalysis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -62,7 +62,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * <p>List completed system prompt analysis results with filtering and bidirectional pagination.</p>
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> list() {
         return list(ListSystemPromptAnalysisRequest.builder().build());
     }
 
@@ -71,7 +71,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * <p>List completed system prompt analysis results with filtering and bidirectional pagination.</p>
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> list(
             RequestOptions requestOptions) {
         return list(ListSystemPromptAnalysisRequest.builder().build(), requestOptions);
     }
@@ -81,7 +81,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * <p>List completed system prompt analysis results with filtering and bidirectional pagination.</p>
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> list(
             ListSystemPromptAnalysisRequest request) {
         return list(request, null);
     }
@@ -91,7 +91,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * <p>List completed system prompt analysis results with filtering and bidirectional pagination.</p>
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> list(
             ListSystemPromptAnalysisRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -156,7 +156,7 @@ public class AsyncRawSystemPromptAnalysisClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> future =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> future =
                 new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
@@ -173,7 +173,7 @@ public class AsyncRawSystemPromptAnalysisClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<SystemPromptResultItem> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<SystemPromptResultItem>(
                                         startingAfter.isPresent()
                                                 && !startingAfter.get().isEmpty(),
@@ -248,7 +248,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * <p>This immediately starts the workflow which auto-triggers question generation.
      * Client should poll /status to check progress.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> create(
             StartSystemPromptWorkflowBody request) {
         return create(request, null);
     }
@@ -259,7 +259,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * <p>This immediately starts the workflow which auto-triggers question generation.
      * Client should poll /status to check progress.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> create(
             StartSystemPromptWorkflowBody request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -298,7 +298,7 @@ public class AsyncRawSystemPromptAnalysisClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -306,7 +306,7 @@ public class AsyncRawSystemPromptAnalysisClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, StartWorkflowResponse.class),
                                 response));
                         return;
@@ -368,7 +368,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * <p>This endpoint is designed to be polled by clients to track progress.
      * Returns immediately with current state.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AnalysisStatus>> status(String workflowId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisStatus>> status(String workflowId) {
         return status(workflowId, StatusSystemPromptAnalysisRequest.builder().build());
     }
 
@@ -378,7 +378,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * <p>This endpoint is designed to be polled by clients to track progress.
      * Returns immediately with current state.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AnalysisStatus>> status(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisStatus>> status(
             String workflowId, RequestOptions requestOptions) {
         return status(workflowId, StatusSystemPromptAnalysisRequest.builder().build(), requestOptions);
     }
@@ -389,7 +389,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * <p>This endpoint is designed to be polled by clients to track progress.
      * Returns immediately with current state.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AnalysisStatus>> status(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisStatus>> status(
             String workflowId, StatusSystemPromptAnalysisRequest request) {
         return status(workflowId, request, null);
     }
@@ -400,7 +400,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * <p>This endpoint is designed to be polled by clients to track progress.
      * Returns immediately with current state.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AnalysisStatus>> status(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisStatus>> status(
             String workflowId, StatusSystemPromptAnalysisRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -431,7 +431,7 @@ public class AsyncRawSystemPromptAnalysisClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<AnalysisStatus>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisStatus>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -439,7 +439,7 @@ public class AsyncRawSystemPromptAnalysisClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AnalysisStatus.class),
                                 response));
                         return;
@@ -499,7 +499,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the final result of a completed analysis workflow.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AnalysisResult>> get(String workflowId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisResult>> get(String workflowId) {
         return get(workflowId, GetSystemPromptAnalysisRequest.builder().build());
     }
 
@@ -507,7 +507,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the final result of a completed analysis workflow.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AnalysisResult>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisResult>> get(
             String workflowId, RequestOptions requestOptions) {
         return get(workflowId, GetSystemPromptAnalysisRequest.builder().build(), requestOptions);
     }
@@ -516,7 +516,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the final result of a completed analysis workflow.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AnalysisResult>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisResult>> get(
             String workflowId, GetSystemPromptAnalysisRequest request) {
         return get(workflowId, request, null);
     }
@@ -525,7 +525,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the final result of a completed analysis workflow.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AnalysisResult>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisResult>> get(
             String workflowId, GetSystemPromptAnalysisRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -555,7 +555,7 @@ public class AsyncRawSystemPromptAnalysisClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<AnalysisResult>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisResult>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -563,7 +563,7 @@ public class AsyncRawSystemPromptAnalysisClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AnalysisResult.class),
                                 response));
                         return;
@@ -628,7 +628,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a system prompt analysis result from storage.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String workflowId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String workflowId) {
         return delete(workflowId, DeleteSystemPromptAnalysisRequest.builder().build());
     }
 
@@ -636,7 +636,8 @@ public class AsyncRawSystemPromptAnalysisClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a system prompt analysis result from storage.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String workflowId, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
+            String workflowId, RequestOptions requestOptions) {
         return delete(workflowId, DeleteSystemPromptAnalysisRequest.builder().build(), requestOptions);
     }
 
@@ -644,7 +645,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a system prompt analysis result from storage.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String workflowId, DeleteSystemPromptAnalysisRequest request) {
         return delete(workflowId, request, null);
     }
@@ -653,7 +654,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a system prompt analysis result from storage.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String workflowId, DeleteSystemPromptAnalysisRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -686,14 +687,14 @@ public class AsyncRawSystemPromptAnalysisClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
@@ -754,7 +755,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * <p>This endpoint accepts user answers and triggers the compile+validate
      * child workflow. Returns immediately; client should poll /status for results.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SubmitAnswersResult>> answers(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SubmitAnswersResult>> answers(
             String workflowId, SubmitAnswersBody request) {
         return answers(workflowId, request, null);
     }
@@ -765,7 +766,7 @@ public class AsyncRawSystemPromptAnalysisClient {
      * <p>This endpoint accepts user answers and triggers the compile+validate
      * child workflow. Returns immediately; client should poll /status for results.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SubmitAnswersResult>> answers(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SubmitAnswersResult>> answers(
             String workflowId, SubmitAnswersBody request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -806,7 +807,7 @@ public class AsyncRawSystemPromptAnalysisClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SubmitAnswersResult>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SubmitAnswersResult>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -814,7 +815,7 @@ public class AsyncRawSystemPromptAnalysisClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SubmitAnswersResult.class),
                                 response));
                         return;

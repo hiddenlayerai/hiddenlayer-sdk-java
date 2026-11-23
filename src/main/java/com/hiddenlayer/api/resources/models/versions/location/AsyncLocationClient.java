@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.models.versions.location;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.models.versions.location.requests.InternalLocationRequest;
 import com.hiddenlayer.api.resources.models.versions.location.types.InternalLocationResponse;
@@ -28,7 +28,7 @@ public class AsyncLocationClient {
     }
 
     public CompletableFuture<InternalLocationResponse> internal(String versionId) {
-        CompletableFuture<HiddenLayerHttpResponse<InternalLocationResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InternalLocationResponse>> rawFuture =
                 this.rawClient.internal(versionId);
         CompletableFuture<InternalLocationResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -40,7 +40,7 @@ public class AsyncLocationClient {
     }
 
     public CompletableFuture<InternalLocationResponse> internal(String versionId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<InternalLocationResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InternalLocationResponse>> rawFuture =
                 this.rawClient.internal(versionId, requestOptions);
         CompletableFuture<InternalLocationResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -52,7 +52,7 @@ public class AsyncLocationClient {
     }
 
     public CompletableFuture<InternalLocationResponse> internal(String versionId, InternalLocationRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<InternalLocationResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InternalLocationResponse>> rawFuture =
                 this.rawClient.internal(versionId, request);
         CompletableFuture<InternalLocationResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -65,7 +65,7 @@ public class AsyncLocationClient {
 
     public CompletableFuture<InternalLocationResponse> internal(
             String versionId, InternalLocationRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<InternalLocationResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InternalLocationResponse>> rawFuture =
                 this.rawClient.internal(versionId, request, requestOptions);
         CompletableFuture<InternalLocationResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

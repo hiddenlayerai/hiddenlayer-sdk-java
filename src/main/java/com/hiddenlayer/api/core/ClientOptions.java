@@ -257,6 +257,8 @@ public final class ClientOptions {
 
         private Optional<LogConfig> logging = Optional.empty();
 
+        private final List<Interceptor> interceptors = new ArrayList<>();
+
         public Builder environment(Environment environment) {
             this.environment = environment;
             return this;
@@ -393,6 +395,16 @@ public final class ClientOptions {
         }
 
         /**
+         * Add a custom OkHttp interceptor to the client.
+         * Interceptors are applied to the OkHttpClient when the client is built.
+         * This can be used for custom request signing, logging, or other request/response modifications.
+         */
+        public Builder addInterceptor(Interceptor interceptor) {
+            this.interceptors.add(interceptor);
+            return this;
+        }
+
+        /**
          * Configure logging for the SDK. Silent by default — no log output unless explicitly configured.
          */
         public Builder logging(LogConfig logging) {
@@ -449,6 +461,10 @@ public final class ClientOptions {
             Logger logger = Logger.from(this.logging);
             httpClientBuilder.addInterceptor(new LoggingInterceptor(logger));
             httpClientBuilder.addInterceptor(new ResponseDecompressionInterceptor());
+
+            for (Interceptor interceptor : this.interceptors) {
+                httpClientBuilder.addInterceptor(interceptor);
+            }
 
             this.httpClient = httpClientBuilder.build();
             this.timeout = Optional.of(httpClient.callTimeoutMillis() / 1000);

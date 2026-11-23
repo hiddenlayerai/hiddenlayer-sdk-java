@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.interactions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -35,14 +35,14 @@ public class RawInteractionsClient {
     /**
      * Performs a detailed security analysis of the input and/or output of LLM interactions.
      */
-    public HiddenLayerHttpResponse<EnrichedResponse> analyze(InteractionsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<EnrichedResponse> analyze(InteractionsRequest request) {
         return analyze(request, null);
     }
 
     /**
      * Performs a detailed security analysis of the input and/or output of LLM interactions.
      */
-    public HiddenLayerHttpResponse<EnrichedResponse> analyze(
+    public BaseHiddenLayerClientHttpResponse<EnrichedResponse> analyze(
             InteractionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -88,7 +88,7 @@ public class RawInteractionsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, EnrichedResponse.class), response);
             }
             try {

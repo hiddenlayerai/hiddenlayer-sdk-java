@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.models.versions.location;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -30,20 +30,21 @@ public class RawLocationClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<InternalLocationResponse> internal(String versionId) {
+    public BaseHiddenLayerClientHttpResponse<InternalLocationResponse> internal(String versionId) {
         return internal(versionId, InternalLocationRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<InternalLocationResponse> internal(String versionId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<InternalLocationResponse> internal(
+            String versionId, RequestOptions requestOptions) {
         return internal(versionId, InternalLocationRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<InternalLocationResponse> internal(
+    public BaseHiddenLayerClientHttpResponse<InternalLocationResponse> internal(
             String versionId, InternalLocationRequest request) {
         return internal(versionId, request, null);
     }
 
-    public HiddenLayerHttpResponse<InternalLocationResponse> internal(
+    public BaseHiddenLayerClientHttpResponse<InternalLocationResponse> internal(
             String versionId, InternalLocationRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -79,7 +80,7 @@ public class RawLocationClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, InternalLocationResponse.class),
                         response);
             }

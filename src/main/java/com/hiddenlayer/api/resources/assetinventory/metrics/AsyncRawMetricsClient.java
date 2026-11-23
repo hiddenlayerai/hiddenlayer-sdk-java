@@ -5,10 +5,10 @@ package com.hiddenlayer.api.resources.assetinventory.metrics;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -41,11 +41,11 @@ public class AsyncRawMetricsClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1ProviderCounts>> providerCountsV1() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1ProviderCounts>> providerCountsV1() {
         return providerCountsV1(null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1ProviderCounts>> providerCountsV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1ProviderCounts>> providerCountsV1(
             RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -74,7 +74,8 @@ public class AsyncRawMetricsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1ProviderCounts>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1ProviderCounts>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -82,7 +83,7 @@ public class AsyncRawMetricsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, AiAssetInventoryV1ProviderCounts.class),
                                 response));
@@ -129,11 +130,11 @@ public class AsyncRawMetricsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1RegionCounts>> regionCountsV1() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1RegionCounts>> regionCountsV1() {
         return regionCountsV1(null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1RegionCounts>> regionCountsV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1RegionCounts>> regionCountsV1(
             RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -162,7 +163,8 @@ public class AsyncRawMetricsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1RegionCounts>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1RegionCounts>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -170,7 +172,7 @@ public class AsyncRawMetricsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, AiAssetInventoryV1RegionCounts.class),
                                 response));
@@ -217,11 +219,11 @@ public class AsyncRawMetricsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetTypeCounts>> assetTypeCountsV1() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetTypeCounts>> assetTypeCountsV1() {
         return assetTypeCountsV1(null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetTypeCounts>> assetTypeCountsV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetTypeCounts>> assetTypeCountsV1(
             RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -250,7 +252,7 @@ public class AsyncRawMetricsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetTypeCounts>> future =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetTypeCounts>> future =
                 new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
@@ -259,7 +261,7 @@ public class AsyncRawMetricsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, AiAssetInventoryV1AssetTypeCounts.class),
                                 response));
@@ -313,7 +315,7 @@ public class AsyncRawMetricsClient {
      * Assets from providers outside this set are counted under
      * <code>other</code>.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ProviderCounts>> providerCounts() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ProviderCounts>> providerCounts() {
         return providerCounts(null);
     }
 
@@ -324,7 +326,8 @@ public class AsyncRawMetricsClient {
      * Assets from providers outside this set are counted under
      * <code>other</code>.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ProviderCounts>> providerCounts(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ProviderCounts>> providerCounts(
+            RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v2/metrics/provider-counts");
@@ -352,7 +355,7 @@ public class AsyncRawMetricsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ProviderCounts>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ProviderCounts>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -360,7 +363,7 @@ public class AsyncRawMetricsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ProviderCounts.class),
                                 response));
                         return;
@@ -423,7 +426,7 @@ public class AsyncRawMetricsClient {
      * higher-level geographic region (for example, North America or
      * Europe).</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RegionCounts>> regionCounts() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RegionCounts>> regionCounts() {
         return regionCounts(null);
     }
 
@@ -434,7 +437,8 @@ public class AsyncRawMetricsClient {
      * higher-level geographic region (for example, North America or
      * Europe).</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RegionCounts>> regionCounts(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RegionCounts>> regionCounts(
+            RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v2/metrics/region-counts");
@@ -462,7 +466,7 @@ public class AsyncRawMetricsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<RegionCounts>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RegionCounts>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -470,7 +474,7 @@ public class AsyncRawMetricsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RegionCounts.class), response));
                         return;
                     }
@@ -530,7 +534,7 @@ public class AsyncRawMetricsClient {
      * <p>Return the number of AI assets in your inventory grouped by
      * asset type (for example, model, endpoint, or agent).</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Map<String, Integer>>> assetTypeCounts() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Integer>>> assetTypeCounts() {
         return assetTypeCounts(null);
     }
 
@@ -539,7 +543,7 @@ public class AsyncRawMetricsClient {
      * <p>Return the number of AI assets in your inventory grouped by
      * asset type (for example, model, endpoint, or agent).</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Map<String, Integer>>> assetTypeCounts(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Integer>>> assetTypeCounts(
             RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -568,7 +572,7 @@ public class AsyncRawMetricsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Map<String, Integer>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, Integer>>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -576,7 +580,7 @@ public class AsyncRawMetricsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Map<String, Integer>>() {}),
                                 response));

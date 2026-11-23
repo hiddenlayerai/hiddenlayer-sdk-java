@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.models.policycompliance;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -41,7 +41,7 @@ public class AsyncRawPolicyComplianceClient {
     /**
      * Override the policy compliance status for a model. Send {&quot;compliant&quot;: true} to mark as compliant, or {&quot;compliant&quot;: false} to mark as noncompliant.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> update(
             String modelId, OverridePolicyComplianceRequest request) {
         return update(modelId, request, null);
     }
@@ -49,7 +49,7 @@ public class AsyncRawPolicyComplianceClient {
     /**
      * Override the policy compliance status for a model. Send {&quot;compliant&quot;: true} to mark as compliant, or {&quot;compliant&quot;: false} to mark as noncompliant.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> update(
             String modelId, OverridePolicyComplianceRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -90,14 +90,14 @@ public class AsyncRawPolicyComplianceClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
@@ -145,21 +145,22 @@ public class AsyncRawPolicyComplianceClient {
     /**
      * Remove the manual policy compliance override for a model, reverting to the policy-derived compliance status.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String modelId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String modelId) {
         return delete(modelId, DeletePolicyComplianceRequest.builder().build());
     }
 
     /**
      * Remove the manual policy compliance override for a model, reverting to the policy-derived compliance status.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String modelId, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
+            String modelId, RequestOptions requestOptions) {
         return delete(modelId, DeletePolicyComplianceRequest.builder().build(), requestOptions);
     }
 
     /**
      * Remove the manual policy compliance override for a model, reverting to the policy-derived compliance status.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String modelId, DeletePolicyComplianceRequest request) {
         return delete(modelId, request, null);
     }
@@ -167,7 +168,7 @@ public class AsyncRawPolicyComplianceClient {
     /**
      * Remove the manual policy compliance override for a model, reverting to the policy-derived compliance status.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String modelId, DeletePolicyComplianceRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -201,14 +202,14 @@ public class AsyncRawPolicyComplianceClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";

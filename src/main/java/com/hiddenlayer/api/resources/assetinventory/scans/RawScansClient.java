@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.assetinventory.scans;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -32,19 +32,19 @@ public class RawScansClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<AssetScan> get(String scanId) {
+    public BaseHiddenLayerClientHttpResponse<AssetScan> get(String scanId) {
         return get(scanId, GetScansRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<AssetScan> get(String scanId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<AssetScan> get(String scanId, RequestOptions requestOptions) {
         return get(scanId, GetScansRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<AssetScan> get(String scanId, GetScansRequest request) {
+    public BaseHiddenLayerClientHttpResponse<AssetScan> get(String scanId, GetScansRequest request) {
         return get(scanId, request, null);
     }
 
-    public HiddenLayerHttpResponse<AssetScan> get(
+    public BaseHiddenLayerClientHttpResponse<AssetScan> get(
             String scanId, GetScansRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -78,7 +78,7 @@ public class RawScansClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AssetScan.class), response);
             }
             try {

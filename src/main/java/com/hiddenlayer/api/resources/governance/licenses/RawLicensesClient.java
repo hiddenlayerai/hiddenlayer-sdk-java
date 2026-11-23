@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.governance.licenses;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -33,7 +33,7 @@ public class RawLicensesClient {
      * Returns every license value a <code>license</code> condition accepts, including <code>unknown</code> and <code>custom</code>
      * alongside the named licenses. Rules store each license's <code>id</code>; <code>name</code> is for display only.
      */
-    public HiddenLayerHttpResponse<ListLicensesResponse> list() {
+    public BaseHiddenLayerClientHttpResponse<ListLicensesResponse> list() {
         return list(null);
     }
 
@@ -41,7 +41,7 @@ public class RawLicensesClient {
      * Returns every license value a <code>license</code> condition accepts, including <code>unknown</code> and <code>custom</code>
      * alongside the named licenses. Rules store each license's <code>id</code>; <code>name</code> is for display only.
      */
-    public HiddenLayerHttpResponse<ListLicensesResponse> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ListLicensesResponse> list(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("governance/v1/licenses");
@@ -73,7 +73,7 @@ public class RawLicensesClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ListLicensesResponse.class), response);
             }
             try {

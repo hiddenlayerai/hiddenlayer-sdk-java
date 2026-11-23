@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.evaluations.redteamv2.sessions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -55,7 +55,8 @@ public class AsyncRawSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Lists a finished run's sessions in run order, without their messages. Get a single session for its messages.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamSession>>> list(String workflowId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamSession>>> list(
+            String workflowId) {
         return list(workflowId, ListSessionsRequest.builder().build());
     }
 
@@ -63,7 +64,7 @@ public class AsyncRawSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Lists a finished run's sessions in run order, without their messages. Get a single session for its messages.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamSession>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamSession>>> list(
             String workflowId, RequestOptions requestOptions) {
         return list(workflowId, ListSessionsRequest.builder().build(), requestOptions);
     }
@@ -72,7 +73,7 @@ public class AsyncRawSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Lists a finished run's sessions in run order, without their messages. Get a single session for its messages.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamSession>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamSession>>> list(
             String workflowId, ListSessionsRequest request) {
         return list(workflowId, request, null);
     }
@@ -81,7 +82,7 @@ public class AsyncRawSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Lists a finished run's sessions in run order, without their messages. Get a single session for its messages.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamSession>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamSession>>> list(
             String workflowId, ListSessionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -120,7 +121,7 @@ public class AsyncRawSessionsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamSession>>> future =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamSession>>> future =
                 new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
@@ -137,7 +138,7 @@ public class AsyncRawSessionsClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<RedTeamSession> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<RedTeamSession>(
                                         !startingAfter.isEmpty(), result, parsedResponse, () -> {
                                             try {
@@ -215,14 +216,15 @@ public class AsyncRawSessionsClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamSessionDetail>> get(String workflowId, String sessionId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamSessionDetail>> get(
+            String workflowId, String sessionId) {
         return get(workflowId, sessionId, GetSessionsRequest.builder().build());
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamSessionDetail>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamSessionDetail>> get(
             String workflowId, String sessionId, RequestOptions requestOptions) {
         return get(workflowId, sessionId, GetSessionsRequest.builder().build(), requestOptions);
     }
@@ -230,7 +232,7 @@ public class AsyncRawSessionsClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamSessionDetail>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamSessionDetail>> get(
             String workflowId, String sessionId, GetSessionsRequest request) {
         return get(workflowId, sessionId, request, null);
     }
@@ -238,7 +240,7 @@ public class AsyncRawSessionsClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamSessionDetail>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamSessionDetail>> get(
             String workflowId, String sessionId, GetSessionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -270,7 +272,7 @@ public class AsyncRawSessionsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamSessionDetail>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamSessionDetail>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -278,7 +280,7 @@ public class AsyncRawSessionsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RedTeamSessionDetail.class),
                                 response));
                         return;
@@ -348,7 +350,7 @@ public class AsyncRawSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns the Runtime Security session ID of one session of a finished run, or the reason it has none. Only <code>NOT_FOUND</code> can change on a later call.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamRuntimeSessionLookup>> runtimeSession(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRuntimeSessionLookup>> runtimeSession(
             String workflowId, String sessionId) {
         return runtimeSession(
                 workflowId, sessionId, RuntimeSessionSessionsRequest.builder().build());
@@ -358,7 +360,7 @@ public class AsyncRawSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns the Runtime Security session ID of one session of a finished run, or the reason it has none. Only <code>NOT_FOUND</code> can change on a later call.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamRuntimeSessionLookup>> runtimeSession(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRuntimeSessionLookup>> runtimeSession(
             String workflowId, String sessionId, RequestOptions requestOptions) {
         return runtimeSession(
                 workflowId, sessionId, RuntimeSessionSessionsRequest.builder().build(), requestOptions);
@@ -368,7 +370,7 @@ public class AsyncRawSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns the Runtime Security session ID of one session of a finished run, or the reason it has none. Only <code>NOT_FOUND</code> can change on a later call.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamRuntimeSessionLookup>> runtimeSession(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRuntimeSessionLookup>> runtimeSession(
             String workflowId, String sessionId, RuntimeSessionSessionsRequest request) {
         return runtimeSession(workflowId, sessionId, request, null);
     }
@@ -377,7 +379,7 @@ public class AsyncRawSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns the Runtime Security session ID of one session of a finished run, or the reason it has none. Only <code>NOT_FOUND</code> can change on a later call.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RedTeamRuntimeSessionLookup>> runtimeSession(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRuntimeSessionLookup>> runtimeSession(
             String workflowId, String sessionId, RuntimeSessionSessionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -410,7 +412,8 @@ public class AsyncRawSessionsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamRuntimeSessionLookup>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRuntimeSessionLookup>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -418,7 +421,7 @@ public class AsyncRawSessionsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, RedTeamRuntimeSessionLookup.class),
                                 response));

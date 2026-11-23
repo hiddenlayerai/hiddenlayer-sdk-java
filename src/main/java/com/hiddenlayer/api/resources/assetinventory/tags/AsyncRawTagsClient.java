@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.assetinventory.tags;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -45,31 +45,32 @@ public class AsyncRawTagsClient {
     /**
      * Returns a paginated list of tag definitions. Optionally filter by source.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>>> listV1() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>>>
+            listV1() {
         return listV1(ListV1TagsRequest.builder().build());
     }
 
     /**
      * Returns a paginated list of tag definitions. Optionally filter by source.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>>> listV1(
-            RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>>>
+            listV1(RequestOptions requestOptions) {
         return listV1(ListV1TagsRequest.builder().build(), requestOptions);
     }
 
     /**
      * Returns a paginated list of tag definitions. Optionally filter by source.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>>> listV1(
-            ListV1TagsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>>>
+            listV1(ListV1TagsRequest request) {
         return listV1(request, null);
     }
 
     /**
      * Returns a paginated list of tag definitions. Optionally filter by source.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>>> listV1(
-            ListV1TagsRequest request, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>>>
+            listV1(ListV1TagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("asset-inventory/v1/tags");
@@ -116,8 +117,8 @@ public class AsyncRawTagsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>>> future =
-                new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<AiAssetInventoryV1TagDefinition>>>
+                future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -133,7 +134,7 @@ public class AsyncRawTagsClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<AiAssetInventoryV1TagDefinition> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<AiAssetInventoryV1TagDefinition>(
                                         !startingAfter.isEmpty(), result, parsedResponse, () -> {
                                             try {
@@ -192,7 +193,7 @@ public class AsyncRawTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of tag definitions. Optionally filter by source.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TagDefinition>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TagDefinition>>> list() {
         return list(ListTagsRequest.builder().build());
     }
 
@@ -200,7 +201,7 @@ public class AsyncRawTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of tag definitions. Optionally filter by source.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TagDefinition>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TagDefinition>>> list(
             RequestOptions requestOptions) {
         return list(ListTagsRequest.builder().build(), requestOptions);
     }
@@ -209,7 +210,8 @@ public class AsyncRawTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of tag definitions. Optionally filter by source.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TagDefinition>>> list(ListTagsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TagDefinition>>> list(
+            ListTagsRequest request) {
         return list(request, null);
     }
 
@@ -217,7 +219,7 @@ public class AsyncRawTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of tag definitions. Optionally filter by source.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TagDefinition>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TagDefinition>>> list(
             ListTagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -265,7 +267,7 @@ public class AsyncRawTagsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<TagDefinition>>> future =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<TagDefinition>>> future =
                 new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
@@ -282,7 +284,7 @@ public class AsyncRawTagsClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<TagDefinition> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<TagDefinition>(
                                         !startingAfter.isEmpty(), result, parsedResponse, () -> {
                                             try {

@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.evaluations.redteamv2;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -64,7 +64,7 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Lists finished runs, newest first. A cursor is valid only with the filters it was issued for.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<RedTeamRunListItem>> list() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamRunListItem>> list() {
         return list(ListRedTeamV2Request.builder().build());
     }
 
@@ -72,7 +72,8 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Lists finished runs, newest first. A cursor is valid only with the filters it was issued for.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<RedTeamRunListItem>> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamRunListItem>> list(
+            RequestOptions requestOptions) {
         return list(ListRedTeamV2Request.builder().build(), requestOptions);
     }
 
@@ -80,7 +81,8 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Lists finished runs, newest first. A cursor is valid only with the filters it was issued for.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<RedTeamRunListItem>> list(ListRedTeamV2Request request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamRunListItem>> list(
+            ListRedTeamV2Request request) {
         return list(request, null);
     }
 
@@ -88,7 +90,7 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Lists finished runs, newest first. A cursor is valid only with the filters it was issued for.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<RedTeamRunListItem>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamRunListItem>> list(
             ListRedTeamV2Request request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -161,7 +163,7 @@ public class RawRedTeamV2Client {
                         .cursor(startingAfter)
                         .build();
                 List<RedTeamRunListItem> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<RedTeamRunListItem>(
                                 !startingAfter.isEmpty(), result, parsedResponse, () -> list(
                                                 nextRequest, requestOptions)
@@ -204,7 +206,7 @@ public class RawRedTeamV2Client {
      * <p>Starts a run against a target that the client calls. Poll <code>next-action</code> for each attack prompt and post the target's reply to <code>target-response</code> until <code>action_type</code> is <code>COMPLETED</code> or <code>FAILED</code>.
      * The body's fields depend on <code>execution_strategy_type</code>; a field that strategy does not use is a 422. <code>is_runtime_trace_enabled: true</code> also requires the <code>inference:read</code> scope.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamRunCreated> create(RedTeamCreateRunRequest request) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamRunCreated> create(RedTeamCreateRunRequest request) {
         return create(request, null);
     }
 
@@ -213,7 +215,7 @@ public class RawRedTeamV2Client {
      * <p>Starts a run against a target that the client calls. Poll <code>next-action</code> for each attack prompt and post the target's reply to <code>target-response</code> until <code>action_type</code> is <code>COMPLETED</code> or <code>FAILED</code>.
      * The body's fields depend on <code>execution_strategy_type</code>; a field that strategy does not use is a 422. <code>is_runtime_trace_enabled: true</code> also requires the <code>inference:read</code> scope.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamRunCreated> create(
+    public BaseHiddenLayerClientHttpResponse<RedTeamRunCreated> create(
             RedTeamCreateRunRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -256,7 +258,7 @@ public class RawRedTeamV2Client {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RedTeamRunCreated.class), response);
             }
             try {
@@ -299,7 +301,7 @@ public class RawRedTeamV2Client {
      * <p>Starts a run that attacks a built-in target model, with no client calls after this one. <code>target_model</code> must be in the target model catalog.
      * The body's fields depend on <code>execution_strategy_type</code>; a field that strategy does not use is a 422. <code>is_runtime_trace_enabled: true</code> also requires the <code>inference:read</code> scope.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamRunCreated> simulated(RedTeamCreateRunRequest request) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamRunCreated> simulated(RedTeamCreateRunRequest request) {
         return simulated(request, null);
     }
 
@@ -308,7 +310,7 @@ public class RawRedTeamV2Client {
      * <p>Starts a run that attacks a built-in target model, with no client calls after this one. <code>target_model</code> must be in the target model catalog.
      * The body's fields depend on <code>execution_strategy_type</code>; a field that strategy does not use is a 422. <code>is_runtime_trace_enabled: true</code> also requires the <code>inference:read</code> scope.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamRunCreated> simulated(
+    public BaseHiddenLayerClientHttpResponse<RedTeamRunCreated> simulated(
             RedTeamCreateRunRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -351,7 +353,7 @@ public class RawRedTeamV2Client {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RedTeamRunCreated.class), response);
             }
             try {
@@ -396,7 +398,7 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns the settings the calling tenant's next run uses.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamTenantSettings> settings() {
+    public BaseHiddenLayerClientHttpResponse<RedTeamTenantSettings> settings() {
         return settings(null);
     }
 
@@ -404,7 +406,7 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns the settings the calling tenant's next run uses.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamTenantSettings> settings(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamTenantSettings> settings(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("evaluations/v2/red-team/settings");
@@ -436,7 +438,7 @@ public class RawRedTeamV2Client {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RedTeamTenantSettings.class), response);
             }
             try {
@@ -468,7 +470,7 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a finished run without its sessions; a run that has not finished is a 404. Read its sessions from the sessions sub-collection.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamRun> get(String workflowId) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamRun> get(String workflowId) {
         return get(workflowId, GetRedTeamV2Request.builder().build());
     }
 
@@ -476,7 +478,7 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a finished run without its sessions; a run that has not finished is a 404. Read its sessions from the sessions sub-collection.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamRun> get(String workflowId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamRun> get(String workflowId, RequestOptions requestOptions) {
         return get(workflowId, GetRedTeamV2Request.builder().build(), requestOptions);
     }
 
@@ -484,7 +486,7 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a finished run without its sessions; a run that has not finished is a 404. Read its sessions from the sessions sub-collection.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamRun> get(String workflowId, GetRedTeamV2Request request) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamRun> get(String workflowId, GetRedTeamV2Request request) {
         return get(workflowId, request, null);
     }
 
@@ -492,7 +494,7 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a finished run without its sessions; a run that has not finished is a 404. Read its sessions from the sessions sub-collection.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamRun> get(
+    public BaseHiddenLayerClientHttpResponse<RedTeamRun> get(
             String workflowId, GetRedTeamV2Request request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -526,7 +528,7 @@ public class RawRedTeamV2Client {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RedTeamRun.class), response);
             }
             try {
@@ -566,28 +568,28 @@ public class RawRedTeamV2Client {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<Void> delete(String workflowId) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String workflowId) {
         return delete(workflowId, DeleteRedTeamV2Request.builder().build());
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<Void> delete(String workflowId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String workflowId, RequestOptions requestOptions) {
         return delete(workflowId, DeleteRedTeamV2Request.builder().build(), requestOptions);
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<Void> delete(String workflowId, DeleteRedTeamV2Request request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String workflowId, DeleteRedTeamV2Request request) {
         return delete(workflowId, request, null);
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<Void> delete(
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
             String workflowId, DeleteRedTeamV2Request request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -623,7 +625,7 @@ public class RawRedTeamV2Client {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -664,7 +666,7 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a run's progress, whether or not it has finished. Once the run's result is stored, <code>status</code> and <code>phase</code> are the run's status, <code>COMPLETED</code> or <code>FAILED</code>.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamRunProgress> status(String workflowId) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamRunProgress> status(String workflowId) {
         return status(workflowId, StatusRedTeamV2Request.builder().build());
     }
 
@@ -672,7 +674,8 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a run's progress, whether or not it has finished. Once the run's result is stored, <code>status</code> and <code>phase</code> are the run's status, <code>COMPLETED</code> or <code>FAILED</code>.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamRunProgress> status(String workflowId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamRunProgress> status(
+            String workflowId, RequestOptions requestOptions) {
         return status(workflowId, StatusRedTeamV2Request.builder().build(), requestOptions);
     }
 
@@ -680,7 +683,8 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a run's progress, whether or not it has finished. Once the run's result is stored, <code>status</code> and <code>phase</code> are the run's status, <code>COMPLETED</code> or <code>FAILED</code>.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamRunProgress> status(String workflowId, StatusRedTeamV2Request request) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamRunProgress> status(
+            String workflowId, StatusRedTeamV2Request request) {
         return status(workflowId, request, null);
     }
 
@@ -688,7 +692,7 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a run's progress, whether or not it has finished. Once the run's result is stored, <code>status</code> and <code>phase</code> are the run's status, <code>COMPLETED</code> or <code>FAILED</code>.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamRunProgress> status(
+    public BaseHiddenLayerClientHttpResponse<RedTeamRunProgress> status(
             String workflowId, StatusRedTeamV2Request request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -723,7 +727,7 @@ public class RawRedTeamV2Client {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RedTeamRunProgress.class), response);
             }
             try {
@@ -769,7 +773,7 @@ public class RawRedTeamV2Client {
      * <li><strong><code>COMPLETED</code> or <code>FAILED</code></strong>: the run has ended; <code>FAILED</code> carries the failure in <code>message</code>.</li>
      * </ul>
      */
-    public HiddenLayerHttpResponse<RedTeamNextAction> nextAction(String workflowId) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamNextAction> nextAction(String workflowId) {
         return nextAction(workflowId, NextActionRedTeamV2Request.builder().build());
     }
 
@@ -782,7 +786,8 @@ public class RawRedTeamV2Client {
      * <li><strong><code>COMPLETED</code> or <code>FAILED</code></strong>: the run has ended; <code>FAILED</code> carries the failure in <code>message</code>.</li>
      * </ul>
      */
-    public HiddenLayerHttpResponse<RedTeamNextAction> nextAction(String workflowId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamNextAction> nextAction(
+            String workflowId, RequestOptions requestOptions) {
         return nextAction(workflowId, NextActionRedTeamV2Request.builder().build(), requestOptions);
     }
 
@@ -795,7 +800,7 @@ public class RawRedTeamV2Client {
      * <li><strong><code>COMPLETED</code> or <code>FAILED</code></strong>: the run has ended; <code>FAILED</code> carries the failure in <code>message</code>.</li>
      * </ul>
      */
-    public HiddenLayerHttpResponse<RedTeamNextAction> nextAction(
+    public BaseHiddenLayerClientHttpResponse<RedTeamNextAction> nextAction(
             String workflowId, NextActionRedTeamV2Request request) {
         return nextAction(workflowId, request, null);
     }
@@ -809,7 +814,7 @@ public class RawRedTeamV2Client {
      * <li><strong><code>COMPLETED</code> or <code>FAILED</code></strong>: the run has ended; <code>FAILED</code> carries the failure in <code>message</code>.</li>
      * </ul>
      */
-    public HiddenLayerHttpResponse<RedTeamNextAction> nextAction(
+    public BaseHiddenLayerClientHttpResponse<RedTeamNextAction> nextAction(
             String workflowId, NextActionRedTeamV2Request request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -844,7 +849,7 @@ public class RawRedTeamV2Client {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RedTeamNextAction.class), response);
             }
             try {
@@ -885,7 +890,7 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Submits the target's reply to the attack prompt of a <code>next-action</code> <code>ATTACK_TASK</code>; poll <code>next-action</code> again afterwards. A session that is not waiting for a reply is a 422.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamTargetResponseResult> targetResponse(
+    public BaseHiddenLayerClientHttpResponse<RedTeamTargetResponseResult> targetResponse(
             String workflowId, RedTeamTargetResponse request) {
         return targetResponse(workflowId, request, null);
     }
@@ -894,7 +899,7 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Submits the target's reply to the attack prompt of a <code>next-action</code> <code>ATTACK_TASK</code>; poll <code>next-action</code> again afterwards. A session that is not waiting for a reply is a 422.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamTargetResponseResult> targetResponse(
+    public BaseHiddenLayerClientHttpResponse<RedTeamTargetResponseResult> targetResponse(
             String workflowId, RedTeamTargetResponse request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -939,7 +944,7 @@ public class RawRedTeamV2Client {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RedTeamTargetResponseResult.class),
                         response);
             }
@@ -978,7 +983,7 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Exports one row per message of every session of a finished run, in one response. Each of the run's objectives adds four columns, prefixed with its objective ID. To read a run in pages, use <code>GET /evaluations/v2/red-team/{workflow_id}/sessions</code>.</p>
      */
-    public HiddenLayerHttpResponse<InputStream> csv(String workflowId) {
+    public BaseHiddenLayerClientHttpResponse<InputStream> csv(String workflowId) {
         return csv(workflowId, CsvRedTeamV2Request.builder().build());
     }
 
@@ -986,7 +991,7 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Exports one row per message of every session of a finished run, in one response. Each of the run's objectives adds four columns, prefixed with its objective ID. To read a run in pages, use <code>GET /evaluations/v2/red-team/{workflow_id}/sessions</code>.</p>
      */
-    public HiddenLayerHttpResponse<InputStream> csv(String workflowId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<InputStream> csv(String workflowId, RequestOptions requestOptions) {
         return csv(workflowId, CsvRedTeamV2Request.builder().build(), requestOptions);
     }
 
@@ -994,7 +999,7 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Exports one row per message of every session of a finished run, in one response. Each of the run's objectives adds four columns, prefixed with its objective ID. To read a run in pages, use <code>GET /evaluations/v2/red-team/{workflow_id}/sessions</code>.</p>
      */
-    public HiddenLayerHttpResponse<InputStream> csv(String workflowId, CsvRedTeamV2Request request) {
+    public BaseHiddenLayerClientHttpResponse<InputStream> csv(String workflowId, CsvRedTeamV2Request request) {
         return csv(workflowId, request, null);
     }
 
@@ -1002,7 +1007,7 @@ public class RawRedTeamV2Client {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Exports one row per message of every session of a finished run, in one response. Each of the run's objectives adds four columns, prefixed with its objective ID. To read a run in pages, use <code>GET /evaluations/v2/red-team/{workflow_id}/sessions</code>.</p>
      */
-    public HiddenLayerHttpResponse<InputStream> csv(
+    public BaseHiddenLayerClientHttpResponse<InputStream> csv(
             String workflowId, CsvRedTeamV2Request request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1037,7 +1042,7 @@ public class RawRedTeamV2Client {
             Response response = client.newCall(okhttpRequest).execute();
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(new ResponseBodyInputStream(response), response);
+                return new BaseHiddenLayerClientHttpResponse<>(new ResponseBodyInputStream(response), response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {

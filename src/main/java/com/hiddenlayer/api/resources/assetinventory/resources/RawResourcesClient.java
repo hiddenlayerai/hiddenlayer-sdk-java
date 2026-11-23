@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.assetinventory.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -36,21 +36,21 @@ public class RawResourcesClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>> list() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>> list() {
         return list(ListResourcesRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>> list(
             RequestOptions requestOptions) {
         return list(ListResourcesRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>> list(
             ListResourcesRequest request) {
         return list(request, null);
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ListResourcesResponseItemsItem>> list(
             ListResourcesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -116,7 +116,7 @@ public class RawResourcesClient {
                         .build();
                 List<ListResourcesResponseItemsItem> result =
                         parsedResponse.getItems().orElse(Collections.emptyList());
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<ListResourcesResponseItemsItem>(
                                 !startingAfter.isEmpty(), result, parsedResponse, () -> list(
                                                 nextRequest, requestOptions)

@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.eularesponses;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -36,14 +36,15 @@ public class AsyncRawEulaResponsesClient {
     /**
      * Retrieves the current EULA acceptance status for the authenticated user's tenant, including the version responded to and when it was last updated.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SelfEulaResponsesResponse>> self() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SelfEulaResponsesResponse>> self() {
         return self(null);
     }
 
     /**
      * Retrieves the current EULA acceptance status for the authenticated user's tenant, including the version responded to and when it was last updated.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SelfEulaResponsesResponse>> self(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SelfEulaResponsesResponse>> self(
+            RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/eula-responses/self");
@@ -71,7 +72,8 @@ public class AsyncRawEulaResponsesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SelfEulaResponsesResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SelfEulaResponsesResponse>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -79,7 +81,7 @@ public class AsyncRawEulaResponsesClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, SelfEulaResponsesResponse.class),
                                 response));

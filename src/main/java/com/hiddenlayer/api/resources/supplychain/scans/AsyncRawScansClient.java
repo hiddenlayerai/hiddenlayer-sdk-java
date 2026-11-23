@@ -5,10 +5,10 @@ package com.hiddenlayer.api.resources.supplychain.scans;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -42,21 +42,21 @@ public class AsyncRawScansClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Optional<Map<String, Object>>>> get(String scanId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Optional<Map<String, Object>>>> get(String scanId) {
         return get(scanId, GetScansRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Optional<Map<String, Object>>>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Optional<Map<String, Object>>>> get(
             String scanId, RequestOptions requestOptions) {
         return get(scanId, GetScansRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Optional<Map<String, Object>>>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Optional<Map<String, Object>>>> get(
             String scanId, GetScansRequest request) {
         return get(scanId, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Optional<Map<String, Object>>>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Optional<Map<String, Object>>>> get(
             String scanId, GetScansRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -96,7 +96,8 @@ public class AsyncRawScansClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Optional<Map<String, Object>>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Optional<Map<String, Object>>>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -104,7 +105,7 @@ public class AsyncRawScansClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<Optional<Map<String, Object>>>() {}),
                                 response));
@@ -161,7 +162,7 @@ public class AsyncRawScansClient {
      * <p>Remediation guidance is generated on-demand with AI assistance and may not be
      * immediately available.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<GuidanceScansResponse>> guidance(String scanId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GuidanceScansResponse>> guidance(String scanId) {
         return guidance(scanId, GuidanceScansRequest.builder().build());
     }
 
@@ -170,7 +171,7 @@ public class AsyncRawScansClient {
      * <p>Remediation guidance is generated on-demand with AI assistance and may not be
      * immediately available.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<GuidanceScansResponse>> guidance(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GuidanceScansResponse>> guidance(
             String scanId, RequestOptions requestOptions) {
         return guidance(scanId, GuidanceScansRequest.builder().build(), requestOptions);
     }
@@ -180,7 +181,7 @@ public class AsyncRawScansClient {
      * <p>Remediation guidance is generated on-demand with AI assistance and may not be
      * immediately available.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<GuidanceScansResponse>> guidance(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GuidanceScansResponse>> guidance(
             String scanId, GuidanceScansRequest request) {
         return guidance(scanId, request, null);
     }
@@ -190,7 +191,7 @@ public class AsyncRawScansClient {
      * <p>Remediation guidance is generated on-demand with AI assistance and may not be
      * immediately available.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<GuidanceScansResponse>> guidance(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GuidanceScansResponse>> guidance(
             String scanId, GuidanceScansRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -221,7 +222,7 @@ public class AsyncRawScansClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<GuidanceScansResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<GuidanceScansResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -229,7 +230,7 @@ public class AsyncRawScansClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GuidanceScansResponse.class),
                                 response));
                         return;

@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.assetinventory.jobs;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -45,7 +45,7 @@ public class AsyncRawJobsClient {
      * The request is processed synchronously: the response is the finished <code>Job</code>, always in a terminal state (<code>COMPLETED</code> or <code>FAILED</code>), with <code>matched_count</code>, <code>succeeded_count</code>, <code>failed_count</code>, and per-asset <code>failures[]</code> filled in. A filter that matches no assets returns <code>COMPLETED</code> with <code>matched_count: 0</code>. Jobs are not stored, so there is no job ID to poll — the response is the only report of the outcome.
      * A job matches at most 10,000 assets; a filter that would match more is rejected with <code>422 Unprocessable Entity</code>. Narrow the filter and retry.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncJob>> customTags(BulkCustomTagJobRequestV2 request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncJob>> customTags(BulkCustomTagJobRequestV2 request) {
         return customTags(request, null);
     }
 
@@ -56,7 +56,7 @@ public class AsyncRawJobsClient {
      * The request is processed synchronously: the response is the finished <code>Job</code>, always in a terminal state (<code>COMPLETED</code> or <code>FAILED</code>), with <code>matched_count</code>, <code>succeeded_count</code>, <code>failed_count</code>, and per-asset <code>failures[]</code> filled in. A filter that matches no assets returns <code>COMPLETED</code> with <code>matched_count: 0</code>. Jobs are not stored, so there is no job ID to poll — the response is the only report of the outcome.
      * A job matches at most 10,000 assets; a filter that would match more is rejected with <code>422 Unprocessable Entity</code>. Narrow the filter and retry.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncJob>> customTags(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncJob>> customTags(
             BulkCustomTagJobRequestV2 request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -95,7 +95,7 @@ public class AsyncRawJobsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncJob>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncJob>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -103,7 +103,7 @@ public class AsyncRawJobsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SyncJob.class), response));
                         return;
                     }

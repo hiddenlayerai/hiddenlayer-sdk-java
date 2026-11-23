@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.assetinventory.scans;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -36,19 +36,20 @@ public class AsyncRawScansClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AssetScan>> get(String scanId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetScan>> get(String scanId) {
         return get(scanId, GetScansRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AssetScan>> get(String scanId, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetScan>> get(
+            String scanId, RequestOptions requestOptions) {
         return get(scanId, GetScansRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AssetScan>> get(String scanId, GetScansRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetScan>> get(String scanId, GetScansRequest request) {
         return get(scanId, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AssetScan>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetScan>> get(
             String scanId, GetScansRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -78,7 +79,7 @@ public class AsyncRawScansClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<AssetScan>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetScan>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -86,7 +87,7 @@ public class AsyncRawScansClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AssetScan.class), response));
                         return;
                     }

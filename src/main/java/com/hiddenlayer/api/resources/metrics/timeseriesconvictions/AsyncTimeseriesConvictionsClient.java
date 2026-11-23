@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.metrics.timeseriesconvictions;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.metrics.timeseriesconvictions.requests.ListTimeseriesConvictionsRequest;
 import com.hiddenlayer.api.resources.metrics.timeseriesconvictions.requests.ListV2TimeseriesConvictionsRequest;
@@ -30,7 +30,7 @@ public class AsyncTimeseriesConvictionsClient {
     }
 
     public CompletableFuture<IncidentTimeseriesResponseV2> listV2(ListV2TimeseriesConvictionsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<IncidentTimeseriesResponseV2>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<IncidentTimeseriesResponseV2>> rawFuture =
                 this.rawClient.listV2(request);
         CompletableFuture<IncidentTimeseriesResponseV2> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -43,7 +43,7 @@ public class AsyncTimeseriesConvictionsClient {
 
     public CompletableFuture<IncidentTimeseriesResponseV2> listV2(
             ListV2TimeseriesConvictionsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<IncidentTimeseriesResponseV2>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<IncidentTimeseriesResponseV2>> rawFuture =
                 this.rawClient.listV2(request, requestOptions);
         CompletableFuture<IncidentTimeseriesResponseV2> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -55,7 +55,7 @@ public class AsyncTimeseriesConvictionsClient {
     }
 
     public CompletableFuture<ConvictionTimeseriesResponseV3> list(ListTimeseriesConvictionsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<ConvictionTimeseriesResponseV3>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ConvictionTimeseriesResponseV3>> rawFuture =
                 this.rawClient.list(request);
         CompletableFuture<ConvictionTimeseriesResponseV3> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -68,7 +68,7 @@ public class AsyncTimeseriesConvictionsClient {
 
     public CompletableFuture<ConvictionTimeseriesResponseV3> list(
             ListTimeseriesConvictionsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ConvictionTimeseriesResponseV3>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ConvictionTimeseriesResponseV3>> rawFuture =
                 this.rawClient.list(request, requestOptions);
         CompletableFuture<ConvictionTimeseriesResponseV3> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

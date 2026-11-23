@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.sensors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -48,14 +48,14 @@ public class RawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SensorSorItemResponse> create(SensorSorItemCreateRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SensorSorItemResponse> create(SensorSorItemCreateRequest request) {
         return create(request, null);
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SensorSorItemResponse> create(
+    public BaseHiddenLayerClientHttpResponse<SensorSorItemResponse> create(
             SensorSorItemCreateRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -98,7 +98,7 @@ public class RawSensorsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SensorSorItemResponse.class), response);
             }
             try {
@@ -129,28 +129,30 @@ public class RawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SensorSorItemResponse> retrieve(String sensorId) {
+    public BaseHiddenLayerClientHttpResponse<SensorSorItemResponse> retrieve(String sensorId) {
         return retrieve(sensorId, RetrieveSensorsRequest.builder().build());
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SensorSorItemResponse> retrieve(String sensorId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SensorSorItemResponse> retrieve(
+            String sensorId, RequestOptions requestOptions) {
         return retrieve(sensorId, RetrieveSensorsRequest.builder().build(), requestOptions);
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SensorSorItemResponse> retrieve(String sensorId, RetrieveSensorsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SensorSorItemResponse> retrieve(
+            String sensorId, RetrieveSensorsRequest request) {
         return retrieve(sensorId, request, null);
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SensorSorItemResponse> retrieve(
+    public BaseHiddenLayerClientHttpResponse<SensorSorItemResponse> retrieve(
             String sensorId, RetrieveSensorsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -184,7 +186,7 @@ public class RawSensorsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SensorSorItemResponse.class), response);
             }
             try {
@@ -212,14 +214,14 @@ public class RawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SensorSorUpdateResponseModel> update(String sensorId) {
+    public BaseHiddenLayerClientHttpResponse<SensorSorUpdateResponseModel> update(String sensorId) {
         return update(sensorId, SensorSorItemUpdateRequest.builder().build());
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SensorSorUpdateResponseModel> update(
+    public BaseHiddenLayerClientHttpResponse<SensorSorUpdateResponseModel> update(
             String sensorId, RequestOptions requestOptions) {
         return update(sensorId, SensorSorItemUpdateRequest.builder().build(), requestOptions);
     }
@@ -227,7 +229,7 @@ public class RawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SensorSorUpdateResponseModel> update(
+    public BaseHiddenLayerClientHttpResponse<SensorSorUpdateResponseModel> update(
             String sensorId, SensorSorItemUpdateRequest request) {
         return update(sensorId, request, null);
     }
@@ -235,7 +237,7 @@ public class RawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SensorSorUpdateResponseModel> update(
+    public BaseHiddenLayerClientHttpResponse<SensorSorUpdateResponseModel> update(
             String sensorId, SensorSorItemUpdateRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -279,7 +281,7 @@ public class RawSensorsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SensorSorUpdateResponseModel.class),
                         response);
             }
@@ -311,28 +313,28 @@ public class RawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<Void> delete(String sensorId) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String sensorId) {
         return delete(sensorId, DeleteSensorsRequest.builder().build());
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<Void> delete(String sensorId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String sensorId, RequestOptions requestOptions) {
         return delete(sensorId, DeleteSensorsRequest.builder().build(), requestOptions);
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<Void> delete(String sensorId, DeleteSensorsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String sensorId, DeleteSensorsRequest request) {
         return delete(sensorId, request, null);
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<Void> delete(
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
             String sensorId, DeleteSensorsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -368,7 +370,7 @@ public class RawSensorsClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -402,14 +404,14 @@ public class RawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>> queryLegacy() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>> queryLegacy() {
         return queryLegacy(SensorSorQueryRequest.builder().build());
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>> queryLegacy(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>> queryLegacy(
             RequestOptions requestOptions) {
         return queryLegacy(SensorSorQueryRequest.builder().build(), requestOptions);
     }
@@ -417,7 +419,7 @@ public class RawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>> queryLegacy(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>> queryLegacy(
             SensorSorQueryRequest request) {
         return queryLegacy(request, null);
     }
@@ -425,7 +427,7 @@ public class RawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>> queryLegacy(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>> queryLegacy(
             SensorSorQueryRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -477,7 +479,7 @@ public class RawSensorsClient {
                         .pageNumber(newPageNumber)
                         .build();
                 List<SensorSorItemResponse> result = parsedResponse.getResults();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<SensorSorItemResponse>(
                                 true, result, parsedResponse, () -> queryLegacy(nextRequest, requestOptions)
                                         .body()),
@@ -504,28 +506,30 @@ public class RawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>> query() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>> query() {
         return query(SensorSorQueryRequest.builder().build());
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>> query(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>> query(
+            RequestOptions requestOptions) {
         return query(SensorSorQueryRequest.builder().build(), requestOptions);
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>> query(SensorSorQueryRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>> query(
+            SensorSorQueryRequest request) {
         return query(request, null);
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>> query(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>> query(
             SensorSorQueryRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -577,7 +581,7 @@ public class RawSensorsClient {
                         .pageNumber(newPageNumber)
                         .build();
                 List<SensorSorItemResponse> result = parsedResponse.getResults();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<SensorSorItemResponse>(
                                 true, result, parsedResponse, () -> query(nextRequest, requestOptions)
                                         .body()),

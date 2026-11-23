@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.governance.rulepacks;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.governance.rulepacks.requests.ListRulePacksRequest;
@@ -32,7 +32,8 @@ public class AsyncRulePacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<SyncPagingIterable<RulePack>> list() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RulePack>>> rawFuture = this.rawClient.list();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RulePack>>> rawFuture =
+                this.rawClient.list();
         CompletableFuture<SyncPagingIterable<RulePack>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -46,7 +47,7 @@ public class AsyncRulePacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<SyncPagingIterable<RulePack>> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RulePack>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RulePack>>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<SyncPagingIterable<RulePack>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -61,7 +62,7 @@ public class AsyncRulePacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
     public CompletableFuture<SyncPagingIterable<RulePack>> list(ListRulePacksRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RulePack>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RulePack>>> rawFuture =
                 this.rawClient.list(request);
         CompletableFuture<SyncPagingIterable<RulePack>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -77,7 +78,7 @@ public class AsyncRulePacksClient {
      */
     public CompletableFuture<SyncPagingIterable<RulePack>> list(
             ListRulePacksRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RulePack>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RulePack>>> rawFuture =
                 this.rawClient.list(request, requestOptions);
         CompletableFuture<SyncPagingIterable<RulePack>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

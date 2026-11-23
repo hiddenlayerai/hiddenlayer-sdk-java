@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.mitre.atlas.tactics;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -32,19 +32,19 @@ public class RawTacticsClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<MitreAtlasTacticV1> get(String tacticId) {
+    public BaseHiddenLayerClientHttpResponse<MitreAtlasTacticV1> get(String tacticId) {
         return get(tacticId, GetTacticsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<MitreAtlasTacticV1> get(String tacticId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<MitreAtlasTacticV1> get(String tacticId, RequestOptions requestOptions) {
         return get(tacticId, GetTacticsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<MitreAtlasTacticV1> get(String tacticId, GetTacticsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<MitreAtlasTacticV1> get(String tacticId, GetTacticsRequest request) {
         return get(tacticId, request, null);
     }
 
-    public HiddenLayerHttpResponse<MitreAtlasTacticV1> get(
+    public BaseHiddenLayerClientHttpResponse<MitreAtlasTacticV1> get(
             String tacticId, GetTacticsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -78,7 +78,7 @@ public class RawTacticsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, MitreAtlasTacticV1.class), response);
             }
             try {

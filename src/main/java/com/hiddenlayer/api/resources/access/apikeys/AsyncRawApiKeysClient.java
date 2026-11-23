@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.access.apikeys;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -56,14 +56,14 @@ public class AsyncRawApiKeysClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<StaticApiKey>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<StaticApiKey>>> list() {
         return list(ListApiKeysRequest.builder().build());
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<StaticApiKey>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<StaticApiKey>>> list(
             RequestOptions requestOptions) {
         return list(ListApiKeysRequest.builder().build(), requestOptions);
     }
@@ -71,7 +71,7 @@ public class AsyncRawApiKeysClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<StaticApiKey>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<StaticApiKey>>> list(
             ListApiKeysRequest request) {
         return list(request, null);
     }
@@ -79,7 +79,7 @@ public class AsyncRawApiKeysClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<StaticApiKey>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<StaticApiKey>>> list(
             ListApiKeysRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -116,7 +116,8 @@ public class AsyncRawApiKeysClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<StaticApiKey>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<StaticApiKey>>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -132,7 +133,7 @@ public class AsyncRawApiKeysClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<StaticApiKey> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<StaticApiKey>(
                                         !startingAfter.isEmpty(), result, parsedResponse, () -> {
                                             try {
@@ -202,7 +203,8 @@ public class AsyncRawApiKeysClient {
      * <p>Prefer <a href="#operation/create_credentials_api_v2_credentials_post">API credentials</a>, which trade a client ID and secret for short-lived OAuth2 access tokens. Reserve Static API Keys for integrations that cannot easily support OAuth2.</p>
      * <p>A tenant can have at most 100 keys that are neither revoked nor retired, including keys with no active secret.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<StaticApiKeyWithValue>> create(StaticApiKeyCreateRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<StaticApiKeyWithValue>> create(
+            StaticApiKeyCreateRequest request) {
         return create(request, null);
     }
 
@@ -211,7 +213,7 @@ public class AsyncRawApiKeysClient {
      * <p>Prefer <a href="#operation/create_credentials_api_v2_credentials_post">API credentials</a>, which trade a client ID and secret for short-lived OAuth2 access tokens. Reserve Static API Keys for integrations that cannot easily support OAuth2.</p>
      * <p>A tenant can have at most 100 keys that are neither revoked nor retired, including keys with no active secret.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<StaticApiKeyWithValue>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<StaticApiKeyWithValue>> create(
             StaticApiKeyCreateRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -250,7 +252,7 @@ public class AsyncRawApiKeysClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<StaticApiKeyWithValue>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StaticApiKeyWithValue>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -258,7 +260,7 @@ public class AsyncRawApiKeysClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, StaticApiKeyWithValue.class),
                                 response));
                         return;
@@ -327,28 +329,30 @@ public class AsyncRawApiKeysClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<StaticApiKey>> get(String id) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<StaticApiKey>> get(String id) {
         return get(id, GetApiKeysRequest.builder().build());
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<StaticApiKey>> get(String id, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<StaticApiKey>> get(
+            String id, RequestOptions requestOptions) {
         return get(id, GetApiKeysRequest.builder().build(), requestOptions);
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<StaticApiKey>> get(String id, GetApiKeysRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<StaticApiKey>> get(
+            String id, GetApiKeysRequest request) {
         return get(id, request, null);
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<StaticApiKey>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<StaticApiKey>> get(
             String id, GetApiKeysRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -378,7 +382,7 @@ public class AsyncRawApiKeysClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<StaticApiKey>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StaticApiKey>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -386,7 +390,7 @@ public class AsyncRawApiKeysClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, StaticApiKey.class), response));
                         return;
                     }
@@ -450,7 +454,7 @@ public class AsyncRawApiKeysClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Revokes the key and all its secrets. Revoking a key that is already revoked returns <code>204</code>, whatever the <code>If-Match</code> value.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String id, DeleteApiKeysRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String id, DeleteApiKeysRequest request) {
         return delete(id, request, null);
     }
 
@@ -458,7 +462,7 @@ public class AsyncRawApiKeysClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Revokes the key and all its secrets. Revoking a key that is already revoked returns <code>204</code>, whatever the <code>If-Match</code> value.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String id, DeleteApiKeysRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -492,14 +496,14 @@ public class AsyncRawApiKeysClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";

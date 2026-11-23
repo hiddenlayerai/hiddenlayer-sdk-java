@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.mitre.atlas.techniques;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -33,19 +33,21 @@ public class RawTechniquesClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<GetTechniquesResponse> get(String techniqueId) {
+    public BaseHiddenLayerClientHttpResponse<GetTechniquesResponse> get(String techniqueId) {
         return get(techniqueId, GetTechniquesRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<GetTechniquesResponse> get(String techniqueId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<GetTechniquesResponse> get(
+            String techniqueId, RequestOptions requestOptions) {
         return get(techniqueId, GetTechniquesRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<GetTechniquesResponse> get(String techniqueId, GetTechniquesRequest request) {
+    public BaseHiddenLayerClientHttpResponse<GetTechniquesResponse> get(
+            String techniqueId, GetTechniquesRequest request) {
         return get(techniqueId, request, null);
     }
 
-    public HiddenLayerHttpResponse<GetTechniquesResponse> get(
+    public BaseHiddenLayerClientHttpResponse<GetTechniquesResponse> get(
             String techniqueId, GetTechniquesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -86,7 +88,7 @@ public class RawTechniquesClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetTechniquesResponse.class), response);
             }
             try {

@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.scans.upload;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.Suppliers;
 import com.hiddenlayer.api.resources.scans.upload.file.AsyncFileClient;
@@ -36,7 +36,8 @@ public class AsyncUploadClient {
     }
 
     public CompletableFuture<StartUploadResponse> start(MultiFileUploadRequestV3 request) {
-        CompletableFuture<HiddenLayerHttpResponse<StartUploadResponse>> rawFuture = this.rawClient.start(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StartUploadResponse>> rawFuture =
+                this.rawClient.start(request);
         CompletableFuture<StartUploadResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -48,7 +49,7 @@ public class AsyncUploadClient {
 
     public CompletableFuture<StartUploadResponse> start(
             MultiFileUploadRequestV3 request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<StartUploadResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StartUploadResponse>> rawFuture =
                 this.rawClient.start(request, requestOptions);
         CompletableFuture<StartUploadResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -60,7 +61,7 @@ public class AsyncUploadClient {
     }
 
     public CompletableFuture<CompleteAllUploadResponse> completeAll(String scanId) {
-        CompletableFuture<HiddenLayerHttpResponse<CompleteAllUploadResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<CompleteAllUploadResponse>> rawFuture =
                 this.rawClient.completeAll(scanId);
         CompletableFuture<CompleteAllUploadResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -72,7 +73,7 @@ public class AsyncUploadClient {
     }
 
     public CompletableFuture<CompleteAllUploadResponse> completeAll(String scanId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<CompleteAllUploadResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<CompleteAllUploadResponse>> rawFuture =
                 this.rawClient.completeAll(scanId, requestOptions);
         CompletableFuture<CompleteAllUploadResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -84,7 +85,7 @@ public class AsyncUploadClient {
     }
 
     public CompletableFuture<CompleteAllUploadResponse> completeAll(String scanId, CompleteAllUploadRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<CompleteAllUploadResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<CompleteAllUploadResponse>> rawFuture =
                 this.rawClient.completeAll(scanId, request);
         CompletableFuture<CompleteAllUploadResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -97,7 +98,7 @@ public class AsyncUploadClient {
 
     public CompletableFuture<CompleteAllUploadResponse> completeAll(
             String scanId, CompleteAllUploadRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<CompleteAllUploadResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<CompleteAllUploadResponse>> rawFuture =
                 this.rawClient.completeAll(scanId, request, requestOptions);
         CompletableFuture<CompleteAllUploadResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

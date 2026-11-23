@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.governance.licenses;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -37,7 +37,7 @@ public class AsyncRawLicensesClient {
      * Returns every license value a <code>license</code> condition accepts, including <code>unknown</code> and <code>custom</code>
      * alongside the named licenses. Rules store each license's <code>id</code>; <code>name</code> is for display only.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ListLicensesResponse>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ListLicensesResponse>> list() {
         return list(null);
     }
 
@@ -45,7 +45,8 @@ public class AsyncRawLicensesClient {
      * Returns every license value a <code>license</code> condition accepts, including <code>unknown</code> and <code>custom</code>
      * alongside the named licenses. Rules store each license's <code>id</code>; <code>name</code> is for display only.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ListLicensesResponse>> list(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ListLicensesResponse>> list(
+            RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("governance/v1/licenses");
@@ -73,7 +74,7 @@ public class AsyncRawLicensesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ListLicensesResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListLicensesResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -81,7 +82,7 @@ public class AsyncRawLicensesClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ListLicensesResponse.class),
                                 response));
                         return;

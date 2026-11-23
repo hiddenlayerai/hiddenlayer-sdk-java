@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.models.cards;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.models.cards.requests.ListCardsRequest;
@@ -33,7 +33,8 @@ public class AsyncCardsClient {
     }
 
     public CompletableFuture<SyncPagingIterable<ModelCardV3>> listV3() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>>> rawFuture = this.rawClient.listV3();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV3>>> rawFuture =
+                this.rawClient.listV3();
         CompletableFuture<SyncPagingIterable<ModelCardV3>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -44,7 +45,7 @@ public class AsyncCardsClient {
     }
 
     public CompletableFuture<SyncPagingIterable<ModelCardV3>> listV3(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV3>>> rawFuture =
                 this.rawClient.listV3(requestOptions);
         CompletableFuture<SyncPagingIterable<ModelCardV3>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -56,7 +57,7 @@ public class AsyncCardsClient {
     }
 
     public CompletableFuture<SyncPagingIterable<ModelCardV3>> listV3(ListV3CardsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV3>>> rawFuture =
                 this.rawClient.listV3(request);
         CompletableFuture<SyncPagingIterable<ModelCardV3>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -69,7 +70,7 @@ public class AsyncCardsClient {
 
     public CompletableFuture<SyncPagingIterable<ModelCardV3>> listV3(
             ListV3CardsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV3>>> rawFuture =
                 this.rawClient.listV3(request, requestOptions);
         CompletableFuture<SyncPagingIterable<ModelCardV3>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -89,7 +90,8 @@ public class AsyncCardsClient {
      * (<code>model_name</code>, <code>scan_started_at</code>).
      */
     public CompletableFuture<SyncPagingIterable<ModelCardV4>> list() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>>> rawFuture = this.rawClient.list();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV4>>> rawFuture =
+                this.rawClient.list();
         CompletableFuture<SyncPagingIterable<ModelCardV4>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -108,7 +110,7 @@ public class AsyncCardsClient {
      * (<code>model_name</code>, <code>scan_started_at</code>).
      */
     public CompletableFuture<SyncPagingIterable<ModelCardV4>> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV4>>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<SyncPagingIterable<ModelCardV4>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -128,7 +130,7 @@ public class AsyncCardsClient {
      * (<code>model_name</code>, <code>scan_started_at</code>).
      */
     public CompletableFuture<SyncPagingIterable<ModelCardV4>> list(ListCardsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV4>>> rawFuture =
                 this.rawClient.list(request);
         CompletableFuture<SyncPagingIterable<ModelCardV4>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -149,7 +151,7 @@ public class AsyncCardsClient {
      */
     public CompletableFuture<SyncPagingIterable<ModelCardV4>> list(
             ListCardsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV4>>> rawFuture =
                 this.rawClient.list(request, requestOptions);
         CompletableFuture<SyncPagingIterable<ModelCardV4>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -161,7 +163,7 @@ public class AsyncCardsClient {
     }
 
     public CompletableFuture<SuggestionsCardsResponse> suggestions(SuggestionsCardsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SuggestionsCardsResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SuggestionsCardsResponse>> rawFuture =
                 this.rawClient.suggestions(request);
         CompletableFuture<SuggestionsCardsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -174,7 +176,7 @@ public class AsyncCardsClient {
 
     public CompletableFuture<SuggestionsCardsResponse> suggestions(
             SuggestionsCardsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SuggestionsCardsResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SuggestionsCardsResponse>> rawFuture =
                 this.rawClient.suggestions(request, requestOptions);
         CompletableFuture<SuggestionsCardsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

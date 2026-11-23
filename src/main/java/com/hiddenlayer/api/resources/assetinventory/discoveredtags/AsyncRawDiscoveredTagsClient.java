@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.assetinventory.discoveredtags;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -44,14 +44,14 @@ public class AsyncRawDiscoveredTagsClient {
     /**
      * Returns a paginated list of values for a given discovered tag name.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> valuesV1(String tagName) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> valuesV1(String tagName) {
         return valuesV1(tagName, ValuesV1DiscoveredTagsRequest.builder().build());
     }
 
     /**
      * Returns a paginated list of values for a given discovered tag name.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> valuesV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> valuesV1(
             String tagName, RequestOptions requestOptions) {
         return valuesV1(tagName, ValuesV1DiscoveredTagsRequest.builder().build(), requestOptions);
     }
@@ -59,7 +59,7 @@ public class AsyncRawDiscoveredTagsClient {
     /**
      * Returns a paginated list of values for a given discovered tag name.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> valuesV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> valuesV1(
             String tagName, ValuesV1DiscoveredTagsRequest request) {
         return valuesV1(tagName, request, null);
     }
@@ -67,7 +67,7 @@ public class AsyncRawDiscoveredTagsClient {
     /**
      * Returns a paginated list of values for a given discovered tag name.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> valuesV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> valuesV1(
             String tagName, ValuesV1DiscoveredTagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -113,7 +113,8 @@ public class AsyncRawDiscoveredTagsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -129,7 +130,7 @@ public class AsyncRawDiscoveredTagsClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<String> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<String>(!startingAfter.isEmpty(), result, parsedResponse, () -> {
                                     try {
                                         return valuesV1(tagName, nextRequest, requestOptions)
@@ -187,7 +188,7 @@ public class AsyncRawDiscoveredTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of values for a given discovered tag name.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> values(String tagName) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> values(String tagName) {
         return values(tagName, ValuesDiscoveredTagsRequest.builder().build());
     }
 
@@ -195,7 +196,7 @@ public class AsyncRawDiscoveredTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of values for a given discovered tag name.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> values(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> values(
             String tagName, RequestOptions requestOptions) {
         return values(tagName, ValuesDiscoveredTagsRequest.builder().build(), requestOptions);
     }
@@ -204,7 +205,7 @@ public class AsyncRawDiscoveredTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of values for a given discovered tag name.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> values(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> values(
             String tagName, ValuesDiscoveredTagsRequest request) {
         return values(tagName, request, null);
     }
@@ -213,7 +214,7 @@ public class AsyncRawDiscoveredTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of values for a given discovered tag name.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> values(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> values(
             String tagName, ValuesDiscoveredTagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -259,7 +260,8 @@ public class AsyncRawDiscoveredTagsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -275,7 +277,7 @@ public class AsyncRawDiscoveredTagsClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<String> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<String>(!startingAfter.isEmpty(), result, parsedResponse, () -> {
                                     try {
                                         return values(tagName, nextRequest, requestOptions)

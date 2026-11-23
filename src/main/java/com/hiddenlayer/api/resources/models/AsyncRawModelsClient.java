@@ -5,11 +5,11 @@ package com.hiddenlayer.api.resources.models;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -44,21 +44,21 @@ public class AsyncRawModelsClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SensorSorModel>> retrieve(String modelId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorModel>> retrieve(String modelId) {
         return retrieve(modelId, RetrieveModelsRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SensorSorModel>> retrieve(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorModel>> retrieve(
             String modelId, RequestOptions requestOptions) {
         return retrieve(modelId, RetrieveModelsRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SensorSorModel>> retrieve(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorModel>> retrieve(
             String modelId, RetrieveModelsRequest request) {
         return retrieve(modelId, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SensorSorModel>> retrieve(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorModel>> retrieve(
             String modelId, RetrieveModelsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -88,7 +88,7 @@ public class AsyncRawModelsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorModel>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorModel>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -96,7 +96,7 @@ public class AsyncRawModelsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SensorSorModel.class),
                                 response));
                         return;
@@ -142,19 +142,21 @@ public class AsyncRawModelsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String modelId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String modelId) {
         return delete(modelId, DeleteModelsRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String modelId, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
+            String modelId, RequestOptions requestOptions) {
         return delete(modelId, DeleteModelsRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String modelId, DeleteModelsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
+            String modelId, DeleteModelsRequest request) {
         return delete(modelId, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String modelId, DeleteModelsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -187,14 +189,14 @@ public class AsyncRawModelsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
@@ -249,11 +251,12 @@ public class AsyncRawModelsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<List<SensorSorModel>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<List<SensorSorModel>>> list() {
         return list(null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<List<SensorSorModel>>> list(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<List<SensorSorModel>>> list(
+            RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/models");
@@ -281,7 +284,7 @@ public class AsyncRawModelsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<List<SensorSorModel>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<List<SensorSorModel>>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -289,7 +292,7 @@ public class AsyncRawModelsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, new TypeReference<List<SensorSorModel>>() {}),
                                 response));
@@ -336,11 +339,12 @@ public class AsyncRawModelsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<UpdateModelsResponse>> update(List<SensorSorModel> request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<UpdateModelsResponse>> update(
+            List<SensorSorModel> request) {
         return update(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<UpdateModelsResponse>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<UpdateModelsResponse>> update(
             List<SensorSorModel> request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -379,7 +383,7 @@ public class AsyncRawModelsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<UpdateModelsResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<UpdateModelsResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -387,7 +391,7 @@ public class AsyncRawModelsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, UpdateModelsResponse.class),
                                 response));
                         return;

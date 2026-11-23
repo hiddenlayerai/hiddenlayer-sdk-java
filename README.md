@@ -82,12 +82,12 @@ Instantiate and use the client with the following:
 ```java
 package com.example.usage;
 
-import com.hiddenlayer.api.HiddenLayer;
+import com.hiddenlayer.api.BaseHiddenLayerClient;
 import com.hiddenlayer.api.resources.credentials.requests.CredentialsCreateRequestV2;
 
 public class Example {
     public static void main(String[] args) {
-        HiddenLayer client = HiddenLayer.withCredentials("<clientId>", "<clientSecret>")
+        BaseHiddenLayerClient client = BaseHiddenLayerClient.withCredentials("<clientId>", "<clientSecret>")
             .build()
         ;
 
@@ -875,12 +875,11 @@ We are keen for your feedback; please open an [issue](https://www.github.com/hid
 This SDK allows you to configure different environments for API requests.
 
 ```java
-import com.hiddenlayer.api.HiddenLayer;
+import com.hiddenlayer.api.BaseHiddenLayerClient;
 import com.hiddenlayer.api.core.Environment;
 
-HiddenLayer client = HiddenLayer
+BaseHiddenLayerClient client = BaseHiddenLayerClient
     .builder()
-    .credentials("<clientId>", "<clientSecret>")
     .environment(Environment.PROD_US)
     .build();
 ```
@@ -890,11 +889,10 @@ HiddenLayer client = HiddenLayer
 You can set a custom base URL when constructing the client.
 
 ```java
-import com.hiddenlayer.api.HiddenLayer;
+import com.hiddenlayer.api.BaseHiddenLayerClient;
 
-HiddenLayer client = HiddenLayer
+BaseHiddenLayerClient client = BaseHiddenLayerClient
     .builder()
-    .credentials("<clientId>", "<clientSecret>")
     .url("https://example.com")
     .build();
 ```
@@ -922,7 +920,7 @@ This SDK supports two authentication methods:
 If you already have a valid access token, you can use it directly:
 
 ```java
-HiddenLayer client = HiddenLayer.builder()
+BaseHiddenLayerClient client = BaseHiddenLayerClient.builder()
     .token("your-access-token")
     .url("https://api.example.com")
     .build();
@@ -933,7 +931,7 @@ HiddenLayer client = HiddenLayer.builder()
 The SDK can automatically handle token acquisition and refresh:
 
 ```java
-HiddenLayer client = HiddenLayer.builder()
+BaseHiddenLayerClient client = BaseHiddenLayerClient.builder()
     .credentials("client-id", "client-secret")
     .url("https://api.example.com")
     .build();
@@ -947,14 +945,13 @@ This SDK is built to work with any instance of `OkHttpClient`. By default, if no
 However, you can pass your own client like so:
 
 ```java
-import com.hiddenlayer.api.HiddenLayer;
+import com.hiddenlayer.api.BaseHiddenLayerClient;
 import okhttp3.OkHttpClient;
 
 OkHttpClient customClient = ...;
 
-HiddenLayer client = HiddenLayer
+BaseHiddenLayerClient client = BaseHiddenLayerClient
     .builder()
-    .credentials("<clientId>", "<clientSecret>")
     .httpClient(customClient)
     .build();
 ```
@@ -977,11 +974,10 @@ A request is deemed retryable when any of the following HTTP status codes is ret
 Use the `maxRetries` client option to configure this behavior.
 
 ```java
-import com.hiddenlayer.api.HiddenLayer;
+import com.hiddenlayer.api.BaseHiddenLayerClient;
 
-HiddenLayer client = HiddenLayer
+BaseHiddenLayerClient client = BaseHiddenLayerClient
     .builder()
-    .credentials("<clientId>", "<clientSecret>")
     .maxRetries(1)
     .build();
 ```
@@ -990,13 +986,12 @@ HiddenLayer client = HiddenLayer
 
 The SDK defaults to a 60 second timeout. You can configure this with a timeout option at the client or request level.
 ```java
-import com.hiddenlayer.api.HiddenLayer;
+import com.hiddenlayer.api.BaseHiddenLayerClient;
 import com.hiddenlayer.api.core.RequestOptions;
 
 // Client level
-HiddenLayer client = HiddenLayer
+BaseHiddenLayerClient client = BaseHiddenLayerClient
     .builder()
-    .credentials("<clientId>", "<clientSecret>")
     .timeout(60)
     .build();
 
@@ -1015,13 +1010,12 @@ client.credentials().create(
 The SDK allows you to add custom headers to requests. You can configure headers at the client level or at the request level.
 
 ```java
-import com.hiddenlayer.api.HiddenLayer;
+import com.hiddenlayer.api.BaseHiddenLayerClient;
 import com.hiddenlayer.api.core.RequestOptions;
 
 // Client level
-HiddenLayer client = HiddenLayer
+BaseHiddenLayerClient client = BaseHiddenLayerClient
     .builder()
-    .credentials("<clientId>", "<clientSecret>")
     .addHeader("X-Custom-Header", "custom-value")
     .addHeader("X-Request-Id", "abc-123")
     .build();
@@ -1063,7 +1057,7 @@ The `withRawResponse()` method returns a raw client that wraps all responses wit
 (A normal client's `response` is identical to a raw client's `response.body()`.)
 
 ```java
-HiddenLayerHttpResponse response = client.credentials().withRawResponse().create(...);
+BaseHiddenLayerClientHttpResponse response = client.credentials().withRawResponse().create(...);
 
 System.out.println(response.body());
 System.out.println(response.headers().get("X-My-Header"));

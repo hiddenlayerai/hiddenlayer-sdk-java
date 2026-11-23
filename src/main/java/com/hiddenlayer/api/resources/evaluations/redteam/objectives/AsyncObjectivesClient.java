@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.evaluations.redteam.objectives;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.evaluations.redteam.objectives.requests.CreateCustomObjectiveRequest;
@@ -40,7 +40,8 @@ public class AsyncObjectivesClient {
      * objectives (UUID IDs). The list is cursor-paginated.</p>
      */
     public CompletableFuture<SyncPagingIterable<ApeObjective>> list() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ApeObjective>>> rawFuture = this.rawClient.list();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ApeObjective>>> rawFuture =
+                this.rawClient.list();
         CompletableFuture<SyncPagingIterable<ApeObjective>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -58,7 +59,7 @@ public class AsyncObjectivesClient {
      * objectives (UUID IDs). The list is cursor-paginated.</p>
      */
     public CompletableFuture<SyncPagingIterable<ApeObjective>> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ApeObjective>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ApeObjective>>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<SyncPagingIterable<ApeObjective>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -77,7 +78,7 @@ public class AsyncObjectivesClient {
      * objectives (UUID IDs). The list is cursor-paginated.</p>
      */
     public CompletableFuture<SyncPagingIterable<ApeObjective>> list(ListObjectivesRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ApeObjective>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ApeObjective>>> rawFuture =
                 this.rawClient.list(request);
         CompletableFuture<SyncPagingIterable<ApeObjective>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -97,7 +98,7 @@ public class AsyncObjectivesClient {
      */
     public CompletableFuture<SyncPagingIterable<ApeObjective>> list(
             ListObjectivesRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ApeObjective>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ApeObjective>>> rawFuture =
                 this.rawClient.list(request, requestOptions);
         CompletableFuture<SyncPagingIterable<ApeObjective>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -120,7 +121,7 @@ public class AsyncObjectivesClient {
      * returns 409.</p>
      */
     public CompletableFuture<ApeObjective> create(CreateCustomObjectiveRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> rawFuture = this.rawClient.create(request);
         CompletableFuture<ApeObjective> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -142,7 +143,7 @@ public class AsyncObjectivesClient {
      * returns 409.</p>
      */
     public CompletableFuture<ApeObjective> create(CreateCustomObjectiveRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> rawFuture =
                 this.rawClient.create(request, requestOptions);
         CompletableFuture<ApeObjective> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -159,7 +160,7 @@ public class AsyncObjectivesClient {
      * objective; UUIDs return one of the tenant's custom objectives.</p>
      */
     public CompletableFuture<ApeObjective> get(String objectiveId) {
-        CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> rawFuture = this.rawClient.get(objectiveId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> rawFuture = this.rawClient.get(objectiveId);
         CompletableFuture<ApeObjective> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -175,7 +176,7 @@ public class AsyncObjectivesClient {
      * objective; UUIDs return one of the tenant's custom objectives.</p>
      */
     public CompletableFuture<ApeObjective> get(String objectiveId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> rawFuture =
                 this.rawClient.get(objectiveId, requestOptions);
         CompletableFuture<ApeObjective> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -192,7 +193,8 @@ public class AsyncObjectivesClient {
      * objective; UUIDs return one of the tenant's custom objectives.</p>
      */
     public CompletableFuture<ApeObjective> get(String objectiveId, GetObjectivesRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> rawFuture = this.rawClient.get(objectiveId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> rawFuture =
+                this.rawClient.get(objectiveId, request);
         CompletableFuture<ApeObjective> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -209,7 +211,7 @@ public class AsyncObjectivesClient {
      */
     public CompletableFuture<ApeObjective> get(
             String objectiveId, GetObjectivesRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> rawFuture =
                 this.rawClient.get(objectiveId, request, requestOptions);
         CompletableFuture<ApeObjective> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -229,7 +231,7 @@ public class AsyncObjectivesClient {
      * returns 409.</p>
      */
     public CompletableFuture<Void> delete(String objectiveId) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(objectiveId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(objectiveId);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -248,7 +250,8 @@ public class AsyncObjectivesClient {
      * returns 409.</p>
      */
     public CompletableFuture<Void> delete(String objectiveId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(objectiveId, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(objectiveId, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -267,7 +270,8 @@ public class AsyncObjectivesClient {
      * returns 409.</p>
      */
     public CompletableFuture<Void> delete(String objectiveId, DeleteObjectivesRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(objectiveId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(objectiveId, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -287,7 +291,7 @@ public class AsyncObjectivesClient {
      */
     public CompletableFuture<Void> delete(
             String objectiveId, DeleteObjectivesRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.delete(objectiveId, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -307,7 +311,8 @@ public class AsyncObjectivesClient {
      * built-in's effective severity instead.</p>
      */
     public CompletableFuture<ApeObjective> update(String objectiveId) {
-        CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> rawFuture = this.rawClient.update(objectiveId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> rawFuture =
+                this.rawClient.update(objectiveId);
         CompletableFuture<ApeObjective> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -326,7 +331,7 @@ public class AsyncObjectivesClient {
      * built-in's effective severity instead.</p>
      */
     public CompletableFuture<ApeObjective> update(String objectiveId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> rawFuture =
                 this.rawClient.update(objectiveId, requestOptions);
         CompletableFuture<ApeObjective> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -346,7 +351,7 @@ public class AsyncObjectivesClient {
      * built-in's effective severity instead.</p>
      */
     public CompletableFuture<ApeObjective> update(String objectiveId, UpdateCustomObjectiveRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> rawFuture =
                 this.rawClient.update(objectiveId, request);
         CompletableFuture<ApeObjective> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -367,7 +372,7 @@ public class AsyncObjectivesClient {
      */
     public CompletableFuture<ApeObjective> update(
             String objectiveId, UpdateCustomObjectiveRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ApeObjective>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ApeObjective>> rawFuture =
                 this.rawClient.update(objectiveId, request, requestOptions);
         CompletableFuture<ApeObjective> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

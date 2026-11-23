@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.users;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -51,14 +51,14 @@ public class RawUsersClient {
     /**
      * Returns all users belonging to the authenticated user's tenant. The response includes up to 1000 items. <strong>Deprecated</strong> — use <a href="#tag/Users/operation/list_users_access_v2_users_get">List Users (paginated)</a> instead.
      */
-    public HiddenLayerHttpResponse<ListUsersResponse> list() {
+    public BaseHiddenLayerClientHttpResponse<ListUsersResponse> list() {
         return list(null);
     }
 
     /**
      * Returns all users belonging to the authenticated user's tenant. The response includes up to 1000 items. <strong>Deprecated</strong> — use <a href="#tag/Users/operation/list_users_access_v2_users_get">List Users (paginated)</a> instead.
      */
-    public HiddenLayerHttpResponse<ListUsersResponse> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ListUsersResponse> list(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/users");
@@ -90,7 +90,7 @@ public class RawUsersClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ListUsersResponse.class), response);
             }
             try {
@@ -118,28 +118,29 @@ public class RawUsersClient {
     /**
      * Creates a new user in the tenant. The user's email address must be unique within the tenant.
      */
-    public HiddenLayerHttpResponse<CreateUsersResponse> create() {
+    public BaseHiddenLayerClientHttpResponse<CreateUsersResponse> create() {
         return create(UserBase.builder().build());
     }
 
     /**
      * Creates a new user in the tenant. The user's email address must be unique within the tenant.
      */
-    public HiddenLayerHttpResponse<CreateUsersResponse> create(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<CreateUsersResponse> create(RequestOptions requestOptions) {
         return create(UserBase.builder().build(), requestOptions);
     }
 
     /**
      * Creates a new user in the tenant. The user's email address must be unique within the tenant.
      */
-    public HiddenLayerHttpResponse<CreateUsersResponse> create(UserBase request) {
+    public BaseHiddenLayerClientHttpResponse<CreateUsersResponse> create(UserBase request) {
         return create(request, null);
     }
 
     /**
      * Creates a new user in the tenant. The user's email address must be unique within the tenant.
      */
-    public HiddenLayerHttpResponse<CreateUsersResponse> create(UserBase request, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<CreateUsersResponse> create(
+            UserBase request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/users");
@@ -181,7 +182,7 @@ public class RawUsersClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CreateUsersResponse.class), response);
             }
             try {
@@ -212,28 +213,28 @@ public class RawUsersClient {
     /**
      * Retrieves details for the specified user.
      */
-    public HiddenLayerHttpResponse<GetUsersResponse> get(String id) {
+    public BaseHiddenLayerClientHttpResponse<GetUsersResponse> get(String id) {
         return get(id, GetUsersRequest.builder().build());
     }
 
     /**
      * Retrieves details for the specified user.
      */
-    public HiddenLayerHttpResponse<GetUsersResponse> get(String id, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<GetUsersResponse> get(String id, RequestOptions requestOptions) {
         return get(id, GetUsersRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieves details for the specified user.
      */
-    public HiddenLayerHttpResponse<GetUsersResponse> get(String id, GetUsersRequest request) {
+    public BaseHiddenLayerClientHttpResponse<GetUsersResponse> get(String id, GetUsersRequest request) {
         return get(id, request, null);
     }
 
     /**
      * Retrieves details for the specified user.
      */
-    public HiddenLayerHttpResponse<GetUsersResponse> get(
+    public BaseHiddenLayerClientHttpResponse<GetUsersResponse> get(
             String id, GetUsersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -267,7 +268,7 @@ public class RawUsersClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetUsersResponse.class), response);
             }
             try {
@@ -298,14 +299,15 @@ public class RawUsersClient {
     /**
      * Updates details for the specified user. The user's email address must remain unique within the tenant.
      */
-    public HiddenLayerHttpResponse<User> update(String id, UpdateUsersRequest request) {
+    public BaseHiddenLayerClientHttpResponse<User> update(String id, UpdateUsersRequest request) {
         return update(id, request, null);
     }
 
     /**
      * Updates details for the specified user. The user's email address must remain unique within the tenant.
      */
-    public HiddenLayerHttpResponse<User> update(String id, UpdateUsersRequest request, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<User> update(
+            String id, UpdateUsersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/users")
@@ -348,7 +350,7 @@ public class RawUsersClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, User.class), response);
             }
             try {
@@ -385,28 +387,29 @@ public class RawUsersClient {
     /**
      * Permanently removes the specified user from the tenant.
      */
-    public HiddenLayerHttpResponse<Void> delete(String id) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id) {
         return delete(id, DeleteUsersRequest.builder().build());
     }
 
     /**
      * Permanently removes the specified user from the tenant.
      */
-    public HiddenLayerHttpResponse<Void> delete(String id, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id, RequestOptions requestOptions) {
         return delete(id, DeleteUsersRequest.builder().build(), requestOptions);
     }
 
     /**
      * Permanently removes the specified user from the tenant.
      */
-    public HiddenLayerHttpResponse<Void> delete(String id, DeleteUsersRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id, DeleteUsersRequest request) {
         return delete(id, request, null);
     }
 
     /**
      * Permanently removes the specified user from the tenant.
      */
-    public HiddenLayerHttpResponse<Void> delete(String id, DeleteUsersRequest request, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
+            String id, DeleteUsersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/users")
@@ -441,7 +444,7 @@ public class RawUsersClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -477,7 +480,7 @@ public class RawUsersClient {
      * The user must complete the reset workflow themselves via the link in the email.
      * The <code>password</code> field in the response is deprecated and included only for backwards compatibility.
      */
-    public HiddenLayerHttpResponse<ResetUsersResponse> reset(ResetUsersRequest request) {
+    public BaseHiddenLayerClientHttpResponse<ResetUsersResponse> reset(ResetUsersRequest request) {
         return reset(request, null);
     }
 
@@ -486,7 +489,8 @@ public class RawUsersClient {
      * The user must complete the reset workflow themselves via the link in the email.
      * The <code>password</code> field in the response is deprecated and included only for backwards compatibility.
      */
-    public HiddenLayerHttpResponse<ResetUsersResponse> reset(ResetUsersRequest request, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ResetUsersResponse> reset(
+            ResetUsersRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/users/reset");
@@ -528,7 +532,7 @@ public class RawUsersClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ResetUsersResponse.class), response);
             }
             try {
@@ -556,14 +560,14 @@ public class RawUsersClient {
     /**
      * Retrieves profile and role details for the currently authenticated user.
      */
-    public HiddenLayerHttpResponse<MeUsersResponse> me() {
+    public BaseHiddenLayerClientHttpResponse<MeUsersResponse> me() {
         return me(null);
     }
 
     /**
      * Retrieves profile and role details for the currently authenticated user.
      */
-    public HiddenLayerHttpResponse<MeUsersResponse> me(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<MeUsersResponse> me(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/users/me");
@@ -595,7 +599,7 @@ public class RawUsersClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, MeUsersResponse.class), response);
             }
             try {

@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.access.permissions;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.access.permissions.types.ListPermissionsResponse;
 import java.util.concurrent.CompletableFuture;
@@ -37,7 +37,7 @@ public class AsyncPermissionsClient {
      * <a href="#operation/list_permissions_api_v2_permissions_get"><code>GET /api/v2/permissions</code></a> instead.</p>
      */
     public CompletableFuture<ListPermissionsResponse> list() {
-        CompletableFuture<HiddenLayerHttpResponse<ListPermissionsResponse>> rawFuture = this.rawClient.list();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListPermissionsResponse>> rawFuture = this.rawClient.list();
         CompletableFuture<ListPermissionsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -58,7 +58,7 @@ public class AsyncPermissionsClient {
      * <a href="#operation/list_permissions_api_v2_permissions_get"><code>GET /api/v2/permissions</code></a> instead.</p>
      */
     public CompletableFuture<ListPermissionsResponse> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ListPermissionsResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListPermissionsResponse>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<ListPermissionsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

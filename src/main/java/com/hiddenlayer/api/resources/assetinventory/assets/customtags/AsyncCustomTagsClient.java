@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.assetinventory.assets.customtags;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.assetinventory.assets.customtags.requests.DeleteCustomTagsRequest;
 import com.hiddenlayer.api.resources.assetinventory.assets.customtags.requests.DeleteV1CustomTagsRequest;
@@ -36,7 +36,7 @@ public class AsyncCustomTagsClient {
      */
     public CompletableFuture<AiAssetInventoryV1TagValue> updateV1(
             String assetId, String tagName, UpdateV1CustomTagsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1TagValue>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1TagValue>> rawFuture =
                 this.rawClient.updateV1(assetId, tagName, request);
         CompletableFuture<AiAssetInventoryV1TagValue> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -52,7 +52,7 @@ public class AsyncCustomTagsClient {
      */
     public CompletableFuture<AiAssetInventoryV1TagValue> updateV1(
             String assetId, String tagName, UpdateV1CustomTagsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1TagValue>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1TagValue>> rawFuture =
                 this.rawClient.updateV1(assetId, tagName, request, requestOptions);
         CompletableFuture<AiAssetInventoryV1TagValue> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -67,7 +67,8 @@ public class AsyncCustomTagsClient {
      * Removes a custom tag assignment from an asset.
      */
     public CompletableFuture<Void> deleteV1(String assetId, String tagName) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.deleteV1(assetId, tagName);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.deleteV1(assetId, tagName);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -81,7 +82,7 @@ public class AsyncCustomTagsClient {
      * Removes a custom tag assignment from an asset.
      */
     public CompletableFuture<Void> deleteV1(String assetId, String tagName, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.deleteV1(assetId, tagName, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -96,7 +97,8 @@ public class AsyncCustomTagsClient {
      * Removes a custom tag assignment from an asset.
      */
     public CompletableFuture<Void> deleteV1(String assetId, String tagName, DeleteV1CustomTagsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.deleteV1(assetId, tagName, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.deleteV1(assetId, tagName, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -111,7 +113,7 @@ public class AsyncCustomTagsClient {
      */
     public CompletableFuture<Void> deleteV1(
             String assetId, String tagName, DeleteV1CustomTagsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.deleteV1(assetId, tagName, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -127,7 +129,7 @@ public class AsyncCustomTagsClient {
      * <p>Assigns a custom tag to an asset. If the tag already exists on the asset, its value is updated.</p>
      */
     public CompletableFuture<TagValue> update(String assetId, String tagName, UpdateCustomTagsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<TagValue>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TagValue>> rawFuture =
                 this.rawClient.update(assetId, tagName, request);
         CompletableFuture<TagValue> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -144,7 +146,7 @@ public class AsyncCustomTagsClient {
      */
     public CompletableFuture<TagValue> update(
             String assetId, String tagName, UpdateCustomTagsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<TagValue>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TagValue>> rawFuture =
                 this.rawClient.update(assetId, tagName, request, requestOptions);
         CompletableFuture<TagValue> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -160,7 +162,7 @@ public class AsyncCustomTagsClient {
      * <p>Removes a custom tag assignment from an asset.</p>
      */
     public CompletableFuture<Void> delete(String assetId, String tagName) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(assetId, tagName);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(assetId, tagName);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -175,7 +177,7 @@ public class AsyncCustomTagsClient {
      * <p>Removes a custom tag assignment from an asset.</p>
      */
     public CompletableFuture<Void> delete(String assetId, String tagName, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.delete(assetId, tagName, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -191,7 +193,8 @@ public class AsyncCustomTagsClient {
      * <p>Removes a custom tag assignment from an asset.</p>
      */
     public CompletableFuture<Void> delete(String assetId, String tagName, DeleteCustomTagsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(assetId, tagName, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(assetId, tagName, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -207,7 +210,7 @@ public class AsyncCustomTagsClient {
      */
     public CompletableFuture<Void> delete(
             String assetId, String tagName, DeleteCustomTagsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.delete(assetId, tagName, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.assetinventory.customtags;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.assetinventory.customtags.requests.AiAssetInventoryV1TagDefinitionUpdate;
@@ -37,7 +37,7 @@ public class AsyncCustomTagsClient {
      */
     public CompletableFuture<AiAssetInventoryV1TagDefinition> updateV1(
             String tagName, AiAssetInventoryV1TagDefinitionUpdate request) {
-        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1TagDefinition>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1TagDefinition>> rawFuture =
                 this.rawClient.updateV1(tagName, request);
         CompletableFuture<AiAssetInventoryV1TagDefinition> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -53,7 +53,7 @@ public class AsyncCustomTagsClient {
      */
     public CompletableFuture<AiAssetInventoryV1TagDefinition> updateV1(
             String tagName, AiAssetInventoryV1TagDefinitionUpdate request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1TagDefinition>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1TagDefinition>> rawFuture =
                 this.rawClient.updateV1(tagName, request, requestOptions);
         CompletableFuture<AiAssetInventoryV1TagDefinition> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -68,7 +68,7 @@ public class AsyncCustomTagsClient {
      * Returns a paginated list of values for a given custom tag name.
      */
     public CompletableFuture<SyncPagingIterable<String>> valuesV1(String tagName) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> rawFuture =
                 this.rawClient.valuesV1(tagName);
         CompletableFuture<SyncPagingIterable<String>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -83,7 +83,7 @@ public class AsyncCustomTagsClient {
      * Returns a paginated list of values for a given custom tag name.
      */
     public CompletableFuture<SyncPagingIterable<String>> valuesV1(String tagName, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> rawFuture =
                 this.rawClient.valuesV1(tagName, requestOptions);
         CompletableFuture<SyncPagingIterable<String>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -98,7 +98,7 @@ public class AsyncCustomTagsClient {
      * Returns a paginated list of values for a given custom tag name.
      */
     public CompletableFuture<SyncPagingIterable<String>> valuesV1(String tagName, ValuesV1CustomTagsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> rawFuture =
                 this.rawClient.valuesV1(tagName, request);
         CompletableFuture<SyncPagingIterable<String>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -114,7 +114,7 @@ public class AsyncCustomTagsClient {
      */
     public CompletableFuture<SyncPagingIterable<String>> valuesV1(
             String tagName, ValuesV1CustomTagsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> rawFuture =
                 this.rawClient.valuesV1(tagName, request, requestOptions);
         CompletableFuture<SyncPagingIterable<String>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -130,7 +130,8 @@ public class AsyncCustomTagsClient {
      * <p>Updates a tag definition. Only the name can be changed at this time.</p>
      */
     public CompletableFuture<TagDefinition> update(String tagName, TagDefinitionUpdate request) {
-        CompletableFuture<HiddenLayerHttpResponse<TagDefinition>> rawFuture = this.rawClient.update(tagName, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TagDefinition>> rawFuture =
+                this.rawClient.update(tagName, request);
         CompletableFuture<TagDefinition> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -146,7 +147,7 @@ public class AsyncCustomTagsClient {
      */
     public CompletableFuture<TagDefinition> update(
             String tagName, TagDefinitionUpdate request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<TagDefinition>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TagDefinition>> rawFuture =
                 this.rawClient.update(tagName, request, requestOptions);
         CompletableFuture<TagDefinition> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -162,7 +163,7 @@ public class AsyncCustomTagsClient {
      * <p>Returns a cursor-paginated list of values for a given custom tag name.</p>
      */
     public CompletableFuture<SyncPagingIterable<String>> values(String tagName) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> rawFuture =
                 this.rawClient.values(tagName);
         CompletableFuture<SyncPagingIterable<String>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -178,7 +179,7 @@ public class AsyncCustomTagsClient {
      * <p>Returns a cursor-paginated list of values for a given custom tag name.</p>
      */
     public CompletableFuture<SyncPagingIterable<String>> values(String tagName, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> rawFuture =
                 this.rawClient.values(tagName, requestOptions);
         CompletableFuture<SyncPagingIterable<String>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -194,7 +195,7 @@ public class AsyncCustomTagsClient {
      * <p>Returns a cursor-paginated list of values for a given custom tag name.</p>
      */
     public CompletableFuture<SyncPagingIterable<String>> values(String tagName, ValuesCustomTagsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> rawFuture =
                 this.rawClient.values(tagName, request);
         CompletableFuture<SyncPagingIterable<String>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -211,7 +212,7 @@ public class AsyncCustomTagsClient {
      */
     public CompletableFuture<SyncPagingIterable<String>> values(
             String tagName, ValuesCustomTagsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> rawFuture =
                 this.rawClient.values(tagName, request, requestOptions);
         CompletableFuture<SyncPagingIterable<String>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

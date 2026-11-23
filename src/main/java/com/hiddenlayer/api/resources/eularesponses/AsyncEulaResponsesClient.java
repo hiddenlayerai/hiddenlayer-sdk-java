@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.eularesponses;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.eularesponses.types.SelfEulaResponsesResponse;
 import java.util.concurrent.CompletableFuture;
@@ -30,7 +30,8 @@ public class AsyncEulaResponsesClient {
      * Retrieves the current EULA acceptance status for the authenticated user's tenant, including the version responded to and when it was last updated.
      */
     public CompletableFuture<SelfEulaResponsesResponse> self() {
-        CompletableFuture<HiddenLayerHttpResponse<SelfEulaResponsesResponse>> rawFuture = this.rawClient.self();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SelfEulaResponsesResponse>> rawFuture =
+                this.rawClient.self();
         CompletableFuture<SelfEulaResponsesResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -44,7 +45,7 @@ public class AsyncEulaResponsesClient {
      * Retrieves the current EULA acceptance status for the authenticated user's tenant, including the version responded to and when it was last updated.
      */
     public CompletableFuture<SelfEulaResponsesResponse> self(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SelfEulaResponsesResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SelfEulaResponsesResponse>> rawFuture =
                 this.rawClient.self(requestOptions);
         CompletableFuture<SelfEulaResponsesResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

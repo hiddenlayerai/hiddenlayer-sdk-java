@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.compliance.projects;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -49,19 +49,19 @@ public class RawProjectsClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<GetProjectItem>> list() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<GetProjectItem>> list() {
         return list(ListProjectsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<GetProjectItem>> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<GetProjectItem>> list(RequestOptions requestOptions) {
         return list(ListProjectsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<GetProjectItem>> list(ListProjectsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<GetProjectItem>> list(ListProjectsRequest request) {
         return list(request, null);
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<GetProjectItem>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<GetProjectItem>> list(
             ListProjectsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -137,7 +137,7 @@ public class RawProjectsClient {
                         .cursor(startingAfter)
                         .build();
                 List<GetProjectItem> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<GetProjectItem>(
                                 !startingAfter.isEmpty(), result, parsedResponse, () -> list(
                                                 nextRequest, requestOptions)
@@ -172,28 +172,29 @@ public class RawProjectsClient {
     /**
      * Returns the new project ID; retrieve the project by ID to read its settings.
      */
-    public HiddenLayerHttpResponse<ProjectId> create() {
+    public BaseHiddenLayerClientHttpResponse<ProjectId> create() {
         return create(CreateProjectsRequest.builder().build());
     }
 
     /**
      * Returns the new project ID; retrieve the project by ID to read its settings.
      */
-    public HiddenLayerHttpResponse<ProjectId> create(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ProjectId> create(RequestOptions requestOptions) {
         return create(CreateProjectsRequest.builder().build(), requestOptions);
     }
 
     /**
      * Returns the new project ID; retrieve the project by ID to read its settings.
      */
-    public HiddenLayerHttpResponse<ProjectId> create(CreateProjectsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<ProjectId> create(CreateProjectsRequest request) {
         return create(request, null);
     }
 
     /**
      * Returns the new project ID; retrieve the project by ID to read its settings.
      */
-    public HiddenLayerHttpResponse<ProjectId> create(CreateProjectsRequest request, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ProjectId> create(
+            CreateProjectsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("compliance/v1/projects");
@@ -235,7 +236,7 @@ public class RawProjectsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ProjectId.class), response);
             }
             try {
@@ -269,19 +270,19 @@ public class RawProjectsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<GetProjectsResponse> get(String id) {
+    public BaseHiddenLayerClientHttpResponse<GetProjectsResponse> get(String id) {
         return get(id, GetProjectsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<GetProjectsResponse> get(String id, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<GetProjectsResponse> get(String id, RequestOptions requestOptions) {
         return get(id, GetProjectsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<GetProjectsResponse> get(String id, GetProjectsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<GetProjectsResponse> get(String id, GetProjectsRequest request) {
         return get(id, request, null);
     }
 
-    public HiddenLayerHttpResponse<GetProjectsResponse> get(
+    public BaseHiddenLayerClientHttpResponse<GetProjectsResponse> get(
             String id, GetProjectsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -315,7 +316,7 @@ public class RawProjectsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetProjectsResponse.class), response);
             }
             try {
@@ -349,28 +350,28 @@ public class RawProjectsClient {
     /**
      * Updates an existing project and returns its ID; retrieve the project by ID to read its settings. A missing project returns 404.
      */
-    public HiddenLayerHttpResponse<ProjectId> update(String id) {
+    public BaseHiddenLayerClientHttpResponse<ProjectId> update(String id) {
         return update(id, UpdateProjectsRequest.builder().build());
     }
 
     /**
      * Updates an existing project and returns its ID; retrieve the project by ID to read its settings. A missing project returns 404.
      */
-    public HiddenLayerHttpResponse<ProjectId> update(String id, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ProjectId> update(String id, RequestOptions requestOptions) {
         return update(id, UpdateProjectsRequest.builder().build(), requestOptions);
     }
 
     /**
      * Updates an existing project and returns its ID; retrieve the project by ID to read its settings. A missing project returns 404.
      */
-    public HiddenLayerHttpResponse<ProjectId> update(String id, UpdateProjectsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<ProjectId> update(String id, UpdateProjectsRequest request) {
         return update(id, request, null);
     }
 
     /**
      * Updates an existing project and returns its ID; retrieve the project by ID to read its settings. A missing project returns 404.
      */
-    public HiddenLayerHttpResponse<ProjectId> update(
+    public BaseHiddenLayerClientHttpResponse<ProjectId> update(
             String id, UpdateProjectsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -418,7 +419,7 @@ public class RawProjectsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ProjectId.class), response);
             }
             try {
@@ -458,19 +459,19 @@ public class RawProjectsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<Void> delete(String id) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id) {
         return delete(id, DeleteProjectsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<Void> delete(String id, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id, RequestOptions requestOptions) {
         return delete(id, DeleteProjectsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<Void> delete(String id, DeleteProjectsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id, DeleteProjectsRequest request) {
         return delete(id, request, null);
     }
 
-    public HiddenLayerHttpResponse<Void> delete(
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
             String id, DeleteProjectsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -506,7 +507,7 @@ public class RawProjectsClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {

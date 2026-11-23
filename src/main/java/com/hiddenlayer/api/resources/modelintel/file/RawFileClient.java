@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.modelintel.file;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -37,28 +37,28 @@ public class RawFileClient {
     /**
      * Retrieve detailed file information including all associated instances, repositories, and metadata
      */
-    public HiddenLayerHttpResponse<GetFileResponse> get(String sha256) {
+    public BaseHiddenLayerClientHttpResponse<GetFileResponse> get(String sha256) {
         return get(sha256, GetFileRequest.builder().build());
     }
 
     /**
      * Retrieve detailed file information including all associated instances, repositories, and metadata
      */
-    public HiddenLayerHttpResponse<GetFileResponse> get(String sha256, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<GetFileResponse> get(String sha256, RequestOptions requestOptions) {
         return get(sha256, GetFileRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieve detailed file information including all associated instances, repositories, and metadata
      */
-    public HiddenLayerHttpResponse<GetFileResponse> get(String sha256, GetFileRequest request) {
+    public BaseHiddenLayerClientHttpResponse<GetFileResponse> get(String sha256, GetFileRequest request) {
         return get(sha256, request, null);
     }
 
     /**
      * Retrieve detailed file information including all associated instances, repositories, and metadata
      */
-    public HiddenLayerHttpResponse<GetFileResponse> get(
+    public BaseHiddenLayerClientHttpResponse<GetFileResponse> get(
             String sha256, GetFileRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -100,7 +100,7 @@ public class RawFileClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetFileResponse.class), response);
             }
             try {
@@ -124,28 +124,28 @@ public class RawFileClient {
     /**
      * Retrieve file information such as filetype, file size in bytes, and MIME type
      */
-    public HiddenLayerHttpResponse<File> metadata(String sha256) {
+    public BaseHiddenLayerClientHttpResponse<File> metadata(String sha256) {
         return metadata(sha256, MetadataFileRequest.builder().build());
     }
 
     /**
      * Retrieve file information such as filetype, file size in bytes, and MIME type
      */
-    public HiddenLayerHttpResponse<File> metadata(String sha256, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<File> metadata(String sha256, RequestOptions requestOptions) {
         return metadata(sha256, MetadataFileRequest.builder().build(), requestOptions);
     }
 
     /**
      * Retrieve file information such as filetype, file size in bytes, and MIME type
      */
-    public HiddenLayerHttpResponse<File> metadata(String sha256, MetadataFileRequest request) {
+    public BaseHiddenLayerClientHttpResponse<File> metadata(String sha256, MetadataFileRequest request) {
         return metadata(sha256, request, null);
     }
 
     /**
      * Retrieve file information such as filetype, file size in bytes, and MIME type
      */
-    public HiddenLayerHttpResponse<File> metadata(
+    public BaseHiddenLayerClientHttpResponse<File> metadata(
             String sha256, MetadataFileRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -180,7 +180,7 @@ public class RawFileClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, File.class), response);
             }
             try {

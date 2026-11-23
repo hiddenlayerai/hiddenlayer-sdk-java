@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.sensors;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.sensors.requests.DeleteSensorsRequest;
@@ -37,7 +37,8 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SensorSorItemResponse> create(SensorSorItemCreateRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorItemResponse>> rawFuture =
+                this.rawClient.create(request);
         CompletableFuture<SensorSorItemResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -52,7 +53,7 @@ public class AsyncSensorsClient {
      */
     public CompletableFuture<SensorSorItemResponse> create(
             SensorSorItemCreateRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorItemResponse>> rawFuture =
                 this.rawClient.create(request, requestOptions);
         CompletableFuture<SensorSorItemResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -67,7 +68,8 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SensorSorItemResponse> retrieve(String sensorId) {
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> rawFuture = this.rawClient.retrieve(sensorId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorItemResponse>> rawFuture =
+                this.rawClient.retrieve(sensorId);
         CompletableFuture<SensorSorItemResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -81,7 +83,7 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SensorSorItemResponse> retrieve(String sensorId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorItemResponse>> rawFuture =
                 this.rawClient.retrieve(sensorId, requestOptions);
         CompletableFuture<SensorSorItemResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -96,7 +98,7 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SensorSorItemResponse> retrieve(String sensorId, RetrieveSensorsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorItemResponse>> rawFuture =
                 this.rawClient.retrieve(sensorId, request);
         CompletableFuture<SensorSorItemResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -112,7 +114,7 @@ public class AsyncSensorsClient {
      */
     public CompletableFuture<SensorSorItemResponse> retrieve(
             String sensorId, RetrieveSensorsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorItemResponse>> rawFuture =
                 this.rawClient.retrieve(sensorId, request, requestOptions);
         CompletableFuture<SensorSorItemResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -127,7 +129,7 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SensorSorUpdateResponseModel> update(String sensorId) {
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorUpdateResponseModel>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorUpdateResponseModel>> rawFuture =
                 this.rawClient.update(sensorId);
         CompletableFuture<SensorSorUpdateResponseModel> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -142,7 +144,7 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SensorSorUpdateResponseModel> update(String sensorId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorUpdateResponseModel>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorUpdateResponseModel>> rawFuture =
                 this.rawClient.update(sensorId, requestOptions);
         CompletableFuture<SensorSorUpdateResponseModel> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -157,7 +159,7 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SensorSorUpdateResponseModel> update(String sensorId, SensorSorItemUpdateRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorUpdateResponseModel>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorUpdateResponseModel>> rawFuture =
                 this.rawClient.update(sensorId, request);
         CompletableFuture<SensorSorUpdateResponseModel> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -173,7 +175,7 @@ public class AsyncSensorsClient {
      */
     public CompletableFuture<SensorSorUpdateResponseModel> update(
             String sensorId, SensorSorItemUpdateRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorUpdateResponseModel>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorUpdateResponseModel>> rawFuture =
                 this.rawClient.update(sensorId, request, requestOptions);
         CompletableFuture<SensorSorUpdateResponseModel> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -188,7 +190,7 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<Void> delete(String sensorId) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(sensorId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(sensorId);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -202,7 +204,8 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<Void> delete(String sensorId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(sensorId, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(sensorId, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -216,7 +219,7 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<Void> delete(String sensorId, DeleteSensorsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(sensorId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(sensorId, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -231,7 +234,7 @@ public class AsyncSensorsClient {
      */
     public CompletableFuture<Void> delete(
             String sensorId, DeleteSensorsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.delete(sensorId, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -246,7 +249,7 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> queryLegacy() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
                 this.rawClient.queryLegacy();
         CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -262,7 +265,7 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> queryLegacy(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
                 this.rawClient.queryLegacy(requestOptions);
         CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -278,7 +281,7 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> queryLegacy(SensorSorQueryRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
                 this.rawClient.queryLegacy(request);
         CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -295,7 +298,7 @@ public class AsyncSensorsClient {
      */
     public CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> queryLegacy(
             SensorSorQueryRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
                 this.rawClient.queryLegacy(request, requestOptions);
         CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -311,7 +314,7 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> query() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
                 this.rawClient.query();
         CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -327,7 +330,7 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> query(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
                 this.rawClient.query(requestOptions);
         CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -343,7 +346,7 @@ public class AsyncSensorsClient {
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
     public CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> query(SensorSorQueryRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
                 this.rawClient.query(request);
         CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -360,7 +363,7 @@ public class AsyncSensorsClient {
      */
     public CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> query(
             SensorSorQueryRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> rawFuture =
                 this.rawClient.query(request, requestOptions);
         CompletableFuture<SyncPagingIterable<SensorSorItemResponse>> future =
                 rawFuture.thenApply(response -> response.body());

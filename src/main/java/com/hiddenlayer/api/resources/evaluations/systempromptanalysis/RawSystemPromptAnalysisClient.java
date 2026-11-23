@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.evaluations.systempromptanalysis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -57,7 +57,7 @@ public class RawSystemPromptAnalysisClient {
      * <p>List completed system prompt analysis results with filtering and bidirectional pagination.</p>
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<SystemPromptResultItem>> list() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SystemPromptResultItem>> list() {
         return list(ListSystemPromptAnalysisRequest.builder().build());
     }
 
@@ -66,7 +66,8 @@ public class RawSystemPromptAnalysisClient {
      * <p>List completed system prompt analysis results with filtering and bidirectional pagination.</p>
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<SystemPromptResultItem>> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SystemPromptResultItem>> list(
+            RequestOptions requestOptions) {
         return list(ListSystemPromptAnalysisRequest.builder().build(), requestOptions);
     }
 
@@ -75,7 +76,7 @@ public class RawSystemPromptAnalysisClient {
      * <p>List completed system prompt analysis results with filtering and bidirectional pagination.</p>
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<SystemPromptResultItem>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SystemPromptResultItem>> list(
             ListSystemPromptAnalysisRequest request) {
         return list(request, null);
     }
@@ -85,7 +86,7 @@ public class RawSystemPromptAnalysisClient {
      * <p>List completed system prompt analysis results with filtering and bidirectional pagination.</p>
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<SystemPromptResultItem>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SystemPromptResultItem>> list(
             ListSystemPromptAnalysisRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -162,7 +163,7 @@ public class RawSystemPromptAnalysisClient {
                         .cursor(startingAfter)
                         .build();
                 List<SystemPromptResultItem> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<SystemPromptResultItem>(
                                 startingAfter.isPresent()
                                         && !startingAfter.get().isEmpty(),
@@ -205,7 +206,7 @@ public class RawSystemPromptAnalysisClient {
      * <p>This immediately starts the workflow which auto-triggers question generation.
      * Client should poll /status to check progress.</p>
      */
-    public HiddenLayerHttpResponse<StartWorkflowResponse> create(StartSystemPromptWorkflowBody request) {
+    public BaseHiddenLayerClientHttpResponse<StartWorkflowResponse> create(StartSystemPromptWorkflowBody request) {
         return create(request, null);
     }
 
@@ -215,7 +216,7 @@ public class RawSystemPromptAnalysisClient {
      * <p>This immediately starts the workflow which auto-triggers question generation.
      * Client should poll /status to check progress.</p>
      */
-    public HiddenLayerHttpResponse<StartWorkflowResponse> create(
+    public BaseHiddenLayerClientHttpResponse<StartWorkflowResponse> create(
             StartSystemPromptWorkflowBody request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -258,7 +259,7 @@ public class RawSystemPromptAnalysisClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, StartWorkflowResponse.class), response);
             }
             try {
@@ -295,7 +296,7 @@ public class RawSystemPromptAnalysisClient {
      * <p>This endpoint is designed to be polled by clients to track progress.
      * Returns immediately with current state.</p>
      */
-    public HiddenLayerHttpResponse<AnalysisStatus> status(String workflowId) {
+    public BaseHiddenLayerClientHttpResponse<AnalysisStatus> status(String workflowId) {
         return status(workflowId, StatusSystemPromptAnalysisRequest.builder().build());
     }
 
@@ -305,7 +306,7 @@ public class RawSystemPromptAnalysisClient {
      * <p>This endpoint is designed to be polled by clients to track progress.
      * Returns immediately with current state.</p>
      */
-    public HiddenLayerHttpResponse<AnalysisStatus> status(String workflowId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<AnalysisStatus> status(String workflowId, RequestOptions requestOptions) {
         return status(workflowId, StatusSystemPromptAnalysisRequest.builder().build(), requestOptions);
     }
 
@@ -315,7 +316,7 @@ public class RawSystemPromptAnalysisClient {
      * <p>This endpoint is designed to be polled by clients to track progress.
      * Returns immediately with current state.</p>
      */
-    public HiddenLayerHttpResponse<AnalysisStatus> status(
+    public BaseHiddenLayerClientHttpResponse<AnalysisStatus> status(
             String workflowId, StatusSystemPromptAnalysisRequest request) {
         return status(workflowId, request, null);
     }
@@ -326,7 +327,7 @@ public class RawSystemPromptAnalysisClient {
      * <p>This endpoint is designed to be polled by clients to track progress.
      * Returns immediately with current state.</p>
      */
-    public HiddenLayerHttpResponse<AnalysisStatus> status(
+    public BaseHiddenLayerClientHttpResponse<AnalysisStatus> status(
             String workflowId, StatusSystemPromptAnalysisRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -361,7 +362,7 @@ public class RawSystemPromptAnalysisClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AnalysisStatus.class), response);
             }
             try {
@@ -396,7 +397,7 @@ public class RawSystemPromptAnalysisClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the final result of a completed analysis workflow.</p>
      */
-    public HiddenLayerHttpResponse<AnalysisResult> get(String workflowId) {
+    public BaseHiddenLayerClientHttpResponse<AnalysisResult> get(String workflowId) {
         return get(workflowId, GetSystemPromptAnalysisRequest.builder().build());
     }
 
@@ -404,7 +405,7 @@ public class RawSystemPromptAnalysisClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the final result of a completed analysis workflow.</p>
      */
-    public HiddenLayerHttpResponse<AnalysisResult> get(String workflowId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<AnalysisResult> get(String workflowId, RequestOptions requestOptions) {
         return get(workflowId, GetSystemPromptAnalysisRequest.builder().build(), requestOptions);
     }
 
@@ -412,7 +413,8 @@ public class RawSystemPromptAnalysisClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the final result of a completed analysis workflow.</p>
      */
-    public HiddenLayerHttpResponse<AnalysisResult> get(String workflowId, GetSystemPromptAnalysisRequest request) {
+    public BaseHiddenLayerClientHttpResponse<AnalysisResult> get(
+            String workflowId, GetSystemPromptAnalysisRequest request) {
         return get(workflowId, request, null);
     }
 
@@ -420,7 +422,7 @@ public class RawSystemPromptAnalysisClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the final result of a completed analysis workflow.</p>
      */
-    public HiddenLayerHttpResponse<AnalysisResult> get(
+    public BaseHiddenLayerClientHttpResponse<AnalysisResult> get(
             String workflowId, GetSystemPromptAnalysisRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -454,7 +456,7 @@ public class RawSystemPromptAnalysisClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AnalysisResult.class), response);
             }
             try {
@@ -492,7 +494,7 @@ public class RawSystemPromptAnalysisClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a system prompt analysis result from storage.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String workflowId) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String workflowId) {
         return delete(workflowId, DeleteSystemPromptAnalysisRequest.builder().build());
     }
 
@@ -500,7 +502,7 @@ public class RawSystemPromptAnalysisClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a system prompt analysis result from storage.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String workflowId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String workflowId, RequestOptions requestOptions) {
         return delete(workflowId, DeleteSystemPromptAnalysisRequest.builder().build(), requestOptions);
     }
 
@@ -508,7 +510,8 @@ public class RawSystemPromptAnalysisClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a system prompt analysis result from storage.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String workflowId, DeleteSystemPromptAnalysisRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
+            String workflowId, DeleteSystemPromptAnalysisRequest request) {
         return delete(workflowId, request, null);
     }
 
@@ -516,7 +519,7 @@ public class RawSystemPromptAnalysisClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a system prompt analysis result from storage.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
             String workflowId, DeleteSystemPromptAnalysisRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -552,7 +555,7 @@ public class RawSystemPromptAnalysisClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -589,7 +592,8 @@ public class RawSystemPromptAnalysisClient {
      * <p>This endpoint accepts user answers and triggers the compile+validate
      * child workflow. Returns immediately; client should poll /status for results.</p>
      */
-    public HiddenLayerHttpResponse<SubmitAnswersResult> answers(String workflowId, SubmitAnswersBody request) {
+    public BaseHiddenLayerClientHttpResponse<SubmitAnswersResult> answers(
+            String workflowId, SubmitAnswersBody request) {
         return answers(workflowId, request, null);
     }
 
@@ -599,7 +603,7 @@ public class RawSystemPromptAnalysisClient {
      * <p>This endpoint accepts user answers and triggers the compile+validate
      * child workflow. Returns immediately; client should poll /status for results.</p>
      */
-    public HiddenLayerHttpResponse<SubmitAnswersResult> answers(
+    public BaseHiddenLayerClientHttpResponse<SubmitAnswersResult> answers(
             String workflowId, SubmitAnswersBody request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -644,7 +648,7 @@ public class RawSystemPromptAnalysisClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SubmitAnswersResult.class), response);
             }
             try {

@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.models.cards;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -39,19 +39,19 @@ public class RawCardsClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>> listV3() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV3>> listV3() {
         return listV3(ListV3CardsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>> listV3(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV3>> listV3(RequestOptions requestOptions) {
         return listV3(ListV3CardsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>> listV3(ListV3CardsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV3>> listV3(ListV3CardsRequest request) {
         return listV3(request, null);
     }
 
-    public HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>> listV3(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV3>> listV3(
             ListV3CardsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -142,7 +142,7 @@ public class RawCardsClient {
                         .from(request)
                         .offset(newPageNumber)
                         .build();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<ModelCardV3>(
                                 true, result, parsedResponse, () -> listV3(nextRequest, requestOptions)
                                         .body()),
@@ -174,7 +174,7 @@ public class RawCardsClient {
      * (<code>model_id[eq]</code>, <code>scan_started_at[gt/gte/lt/lte]</code>) and sorts
      * (<code>model_name</code>, <code>scan_started_at</code>).
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>> list() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV4>> list() {
         return list(ListCardsRequest.builder().build());
     }
 
@@ -186,7 +186,7 @@ public class RawCardsClient {
      * (<code>model_id[eq]</code>, <code>scan_started_at[gt/gte/lt/lte]</code>) and sorts
      * (<code>model_name</code>, <code>scan_started_at</code>).
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV4>> list(RequestOptions requestOptions) {
         return list(ListCardsRequest.builder().build(), requestOptions);
     }
 
@@ -198,7 +198,7 @@ public class RawCardsClient {
      * (<code>model_id[eq]</code>, <code>scan_started_at[gt/gte/lt/lte]</code>) and sorts
      * (<code>model_name</code>, <code>scan_started_at</code>).
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>> list(ListCardsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV4>> list(ListCardsRequest request) {
         return list(request, null);
     }
 
@@ -210,7 +210,7 @@ public class RawCardsClient {
      * (<code>model_id[eq]</code>, <code>scan_started_at[gt/gte/lt/lte]</code>) and sorts
      * (<code>model_name</code>, <code>scan_started_at</code>).
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV4>> list(
             ListCardsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -301,7 +301,7 @@ public class RawCardsClient {
                         .from(request)
                         .offset(newPageNumber)
                         .build();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<ModelCardV4>(
                                 true, result, parsedResponse, () -> list(nextRequest, requestOptions)
                                         .body()),
@@ -325,11 +325,11 @@ public class RawCardsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<SuggestionsCardsResponse> suggestions(SuggestionsCardsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SuggestionsCardsResponse> suggestions(SuggestionsCardsRequest request) {
         return suggestions(request, null);
     }
 
-    public HiddenLayerHttpResponse<SuggestionsCardsResponse> suggestions(
+    public BaseHiddenLayerClientHttpResponse<SuggestionsCardsResponse> suggestions(
             SuggestionsCardsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -367,7 +367,7 @@ public class RawCardsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SuggestionsCardsResponse.class),
                         response);
             }

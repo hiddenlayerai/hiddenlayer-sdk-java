@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.metrics.timeseriesconvictions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -39,12 +39,12 @@ public class AsyncRawTimeseriesConvictionsClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<IncidentTimeseriesResponseV2>> listV2(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<IncidentTimeseriesResponseV2>> listV2(
             ListV2TimeseriesConvictionsRequest request) {
         return listV2(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<IncidentTimeseriesResponseV2>> listV2(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<IncidentTimeseriesResponseV2>> listV2(
             ListV2TimeseriesConvictionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -82,7 +82,8 @@ public class AsyncRawTimeseriesConvictionsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<IncidentTimeseriesResponseV2>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<IncidentTimeseriesResponseV2>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -90,7 +91,7 @@ public class AsyncRawTimeseriesConvictionsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, IncidentTimeseriesResponseV2.class),
                                 response));
@@ -147,12 +148,12 @@ public class AsyncRawTimeseriesConvictionsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<ConvictionTimeseriesResponseV3>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ConvictionTimeseriesResponseV3>> list(
             ListTimeseriesConvictionsRequest request) {
         return list(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<ConvictionTimeseriesResponseV3>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ConvictionTimeseriesResponseV3>> list(
             ListTimeseriesConvictionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -190,7 +191,8 @@ public class AsyncRawTimeseriesConvictionsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ConvictionTimeseriesResponseV3>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ConvictionTimeseriesResponseV3>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -198,7 +200,7 @@ public class AsyncRawTimeseriesConvictionsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, ConvictionTimeseriesResponseV3.class),
                                 response));

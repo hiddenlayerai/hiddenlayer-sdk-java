@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.evaluations.promptsets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -57,7 +57,7 @@ public class AsyncRawPromptSetsClient {
      * <li>Tenant-specific prompt sets with their current status</li>
      * </ul>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<PromptSetsResponse>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<PromptSetsResponse>> list() {
         return list(null);
     }
 
@@ -70,7 +70,8 @@ public class AsyncRawPromptSetsClient {
      * <li>Tenant-specific prompt sets with their current status</li>
      * </ul>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<PromptSetsResponse>> list(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<PromptSetsResponse>> list(
+            RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("evaluations/v1/prompt-sets");
@@ -98,7 +99,7 @@ public class AsyncRawPromptSetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<PromptSetsResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<PromptSetsResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -106,7 +107,7 @@ public class AsyncRawPromptSetsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PromptSetsResponse.class),
                                 response));
                         return;
@@ -165,7 +166,8 @@ public class AsyncRawPromptSetsClient {
      * background job then tags the prompts, after applying any requested
      * mutations. List the prompt sets to see when the status changes.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<CreatePromptSetResponse>> create(CreatePromptSetRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<CreatePromptSetResponse>> create(
+            CreatePromptSetRequest request) {
         return create(request, null);
     }
 
@@ -177,7 +179,7 @@ public class AsyncRawPromptSetsClient {
      * background job then tags the prompts, after applying any requested
      * mutations. List the prompt sets to see when the status changes.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<CreatePromptSetResponse>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<CreatePromptSetResponse>> create(
             CreatePromptSetRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -216,7 +218,8 @@ public class AsyncRawPromptSetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<CreatePromptSetResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<CreatePromptSetResponse>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -224,7 +227,7 @@ public class AsyncRawPromptSetsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CreatePromptSetResponse.class),
                                 response));
                         return;
@@ -295,7 +298,7 @@ public class AsyncRawPromptSetsClient {
      * <li>semantic_transformations: LLM-based semantic transformations</li>
      * </ul>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AvailableMutationsResponse>> mutations() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AvailableMutationsResponse>> mutations() {
         return mutations(null);
     }
 
@@ -309,7 +312,7 @@ public class AsyncRawPromptSetsClient {
      * <li>semantic_transformations: LLM-based semantic transformations</li>
      * </ul>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AvailableMutationsResponse>> mutations(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AvailableMutationsResponse>> mutations(
             RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -338,7 +341,8 @@ public class AsyncRawPromptSetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<AvailableMutationsResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AvailableMutationsResponse>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -346,7 +350,7 @@ public class AsyncRawPromptSetsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, AvailableMutationsResponse.class),
                                 response));
@@ -402,7 +406,7 @@ public class AsyncRawPromptSetsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a tenant-specific prompt set.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String promptSetId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String promptSetId) {
         return delete(promptSetId, DeletePromptSetsRequest.builder().build());
     }
 
@@ -410,7 +414,8 @@ public class AsyncRawPromptSetsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a tenant-specific prompt set.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String promptSetId, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
+            String promptSetId, RequestOptions requestOptions) {
         return delete(promptSetId, DeletePromptSetsRequest.builder().build(), requestOptions);
     }
 
@@ -418,7 +423,7 @@ public class AsyncRawPromptSetsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a tenant-specific prompt set.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String promptSetId, DeletePromptSetsRequest request) {
         return delete(promptSetId, request, null);
     }
@@ -427,7 +432,7 @@ public class AsyncRawPromptSetsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a tenant-specific prompt set.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String promptSetId, DeletePromptSetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -460,14 +465,14 @@ public class AsyncRawPromptSetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
@@ -528,7 +533,7 @@ public class AsyncRawPromptSetsClient {
      * <p>Exports a built-in or tenant-specific prompt set as CSV with columns:
      * prompt_id, system_prompt, user_prompt, technique_ids.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<InputStream>> csv(String promptSetId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> csv(String promptSetId) {
         return csv(promptSetId, CsvPromptSetsRequest.builder().build());
     }
 
@@ -538,7 +543,7 @@ public class AsyncRawPromptSetsClient {
      * <p>Exports a built-in or tenant-specific prompt set as CSV with columns:
      * prompt_id, system_prompt, user_prompt, technique_ids.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<InputStream>> csv(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> csv(
             String promptSetId, RequestOptions requestOptions) {
         return csv(promptSetId, CsvPromptSetsRequest.builder().build(), requestOptions);
     }
@@ -549,7 +554,7 @@ public class AsyncRawPromptSetsClient {
      * <p>Exports a built-in or tenant-specific prompt set as CSV with columns:
      * prompt_id, system_prompt, user_prompt, technique_ids.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<InputStream>> csv(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> csv(
             String promptSetId, CsvPromptSetsRequest request) {
         return csv(promptSetId, request, null);
     }
@@ -560,7 +565,7 @@ public class AsyncRawPromptSetsClient {
      * <p>Exports a built-in or tenant-specific prompt set as CSV with columns:
      * prompt_id, system_prompt, user_prompt, technique_ids.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<InputStream>> csv(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> csv(
             String promptSetId, CsvPromptSetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -591,7 +596,7 @@ public class AsyncRawPromptSetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<InputStream>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -599,7 +604,8 @@ public class AsyncRawPromptSetsClient {
                 try {
                     ResponseBody responseBody = response.body();
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(new ResponseBodyInputStream(response), response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
+                                new ResponseBodyInputStream(response), response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";

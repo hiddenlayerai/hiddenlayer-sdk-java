@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.promptanalyzer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -38,7 +38,7 @@ public class AsyncRawPromptAnalyzerClient {
     /**
      * Analyze LLM Prompt and Response
      */
-    public CompletableFuture<HiddenLayerHttpResponse<HiddenLayerPromptAnalyzerResponse>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<HiddenLayerPromptAnalyzerResponse>> create(
             PromptAnalyzerRequest request) {
         return create(request, null);
     }
@@ -46,7 +46,7 @@ public class AsyncRawPromptAnalyzerClient {
     /**
      * Analyze LLM Prompt and Response
      */
-    public CompletableFuture<HiddenLayerHttpResponse<HiddenLayerPromptAnalyzerResponse>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<HiddenLayerPromptAnalyzerResponse>> create(
             PromptAnalyzerRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -91,7 +91,7 @@ public class AsyncRawPromptAnalyzerClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<HiddenLayerPromptAnalyzerResponse>> future =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<HiddenLayerPromptAnalyzerResponse>> future =
                 new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
@@ -100,7 +100,7 @@ public class AsyncRawPromptAnalyzerClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, HiddenLayerPromptAnalyzerResponse.class),
                                 response));

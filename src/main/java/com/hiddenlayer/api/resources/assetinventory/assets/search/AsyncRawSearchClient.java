@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.assetinventory.assets.search;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -42,12 +42,12 @@ public class AsyncRawSearchClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SearchResult>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SearchResult>>> list(
             ListSearchRequest request) {
         return list(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SearchResult>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SearchResult>>> list(
             ListSearchRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -147,7 +147,8 @@ public class AsyncRawSearchClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SearchResult>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SearchResult>>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -165,7 +166,7 @@ public class AsyncRawSearchClient {
                                 .from(request)
                                 .offset(newPageNumber)
                                 .build();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<SearchResult>(true, result, parsedResponse, () -> {
                                     try {
                                         return list(nextRequest, requestOptions)
@@ -219,12 +220,12 @@ public class AsyncRawSearchClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SearchSuggestionsResponse>> suggestions(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SearchSuggestionsResponse>> suggestions(
             SuggestionsSearchRequest request) {
         return suggestions(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SearchSuggestionsResponse>> suggestions(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SearchSuggestionsResponse>> suggestions(
             SuggestionsSearchRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -308,7 +309,8 @@ public class AsyncRawSearchClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SearchSuggestionsResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SearchSuggestionsResponse>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -316,7 +318,7 @@ public class AsyncRawSearchClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, SearchSuggestionsResponse.class),
                                 response));

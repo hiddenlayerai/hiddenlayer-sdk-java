@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.scans.results;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.scans.results.requests.ListFilesResultsRequest;
@@ -35,8 +35,8 @@ public class AsyncResultsClient {
      * Returns a cursor-paginated list of file results for a given scan. Results are sorted by compliance status, then highest detection severity, then file path.
      */
     public CompletableFuture<SyncPagingIterable<ScanFileResultWithComplianceV3>> listFiles(String scanId) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>> rawFuture =
-                this.rawClient.listFiles(scanId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>>
+                rawFuture = this.rawClient.listFiles(scanId);
         CompletableFuture<SyncPagingIterable<ScanFileResultWithComplianceV3>> future =
                 rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -52,8 +52,8 @@ public class AsyncResultsClient {
      */
     public CompletableFuture<SyncPagingIterable<ScanFileResultWithComplianceV3>> listFiles(
             String scanId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>> rawFuture =
-                this.rawClient.listFiles(scanId, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>>
+                rawFuture = this.rawClient.listFiles(scanId, requestOptions);
         CompletableFuture<SyncPagingIterable<ScanFileResultWithComplianceV3>> future =
                 rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -69,8 +69,8 @@ public class AsyncResultsClient {
      */
     public CompletableFuture<SyncPagingIterable<ScanFileResultWithComplianceV3>> listFiles(
             String scanId, ListFilesResultsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>> rawFuture =
-                this.rawClient.listFiles(scanId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>>
+                rawFuture = this.rawClient.listFiles(scanId, request);
         CompletableFuture<SyncPagingIterable<ScanFileResultWithComplianceV3>> future =
                 rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -86,8 +86,8 @@ public class AsyncResultsClient {
      */
     public CompletableFuture<SyncPagingIterable<ScanFileResultWithComplianceV3>> listFiles(
             String scanId, ListFilesResultsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>> rawFuture =
-                this.rawClient.listFiles(scanId, request, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanFileResultWithComplianceV3>>>
+                rawFuture = this.rawClient.listFiles(scanId, request, requestOptions);
         CompletableFuture<SyncPagingIterable<ScanFileResultWithComplianceV3>> future =
                 rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -99,7 +99,7 @@ public class AsyncResultsClient {
     }
 
     public CompletableFuture<String> sarif(String scanId) {
-        CompletableFuture<HiddenLayerHttpResponse<String>> rawFuture = this.rawClient.sarif(scanId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<String>> rawFuture = this.rawClient.sarif(scanId);
         CompletableFuture<String> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -110,7 +110,8 @@ public class AsyncResultsClient {
     }
 
     public CompletableFuture<String> sarif(String scanId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<String>> rawFuture = this.rawClient.sarif(scanId, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<String>> rawFuture =
+                this.rawClient.sarif(scanId, requestOptions);
         CompletableFuture<String> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -121,7 +122,7 @@ public class AsyncResultsClient {
     }
 
     public CompletableFuture<String> sarif(String scanId, SarifResultsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<String>> rawFuture = this.rawClient.sarif(scanId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<String>> rawFuture = this.rawClient.sarif(scanId, request);
         CompletableFuture<String> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -132,7 +133,7 @@ public class AsyncResultsClient {
     }
 
     public CompletableFuture<String> sarif(String scanId, SarifResultsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<String>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<String>> rawFuture =
                 this.rawClient.sarif(scanId, request, requestOptions);
         CompletableFuture<String> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -147,7 +148,7 @@ public class AsyncResultsClient {
      * Returns aggregated summary information for a scan without file-level results.
      */
     public CompletableFuture<ScanReportSummaryResponseV3> retrieveSummary(String scanId) {
-        CompletableFuture<HiddenLayerHttpResponse<ScanReportSummaryResponseV3>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportSummaryResponseV3>> rawFuture =
                 this.rawClient.retrieveSummary(scanId);
         CompletableFuture<ScanReportSummaryResponseV3> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -163,7 +164,7 @@ public class AsyncResultsClient {
      */
     public CompletableFuture<ScanReportSummaryResponseV3> retrieveSummary(
             String scanId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ScanReportSummaryResponseV3>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportSummaryResponseV3>> rawFuture =
                 this.rawClient.retrieveSummary(scanId, requestOptions);
         CompletableFuture<ScanReportSummaryResponseV3> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -179,7 +180,7 @@ public class AsyncResultsClient {
      */
     public CompletableFuture<ScanReportSummaryResponseV3> retrieveSummary(
             String scanId, RetrieveSummaryResultsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<ScanReportSummaryResponseV3>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportSummaryResponseV3>> rawFuture =
                 this.rawClient.retrieveSummary(scanId, request);
         CompletableFuture<ScanReportSummaryResponseV3> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -195,7 +196,7 @@ public class AsyncResultsClient {
      */
     public CompletableFuture<ScanReportSummaryResponseV3> retrieveSummary(
             String scanId, RetrieveSummaryResultsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ScanReportSummaryResponseV3>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportSummaryResponseV3>> rawFuture =
                 this.rawClient.retrieveSummary(scanId, request, requestOptions);
         CompletableFuture<ScanReportSummaryResponseV3> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.mitre.atlas.techniques;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -37,21 +37,21 @@ public class AsyncRawTechniquesClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<GetTechniquesResponse>> get(String techniqueId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GetTechniquesResponse>> get(String techniqueId) {
         return get(techniqueId, GetTechniquesRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<GetTechniquesResponse>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GetTechniquesResponse>> get(
             String techniqueId, RequestOptions requestOptions) {
         return get(techniqueId, GetTechniquesRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<GetTechniquesResponse>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GetTechniquesResponse>> get(
             String techniqueId, GetTechniquesRequest request) {
         return get(techniqueId, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<GetTechniquesResponse>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<GetTechniquesResponse>> get(
             String techniqueId, GetTechniquesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -88,7 +88,7 @@ public class AsyncRawTechniquesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<GetTechniquesResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<GetTechniquesResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -96,7 +96,7 @@ public class AsyncRawTechniquesClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetTechniquesResponse.class),
                                 response));
                         return;

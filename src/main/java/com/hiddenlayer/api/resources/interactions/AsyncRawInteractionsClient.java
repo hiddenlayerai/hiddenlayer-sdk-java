@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.interactions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -39,14 +39,14 @@ public class AsyncRawInteractionsClient {
     /**
      * Performs a detailed security analysis of the input and/or output of LLM interactions.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<EnrichedResponse>> analyze(InteractionsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<EnrichedResponse>> analyze(InteractionsRequest request) {
         return analyze(request, null);
     }
 
     /**
      * Performs a detailed security analysis of the input and/or output of LLM interactions.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<EnrichedResponse>> analyze(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<EnrichedResponse>> analyze(
             InteractionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -88,7 +88,7 @@ public class AsyncRawInteractionsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<EnrichedResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<EnrichedResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -96,7 +96,7 @@ public class AsyncRawInteractionsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, EnrichedResponse.class),
                                 response));
                         return;

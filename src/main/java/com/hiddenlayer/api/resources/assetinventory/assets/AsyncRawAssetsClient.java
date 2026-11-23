@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.assetinventory.assets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -61,19 +61,21 @@ public class AsyncRawAssetsClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<ListV1AssetsResponse>> listV1() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ListV1AssetsResponse>> listV1() {
         return listV1(ListV1AssetsRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<ListV1AssetsResponse>> listV1(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ListV1AssetsResponse>> listV1(
+            RequestOptions requestOptions) {
         return listV1(ListV1AssetsRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<ListV1AssetsResponse>> listV1(ListV1AssetsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ListV1AssetsResponse>> listV1(
+            ListV1AssetsRequest request) {
         return listV1(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<ListV1AssetsResponse>> listV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ListV1AssetsResponse>> listV1(
             ListV1AssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -157,7 +159,7 @@ public class AsyncRawAssetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ListV1AssetsResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListV1AssetsResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -165,7 +167,7 @@ public class AsyncRawAssetsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ListV1AssetsResponse.class),
                                 response));
                         return;
@@ -204,19 +206,21 @@ public class AsyncRawAssetsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAsset>> getV1(String assetId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAsset>> getV1(String assetId) {
         return getV1(assetId, GetV1AssetsRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAsset>> getV1(String assetId, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAsset>> getV1(
+            String assetId, RequestOptions requestOptions) {
         return getV1(assetId, GetV1AssetsRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAsset>> getV1(String assetId, GetV1AssetsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAsset>> getV1(
+            String assetId, GetV1AssetsRequest request) {
         return getV1(assetId, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAsset>> getV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAsset>> getV1(
             String assetId, GetV1AssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -250,7 +254,7 @@ public class AsyncRawAssetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<AiAsset>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAsset>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -258,7 +262,7 @@ public class AsyncRawAssetsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AiAsset.class), response));
                         return;
                     }
@@ -296,21 +300,22 @@ public class AsyncRawAssetsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetGraphNode>> graph(String assetId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetGraphNode>> graph(
+            String assetId) {
         return graph(assetId, GraphAssetsRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetGraphNode>> graph(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetGraphNode>> graph(
             String assetId, RequestOptions requestOptions) {
         return graph(assetId, GraphAssetsRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetGraphNode>> graph(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetGraphNode>> graph(
             String assetId, GraphAssetsRequest request) {
         return graph(assetId, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetGraphNode>> graph(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetGraphNode>> graph(
             String assetId, GraphAssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -345,7 +350,8 @@ public class AsyncRawAssetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetGraphNode>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetGraphNode>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -353,7 +359,7 @@ public class AsyncRawAssetsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, AiAssetInventoryV1AssetGraphNode.class),
                                 response));
@@ -403,14 +409,14 @@ public class AsyncRawAssetsClient {
     /**
      * Returns the available filter fields and their values. Tag names are included as a filter field.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<FiltersV1AssetsResponse>> filtersV1() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<FiltersV1AssetsResponse>> filtersV1() {
         return filtersV1(null);
     }
 
     /**
      * Returns the available filter fields and their values. Tag names are included as a filter field.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<FiltersV1AssetsResponse>> filtersV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<FiltersV1AssetsResponse>> filtersV1(
             RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -439,7 +445,8 @@ public class AsyncRawAssetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<FiltersV1AssetsResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<FiltersV1AssetsResponse>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -447,7 +454,7 @@ public class AsyncRawAssetsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, FiltersV1AssetsResponse.class),
                                 response));
                         return;
@@ -480,14 +487,14 @@ public class AsyncRawAssetsClient {
     /**
      * Returns all custom and discovered tags assigned to the given asset.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetTagMap>> tagsV1(String assetId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetTagMap>> tagsV1(String assetId) {
         return tagsV1(assetId, TagsV1AssetsRequest.builder().build());
     }
 
     /**
      * Returns all custom and discovered tags assigned to the given asset.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetTagMap>> tagsV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetTagMap>> tagsV1(
             String assetId, RequestOptions requestOptions) {
         return tagsV1(assetId, TagsV1AssetsRequest.builder().build(), requestOptions);
     }
@@ -495,7 +502,7 @@ public class AsyncRawAssetsClient {
     /**
      * Returns all custom and discovered tags assigned to the given asset.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetTagMap>> tagsV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetTagMap>> tagsV1(
             String assetId, TagsV1AssetsRequest request) {
         return tagsV1(assetId, request, null);
     }
@@ -503,7 +510,7 @@ public class AsyncRawAssetsClient {
     /**
      * Returns all custom and discovered tags assigned to the given asset.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetTagMap>> tagsV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetTagMap>> tagsV1(
             String assetId, TagsV1AssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -534,7 +541,8 @@ public class AsyncRawAssetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetTagMap>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetTagMap>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -542,7 +550,7 @@ public class AsyncRawAssetsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, AiAssetInventoryV1AssetTagMap.class),
                                 response));
@@ -619,7 +627,7 @@ public class AsyncRawAssetsClient {
      * sort over a very large tenant — receives <code>422 Unprocessable Entity</code> with a &quot;query exceeds allowed cost/time limit&quot; message
      * suggesting index-backed sort fields to retry with.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<Asset>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<Asset>>> list() {
         return list(ListAssetsRequest.builder().build());
     }
 
@@ -648,7 +656,8 @@ public class AsyncRawAssetsClient {
      * sort over a very large tenant — receives <code>422 Unprocessable Entity</code> with a &quot;query exceeds allowed cost/time limit&quot; message
      * suggesting index-backed sort fields to retry with.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<Asset>>> list(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<Asset>>> list(
+            RequestOptions requestOptions) {
         return list(ListAssetsRequest.builder().build(), requestOptions);
     }
 
@@ -677,7 +686,8 @@ public class AsyncRawAssetsClient {
      * sort over a very large tenant — receives <code>422 Unprocessable Entity</code> with a &quot;query exceeds allowed cost/time limit&quot; message
      * suggesting index-backed sort fields to retry with.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<Asset>>> list(ListAssetsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<Asset>>> list(
+            ListAssetsRequest request) {
         return list(request, null);
     }
 
@@ -706,7 +716,7 @@ public class AsyncRawAssetsClient {
      * sort over a very large tenant — receives <code>422 Unprocessable Entity</code> with a &quot;query exceeds allowed cost/time limit&quot; message
      * suggesting index-backed sort fields to retry with.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<Asset>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<Asset>>> list(
             ListAssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -804,7 +814,8 @@ public class AsyncRawAssetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<Asset>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<Asset>>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -820,7 +831,7 @@ public class AsyncRawAssetsClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<Asset> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<Asset>(!startingAfter.isEmpty(), result, parsedResponse, () -> {
                                     try {
                                         return list(nextRequest, requestOptions)
@@ -892,7 +903,7 @@ public class AsyncRawAssetsClient {
      * suggestions. Filtering by <code>project_id</code> additionally requires the
      * <code>project:read</code> scope.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SuggestionsAssetsResponse>> suggestions(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SuggestionsAssetsResponse>> suggestions(
             SuggestionsAssetsRequest request) {
         return suggestions(request, null);
     }
@@ -905,7 +916,7 @@ public class AsyncRawAssetsClient {
      * suggestions. Filtering by <code>project_id</code> additionally requires the
      * <code>project:read</code> scope.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SuggestionsAssetsResponse>> suggestions(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SuggestionsAssetsResponse>> suggestions(
             SuggestionsAssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -989,7 +1000,8 @@ public class AsyncRawAssetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SuggestionsAssetsResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SuggestionsAssetsResponse>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -997,7 +1009,7 @@ public class AsyncRawAssetsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, SuggestionsAssetsResponse.class),
                                 response));
@@ -1094,7 +1106,7 @@ public class AsyncRawAssetsClient {
      * &quot;query exceeds allowed cost/time limit&quot; message rather than an
      * unbounded query.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<FilterFacetsResponse>> filters() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<FilterFacetsResponse>> filters() {
         return filters(FiltersAssetsRequest.builder().build());
     }
 
@@ -1138,7 +1150,8 @@ public class AsyncRawAssetsClient {
      * &quot;query exceeds allowed cost/time limit&quot; message rather than an
      * unbounded query.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<FilterFacetsResponse>> filters(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<FilterFacetsResponse>> filters(
+            RequestOptions requestOptions) {
         return filters(FiltersAssetsRequest.builder().build(), requestOptions);
     }
 
@@ -1182,7 +1195,8 @@ public class AsyncRawAssetsClient {
      * &quot;query exceeds allowed cost/time limit&quot; message rather than an
      * unbounded query.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<FilterFacetsResponse>> filters(FiltersAssetsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<FilterFacetsResponse>> filters(
+            FiltersAssetsRequest request) {
         return filters(request, null);
     }
 
@@ -1226,7 +1240,7 @@ public class AsyncRawAssetsClient {
      * &quot;query exceeds allowed cost/time limit&quot; message rather than an
      * unbounded query.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<FilterFacetsResponse>> filters(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<FilterFacetsResponse>> filters(
             FiltersAssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1266,7 +1280,7 @@ public class AsyncRawAssetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<FilterFacetsResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<FilterFacetsResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -1274,7 +1288,7 @@ public class AsyncRawAssetsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, FilterFacetsResponse.class),
                                 response));
                         return;
@@ -1339,7 +1353,7 @@ public class AsyncRawAssetsClient {
      * map holding the details that service observed.</p>
      * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Asset>> get(String assetId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Asset>> get(String assetId) {
         return get(assetId, GetAssetsRequest.builder().build());
     }
 
@@ -1352,7 +1366,8 @@ public class AsyncRawAssetsClient {
      * map holding the details that service observed.</p>
      * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Asset>> get(String assetId, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Asset>> get(
+            String assetId, RequestOptions requestOptions) {
         return get(assetId, GetAssetsRequest.builder().build(), requestOptions);
     }
 
@@ -1365,7 +1380,7 @@ public class AsyncRawAssetsClient {
      * map holding the details that service observed.</p>
      * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Asset>> get(String assetId, GetAssetsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Asset>> get(String assetId, GetAssetsRequest request) {
         return get(assetId, request, null);
     }
 
@@ -1378,7 +1393,7 @@ public class AsyncRawAssetsClient {
      * map holding the details that service observed.</p>
      * <p>Embedding <code>projects</code> additionally requires the <code>project:read</code> scope.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Asset>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Asset>> get(
             String assetId, GetAssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1412,7 +1427,7 @@ public class AsyncRawAssetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Asset>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Asset>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -1420,7 +1435,7 @@ public class AsyncRawAssetsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Asset.class), response));
                         return;
                     }
@@ -1494,7 +1509,7 @@ public class AsyncRawAssetsClient {
      * have been reached.</p>
      * <p>Requires the <code>asset:read</code> scope.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AssetGraphNode>> discoveredGraph(String assetId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetGraphNode>> discoveredGraph(String assetId) {
         return discoveredGraph(assetId, DiscoveredGraphAssetsRequest.builder().build());
     }
 
@@ -1512,7 +1527,7 @@ public class AsyncRawAssetsClient {
      * have been reached.</p>
      * <p>Requires the <code>asset:read</code> scope.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AssetGraphNode>> discoveredGraph(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetGraphNode>> discoveredGraph(
             String assetId, RequestOptions requestOptions) {
         return discoveredGraph(assetId, DiscoveredGraphAssetsRequest.builder().build(), requestOptions);
     }
@@ -1531,7 +1546,7 @@ public class AsyncRawAssetsClient {
      * have been reached.</p>
      * <p>Requires the <code>asset:read</code> scope.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AssetGraphNode>> discoveredGraph(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetGraphNode>> discoveredGraph(
             String assetId, DiscoveredGraphAssetsRequest request) {
         return discoveredGraph(assetId, request, null);
     }
@@ -1550,7 +1565,7 @@ public class AsyncRawAssetsClient {
      * have been reached.</p>
      * <p>Requires the <code>asset:read</code> scope.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AssetGraphNode>> discoveredGraph(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetGraphNode>> discoveredGraph(
             String assetId, DiscoveredGraphAssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1585,7 +1600,7 @@ public class AsyncRawAssetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<AssetGraphNode>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetGraphNode>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -1593,7 +1608,7 @@ public class AsyncRawAssetsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AssetGraphNode.class),
                                 response));
                         return;
@@ -1658,7 +1673,7 @@ public class AsyncRawAssetsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns all custom and discovered tags assigned to the given asset.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AssetTagMap>> tags(String assetId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetTagMap>> tags(String assetId) {
         return tags(assetId, TagsAssetsRequest.builder().build());
     }
 
@@ -1666,7 +1681,8 @@ public class AsyncRawAssetsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns all custom and discovered tags assigned to the given asset.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AssetTagMap>> tags(String assetId, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetTagMap>> tags(
+            String assetId, RequestOptions requestOptions) {
         return tags(assetId, TagsAssetsRequest.builder().build(), requestOptions);
     }
 
@@ -1674,7 +1690,8 @@ public class AsyncRawAssetsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns all custom and discovered tags assigned to the given asset.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AssetTagMap>> tags(String assetId, TagsAssetsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetTagMap>> tags(
+            String assetId, TagsAssetsRequest request) {
         return tags(assetId, request, null);
     }
 
@@ -1682,7 +1699,7 @@ public class AsyncRawAssetsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns all custom and discovered tags assigned to the given asset.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AssetTagMap>> tags(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetTagMap>> tags(
             String assetId, TagsAssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1713,7 +1730,7 @@ public class AsyncRawAssetsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<AssetTagMap>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AssetTagMap>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -1721,7 +1738,7 @@ public class AsyncRawAssetsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AssetTagMap.class), response));
                         return;
                     }

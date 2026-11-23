@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.scans.upload;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -40,11 +40,12 @@ public class AsyncRawUploadClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<StartUploadResponse>> start(MultiFileUploadRequestV3 request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<StartUploadResponse>> start(
+            MultiFileUploadRequestV3 request) {
         return start(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<StartUploadResponse>> start(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<StartUploadResponse>> start(
             MultiFileUploadRequestV3 request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -83,7 +84,7 @@ public class AsyncRawUploadClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<StartUploadResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StartUploadResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -91,7 +92,7 @@ public class AsyncRawUploadClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, StartUploadResponse.class),
                                 response));
                         return;
@@ -137,21 +138,21 @@ public class AsyncRawUploadClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<CompleteAllUploadResponse>> completeAll(String scanId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<CompleteAllUploadResponse>> completeAll(String scanId) {
         return completeAll(scanId, CompleteAllUploadRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<CompleteAllUploadResponse>> completeAll(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<CompleteAllUploadResponse>> completeAll(
             String scanId, RequestOptions requestOptions) {
         return completeAll(scanId, CompleteAllUploadRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<CompleteAllUploadResponse>> completeAll(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<CompleteAllUploadResponse>> completeAll(
             String scanId, CompleteAllUploadRequest request) {
         return completeAll(scanId, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<CompleteAllUploadResponse>> completeAll(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<CompleteAllUploadResponse>> completeAll(
             String scanId, CompleteAllUploadRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -185,7 +186,8 @@ public class AsyncRawUploadClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<CompleteAllUploadResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<CompleteAllUploadResponse>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -193,7 +195,7 @@ public class AsyncRawUploadClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, CompleteAllUploadResponse.class),
                                 response));

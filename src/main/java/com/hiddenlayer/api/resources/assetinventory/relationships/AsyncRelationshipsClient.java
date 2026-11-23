@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.assetinventory.relationships;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.assetinventory.relationships.requests.GetRelationshipsRequest;
 import com.hiddenlayer.api.types.AiAssetInventoryV1AssetRelationship;
@@ -28,7 +28,7 @@ public class AsyncRelationshipsClient {
     }
 
     public CompletableFuture<AiAssetInventoryV1AssetRelationship> get(String relationshipId) {
-        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetRelationship>> rawFuture =
                 this.rawClient.get(relationshipId);
         CompletableFuture<AiAssetInventoryV1AssetRelationship> future =
                 rawFuture.thenApply(response -> response.body());
@@ -42,7 +42,7 @@ public class AsyncRelationshipsClient {
 
     public CompletableFuture<AiAssetInventoryV1AssetRelationship> get(
             String relationshipId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetRelationship>> rawFuture =
                 this.rawClient.get(relationshipId, requestOptions);
         CompletableFuture<AiAssetInventoryV1AssetRelationship> future =
                 rawFuture.thenApply(response -> response.body());
@@ -56,7 +56,7 @@ public class AsyncRelationshipsClient {
 
     public CompletableFuture<AiAssetInventoryV1AssetRelationship> get(
             String relationshipId, GetRelationshipsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetRelationship>> rawFuture =
                 this.rawClient.get(relationshipId, request);
         CompletableFuture<AiAssetInventoryV1AssetRelationship> future =
                 rawFuture.thenApply(response -> response.body());
@@ -70,7 +70,7 @@ public class AsyncRelationshipsClient {
 
     public CompletableFuture<AiAssetInventoryV1AssetRelationship> get(
             String relationshipId, GetRelationshipsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetRelationship>> rawFuture =
                 this.rawClient.get(relationshipId, request, requestOptions);
         CompletableFuture<AiAssetInventoryV1AssetRelationship> future =
                 rawFuture.thenApply(response -> response.body());

@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.evaluations.threatmodeling;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.evaluations.threatmodeling.requests.DeleteThreatModelingRequest;
@@ -41,7 +41,7 @@ public class AsyncThreatModelingClient {
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
     public CompletableFuture<SyncPagingIterable<ThreatModelingResultItem>> list() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> rawFuture =
                 this.rawClient.list();
         CompletableFuture<SyncPagingIterable<ThreatModelingResultItem>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -59,7 +59,7 @@ public class AsyncThreatModelingClient {
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
     public CompletableFuture<SyncPagingIterable<ThreatModelingResultItem>> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<SyncPagingIterable<ThreatModelingResultItem>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -77,7 +77,7 @@ public class AsyncThreatModelingClient {
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
     public CompletableFuture<SyncPagingIterable<ThreatModelingResultItem>> list(ListThreatModelingRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> rawFuture =
                 this.rawClient.list(request);
         CompletableFuture<SyncPagingIterable<ThreatModelingResultItem>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -96,7 +96,7 @@ public class AsyncThreatModelingClient {
      */
     public CompletableFuture<SyncPagingIterable<ThreatModelingResultItem>> list(
             ListThreatModelingRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> rawFuture =
                 this.rawClient.list(request, requestOptions);
         CompletableFuture<SyncPagingIterable<ThreatModelingResultItem>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -115,7 +115,8 @@ public class AsyncThreatModelingClient {
      * Client should poll /status to check progress.</p>
      */
     public CompletableFuture<StartWorkflowResponse> create(StartThreatModelingWorkflowBody request) {
-        CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> rawFuture =
+                this.rawClient.create(request);
         CompletableFuture<StartWorkflowResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -133,7 +134,7 @@ public class AsyncThreatModelingClient {
      */
     public CompletableFuture<StartWorkflowResponse> create(
             StartThreatModelingWorkflowBody request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> rawFuture =
                 this.rawClient.create(request, requestOptions);
         CompletableFuture<StartWorkflowResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -150,7 +151,8 @@ public class AsyncThreatModelingClient {
      * Returns immediately with current state.</p>
      */
     public CompletableFuture<ThreatModelingStatus> status(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<ThreatModelingStatus>> rawFuture = this.rawClient.status(workflowId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingStatus>> rawFuture =
+                this.rawClient.status(workflowId);
         CompletableFuture<ThreatModelingStatus> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -166,7 +168,7 @@ public class AsyncThreatModelingClient {
      * Returns immediately with current state.</p>
      */
     public CompletableFuture<ThreatModelingStatus> status(String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ThreatModelingStatus>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingStatus>> rawFuture =
                 this.rawClient.status(workflowId, requestOptions);
         CompletableFuture<ThreatModelingStatus> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -183,7 +185,7 @@ public class AsyncThreatModelingClient {
      * Returns immediately with current state.</p>
      */
     public CompletableFuture<ThreatModelingStatus> status(String workflowId, StatusThreatModelingRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<ThreatModelingStatus>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingStatus>> rawFuture =
                 this.rawClient.status(workflowId, request);
         CompletableFuture<ThreatModelingStatus> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -201,7 +203,7 @@ public class AsyncThreatModelingClient {
      */
     public CompletableFuture<ThreatModelingStatus> status(
             String workflowId, StatusThreatModelingRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ThreatModelingStatus>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingStatus>> rawFuture =
                 this.rawClient.status(workflowId, request, requestOptions);
         CompletableFuture<ThreatModelingStatus> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -217,7 +219,8 @@ public class AsyncThreatModelingClient {
      * <p>Get the final result of a completed threat modeling workflow.</p>
      */
     public CompletableFuture<ThreatModelingResult> get(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<ThreatModelingResult>> rawFuture = this.rawClient.get(workflowId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingResult>> rawFuture =
+                this.rawClient.get(workflowId);
         CompletableFuture<ThreatModelingResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -232,7 +235,7 @@ public class AsyncThreatModelingClient {
      * <p>Get the final result of a completed threat modeling workflow.</p>
      */
     public CompletableFuture<ThreatModelingResult> get(String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ThreatModelingResult>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingResult>> rawFuture =
                 this.rawClient.get(workflowId, requestOptions);
         CompletableFuture<ThreatModelingResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -248,7 +251,7 @@ public class AsyncThreatModelingClient {
      * <p>Get the final result of a completed threat modeling workflow.</p>
      */
     public CompletableFuture<ThreatModelingResult> get(String workflowId, GetThreatModelingRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<ThreatModelingResult>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingResult>> rawFuture =
                 this.rawClient.get(workflowId, request);
         CompletableFuture<ThreatModelingResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -265,7 +268,7 @@ public class AsyncThreatModelingClient {
      */
     public CompletableFuture<ThreatModelingResult> get(
             String workflowId, GetThreatModelingRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ThreatModelingResult>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingResult>> rawFuture =
                 this.rawClient.get(workflowId, request, requestOptions);
         CompletableFuture<ThreatModelingResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -281,7 +284,7 @@ public class AsyncThreatModelingClient {
      * <p>Delete a threat modeling result from storage.</p>
      */
     public CompletableFuture<Void> delete(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -296,7 +299,8 @@ public class AsyncThreatModelingClient {
      * <p>Delete a threat modeling result from storage.</p>
      */
     public CompletableFuture<Void> delete(String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(workflowId, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -311,7 +315,8 @@ public class AsyncThreatModelingClient {
      * <p>Delete a threat modeling result from storage.</p>
      */
     public CompletableFuture<Void> delete(String workflowId, DeleteThreatModelingRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(workflowId, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -327,7 +332,7 @@ public class AsyncThreatModelingClient {
      */
     public CompletableFuture<Void> delete(
             String workflowId, DeleteThreatModelingRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.delete(workflowId, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

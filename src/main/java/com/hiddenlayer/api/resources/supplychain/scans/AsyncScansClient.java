@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.supplychain.scans;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.supplychain.scans.requests.GetScansRequest;
 import com.hiddenlayer.api.resources.supplychain.scans.requests.GuidanceScansRequest;
@@ -31,7 +31,7 @@ public class AsyncScansClient {
     }
 
     public CompletableFuture<Optional<Map<String, Object>>> get(String scanId) {
-        CompletableFuture<HiddenLayerHttpResponse<Optional<Map<String, Object>>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Optional<Map<String, Object>>>> rawFuture =
                 this.rawClient.get(scanId);
         CompletableFuture<Optional<Map<String, Object>>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -43,7 +43,7 @@ public class AsyncScansClient {
     }
 
     public CompletableFuture<Optional<Map<String, Object>>> get(String scanId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Optional<Map<String, Object>>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Optional<Map<String, Object>>>> rawFuture =
                 this.rawClient.get(scanId, requestOptions);
         CompletableFuture<Optional<Map<String, Object>>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -55,7 +55,7 @@ public class AsyncScansClient {
     }
 
     public CompletableFuture<Optional<Map<String, Object>>> get(String scanId, GetScansRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Optional<Map<String, Object>>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Optional<Map<String, Object>>>> rawFuture =
                 this.rawClient.get(scanId, request);
         CompletableFuture<Optional<Map<String, Object>>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -68,7 +68,7 @@ public class AsyncScansClient {
 
     public CompletableFuture<Optional<Map<String, Object>>> get(
             String scanId, GetScansRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Optional<Map<String, Object>>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Optional<Map<String, Object>>>> rawFuture =
                 this.rawClient.get(scanId, request, requestOptions);
         CompletableFuture<Optional<Map<String, Object>>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -85,7 +85,8 @@ public class AsyncScansClient {
      * immediately available.</p>
      */
     public CompletableFuture<GuidanceScansResponse> guidance(String scanId) {
-        CompletableFuture<HiddenLayerHttpResponse<GuidanceScansResponse>> rawFuture = this.rawClient.guidance(scanId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<GuidanceScansResponse>> rawFuture =
+                this.rawClient.guidance(scanId);
         CompletableFuture<GuidanceScansResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -101,7 +102,7 @@ public class AsyncScansClient {
      * immediately available.</p>
      */
     public CompletableFuture<GuidanceScansResponse> guidance(String scanId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<GuidanceScansResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<GuidanceScansResponse>> rawFuture =
                 this.rawClient.guidance(scanId, requestOptions);
         CompletableFuture<GuidanceScansResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -118,7 +119,7 @@ public class AsyncScansClient {
      * immediately available.</p>
      */
     public CompletableFuture<GuidanceScansResponse> guidance(String scanId, GuidanceScansRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<GuidanceScansResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<GuidanceScansResponse>> rawFuture =
                 this.rawClient.guidance(scanId, request);
         CompletableFuture<GuidanceScansResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -136,7 +137,7 @@ public class AsyncScansClient {
      */
     public CompletableFuture<GuidanceScansResponse> guidance(
             String scanId, GuidanceScansRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<GuidanceScansResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<GuidanceScansResponse>> rawFuture =
                 this.rawClient.guidance(scanId, request, requestOptions);
         CompletableFuture<GuidanceScansResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

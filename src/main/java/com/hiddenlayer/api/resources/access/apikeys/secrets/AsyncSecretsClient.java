@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.access.apikeys.secrets;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.access.apikeys.secrets.requests.CreateSecretsRequest;
 import com.hiddenlayer.api.resources.access.apikeys.secrets.requests.DeleteSecretsRequest;
@@ -33,7 +33,7 @@ public class AsyncSecretsClient {
      * <p>Adds a secret to the key. Existing secrets keep working until they are revoked or expire.</p>
      */
     public CompletableFuture<StaticApiKeySecretWithValue> create(String id, CreateSecretsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<StaticApiKeySecretWithValue>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StaticApiKeySecretWithValue>> rawFuture =
                 this.rawClient.create(id, request);
         CompletableFuture<StaticApiKeySecretWithValue> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -50,7 +50,7 @@ public class AsyncSecretsClient {
      */
     public CompletableFuture<StaticApiKeySecretWithValue> create(
             String id, CreateSecretsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<StaticApiKeySecretWithValue>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StaticApiKeySecretWithValue>> rawFuture =
                 this.rawClient.create(id, request, requestOptions);
         CompletableFuture<StaticApiKeySecretWithValue> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -66,7 +66,8 @@ public class AsyncSecretsClient {
      * <p>Revokes only this secret; the key and its other secret keep working. Revoking a secret that is already revoked or expired, or whose key is revoked, returns <code>204</code>, whatever the <code>If-Match</code> value.</p>
      */
     public CompletableFuture<Void> delete(String id, String secretId, DeleteSecretsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(id, secretId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(id, secretId, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -82,7 +83,7 @@ public class AsyncSecretsClient {
      */
     public CompletableFuture<Void> delete(
             String id, String secretId, DeleteSecretsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.delete(id, secretId, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

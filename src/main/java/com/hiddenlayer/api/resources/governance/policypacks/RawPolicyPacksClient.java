@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.governance.policypacks;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -54,7 +54,7 @@ public class RawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns pack summaries without <code>settings</code> or <code>detection_rules</code>. To read those, get the policy pack by ID.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>> list() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<PolicyPackSummary>> list() {
         return list(ListPolicyPacksRequest.builder().build());
     }
 
@@ -62,7 +62,8 @@ public class RawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns pack summaries without <code>settings</code> or <code>detection_rules</code>. To read those, get the policy pack by ID.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<PolicyPackSummary>> list(
+            RequestOptions requestOptions) {
         return list(ListPolicyPacksRequest.builder().build(), requestOptions);
     }
 
@@ -70,7 +71,8 @@ public class RawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns pack summaries without <code>settings</code> or <code>detection_rules</code>. To read those, get the policy pack by ID.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>> list(ListPolicyPacksRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<PolicyPackSummary>> list(
+            ListPolicyPacksRequest request) {
         return list(request, null);
     }
 
@@ -78,7 +80,7 @@ public class RawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns pack summaries without <code>settings</code> or <code>detection_rules</code>. To read those, get the policy pack by ID.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<PolicyPackSummary>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<PolicyPackSummary>> list(
             ListPolicyPacksRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -146,7 +148,7 @@ public class RawPolicyPacksClient {
                         .cursor(startingAfter)
                         .build();
                 List<PolicyPackSummary> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<PolicyPackSummary>(
                                 !startingAfter.isEmpty(), result, parsedResponse, () -> list(
                                                 nextRequest, requestOptions)
@@ -185,7 +187,7 @@ public class RawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Creates a custom policy pack from the rule packs, individual rules, redaction configuration, and settings in the request.</p>
      */
-    public HiddenLayerHttpResponse<PolicyPack> create(PolicyPackWriteRequest request) {
+    public BaseHiddenLayerClientHttpResponse<PolicyPack> create(PolicyPackWriteRequest request) {
         return create(request, null);
     }
 
@@ -193,7 +195,8 @@ public class RawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Creates a custom policy pack from the rule packs, individual rules, redaction configuration, and settings in the request.</p>
      */
-    public HiddenLayerHttpResponse<PolicyPack> create(PolicyPackWriteRequest request, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<PolicyPack> create(
+            PolicyPackWriteRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("governance/v2/policy-packs");
@@ -235,7 +238,7 @@ public class RawPolicyPacksClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PolicyPack.class), response);
             }
             try {
@@ -276,7 +279,8 @@ public class RawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>To apply the recommendation, set the returned <code>id</code> as the project's <code>policy_pack_id</code>.</p>
      */
-    public HiddenLayerHttpResponse<PolicyPackRecommendation> recommendations(PolicyPackRecommendationRequest request) {
+    public BaseHiddenLayerClientHttpResponse<PolicyPackRecommendation> recommendations(
+            PolicyPackRecommendationRequest request) {
         return recommendations(request, null);
     }
 
@@ -284,7 +288,7 @@ public class RawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>To apply the recommendation, set the returned <code>id</code> as the project's <code>policy_pack_id</code>.</p>
      */
-    public HiddenLayerHttpResponse<PolicyPackRecommendation> recommendations(
+    public BaseHiddenLayerClientHttpResponse<PolicyPackRecommendation> recommendations(
             PolicyPackRecommendationRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -327,7 +331,7 @@ public class RawPolicyPacksClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PolicyPackRecommendation.class),
                         response);
             }
@@ -365,28 +369,28 @@ public class RawPolicyPacksClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<PolicyPack> get(String policyPackId) {
+    public BaseHiddenLayerClientHttpResponse<PolicyPack> get(String policyPackId) {
         return get(policyPackId, GetPolicyPacksRequest.builder().build());
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<PolicyPack> get(String policyPackId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<PolicyPack> get(String policyPackId, RequestOptions requestOptions) {
         return get(policyPackId, GetPolicyPacksRequest.builder().build(), requestOptions);
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<PolicyPack> get(String policyPackId, GetPolicyPacksRequest request) {
+    public BaseHiddenLayerClientHttpResponse<PolicyPack> get(String policyPackId, GetPolicyPacksRequest request) {
         return get(policyPackId, request, null);
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<PolicyPack> get(
+    public BaseHiddenLayerClientHttpResponse<PolicyPack> get(
             String policyPackId, GetPolicyPacksRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -420,7 +424,7 @@ public class RawPolicyPacksClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PolicyPack.class), response);
             }
             try {
@@ -455,7 +459,7 @@ public class RawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Replaces the entire pack, including <code>settings</code>; omitted optional fields are cleared.</p>
      */
-    public HiddenLayerHttpResponse<PolicyPack> update(String policyPackId, UpdatePolicyPacksRequest request) {
+    public BaseHiddenLayerClientHttpResponse<PolicyPack> update(String policyPackId, UpdatePolicyPacksRequest request) {
         return update(policyPackId, request, null);
     }
 
@@ -463,7 +467,7 @@ public class RawPolicyPacksClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Replaces the entire pack, including <code>settings</code>; omitted optional fields are cleared.</p>
      */
-    public HiddenLayerHttpResponse<PolicyPack> update(
+    public BaseHiddenLayerClientHttpResponse<PolicyPack> update(
             String policyPackId, UpdatePolicyPacksRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -507,7 +511,7 @@ public class RawPolicyPacksClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, PolicyPack.class), response);
             }
             try {
@@ -552,7 +556,7 @@ public class RawPolicyPacksClient {
      * <p>Projects using the pack are moved to the pack assigned to the tenant's default project. The pack's policy, ruleset, and ruleset settings are also deleted unless another project or pack still references them.
      * Returns 403 when the pack is HiddenLayer-authored; only custom packs can be deleted.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String policyPackId) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String policyPackId) {
         return delete(policyPackId, DeletePolicyPacksRequest.builder().build());
     }
 
@@ -561,7 +565,7 @@ public class RawPolicyPacksClient {
      * <p>Projects using the pack are moved to the pack assigned to the tenant's default project. The pack's policy, ruleset, and ruleset settings are also deleted unless another project or pack still references them.
      * Returns 403 when the pack is HiddenLayer-authored; only custom packs can be deleted.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String policyPackId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String policyPackId, RequestOptions requestOptions) {
         return delete(policyPackId, DeletePolicyPacksRequest.builder().build(), requestOptions);
     }
 
@@ -570,7 +574,7 @@ public class RawPolicyPacksClient {
      * <p>Projects using the pack are moved to the pack assigned to the tenant's default project. The pack's policy, ruleset, and ruleset settings are also deleted unless another project or pack still references them.
      * Returns 403 when the pack is HiddenLayer-authored; only custom packs can be deleted.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String policyPackId, DeletePolicyPacksRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String policyPackId, DeletePolicyPacksRequest request) {
         return delete(policyPackId, request, null);
     }
 
@@ -579,7 +583,7 @@ public class RawPolicyPacksClient {
      * <p>Projects using the pack are moved to the pack assigned to the tenant's default project. The pack's policy, ruleset, and ruleset settings are also deleted unless another project or pack still references them.
      * Returns 403 when the pack is HiddenLayer-authored; only custom packs can be deleted.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
             String policyPackId, DeletePolicyPacksRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -615,7 +619,7 @@ public class RawPolicyPacksClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {

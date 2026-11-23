@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.compliance.rulesets.settings;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -47,19 +47,19 @@ public class RawSettingsClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<ListSettingsResponse> list() {
+    public BaseHiddenLayerClientHttpResponse<ListSettingsResponse> list() {
         return list(ListSettingsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<ListSettingsResponse> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ListSettingsResponse> list(RequestOptions requestOptions) {
         return list(ListSettingsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<ListSettingsResponse> list(ListSettingsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<ListSettingsResponse> list(ListSettingsRequest request) {
         return list(request, null);
     }
 
-    public HiddenLayerHttpResponse<ListSettingsResponse> list(
+    public BaseHiddenLayerClientHttpResponse<ListSettingsResponse> list(
             ListSettingsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -100,7 +100,7 @@ public class RawSettingsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ListSettingsResponse.class), response);
             }
             try {
@@ -128,11 +128,11 @@ public class RawSettingsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<SettingsId> create(String id, CreateSettingsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<SettingsId> create(String id, CreateSettingsRequest request) {
         return create(id, request, null);
     }
 
-    public HiddenLayerHttpResponse<SettingsId> create(
+    public BaseHiddenLayerClientHttpResponse<SettingsId> create(
             String id, CreateSettingsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -177,7 +177,7 @@ public class RawSettingsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SettingsId.class), response);
             }
             try {
@@ -208,21 +208,21 @@ public class RawSettingsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<SettingsDetailsWithSchema> get(String id, String settingsId) {
+    public BaseHiddenLayerClientHttpResponse<SettingsDetailsWithSchema> get(String id, String settingsId) {
         return get(id, settingsId, GetSettingsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<SettingsDetailsWithSchema> get(
+    public BaseHiddenLayerClientHttpResponse<SettingsDetailsWithSchema> get(
             String id, String settingsId, RequestOptions requestOptions) {
         return get(id, settingsId, GetSettingsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<SettingsDetailsWithSchema> get(
+    public BaseHiddenLayerClientHttpResponse<SettingsDetailsWithSchema> get(
             String id, String settingsId, GetSettingsRequest request) {
         return get(id, settingsId, request, null);
     }
 
-    public HiddenLayerHttpResponse<SettingsDetailsWithSchema> get(
+    public BaseHiddenLayerClientHttpResponse<SettingsDetailsWithSchema> get(
             String id, String settingsId, GetSettingsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -262,7 +262,7 @@ public class RawSettingsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SettingsDetailsWithSchema.class),
                         response);
             }
@@ -294,20 +294,20 @@ public class RawSettingsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<Void> update(String id, String settingsId, Settings body) {
+    public BaseHiddenLayerClientHttpResponse<Void> update(String id, String settingsId, Settings body) {
         return update(id, settingsId, UpdateSettingsRequest.builder().body(body).build());
     }
 
-    public HiddenLayerHttpResponse<Void> update(
+    public BaseHiddenLayerClientHttpResponse<Void> update(
             String id, String settingsId, Settings body, RequestOptions requestOptions) {
         return update(id, settingsId, UpdateSettingsRequest.builder().body(body).build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<Void> update(String id, String settingsId, UpdateSettingsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> update(String id, String settingsId, UpdateSettingsRequest request) {
         return update(id, settingsId, request, null);
     }
 
-    public HiddenLayerHttpResponse<Void> update(
+    public BaseHiddenLayerClientHttpResponse<Void> update(
             String id, String settingsId, UpdateSettingsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -355,7 +355,7 @@ public class RawSettingsClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {
@@ -392,19 +392,19 @@ public class RawSettingsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<Void> delete(String id, String settingsId) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id, String settingsId) {
         return delete(id, settingsId, DeleteSettingsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<Void> delete(String id, String settingsId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id, String settingsId, RequestOptions requestOptions) {
         return delete(id, settingsId, DeleteSettingsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<Void> delete(String id, String settingsId, DeleteSettingsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id, String settingsId, DeleteSettingsRequest request) {
         return delete(id, settingsId, request, null);
     }
 
-    public HiddenLayerHttpResponse<Void> delete(
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
             String id, String settingsId, DeleteSettingsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -442,7 +442,7 @@ public class RawSettingsClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {

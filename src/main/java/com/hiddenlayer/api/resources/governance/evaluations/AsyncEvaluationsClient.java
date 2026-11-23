@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.governance.evaluations;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.governance.evaluations.requests.GetEvaluationsRequest;
 import com.hiddenlayer.api.resources.governance.evaluations.requests.ListEvaluationsRequest;
@@ -34,7 +34,8 @@ public class AsyncEvaluationsClient {
      * Each artifact will have a corresponding status to indicate whether evaluation results exist for that ID.
      */
     public CompletableFuture<Map<String, EvaluationResult>> list() {
-        CompletableFuture<HiddenLayerHttpResponse<Map<String, EvaluationResult>>> rawFuture = this.rawClient.list();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, EvaluationResult>>> rawFuture =
+                this.rawClient.list();
         CompletableFuture<Map<String, EvaluationResult>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -49,7 +50,7 @@ public class AsyncEvaluationsClient {
      * Each artifact will have a corresponding status to indicate whether evaluation results exist for that ID.
      */
     public CompletableFuture<Map<String, EvaluationResult>> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Map<String, EvaluationResult>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, EvaluationResult>>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<Map<String, EvaluationResult>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -65,7 +66,7 @@ public class AsyncEvaluationsClient {
      * Each artifact will have a corresponding status to indicate whether evaluation results exist for that ID.
      */
     public CompletableFuture<Map<String, EvaluationResult>> list(ListEvaluationsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Map<String, EvaluationResult>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, EvaluationResult>>> rawFuture =
                 this.rawClient.list(request);
         CompletableFuture<Map<String, EvaluationResult>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -82,7 +83,7 @@ public class AsyncEvaluationsClient {
      */
     public CompletableFuture<Map<String, EvaluationResult>> list(
             ListEvaluationsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Map<String, EvaluationResult>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Map<String, EvaluationResult>>> rawFuture =
                 this.rawClient.list(request, requestOptions);
         CompletableFuture<Map<String, EvaluationResult>> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -98,7 +99,8 @@ public class AsyncEvaluationsClient {
      * The response includes whether the artifact is compliant with the defined policies and an explanation of the evaluation.
      */
     public CompletableFuture<EvaluationResult> get(String artifactId) {
-        CompletableFuture<HiddenLayerHttpResponse<EvaluationResult>> rawFuture = this.rawClient.get(artifactId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<EvaluationResult>> rawFuture =
+                this.rawClient.get(artifactId);
         CompletableFuture<EvaluationResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -113,7 +115,7 @@ public class AsyncEvaluationsClient {
      * The response includes whether the artifact is compliant with the defined policies and an explanation of the evaluation.
      */
     public CompletableFuture<EvaluationResult> get(String artifactId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<EvaluationResult>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<EvaluationResult>> rawFuture =
                 this.rawClient.get(artifactId, requestOptions);
         CompletableFuture<EvaluationResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -129,7 +131,7 @@ public class AsyncEvaluationsClient {
      * The response includes whether the artifact is compliant with the defined policies and an explanation of the evaluation.
      */
     public CompletableFuture<EvaluationResult> get(String artifactId, GetEvaluationsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<EvaluationResult>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<EvaluationResult>> rawFuture =
                 this.rawClient.get(artifactId, request);
         CompletableFuture<EvaluationResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -146,7 +148,7 @@ public class AsyncEvaluationsClient {
      */
     public CompletableFuture<EvaluationResult> get(
             String artifactId, GetEvaluationsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<EvaluationResult>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<EvaluationResult>> rawFuture =
                 this.rawClient.get(artifactId, request, requestOptions);
         CompletableFuture<EvaluationResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

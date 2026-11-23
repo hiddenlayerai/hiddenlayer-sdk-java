@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.access.apikeys.secrets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -45,7 +45,8 @@ public class RawSecretsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Adds a secret to the key. Existing secrets keep working until they are revoked or expire.</p>
      */
-    public HiddenLayerHttpResponse<StaticApiKeySecretWithValue> create(String id, CreateSecretsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<StaticApiKeySecretWithValue> create(
+            String id, CreateSecretsRequest request) {
         return create(id, request, null);
     }
 
@@ -53,7 +54,7 @@ public class RawSecretsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Adds a secret to the key. Existing secrets keep working until they are revoked or expire.</p>
      */
-    public HiddenLayerHttpResponse<StaticApiKeySecretWithValue> create(
+    public BaseHiddenLayerClientHttpResponse<StaticApiKeySecretWithValue> create(
             String id, CreateSecretsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -99,7 +100,7 @@ public class RawSecretsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, StaticApiKeySecretWithValue.class),
                         response);
             }
@@ -147,7 +148,7 @@ public class RawSecretsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Revokes only this secret; the key and its other secret keep working. Revoking a secret that is already revoked or expired, or whose key is revoked, returns <code>204</code>, whatever the <code>If-Match</code> value.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String id, String secretId, DeleteSecretsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String id, String secretId, DeleteSecretsRequest request) {
         return delete(id, secretId, request, null);
     }
 
@@ -155,7 +156,7 @@ public class RawSecretsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Revokes only this secret; the key and its other secret keep working. Revoking a secret that is already revoked or expired, or whose key is revoked, returns <code>204</code>, whatever the <code>If-Match</code> value.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
             String id, String secretId, DeleteSecretsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -194,7 +195,7 @@ public class RawSecretsClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {

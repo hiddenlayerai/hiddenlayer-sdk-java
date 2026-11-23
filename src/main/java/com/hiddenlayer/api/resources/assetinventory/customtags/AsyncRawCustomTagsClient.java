@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.assetinventory.customtags;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -54,7 +54,7 @@ public class AsyncRawCustomTagsClient {
     /**
      * Updates a tag definition. Only the name can be changed at this time.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1TagDefinition>> updateV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1TagDefinition>> updateV1(
             String tagName, AiAssetInventoryV1TagDefinitionUpdate request) {
         return updateV1(tagName, request, null);
     }
@@ -62,7 +62,7 @@ public class AsyncRawCustomTagsClient {
     /**
      * Updates a tag definition. Only the name can be changed at this time.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1TagDefinition>> updateV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1TagDefinition>> updateV1(
             String tagName, AiAssetInventoryV1TagDefinitionUpdate request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -102,7 +102,8 @@ public class AsyncRawCustomTagsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1TagDefinition>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1TagDefinition>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -110,7 +111,7 @@ public class AsyncRawCustomTagsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, AiAssetInventoryV1TagDefinition.class),
                                 response));
@@ -175,14 +176,14 @@ public class AsyncRawCustomTagsClient {
     /**
      * Returns a paginated list of values for a given custom tag name.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> valuesV1(String tagName) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> valuesV1(String tagName) {
         return valuesV1(tagName, ValuesV1CustomTagsRequest.builder().build());
     }
 
     /**
      * Returns a paginated list of values for a given custom tag name.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> valuesV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> valuesV1(
             String tagName, RequestOptions requestOptions) {
         return valuesV1(tagName, ValuesV1CustomTagsRequest.builder().build(), requestOptions);
     }
@@ -190,7 +191,7 @@ public class AsyncRawCustomTagsClient {
     /**
      * Returns a paginated list of values for a given custom tag name.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> valuesV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> valuesV1(
             String tagName, ValuesV1CustomTagsRequest request) {
         return valuesV1(tagName, request, null);
     }
@@ -198,7 +199,7 @@ public class AsyncRawCustomTagsClient {
     /**
      * Returns a paginated list of values for a given custom tag name.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> valuesV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> valuesV1(
             String tagName, ValuesV1CustomTagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -244,7 +245,8 @@ public class AsyncRawCustomTagsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -260,7 +262,7 @@ public class AsyncRawCustomTagsClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<String> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<String>(!startingAfter.isEmpty(), result, parsedResponse, () -> {
                                     try {
                                         return valuesV1(tagName, nextRequest, requestOptions)
@@ -318,7 +320,7 @@ public class AsyncRawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Updates a tag definition. Only the name can be changed at this time.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<TagDefinition>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<TagDefinition>> update(
             String tagName, TagDefinitionUpdate request) {
         return update(tagName, request, null);
     }
@@ -327,7 +329,7 @@ public class AsyncRawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Updates a tag definition. Only the name can be changed at this time.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<TagDefinition>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<TagDefinition>> update(
             String tagName, TagDefinitionUpdate request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -367,7 +369,7 @@ public class AsyncRawCustomTagsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<TagDefinition>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TagDefinition>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -375,7 +377,7 @@ public class AsyncRawCustomTagsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TagDefinition.class),
                                 response));
                         return;
@@ -440,7 +442,7 @@ public class AsyncRawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of values for a given custom tag name.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> values(String tagName) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> values(String tagName) {
         return values(tagName, ValuesCustomTagsRequest.builder().build());
     }
 
@@ -448,7 +450,7 @@ public class AsyncRawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of values for a given custom tag name.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> values(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> values(
             String tagName, RequestOptions requestOptions) {
         return values(tagName, ValuesCustomTagsRequest.builder().build(), requestOptions);
     }
@@ -457,7 +459,7 @@ public class AsyncRawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of values for a given custom tag name.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> values(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> values(
             String tagName, ValuesCustomTagsRequest request) {
         return values(tagName, request, null);
     }
@@ -466,7 +468,7 @@ public class AsyncRawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns a cursor-paginated list of values for a given custom tag name.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> values(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> values(
             String tagName, ValuesCustomTagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -512,7 +514,8 @@ public class AsyncRawCustomTagsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<String>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<String>>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -528,7 +531,7 @@ public class AsyncRawCustomTagsClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<String> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<String>(!startingAfter.isEmpty(), result, parsedResponse, () -> {
                                     try {
                                         return values(tagName, nextRequest, requestOptions)

@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.scans.jobs;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.scans.jobs.requests.ListJobsRequest;
@@ -33,7 +33,7 @@ public class AsyncJobsClient {
     }
 
     public CompletableFuture<ScanJob> request(ScanJobRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<ScanJob>> rawFuture = this.rawClient.request(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanJob>> rawFuture = this.rawClient.request(request);
         CompletableFuture<ScanJob> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -44,7 +44,8 @@ public class AsyncJobsClient {
     }
 
     public CompletableFuture<ScanJob> request(ScanJobRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ScanJob>> rawFuture = this.rawClient.request(request, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanJob>> rawFuture =
+                this.rawClient.request(request, requestOptions);
         CompletableFuture<ScanJob> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -55,7 +56,8 @@ public class AsyncJobsClient {
     }
 
     public CompletableFuture<ScanReportOfRecordV3> retrieve(String scanId) {
-        CompletableFuture<HiddenLayerHttpResponse<ScanReportOfRecordV3>> rawFuture = this.rawClient.retrieve(scanId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportOfRecordV3>> rawFuture =
+                this.rawClient.retrieve(scanId);
         CompletableFuture<ScanReportOfRecordV3> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -66,7 +68,7 @@ public class AsyncJobsClient {
     }
 
     public CompletableFuture<ScanReportOfRecordV3> retrieve(String scanId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ScanReportOfRecordV3>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportOfRecordV3>> rawFuture =
                 this.rawClient.retrieve(scanId, requestOptions);
         CompletableFuture<ScanReportOfRecordV3> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -78,7 +80,7 @@ public class AsyncJobsClient {
     }
 
     public CompletableFuture<ScanReportOfRecordV3> retrieve(String scanId, RetrieveJobsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<ScanReportOfRecordV3>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportOfRecordV3>> rawFuture =
                 this.rawClient.retrieve(scanId, request);
         CompletableFuture<ScanReportOfRecordV3> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -91,7 +93,7 @@ public class AsyncJobsClient {
 
     public CompletableFuture<ScanReportOfRecordV3> retrieve(
             String scanId, RetrieveJobsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ScanReportOfRecordV3>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ScanReportOfRecordV3>> rawFuture =
                 this.rawClient.retrieve(scanId, request, requestOptions);
         CompletableFuture<ScanReportOfRecordV3> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -103,8 +105,8 @@ public class AsyncJobsClient {
     }
 
     public CompletableFuture<SyncPagingIterable<ScanReportOfRecordV3Summary>> list() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> rawFuture =
-                this.rawClient.list();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>>
+                rawFuture = this.rawClient.list();
         CompletableFuture<SyncPagingIterable<ScanReportOfRecordV3Summary>> future =
                 rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -116,8 +118,8 @@ public class AsyncJobsClient {
     }
 
     public CompletableFuture<SyncPagingIterable<ScanReportOfRecordV3Summary>> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> rawFuture =
-                this.rawClient.list(requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>>
+                rawFuture = this.rawClient.list(requestOptions);
         CompletableFuture<SyncPagingIterable<ScanReportOfRecordV3Summary>> future =
                 rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -129,8 +131,8 @@ public class AsyncJobsClient {
     }
 
     public CompletableFuture<SyncPagingIterable<ScanReportOfRecordV3Summary>> list(ListJobsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> rawFuture =
-                this.rawClient.list(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>>
+                rawFuture = this.rawClient.list(request);
         CompletableFuture<SyncPagingIterable<ScanReportOfRecordV3Summary>> future =
                 rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -143,8 +145,8 @@ public class AsyncJobsClient {
 
     public CompletableFuture<SyncPagingIterable<ScanReportOfRecordV3Summary>> list(
             ListJobsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>> rawFuture =
-                this.rawClient.list(request, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ScanReportOfRecordV3Summary>>>
+                rawFuture = this.rawClient.list(request, requestOptions);
         CompletableFuture<SyncPagingIterable<ScanReportOfRecordV3Summary>> future =
                 rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

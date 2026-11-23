@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Map;
 import okhttp3.Response;
 
-public final class HiddenLayerHttpResponse<T> {
+public final class BaseHiddenLayerClientHttpResponse<T> {
 
     private final T body;
 
     private final Map<String, List<String>> headers;
 
-    public HiddenLayerHttpResponse(T body, Response rawResponse) {
+    public BaseHiddenLayerClientHttpResponse(T body, Response rawResponse) {
         this.body = body;
 
         Map<String, List<String>> headers = new HashMap<>();

@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.governance.rulepacks;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -44,14 +44,14 @@ public class AsyncRawRulePacksClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RulePack>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RulePack>>> list() {
         return list(ListRulePacksRequest.builder().build());
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RulePack>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RulePack>>> list(
             RequestOptions requestOptions) {
         return list(ListRulePacksRequest.builder().build(), requestOptions);
     }
@@ -59,14 +59,15 @@ public class AsyncRawRulePacksClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RulePack>>> list(ListRulePacksRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RulePack>>> list(
+            ListRulePacksRequest request) {
         return list(request, null);
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RulePack>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RulePack>>> list(
             ListRulePacksRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -111,7 +112,8 @@ public class AsyncRawRulePacksClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RulePack>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RulePack>>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -127,7 +129,7 @@ public class AsyncRawRulePacksClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<RulePack> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<RulePack>(
                                         !startingAfter.isEmpty(), result, parsedResponse, () -> {
                                             try {

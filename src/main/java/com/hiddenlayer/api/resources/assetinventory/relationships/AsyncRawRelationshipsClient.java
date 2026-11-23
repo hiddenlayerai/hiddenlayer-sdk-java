@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.assetinventory.relationships;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -35,21 +35,22 @@ public class AsyncRawRelationshipsClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship>> get(String relationshipId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetRelationship>> get(
+            String relationshipId) {
         return get(relationshipId, GetRelationshipsRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetRelationship>> get(
             String relationshipId, RequestOptions requestOptions) {
         return get(relationshipId, GetRelationshipsRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetRelationship>> get(
             String relationshipId, GetRelationshipsRequest request) {
         return get(relationshipId, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetRelationship>> get(
             String relationshipId, GetRelationshipsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -79,7 +80,7 @@ public class AsyncRawRelationshipsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1AssetRelationship>> future =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1AssetRelationship>> future =
                 new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
@@ -88,7 +89,7 @@ public class AsyncRawRelationshipsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, AiAssetInventoryV1AssetRelationship.class),
                                 response));

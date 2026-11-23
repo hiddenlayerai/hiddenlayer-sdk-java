@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.audit.activitytypes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -35,14 +35,14 @@ public class AsyncRawActivityTypesClient {
     /**
      * Returns the list of all auditable activity types. Use this to understand what actions are tracked and to build filters when querying audit entries.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ActivityTypeList>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ActivityTypeList>> list() {
         return list(null);
     }
 
     /**
      * Returns the list of all auditable activity types. Use this to understand what actions are tracked and to build filters when querying audit entries.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ActivityTypeList>> list(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ActivityTypeList>> list(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("audit/v3/activity-types");
@@ -70,7 +70,7 @@ public class AsyncRawActivityTypesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ActivityTypeList>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ActivityTypeList>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -78,7 +78,7 @@ public class AsyncRawActivityTypesClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ActivityTypeList.class),
                                 response));
                         return;

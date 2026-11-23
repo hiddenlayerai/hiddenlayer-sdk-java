@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.evaluations.redteamv2.sessions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -50,7 +50,7 @@ public class RawSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Lists a finished run's sessions in run order, without their messages. Get a single session for its messages.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<RedTeamSession>> list(String workflowId) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamSession>> list(String workflowId) {
         return list(workflowId, ListSessionsRequest.builder().build());
     }
 
@@ -58,7 +58,7 @@ public class RawSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Lists a finished run's sessions in run order, without their messages. Get a single session for its messages.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<RedTeamSession>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamSession>> list(
             String workflowId, RequestOptions requestOptions) {
         return list(workflowId, ListSessionsRequest.builder().build(), requestOptions);
     }
@@ -67,7 +67,7 @@ public class RawSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Lists a finished run's sessions in run order, without their messages. Get a single session for its messages.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<RedTeamSession>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamSession>> list(
             String workflowId, ListSessionsRequest request) {
         return list(workflowId, request, null);
     }
@@ -76,7 +76,7 @@ public class RawSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Lists a finished run's sessions in run order, without their messages. Get a single session for its messages.</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<RedTeamSession>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamSession>> list(
             String workflowId, ListSessionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -127,7 +127,7 @@ public class RawSessionsClient {
                         .cursor(startingAfter)
                         .build();
                 List<RedTeamSession> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<RedTeamSession>(
                                 !startingAfter.isEmpty(), result, parsedResponse, () -> list(
                                                 workflowId, nextRequest, requestOptions)
@@ -171,14 +171,14 @@ public class RawSessionsClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<RedTeamSessionDetail> get(String workflowId, String sessionId) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamSessionDetail> get(String workflowId, String sessionId) {
         return get(workflowId, sessionId, GetSessionsRequest.builder().build());
     }
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<RedTeamSessionDetail> get(
+    public BaseHiddenLayerClientHttpResponse<RedTeamSessionDetail> get(
             String workflowId, String sessionId, RequestOptions requestOptions) {
         return get(workflowId, sessionId, GetSessionsRequest.builder().build(), requestOptions);
     }
@@ -186,7 +186,7 @@ public class RawSessionsClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<RedTeamSessionDetail> get(
+    public BaseHiddenLayerClientHttpResponse<RedTeamSessionDetail> get(
             String workflowId, String sessionId, GetSessionsRequest request) {
         return get(workflowId, sessionId, request, null);
     }
@@ -194,7 +194,7 @@ public class RawSessionsClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      */
-    public HiddenLayerHttpResponse<RedTeamSessionDetail> get(
+    public BaseHiddenLayerClientHttpResponse<RedTeamSessionDetail> get(
             String workflowId, String sessionId, GetSessionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -230,7 +230,7 @@ public class RawSessionsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RedTeamSessionDetail.class), response);
             }
             try {
@@ -271,7 +271,8 @@ public class RawSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns the Runtime Security session ID of one session of a finished run, or the reason it has none. Only <code>NOT_FOUND</code> can change on a later call.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamRuntimeSessionLookup> runtimeSession(String workflowId, String sessionId) {
+    public BaseHiddenLayerClientHttpResponse<RedTeamRuntimeSessionLookup> runtimeSession(
+            String workflowId, String sessionId) {
         return runtimeSession(
                 workflowId, sessionId, RuntimeSessionSessionsRequest.builder().build());
     }
@@ -280,7 +281,7 @@ public class RawSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns the Runtime Security session ID of one session of a finished run, or the reason it has none. Only <code>NOT_FOUND</code> can change on a later call.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamRuntimeSessionLookup> runtimeSession(
+    public BaseHiddenLayerClientHttpResponse<RedTeamRuntimeSessionLookup> runtimeSession(
             String workflowId, String sessionId, RequestOptions requestOptions) {
         return runtimeSession(
                 workflowId, sessionId, RuntimeSessionSessionsRequest.builder().build(), requestOptions);
@@ -290,7 +291,7 @@ public class RawSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns the Runtime Security session ID of one session of a finished run, or the reason it has none. Only <code>NOT_FOUND</code> can change on a later call.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamRuntimeSessionLookup> runtimeSession(
+    public BaseHiddenLayerClientHttpResponse<RedTeamRuntimeSessionLookup> runtimeSession(
             String workflowId, String sessionId, RuntimeSessionSessionsRequest request) {
         return runtimeSession(workflowId, sessionId, request, null);
     }
@@ -299,7 +300,7 @@ public class RawSessionsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns the Runtime Security session ID of one session of a finished run, or the reason it has none. Only <code>NOT_FOUND</code> can change on a later call.</p>
      */
-    public HiddenLayerHttpResponse<RedTeamRuntimeSessionLookup> runtimeSession(
+    public BaseHiddenLayerClientHttpResponse<RedTeamRuntimeSessionLookup> runtimeSession(
             String workflowId, String sessionId, RuntimeSessionSessionsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -336,7 +337,7 @@ public class RawSessionsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RedTeamRuntimeSessionLookup.class),
                         response);
             }

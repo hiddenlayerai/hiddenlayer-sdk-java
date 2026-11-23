@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.scans.upload.file;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -35,11 +35,11 @@ public class RawFileClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<AddFileResponse> add(String scanId, AddFileRequest request) {
+    public BaseHiddenLayerClientHttpResponse<AddFileResponse> add(String scanId, AddFileRequest request) {
         return add(scanId, request, null);
     }
 
-    public HiddenLayerHttpResponse<AddFileResponse> add(
+    public BaseHiddenLayerClientHttpResponse<AddFileResponse> add(
             String scanId, AddFileRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -86,7 +86,7 @@ public class RawFileClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AddFileResponse.class), response);
             }
             try {
@@ -111,21 +111,21 @@ public class RawFileClient {
         }
     }
 
-    public HiddenLayerHttpResponse<CompleteFileResponse> complete(String scanId, String fileId) {
+    public BaseHiddenLayerClientHttpResponse<CompleteFileResponse> complete(String scanId, String fileId) {
         return complete(scanId, fileId, CompleteFileRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<CompleteFileResponse> complete(
+    public BaseHiddenLayerClientHttpResponse<CompleteFileResponse> complete(
             String scanId, String fileId, RequestOptions requestOptions) {
         return complete(scanId, fileId, CompleteFileRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<CompleteFileResponse> complete(
+    public BaseHiddenLayerClientHttpResponse<CompleteFileResponse> complete(
             String scanId, String fileId, CompleteFileRequest request) {
         return complete(scanId, fileId, request, null);
     }
 
-    public HiddenLayerHttpResponse<CompleteFileResponse> complete(
+    public BaseHiddenLayerClientHttpResponse<CompleteFileResponse> complete(
             String scanId, String fileId, CompleteFileRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -165,7 +165,7 @@ public class RawFileClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, CompleteFileResponse.class), response);
             }
             try {

@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.evaluations.redteam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -70,7 +70,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns the list of available target models for red team evaluations.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<TargetModelResponse>> targetModels() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<TargetModelResponse>> targetModels() {
         return targetModels(null);
     }
 
@@ -78,7 +78,8 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Returns the list of available target models for red team evaluations.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<TargetModelResponse>> targetModels(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<TargetModelResponse>> targetModels(
+            RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("evaluations/v1/red-team/target-models");
@@ -106,7 +107,7 @@ public class AsyncRawRedTeamClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<TargetModelResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TargetModelResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -114,7 +115,7 @@ public class AsyncRawRedTeamClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TargetModelResponse.class),
                                 response));
                         return;
@@ -176,7 +177,7 @@ public class AsyncRawRedTeamClient {
      * <p>Results are ordered by completed_at DESC (newest first).
      * Returns metadata only - use GET /evaluations/v1/red-team/{workflow_id} for full payload.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamResultItem>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamResultItem>>> list() {
         return list(ListRedTeamRequest.builder().build());
     }
 
@@ -186,7 +187,7 @@ public class AsyncRawRedTeamClient {
      * <p>Results are ordered by completed_at DESC (newest first).
      * Returns metadata only - use GET /evaluations/v1/red-team/{workflow_id} for full payload.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamResultItem>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamResultItem>>> list(
             RequestOptions requestOptions) {
         return list(ListRedTeamRequest.builder().build(), requestOptions);
     }
@@ -197,7 +198,7 @@ public class AsyncRawRedTeamClient {
      * <p>Results are ordered by completed_at DESC (newest first).
      * Returns metadata only - use GET /evaluations/v1/red-team/{workflow_id} for full payload.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamResultItem>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamResultItem>>> list(
             ListRedTeamRequest request) {
         return list(request, null);
     }
@@ -208,7 +209,7 @@ public class AsyncRawRedTeamClient {
      * <p>Results are ordered by completed_at DESC (newest first).
      * Returns metadata only - use GET /evaluations/v1/red-team/{workflow_id} for full payload.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamResultItem>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamResultItem>>> list(
             ListRedTeamRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -273,7 +274,7 @@ public class AsyncRawRedTeamClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamResultItem>>> future =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamResultItem>>> future =
                 new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
@@ -290,7 +291,7 @@ public class AsyncRawRedTeamClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<RedTeamResultItem> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<RedTeamResultItem>(
                                         startingAfter.isPresent()
                                                 && !startingAfter.get().isEmpty(),
@@ -364,7 +365,8 @@ public class AsyncRawRedTeamClient {
      * <p>Start a new red team client workflow.
      * Auto-triggers planning phase. Client should then poll /next-action.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> create(ClientRedTeamBody request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> create(
+            ClientRedTeamBody request) {
         return create(request, null);
     }
 
@@ -373,7 +375,7 @@ public class AsyncRawRedTeamClient {
      * <p>Start a new red team client workflow.
      * Auto-triggers planning phase. Client should then poll /next-action.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> create(
             ClientRedTeamBody request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -412,7 +414,7 @@ public class AsyncRawRedTeamClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -420,7 +422,7 @@ public class AsyncRawRedTeamClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, StartWorkflowResponse.class),
                                 response));
                         return;
@@ -480,7 +482,8 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get current status of a red team workflow.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<WorkflowStatusResponse>> retrieveStatus(String workflowId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowStatusResponse>> retrieveStatus(
+            String workflowId) {
         return retrieveStatus(workflowId, RetrieveStatusRedTeamRequest.builder().build());
     }
 
@@ -488,7 +491,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get current status of a red team workflow.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<WorkflowStatusResponse>> retrieveStatus(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowStatusResponse>> retrieveStatus(
             String workflowId, RequestOptions requestOptions) {
         return retrieveStatus(workflowId, RetrieveStatusRedTeamRequest.builder().build(), requestOptions);
     }
@@ -497,7 +500,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get current status of a red team workflow.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<WorkflowStatusResponse>> retrieveStatus(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowStatusResponse>> retrieveStatus(
             String workflowId, RetrieveStatusRedTeamRequest request) {
         return retrieveStatus(workflowId, request, null);
     }
@@ -506,7 +509,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get current status of a red team workflow.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<WorkflowStatusResponse>> retrieveStatus(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowStatusResponse>> retrieveStatus(
             String workflowId, RetrieveStatusRedTeamRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -537,7 +540,7 @@ public class AsyncRawRedTeamClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<WorkflowStatusResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowStatusResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -545,7 +548,7 @@ public class AsyncRawRedTeamClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, WorkflowStatusResponse.class),
                                 response));
                         return;
@@ -612,7 +615,8 @@ public class AsyncRawRedTeamClient {
      * <li>If complete: Returns action_type=complete</li>
      * </ul>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<NextActionResponse>> retrieveNextAction(String workflowId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<NextActionResponse>> retrieveNextAction(
+            String workflowId) {
         return retrieveNextAction(
                 workflowId, RetrieveNextActionRedTeamRequest.builder().build());
     }
@@ -628,7 +632,7 @@ public class AsyncRawRedTeamClient {
      * <li>If complete: Returns action_type=complete</li>
      * </ul>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<NextActionResponse>> retrieveNextAction(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<NextActionResponse>> retrieveNextAction(
             String workflowId, RequestOptions requestOptions) {
         return retrieveNextAction(
                 workflowId, RetrieveNextActionRedTeamRequest.builder().build(), requestOptions);
@@ -645,7 +649,7 @@ public class AsyncRawRedTeamClient {
      * <li>If complete: Returns action_type=complete</li>
      * </ul>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<NextActionResponse>> retrieveNextAction(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<NextActionResponse>> retrieveNextAction(
             String workflowId, RetrieveNextActionRedTeamRequest request) {
         return retrieveNextAction(workflowId, request, null);
     }
@@ -661,7 +665,7 @@ public class AsyncRawRedTeamClient {
      * <li>If complete: Returns action_type=complete</li>
      * </ul>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<NextActionResponse>> retrieveNextAction(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<NextActionResponse>> retrieveNextAction(
             String workflowId, RetrieveNextActionRedTeamRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -692,7 +696,7 @@ public class AsyncRawRedTeamClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<NextActionResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<NextActionResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -700,7 +704,7 @@ public class AsyncRawRedTeamClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, NextActionResponse.class),
                                 response));
                         return;
@@ -762,7 +766,7 @@ public class AsyncRawRedTeamClient {
      * <p>This triggers the ProcessTargetResponseWorkflow child workflow
      * for the specified session. Returns immediately.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SubmitTargetResponseResult>> submitTargetResponse(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SubmitTargetResponseResult>> submitTargetResponse(
             String workflowId, SubmitTargetResponseBody request) {
         return submitTargetResponse(workflowId, request, null);
     }
@@ -773,7 +777,7 @@ public class AsyncRawRedTeamClient {
      * <p>This triggers the ProcessTargetResponseWorkflow child workflow
      * for the specified session. Returns immediately.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SubmitTargetResponseResult>> submitTargetResponse(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SubmitTargetResponseResult>> submitTargetResponse(
             String workflowId, SubmitTargetResponseBody request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -814,7 +818,8 @@ public class AsyncRawRedTeamClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SubmitTargetResponseResult>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SubmitTargetResponseResult>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -822,7 +827,7 @@ public class AsyncRawRedTeamClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, SubmitTargetResponseResult.class),
                                 response));
@@ -888,7 +893,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the complete result of a red team workflow.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<WorkflowResultResponse>> retrieveEvaluationResults(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowResultResponse>> retrieveEvaluationResults(
             String workflowId) {
         return retrieveEvaluationResults(
                 workflowId, RetrieveEvaluationResultsRedTeamRequest.builder().build());
@@ -898,7 +903,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the complete result of a red team workflow.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<WorkflowResultResponse>> retrieveEvaluationResults(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowResultResponse>> retrieveEvaluationResults(
             String workflowId, RequestOptions requestOptions) {
         return retrieveEvaluationResults(
                 workflowId, RetrieveEvaluationResultsRedTeamRequest.builder().build(), requestOptions);
@@ -908,7 +913,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the complete result of a red team workflow.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<WorkflowResultResponse>> retrieveEvaluationResults(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowResultResponse>> retrieveEvaluationResults(
             String workflowId, RetrieveEvaluationResultsRedTeamRequest request) {
         return retrieveEvaluationResults(workflowId, request, null);
     }
@@ -917,7 +922,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the complete result of a red team workflow.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<WorkflowResultResponse>> retrieveEvaluationResults(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowResultResponse>> retrieveEvaluationResults(
             String workflowId, RetrieveEvaluationResultsRedTeamRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -947,7 +952,7 @@ public class AsyncRawRedTeamClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<WorkflowResultResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<WorkflowResultResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -955,7 +960,7 @@ public class AsyncRawRedTeamClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, WorkflowResultResponse.class),
                                 response));
                         return;
@@ -1015,7 +1020,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a red team workflow result from storage.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String workflowId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String workflowId) {
         return delete(workflowId, DeleteRedTeamRequest.builder().build());
     }
 
@@ -1023,7 +1028,8 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a red team workflow result from storage.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String workflowId, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
+            String workflowId, RequestOptions requestOptions) {
         return delete(workflowId, DeleteRedTeamRequest.builder().build(), requestOptions);
     }
 
@@ -1031,7 +1037,8 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a red team workflow result from storage.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String workflowId, DeleteRedTeamRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
+            String workflowId, DeleteRedTeamRequest request) {
         return delete(workflowId, request, null);
     }
 
@@ -1039,7 +1046,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a red team workflow result from storage.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String workflowId, DeleteRedTeamRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1072,14 +1079,14 @@ public class AsyncRawRedTeamClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
@@ -1138,7 +1145,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Terminate a running workflow job.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> terminate(String workflowId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> terminate(String workflowId) {
         return terminate(workflowId, TerminateRedTeamRequest.builder().build());
     }
 
@@ -1146,7 +1153,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Terminate a running workflow job.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> terminate(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> terminate(
             String workflowId, RequestOptions requestOptions) {
         return terminate(workflowId, TerminateRedTeamRequest.builder().build(), requestOptions);
     }
@@ -1155,7 +1162,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Terminate a running workflow job.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> terminate(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> terminate(
             String workflowId, TerminateRedTeamRequest request) {
         return terminate(workflowId, request, null);
     }
@@ -1164,7 +1171,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Terminate a running workflow job.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> terminate(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> terminate(
             String workflowId, TerminateRedTeamRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1199,14 +1206,14 @@ public class AsyncRawRedTeamClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
@@ -1265,7 +1272,8 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Start a new simulated red team workflow with a built-in target model.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> simulated(StartRedTeamBody request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> simulated(
+            StartRedTeamBody request) {
         return simulated(request, null);
     }
 
@@ -1273,7 +1281,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Start a new simulated red team workflow with a built-in target model.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> simulated(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> simulated(
             StartRedTeamBody request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1312,7 +1320,7 @@ public class AsyncRawRedTeamClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -1320,7 +1328,7 @@ public class AsyncRawRedTeamClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, StartWorkflowResponse.class),
                                 response));
                         return;
@@ -1385,7 +1393,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<InputStream>> csv(String workflowId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> csv(String workflowId) {
         return csv(workflowId, CsvRedTeamRequest.builder().build());
     }
 
@@ -1393,7 +1401,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<InputStream>> csv(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> csv(
             String workflowId, RequestOptions requestOptions) {
         return csv(workflowId, CsvRedTeamRequest.builder().build(), requestOptions);
     }
@@ -1402,7 +1410,8 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<InputStream>> csv(String workflowId, CsvRedTeamRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> csv(
+            String workflowId, CsvRedTeamRequest request) {
         return csv(workflowId, request, null);
     }
 
@@ -1410,7 +1419,7 @@ public class AsyncRawRedTeamClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Export attacker/target interactions for a red team workflow as CSV (one row per message).</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<InputStream>> csv(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> csv(
             String workflowId, CsvRedTeamRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -1441,7 +1450,7 @@ public class AsyncRawRedTeamClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<InputStream>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InputStream>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -1449,7 +1458,8 @@ public class AsyncRawRedTeamClient {
                 try {
                     ResponseBody responseBody = response.body();
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(new ResponseBodyInputStream(response), response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
+                                new ResponseBodyInputStream(response), response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";

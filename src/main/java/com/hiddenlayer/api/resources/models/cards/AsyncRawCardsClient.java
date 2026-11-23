@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.models.cards;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.QueryStringMapper;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -44,21 +44,21 @@ public class AsyncRawCardsClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>>> listV3() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV3>>> listV3() {
         return listV3(ListV3CardsRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>>> listV3(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV3>>> listV3(
             RequestOptions requestOptions) {
         return listV3(ListV3CardsRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>>> listV3(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV3>>> listV3(
             ListV3CardsRequest request) {
         return listV3(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>>> listV3(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV3>>> listV3(
             ListV3CardsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -135,7 +135,8 @@ public class AsyncRawCardsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV3>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV3>>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -153,7 +154,7 @@ public class AsyncRawCardsClient {
                                 .from(request)
                                 .offset(newPageNumber)
                                 .build();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<ModelCardV3>(true, result, parsedResponse, () -> {
                                     try {
                                         return listV3(nextRequest, requestOptions)
@@ -208,7 +209,7 @@ public class AsyncRawCardsClient {
      * (<code>model_id[eq]</code>, <code>scan_started_at[gt/gte/lt/lte]</code>) and sorts
      * (<code>model_name</code>, <code>scan_started_at</code>).
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV4>>> list() {
         return list(ListCardsRequest.builder().build());
     }
 
@@ -220,7 +221,7 @@ public class AsyncRawCardsClient {
      * (<code>model_id[eq]</code>, <code>scan_started_at[gt/gte/lt/lte]</code>) and sorts
      * (<code>model_name</code>, <code>scan_started_at</code>).
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV4>>> list(
             RequestOptions requestOptions) {
         return list(ListCardsRequest.builder().build(), requestOptions);
     }
@@ -233,7 +234,8 @@ public class AsyncRawCardsClient {
      * (<code>model_id[eq]</code>, <code>scan_started_at[gt/gte/lt/lte]</code>) and sorts
      * (<code>model_name</code>, <code>scan_started_at</code>).
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>>> list(ListCardsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV4>>> list(
+            ListCardsRequest request) {
         return list(request, null);
     }
 
@@ -245,7 +247,7 @@ public class AsyncRawCardsClient {
      * (<code>model_id[eq]</code>, <code>scan_started_at[gt/gte/lt/lte]</code>) and sorts
      * (<code>model_name</code>, <code>scan_started_at</code>).
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV4>>> list(
             ListCardsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -322,7 +324,8 @@ public class AsyncRawCardsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ModelCardV4>>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ModelCardV4>>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -340,7 +343,7 @@ public class AsyncRawCardsClient {
                                 .from(request)
                                 .offset(newPageNumber)
                                 .build();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<ModelCardV4>(true, result, parsedResponse, () -> {
                                     try {
                                         return list(nextRequest, requestOptions)
@@ -387,12 +390,12 @@ public class AsyncRawCardsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SuggestionsCardsResponse>> suggestions(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SuggestionsCardsResponse>> suggestions(
             SuggestionsCardsRequest request) {
         return suggestions(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SuggestionsCardsResponse>> suggestions(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SuggestionsCardsResponse>> suggestions(
             SuggestionsCardsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -426,7 +429,8 @@ public class AsyncRawCardsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SuggestionsCardsResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SuggestionsCardsResponse>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -434,7 +438,7 @@ public class AsyncRawCardsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SuggestionsCardsResponse.class),
                                 response));
                         return;

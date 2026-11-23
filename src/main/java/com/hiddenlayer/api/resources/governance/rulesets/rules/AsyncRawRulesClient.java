@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.governance.rulesets.rules;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -56,7 +56,8 @@ public class AsyncRawRulesClient {
      * The new rule will be appended to the existing rules in the specified rule set.
      * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RuleSet>> create(String ruleSetId, CreateRulesRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> create(
+            String ruleSetId, CreateRulesRequest request) {
         return create(ruleSetId, request, null);
     }
 
@@ -73,7 +74,7 @@ public class AsyncRawRulesClient {
      * The new rule will be appended to the existing rules in the specified rule set.
      * If the rule set does not exist, a 404 Not Found error is returned.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RuleSet>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> create(
             String ruleSetId, CreateRulesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -114,7 +115,7 @@ public class AsyncRawRulesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -122,7 +123,7 @@ public class AsyncRawRulesClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RuleSet.class), response));
                         return;
                     }
@@ -192,7 +193,7 @@ public class AsyncRawRulesClient {
      * <p>Replace an existing rule in a rule set with a new definition. This endpoint allows you to update the compliance criteria and conditions of a rule, preserving
      * the rule's order in the rule set. If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RuleSet>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> update(
             String ruleSetId, String ruleId, UpdateRulesRequest request) {
         return update(ruleSetId, ruleId, request, null);
     }
@@ -207,7 +208,7 @@ public class AsyncRawRulesClient {
      * <p>Replace an existing rule in a rule set with a new definition. This endpoint allows you to update the compliance criteria and conditions of a rule, preserving
      * the rule's order in the rule set. If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RuleSet>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> update(
             String ruleSetId, String ruleId, UpdateRulesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -249,7 +250,7 @@ public class AsyncRawRulesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -257,7 +258,7 @@ public class AsyncRawRulesClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RuleSet.class), response));
                         return;
                     }
@@ -329,7 +330,7 @@ public class AsyncRawRulesClient {
      * <p>Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
      * If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RuleSet>> delete(String ruleSetId, String ruleId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> delete(String ruleSetId, String ruleId) {
         return delete(ruleSetId, ruleId, DeleteRulesRequest.builder().build());
     }
 
@@ -345,7 +346,7 @@ public class AsyncRawRulesClient {
      * <p>Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
      * If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RuleSet>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> delete(
             String ruleSetId, String ruleId, RequestOptions requestOptions) {
         return delete(ruleSetId, ruleId, DeleteRulesRequest.builder().build(), requestOptions);
     }
@@ -362,7 +363,7 @@ public class AsyncRawRulesClient {
      * <p>Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
      * If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RuleSet>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> delete(
             String ruleSetId, String ruleId, DeleteRulesRequest request) {
         return delete(ruleSetId, ruleId, request, null);
     }
@@ -379,7 +380,7 @@ public class AsyncRawRulesClient {
      * <p>Disable a rule in a rule set. This endpoint allows you to remove a rule. It will no longer affect artifact evaluations.
      * If the rule set or the rule does not exist, a 404 Not Found error is returned.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<RuleSet>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> delete(
             String ruleSetId, String ruleId, DeleteRulesRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -414,7 +415,7 @@ public class AsyncRawRulesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<RuleSet>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RuleSet>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -422,7 +423,7 @@ public class AsyncRawRulesClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, RuleSet.class), response));
                         return;
                     }

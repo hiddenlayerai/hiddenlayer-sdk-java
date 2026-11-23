@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.assetinventory.assets.customtags;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -47,7 +47,7 @@ public class AsyncRawCustomTagsClient {
     /**
      * Assigns a custom tag to an asset. If the tag already exists on the asset, its value is updated.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1TagValue>> updateV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1TagValue>> updateV1(
             String assetId, String tagName, UpdateV1CustomTagsRequest request) {
         return updateV1(assetId, tagName, request, null);
     }
@@ -55,7 +55,7 @@ public class AsyncRawCustomTagsClient {
     /**
      * Assigns a custom tag to an asset. If the tag already exists on the asset, its value is updated.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1TagValue>> updateV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1TagValue>> updateV1(
             String assetId, String tagName, UpdateV1CustomTagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -97,7 +97,8 @@ public class AsyncRawCustomTagsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<AiAssetInventoryV1TagValue>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AiAssetInventoryV1TagValue>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -105,7 +106,7 @@ public class AsyncRawCustomTagsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, AiAssetInventoryV1TagValue.class),
                                 response));
@@ -165,14 +166,14 @@ public class AsyncRawCustomTagsClient {
     /**
      * Removes a custom tag assignment from an asset.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> deleteV1(String assetId, String tagName) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> deleteV1(String assetId, String tagName) {
         return deleteV1(assetId, tagName, DeleteV1CustomTagsRequest.builder().build());
     }
 
     /**
      * Removes a custom tag assignment from an asset.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> deleteV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> deleteV1(
             String assetId, String tagName, RequestOptions requestOptions) {
         return deleteV1(assetId, tagName, DeleteV1CustomTagsRequest.builder().build(), requestOptions);
     }
@@ -180,7 +181,7 @@ public class AsyncRawCustomTagsClient {
     /**
      * Removes a custom tag assignment from an asset.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> deleteV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> deleteV1(
             String assetId, String tagName, DeleteV1CustomTagsRequest request) {
         return deleteV1(assetId, tagName, request, null);
     }
@@ -188,7 +189,7 @@ public class AsyncRawCustomTagsClient {
     /**
      * Removes a custom tag assignment from an asset.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> deleteV1(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> deleteV1(
             String assetId, String tagName, DeleteV1CustomTagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -223,14 +224,14 @@ public class AsyncRawCustomTagsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
@@ -284,7 +285,7 @@ public class AsyncRawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Assigns a custom tag to an asset. If the tag already exists on the asset, its value is updated.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<TagValue>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<TagValue>> update(
             String assetId, String tagName, UpdateCustomTagsRequest request) {
         return update(assetId, tagName, request, null);
     }
@@ -293,7 +294,7 @@ public class AsyncRawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Assigns a custom tag to an asset. If the tag already exists on the asset, its value is updated.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<TagValue>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<TagValue>> update(
             String assetId, String tagName, UpdateCustomTagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -335,7 +336,7 @@ public class AsyncRawCustomTagsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<TagValue>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TagValue>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -343,7 +344,7 @@ public class AsyncRawCustomTagsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, TagValue.class), response));
                         return;
                     }
@@ -402,7 +403,7 @@ public class AsyncRawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Removes a custom tag assignment from an asset.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String assetId, String tagName) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String assetId, String tagName) {
         return delete(assetId, tagName, DeleteCustomTagsRequest.builder().build());
     }
 
@@ -410,7 +411,7 @@ public class AsyncRawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Removes a custom tag assignment from an asset.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String assetId, String tagName, RequestOptions requestOptions) {
         return delete(assetId, tagName, DeleteCustomTagsRequest.builder().build(), requestOptions);
     }
@@ -419,7 +420,7 @@ public class AsyncRawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Removes a custom tag assignment from an asset.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String assetId, String tagName, DeleteCustomTagsRequest request) {
         return delete(assetId, tagName, request, null);
     }
@@ -428,7 +429,7 @@ public class AsyncRawCustomTagsClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Removes a custom tag assignment from an asset.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String assetId, String tagName, DeleteCustomTagsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -463,14 +464,14 @@ public class AsyncRawCustomTagsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";

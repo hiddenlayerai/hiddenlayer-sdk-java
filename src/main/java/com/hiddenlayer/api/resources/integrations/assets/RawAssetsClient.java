@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.integrations.assets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -38,28 +38,30 @@ public class RawAssetsClient {
     /**
      * Triggers an on-demand retrieval and scan workflow for a discovered AI asset. This endpoint validates the asset exists and has a matching integration, then sends a message to initiate the asset retrieval and scanning process.
      */
-    public HiddenLayerHttpResponse<AssetScanTriggerResponse> scans(String assetId) {
+    public BaseHiddenLayerClientHttpResponse<AssetScanTriggerResponse> scans(String assetId) {
         return scans(assetId, ScansAssetsRequest.builder().build());
     }
 
     /**
      * Triggers an on-demand retrieval and scan workflow for a discovered AI asset. This endpoint validates the asset exists and has a matching integration, then sends a message to initiate the asset retrieval and scanning process.
      */
-    public HiddenLayerHttpResponse<AssetScanTriggerResponse> scans(String assetId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<AssetScanTriggerResponse> scans(
+            String assetId, RequestOptions requestOptions) {
         return scans(assetId, ScansAssetsRequest.builder().build(), requestOptions);
     }
 
     /**
      * Triggers an on-demand retrieval and scan workflow for a discovered AI asset. This endpoint validates the asset exists and has a matching integration, then sends a message to initiate the asset retrieval and scanning process.
      */
-    public HiddenLayerHttpResponse<AssetScanTriggerResponse> scans(String assetId, ScansAssetsRequest request) {
+    public BaseHiddenLayerClientHttpResponse<AssetScanTriggerResponse> scans(
+            String assetId, ScansAssetsRequest request) {
         return scans(assetId, request, null);
     }
 
     /**
      * Triggers an on-demand retrieval and scan workflow for a discovered AI asset. This endpoint validates the asset exists and has a matching integration, then sends a message to initiate the asset retrieval and scanning process.
      */
-    public HiddenLayerHttpResponse<AssetScanTriggerResponse> scans(
+    public BaseHiddenLayerClientHttpResponse<AssetScanTriggerResponse> scans(
             String assetId, ScansAssetsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -98,7 +100,7 @@ public class RawAssetsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, AssetScanTriggerResponse.class),
                         response);
             }

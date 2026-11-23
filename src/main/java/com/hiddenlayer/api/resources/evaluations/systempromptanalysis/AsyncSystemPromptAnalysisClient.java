@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.evaluations.systempromptanalysis;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.evaluations.systempromptanalysis.requests.DeleteSystemPromptAnalysisRequest;
@@ -43,7 +43,7 @@ public class AsyncSystemPromptAnalysisClient {
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
     public CompletableFuture<SyncPagingIterable<SystemPromptResultItem>> list() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> rawFuture =
                 this.rawClient.list();
         CompletableFuture<SyncPagingIterable<SystemPromptResultItem>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -61,7 +61,7 @@ public class AsyncSystemPromptAnalysisClient {
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
     public CompletableFuture<SyncPagingIterable<SystemPromptResultItem>> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<SyncPagingIterable<SystemPromptResultItem>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -79,7 +79,7 @@ public class AsyncSystemPromptAnalysisClient {
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
     public CompletableFuture<SyncPagingIterable<SystemPromptResultItem>> list(ListSystemPromptAnalysisRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> rawFuture =
                 this.rawClient.list(request);
         CompletableFuture<SyncPagingIterable<SystemPromptResultItem>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -98,7 +98,7 @@ public class AsyncSystemPromptAnalysisClient {
      */
     public CompletableFuture<SyncPagingIterable<SystemPromptResultItem>> list(
             ListSystemPromptAnalysisRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SystemPromptResultItem>>> rawFuture =
                 this.rawClient.list(request, requestOptions);
         CompletableFuture<SyncPagingIterable<SystemPromptResultItem>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -117,7 +117,8 @@ public class AsyncSystemPromptAnalysisClient {
      * Client should poll /status to check progress.</p>
      */
     public CompletableFuture<StartWorkflowResponse> create(StartSystemPromptWorkflowBody request) {
-        CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> rawFuture =
+                this.rawClient.create(request);
         CompletableFuture<StartWorkflowResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -135,7 +136,7 @@ public class AsyncSystemPromptAnalysisClient {
      */
     public CompletableFuture<StartWorkflowResponse> create(
             StartSystemPromptWorkflowBody request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> rawFuture =
                 this.rawClient.create(request, requestOptions);
         CompletableFuture<StartWorkflowResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -153,7 +154,8 @@ public class AsyncSystemPromptAnalysisClient {
      * Returns immediately with current state.</p>
      */
     public CompletableFuture<AnalysisStatus> status(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<AnalysisStatus>> rawFuture = this.rawClient.status(workflowId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisStatus>> rawFuture =
+                this.rawClient.status(workflowId);
         CompletableFuture<AnalysisStatus> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -170,7 +172,7 @@ public class AsyncSystemPromptAnalysisClient {
      * Returns immediately with current state.</p>
      */
     public CompletableFuture<AnalysisStatus> status(String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<AnalysisStatus>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisStatus>> rawFuture =
                 this.rawClient.status(workflowId, requestOptions);
         CompletableFuture<AnalysisStatus> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -188,7 +190,7 @@ public class AsyncSystemPromptAnalysisClient {
      * Returns immediately with current state.</p>
      */
     public CompletableFuture<AnalysisStatus> status(String workflowId, StatusSystemPromptAnalysisRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<AnalysisStatus>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisStatus>> rawFuture =
                 this.rawClient.status(workflowId, request);
         CompletableFuture<AnalysisStatus> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -207,7 +209,7 @@ public class AsyncSystemPromptAnalysisClient {
      */
     public CompletableFuture<AnalysisStatus> status(
             String workflowId, StatusSystemPromptAnalysisRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<AnalysisStatus>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisStatus>> rawFuture =
                 this.rawClient.status(workflowId, request, requestOptions);
         CompletableFuture<AnalysisStatus> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -223,7 +225,7 @@ public class AsyncSystemPromptAnalysisClient {
      * <p>Get the final result of a completed analysis workflow.</p>
      */
     public CompletableFuture<AnalysisResult> get(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<AnalysisResult>> rawFuture = this.rawClient.get(workflowId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisResult>> rawFuture = this.rawClient.get(workflowId);
         CompletableFuture<AnalysisResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -238,7 +240,7 @@ public class AsyncSystemPromptAnalysisClient {
      * <p>Get the final result of a completed analysis workflow.</p>
      */
     public CompletableFuture<AnalysisResult> get(String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<AnalysisResult>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisResult>> rawFuture =
                 this.rawClient.get(workflowId, requestOptions);
         CompletableFuture<AnalysisResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -254,7 +256,8 @@ public class AsyncSystemPromptAnalysisClient {
      * <p>Get the final result of a completed analysis workflow.</p>
      */
     public CompletableFuture<AnalysisResult> get(String workflowId, GetSystemPromptAnalysisRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<AnalysisResult>> rawFuture = this.rawClient.get(workflowId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisResult>> rawFuture =
+                this.rawClient.get(workflowId, request);
         CompletableFuture<AnalysisResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -270,7 +273,7 @@ public class AsyncSystemPromptAnalysisClient {
      */
     public CompletableFuture<AnalysisResult> get(
             String workflowId, GetSystemPromptAnalysisRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<AnalysisResult>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AnalysisResult>> rawFuture =
                 this.rawClient.get(workflowId, request, requestOptions);
         CompletableFuture<AnalysisResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -286,7 +289,7 @@ public class AsyncSystemPromptAnalysisClient {
      * <p>Delete a system prompt analysis result from storage.</p>
      */
     public CompletableFuture<Void> delete(String workflowId) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -301,7 +304,8 @@ public class AsyncSystemPromptAnalysisClient {
      * <p>Delete a system prompt analysis result from storage.</p>
      */
     public CompletableFuture<Void> delete(String workflowId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(workflowId, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -316,7 +320,8 @@ public class AsyncSystemPromptAnalysisClient {
      * <p>Delete a system prompt analysis result from storage.</p>
      */
     public CompletableFuture<Void> delete(String workflowId, DeleteSystemPromptAnalysisRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(workflowId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(workflowId, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -332,7 +337,7 @@ public class AsyncSystemPromptAnalysisClient {
      */
     public CompletableFuture<Void> delete(
             String workflowId, DeleteSystemPromptAnalysisRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.delete(workflowId, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -350,7 +355,7 @@ public class AsyncSystemPromptAnalysisClient {
      * child workflow. Returns immediately; client should poll /status for results.</p>
      */
     public CompletableFuture<SubmitAnswersResult> answers(String workflowId, SubmitAnswersBody request) {
-        CompletableFuture<HiddenLayerHttpResponse<SubmitAnswersResult>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SubmitAnswersResult>> rawFuture =
                 this.rawClient.answers(workflowId, request);
         CompletableFuture<SubmitAnswersResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -369,7 +374,7 @@ public class AsyncSystemPromptAnalysisClient {
      */
     public CompletableFuture<SubmitAnswersResult> answers(
             String workflowId, SubmitAnswersBody request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SubmitAnswersResult>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SubmitAnswersResult>> rawFuture =
                 this.rawClient.answers(workflowId, request, requestOptions);
         CompletableFuture<SubmitAnswersResult> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

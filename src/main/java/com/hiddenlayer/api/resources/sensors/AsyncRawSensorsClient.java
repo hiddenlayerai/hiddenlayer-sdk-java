@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.sensors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -53,7 +53,7 @@ public class AsyncRawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorItemResponse>> create(
             SensorSorItemCreateRequest request) {
         return create(request, null);
     }
@@ -61,7 +61,7 @@ public class AsyncRawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorItemResponse>> create(
             SensorSorItemCreateRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -100,7 +100,7 @@ public class AsyncRawSensorsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorItemResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -108,7 +108,7 @@ public class AsyncRawSensorsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SensorSorItemResponse.class),
                                 response));
                         return;
@@ -162,14 +162,14 @@ public class AsyncRawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> retrieve(String sensorId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorItemResponse>> retrieve(String sensorId) {
         return retrieve(sensorId, RetrieveSensorsRequest.builder().build());
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> retrieve(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorItemResponse>> retrieve(
             String sensorId, RequestOptions requestOptions) {
         return retrieve(sensorId, RetrieveSensorsRequest.builder().build(), requestOptions);
     }
@@ -177,7 +177,7 @@ public class AsyncRawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> retrieve(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorItemResponse>> retrieve(
             String sensorId, RetrieveSensorsRequest request) {
         return retrieve(sensorId, request, null);
     }
@@ -185,7 +185,7 @@ public class AsyncRawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> retrieve(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorItemResponse>> retrieve(
             String sensorId, RetrieveSensorsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -215,7 +215,7 @@ public class AsyncRawSensorsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorItemResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorItemResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -223,7 +223,7 @@ public class AsyncRawSensorsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SensorSorItemResponse.class),
                                 response));
                         return;
@@ -272,14 +272,14 @@ public class AsyncRawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SensorSorUpdateResponseModel>> update(String sensorId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorUpdateResponseModel>> update(String sensorId) {
         return update(sensorId, SensorSorItemUpdateRequest.builder().build());
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SensorSorUpdateResponseModel>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorUpdateResponseModel>> update(
             String sensorId, RequestOptions requestOptions) {
         return update(sensorId, SensorSorItemUpdateRequest.builder().build(), requestOptions);
     }
@@ -287,7 +287,7 @@ public class AsyncRawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SensorSorUpdateResponseModel>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorUpdateResponseModel>> update(
             String sensorId, SensorSorItemUpdateRequest request) {
         return update(sensorId, request, null);
     }
@@ -295,7 +295,7 @@ public class AsyncRawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SensorSorUpdateResponseModel>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorUpdateResponseModel>> update(
             String sensorId, SensorSorItemUpdateRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -335,7 +335,8 @@ public class AsyncRawSensorsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SensorSorUpdateResponseModel>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SensorSorUpdateResponseModel>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -343,7 +344,7 @@ public class AsyncRawSensorsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, SensorSorUpdateResponseModel.class),
                                 response));
@@ -398,28 +399,30 @@ public class AsyncRawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String sensorId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String sensorId) {
         return delete(sensorId, DeleteSensorsRequest.builder().build());
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String sensorId, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
+            String sensorId, RequestOptions requestOptions) {
         return delete(sensorId, DeleteSensorsRequest.builder().build(), requestOptions);
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String sensorId, DeleteSensorsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
+            String sensorId, DeleteSensorsRequest request) {
         return delete(sensorId, request, null);
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String sensorId, DeleteSensorsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -452,14 +455,14 @@ public class AsyncRawSensorsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
@@ -517,14 +520,15 @@ public class AsyncRawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> queryLegacy() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>>
+            queryLegacy() {
         return queryLegacy(SensorSorQueryRequest.builder().build());
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> queryLegacy(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> queryLegacy(
             RequestOptions requestOptions) {
         return queryLegacy(SensorSorQueryRequest.builder().build(), requestOptions);
     }
@@ -532,7 +536,7 @@ public class AsyncRawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> queryLegacy(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> queryLegacy(
             SensorSorQueryRequest request) {
         return queryLegacy(request, null);
     }
@@ -540,7 +544,7 @@ public class AsyncRawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> queryLegacy(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> queryLegacy(
             SensorSorQueryRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -579,7 +583,7 @@ public class AsyncRawSensorsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> future =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> future =
                 new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
@@ -598,7 +602,7 @@ public class AsyncRawSensorsClient {
                                 .pageNumber(newPageNumber)
                                 .build();
                         List<SensorSorItemResponse> result = parsedResponse.getResults();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<SensorSorItemResponse>(true, result, parsedResponse, () -> {
                                     try {
                                         return queryLegacy(nextRequest, requestOptions)
@@ -648,14 +652,14 @@ public class AsyncRawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> query() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> query() {
         return query(SensorSorQueryRequest.builder().build());
     }
 
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> query(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> query(
             RequestOptions requestOptions) {
         return query(SensorSorQueryRequest.builder().build(), requestOptions);
     }
@@ -663,7 +667,7 @@ public class AsyncRawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> query(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> query(
             SensorSorQueryRequest request) {
         return query(request, null);
     }
@@ -671,7 +675,7 @@ public class AsyncRawSensorsClient {
     /**
      * ⚠️ <strong>DEPRECATED</strong>: This endpoint will be removed after April 13, 2026.
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> query(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> query(
             SensorSorQueryRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -710,7 +714,7 @@ public class AsyncRawSensorsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> future =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<SensorSorItemResponse>>> future =
                 new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
@@ -729,7 +733,7 @@ public class AsyncRawSensorsClient {
                                 .pageNumber(newPageNumber)
                                 .build();
                         List<SensorSorItemResponse> result = parsedResponse.getResults();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<SensorSorItemResponse>(true, result, parsedResponse, () -> {
                                     try {
                                         return query(nextRequest, requestOptions)

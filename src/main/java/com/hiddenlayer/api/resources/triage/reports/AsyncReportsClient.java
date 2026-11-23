@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.triage.reports;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.types.TriageReport;
 import java.util.concurrent.CompletableFuture;
@@ -56,7 +56,7 @@ public class AsyncReportsClient {
      * </ul>
      */
     public CompletableFuture<TriageReport> list() {
-        CompletableFuture<HiddenLayerHttpResponse<TriageReport>> rawFuture = this.rawClient.list();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageReport>> rawFuture = this.rawClient.list();
         CompletableFuture<TriageReport> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -96,7 +96,8 @@ public class AsyncReportsClient {
      * </ul>
      */
     public CompletableFuture<TriageReport> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<TriageReport>> rawFuture = this.rawClient.list(requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<TriageReport>> rawFuture =
+                this.rawClient.list(requestOptions);
         CompletableFuture<TriageReport> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {

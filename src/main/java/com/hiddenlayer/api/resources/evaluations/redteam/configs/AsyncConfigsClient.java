@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.evaluations.redteam.configs;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.pagination.SyncPagingIterable;
 import com.hiddenlayer.api.resources.evaluations.redteam.configs.requests.CreateRedTeamConfigRequest;
@@ -41,7 +41,7 @@ public class AsyncConfigsClient {
      * knobs). Configs are referenced from the start endpoints via <code>config_id</code>.</p>
      */
     public CompletableFuture<SyncPagingIterable<RedTeamConfigSummary>> list() {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> rawFuture =
                 this.rawClient.list();
         CompletableFuture<SyncPagingIterable<RedTeamConfigSummary>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -61,7 +61,7 @@ public class AsyncConfigsClient {
      * knobs). Configs are referenced from the start endpoints via <code>config_id</code>.</p>
      */
     public CompletableFuture<SyncPagingIterable<RedTeamConfigSummary>> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<SyncPagingIterable<RedTeamConfigSummary>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -81,7 +81,7 @@ public class AsyncConfigsClient {
      * knobs). Configs are referenced from the start endpoints via <code>config_id</code>.</p>
      */
     public CompletableFuture<SyncPagingIterable<RedTeamConfigSummary>> list(ListConfigsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> rawFuture =
                 this.rawClient.list(request);
         CompletableFuture<SyncPagingIterable<RedTeamConfigSummary>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -102,7 +102,7 @@ public class AsyncConfigsClient {
      */
     public CompletableFuture<SyncPagingIterable<RedTeamConfigSummary>> list(
             ListConfigsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<RedTeamConfigSummary>>> rawFuture =
                 this.rawClient.list(request, requestOptions);
         CompletableFuture<SyncPagingIterable<RedTeamConfigSummary>> future =
                 rawFuture.thenApply(response -> response.body());
@@ -123,7 +123,7 @@ public class AsyncConfigsClient {
      * is stored as the canonical project UUID.</p>
      */
     public CompletableFuture<RedTeamConfig> create(CreateRedTeamConfigRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> rawFuture = this.rawClient.create(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> rawFuture = this.rawClient.create(request);
         CompletableFuture<RedTeamConfig> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -142,7 +142,7 @@ public class AsyncConfigsClient {
      * is stored as the canonical project UUID.</p>
      */
     public CompletableFuture<RedTeamConfig> create(CreateRedTeamConfigRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> rawFuture =
                 this.rawClient.create(request, requestOptions);
         CompletableFuture<RedTeamConfig> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -161,7 +161,7 @@ public class AsyncConfigsClient {
      * <code>hl_project_status</code> is <code>unknown</code> when the project service is unavailable.</p>
      */
     public CompletableFuture<RedTeamConfig> get(String configId) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> rawFuture = this.rawClient.get(configId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> rawFuture = this.rawClient.get(configId);
         CompletableFuture<RedTeamConfig> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -179,7 +179,7 @@ public class AsyncConfigsClient {
      * <code>hl_project_status</code> is <code>unknown</code> when the project service is unavailable.</p>
      */
     public CompletableFuture<RedTeamConfig> get(String configId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> rawFuture =
                 this.rawClient.get(configId, requestOptions);
         CompletableFuture<RedTeamConfig> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -198,7 +198,8 @@ public class AsyncConfigsClient {
      * <code>hl_project_status</code> is <code>unknown</code> when the project service is unavailable.</p>
      */
     public CompletableFuture<RedTeamConfig> get(String configId, GetConfigsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> rawFuture = this.rawClient.get(configId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> rawFuture =
+                this.rawClient.get(configId, request);
         CompletableFuture<RedTeamConfig> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -217,7 +218,7 @@ public class AsyncConfigsClient {
      */
     public CompletableFuture<RedTeamConfig> get(
             String configId, GetConfigsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> rawFuture =
                 this.rawClient.get(configId, request, requestOptions);
         CompletableFuture<RedTeamConfig> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -235,7 +236,7 @@ public class AsyncConfigsClient {
      * at start time.</p>
      */
     public CompletableFuture<Void> delete(String configId) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(configId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(configId);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -252,7 +253,8 @@ public class AsyncConfigsClient {
      * at start time.</p>
      */
     public CompletableFuture<Void> delete(String configId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(configId, requestOptions);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(configId, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -269,7 +271,7 @@ public class AsyncConfigsClient {
      * at start time.</p>
      */
     public CompletableFuture<Void> delete(String configId, DeleteConfigsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(configId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(configId, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -287,7 +289,7 @@ public class AsyncConfigsClient {
      */
     public CompletableFuture<Void> delete(
             String configId, DeleteConfigsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.delete(configId, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -310,7 +312,7 @@ public class AsyncConfigsClient {
      * whenever they are present in the request body with a non-empty value.</p>
      */
     public CompletableFuture<RedTeamConfig> update(String configId) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> rawFuture = this.rawClient.update(configId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> rawFuture = this.rawClient.update(configId);
         CompletableFuture<RedTeamConfig> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -332,7 +334,7 @@ public class AsyncConfigsClient {
      * whenever they are present in the request body with a non-empty value.</p>
      */
     public CompletableFuture<RedTeamConfig> update(String configId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> rawFuture =
                 this.rawClient.update(configId, requestOptions);
         CompletableFuture<RedTeamConfig> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -355,7 +357,8 @@ public class AsyncConfigsClient {
      * whenever they are present in the request body with a non-empty value.</p>
      */
     public CompletableFuture<RedTeamConfig> update(String configId, UpdateRedTeamConfigRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> rawFuture = this.rawClient.update(configId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> rawFuture =
+                this.rawClient.update(configId, request);
         CompletableFuture<RedTeamConfig> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -378,7 +381,7 @@ public class AsyncConfigsClient {
      */
     public CompletableFuture<RedTeamConfig> update(
             String configId, UpdateRedTeamConfigRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<RedTeamConfig>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamConfig>> rawFuture =
                 this.rawClient.update(configId, request, requestOptions);
         CompletableFuture<RedTeamConfig> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.models.versions.location;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.RequestOptions;
@@ -34,21 +34,21 @@ public class AsyncRawLocationClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<InternalLocationResponse>> internal(String versionId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InternalLocationResponse>> internal(String versionId) {
         return internal(versionId, InternalLocationRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<InternalLocationResponse>> internal(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InternalLocationResponse>> internal(
             String versionId, RequestOptions requestOptions) {
         return internal(versionId, InternalLocationRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<InternalLocationResponse>> internal(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InternalLocationResponse>> internal(
             String versionId, InternalLocationRequest request) {
         return internal(versionId, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<InternalLocationResponse>> internal(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<InternalLocationResponse>> internal(
             String versionId, InternalLocationRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -80,7 +80,8 @@ public class AsyncRawLocationClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<InternalLocationResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<InternalLocationResponse>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -88,7 +89,7 @@ public class AsyncRawLocationClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, InternalLocationResponse.class),
                                 response));
                         return;

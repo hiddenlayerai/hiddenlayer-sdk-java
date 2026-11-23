@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.compliance.rulesets.settings;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.resources.compliance.rulesets.settings.requests.CreateSettingsRequest;
 import com.hiddenlayer.api.resources.compliance.rulesets.settings.requests.DeleteSettingsRequest;
@@ -35,7 +35,7 @@ public class AsyncSettingsClient {
     }
 
     public CompletableFuture<ListSettingsResponse> list() {
-        CompletableFuture<HiddenLayerHttpResponse<ListSettingsResponse>> rawFuture = this.rawClient.list();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListSettingsResponse>> rawFuture = this.rawClient.list();
         CompletableFuture<ListSettingsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -46,7 +46,7 @@ public class AsyncSettingsClient {
     }
 
     public CompletableFuture<ListSettingsResponse> list(RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ListSettingsResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListSettingsResponse>> rawFuture =
                 this.rawClient.list(requestOptions);
         CompletableFuture<ListSettingsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -58,7 +58,8 @@ public class AsyncSettingsClient {
     }
 
     public CompletableFuture<ListSettingsResponse> list(ListSettingsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<ListSettingsResponse>> rawFuture = this.rawClient.list(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListSettingsResponse>> rawFuture =
+                this.rawClient.list(request);
         CompletableFuture<ListSettingsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -69,7 +70,7 @@ public class AsyncSettingsClient {
     }
 
     public CompletableFuture<ListSettingsResponse> list(ListSettingsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<ListSettingsResponse>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListSettingsResponse>> rawFuture =
                 this.rawClient.list(request, requestOptions);
         CompletableFuture<ListSettingsResponse> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -81,7 +82,7 @@ public class AsyncSettingsClient {
     }
 
     public CompletableFuture<SettingsId> create(String id, CreateSettingsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SettingsId>> rawFuture = this.rawClient.create(id, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SettingsId>> rawFuture = this.rawClient.create(id, request);
         CompletableFuture<SettingsId> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -93,7 +94,7 @@ public class AsyncSettingsClient {
 
     public CompletableFuture<SettingsId> create(
             String id, CreateSettingsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SettingsId>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SettingsId>> rawFuture =
                 this.rawClient.create(id, request, requestOptions);
         CompletableFuture<SettingsId> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -105,7 +106,7 @@ public class AsyncSettingsClient {
     }
 
     public CompletableFuture<SettingsDetailsWithSchema> get(String id, String settingsId) {
-        CompletableFuture<HiddenLayerHttpResponse<SettingsDetailsWithSchema>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SettingsDetailsWithSchema>> rawFuture =
                 this.rawClient.get(id, settingsId);
         CompletableFuture<SettingsDetailsWithSchema> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -118,7 +119,7 @@ public class AsyncSettingsClient {
 
     public CompletableFuture<SettingsDetailsWithSchema> get(
             String id, String settingsId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SettingsDetailsWithSchema>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SettingsDetailsWithSchema>> rawFuture =
                 this.rawClient.get(id, settingsId, requestOptions);
         CompletableFuture<SettingsDetailsWithSchema> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -130,7 +131,7 @@ public class AsyncSettingsClient {
     }
 
     public CompletableFuture<SettingsDetailsWithSchema> get(String id, String settingsId, GetSettingsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<SettingsDetailsWithSchema>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SettingsDetailsWithSchema>> rawFuture =
                 this.rawClient.get(id, settingsId, request);
         CompletableFuture<SettingsDetailsWithSchema> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -143,7 +144,7 @@ public class AsyncSettingsClient {
 
     public CompletableFuture<SettingsDetailsWithSchema> get(
             String id, String settingsId, GetSettingsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<SettingsDetailsWithSchema>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SettingsDetailsWithSchema>> rawFuture =
                 this.rawClient.get(id, settingsId, request, requestOptions);
         CompletableFuture<SettingsDetailsWithSchema> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -155,7 +156,8 @@ public class AsyncSettingsClient {
     }
 
     public CompletableFuture<Void> update(String id, String settingsId, Settings body) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.update(id, settingsId, body);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.update(id, settingsId, body);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -166,7 +168,7 @@ public class AsyncSettingsClient {
     }
 
     public CompletableFuture<Void> update(String id, String settingsId, Settings body, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.update(id, settingsId, body, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -178,7 +180,8 @@ public class AsyncSettingsClient {
     }
 
     public CompletableFuture<Void> update(String id, String settingsId, UpdateSettingsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.update(id, settingsId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.update(id, settingsId, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -190,7 +193,7 @@ public class AsyncSettingsClient {
 
     public CompletableFuture<Void> update(
             String id, String settingsId, UpdateSettingsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.update(id, settingsId, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -202,7 +205,7 @@ public class AsyncSettingsClient {
     }
 
     public CompletableFuture<Void> delete(String id, String settingsId) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(id, settingsId);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture = this.rawClient.delete(id, settingsId);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -213,7 +216,7 @@ public class AsyncSettingsClient {
     }
 
     public CompletableFuture<Void> delete(String id, String settingsId, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.delete(id, settingsId, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
@@ -225,7 +228,8 @@ public class AsyncSettingsClient {
     }
 
     public CompletableFuture<Void> delete(String id, String settingsId, DeleteSettingsRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture = this.rawClient.delete(id, settingsId, request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
+                this.rawClient.delete(id, settingsId, request);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -237,7 +241,7 @@ public class AsyncSettingsClient {
 
     public CompletableFuture<Void> delete(
             String id, String settingsId, DeleteSettingsRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<Void>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> rawFuture =
                 this.rawClient.delete(id, settingsId, request, requestOptions);
         CompletableFuture<Void> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

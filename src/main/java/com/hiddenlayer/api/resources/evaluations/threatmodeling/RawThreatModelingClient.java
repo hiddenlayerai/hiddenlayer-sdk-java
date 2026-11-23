@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.evaluations.threatmodeling;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -55,7 +55,7 @@ public class RawThreatModelingClient {
      * <p>List completed threat modeling results with filtering and bidirectional pagination.</p>
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<ThreatModelingResultItem>> list() {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ThreatModelingResultItem>> list() {
         return list(ListThreatModelingRequest.builder().build());
     }
 
@@ -64,7 +64,8 @@ public class RawThreatModelingClient {
      * <p>List completed threat modeling results with filtering and bidirectional pagination.</p>
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<ThreatModelingResultItem>> list(RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ThreatModelingResultItem>> list(
+            RequestOptions requestOptions) {
         return list(ListThreatModelingRequest.builder().build(), requestOptions);
     }
 
@@ -73,7 +74,7 @@ public class RawThreatModelingClient {
      * <p>List completed threat modeling results with filtering and bidirectional pagination.</p>
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<ThreatModelingResultItem>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ThreatModelingResultItem>> list(
             ListThreatModelingRequest request) {
         return list(request, null);
     }
@@ -83,7 +84,7 @@ public class RawThreatModelingClient {
      * <p>List completed threat modeling results with filtering and bidirectional pagination.</p>
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
-    public HiddenLayerHttpResponse<SyncPagingIterable<ThreatModelingResultItem>> list(
+    public BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ThreatModelingResultItem>> list(
             ListThreatModelingRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -156,7 +157,7 @@ public class RawThreatModelingClient {
                         .cursor(startingAfter)
                         .build();
                 List<ThreatModelingResultItem> result = parsedResponse.getItems();
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         new SyncPagingIterable<ThreatModelingResultItem>(
                                 startingAfter.isPresent()
                                         && !startingAfter.get().isEmpty(),
@@ -199,7 +200,7 @@ public class RawThreatModelingClient {
      * <p>This immediately starts the workflow which auto-executes both analysis phases.
      * Client should poll /status to check progress.</p>
      */
-    public HiddenLayerHttpResponse<StartWorkflowResponse> create(StartThreatModelingWorkflowBody request) {
+    public BaseHiddenLayerClientHttpResponse<StartWorkflowResponse> create(StartThreatModelingWorkflowBody request) {
         return create(request, null);
     }
 
@@ -209,7 +210,7 @@ public class RawThreatModelingClient {
      * <p>This immediately starts the workflow which auto-executes both analysis phases.
      * Client should poll /status to check progress.</p>
      */
-    public HiddenLayerHttpResponse<StartWorkflowResponse> create(
+    public BaseHiddenLayerClientHttpResponse<StartWorkflowResponse> create(
             StartThreatModelingWorkflowBody request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -252,7 +253,7 @@ public class RawThreatModelingClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, StartWorkflowResponse.class), response);
             }
             try {
@@ -288,7 +289,7 @@ public class RawThreatModelingClient {
      * <p>Get current status of threat modeling workflow (polling endpoint).
      * Returns immediately with current state.</p>
      */
-    public HiddenLayerHttpResponse<ThreatModelingStatus> status(String workflowId) {
+    public BaseHiddenLayerClientHttpResponse<ThreatModelingStatus> status(String workflowId) {
         return status(workflowId, StatusThreatModelingRequest.builder().build());
     }
 
@@ -297,7 +298,8 @@ public class RawThreatModelingClient {
      * <p>Get current status of threat modeling workflow (polling endpoint).
      * Returns immediately with current state.</p>
      */
-    public HiddenLayerHttpResponse<ThreatModelingStatus> status(String workflowId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ThreatModelingStatus> status(
+            String workflowId, RequestOptions requestOptions) {
         return status(workflowId, StatusThreatModelingRequest.builder().build(), requestOptions);
     }
 
@@ -306,7 +308,7 @@ public class RawThreatModelingClient {
      * <p>Get current status of threat modeling workflow (polling endpoint).
      * Returns immediately with current state.</p>
      */
-    public HiddenLayerHttpResponse<ThreatModelingStatus> status(
+    public BaseHiddenLayerClientHttpResponse<ThreatModelingStatus> status(
             String workflowId, StatusThreatModelingRequest request) {
         return status(workflowId, request, null);
     }
@@ -316,7 +318,7 @@ public class RawThreatModelingClient {
      * <p>Get current status of threat modeling workflow (polling endpoint).
      * Returns immediately with current state.</p>
      */
-    public HiddenLayerHttpResponse<ThreatModelingStatus> status(
+    public BaseHiddenLayerClientHttpResponse<ThreatModelingStatus> status(
             String workflowId, StatusThreatModelingRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -351,7 +353,7 @@ public class RawThreatModelingClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ThreatModelingStatus.class), response);
             }
             try {
@@ -386,7 +388,7 @@ public class RawThreatModelingClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the final result of a completed threat modeling workflow.</p>
      */
-    public HiddenLayerHttpResponse<ThreatModelingResult> get(String workflowId) {
+    public BaseHiddenLayerClientHttpResponse<ThreatModelingResult> get(String workflowId) {
         return get(workflowId, GetThreatModelingRequest.builder().build());
     }
 
@@ -394,7 +396,8 @@ public class RawThreatModelingClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the final result of a completed threat modeling workflow.</p>
      */
-    public HiddenLayerHttpResponse<ThreatModelingResult> get(String workflowId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<ThreatModelingResult> get(
+            String workflowId, RequestOptions requestOptions) {
         return get(workflowId, GetThreatModelingRequest.builder().build(), requestOptions);
     }
 
@@ -402,7 +405,8 @@ public class RawThreatModelingClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the final result of a completed threat modeling workflow.</p>
      */
-    public HiddenLayerHttpResponse<ThreatModelingResult> get(String workflowId, GetThreatModelingRequest request) {
+    public BaseHiddenLayerClientHttpResponse<ThreatModelingResult> get(
+            String workflowId, GetThreatModelingRequest request) {
         return get(workflowId, request, null);
     }
 
@@ -410,7 +414,7 @@ public class RawThreatModelingClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the final result of a completed threat modeling workflow.</p>
      */
-    public HiddenLayerHttpResponse<ThreatModelingResult> get(
+    public BaseHiddenLayerClientHttpResponse<ThreatModelingResult> get(
             String workflowId, GetThreatModelingRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -444,7 +448,7 @@ public class RawThreatModelingClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ThreatModelingResult.class), response);
             }
             try {
@@ -482,7 +486,7 @@ public class RawThreatModelingClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a threat modeling result from storage.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String workflowId) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String workflowId) {
         return delete(workflowId, DeleteThreatModelingRequest.builder().build());
     }
 
@@ -490,7 +494,7 @@ public class RawThreatModelingClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a threat modeling result from storage.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String workflowId, RequestOptions requestOptions) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String workflowId, RequestOptions requestOptions) {
         return delete(workflowId, DeleteThreatModelingRequest.builder().build(), requestOptions);
     }
 
@@ -498,7 +502,7 @@ public class RawThreatModelingClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a threat modeling result from storage.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(String workflowId, DeleteThreatModelingRequest request) {
+    public BaseHiddenLayerClientHttpResponse<Void> delete(String workflowId, DeleteThreatModelingRequest request) {
         return delete(workflowId, request, null);
     }
 
@@ -506,7 +510,7 @@ public class RawThreatModelingClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a threat modeling result from storage.</p>
      */
-    public HiddenLayerHttpResponse<Void> delete(
+    public BaseHiddenLayerClientHttpResponse<Void> delete(
             String workflowId, DeleteThreatModelingRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -542,7 +546,7 @@ public class RawThreatModelingClient {
         try (Response response = client.newCall(okhttpRequest).execute()) {
             ResponseBody responseBody = response.body();
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(null, response);
+                return new BaseHiddenLayerClientHttpResponse<>(null, response);
             }
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             try {

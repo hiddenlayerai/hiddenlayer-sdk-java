@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.models.versions.locations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -36,21 +36,21 @@ public class RawLocationsClient {
         this.clientOptions = clientOptions;
     }
 
-    public HiddenLayerHttpResponse<GetLocationsResponse> get(String versionId, String key) {
+    public BaseHiddenLayerClientHttpResponse<GetLocationsResponse> get(String versionId, String key) {
         return get(versionId, key, GetLocationsRequest.builder().build());
     }
 
-    public HiddenLayerHttpResponse<GetLocationsResponse> get(
+    public BaseHiddenLayerClientHttpResponse<GetLocationsResponse> get(
             String versionId, String key, RequestOptions requestOptions) {
         return get(versionId, key, GetLocationsRequest.builder().build(), requestOptions);
     }
 
-    public HiddenLayerHttpResponse<GetLocationsResponse> get(
+    public BaseHiddenLayerClientHttpResponse<GetLocationsResponse> get(
             String versionId, String key, GetLocationsRequest request) {
         return get(versionId, key, request, null);
     }
 
-    public HiddenLayerHttpResponse<GetLocationsResponse> get(
+    public BaseHiddenLayerClientHttpResponse<GetLocationsResponse> get(
             String versionId, String key, GetLocationsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -86,7 +86,7 @@ public class RawLocationsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, GetLocationsResponse.class), response);
             }
             try {
@@ -107,12 +107,12 @@ public class RawLocationsClient {
         }
     }
 
-    public HiddenLayerHttpResponse<UpdateLocationsResponse> update(
+    public BaseHiddenLayerClientHttpResponse<UpdateLocationsResponse> update(
             String versionId, String key, UpdateLocationsRequest request) {
         return update(versionId, key, request, null);
     }
 
-    public HiddenLayerHttpResponse<UpdateLocationsResponse> update(
+    public BaseHiddenLayerClientHttpResponse<UpdateLocationsResponse> update(
             String versionId, String key, UpdateLocationsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -158,7 +158,7 @@ public class RawLocationsClient {
             ResponseBody responseBody = response.body();
             String responseBodyString = responseBody != null ? responseBody.string() : "{}";
             if (response.isSuccessful()) {
-                return new HiddenLayerHttpResponse<>(
+                return new BaseHiddenLayerClientHttpResponse<>(
                         ObjectMappers.JSON_MAPPER.readValue(responseBodyString, UpdateLocationsResponse.class),
                         response);
             }

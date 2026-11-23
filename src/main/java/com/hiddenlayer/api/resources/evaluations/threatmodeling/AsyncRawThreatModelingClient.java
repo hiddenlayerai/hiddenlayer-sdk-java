@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.evaluations.threatmodeling;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.MediaTypes;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
@@ -60,7 +60,7 @@ public class AsyncRawThreatModelingClient {
      * <p>List completed threat modeling results with filtering and bidirectional pagination.</p>
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> list() {
         return list(ListThreatModelingRequest.builder().build());
     }
 
@@ -69,7 +69,7 @@ public class AsyncRawThreatModelingClient {
      * <p>List completed threat modeling results with filtering and bidirectional pagination.</p>
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> list(
             RequestOptions requestOptions) {
         return list(ListThreatModelingRequest.builder().build(), requestOptions);
     }
@@ -79,7 +79,7 @@ public class AsyncRawThreatModelingClient {
      * <p>List completed threat modeling results with filtering and bidirectional pagination.</p>
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> list(
             ListThreatModelingRequest request) {
         return list(request, null);
     }
@@ -89,7 +89,7 @@ public class AsyncRawThreatModelingClient {
      * <p>List completed threat modeling results with filtering and bidirectional pagination.</p>
      * <p>Results are ordered by completed_at DESC (newest first).</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> list(
             ListThreatModelingRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -150,7 +150,7 @@ public class AsyncRawThreatModelingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> future =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SyncPagingIterable<ThreatModelingResultItem>>> future =
                 new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
@@ -167,7 +167,7 @@ public class AsyncRawThreatModelingClient {
                                 .cursor(startingAfter)
                                 .build();
                         List<ThreatModelingResultItem> result = parsedResponse.getItems();
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 new SyncPagingIterable<ThreatModelingResultItem>(
                                         startingAfter.isPresent()
                                                 && !startingAfter.get().isEmpty(),
@@ -242,7 +242,7 @@ public class AsyncRawThreatModelingClient {
      * <p>This immediately starts the workflow which auto-executes both analysis phases.
      * Client should poll /status to check progress.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> create(
             StartThreatModelingWorkflowBody request) {
         return create(request, null);
     }
@@ -253,7 +253,7 @@ public class AsyncRawThreatModelingClient {
      * <p>This immediately starts the workflow which auto-executes both analysis phases.
      * Client should poll /status to check progress.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> create(
             StartThreatModelingWorkflowBody request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -292,7 +292,7 @@ public class AsyncRawThreatModelingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<StartWorkflowResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -300,7 +300,7 @@ public class AsyncRawThreatModelingClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, StartWorkflowResponse.class),
                                 response));
                         return;
@@ -361,7 +361,7 @@ public class AsyncRawThreatModelingClient {
      * <p>Get current status of threat modeling workflow (polling endpoint).
      * Returns immediately with current state.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ThreatModelingStatus>> status(String workflowId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingStatus>> status(String workflowId) {
         return status(workflowId, StatusThreatModelingRequest.builder().build());
     }
 
@@ -370,7 +370,7 @@ public class AsyncRawThreatModelingClient {
      * <p>Get current status of threat modeling workflow (polling endpoint).
      * Returns immediately with current state.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ThreatModelingStatus>> status(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingStatus>> status(
             String workflowId, RequestOptions requestOptions) {
         return status(workflowId, StatusThreatModelingRequest.builder().build(), requestOptions);
     }
@@ -380,7 +380,7 @@ public class AsyncRawThreatModelingClient {
      * <p>Get current status of threat modeling workflow (polling endpoint).
      * Returns immediately with current state.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ThreatModelingStatus>> status(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingStatus>> status(
             String workflowId, StatusThreatModelingRequest request) {
         return status(workflowId, request, null);
     }
@@ -390,7 +390,7 @@ public class AsyncRawThreatModelingClient {
      * <p>Get current status of threat modeling workflow (polling endpoint).
      * Returns immediately with current state.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ThreatModelingStatus>> status(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingStatus>> status(
             String workflowId, StatusThreatModelingRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -421,7 +421,7 @@ public class AsyncRawThreatModelingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ThreatModelingStatus>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingStatus>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -429,7 +429,7 @@ public class AsyncRawThreatModelingClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ThreatModelingStatus.class),
                                 response));
                         return;
@@ -489,7 +489,7 @@ public class AsyncRawThreatModelingClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the final result of a completed threat modeling workflow.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ThreatModelingResult>> get(String workflowId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingResult>> get(String workflowId) {
         return get(workflowId, GetThreatModelingRequest.builder().build());
     }
 
@@ -497,7 +497,7 @@ public class AsyncRawThreatModelingClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the final result of a completed threat modeling workflow.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ThreatModelingResult>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingResult>> get(
             String workflowId, RequestOptions requestOptions) {
         return get(workflowId, GetThreatModelingRequest.builder().build(), requestOptions);
     }
@@ -506,7 +506,7 @@ public class AsyncRawThreatModelingClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the final result of a completed threat modeling workflow.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ThreatModelingResult>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingResult>> get(
             String workflowId, GetThreatModelingRequest request) {
         return get(workflowId, request, null);
     }
@@ -515,7 +515,7 @@ public class AsyncRawThreatModelingClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Get the final result of a completed threat modeling workflow.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ThreatModelingResult>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingResult>> get(
             String workflowId, GetThreatModelingRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -545,7 +545,7 @@ public class AsyncRawThreatModelingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ThreatModelingResult>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ThreatModelingResult>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -553,7 +553,7 @@ public class AsyncRawThreatModelingClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ThreatModelingResult.class),
                                 response));
                         return;
@@ -618,7 +618,7 @@ public class AsyncRawThreatModelingClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a threat modeling result from storage.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String workflowId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String workflowId) {
         return delete(workflowId, DeleteThreatModelingRequest.builder().build());
     }
 
@@ -626,7 +626,8 @@ public class AsyncRawThreatModelingClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a threat modeling result from storage.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String workflowId, RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
+            String workflowId, RequestOptions requestOptions) {
         return delete(workflowId, DeleteThreatModelingRequest.builder().build(), requestOptions);
     }
 
@@ -634,7 +635,7 @@ public class AsyncRawThreatModelingClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a threat modeling result from storage.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String workflowId, DeleteThreatModelingRequest request) {
         return delete(workflowId, request, null);
     }
@@ -643,7 +644,7 @@ public class AsyncRawThreatModelingClient {
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Delete a threat modeling result from storage.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String workflowId, DeleteThreatModelingRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -676,14 +677,14 @@ public class AsyncRawThreatModelingClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";

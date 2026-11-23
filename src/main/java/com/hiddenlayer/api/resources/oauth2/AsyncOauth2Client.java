@@ -3,8 +3,8 @@
  */
 package com.hiddenlayer.api.resources.oauth2;
 
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.types.AccessToken;
 import com.hiddenlayer.api.types.AccessTokenRequest;
@@ -32,7 +32,7 @@ public class AsyncOauth2Client {
      * <p>Send the token as <code>Authorization: Bearer &lt;access_token&gt;</code> on every other request. It expires <code>expires_in</code> seconds after it is issued, so request a new one before then.</p>
      */
     public CompletableFuture<AccessToken> token(AccessTokenRequest request) {
-        CompletableFuture<HiddenLayerHttpResponse<AccessToken>> rawFuture = this.rawClient.token(request);
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AccessToken>> rawFuture = this.rawClient.token(request);
         CompletableFuture<AccessToken> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {
             if (future.isCancelled()) {
@@ -47,7 +47,7 @@ public class AsyncOauth2Client {
      * <p>Send the token as <code>Authorization: Bearer &lt;access_token&gt;</code> on every other request. It expires <code>expires_in</code> seconds after it is issued, so request a new one before then.</p>
      */
     public CompletableFuture<AccessToken> token(AccessTokenRequest request, RequestOptions requestOptions) {
-        CompletableFuture<HiddenLayerHttpResponse<AccessToken>> rawFuture =
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<AccessToken>> rawFuture =
                 this.rawClient.token(request, requestOptions);
         CompletableFuture<AccessToken> future = rawFuture.thenApply(response -> response.body());
         future.whenComplete((result_, throwable_) -> {

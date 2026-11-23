@@ -4,11 +4,11 @@
 package com.hiddenlayer.api.resources.compliance.rulesets.settings;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.BodyProperties;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.PathSegments;
 import com.hiddenlayer.api.core.QueryStringMapper;
@@ -51,19 +51,21 @@ public class AsyncRawSettingsClient {
         this.clientOptions = clientOptions;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<ListSettingsResponse>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ListSettingsResponse>> list() {
         return list(ListSettingsRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<ListSettingsResponse>> list(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ListSettingsResponse>> list(
+            RequestOptions requestOptions) {
         return list(ListSettingsRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<ListSettingsResponse>> list(ListSettingsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ListSettingsResponse>> list(
+            ListSettingsRequest request) {
         return list(request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<ListSettingsResponse>> list(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ListSettingsResponse>> list(
             ListSettingsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -100,7 +102,7 @@ public class AsyncRawSettingsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ListSettingsResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListSettingsResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -108,7 +110,7 @@ public class AsyncRawSettingsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ListSettingsResponse.class),
                                 response));
                         return;
@@ -159,11 +161,12 @@ public class AsyncRawSettingsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SettingsId>> create(String id, CreateSettingsRequest request) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SettingsId>> create(
+            String id, CreateSettingsRequest request) {
         return create(id, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SettingsId>> create(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SettingsId>> create(
             String id, CreateSettingsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -204,7 +207,7 @@ public class AsyncRawSettingsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SettingsId>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SettingsId>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -212,7 +215,7 @@ public class AsyncRawSettingsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, SettingsId.class), response));
                         return;
                     }
@@ -267,21 +270,22 @@ public class AsyncRawSettingsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SettingsDetailsWithSchema>> get(String id, String settingsId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SettingsDetailsWithSchema>> get(
+            String id, String settingsId) {
         return get(id, settingsId, GetSettingsRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SettingsDetailsWithSchema>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SettingsDetailsWithSchema>> get(
             String id, String settingsId, RequestOptions requestOptions) {
         return get(id, settingsId, GetSettingsRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SettingsDetailsWithSchema>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SettingsDetailsWithSchema>> get(
             String id, String settingsId, GetSettingsRequest request) {
         return get(id, settingsId, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<SettingsDetailsWithSchema>> get(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<SettingsDetailsWithSchema>> get(
             String id, String settingsId, GetSettingsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -317,7 +321,8 @@ public class AsyncRawSettingsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<SettingsDetailsWithSchema>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<SettingsDetailsWithSchema>> future =
+                new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -325,7 +330,7 @@ public class AsyncRawSettingsClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(
                                         responseBodyString, SettingsDetailsWithSchema.class),
                                 response));
@@ -382,21 +387,22 @@ public class AsyncRawSettingsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> update(String id, String settingsId, Settings body) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> update(
+            String id, String settingsId, Settings body) {
         return update(id, settingsId, UpdateSettingsRequest.builder().body(body).build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> update(
             String id, String settingsId, Settings body, RequestOptions requestOptions) {
         return update(id, settingsId, UpdateSettingsRequest.builder().body(body).build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> update(
             String id, String settingsId, UpdateSettingsRequest request) {
         return update(id, settingsId, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> update(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> update(
             String id, String settingsId, UpdateSettingsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -441,14 +447,14 @@ public class AsyncRawSettingsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
@@ -513,21 +519,21 @@ public class AsyncRawSettingsClient {
         return future;
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(String id, String settingsId) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(String id, String settingsId) {
         return delete(id, settingsId, DeleteSettingsRequest.builder().build());
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String id, String settingsId, RequestOptions requestOptions) {
         return delete(id, settingsId, DeleteSettingsRequest.builder().build(), requestOptions);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String id, String settingsId, DeleteSettingsRequest request) {
         return delete(id, settingsId, request, null);
     }
 
-    public CompletableFuture<HiddenLayerHttpResponse<Void>> delete(
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> delete(
             String id, String settingsId, DeleteSettingsRequest request, RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
@@ -562,14 +568,14 @@ public class AsyncRawSettingsClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<Void>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<Void>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(null, response));
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(null, response));
                         return;
                     }
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";

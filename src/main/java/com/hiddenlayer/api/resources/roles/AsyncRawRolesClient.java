@@ -4,10 +4,10 @@
 package com.hiddenlayer.api.resources.roles;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hiddenlayer.api.core.BaseHiddenLayerClientHttpResponse;
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
 import com.hiddenlayer.api.core.HiddenLayerException;
-import com.hiddenlayer.api.core.HiddenLayerHttpResponse;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.core.RequestOptions;
 import com.hiddenlayer.api.core.RetryInterceptor;
@@ -60,7 +60,7 @@ public class AsyncRawRolesClient {
      * </ul>
      * <p>Note: Some resources are restricted to specific service integrations and are not accessible through these roles.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ListRolesResponse>> list() {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ListRolesResponse>> list() {
         return list(null);
     }
 
@@ -92,7 +92,7 @@ public class AsyncRawRolesClient {
      * </ul>
      * <p>Note: Some resources are restricted to specific service integrations and are not accessible through these roles.</p>
      */
-    public CompletableFuture<HiddenLayerHttpResponse<ListRolesResponse>> list(RequestOptions requestOptions) {
+    public CompletableFuture<BaseHiddenLayerClientHttpResponse<ListRolesResponse>> list(RequestOptions requestOptions) {
         HttpUrl.Builder httpUrl = HttpUrl.parse(this.clientOptions.environment().getUrl())
                 .newBuilder()
                 .addPathSegments("api/v2/roles");
@@ -120,7 +120,7 @@ public class AsyncRawRolesClient {
                                     requestOptions.getMaxRetries().get()))
                     .build();
         }
-        CompletableFuture<HiddenLayerHttpResponse<ListRolesResponse>> future = new CompletableFuture<>();
+        CompletableFuture<BaseHiddenLayerClientHttpResponse<ListRolesResponse>> future = new CompletableFuture<>();
         RetryInterceptor.AsyncCall okhttpCall = RetryInterceptor.newAsyncCall(client, okhttpRequest);
         okhttpCall.enqueue(new Callback() {
             @Override
@@ -128,7 +128,7 @@ public class AsyncRawRolesClient {
                 try (ResponseBody responseBody = response.body()) {
                     String responseBodyString = responseBody != null ? responseBody.string() : "{}";
                     if (response.isSuccessful()) {
-                        future.complete(new HiddenLayerHttpResponse<>(
+                        future.complete(new BaseHiddenLayerClientHttpResponse<>(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, ListRolesResponse.class),
                                 response));
                         return;
