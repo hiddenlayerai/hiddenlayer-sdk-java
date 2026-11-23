@@ -4,6 +4,8 @@
 
 [Full diff](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.4.0...v2.5.0)
 
+> 2.5.0 was tagged but never published to Maven Central: its publish was cancelled. These changes first reach Maven Central in 3.0.0.
+
 
 ### Features
 
