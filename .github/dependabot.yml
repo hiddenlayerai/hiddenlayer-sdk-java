@@ -1,0 +1,12 @@
+version: 2
+updates:
+  # The ledger and its lockfile are .fernignored, so this repo owns their versions.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+
+  # No gradle ecosystem: Fern writes build.gradle on every run, so a bump here merges without a
+  # changeset, never releases, and is undone by the next Fern push.
+  # No github-actions ecosystem: every workflow here is copied from hl-sdk-gen's SDK repo
+  # template, which pins the actions and is where a bump has to start.
