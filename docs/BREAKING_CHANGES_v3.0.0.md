@@ -167,7 +167,7 @@ InteractionsRequest request = InteractionsRequest.builder()
     .build();
 ```
 
-Nested request types are top-level classes named after the specification's schemas (`InteractionsMetadata`), where v2.x nested them in the `Params` class (`InteractionAnalyzeParams.Metadata`). Integers the specification doesn't mark as 64-bit are `int` and `Integer`, where v2.x used `Long`.
+Nested request types are top-level classes named after the specification's schemas (`InteractionsMetadata`), where v2.x nested them in the `Params` class (`InteractionAnalyzeParams.Metadata`). Integers are `long` and `Long`, as in v2.x, with two exceptions that are `int` and `Integer`: those the specification marks as 32-bit or limits to a 32-bit maximum, such as `limit` and `pageSize`, and the `offset` a paginated request starts from.
 
 `toBuilder()` is replaced by `builder().from(existing)`. `putAdditionalHeader`, `putAdditionalQueryParam` and `putAdditionalBodyProperty` on a `Params` builder are replaced by [request options](#request-options).
 
@@ -358,7 +358,6 @@ The raw response has no `statusCode()`: a raw method returns only for a 2xx stat
 - A scan that runs longer than about 25 minutes no longer fails with `timeout value is negative`: the delay between polls stays at its 30-second cap.
 - `AsyncModelScanner` reads and uploads at most ten parts at a time, where v2.x could hold every part of a file in memory at once.
 - The asynchronous scans retry a scan that isn't found yet when reading its file results too, as the synchronous ones did, and fail their future instead of leaving it pending when the scanner is closed mid-scan.
-- A file larger than 2,147,483,647 bytes is refused before it is uploaded, with a `HiddenLayerException` that says so. The specification types the upload's content length as a 32-bit integer; v2.x sent it as a `Long`.
 - The default ignore patterns of a folder scan are public, as `ScanFolderOptions.DEFAULT_IGNORE_FILE_PATTERNS`.
 
 ## Beta warnings

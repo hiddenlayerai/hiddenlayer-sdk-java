@@ -95,13 +95,8 @@ final class ScanUploads {
     }
 
     static AddFileRequest addRequest(Path file, long fileSize) {
-        // The generated client declares file-content-length as a 32-bit integer.
-        if (fileSize > Integer.MAX_VALUE) {
-            throw new HiddenLayerException(file + " is " + fileSize + " bytes, and this version of the SDK uploads"
-                    + " files of up to " + Integer.MAX_VALUE + " bytes");
-        }
         return AddFileRequest.builder()
-                .fileContentLength((int) fileSize)
+                .fileContentLength(fileSize)
                 .fileName(file.getFileName().toString())
                 .build();
     }

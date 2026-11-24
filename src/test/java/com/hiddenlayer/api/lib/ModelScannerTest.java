@@ -293,16 +293,12 @@ final class ModelScannerTest {
     }
 
     @Test
-    void fileTooLargeForTheGeneratedClientIsRefusedBeforeItIsAdded() {
-        HiddenLayerException failure = assertThrows(
-                HiddenLayerException.class,
-                () -> ScanUploads.addRequest(folder.resolve("weights.bin"), Integer.MAX_VALUE + 1L));
+    void fileLargerThanTwoGibibytesIsAddedWithItsLength() {
+        long fileSize = Integer.MAX_VALUE + 1L;
 
-        assertTrue(failure.getMessage().contains("2147483648 bytes"), failure.getMessage());
         assertEquals(
-                Integer.MAX_VALUE,
-                ScanUploads.addRequest(folder.resolve("weights.bin"), Integer.MAX_VALUE)
-                        .getFileContentLength());
+                fileSize,
+                ScanUploads.addRequest(folder.resolve("weights.bin"), fileSize).getFileContentLength());
     }
 
     @Test
