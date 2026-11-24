@@ -141,7 +141,7 @@ try {
 }
 ```
 
-Every exception the library throws is a `HiddenLayerException`: a request that times out or can't connect throws one with the `IOException` as its cause.
+A request that times out or can't connect throws a `HiddenLayerException` with the `IOException` as its cause. A missing credential throws an `IllegalStateException` when the client is built, and an invalid argument an `IllegalArgumentException`.
 
 ## Pagination
 
@@ -159,7 +159,7 @@ for (ModelCardV4 card : client.models().cards().list()) {
 
 ## Retries and timeouts
 
-408, 429 and 5xx responses are retried twice by default, with exponential backoff. Requests time out after 60 seconds. Both can be set for the client or per request:
+408, 429 and 5xx responses are retried twice by default, with exponential backoff. A request that times out or loses its connection isn't retried, except while a scanner polls for a scan's results. Requests time out after 60 seconds. Retries and the timeout can be set for the client or per request:
 
 ```java
 import com.hiddenlayer.api.core.RequestOptions;
@@ -177,9 +177,11 @@ import com.hiddenlayer.api.types.SensorSorItemResponse;
 
 BaseHiddenLayerClientHttpResponse<SensorSorItemResponse> response =
     client.sensors().withRawResponse().retrieve(sensorId);
-System.out.println(response.headers().get("x-request-id"));
+response.headers().forEach((name, values) -> System.out.println(name + ": " + values));
 SensorSorItemResponse sensor = response.body();
 ```
+
+Header names keep the case the server sent them in.
 
 ## Custom HTTP client
 
@@ -197,7 +199,7 @@ OkHttpClient httpClient = new OkHttpClient.Builder()
 HiddenLayerClient client = new HiddenLayerClientBuilder().httpClient(httpClient).build();
 ```
 
-The exchange of a client ID and secret for an access token doesn't go through that client; it uses a default one.
+The client you pass keeps the SDK's retries, and its own timeouts apply unless you call `timeout` on the builder. Two kinds of request don't go through it: the exchange of a client ID and secret for an access token, and the scanners' uploads of file parts to presigned URLs.
 
 ## Beta APIs
 

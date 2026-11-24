@@ -121,4 +121,13 @@ final class ClientEnvironmentTest {
         assertNull(environment(ClientEnvironment.BASE_URL, "  ").baseUrl());
         assertNull(environment().baseUrl());
     }
+
+    @Test
+    void baseUrlWithoutASchemeIsRefusedByName() {
+        IllegalStateException failure = assertThrows(
+                IllegalStateException.class, () -> environment(ClientEnvironment.BASE_URL, "api.us.hiddenlayer.ai")
+                        .baseUrl());
+
+        assertTrue(failure.getMessage().startsWith("HIDDENLAYER_BASE_URL must be"), failure.getMessage());
+    }
 }

@@ -29,12 +29,16 @@ public class AsyncCommunityScanner implements AutoCloseable {
      * @return A future of the scan results
      */
     public CompletableFuture<ScanReportOfRecordV3> communityScan(CommunityScanOptions options) {
-        return client.scans().jobs().request(CommunityScans.jobRequest(options)).thenCompose(scanJob -> {
-            String scanId = CommunityScans.scanId(scanJob);
-            return options.getWaitForResults()
-                    ? ScanUtils.waitForScanResultsAsync(client, scanId, executor)
-                    : ScanUtils.getScanResultsAsync(client, scanId, executor);
-        });
+        // From the scanner's thread: issuing a request can block on the token exchange, and throw its failure.
+        return CompletableFuture.supplyAsync(
+                        () -> client.scans().jobs().request(CommunityScans.jobRequest(options)), executor)
+                .thenCompose(request -> request)
+                .thenCompose(scanJob -> {
+                    String scanId = CommunityScans.scanId(scanJob);
+                    return options.getWaitForResults()
+                            ? ScanUtils.waitForScanResultsAsync(client, scanId, executor)
+                            : ScanUtils.getScanResultsAsync(client, scanId, executor);
+                });
     }
 
     /** Scan a model at a remote location as version {@code "main"}, waiting for results. */
@@ -104,7 +108,7 @@ public class AsyncCommunityScanner implements AutoCloseable {
                 modelName, modelPath, modelSource, modelVersion, waitForResults, requestSource, origin));
     }
 
-    /** Stops the scanner's threads once the scans already running have finished. */
+    /** Stops the scanner's threads. A scan still waiting for its results fails at its next poll. */
     @Override
     public void close() {
         executor.shutdown();

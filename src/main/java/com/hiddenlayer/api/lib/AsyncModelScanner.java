@@ -238,7 +238,7 @@ public class AsyncModelScanner implements AutoCloseable {
                 origin));
     }
 
-    /** Stops the scanner's threads once the scans already running have finished. */
+    /** Stops the scanner's threads. A scan still uploading or waiting for its results fails at its next step. */
     @Override
     public void close() {
         executor.shutdown();

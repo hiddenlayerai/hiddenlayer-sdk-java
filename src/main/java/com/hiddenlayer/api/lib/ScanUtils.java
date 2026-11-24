@@ -15,6 +15,7 @@ import com.hiddenlayer.api.types.ScanFileResultWithComplianceV3;
 import com.hiddenlayer.api.types.ScanReportOfRecordV3;
 import com.hiddenlayer.api.types.ScanReportSummaryResponseV3;
 import com.hiddenlayer.api.types.Status;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,6 +43,10 @@ public final class ScanUtils {
     static final int FILE_RESULTS_MAX_PAGES = 10_000;
 
     static final int MAX_AVAILABILITY_ATTEMPTS = 5;
+
+    // The generated client retries a response's status, not a request that timed out or lost its connection, as
+    // 2.x's did. This many of those in a row end a wait for results.
+    static final int MAX_POLL_NETWORK_FAILURES = 3;
 
     private static final Logger LOGGER = Logger.getLogger("ScanUtils");
 
@@ -95,6 +100,7 @@ public final class ScanUtils {
      * @param client The HiddenLayer client
      * @param scanId The ID of the scan to wait for
      * @return The finished scan's report
+     * @throws HiddenLayerException when three status polls in a row time out or lose their connection
      */
     public static ScanReportOfRecordV3 waitForScanResults(BaseHiddenLayerClient client, String scanId) {
         return waitForScanResults(client, scanId, ScanPacing.DEFAULT);
@@ -102,15 +108,23 @@ public final class ScanUtils {
 
     static ScanReportOfRecordV3 waitForScanResults(BaseHiddenLayerClient client, String scanId, ScanPacing pacing) {
         int polls = 0;
+        int networkFailures = 0;
         while (true) {
             ScanReportSummaryResponseV3 summary = null;
             try {
                 summary = client.scans().results().retrieveSummary(scanId);
+                networkFailures = 0;
             } catch (HiddenLayerApiException e) {
                 if (!isNotFound(e)) {
                     throw e;
                 }
+                networkFailures = 0;
                 LOGGER.info("scan not found yet, retrying...");
+            } catch (HiddenLayerException e) {
+                networkFailures++;
+                if (!mayPollAgain(e, networkFailures)) {
+                    throw e;
+                }
             }
             if (summary != null) {
                 if (isFinished(summary.getStatus())) {
@@ -159,7 +173,7 @@ public final class ScanUtils {
     static CompletableFuture<ScanReportOfRecordV3> waitForScanResultsAsync(
             AsyncBaseHiddenLayerClient client, String scanId, ScheduledExecutorService executor, ScanPacing pacing) {
         CompletableFuture<ScanReportOfRecordV3> result = new CompletableFuture<>();
-        pollUntilFinished(new AsyncRead(client, scanId, executor, pacing), 0, result);
+        pollUntilFinished(new AsyncRead(client, scanId, executor, pacing), 0, 0, result);
         return result;
     }
 
@@ -261,19 +275,24 @@ public final class ScanUtils {
                 })));
     }
 
-    private static void pollUntilFinished(AsyncRead read, int polls, CompletableFuture<ScanReportOfRecordV3> result) {
+    private static void pollUntilFinished(
+            AsyncRead read, int polls, int networkFailures, CompletableFuture<ScanReportOfRecordV3> result) {
         guard(result, () -> read.client
                 .scans()
                 .results()
                 .retrieveSummary(read.scanId)
                 .whenComplete((summary, failure) -> guard(result, () -> {
+                    int failuresInARow = 0;
                     if (failure != null) {
                         Throwable cause = unwrap(failure);
-                        if (!isNotFound(cause)) {
+                        if (isNotFound(cause)) {
+                            LOGGER.info("scan not found yet, retrying...");
+                        } else if (mayPollAgain(cause, networkFailures + 1)) {
+                            failuresInARow = networkFailures + 1;
+                        } else {
                             result.completeExceptionally(cause);
                             return;
                         }
-                        LOGGER.info("scan not found yet, retrying...");
                     } else if (isFinished(summary.getStatus())) {
                         collectFileResultsAsync(read)
                                 .whenComplete((files, filesFailure) -> guard(result, () -> {
@@ -288,11 +307,12 @@ public final class ScanUtils {
                         LOGGER.info("scan status: " + summary.getStatus());
                     }
                     int poll = polls + 1;
+                    int failuresSoFar = failuresInARow;
                     schedule(
                             read,
                             read.pacing.pollDelayMillis(poll),
                             result,
-                            () -> pollUntilFinished(read, poll, result));
+                            () -> pollUntilFinished(read, poll, failuresSoFar, result));
                 })));
     }
 
@@ -332,7 +352,7 @@ public final class ScanUtils {
     private static void guard(CompletableFuture<?> result, Runnable step) {
         try {
             step.run();
-        } catch (RuntimeException e) {
+        } catch (Throwable e) {
             result.completeExceptionally(e);
         }
     }
@@ -369,6 +389,18 @@ public final class ScanUtils {
 
     private static boolean isNotFound(Throwable failure) {
         return failure instanceof HiddenLayerApiException && ((HiddenLayerApiException) failure).statusCode() == 404;
+    }
+
+    /** Whether a status poll that failed in transit is tried again: all but the third such failure in a row. */
+    private static boolean mayPollAgain(Throwable failure, int networkFailures) {
+        boolean isNetworkFailure = failure instanceof HiddenLayerException
+                && !(failure instanceof HiddenLayerApiException)
+                && failure.getCause() instanceof IOException;
+        if (!isNetworkFailure || networkFailures >= MAX_POLL_NETWORK_FAILURES) {
+            return false;
+        }
+        LOGGER.warning("scan status request failed, retrying: " + failure.getCause());
+        return true;
     }
 
     private static IllegalStateException tooManyPages(String scanId) {

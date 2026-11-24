@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,6 +23,9 @@ import java.util.stream.Stream;
 /** What the synchronous and asynchronous model scanners share: choosing the files and uploading their parts. */
 final class ScanUploads {
     static final String REQUESTING_ENTITY = "hiddenlayer-java-sdk";
+
+    // The client's default request timeout. Without one, a stalled upload never returns.
+    static final int UPLOAD_TIMEOUT_MILLIS = 60_000;
 
     private ScanUploads() {}
 
@@ -71,8 +75,8 @@ final class ScanUploads {
                         return isAllowed && !matchesAny(fileName, ignorePatterns);
                     })
                     .collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+        } catch (IOException | UncheckedIOException e) {
+            throw new HiddenLayerException("Failed to list the files under " + folder, e);
         }
     }
 
@@ -106,7 +110,7 @@ final class ScanUploads {
         try {
             return Files.size(file);
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw new HiddenLayerException("Failed to read the size of " + file, e);
         }
     }
 
@@ -116,6 +120,12 @@ final class ScanUploads {
                 part.getUploadUrl().orElseThrow(() -> new HiddenLayerException("Part upload URL must not be null"));
         long startOffset = part.getStartOffset().map(Number::longValue).orElse(0L);
         long endOffset = part.getEndOffset().map(Number::longValue).orElse(fileSize);
+        // The offsets come from the API: out of range, they would upload bytes the file doesn't have.
+        boolean isWithinFile = startOffset >= 0 && startOffset <= endOffset && endOffset <= fileSize;
+        if (!isWithinFile || endOffset - startOffset > Integer.MAX_VALUE) {
+            throw new HiddenLayerException("Part " + startOffset + " to " + endOffset + " is not a part of " + file
+                    + ", which has " + fileSize + " bytes");
+        }
         putPart(uploadUrl, readPart(file, startOffset, endOffset));
     }
 
@@ -123,24 +133,27 @@ final class ScanUploads {
         byte[] partData = new byte[Math.toIntExact(endOffset - startOffset)];
         try (RandomAccessFile source = new RandomAccessFile(file.toFile(), "r")) {
             source.seek(startOffset);
-            int totalRead = 0;
-            while (totalRead < partData.length) {
-                int read = source.read(partData, totalRead, partData.length - totalRead);
-                if (read == -1) {
-                    break;
-                }
-                totalRead += read;
-            }
+            source.readFully(partData);
             return partData;
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw new HiddenLayerException(
+                    "Failed to read bytes " + startOffset + " to " + endOffset + " of " + file, e);
         }
     }
 
     static void putPart(String uploadUrl, byte[] partData) {
+        URL url;
+        try {
+            url = new URL(uploadUrl);
+        } catch (MalformedURLException e) {
+            // Not chained: its message repeats the URL, signature included.
+            throw new HiddenLayerException("Part upload URL is not a URL: " + withoutQuery(uploadUrl));
+        }
         HttpURLConnection connection = null;
         try {
-            connection = (HttpURLConnection) new URL(uploadUrl).openConnection();
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(UPLOAD_TIMEOUT_MILLIS);
+            connection.setReadTimeout(UPLOAD_TIMEOUT_MILLIS);
             connection.setRequestMethod("PUT");
             connection.setRequestProperty("Content-Type", "application/octet-stream");
             connection.setRequestProperty("Content-Length", Integer.toString(partData.length));

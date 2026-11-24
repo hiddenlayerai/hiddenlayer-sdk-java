@@ -81,8 +81,15 @@ final class ModelScannerTest {
         return file;
     }
 
-    /** Scripts a whole scan of files whose uploads are each split into two parts, at byte 4. */
     private void scriptScan(int fileSize) {
+        scriptScan(fileSize, "done");
+    }
+
+    /**
+     * Scripts a whole scan of files whose uploads are each split into two parts, at byte 4, and whose summary
+     * reports each status in turn.
+     */
+    private void scriptScan(int fileSize, String... statuses) {
         api.reply("POST", UPLOAD_PATH, 200, "{\"scan_id\":\"" + SCAN_ID + "\"}");
         api.reply(
                 "POST",
@@ -97,7 +104,9 @@ final class ModelScannerTest {
         api.reply("PUT", "/presigned/part-2", 200, "");
         api.reply("PATCH", ADD_FILE_PATH + "/upload-1", 200, "{\"scan_id\":\"" + SCAN_ID + "\"}");
         api.reply("PATCH", SCAN_UPLOAD_PATH, 200, "{\"scan_id\":\"" + SCAN_ID + "\"}");
-        api.reply("GET", SUMMARY_PATH, 200, summary("done"));
+        for (String status : statuses) {
+            api.reply("GET", SUMMARY_PATH, 200, summary(status));
+        }
         api.reply("GET", FILES_PATH, 200, filesPage("", "weights.bin"));
     }
 
@@ -357,5 +366,61 @@ final class ModelScannerTest {
                 .get(10, TimeUnit.SECONDS));
 
         assertEquals(400, ((HiddenLayerApiException) failure.getCause()).statusCode());
+    }
+
+    @Test
+    void scanFileReturnsTheReportAsItStandsWhenToldNotToWait() throws IOException {
+        Path model = write("weights.bin", "0123456789");
+        scriptScan(10, "running", "done");
+
+        ScanReportOfRecordV3 report = client.modelScanner().scanFile("fraud-detector", model.toString(), "7", false);
+
+        assertEquals(Status.RUNNING, report.getStatus());
+        assertEquals(1, api.received("GET", SUMMARY_PATH).size());
+    }
+
+    @Test
+    void asyncScanFileWaitsForTheScanToFinishByDefault() throws Exception {
+        Path model = write("weights.bin", "0123456789");
+        scriptScan(10, "running", "done");
+
+        ScanReportOfRecordV3 report = asyncClient
+                .modelScanner()
+                .scanFile("fraud-detector", model.toString(), "7")
+                .get(30, TimeUnit.SECONDS);
+
+        assertEquals(Status.DONE, report.getStatus());
+        assertEquals(2, api.received("GET", SUMMARY_PATH).size());
+    }
+
+    @Test
+    void partThatReachesPastTheFileIsRefusedBeforeItIsRead() throws IOException {
+        Path model = write("weights.bin", "0123456789");
+        scriptScan(Integer.MAX_VALUE);
+
+        HiddenLayerException failure = assertThrows(
+                HiddenLayerException.class, () -> client.modelScanner().scanFile("fraud-detector", model.toString()));
+
+        assertTrue(failure.getMessage().contains("is not a part of"), failure.getMessage());
+        assertTrue(api.received("PUT", "/presigned/part-2").isEmpty());
+    }
+
+    @Test
+    void uploadUrlThatIsNotAUrlFailsWithoutRepeatingItsSignature() {
+        HiddenLayerException failure = assertThrows(
+                HiddenLayerException.class, () -> ScanUploads.putPart("/presigned/part-1?" + SIGNATURE, new byte[0]));
+
+        assertFalse(failure.getMessage().contains(SIGNATURE), failure.getMessage());
+        assertNull(failure.getCause());
+    }
+
+    @Test
+    void folderThatCannotBeListedFailsAsAHiddenLayerException() {
+        HiddenLayerException failure = assertThrows(
+                HiddenLayerException.class,
+                () -> ScanUploads.filteredFiles(
+                        folder.resolve("missing"), Collections.<String>emptyList(), Collections.<String>emptyList()));
+
+        assertTrue(failure.getCause() instanceof IOException, String.valueOf(failure.getCause()));
     }
 }

@@ -2,9 +2,11 @@ package com.hiddenlayer.api;
 
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.Environment;
+import com.hiddenlayer.api.core.RetryInterceptor;
 import com.hiddenlayer.api.lib.BetaWarningInterceptor;
 import com.hiddenlayer.api.lib.ClientEnvironment;
 import com.hiddenlayer.api.lib.SdkIdentityInterceptor;
+import okhttp3.OkHttpClient;
 
 /**
  * Builds an {@link AsyncHiddenLayerClient}.
@@ -21,7 +23,7 @@ import com.hiddenlayer.api.lib.SdkIdentityInterceptor;
  * }</pre>
  */
 public class AsyncHiddenLayerClientBuilder extends AsyncBaseHiddenLayerClientBuilder<AsyncHiddenLayerClientBuilder> {
-    private final ClientEnvironment processEnvironment = ClientEnvironment.process();
+    private final ClientEnvironment processEnvironment;
 
     private String token;
 
@@ -30,6 +32,15 @@ public class AsyncHiddenLayerClientBuilder extends AsyncBaseHiddenLayerClientBui
     private String clientSecret;
 
     private boolean isUrlSet;
+
+    public AsyncHiddenLayerClientBuilder() {
+        this(ClientEnvironment.process());
+    }
+
+    /** @param processEnvironment What stands in for the process environment, for a test */
+    protected AsyncHiddenLayerClientBuilder(ClientEnvironment processEnvironment) {
+        this.processEnvironment = processEnvironment;
+    }
 
     @Override
     protected AsyncHiddenLayerClientBuilder self() {
@@ -63,10 +74,23 @@ public class AsyncHiddenLayerClientBuilder extends AsyncBaseHiddenLayerClientBui
         return super.environment(environment);
     }
 
+    /** @throws IllegalArgumentException when {@code url} is not an http or https URL */
     @Override
     public AsyncHiddenLayerClientBuilder url(String url) {
+        if (!ClientEnvironment.isHttpUrl(url)) {
+            throw new IllegalArgumentException("url must be an http or https URL");
+        }
         this.isUrlSet = true;
         return super.url(url);
+    }
+
+    /**
+     * Sets the OkHttp client requests are sent with. The SDK's retries are added to it unless it has a {@link
+     * RetryInterceptor} already, and its own timeouts apply unless {@link #timeout} is called.
+     */
+    @Override
+    public AsyncHiddenLayerClientBuilder httpClient(OkHttpClient httpClient) {
+        return super.httpClient(HiddenLayerClientBuilder.withRetries(httpClient));
     }
 
     @Override

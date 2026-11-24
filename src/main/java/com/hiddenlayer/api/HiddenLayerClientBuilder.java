@@ -2,9 +2,12 @@ package com.hiddenlayer.api;
 
 import com.hiddenlayer.api.core.ClientOptions;
 import com.hiddenlayer.api.core.Environment;
+import com.hiddenlayer.api.core.RetryInterceptor;
 import com.hiddenlayer.api.lib.BetaWarningInterceptor;
 import com.hiddenlayer.api.lib.ClientEnvironment;
 import com.hiddenlayer.api.lib.SdkIdentityInterceptor;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
 
 /**
  * Builds a {@link HiddenLayerClient}.
@@ -21,7 +24,7 @@ import com.hiddenlayer.api.lib.SdkIdentityInterceptor;
  * }</pre>
  */
 public class HiddenLayerClientBuilder extends BaseHiddenLayerClientBuilder<HiddenLayerClientBuilder> {
-    private final ClientEnvironment processEnvironment = ClientEnvironment.process();
+    private final ClientEnvironment processEnvironment;
 
     private String token;
 
@@ -30,6 +33,15 @@ public class HiddenLayerClientBuilder extends BaseHiddenLayerClientBuilder<Hidde
     private String clientSecret;
 
     private boolean isUrlSet;
+
+    public HiddenLayerClientBuilder() {
+        this(ClientEnvironment.process());
+    }
+
+    /** @param processEnvironment What stands in for the process environment, for a test */
+    protected HiddenLayerClientBuilder(ClientEnvironment processEnvironment) {
+        this.processEnvironment = processEnvironment;
+    }
 
     @Override
     protected HiddenLayerClientBuilder self() {
@@ -63,10 +75,23 @@ public class HiddenLayerClientBuilder extends BaseHiddenLayerClientBuilder<Hidde
         return super.environment(environment);
     }
 
+    /** @throws IllegalArgumentException when {@code url} is not an http or https URL */
     @Override
     public HiddenLayerClientBuilder url(String url) {
+        if (!ClientEnvironment.isHttpUrl(url)) {
+            throw new IllegalArgumentException("url must be an http or https URL");
+        }
         this.isUrlSet = true;
         return super.url(url);
+    }
+
+    /**
+     * Sets the OkHttp client requests are sent with. The SDK's retries are added to it unless it has a {@link
+     * RetryInterceptor} already, and its own timeouts apply unless {@link #timeout} is called.
+     */
+    @Override
+    public HiddenLayerClientBuilder httpClient(OkHttpClient httpClient) {
+        return super.httpClient(withRetries(httpClient));
     }
 
     @Override
@@ -93,5 +118,15 @@ public class HiddenLayerClientBuilder extends BaseHiddenLayerClientBuilder<Hidde
         }
         validateConfiguration();
         return new HiddenLayerClient(buildClientOptions());
+    }
+
+    // The generated options reconfigure a RetryInterceptor the client already has, and add none to one without.
+    static OkHttpClient withRetries(OkHttpClient httpClient) {
+        for (Interceptor interceptor : httpClient.interceptors()) {
+            if (interceptor instanceof RetryInterceptor) {
+                return httpClient;
+            }
+        }
+        return httpClient.newBuilder().addInterceptor(new RetryInterceptor(2)).build();
     }
 }

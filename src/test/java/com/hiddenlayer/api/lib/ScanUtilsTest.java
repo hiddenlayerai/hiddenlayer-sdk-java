@@ -17,6 +17,7 @@ import com.hiddenlayer.api.AsyncHiddenLayerClientBuilder;
 import com.hiddenlayer.api.HiddenLayerClient;
 import com.hiddenlayer.api.HiddenLayerClientBuilder;
 import com.hiddenlayer.api.core.HiddenLayerApiException;
+import com.hiddenlayer.api.core.HiddenLayerException;
 import com.hiddenlayer.api.types.ScanFileResultV3;
 import com.hiddenlayer.api.types.ScanFileResultWithComplianceV3;
 import com.hiddenlayer.api.types.ScanHighestDetectionSeverityWithSafe;
@@ -34,6 +35,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import okhttp3.Interceptor;
+import okhttp3.Response;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -300,5 +304,124 @@ final class ScanUtilsTest {
 
         assertSame(failure, ScanUtils.unwrap(new CompletionException(new ExecutionException(failure))));
         assertSame(failure, ScanUtils.unwrap(failure));
+    }
+
+    /** Fails the first requests for the scan's summary before they are sent, as a connection that drops would. */
+    private static final class DroppedConnections implements Interceptor {
+        private final int count;
+
+        private final AtomicInteger polls = new AtomicInteger();
+
+        private DroppedConnections(int count) {
+            this.count = count;
+        }
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            boolean isSummary = chain.request().url().encodedPath().equals(SUMMARY_PATH);
+            if (isSummary && polls.incrementAndGet() <= count) {
+                throw new IOException("Connection reset");
+            }
+            return chain.proceed(chain.request());
+        }
+    }
+
+    private HiddenLayerClient clientWith(Interceptor interceptor) {
+        return new HiddenLayerClientBuilder()
+                .token("test-token")
+                .url(api.url())
+                .maxRetries(0)
+                .addInterceptor(interceptor)
+                .build();
+    }
+
+    private AsyncHiddenLayerClient asyncClientWith(Interceptor interceptor) {
+        return new AsyncHiddenLayerClientBuilder()
+                .token("test-token")
+                .url(api.url())
+                .maxRetries(0)
+                .addInterceptor(interceptor)
+                .build();
+    }
+
+    @Test
+    void waitForScanResultsPollsThroughTwoDroppedConnectionsInARow() {
+        api.reply("GET", SUMMARY_PATH, 200, summary("done"));
+        api.reply("GET", FILES_PATH, 200, filesPage("", "weights.bin"));
+
+        try (HiddenLayerClient flaky = clientWith(new DroppedConnections(2))) {
+            assertEquals(
+                    Status.DONE,
+                    ScanUtils.waitForScanResults(flaky, SCAN_ID, immediate()).getStatus());
+        }
+    }
+
+    @Test
+    void waitForScanResultsGivesUpAtTheThirdDroppedConnectionInARow() {
+        api.reply("GET", SUMMARY_PATH, 200, summary("done"));
+        DroppedConnections dropped = new DroppedConnections(3);
+
+        try (HiddenLayerClient flaky = clientWith(dropped)) {
+            HiddenLayerException failure = assertThrows(
+                    HiddenLayerException.class, () -> ScanUtils.waitForScanResults(flaky, SCAN_ID, immediate()));
+
+            assertTrue(failure.getCause() instanceof IOException, String.valueOf(failure.getCause()));
+        }
+        assertEquals(3, dropped.polls.get());
+    }
+
+    @Test
+    void asyncWaitForScanResultsPollsThroughTwoDroppedConnectionsInARow() throws Exception {
+        api.reply("GET", SUMMARY_PATH, 200, summary("done"));
+        api.reply("GET", FILES_PATH, 200, filesPage("", "weights.bin"));
+
+        try (AsyncHiddenLayerClient flaky = asyncClientWith(new DroppedConnections(2))) {
+            ScanReportOfRecordV3 report =
+                    await(ScanUtils.waitForScanResultsAsync(flaky, SCAN_ID, executor, immediate()));
+
+            assertEquals(Status.DONE, report.getStatus());
+        }
+    }
+
+    @Test
+    void asyncWaitForScanResultsGivesUpAtTheThirdDroppedConnectionInARow() {
+        api.reply("GET", SUMMARY_PATH, 200, summary("done"));
+        DroppedConnections dropped = new DroppedConnections(3);
+
+        try (AsyncHiddenLayerClient flaky = asyncClientWith(dropped)) {
+            ExecutionException failure = assertThrows(
+                    ExecutionException.class,
+                    () -> await(ScanUtils.waitForScanResultsAsync(flaky, SCAN_ID, executor, immediate())));
+
+            assertTrue(failure.getCause() instanceof HiddenLayerException, String.valueOf(failure.getCause()));
+        }
+        assertEquals(3, dropped.polls.get());
+    }
+
+    @Test
+    void anErrorInsideAnAsyncStepFailsTheFutureInsteadOfLeavingItPending() {
+        api.reply("GET", SUMMARY_PATH, 200, summary("running"));
+        ScanPacing unlinkable = new ScanPacing() {
+            @Override
+            public long pageDelayMillis() {
+                return 0;
+            }
+
+            @Override
+            public long availabilityDelayMillis(int attempt) {
+                return 0;
+            }
+
+            @Override
+            public long pollDelayMillis(int attempt) {
+                throw new NoSuchMethodError("pollDelayMillis");
+            }
+        };
+
+        ExecutionException failure = assertThrows(
+                ExecutionException.class,
+                () -> await(ScanUtils.waitForScanResultsAsync(asyncClient, SCAN_ID, executor, unlinkable)));
+
+        assertTrue(failure.getCause() instanceof NoSuchMethodError, String.valueOf(failure.getCause()));
     }
 }

@@ -15,6 +15,7 @@ import com.hiddenlayer.api.HiddenLayerClientBuilder;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.lib.AsyncModelScanner;
 import com.hiddenlayer.api.lib.BetaWarning;
+import com.hiddenlayer.api.lib.ClientEnvironment;
 import com.hiddenlayer.api.lib.FakeApi;
 import com.hiddenlayer.api.lib.LogCapture;
 import com.hiddenlayer.api.lib.ScanFixtures;
@@ -35,6 +36,9 @@ import org.junit.jupiter.api.Test;
 
 final class HiddenLayerClientTest {
     private static final String TOKEN_PATH = "/oauth2/token";
+
+    // The discard port: nothing listens there, so a request sent to it fails.
+    private static final String UNREACHABLE_URL = "http://127.0.0.1:9";
 
     private FakeApi api;
 
@@ -57,6 +61,25 @@ final class HiddenLayerClientTest {
     private static final class HttpClientProbe extends HiddenLayerClientBuilder {
         OkHttpClient assembledHttpClient() {
             return buildClientOptions().httpClient();
+        }
+    }
+
+    private static final class AsyncHttpClientProbe extends AsyncHiddenLayerClientBuilder {
+        OkHttpClient assembledHttpClient() {
+            return buildClientOptions().httpClient();
+        }
+    }
+
+    /** A builder that reads one variable's value in place of the process environment. */
+    private static final class BuilderWithVariable extends HiddenLayerClientBuilder {
+        BuilderWithVariable(String name, String value) {
+            super(new ClientEnvironment(variable -> variable.equals(name) ? value : null));
+        }
+    }
+
+    private static final class AsyncBuilderWithVariable extends AsyncHiddenLayerClientBuilder {
+        AsyncBuilderWithVariable(String name, String value) {
+            super(new ClientEnvironment(variable -> variable.equals(name) ? value : null));
         }
     }
 
@@ -153,12 +176,17 @@ final class HiddenLayerClientTest {
         assertEquals("com.hiddenlayer.api:hiddenlayer-java", summaryRequest().header("X-Fern-SDK-Name"));
     }
 
-    /** A beta endpoint no other test calls, since a warning is logged once per endpoint in a JVM. */
-    private static JsonNode betaEndpointOnlyThisTestCalls() throws IOException {
+    /**
+     * The beta endpoint at {@code position} among those no other test calls. Each test takes its own, since a
+     * warning is logged once per endpoint in a JVM.
+     */
+    private static JsonNode betaEndpointOnlyOneTestCalls(int position) throws IOException {
+        int found = 0;
         try (InputStream resource = BetaWarning.class.getResourceAsStream("/com/hiddenlayer/api/beta-endpoints.json")) {
             for (JsonNode endpoint : ObjectMappers.JSON_MAPPER.readTree(resource)) {
                 String pattern = endpoint.get("path_pattern").asText();
-                if (!pattern.startsWith("/scan/") && !pattern.startsWith("/oauth2/")) {
+                boolean isCalledElsewhere = pattern.startsWith("/scan/") || pattern.startsWith("/oauth2/");
+                if (!isCalledElsewhere && found++ == position) {
                     return endpoint;
                 }
             }
@@ -168,15 +196,26 @@ final class HiddenLayerClientTest {
 
     @Test
     void warnsOnceForABetaEndpointCalledThroughTheClient() throws IOException {
-        JsonNode endpoint = betaEndpointOnlyThisTestCalls();
-        assumeTrue(endpoint != null, "the API has no beta endpoint to call");
+        HttpClientProbe probe = new HttpClientProbe();
+        probe.url(api.url());
+
+        assertWarnsOnce(probe.assembledHttpClient(), betaEndpointOnlyOneTestCalls(0));
+    }
+
+    @Test
+    void asyncClientWarnsOnceForABetaEndpointToo() throws IOException {
+        AsyncHttpClientProbe probe = new AsyncHttpClientProbe();
+        probe.url(api.url());
+
+        assertWarnsOnce(probe.assembledHttpClient(), betaEndpointOnlyOneTestCalls(1));
+    }
+
+    private void assertWarnsOnce(OkHttpClient http, JsonNode endpoint) throws IOException {
+        assumeTrue(endpoint != null, "the API has no beta endpoint left to call");
         String method = endpoint.get("method").asText();
         String pattern = endpoint.get("path_pattern").asText();
         String path = pattern.replaceAll("\\{[^}]+}", "c70523e0");
         api.reply(method, path, 200, "{}");
-        HttpClientProbe probe = new HttpClientProbe();
-        probe.url(api.url());
-        OkHttpClient http = probe.assembledHttpClient();
         Request request = new Request.Builder()
                 .url(api.url() + path)
                 .method(method, method.equals("GET") ? null : RequestBody.create(new byte[0]))
@@ -239,5 +278,68 @@ final class HiddenLayerClientTest {
         client.close();
 
         assertThrows(RejectedExecutionException.class, () -> scanner.scanFile("fraud-detector", "weights.bin"));
+    }
+
+    @Test
+    void baseUrlFromTheEnvironmentIsUsedWhenNoUrlIsPassed() {
+        try (HiddenLayerClient client = new BuilderWithVariable(ClientEnvironment.BASE_URL, api.url())
+                .token("3c5e0a9d7f")
+                .build()) {
+            client.scans().results().retrieveSummary(ScanFixtures.SCAN_ID);
+        }
+
+        assertEquals(1, api.received("GET", ScanFixtures.SUMMARY_PATH).size());
+    }
+
+    @Test
+    void passedUrlWinsOverTheEnvironmentBaseUrl() {
+        try (HiddenLayerClient client = new BuilderWithVariable(ClientEnvironment.BASE_URL, UNREACHABLE_URL)
+                .token("3c5e0a9d7f")
+                .url(api.url())
+                .maxRetries(0)
+                .build()) {
+            client.scans().results().retrieveSummary(ScanFixtures.SCAN_ID);
+        }
+
+        assertEquals(1, api.received("GET", ScanFixtures.SUMMARY_PATH).size());
+    }
+
+    @Test
+    void passedUrlWinsOverTheEnvironmentBaseUrlOnTheAsyncClient() throws Exception {
+        try (AsyncHiddenLayerClient client = new AsyncBuilderWithVariable(ClientEnvironment.BASE_URL, UNREACHABLE_URL)
+                .token("3c5e0a9d7f")
+                .url(api.url())
+                .maxRetries(0)
+                .build()) {
+            client.scans().results().retrieveSummary(ScanFixtures.SCAN_ID).get(10, TimeUnit.SECONDS);
+        }
+
+        assertEquals(1, api.received("GET", ScanFixtures.SUMMARY_PATH).size());
+    }
+
+    @Test
+    void urlWithoutASchemeIsRefusedWhenItIsSet() {
+        assertThrows(IllegalArgumentException.class, () -> new HiddenLayerClientBuilder().url("api.us.hiddenlayer.ai"));
+        assertThrows(
+                IllegalArgumentException.class, () -> new AsyncHiddenLayerClientBuilder().url("api.us.hiddenlayer.ai"));
+    }
+
+    @Test
+    void retriesARequestSentWithAnHttpClientTheCallerPassed() {
+        String busyThenDone = "/scan/v3/results/0b9f5d3c-busy/summary";
+        api.reply("GET", busyThenDone, 503, "{\"detail\":\"try again\"}");
+        api.reply("GET", busyThenDone, 200, ScanFixtures.summary("done"));
+
+        try (HiddenLayerClient client = new HiddenLayerClientBuilder()
+                .token("3c5e0a9d7f")
+                .url(api.url())
+                .httpClient(new OkHttpClient())
+                .build()) {
+            assertEquals(
+                    Status.DONE,
+                    client.scans().results().retrieveSummary("0b9f5d3c-busy").getStatus());
+        }
+
+        assertEquals(2, api.received("GET", busyThenDone).size());
     }
 }

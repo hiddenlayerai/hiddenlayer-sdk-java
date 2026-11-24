@@ -1,6 +1,7 @@
 package com.hiddenlayer.api.lib;
 
 import java.util.function.Function;
+import okhttp3.HttpUrl;
 
 /**
  * What the client builders read from the process environment, and how it combines with what a caller passes.
@@ -29,9 +30,23 @@ public final class ClientEnvironment {
         return new ClientEnvironment(System::getenv);
     }
 
-    /** {@code HIDDENLAYER_BASE_URL}, or null when it is unset or blank. */
+    /**
+     * {@code HIDDENLAYER_BASE_URL}, or null when it is unset or blank.
+     *
+     * @throws IllegalStateException when it is set to anything but an http or https URL
+     */
     public String baseUrl() {
-        return read(BASE_URL);
+        String baseUrl = read(BASE_URL);
+        if (baseUrl != null && !isHttpUrl(baseUrl)) {
+            throw new IllegalStateException(
+                    BASE_URL + " must be an http or https URL, such as https://api.us.hiddenlayer.ai");
+        }
+        return baseUrl;
+    }
+
+    /** Whether the client can send requests to {@code url}; without a scheme it can't. */
+    public static boolean isHttpUrl(String url) {
+        return url != null && HttpUrl.parse(url) != null;
     }
 
     /**

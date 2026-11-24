@@ -100,11 +100,11 @@ HiddenLayerClient client = new HiddenLayerClientBuilder()
 | `baseUrl(String)` | `url(String)` |
 | `prodEu()` | `environment(Environment.PROD_EU)`; `Environment.PROD_US` is the default |
 | `timeout(Duration)` or `timeout(Timeout)` | `timeout(int)`, in seconds, for the whole call; the default is still 60 seconds |
-| `maxRetries(int)` | unchanged; the default is still 2 |
+| `maxRetries(int)` | unchanged; the default is still 2. A request that times out or loses its connection is no longer retried, only a 408, 429 or 5xx response |
 | `putHeader(name, value)` and the other header methods | `addHeader(name, value)` |
 | `putQueryParam(key, value)` and the other query methods | none; pass `addQueryParameter` in each call's [request options](#request-options) |
 | `logLevel(LogLevel)` | `logging(LogConfig.builder().level(LogLevel.DEBUG).build())` |
-| `proxy`, `proxyAuthenticator`, `sslSocketFactory`, `trustManager`, `hostnameVerifier`, `maxIdleConnections`, `keepAliveDuration`, `dispatcherExecutorService` | configure an `OkHttpClient` and pass it to `httpClient(OkHttpClient)` |
+| `proxy`, `proxyAuthenticator`, `sslSocketFactory`, `trustManager`, `hostnameVerifier`, `maxIdleConnections`, `keepAliveDuration`, `dispatcherExecutorService` | configure an `OkHttpClient` and pass it to `httpClient(OkHttpClient)`. It keeps the SDK's retries, and its own timeouts unless `timeout` is called |
 | `responseValidation(boolean)` | none; see [Responses](#responses) |
 | `jsonMapper`, `checkJacksonVersionCompatibility`, `streamHandlerExecutor`, `sleeper`, `clock` | none |
 
@@ -349,10 +349,12 @@ The raw response has no `statusCode()`: a raw method returns only for a 2xx stat
 `client.modelScanner()` (`scanFile`, `scanFolder`) and `client.communityScanner().communityScan` keep their arguments, their defaults and their behaviour, on both clients. The helpers are Java now, in the same package, `com.hiddenlayer.api.lib`. What changes:
 
 - They return `ScanReportOfRecordV3`, the type that replaces `ScanReport`.
-- `ScanFileOptions`, `ScanFolderOptions` and `CommunityScanOptions` keep their constructors, which take every argument, and their getters. Each gains a `builder()` that carries the defaults. Being Java classes, they have no `copy`, `componentN` or default arguments, which Kotlin callers of v2.x could use.
+- `ScanFileOptions`, `ScanFolderOptions` and `CommunityScanOptions` keep their constructors, which take every argument, and their getters. Each gains a `builder()` that carries the defaults. Being Java classes, they have no `copy`, `componentN` or default arguments, which Kotlin callers of v2.x could use, and no `equals`, `hashCode` or `toString` of their own.
 - The functions of `ScanUtils.kt`, which Java callers reached as `ScanUtilsKt.getScanResults` and so on, are static methods of `ScanUtils`: `getScanResults`, `waitForScanResults`, `getScanResultsAsync` and `waitForScanResultsAsync`. They take a `BaseHiddenLayerClient` or an `AsyncBaseHiddenLayerClient`, which the wrapper clients are.
 - A path that doesn't exist, isn't a file or folder, or holds no file to scan throws an `IllegalArgumentException`, and a failed upload or scan throws a `HiddenLayerException` whose cause is the failure. v2.x threw a bare `RuntimeException` for both, with the same messages; both classes extend it.
 - A failed part upload no longer puts the part's presigned URL, with its signature, in the exception message. The message names the URL without its query string.
+- A part upload gives up after 60 seconds without a connection or a response, where v2.x waited without limit. A part whose offsets fall outside the file is refused.
+- While a scan runs, a status poll that times out or loses its connection is tried again, and the third such failure in a row is thrown. v2.x retried each request instead.
 - A scan that runs longer than about 25 minutes no longer fails with `timeout value is negative`: the delay between polls stays at its 30-second cap.
 - `AsyncModelScanner` reads and uploads at most ten parts at a time, where v2.x could hold every part of a file in memory at once.
 - The asynchronous scans retry a scan that isn't found yet when reading its file results too, as the synchronous ones did, and fail their future instead of leaving it pending when the scanner is closed mid-scan.

@@ -18,6 +18,7 @@ import com.hiddenlayer.api.core.HiddenLayerException;
 import com.hiddenlayer.api.types.ScanReportOfRecordV3;
 import com.hiddenlayer.api.types.Status;
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.AfterEach;
@@ -150,5 +151,24 @@ final class CommunityScannerTest {
                 .get(10, TimeUnit.SECONDS));
 
         assertEquals(422, ((HiddenLayerApiException) failure.getCause()).statusCode());
+    }
+
+    @Test
+    void asyncCommunityScanFailsItsFutureWhenTheTokenExchangeIsRefused() {
+        api.reply("POST", "/oauth2/token", 401, "{\"error\":\"invalid_client\"}");
+
+        try (AsyncHiddenLayerClient refused = new AsyncHiddenLayerClientBuilder()
+                .clientId("service-account")
+                .clientSecret("8d1f6b2e4c")
+                .url(api.url())
+                .maxRetries(0)
+                .build()) {
+            CompletableFuture<ScanReportOfRecordV3> scan = refused.communityScanner()
+                    .communityScan("test-models", REPOSITORY, CommunityScanSource.HUGGING_FACE);
+
+            ExecutionException failure = assertThrows(ExecutionException.class, () -> scan.get(10, TimeUnit.SECONDS));
+            assertEquals(401, ((HiddenLayerApiException) failure.getCause()).statusCode());
+        }
+        assertTrue(api.received("POST", JOBS_PATH).isEmpty());
     }
 }
