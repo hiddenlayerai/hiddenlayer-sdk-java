@@ -72,7 +72,7 @@ public final class CreateCsvRequest {
 
     private final Optional<Integer> limit;
 
-    private final Optional<Integer> offset;
+    private final Optional<Long> offset;
 
     private final Map<String, Object> additionalProperties;
 
@@ -98,7 +98,7 @@ public final class CreateCsvRequest {
             Optional<String> region,
             Optional<String> provider,
             Optional<Integer> limit,
-            Optional<Integer> offset,
+            Optional<Long> offset,
             Map<String, Object> additionalProperties) {
         this.modelVersionIds = modelVersionIds;
         this.modelIds = modelIds;
@@ -311,7 +311,7 @@ public final class CreateCsvRequest {
      * @return Number of results to skip for pagination
      */
     @JsonProperty("offset")
-    public Optional<Integer> getOffset() {
+    public Optional<Long> getOffset() {
         return offset;
     }
 
@@ -431,7 +431,7 @@ public final class CreateCsvRequest {
 
         private Optional<Integer> limit = Optional.empty();
 
-        private Optional<Integer> offset = Optional.empty();
+        private Optional<Long> offset = Optional.empty();
 
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -815,12 +815,12 @@ public final class CreateCsvRequest {
          * <p>Number of results to skip for pagination</p>
          */
         @JsonSetter(value = "offset", nulls = Nulls.SKIP)
-        public Builder offset(Optional<Integer> offset) {
+        public Builder offset(Optional<Long> offset) {
             this.offset = offset;
             return this;
         }
 
-        public Builder offset(Integer offset) {
+        public Builder offset(Long offset) {
             this.offset = Optional.ofNullable(offset);
             return this;
         }

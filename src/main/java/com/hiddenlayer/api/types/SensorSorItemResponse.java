@@ -35,7 +35,7 @@ public final class SensorSorItemResponse {
 
     private final OffsetDateTime createdAt;
 
-    private final Optional<Integer> version;
+    private final Optional<Long> version;
 
     private final boolean active;
 
@@ -51,7 +51,7 @@ public final class SensorSorItemResponse {
             String sensorId,
             String plaintextName,
             OffsetDateTime createdAt,
-            Optional<Integer> version,
+            Optional<Long> version,
             boolean active,
             Optional<Map<String, Object>> tags,
             Optional<Boolean> adhoc,
@@ -94,7 +94,7 @@ public final class SensorSorItemResponse {
     }
 
     @JsonProperty("version")
-    public Optional<Integer> getVersion() {
+    public Optional<Long> getVersion() {
         return version;
     }
 
@@ -201,9 +201,9 @@ public final class SensorSorItemResponse {
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
-        _FinalStage version(Optional<Integer> version);
+        _FinalStage version(Optional<Long> version);
 
-        _FinalStage version(Integer version);
+        _FinalStage version(Long version);
 
         _FinalStage tags(Optional<Map<String, Object>> tags);
 
@@ -241,7 +241,7 @@ public final class SensorSorItemResponse {
 
         private Optional<Map<String, Object>> tags = Optional.empty();
 
-        private Optional<Integer> version = Optional.empty();
+        private Optional<Long> version = Optional.empty();
 
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -342,14 +342,14 @@ public final class SensorSorItemResponse {
         }
 
         @java.lang.Override
-        public _FinalStage version(Integer version) {
+        public _FinalStage version(Long version) {
             this.version = Optional.ofNullable(version);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "version", nulls = Nulls.SKIP)
-        public _FinalStage version(Optional<Integer> version) {
+        public _FinalStage version(Optional<Long> version) {
             this.version = version;
             return this;
         }

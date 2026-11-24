@@ -25,11 +25,11 @@ public final class PagedResponse {
 
     private final int limit;
 
-    private final int offset;
+    private final long offset;
 
     private final Map<String, Object> additionalProperties;
 
-    private PagedResponse(List<Object> items, int limit, int offset, Map<String, Object> additionalProperties) {
+    private PagedResponse(List<Object> items, int limit, long offset, Map<String, Object> additionalProperties) {
         this.items = items;
         this.limit = limit;
         this.offset = offset;
@@ -50,7 +50,7 @@ public final class PagedResponse {
     }
 
     @JsonProperty("offset")
-    public int getOffset() {
+    public long getOffset() {
         return offset;
     }
 
@@ -90,7 +90,7 @@ public final class PagedResponse {
     }
 
     public interface OffsetStage {
-        _FinalStage offset(int offset);
+        _FinalStage offset(long offset);
     }
 
     public interface _FinalStage {
@@ -114,7 +114,7 @@ public final class PagedResponse {
     public static final class Builder implements LimitStage, OffsetStage, _FinalStage {
         private int limit;
 
-        private int offset;
+        private long offset;
 
         private List<Object> items = new ArrayList<>();
 
@@ -139,7 +139,7 @@ public final class PagedResponse {
 
         @java.lang.Override
         @JsonSetter("offset")
-        public _FinalStage offset(int offset) {
+        public _FinalStage offset(long offset) {
             this.offset = offset;
             return this;
         }

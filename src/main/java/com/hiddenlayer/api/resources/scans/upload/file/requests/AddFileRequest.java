@@ -18,7 +18,7 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = AddFileRequest.Builder.class)
 public final class AddFileRequest {
-    private final int fileContentLength;
+    private final long fileContentLength;
 
     private final Optional<String> fileName;
 
@@ -27,7 +27,7 @@ public final class AddFileRequest {
     private final Map<String, Object> additionalProperties;
 
     private AddFileRequest(
-            int fileContentLength,
+            long fileContentLength,
             Optional<String> fileName,
             Optional<String> fileNameBase64,
             Map<String, Object> additionalProperties) {
@@ -41,7 +41,7 @@ public final class AddFileRequest {
      * @return Added file size in bytes
      */
     @JsonIgnore
-    public int getFileContentLength() {
+    public long getFileContentLength() {
         return fileContentLength;
     }
 
@@ -98,7 +98,7 @@ public final class AddFileRequest {
         /**
          * <p>Added file size in bytes</p>
          */
-        _FinalStage fileContentLength(int fileContentLength);
+        _FinalStage fileContentLength(long fileContentLength);
 
         Builder from(AddFileRequest other);
     }
@@ -129,7 +129,7 @@ public final class AddFileRequest {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements FileContentLengthStage, _FinalStage {
-        private int fileContentLength;
+        private long fileContentLength;
 
         private Optional<String> fileNameBase64 = Optional.empty();
 
@@ -152,7 +152,7 @@ public final class AddFileRequest {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage fileContentLength(int fileContentLength) {
+        public _FinalStage fileContentLength(long fileContentLength) {
             this.fileContentLength = fileContentLength;
             return this;
         }

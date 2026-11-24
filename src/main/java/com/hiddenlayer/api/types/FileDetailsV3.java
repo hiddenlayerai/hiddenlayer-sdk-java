@@ -31,7 +31,7 @@ public final class FileDetailsV3 {
 
     private final Optional<String> fileSize;
 
-    private final Optional<Integer> fileSizeBytes;
+    private final Optional<Long> fileSizeBytes;
 
     private final String fileType;
 
@@ -45,7 +45,7 @@ public final class FileDetailsV3 {
             String sha256,
             Optional<String> tlsh,
             Optional<String> fileSize,
-            Optional<Integer> fileSizeBytes,
+            Optional<Long> fileSizeBytes,
             String fileType,
             Optional<FileDetailsV3FileTypeDetails> fileTypeDetails,
             Map<String, Object> additionalProperties) {
@@ -104,7 +104,7 @@ public final class FileDetailsV3 {
      * @return size of the file in bytes
      */
     @JsonProperty("file_size_bytes")
-    public Optional<Integer> getFileSizeBytes() {
+    public Optional<Long> getFileSizeBytes() {
         return fileSizeBytes;
     }
 
@@ -222,9 +222,9 @@ public final class FileDetailsV3 {
         /**
          * <p>size of the file in bytes</p>
          */
-        _FinalStage fileSizeBytes(Optional<Integer> fileSizeBytes);
+        _FinalStage fileSizeBytes(Optional<Long> fileSizeBytes);
 
-        _FinalStage fileSizeBytes(Integer fileSizeBytes);
+        _FinalStage fileSizeBytes(Long fileSizeBytes);
 
         /**
          * <p>Format-specific attributes and optional classification of inspected content.</p>
@@ -244,7 +244,7 @@ public final class FileDetailsV3 {
 
         private Optional<FileDetailsV3FileTypeDetails> fileTypeDetails = Optional.empty();
 
-        private Optional<Integer> fileSizeBytes = Optional.empty();
+        private Optional<Long> fileSizeBytes = Optional.empty();
 
         private Optional<String> fileSize = Optional.empty();
 
@@ -327,7 +327,7 @@ public final class FileDetailsV3 {
          * @return Reference to {@code this} so that method calls can be chained together.
          */
         @java.lang.Override
-        public _FinalStage fileSizeBytes(Integer fileSizeBytes) {
+        public _FinalStage fileSizeBytes(Long fileSizeBytes) {
             this.fileSizeBytes = Optional.ofNullable(fileSizeBytes);
             return this;
         }
@@ -337,7 +337,7 @@ public final class FileDetailsV3 {
          */
         @java.lang.Override
         @JsonSetter(value = "file_size_bytes", nulls = Nulls.SKIP)
-        public _FinalStage fileSizeBytes(Optional<Integer> fileSizeBytes) {
+        public _FinalStage fileSizeBytes(Optional<Long> fileSizeBytes) {
             this.fileSizeBytes = fileSizeBytes;
             return this;
         }

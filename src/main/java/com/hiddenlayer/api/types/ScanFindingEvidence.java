@@ -29,7 +29,7 @@ public final class ScanFindingEvidence {
 
     private final Optional<List<ScanFindingEvidenceOperationsItem>> operations;
 
-    private final Optional<Integer> detectedTokenDiscrepancyCount;
+    private final Optional<Long> detectedTokenDiscrepancyCount;
 
     private final Map<String, Object> additionalProperties;
 
@@ -38,7 +38,7 @@ public final class ScanFindingEvidence {
             Optional<List<ScanFindingEvidenceMetadataItem>> metadata,
             Optional<List<ScanFindingEvidenceStructureSegmentsItem>> structureSegments,
             Optional<List<ScanFindingEvidenceOperationsItem>> operations,
-            Optional<Integer> detectedTokenDiscrepancyCount,
+            Optional<Long> detectedTokenDiscrepancyCount,
             Map<String, Object> additionalProperties) {
         this.functionCalls = functionCalls;
         this.metadata = metadata;
@@ -72,7 +72,7 @@ public final class ScanFindingEvidence {
      * @return Number of detected tokenizer discrepancies.
      */
     @JsonProperty("detected_token_discrepancy_count")
-    public Optional<Integer> getDetectedTokenDiscrepancyCount() {
+    public Optional<Long> getDetectedTokenDiscrepancyCount() {
         return detectedTokenDiscrepancyCount;
     }
 
@@ -124,7 +124,7 @@ public final class ScanFindingEvidence {
 
         private Optional<List<ScanFindingEvidenceOperationsItem>> operations = Optional.empty();
 
-        private Optional<Integer> detectedTokenDiscrepancyCount = Optional.empty();
+        private Optional<Long> detectedTokenDiscrepancyCount = Optional.empty();
 
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -187,12 +187,12 @@ public final class ScanFindingEvidence {
          * <p>Number of detected tokenizer discrepancies.</p>
          */
         @JsonSetter(value = "detected_token_discrepancy_count", nulls = Nulls.SKIP)
-        public Builder detectedTokenDiscrepancyCount(Optional<Integer> detectedTokenDiscrepancyCount) {
+        public Builder detectedTokenDiscrepancyCount(Optional<Long> detectedTokenDiscrepancyCount) {
             this.detectedTokenDiscrepancyCount = detectedTokenDiscrepancyCount;
             return this;
         }
 
-        public Builder detectedTokenDiscrepancyCount(Integer detectedTokenDiscrepancyCount) {
+        public Builder detectedTokenDiscrepancyCount(Long detectedTokenDiscrepancyCount) {
             this.detectedTokenDiscrepancyCount = Optional.ofNullable(detectedTokenDiscrepancyCount);
             return this;
         }

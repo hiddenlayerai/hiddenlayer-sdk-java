@@ -28,7 +28,7 @@ public final class ListJobsResponse {
 
     private final int limit;
 
-    private final int offset;
+    private final long offset;
 
     private final Map<String, Object> additionalProperties;
 
@@ -36,7 +36,7 @@ public final class ListJobsResponse {
             List<ScanReportOfRecordV3Summary> items,
             double total,
             int limit,
-            int offset,
+            long offset,
             Map<String, Object> additionalProperties) {
         this.items = items;
         this.total = total;
@@ -67,7 +67,7 @@ public final class ListJobsResponse {
     }
 
     @JsonProperty("offset")
-    public int getOffset() {
+    public long getOffset() {
         return offset;
     }
 
@@ -114,7 +114,7 @@ public final class ListJobsResponse {
     }
 
     public interface OffsetStage {
-        _FinalStage offset(int offset);
+        _FinalStage offset(long offset);
     }
 
     public interface _FinalStage {
@@ -140,7 +140,7 @@ public final class ListJobsResponse {
 
         private int limit;
 
-        private int offset;
+        private long offset;
 
         private List<ScanReportOfRecordV3Summary> items = new ArrayList<>();
 
@@ -177,7 +177,7 @@ public final class ListJobsResponse {
 
         @java.lang.Override
         @JsonSetter("offset")
-        public _FinalStage offset(int offset) {
+        public _FinalStage offset(long offset) {
             this.offset = offset;
             return this;
         }

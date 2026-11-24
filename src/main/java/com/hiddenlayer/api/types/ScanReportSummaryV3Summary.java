@@ -25,27 +25,27 @@ public final class ScanReportSummaryV3Summary {
 
     private final Optional<ScanHighestDetectionSeverity> highestSeverity;
 
-    private final Optional<Integer> detectionCount;
+    private final Optional<Long> detectionCount;
 
-    private final Optional<Integer> advisoryCount;
+    private final Optional<Long> advisoryCount;
 
-    private final Optional<Integer> fileCount;
+    private final Optional<Long> fileCount;
 
-    private final Optional<Integer> filesWithDetectionsCount;
+    private final Optional<Long> filesWithDetectionsCount;
 
     private final Optional<List<String>> detectionCategories;
 
     private final Optional<List<String>> advisoryCategories;
 
-    private final Optional<Integer> filesFailedToScan;
+    private final Optional<Long> filesFailedToScan;
 
-    private final Optional<Integer> unknownFiles;
+    private final Optional<Long> unknownFiles;
 
     private final Optional<List<ScanReportSummaryV3SummaryMitreAtlasItem>> mitreAtlas;
 
     private final Optional<ScanTopThreatType> topThreatType;
 
-    private final Optional<Integer> findingsCount;
+    private final Optional<Long> findingsCount;
 
     private final Optional<Map<String, ScanThreatTypeSummary>> threatTypes;
 
@@ -54,17 +54,17 @@ public final class ScanReportSummaryV3Summary {
     private ScanReportSummaryV3Summary(
             Optional<ScanHighestDetectionSeverityWithSafe> severity,
             Optional<ScanHighestDetectionSeverity> highestSeverity,
-            Optional<Integer> detectionCount,
-            Optional<Integer> advisoryCount,
-            Optional<Integer> fileCount,
-            Optional<Integer> filesWithDetectionsCount,
+            Optional<Long> detectionCount,
+            Optional<Long> advisoryCount,
+            Optional<Long> fileCount,
+            Optional<Long> filesWithDetectionsCount,
             Optional<List<String>> detectionCategories,
             Optional<List<String>> advisoryCategories,
-            Optional<Integer> filesFailedToScan,
-            Optional<Integer> unknownFiles,
+            Optional<Long> filesFailedToScan,
+            Optional<Long> unknownFiles,
             Optional<List<ScanReportSummaryV3SummaryMitreAtlasItem>> mitreAtlas,
             Optional<ScanTopThreatType> topThreatType,
-            Optional<Integer> findingsCount,
+            Optional<Long> findingsCount,
             Optional<Map<String, ScanThreatTypeSummary>> threatTypes,
             Map<String, Object> additionalProperties) {
         this.severity = severity;
@@ -101,7 +101,7 @@ public final class ScanReportSummaryV3Summary {
      * @return Total detections, excluding advisories. Counts findings rather than distinct files.
      */
     @JsonProperty("detection_count")
-    public Optional<Integer> getDetectionCount() {
+    public Optional<Long> getDetectionCount() {
         return detectionCount;
     }
 
@@ -109,7 +109,7 @@ public final class ScanReportSummaryV3Summary {
      * @return Total advisories, excluding detections.
      */
     @JsonProperty("advisory_count")
-    public Optional<Integer> getAdvisoryCount() {
+    public Optional<Long> getAdvisoryCount() {
         return advisoryCount;
     }
 
@@ -117,7 +117,7 @@ public final class ScanReportSummaryV3Summary {
      * @return Total file results counted by the scan, including failed files and unknown file types; not a count of successfully analyzed files.
      */
     @JsonProperty("file_count")
-    public Optional<Integer> getFileCount() {
+    public Optional<Long> getFileCount() {
         return fileCount;
     }
 
@@ -125,7 +125,7 @@ public final class ScanReportSummaryV3Summary {
      * @return Number of files containing detections; files with only advisories do not contribute.
      */
     @JsonProperty("files_with_detections_count")
-    public Optional<Integer> getFilesWithDetectionsCount() {
+    public Optional<Long> getFilesWithDetectionsCount() {
         return filesWithDetectionsCount;
     }
 
@@ -149,7 +149,7 @@ public final class ScanReportSummaryV3Summary {
      * @return number of files that failed during scanning
      */
     @JsonProperty("files_failed_to_scan")
-    public Optional<Integer> getFilesFailedToScan() {
+    public Optional<Long> getFilesFailedToScan() {
         return filesFailedToScan;
     }
 
@@ -157,7 +157,7 @@ public final class ScanReportSummaryV3Summary {
      * @return number of files with unknown file type
      */
     @JsonProperty("unknown_files")
-    public Optional<Integer> getUnknownFiles() {
+    public Optional<Long> getUnknownFiles() {
         return unknownFiles;
     }
 
@@ -181,7 +181,7 @@ public final class ScanReportSummaryV3Summary {
      * @return Findings in the scan, detections and advisories together. Absent until the scan completes, and for scans completed before threat types.
      */
     @JsonProperty("findings_count")
-    public Optional<Integer> getFindingsCount() {
+    public Optional<Long> getFindingsCount() {
         return findingsCount;
     }
 
@@ -255,27 +255,27 @@ public final class ScanReportSummaryV3Summary {
 
         private Optional<ScanHighestDetectionSeverity> highestSeverity = Optional.empty();
 
-        private Optional<Integer> detectionCount = Optional.empty();
+        private Optional<Long> detectionCount = Optional.empty();
 
-        private Optional<Integer> advisoryCount = Optional.empty();
+        private Optional<Long> advisoryCount = Optional.empty();
 
-        private Optional<Integer> fileCount = Optional.empty();
+        private Optional<Long> fileCount = Optional.empty();
 
-        private Optional<Integer> filesWithDetectionsCount = Optional.empty();
+        private Optional<Long> filesWithDetectionsCount = Optional.empty();
 
         private Optional<List<String>> detectionCategories = Optional.empty();
 
         private Optional<List<String>> advisoryCategories = Optional.empty();
 
-        private Optional<Integer> filesFailedToScan = Optional.empty();
+        private Optional<Long> filesFailedToScan = Optional.empty();
 
-        private Optional<Integer> unknownFiles = Optional.empty();
+        private Optional<Long> unknownFiles = Optional.empty();
 
         private Optional<List<ScanReportSummaryV3SummaryMitreAtlasItem>> mitreAtlas = Optional.empty();
 
         private Optional<ScanTopThreatType> topThreatType = Optional.empty();
 
-        private Optional<Integer> findingsCount = Optional.empty();
+        private Optional<Long> findingsCount = Optional.empty();
 
         private Optional<Map<String, ScanThreatTypeSummary>> threatTypes = Optional.empty();
 
@@ -330,12 +330,12 @@ public final class ScanReportSummaryV3Summary {
          * <p>Total detections, excluding advisories. Counts findings rather than distinct files.</p>
          */
         @JsonSetter(value = "detection_count", nulls = Nulls.SKIP)
-        public Builder detectionCount(Optional<Integer> detectionCount) {
+        public Builder detectionCount(Optional<Long> detectionCount) {
             this.detectionCount = detectionCount;
             return this;
         }
 
-        public Builder detectionCount(Integer detectionCount) {
+        public Builder detectionCount(Long detectionCount) {
             this.detectionCount = Optional.ofNullable(detectionCount);
             return this;
         }
@@ -344,12 +344,12 @@ public final class ScanReportSummaryV3Summary {
          * <p>Total advisories, excluding detections.</p>
          */
         @JsonSetter(value = "advisory_count", nulls = Nulls.SKIP)
-        public Builder advisoryCount(Optional<Integer> advisoryCount) {
+        public Builder advisoryCount(Optional<Long> advisoryCount) {
             this.advisoryCount = advisoryCount;
             return this;
         }
 
-        public Builder advisoryCount(Integer advisoryCount) {
+        public Builder advisoryCount(Long advisoryCount) {
             this.advisoryCount = Optional.ofNullable(advisoryCount);
             return this;
         }
@@ -358,12 +358,12 @@ public final class ScanReportSummaryV3Summary {
          * <p>Total file results counted by the scan, including failed files and unknown file types; not a count of successfully analyzed files.</p>
          */
         @JsonSetter(value = "file_count", nulls = Nulls.SKIP)
-        public Builder fileCount(Optional<Integer> fileCount) {
+        public Builder fileCount(Optional<Long> fileCount) {
             this.fileCount = fileCount;
             return this;
         }
 
-        public Builder fileCount(Integer fileCount) {
+        public Builder fileCount(Long fileCount) {
             this.fileCount = Optional.ofNullable(fileCount);
             return this;
         }
@@ -372,12 +372,12 @@ public final class ScanReportSummaryV3Summary {
          * <p>Number of files containing detections; files with only advisories do not contribute.</p>
          */
         @JsonSetter(value = "files_with_detections_count", nulls = Nulls.SKIP)
-        public Builder filesWithDetectionsCount(Optional<Integer> filesWithDetectionsCount) {
+        public Builder filesWithDetectionsCount(Optional<Long> filesWithDetectionsCount) {
             this.filesWithDetectionsCount = filesWithDetectionsCount;
             return this;
         }
 
-        public Builder filesWithDetectionsCount(Integer filesWithDetectionsCount) {
+        public Builder filesWithDetectionsCount(Long filesWithDetectionsCount) {
             this.filesWithDetectionsCount = Optional.ofNullable(filesWithDetectionsCount);
             return this;
         }
@@ -414,12 +414,12 @@ public final class ScanReportSummaryV3Summary {
          * <p>number of files that failed during scanning</p>
          */
         @JsonSetter(value = "files_failed_to_scan", nulls = Nulls.SKIP)
-        public Builder filesFailedToScan(Optional<Integer> filesFailedToScan) {
+        public Builder filesFailedToScan(Optional<Long> filesFailedToScan) {
             this.filesFailedToScan = filesFailedToScan;
             return this;
         }
 
-        public Builder filesFailedToScan(Integer filesFailedToScan) {
+        public Builder filesFailedToScan(Long filesFailedToScan) {
             this.filesFailedToScan = Optional.ofNullable(filesFailedToScan);
             return this;
         }
@@ -428,12 +428,12 @@ public final class ScanReportSummaryV3Summary {
          * <p>number of files with unknown file type</p>
          */
         @JsonSetter(value = "unknown_files", nulls = Nulls.SKIP)
-        public Builder unknownFiles(Optional<Integer> unknownFiles) {
+        public Builder unknownFiles(Optional<Long> unknownFiles) {
             this.unknownFiles = unknownFiles;
             return this;
         }
 
-        public Builder unknownFiles(Integer unknownFiles) {
+        public Builder unknownFiles(Long unknownFiles) {
             this.unknownFiles = Optional.ofNullable(unknownFiles);
             return this;
         }
@@ -470,12 +470,12 @@ public final class ScanReportSummaryV3Summary {
          * <p>Findings in the scan, detections and advisories together. Absent until the scan completes, and for scans completed before threat types.</p>
          */
         @JsonSetter(value = "findings_count", nulls = Nulls.SKIP)
-        public Builder findingsCount(Optional<Integer> findingsCount) {
+        public Builder findingsCount(Optional<Long> findingsCount) {
             this.findingsCount = findingsCount;
             return this;
         }
 
-        public Builder findingsCount(Integer findingsCount) {
+        public Builder findingsCount(Long findingsCount) {
             this.findingsCount = Optional.ofNullable(findingsCount);
             return this;
         }

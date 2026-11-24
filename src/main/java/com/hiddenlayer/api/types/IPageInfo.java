@@ -4,9 +4,9 @@
 package com.hiddenlayer.api.types;
 
 public interface IPageInfo {
-    int getTotalCount();
+    long getTotalCount();
 
-    int getPageSize();
+    long getPageSize();
 
-    int getPageNumber();
+    long getPageNumber();
 }

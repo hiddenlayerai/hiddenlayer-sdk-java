@@ -20,20 +20,20 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = AddFileResponsePartsItem.Builder.class)
 public final class AddFileResponsePartsItem {
-    private final Optional<Integer> partNumber;
+    private final Optional<Long> partNumber;
 
-    private final Optional<Integer> startOffset;
+    private final Optional<Long> startOffset;
 
-    private final Optional<Integer> endOffset;
+    private final Optional<Long> endOffset;
 
     private final Optional<String> uploadUrl;
 
     private final Map<String, Object> additionalProperties;
 
     private AddFileResponsePartsItem(
-            Optional<Integer> partNumber,
-            Optional<Integer> startOffset,
-            Optional<Integer> endOffset,
+            Optional<Long> partNumber,
+            Optional<Long> startOffset,
+            Optional<Long> endOffset,
             Optional<String> uploadUrl,
             Map<String, Object> additionalProperties) {
         this.partNumber = partNumber;
@@ -44,17 +44,17 @@ public final class AddFileResponsePartsItem {
     }
 
     @JsonProperty("part_number")
-    public Optional<Integer> getPartNumber() {
+    public Optional<Long> getPartNumber() {
         return partNumber;
     }
 
     @JsonProperty("start_offset")
-    public Optional<Integer> getStartOffset() {
+    public Optional<Long> getStartOffset() {
         return startOffset;
     }
 
     @JsonProperty("end_offset")
-    public Optional<Integer> getEndOffset() {
+    public Optional<Long> getEndOffset() {
         return endOffset;
     }
 
@@ -97,11 +97,11 @@ public final class AddFileResponsePartsItem {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder {
-        private Optional<Integer> partNumber = Optional.empty();
+        private Optional<Long> partNumber = Optional.empty();
 
-        private Optional<Integer> startOffset = Optional.empty();
+        private Optional<Long> startOffset = Optional.empty();
 
-        private Optional<Integer> endOffset = Optional.empty();
+        private Optional<Long> endOffset = Optional.empty();
 
         private Optional<String> uploadUrl = Optional.empty();
 
@@ -118,34 +118,34 @@ public final class AddFileResponsePartsItem {
         }
 
         @JsonSetter(value = "part_number", nulls = Nulls.SKIP)
-        public Builder partNumber(Optional<Integer> partNumber) {
+        public Builder partNumber(Optional<Long> partNumber) {
             this.partNumber = partNumber;
             return this;
         }
 
-        public Builder partNumber(Integer partNumber) {
+        public Builder partNumber(Long partNumber) {
             this.partNumber = Optional.ofNullable(partNumber);
             return this;
         }
 
         @JsonSetter(value = "start_offset", nulls = Nulls.SKIP)
-        public Builder startOffset(Optional<Integer> startOffset) {
+        public Builder startOffset(Optional<Long> startOffset) {
             this.startOffset = startOffset;
             return this;
         }
 
-        public Builder startOffset(Integer startOffset) {
+        public Builder startOffset(Long startOffset) {
             this.startOffset = Optional.ofNullable(startOffset);
             return this;
         }
 
         @JsonSetter(value = "end_offset", nulls = Nulls.SKIP)
-        public Builder endOffset(Optional<Integer> endOffset) {
+        public Builder endOffset(Optional<Long> endOffset) {
             this.endOffset = endOffset;
             return this;
         }
 
-        public Builder endOffset(Integer endOffset) {
+        public Builder endOffset(Long endOffset) {
             this.endOffset = Optional.ofNullable(endOffset);
             return this;
         }

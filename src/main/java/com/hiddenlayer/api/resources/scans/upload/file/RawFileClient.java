@@ -60,7 +60,7 @@ public class RawFileClient {
                                 RequestBody.create("", null)))
                 .headers(Headers.of(clientOptions.headers(requestOptions)))
                 .addHeader("Accept", "application/json");
-        _requestBuilder.addHeader("file-content-length", Integer.toString(request.getFileContentLength()));
+        _requestBuilder.addHeader("file-content-length", Long.toString(request.getFileContentLength()));
         if (request.getFileName().isPresent()) {
             _requestBuilder.addHeader("file-name", request.getFileName().get());
         }

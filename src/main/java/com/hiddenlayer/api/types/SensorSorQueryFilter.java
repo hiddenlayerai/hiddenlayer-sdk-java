@@ -25,7 +25,7 @@ public final class SensorSorQueryFilter {
 
     private final Optional<Boolean> active;
 
-    private final Optional<Integer> version;
+    private final Optional<Long> version;
 
     private final Optional<OffsetDateTime> createdAtStart;
 
@@ -38,7 +38,7 @@ public final class SensorSorQueryFilter {
     private SensorSorQueryFilter(
             Optional<String> plaintextName,
             Optional<Boolean> active,
-            Optional<Integer> version,
+            Optional<Long> version,
             Optional<OffsetDateTime> createdAtStart,
             Optional<OffsetDateTime> createdAtStop,
             Optional<SensorSorQueryFilterSource> source,
@@ -63,7 +63,7 @@ public final class SensorSorQueryFilter {
     }
 
     @JsonProperty("version")
-    public Optional<Integer> getVersion() {
+    public Optional<Long> getVersion() {
         return version;
     }
 
@@ -123,7 +123,7 @@ public final class SensorSorQueryFilter {
 
         private Optional<Boolean> active = Optional.empty();
 
-        private Optional<Integer> version = Optional.empty();
+        private Optional<Long> version = Optional.empty();
 
         private Optional<OffsetDateTime> createdAtStart = Optional.empty();
 
@@ -168,12 +168,12 @@ public final class SensorSorQueryFilter {
         }
 
         @JsonSetter(value = "version", nulls = Nulls.SKIP)
-        public Builder version(Optional<Integer> version) {
+        public Builder version(Optional<Long> version) {
             this.version = version;
             return this;
         }
 
-        public Builder version(Integer version) {
+        public Builder version(Long version) {
             this.version = Optional.ofNullable(version);
             return this;
         }

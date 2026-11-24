@@ -23,11 +23,12 @@ public final class AccessToken {
 
     private final String tokenType;
 
-    private final int expiresIn;
+    private final long expiresIn;
 
     private final Map<String, Object> additionalProperties;
 
-    private AccessToken(String accessToken, String tokenType, int expiresIn, Map<String, Object> additionalProperties) {
+    private AccessToken(
+            String accessToken, String tokenType, long expiresIn, Map<String, Object> additionalProperties) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
         this.expiresIn = expiresIn;
@@ -54,7 +55,7 @@ public final class AccessToken {
      * @return Seconds from issue until the token expires.
      */
     @JsonProperty("expires_in")
-    public int getExpiresIn() {
+    public long getExpiresIn() {
         return expiresIn;
     }
 
@@ -109,7 +110,7 @@ public final class AccessToken {
         /**
          * <p>Seconds from issue until the token expires.</p>
          */
-        _FinalStage expiresIn(int expiresIn);
+        _FinalStage expiresIn(long expiresIn);
     }
 
     public interface _FinalStage {
@@ -126,7 +127,7 @@ public final class AccessToken {
 
         private String tokenType;
 
-        private int expiresIn;
+        private long expiresIn;
 
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -168,7 +169,7 @@ public final class AccessToken {
          */
         @java.lang.Override
         @JsonSetter("expires_in")
-        public _FinalStage expiresIn(int expiresIn) {
+        public _FinalStage expiresIn(long expiresIn) {
             this.expiresIn = expiresIn;
             return this;
         }

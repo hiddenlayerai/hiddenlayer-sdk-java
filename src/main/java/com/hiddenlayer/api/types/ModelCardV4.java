@@ -39,7 +39,7 @@ public final class ModelCardV4 implements IModelCardBaseResponse {
 
     private final Optional<SecurityPosture> securityPosture;
 
-    private final int activeVersionCount;
+    private final long activeVersionCount;
 
     private final boolean hasGenealogy;
 
@@ -63,7 +63,7 @@ public final class ModelCardV4 implements IModelCardBaseResponse {
             AttackMonitoringThreatLevel attackMonitoringThreatLevel,
             Optional<ModelCardBaseResponseAidrThreatLevel> aidrThreatLevel,
             Optional<SecurityPosture> securityPosture,
-            int activeVersionCount,
+            long activeVersionCount,
             boolean hasGenealogy,
             ModelCardV4ModelScanSeverity modelScanSeverity,
             Optional<Boolean> modelScanHasError,
@@ -145,7 +145,7 @@ public final class ModelCardV4 implements IModelCardBaseResponse {
     }
 
     @JsonProperty("active_version_count")
-    public int getActiveVersionCount() {
+    public long getActiveVersionCount() {
         return activeVersionCount;
     }
 
@@ -279,7 +279,7 @@ public final class ModelCardV4 implements IModelCardBaseResponse {
     }
 
     public interface ActiveVersionCountStage {
-        HasGenealogyStage activeVersionCount(int activeVersionCount);
+        HasGenealogyStage activeVersionCount(long activeVersionCount);
     }
 
     public interface HasGenealogyStage {
@@ -361,7 +361,7 @@ public final class ModelCardV4 implements IModelCardBaseResponse {
 
         private AttackMonitoringThreatLevel attackMonitoringThreatLevel;
 
-        private int activeVersionCount;
+        private long activeVersionCount;
 
         private boolean hasGenealogy;
 
@@ -455,7 +455,7 @@ public final class ModelCardV4 implements IModelCardBaseResponse {
 
         @java.lang.Override
         @JsonSetter("active_version_count")
-        public HasGenealogyStage activeVersionCount(int activeVersionCount) {
+        public HasGenealogyStage activeVersionCount(long activeVersionCount) {
             this.activeVersionCount = activeVersionCount;
             return this;
         }

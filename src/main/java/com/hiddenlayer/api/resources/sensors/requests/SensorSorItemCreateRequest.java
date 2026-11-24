@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 public final class SensorSorItemCreateRequest {
     private final String plaintextName;
 
-    private final Optional<Integer> version;
+    private final Optional<Long> version;
 
     private final Optional<Boolean> active;
 
@@ -35,7 +35,7 @@ public final class SensorSorItemCreateRequest {
 
     private SensorSorItemCreateRequest(
             String plaintextName,
-            Optional<Integer> version,
+            Optional<Long> version,
             Optional<Boolean> active,
             Optional<Map<String, Object>> tags,
             Optional<Boolean> adhoc,
@@ -54,7 +54,7 @@ public final class SensorSorItemCreateRequest {
     }
 
     @JsonProperty("version")
-    public Optional<Integer> getVersion() {
+    public Optional<Long> getVersion() {
         return version;
     }
 
@@ -119,9 +119,9 @@ public final class SensorSorItemCreateRequest {
 
         _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
-        _FinalStage version(Optional<Integer> version);
+        _FinalStage version(Optional<Long> version);
 
-        _FinalStage version(Integer version);
+        _FinalStage version(Long version);
 
         _FinalStage active(Optional<Boolean> active);
 
@@ -146,7 +146,7 @@ public final class SensorSorItemCreateRequest {
 
         private Optional<Boolean> active = Optional.empty();
 
-        private Optional<Integer> version = Optional.empty();
+        private Optional<Long> version = Optional.empty();
 
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -209,14 +209,14 @@ public final class SensorSorItemCreateRequest {
         }
 
         @java.lang.Override
-        public _FinalStage version(Integer version) {
+        public _FinalStage version(Long version) {
             this.version = Optional.ofNullable(version);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "version", nulls = Nulls.SKIP)
-        public _FinalStage version(Optional<Integer> version) {
+        public _FinalStage version(Optional<Long> version) {
             this.version = version;
             return this;
         }

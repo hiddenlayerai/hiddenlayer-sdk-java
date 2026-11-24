@@ -1706,7 +1706,7 @@ client.sensors().create(
 <dl>
 <dd>
 
-**version:** `Optional<Integer>` 
+**version:** `Optional<Long>` 
     
 </dd>
 </dl>
@@ -15368,7 +15368,7 @@ Paired with `threat_type`, a scan matches when a listed threat type's highest se
 <dl>
 <dd>
 
-**offset:** `Optional<Integer>` — Number of results to skip for pagination
+**offset:** `Optional<Long>` — Number of results to skip for pagination
     
 </dd>
 </dl>
@@ -15474,7 +15474,7 @@ client.scans().upload().file().add(
     "00000000-0000-0000-0000-000000000000",
     AddFileRequest
         .builder()
-        .fileContentLength(1)
+        .fileContentLength(1000000L)
         .fileName("exampleFile.txt")
         .build()
 );
@@ -15500,7 +15500,7 @@ client.scans().upload().file().add(
 <dl>
 <dd>
 
-**fileContentLength:** `Integer` — Added file size in bytes
+**fileContentLength:** `Long` — Added file size in bytes
     
 </dd>
 </dl>

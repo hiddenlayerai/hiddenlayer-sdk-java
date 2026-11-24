@@ -34,7 +34,7 @@ public final class ValidationErrorLocItem {
         if (this.type == 0) {
             return visitor.visit((String) this.value);
         } else if (this.type == 1) {
-            return visitor.visit((int) this.value);
+            return visitor.visit((long) this.value);
         }
         throw new IllegalStateException("Failed to visit value. This should never happen.");
     }
@@ -63,14 +63,14 @@ public final class ValidationErrorLocItem {
         return new ValidationErrorLocItem(value, 0);
     }
 
-    public static ValidationErrorLocItem of(int value) {
+    public static ValidationErrorLocItem of(long value) {
         return new ValidationErrorLocItem(value, 1);
     }
 
     public interface Visitor<T> {
         T visit(String value);
 
-        T visit(int value);
+        T visit(long value);
     }
 
     static final class Deserializer extends StdDeserializer<ValidationErrorLocItem> {
@@ -81,8 +81,8 @@ public final class ValidationErrorLocItem {
         @java.lang.Override
         public ValidationErrorLocItem deserialize(JsonParser p, DeserializationContext context) throws IOException {
             Object value = p.readValueAs(Object.class);
-            if (value instanceof Integer) {
-                return of((Integer) value);
+            if (value instanceof Long) {
+                return of((Long) value);
             }
             try {
                 return of(ObjectMappers.JSON_MAPPER.convertValue(value, String.class));

@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IDeprecatedScanPropertiesV3 {
-    int getFileCount();
+    long getFileCount();
 
-    int getFilesWithDetectionsCount();
+    long getFilesWithDetectionsCount();
 
-    int getDetectionCount();
+    long getDetectionCount();
 
     Optional<List<String>> getDetectionCategories();
 

@@ -26,7 +26,7 @@ public final class ScanFindingEvidenceStructureSegmentsItem {
 
     private final Optional<String> location;
 
-    private final Optional<Integer> dataSize;
+    private final Optional<Long> dataSize;
 
     private final Map<String, Object> additionalProperties;
 
@@ -34,7 +34,7 @@ public final class ScanFindingEvidenceStructureSegmentsItem {
             Optional<String> nodeName,
             Optional<String> nodeType,
             Optional<String> location,
-            Optional<Integer> dataSize,
+            Optional<Long> dataSize,
             Map<String, Object> additionalProperties) {
         this.nodeName = nodeName;
         this.nodeType = nodeType;
@@ -59,7 +59,7 @@ public final class ScanFindingEvidenceStructureSegmentsItem {
     }
 
     @JsonProperty("data_size")
-    public Optional<Integer> getDataSize() {
+    public Optional<Long> getDataSize() {
         return dataSize;
     }
 
@@ -104,7 +104,7 @@ public final class ScanFindingEvidenceStructureSegmentsItem {
 
         private Optional<String> location = Optional.empty();
 
-        private Optional<Integer> dataSize = Optional.empty();
+        private Optional<Long> dataSize = Optional.empty();
 
         private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -152,12 +152,12 @@ public final class ScanFindingEvidenceStructureSegmentsItem {
         }
 
         @JsonSetter(value = "data_size", nulls = Nulls.SKIP)
-        public Builder dataSize(Optional<Integer> dataSize) {
+        public Builder dataSize(Optional<Long> dataSize) {
             this.dataSize = dataSize;
             return this;
         }
 
-        public Builder dataSize(Integer dataSize) {
+        public Builder dataSize(Long dataSize) {
             this.dataSize = Optional.ofNullable(dataSize);
             return this;
         }

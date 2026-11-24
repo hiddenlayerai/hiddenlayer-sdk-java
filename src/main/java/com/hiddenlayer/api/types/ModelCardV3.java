@@ -41,7 +41,7 @@ public final class ModelCardV3 implements IModelCardBaseResponse {
 
     private final Optional<SecurityPosture> securityPosture;
 
-    private final List<Integer> activeVersions;
+    private final List<Long> activeVersions;
 
     private final Map<String, Object> additionalProperties;
 
@@ -55,7 +55,7 @@ public final class ModelCardV3 implements IModelCardBaseResponse {
             AttackMonitoringThreatLevel attackMonitoringThreatLevel,
             Optional<ModelCardBaseResponseAidrThreatLevel> aidrThreatLevel,
             Optional<SecurityPosture> securityPosture,
-            List<Integer> activeVersions,
+            List<Long> activeVersions,
             Map<String, Object> additionalProperties) {
         this.modelId = modelId;
         this.createdAt = createdAt;
@@ -127,7 +127,7 @@ public final class ModelCardV3 implements IModelCardBaseResponse {
     }
 
     @JsonProperty("active_versions")
-    public List<Integer> getActiveVersions() {
+    public List<Long> getActiveVersions() {
         return activeVersions;
     }
 
@@ -228,11 +228,11 @@ public final class ModelCardV3 implements IModelCardBaseResponse {
 
         _FinalStage securityPosture(SecurityPosture securityPosture);
 
-        _FinalStage activeVersions(List<Integer> activeVersions);
+        _FinalStage activeVersions(List<Long> activeVersions);
 
-        _FinalStage addActiveVersions(Integer activeVersions);
+        _FinalStage addActiveVersions(Long activeVersions);
 
-        _FinalStage addAllActiveVersions(List<Integer> activeVersions);
+        _FinalStage addAllActiveVersions(List<Long> activeVersions);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -256,7 +256,7 @@ public final class ModelCardV3 implements IModelCardBaseResponse {
 
         private AttackMonitoringThreatLevel attackMonitoringThreatLevel;
 
-        private List<Integer> activeVersions = new ArrayList<>();
+        private List<Long> activeVersions = new ArrayList<>();
 
         private Optional<SecurityPosture> securityPosture = Optional.empty();
 
@@ -334,7 +334,7 @@ public final class ModelCardV3 implements IModelCardBaseResponse {
         }
 
         @java.lang.Override
-        public _FinalStage addAllActiveVersions(List<Integer> activeVersions) {
+        public _FinalStage addAllActiveVersions(List<Long> activeVersions) {
             if (activeVersions != null) {
                 this.activeVersions.addAll(activeVersions);
             }
@@ -342,14 +342,14 @@ public final class ModelCardV3 implements IModelCardBaseResponse {
         }
 
         @java.lang.Override
-        public _FinalStage addActiveVersions(Integer activeVersions) {
+        public _FinalStage addActiveVersions(Long activeVersions) {
             this.activeVersions.add(activeVersions);
             return this;
         }
 
         @java.lang.Override
         @JsonSetter(value = "active_versions", nulls = Nulls.SKIP)
-        public _FinalStage activeVersions(List<Integer> activeVersions) {
+        public _FinalStage activeVersions(List<Long> activeVersions) {
             this.activeVersions.clear();
             if (activeVersions != null) {
                 this.activeVersions.addAll(activeVersions);

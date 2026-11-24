@@ -21,7 +21,7 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = ScanThreatTypeSummary.Builder.class)
 public final class ScanThreatTypeSummary {
-    private final int count;
+    private final long count;
 
     private final Optional<ScanDetectionSeverity> highestSeverity;
 
@@ -32,7 +32,7 @@ public final class ScanThreatTypeSummary {
     private final Map<String, Object> additionalProperties;
 
     private ScanThreatTypeSummary(
-            int count,
+            long count,
             Optional<ScanDetectionSeverity> highestSeverity,
             Optional<List<String>> categories,
             Optional<List<MitreAtlasItem>> mitreAtlas,
@@ -48,7 +48,7 @@ public final class ScanThreatTypeSummary {
      * @return Findings of this threat type.
      */
     @JsonProperty("count")
-    public int getCount() {
+    public long getCount() {
         return count;
     }
 
@@ -112,7 +112,7 @@ public final class ScanThreatTypeSummary {
         /**
          * <p>Findings of this threat type.</p>
          */
-        _FinalStage count(int count);
+        _FinalStage count(long count);
 
         Builder from(ScanThreatTypeSummary other);
     }
@@ -148,7 +148,7 @@ public final class ScanThreatTypeSummary {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements CountStage, _FinalStage {
-        private int count;
+        private long count;
 
         private Optional<List<MitreAtlasItem>> mitreAtlas = Optional.empty();
 
@@ -175,7 +175,7 @@ public final class ScanThreatTypeSummary {
          */
         @java.lang.Override
         @JsonSetter("count")
-        public _FinalStage count(int count) {
+        public _FinalStage count(long count) {
             this.count = count;
             return this;
         }

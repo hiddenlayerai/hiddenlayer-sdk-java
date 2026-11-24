@@ -21,20 +21,20 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 @JsonDeserialize(builder = SensorSorQueryResponse.Builder.class)
 public final class SensorSorQueryResponse implements IPageInfo {
-    private final int totalCount;
+    private final long totalCount;
 
-    private final int pageSize;
+    private final long pageSize;
 
-    private final int pageNumber;
+    private final long pageNumber;
 
     private final List<SensorSorItemResponse> results;
 
     private final Map<String, Object> additionalProperties;
 
     private SensorSorQueryResponse(
-            int totalCount,
-            int pageSize,
-            int pageNumber,
+            long totalCount,
+            long pageSize,
+            long pageNumber,
             List<SensorSorItemResponse> results,
             Map<String, Object> additionalProperties) {
         this.totalCount = totalCount;
@@ -46,19 +46,19 @@ public final class SensorSorQueryResponse implements IPageInfo {
 
     @JsonProperty("total_count")
     @java.lang.Override
-    public int getTotalCount() {
+    public long getTotalCount() {
         return totalCount;
     }
 
     @JsonProperty("page_size")
     @java.lang.Override
-    public int getPageSize() {
+    public long getPageSize() {
         return pageSize;
     }
 
     @JsonProperty("page_number")
     @java.lang.Override
-    public int getPageNumber() {
+    public long getPageNumber() {
         return pageNumber;
     }
 
@@ -100,17 +100,17 @@ public final class SensorSorQueryResponse implements IPageInfo {
     }
 
     public interface TotalCountStage {
-        PageSizeStage totalCount(int totalCount);
+        PageSizeStage totalCount(long totalCount);
 
         Builder from(SensorSorQueryResponse other);
     }
 
     public interface PageSizeStage {
-        PageNumberStage pageSize(int pageSize);
+        PageNumberStage pageSize(long pageSize);
     }
 
     public interface PageNumberStage {
-        _FinalStage pageNumber(int pageNumber);
+        _FinalStage pageNumber(long pageNumber);
     }
 
     public interface _FinalStage {
@@ -129,11 +129,11 @@ public final class SensorSorQueryResponse implements IPageInfo {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class Builder implements TotalCountStage, PageSizeStage, PageNumberStage, _FinalStage {
-        private int totalCount;
+        private long totalCount;
 
-        private int pageSize;
+        private long pageSize;
 
-        private int pageNumber;
+        private long pageNumber;
 
         private List<SensorSorItemResponse> results = new ArrayList<>();
 
@@ -152,21 +152,21 @@ public final class SensorSorQueryResponse implements IPageInfo {
 
         @java.lang.Override
         @JsonSetter("total_count")
-        public PageSizeStage totalCount(int totalCount) {
+        public PageSizeStage totalCount(long totalCount) {
             this.totalCount = totalCount;
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("page_size")
-        public PageNumberStage pageSize(int pageSize) {
+        public PageNumberStage pageSize(long pageSize) {
             this.pageSize = pageSize;
             return this;
         }
 
         @java.lang.Override
         @JsonSetter("page_number")
-        public _FinalStage pageNumber(int pageNumber) {
+        public _FinalStage pageNumber(long pageNumber) {
             this.pageNumber = pageNumber;
             return this;
         }

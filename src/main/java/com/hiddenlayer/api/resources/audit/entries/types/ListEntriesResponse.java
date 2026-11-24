@@ -26,12 +26,12 @@ public final class ListEntriesResponse {
 
     private final int limit;
 
-    private final int offset;
+    private final long offset;
 
     private final Map<String, Object> additionalProperties;
 
     private ListEntriesResponse(
-            List<AuditEntry> items, int limit, int offset, Map<String, Object> additionalProperties) {
+            List<AuditEntry> items, int limit, long offset, Map<String, Object> additionalProperties) {
         this.items = items;
         this.limit = limit;
         this.offset = offset;
@@ -52,7 +52,7 @@ public final class ListEntriesResponse {
     }
 
     @JsonProperty("offset")
-    public int getOffset() {
+    public long getOffset() {
         return offset;
     }
 
@@ -92,7 +92,7 @@ public final class ListEntriesResponse {
     }
 
     public interface OffsetStage {
-        _FinalStage offset(int offset);
+        _FinalStage offset(long offset);
     }
 
     public interface _FinalStage {
@@ -116,7 +116,7 @@ public final class ListEntriesResponse {
     public static final class Builder implements LimitStage, OffsetStage, _FinalStage {
         private int limit;
 
-        private int offset;
+        private long offset;
 
         private List<AuditEntry> items = new ArrayList<>();
 
@@ -141,7 +141,7 @@ public final class ListEntriesResponse {
 
         @java.lang.Override
         @JsonSetter("offset")
-        public _FinalStage offset(int offset) {
+        public _FinalStage offset(long offset) {
             this.offset = offset;
             return this;
         }

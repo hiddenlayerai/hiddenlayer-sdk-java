@@ -48,11 +48,11 @@ public final class ScanReportOfRecordV3Summary
 
     private final Optional<ScanRulesetComplianceV3Compliance> compliance;
 
-    private final int fileCount;
+    private final long fileCount;
 
-    private final int filesWithDetectionsCount;
+    private final long filesWithDetectionsCount;
 
-    private final int detectionCount;
+    private final long detectionCount;
 
     private final Optional<List<String>> detectionCategories;
 
@@ -71,9 +71,9 @@ public final class ScanReportOfRecordV3Summary
             ScanModelInventoryComboV3 inventory,
             ScanReportSummaryV3Summary summary,
             Optional<ScanRulesetComplianceV3Compliance> compliance,
-            int fileCount,
-            int filesWithDetectionsCount,
-            int detectionCount,
+            long fileCount,
+            long filesWithDetectionsCount,
+            long detectionCount,
             Optional<List<String>> detectionCategories,
             Optional<ScanHighestDetectionSeverityWithSafe> severity,
             Map<String, Object> additionalProperties) {
@@ -179,7 +179,7 @@ public final class ScanReportOfRecordV3Summary
      */
     @JsonProperty("file_count")
     @java.lang.Override
-    public int getFileCount() {
+    public long getFileCount() {
         return fileCount;
     }
 
@@ -188,7 +188,7 @@ public final class ScanReportOfRecordV3Summary
      */
     @JsonProperty("files_with_detections_count")
     @java.lang.Override
-    public int getFilesWithDetectionsCount() {
+    public long getFilesWithDetectionsCount() {
         return filesWithDetectionsCount;
     }
 
@@ -197,7 +197,7 @@ public final class ScanReportOfRecordV3Summary
      */
     @JsonProperty("detection_count")
     @java.lang.Override
-    public int getDetectionCount() {
+    public long getDetectionCount() {
         return detectionCount;
     }
 
@@ -316,21 +316,21 @@ public final class ScanReportOfRecordV3Summary
         /**
          * <p>number of files scanned; use <code>.summary.file_count</code> instead</p>
          */
-        FilesWithDetectionsCountStage fileCount(int fileCount);
+        FilesWithDetectionsCountStage fileCount(long fileCount);
     }
 
     public interface FilesWithDetectionsCountStage {
         /**
          * <p>number of files with detections found; use <code>.summary.files_with_detections_count</code> instead</p>
          */
-        DetectionCountStage filesWithDetectionsCount(int filesWithDetectionsCount);
+        DetectionCountStage filesWithDetectionsCount(long filesWithDetectionsCount);
     }
 
     public interface DetectionCountStage {
         /**
          * <p>number of detections found; use <code>.summary.detection_count</code> instead</p>
          */
-        _FinalStage detectionCount(int detectionCount);
+        _FinalStage detectionCount(long detectionCount);
     }
 
     public interface _FinalStage {
@@ -401,11 +401,11 @@ public final class ScanReportOfRecordV3Summary
 
         private ScanReportSummaryV3Summary summary;
 
-        private int fileCount;
+        private long fileCount;
 
-        private int filesWithDetectionsCount;
+        private long filesWithDetectionsCount;
 
-        private int detectionCount;
+        private long detectionCount;
 
         private Optional<ScanHighestDetectionSeverityWithSafe> severity = Optional.empty();
 
@@ -507,7 +507,7 @@ public final class ScanReportOfRecordV3Summary
          */
         @java.lang.Override
         @JsonSetter("file_count")
-        public FilesWithDetectionsCountStage fileCount(int fileCount) {
+        public FilesWithDetectionsCountStage fileCount(long fileCount) {
             this.fileCount = fileCount;
             return this;
         }
@@ -518,7 +518,7 @@ public final class ScanReportOfRecordV3Summary
          */
         @java.lang.Override
         @JsonSetter("files_with_detections_count")
-        public DetectionCountStage filesWithDetectionsCount(int filesWithDetectionsCount) {
+        public DetectionCountStage filesWithDetectionsCount(long filesWithDetectionsCount) {
             this.filesWithDetectionsCount = filesWithDetectionsCount;
             return this;
         }
@@ -529,7 +529,7 @@ public final class ScanReportOfRecordV3Summary
          */
         @java.lang.Override
         @JsonSetter("detection_count")
-        public _FinalStage detectionCount(int detectionCount) {
+        public _FinalStage detectionCount(long detectionCount) {
             this.detectionCount = detectionCount;
             return this;
         }

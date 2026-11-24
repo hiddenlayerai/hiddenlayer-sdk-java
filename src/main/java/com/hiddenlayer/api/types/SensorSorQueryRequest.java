@@ -26,7 +26,7 @@ public final class SensorSorQueryRequest {
 
     private final Optional<SensorSorQueryRequestOrderDir> orderDir;
 
-    private final Optional<Integer> pageSize;
+    private final Optional<Long> pageSize;
 
     private final Optional<Integer> pageNumber;
 
@@ -36,7 +36,7 @@ public final class SensorSorQueryRequest {
             Optional<SensorSorQueryFilter> filter,
             Optional<String> orderBy,
             Optional<SensorSorQueryRequestOrderDir> orderDir,
-            Optional<Integer> pageSize,
+            Optional<Long> pageSize,
             Optional<Integer> pageNumber,
             Map<String, Object> additionalProperties) {
         this.filter = filter;
@@ -63,7 +63,7 @@ public final class SensorSorQueryRequest {
     }
 
     @JsonProperty("page_size")
-    public Optional<Integer> getPageSize() {
+    public Optional<Long> getPageSize() {
         return pageSize;
     }
 
@@ -113,7 +113,7 @@ public final class SensorSorQueryRequest {
 
         private Optional<SensorSorQueryRequestOrderDir> orderDir = Optional.empty();
 
-        private Optional<Integer> pageSize = Optional.empty();
+        private Optional<Long> pageSize = Optional.empty();
 
         private Optional<Integer> pageNumber = Optional.empty();
 
@@ -164,12 +164,12 @@ public final class SensorSorQueryRequest {
         }
 
         @JsonSetter(value = "page_size", nulls = Nulls.SKIP)
-        public Builder pageSize(Optional<Integer> pageSize) {
+        public Builder pageSize(Optional<Long> pageSize) {
             this.pageSize = pageSize;
             return this;
         }
 
-        public Builder pageSize(Integer pageSize) {
+        public Builder pageSize(Long pageSize) {
             this.pageSize = Optional.ofNullable(pageSize);
             return this;
         }
