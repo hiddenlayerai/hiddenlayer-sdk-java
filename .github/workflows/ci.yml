@@ -1,85 +1,135 @@
+# .github/workflows/ci.yml
+#
+# Checks the formatting, builds and tests the package on every PR and every
+# push to main: the generated client with Fern's tests, and the wrapper with
+# its own (PLT-1430). Fern PRs merge on green, so this is the gate between a
+# generation and main.
+#
+# Invariants:
+#   - No secret, no write permission and no cache: this runs on PRs from
+#     anyone, and a cache written on main is one the release's build could
+#     restore.
+#   - Keep lint, build and test as one job each, under those names: main's
+#     ruleset requires the three contexts, and the hand-off waits for every
+#     required one.
+#   - test compiles and runs on Java 8, the oldest the published jar
+#     supports, so Gradle itself runs on Java 8 there: a generator upgrade
+#     that raises Gradle's or a plugin's own Java floor fails this job.
+#   - build stages the Maven repository as publish-sonatype.yml does, on the
+#     same JDK and with the same init script, which compiles for Java 8's
+#     class library, and checks what a release would upload. So SDK code
+#     that calls something Java 8 lacks, or a broken publication, fails its
+#     PR instead of the release. A dependency that needs a newer Java is
+#     caught only where test's Java 8 compile or a test reaches it.
+#   - Each job's timeout stays within the 15 minutes the hand-off waits for
+#     a Fern PR's checks.
+#
+# From hl-sdk-gen's template/; edit it there and copy it into the repo.
+
 name: CI
+
 on:
-  push:
-    branches:
-      - '**'
-      - '!integrated/**'
-      - '!stl-preview-head/**'
-      - '!stl-preview-base/**'
-      - '!generated'
-      - '!codegen/**'
-      - 'codegen/stl/**'
   pull_request:
-    branches-ignore:
-      - 'stl-preview-head/**'
-      - 'stl-preview-base/**'
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  # groupId:artifactId, set by .github/release/maven-central.init.gradle
+  PACKAGE: com.hiddenlayer.api:hiddenlayer-java
 
 jobs:
   lint:
-    timeout-minutes: 15
-    name: lint
+    # hiddenlayerai has no scale-set runners
     runs-on: ubuntu-latest
-
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
-      - name: Set up Java
-        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+      - name: Setup Java
+        uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
         with:
           distribution: temurin
-          java-version: |
-            8
-            21
-          cache: gradle
+          java-version: "17"
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+        with:
+          cache-disabled: true
 
-      - name: Run lints
-        run: ./scripts/lint
+      - name: Check the formatting
+        run: ./gradlew spotlessCheck
 
   build:
-    timeout-minutes: 15
-    name: build
+    # hiddenlayerai has no scale-set runners
     runs-on: ubuntu-latest
-
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
-      - name: Set up Java
-        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+      - name: Setup Java
+        uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
         with:
           distribution: temurin
-          java-version: |
-            8
-            21
-          cache: gradle
+          java-version: "17"
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+        with:
+          cache-disabled: true
 
-      - name: Build SDK
-        run: ./scripts/build
+      - name: Build and stage the Maven repository
+        run: ./gradlew --no-configuration-cache --init-script .github/release/maven-central.init.gradle publishMavenPublicationToStagingRepository
+
+      - name: Check what a release would upload
+        run: |
+          VERSION=$(./gradlew -q --no-configuration-cache properties | sed -n 's/^version: //p')
+          GROUP=${PACKAGE%%:*}
+          ARTIFACT=${PACKAGE#*:}
+          STAGED="build/staging-deploy/${GROUP//.//}/$ARTIFACT/$VERSION"
+          for file in "$ARTIFACT-$VERSION.pom" "$ARTIFACT-$VERSION.jar" "$ARTIFACT-$VERSION-sources.jar" "$ARTIFACT-$VERSION-javadoc.jar"; do
+            if [ ! -f "$STAGED/$file" ]; then
+              echo "::error::$STAGED/$file wasn't staged; Maven Central needs the POM and the jar with its sources and javadoc. Staged: $(find build/staging-deploy -type f \( -name '*.pom' -o -name '*.jar' \) | sort | tr '\n' ' ')"
+              exit 1
+            fi
+          done
 
   test:
-    timeout-minutes: 15
-    name: test
+    # hiddenlayerai has no scale-set runners
     runs-on: ubuntu-latest
-
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
-      - name: Set up Java
-        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+      - name: Setup Java
+        uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
         with:
           distribution: temurin
-          java-version: |
-            8
-            21
-          cache: gradle
+          java-version: "8"
 
-      - name: Set up Gradle
-        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa # v2.12.0
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+        with:
+          cache-disabled: true
 
-      - name: Run tests
-        run: ./scripts/test
+      - name: Test on Java 8
+        run: ./gradlew test

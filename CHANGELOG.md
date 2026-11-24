@@ -1,6 +1,10 @@
 # Changelog
 
-## [2.5.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.4.0...v2.5.0) (2026-09-11)
+## 2.5.0 (2026-09-11)
+
+[Full diff](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.4.0...v2.5.0)
+
+> 2.5.0 was tagged but never published to Maven Central: its publish was cancelled. These changes first reach Maven Central in 3.0.0.
 
 
 ### Features
@@ -13,7 +17,9 @@
 * **scans:** restore paginated scan helpers ([#144](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/144)) ([b982194](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/b982194425df54210036772d1dec126e18140a32))
 * **scans:** stop paginating file results on a blank next cursor ([#145](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/issues/145)) ([23a0f6e](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/commit/23a0f6e51e3023214f3e74e77863e8d8f337028b))
 
-## [2.4.0](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.3.0...v2.4.0) (2026-09-08)
+## 2.4.0 (2026-09-08)
+
+[Full diff](https://github.com/hiddenlayerai/hiddenlayer-sdk-java/compare/v2.3.0...v2.4.0)
 
 
 ### Features
