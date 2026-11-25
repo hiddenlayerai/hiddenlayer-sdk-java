@@ -35,6 +35,8 @@ public final class RedTeamRunMeasurement {
 
     private final Optional<String> failureMessage;
 
+    private final Optional<RedTeamRunRuntimeSecurity> runtimeSecurity;
+
     private final Map<String, Object> additionalProperties;
 
     private RedTeamRunMeasurement(
@@ -45,6 +47,7 @@ public final class RedTeamRunMeasurement {
             double measuredRatio,
             double minMeasuredRatio,
             Optional<String> failureMessage,
+            Optional<RedTeamRunRuntimeSecurity> runtimeSecurity,
             Map<String, Object> additionalProperties) {
         this.runStatus = runStatus;
         this.failureReason = failureReason;
@@ -53,6 +56,7 @@ public final class RedTeamRunMeasurement {
         this.measuredRatio = measuredRatio;
         this.minMeasuredRatio = minMeasuredRatio;
         this.failureMessage = failureMessage;
+        this.runtimeSecurity = runtimeSecurity;
         this.additionalProperties = additionalProperties;
     }
 
@@ -106,6 +110,11 @@ public final class RedTeamRunMeasurement {
         return failureMessage;
     }
 
+    @JsonProperty("runtime_security")
+    public Optional<RedTeamRunRuntimeSecurity> getRuntimeSecurity() {
+        return runtimeSecurity;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -124,7 +133,8 @@ public final class RedTeamRunMeasurement {
                 && sessionsMeasured == other.sessionsMeasured
                 && measuredRatio == other.measuredRatio
                 && minMeasuredRatio == other.minMeasuredRatio
-                && failureMessage.equals(other.failureMessage);
+                && failureMessage.equals(other.failureMessage)
+                && runtimeSecurity.equals(other.runtimeSecurity);
     }
 
     @java.lang.Override
@@ -136,7 +146,8 @@ public final class RedTeamRunMeasurement {
                 this.sessionsMeasured,
                 this.measuredRatio,
                 this.minMeasuredRatio,
-                this.failureMessage);
+                this.failureMessage,
+                this.runtimeSecurity);
     }
 
     @java.lang.Override
@@ -199,6 +210,10 @@ public final class RedTeamRunMeasurement {
         _FinalStage failureMessage(Optional<String> failureMessage);
 
         _FinalStage failureMessage(String failureMessage);
+
+        _FinalStage runtimeSecurity(Optional<RedTeamRunRuntimeSecurity> runtimeSecurity);
+
+        _FinalStage runtimeSecurity(RedTeamRunRuntimeSecurity runtimeSecurity);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -219,6 +234,8 @@ public final class RedTeamRunMeasurement {
 
         private double minMeasuredRatio;
 
+        private Optional<RedTeamRunRuntimeSecurity> runtimeSecurity = Optional.empty();
+
         private Optional<String> failureMessage = Optional.empty();
 
         private Optional<RedTeamRunFailureReason> failureReason = Optional.empty();
@@ -236,6 +253,7 @@ public final class RedTeamRunMeasurement {
             measuredRatio(other.getMeasuredRatio());
             minMeasuredRatio(other.getMinMeasuredRatio());
             failureMessage(other.getFailureMessage());
+            runtimeSecurity(other.getRuntimeSecurity());
             return this;
         }
 
@@ -290,6 +308,19 @@ public final class RedTeamRunMeasurement {
             return this;
         }
 
+        @java.lang.Override
+        public _FinalStage runtimeSecurity(RedTeamRunRuntimeSecurity runtimeSecurity) {
+            this.runtimeSecurity = Optional.ofNullable(runtimeSecurity);
+            return this;
+        }
+
+        @java.lang.Override
+        @JsonSetter(value = "runtime_security", nulls = Nulls.SKIP)
+        public _FinalStage runtimeSecurity(Optional<RedTeamRunRuntimeSecurity> runtimeSecurity) {
+            this.runtimeSecurity = runtimeSecurity;
+            return this;
+        }
+
         /**
          * <p>A readable account of the failure; set only for a FAILED run.</p>
          * @return Reference to {@code this} so that method calls can be chained together.
@@ -333,6 +364,7 @@ public final class RedTeamRunMeasurement {
                     measuredRatio,
                     minMeasuredRatio,
                     failureMessage,
+                    runtimeSecurity,
                     additionalProperties);
         }
 
@@ -344,7 +376,8 @@ public final class RedTeamRunMeasurement {
                     || key.equalsIgnoreCase("sessions_measured")
                     || key.equalsIgnoreCase("measured_ratio")
                     || key.equalsIgnoreCase("min_measured_ratio")
-                    || key.equalsIgnoreCase("failure_message")) {
+                    || key.equalsIgnoreCase("failure_message")
+                    || key.equalsIgnoreCase("runtime_security")) {
                 return;
             }
             this.additionalProperties.put(key, value);

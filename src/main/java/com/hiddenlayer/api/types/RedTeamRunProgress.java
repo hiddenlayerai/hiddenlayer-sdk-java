@@ -58,6 +58,8 @@ public final class RedTeamRunProgress {
 
     private final Optional<Double> etaSeconds;
 
+    private final Optional<RedTeamRunRuntimeSecurity> runtimeSecurity;
+
     private final Map<String, Object> additionalProperties;
 
     private RedTeamRunProgress(
@@ -78,6 +80,7 @@ public final class RedTeamRunProgress {
             Optional<Double> percentComplete,
             Optional<Double> elapsedSeconds,
             Optional<Double> etaSeconds,
+            Optional<RedTeamRunRuntimeSecurity> runtimeSecurity,
             Map<String, Object> additionalProperties) {
         this.workflowId = workflowId;
         this.runId = runId;
@@ -96,6 +99,7 @@ public final class RedTeamRunProgress {
         this.percentComplete = percentComplete;
         this.elapsedSeconds = elapsedSeconds;
         this.etaSeconds = etaSeconds;
+        this.runtimeSecurity = runtimeSecurity;
         this.additionalProperties = additionalProperties;
     }
 
@@ -250,6 +254,17 @@ public final class RedTeamRunProgress {
         return etaSeconds;
     }
 
+    /**
+     * @return The stored run's Runtime Security status; null until the run is stored, and for a run that recorded none.
+     */
+    @JsonIgnore
+    public Optional<RedTeamRunRuntimeSecurity> getRuntimeSecurity() {
+        if (runtimeSecurity == null) {
+            return Optional.empty();
+        }
+        return runtimeSecurity;
+    }
+
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("message")
     private Optional<String> _getMessage() {
@@ -292,6 +307,12 @@ public final class RedTeamRunProgress {
         return etaSeconds;
     }
 
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("runtime_security")
+    private Optional<RedTeamRunRuntimeSecurity> _getRuntimeSecurity() {
+        return runtimeSecurity;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -320,7 +341,8 @@ public final class RedTeamRunProgress {
                 && progressCompleted.equals(other.progressCompleted)
                 && percentComplete.equals(other.percentComplete)
                 && elapsedSeconds.equals(other.elapsedSeconds)
-                && etaSeconds.equals(other.etaSeconds);
+                && etaSeconds.equals(other.etaSeconds)
+                && runtimeSecurity.equals(other.runtimeSecurity);
     }
 
     @java.lang.Override
@@ -342,7 +364,8 @@ public final class RedTeamRunProgress {
                 this.progressCompleted,
                 this.percentComplete,
                 this.elapsedSeconds,
-                this.etaSeconds);
+                this.etaSeconds,
+                this.runtimeSecurity);
     }
 
     @java.lang.Override
@@ -489,6 +512,15 @@ public final class RedTeamRunProgress {
         _FinalStage etaSeconds(Double etaSeconds);
 
         _FinalStage etaSeconds(Nullable<Double> etaSeconds);
+
+        /**
+         * <p>The stored run's Runtime Security status; null until the run is stored, and for a run that recorded none.</p>
+         */
+        _FinalStage runtimeSecurity(Optional<RedTeamRunRuntimeSecurity> runtimeSecurity);
+
+        _FinalStage runtimeSecurity(RedTeamRunRuntimeSecurity runtimeSecurity);
+
+        _FinalStage runtimeSecurity(Nullable<RedTeamRunRuntimeSecurity> runtimeSecurity);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -523,6 +555,8 @@ public final class RedTeamRunProgress {
         private int activeSessions;
 
         private int readyPromptsInQueue;
+
+        private Optional<RedTeamRunRuntimeSecurity> runtimeSecurity = Optional.empty();
 
         private Optional<Double> etaSeconds = Optional.empty();
 
@@ -561,6 +595,7 @@ public final class RedTeamRunProgress {
             percentComplete(other.getPercentComplete());
             elapsedSeconds(other.getElapsedSeconds());
             etaSeconds(other.getEtaSeconds());
+            runtimeSecurity(other.getRuntimeSecurity());
             return this;
         }
 
@@ -663,6 +698,42 @@ public final class RedTeamRunProgress {
         @JsonSetter("ready_prompts_in_queue")
         public _FinalStage readyPromptsInQueue(int readyPromptsInQueue) {
             this.readyPromptsInQueue = readyPromptsInQueue;
+            return this;
+        }
+
+        /**
+         * <p>The stored run's Runtime Security status; null until the run is stored, and for a run that recorded none.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage runtimeSecurity(Nullable<RedTeamRunRuntimeSecurity> runtimeSecurity) {
+            if (runtimeSecurity.isNull()) {
+                this.runtimeSecurity = null;
+            } else if (runtimeSecurity.isEmpty()) {
+                this.runtimeSecurity = Optional.empty();
+            } else {
+                this.runtimeSecurity = Optional.of(runtimeSecurity.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>The stored run's Runtime Security status; null until the run is stored, and for a run that recorded none.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage runtimeSecurity(RedTeamRunRuntimeSecurity runtimeSecurity) {
+            this.runtimeSecurity = Optional.ofNullable(runtimeSecurity);
+            return this;
+        }
+
+        /**
+         * <p>The stored run's Runtime Security status; null until the run is stored, and for a run that recorded none.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "runtime_security", nulls = Nulls.SKIP)
+        public _FinalStage runtimeSecurity(Optional<RedTeamRunRuntimeSecurity> runtimeSecurity) {
+            this.runtimeSecurity = runtimeSecurity;
             return this;
         }
 
@@ -938,6 +1009,7 @@ public final class RedTeamRunProgress {
                     percentComplete,
                     elapsedSeconds,
                     etaSeconds,
+                    runtimeSecurity,
                     additionalProperties);
         }
 
@@ -959,7 +1031,8 @@ public final class RedTeamRunProgress {
                     || key.equalsIgnoreCase("progress_completed")
                     || key.equalsIgnoreCase("percent_complete")
                     || key.equalsIgnoreCase("elapsed_seconds")
-                    || key.equalsIgnoreCase("eta_seconds")) {
+                    || key.equalsIgnoreCase("eta_seconds")
+                    || key.equalsIgnoreCase("runtime_security")) {
                 return;
             }
             this.additionalProperties.put(key, value);

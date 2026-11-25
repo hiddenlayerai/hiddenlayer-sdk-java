@@ -54,6 +54,8 @@ public final class RedTeamRunListItem {
 
     private final RedTeamWorkflowType workflowType;
 
+    private final Optional<RedTeamRuntimeSecurityStatus> runtimeSecurityStatus;
+
     private final Map<String, Object> additionalProperties;
 
     private RedTeamRunListItem(
@@ -71,6 +73,7 @@ public final class RedTeamRunListItem {
             Optional<String> hlProjectId,
             RedTeamRuntimeSecurityMode runtimeSecurityMode,
             RedTeamWorkflowType workflowType,
+            Optional<RedTeamRuntimeSecurityStatus> runtimeSecurityStatus,
             Map<String, Object> additionalProperties) {
         this.workflowId = workflowId;
         this.runId = runId;
@@ -86,6 +89,7 @@ public final class RedTeamRunListItem {
         this.hlProjectId = hlProjectId;
         this.runtimeSecurityMode = runtimeSecurityMode;
         this.workflowType = workflowType;
+        this.runtimeSecurityStatus = runtimeSecurityStatus;
         this.additionalProperties = additionalProperties;
     }
 
@@ -204,6 +208,17 @@ public final class RedTeamRunListItem {
         return workflowType;
     }
 
+    /**
+     * @return Whether Runtime Security evaluated every message; null for a run that recorded no status.
+     */
+    @JsonIgnore
+    public Optional<RedTeamRuntimeSecurityStatus> getRuntimeSecurityStatus() {
+        if (runtimeSecurityStatus == null) {
+            return Optional.empty();
+        }
+        return runtimeSecurityStatus;
+    }
+
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
     @JsonProperty("objectives")
     private Optional<List<RedTeamObjectiveRef>> _getObjectives() {
@@ -226,6 +241,12 @@ public final class RedTeamRunListItem {
     @JsonProperty("hl_project_id")
     private Optional<String> _getHlProjectId() {
         return hlProjectId;
+    }
+
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+    @JsonProperty("runtime_security_status")
+    private Optional<RedTeamRuntimeSecurityStatus> _getRuntimeSecurityStatus() {
+        return runtimeSecurityStatus;
     }
 
     @java.lang.Override
@@ -253,7 +274,8 @@ public final class RedTeamRunListItem {
                 && requestSource.equals(other.requestSource)
                 && hlProjectId.equals(other.hlProjectId)
                 && runtimeSecurityMode.equals(other.runtimeSecurityMode)
-                && workflowType.equals(other.workflowType);
+                && workflowType.equals(other.workflowType)
+                && runtimeSecurityStatus.equals(other.runtimeSecurityStatus);
     }
 
     @java.lang.Override
@@ -272,7 +294,8 @@ public final class RedTeamRunListItem {
                 this.requestSource,
                 this.hlProjectId,
                 this.runtimeSecurityMode,
-                this.workflowType);
+                this.workflowType,
+                this.runtimeSecurityStatus);
     }
 
     @java.lang.Override
@@ -389,6 +412,15 @@ public final class RedTeamRunListItem {
         _FinalStage hlProjectId(String hlProjectId);
 
         _FinalStage hlProjectId(Nullable<String> hlProjectId);
+
+        /**
+         * <p>Whether Runtime Security evaluated every message; null for a run that recorded no status.</p>
+         */
+        _FinalStage runtimeSecurityStatus(Optional<RedTeamRuntimeSecurityStatus> runtimeSecurityStatus);
+
+        _FinalStage runtimeSecurityStatus(RedTeamRuntimeSecurityStatus runtimeSecurityStatus);
+
+        _FinalStage runtimeSecurityStatus(Nullable<RedTeamRuntimeSecurityStatus> runtimeSecurityStatus);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -424,6 +456,8 @@ public final class RedTeamRunListItem {
 
         private RedTeamWorkflowType workflowType;
 
+        private Optional<RedTeamRuntimeSecurityStatus> runtimeSecurityStatus = Optional.empty();
+
         private Optional<String> hlProjectId = Optional.empty();
 
         private Optional<HighestSeverity> highestSeverity = Optional.empty();
@@ -452,6 +486,7 @@ public final class RedTeamRunListItem {
             hlProjectId(other.getHlProjectId());
             runtimeSecurityMode(other.getRuntimeSecurityMode());
             workflowType(other.getWorkflowType());
+            runtimeSecurityStatus(other.getRuntimeSecurityStatus());
             return this;
         }
 
@@ -551,6 +586,42 @@ public final class RedTeamRunListItem {
         @JsonSetter("workflow_type")
         public _FinalStage workflowType(@NotNull RedTeamWorkflowType workflowType) {
             this.workflowType = Objects.requireNonNull(workflowType, "workflowType must not be null");
+            return this;
+        }
+
+        /**
+         * <p>Whether Runtime Security evaluated every message; null for a run that recorded no status.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage runtimeSecurityStatus(Nullable<RedTeamRuntimeSecurityStatus> runtimeSecurityStatus) {
+            if (runtimeSecurityStatus.isNull()) {
+                this.runtimeSecurityStatus = null;
+            } else if (runtimeSecurityStatus.isEmpty()) {
+                this.runtimeSecurityStatus = Optional.empty();
+            } else {
+                this.runtimeSecurityStatus = Optional.of(runtimeSecurityStatus.get());
+            }
+            return this;
+        }
+
+        /**
+         * <p>Whether Runtime Security evaluated every message; null for a run that recorded no status.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage runtimeSecurityStatus(RedTeamRuntimeSecurityStatus runtimeSecurityStatus) {
+            this.runtimeSecurityStatus = Optional.ofNullable(runtimeSecurityStatus);
+            return this;
+        }
+
+        /**
+         * <p>Whether Runtime Security evaluated every message; null for a run that recorded no status.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "runtime_security_status", nulls = Nulls.SKIP)
+        public _FinalStage runtimeSecurityStatus(Optional<RedTeamRuntimeSecurityStatus> runtimeSecurityStatus) {
+            this.runtimeSecurityStatus = runtimeSecurityStatus;
             return this;
         }
 
@@ -715,6 +786,7 @@ public final class RedTeamRunListItem {
                     hlProjectId,
                     runtimeSecurityMode,
                     workflowType,
+                    runtimeSecurityStatus,
                     additionalProperties);
         }
 
@@ -733,7 +805,8 @@ public final class RedTeamRunListItem {
                     || key.equalsIgnoreCase("request_source")
                     || key.equalsIgnoreCase("hl_project_id")
                     || key.equalsIgnoreCase("runtime_security_mode")
-                    || key.equalsIgnoreCase("workflow_type")) {
+                    || key.equalsIgnoreCase("workflow_type")
+                    || key.equalsIgnoreCase("runtime_security_status")) {
                 return;
             }
             this.additionalProperties.put(key, value);
