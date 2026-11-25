@@ -363,7 +363,8 @@ public class AsyncRawRedTeamClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Start a new red team client workflow.
-     * Auto-triggers planning phase. Client should then poll /next-action.</p>
+     * Auto-triggers planning phase. Client should then poll /next-action.
+     * Runs use Runtime Security v1.</p>
      */
     public CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> create(
             ClientRedTeamBody request) {
@@ -373,7 +374,8 @@ public class AsyncRawRedTeamClient {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Start a new red team client workflow.
-     * Auto-triggers planning phase. Client should then poll /next-action.</p>
+     * Auto-triggers planning phase. Client should then poll /next-action.
+     * Runs use Runtime Security v1.</p>
      */
     public CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> create(
             ClientRedTeamBody request, RequestOptions requestOptions) {
@@ -1270,7 +1272,8 @@ public class AsyncRawRedTeamClient {
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
-     * <p>Start a new simulated red team workflow with a built-in target model.</p>
+     * <p>Start a new simulated red team workflow with a built-in target model.
+     * Runs use Runtime Security v1.</p>
      */
     public CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> simulated(
             StartRedTeamBody request) {
@@ -1279,7 +1282,8 @@ public class AsyncRawRedTeamClient {
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
-     * <p>Start a new simulated red team workflow with a built-in target model.</p>
+     * <p>Start a new simulated red team workflow with a built-in target model.
+     * Runs use Runtime Security v1.</p>
      */
     public CompletableFuture<BaseHiddenLayerClientHttpResponse<StartWorkflowResponse>> simulated(
             StartRedTeamBody request, RequestOptions requestOptions) {

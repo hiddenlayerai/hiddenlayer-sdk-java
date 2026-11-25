@@ -246,7 +246,8 @@ public class AsyncRawRedTeamV2Client {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Starts a run against a target that the client calls. Poll <code>next-action</code> for each attack prompt and post the target's reply to <code>target-response</code> until <code>action_type</code> is <code>COMPLETED</code> or <code>FAILED</code>.
-     * The body's fields depend on <code>execution_strategy_type</code>; a field that strategy does not use is a 422. <code>is_runtime_trace_enabled: true</code> also requires the <code>inference:read</code> scope.</p>
+     * The body's fields depend on <code>execution_strategy_type</code>; a field that strategy does not use is a 422. <code>is_runtime_trace_enabled: true</code> also requires the <code>inference:read</code> scope.
+     * Runs use Runtime Security v2 where the deployment supports it.</p>
      */
     public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRunCreated>> create(
             RedTeamCreateRunRequest request) {
@@ -256,7 +257,8 @@ public class AsyncRawRedTeamV2Client {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Starts a run against a target that the client calls. Poll <code>next-action</code> for each attack prompt and post the target's reply to <code>target-response</code> until <code>action_type</code> is <code>COMPLETED</code> or <code>FAILED</code>.
-     * The body's fields depend on <code>execution_strategy_type</code>; a field that strategy does not use is a 422. <code>is_runtime_trace_enabled: true</code> also requires the <code>inference:read</code> scope.</p>
+     * The body's fields depend on <code>execution_strategy_type</code>; a field that strategy does not use is a 422. <code>is_runtime_trace_enabled: true</code> also requires the <code>inference:read</code> scope.
+     * Runs use Runtime Security v2 where the deployment supports it.</p>
      */
     public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRunCreated>> create(
             RedTeamCreateRunRequest request, RequestOptions requestOptions) {
@@ -374,7 +376,8 @@ public class AsyncRawRedTeamV2Client {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Starts a run that attacks a built-in target model, with no client calls after this one. <code>target_model</code> must be in the target model catalog.
-     * The body's fields depend on <code>execution_strategy_type</code>; a field that strategy does not use is a 422. <code>is_runtime_trace_enabled: true</code> also requires the <code>inference:read</code> scope.</p>
+     * The body's fields depend on <code>execution_strategy_type</code>; a field that strategy does not use is a 422. <code>is_runtime_trace_enabled: true</code> also requires the <code>inference:read</code> scope.
+     * Runs use Runtime Security v2 where the deployment supports it.</p>
      */
     public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRunCreated>> simulated(
             RedTeamCreateRunRequest request) {
@@ -384,7 +387,8 @@ public class AsyncRawRedTeamV2Client {
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
      * <p>Starts a run that attacks a built-in target model, with no client calls after this one. <code>target_model</code> must be in the target model catalog.
-     * The body's fields depend on <code>execution_strategy_type</code>; a field that strategy does not use is a 422. <code>is_runtime_trace_enabled: true</code> also requires the <code>inference:read</code> scope.</p>
+     * The body's fields depend on <code>execution_strategy_type</code>; a field that strategy does not use is a 422. <code>is_runtime_trace_enabled: true</code> also requires the <code>inference:read</code> scope.
+     * Runs use Runtime Security v2 where the deployment supports it.</p>
      */
     public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamRunCreated>> simulated(
             RedTeamCreateRunRequest request, RequestOptions requestOptions) {
@@ -506,7 +510,7 @@ public class AsyncRawRedTeamV2Client {
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
-     * <p>Returns the settings the calling tenant's next run uses.</p>
+     * <p>Returns the Runtime Security mode supported by the deployment.</p>
      */
     public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamTenantSettings>> settings() {
         return settings(null);
@@ -514,7 +518,7 @@ public class AsyncRawRedTeamV2Client {
 
     /**
      * [BETA] This endpoint is not GA or Production ready and is subject to changes at any time. Breaking changes may occur.
-     * <p>Returns the settings the calling tenant's next run uses.</p>
+     * <p>Returns the Runtime Security mode supported by the deployment.</p>
      */
     public CompletableFuture<BaseHiddenLayerClientHttpResponse<RedTeamTenantSettings>> settings(
             RequestOptions requestOptions) {
