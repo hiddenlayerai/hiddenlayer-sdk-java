@@ -10,10 +10,10 @@
     "custom-interceptors": true,
     "offset-semantics": "item-index"
   },
-  "originGitCommit": "0af6be07d3debaad106afd527df2ac2fce2c866d",
+  "originGitCommit": "cf62fd3dbf9bcd0c0ed6ee479ba3685ffb0e80dc",
   "originGitCommitIsDirty": true,
   "invokedBy": "ci",
-  "requestedVersion": "2.5.0",
+  "requestedVersion": "3.0.0",
   "ciProvider": "github",
-  "sdkVersion": "2.5.0"
+  "sdkVersion": "3.0.0"
 }
