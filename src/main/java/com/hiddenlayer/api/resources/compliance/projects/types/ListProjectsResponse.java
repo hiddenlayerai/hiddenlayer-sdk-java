@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.hiddenlayer.api.core.ObjectMappers;
 import com.hiddenlayer.api.types.GetProjectItem;
 import com.hiddenlayer.api.types.ICursors;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,10 @@ public final class ListProjectsResponse implements ICursors {
 
     private final List<GetProjectItem> items;
 
+    private final Optional<OffsetDateTime> detectionCountStartAt;
+
+    private final Optional<OffsetDateTime> detectionCountEndAt;
+
     private final Map<String, Object> additionalProperties;
 
     private ListProjectsResponse(
@@ -43,12 +48,16 @@ public final class ListProjectsResponse implements ICursors {
             String next,
             Optional<String> last,
             List<GetProjectItem> items,
+            Optional<OffsetDateTime> detectionCountStartAt,
+            Optional<OffsetDateTime> detectionCountEndAt,
             Map<String, Object> additionalProperties) {
         this.first = first;
         this.prev = prev;
         this.next = next;
         this.last = last;
         this.items = items;
+        this.detectionCountStartAt = detectionCountStartAt;
+        this.detectionCountEndAt = detectionCountEndAt;
         this.additionalProperties = additionalProperties;
     }
 
@@ -93,6 +102,22 @@ public final class ListProjectsResponse implements ICursors {
         return items;
     }
 
+    /**
+     * @return Start of the window detection_count was counted over, in whole seconds; returned only when sorting by detection_count.
+     */
+    @JsonProperty("detection_count_start_at")
+    public Optional<OffsetDateTime> getDetectionCountStartAt() {
+        return detectionCountStartAt;
+    }
+
+    /**
+     * @return End of the window detection_count was counted over, in whole seconds; returned only when sorting by detection_count.
+     */
+    @JsonProperty("detection_count_end_at")
+    public Optional<OffsetDateTime> getDetectionCountEndAt() {
+        return detectionCountEndAt;
+    }
+
     @java.lang.Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -109,12 +134,21 @@ public final class ListProjectsResponse implements ICursors {
                 && prev.equals(other.prev)
                 && next.equals(other.next)
                 && last.equals(other.last)
-                && items.equals(other.items);
+                && items.equals(other.items)
+                && detectionCountStartAt.equals(other.detectionCountStartAt)
+                && detectionCountEndAt.equals(other.detectionCountEndAt);
     }
 
     @java.lang.Override
     public int hashCode() {
-        return Objects.hash(this.first, this.prev, this.next, this.last, this.items);
+        return Objects.hash(
+                this.first,
+                this.prev,
+                this.next,
+                this.last,
+                this.items,
+                this.detectionCountStartAt,
+                this.detectionCountEndAt);
     }
 
     @java.lang.Override
@@ -168,6 +202,20 @@ public final class ListProjectsResponse implements ICursors {
         _FinalStage addItems(GetProjectItem items);
 
         _FinalStage addAllItems(List<GetProjectItem> items);
+
+        /**
+         * <p>Start of the window detection_count was counted over, in whole seconds; returned only when sorting by detection_count.</p>
+         */
+        _FinalStage detectionCountStartAt(Optional<OffsetDateTime> detectionCountStartAt);
+
+        _FinalStage detectionCountStartAt(OffsetDateTime detectionCountStartAt);
+
+        /**
+         * <p>End of the window detection_count was counted over, in whole seconds; returned only when sorting by detection_count.</p>
+         */
+        _FinalStage detectionCountEndAt(Optional<OffsetDateTime> detectionCountEndAt);
+
+        _FinalStage detectionCountEndAt(OffsetDateTime detectionCountEndAt);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -177,6 +225,10 @@ public final class ListProjectsResponse implements ICursors {
         private String prev;
 
         private String next;
+
+        private Optional<OffsetDateTime> detectionCountEndAt = Optional.empty();
+
+        private Optional<OffsetDateTime> detectionCountStartAt = Optional.empty();
 
         private List<GetProjectItem> items = new ArrayList<>();
 
@@ -193,6 +245,8 @@ public final class ListProjectsResponse implements ICursors {
             next(other.getNext());
             last(other.getLast());
             items(other.getItems());
+            detectionCountStartAt(other.getDetectionCountStartAt());
+            detectionCountEndAt(other.getDetectionCountEndAt());
             return this;
         }
 
@@ -226,6 +280,46 @@ public final class ListProjectsResponse implements ICursors {
         @JsonSetter("next")
         public _FinalStage next(@NotNull String next) {
             this.next = Objects.requireNonNull(next, "next must not be null");
+            return this;
+        }
+
+        /**
+         * <p>End of the window detection_count was counted over, in whole seconds; returned only when sorting by detection_count.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage detectionCountEndAt(OffsetDateTime detectionCountEndAt) {
+            this.detectionCountEndAt = Optional.ofNullable(detectionCountEndAt);
+            return this;
+        }
+
+        /**
+         * <p>End of the window detection_count was counted over, in whole seconds; returned only when sorting by detection_count.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "detection_count_end_at", nulls = Nulls.SKIP)
+        public _FinalStage detectionCountEndAt(Optional<OffsetDateTime> detectionCountEndAt) {
+            this.detectionCountEndAt = detectionCountEndAt;
+            return this;
+        }
+
+        /**
+         * <p>Start of the window detection_count was counted over, in whole seconds; returned only when sorting by detection_count.</p>
+         * @return Reference to {@code this} so that method calls can be chained together.
+         */
+        @java.lang.Override
+        public _FinalStage detectionCountStartAt(OffsetDateTime detectionCountStartAt) {
+            this.detectionCountStartAt = Optional.ofNullable(detectionCountStartAt);
+            return this;
+        }
+
+        /**
+         * <p>Start of the window detection_count was counted over, in whole seconds; returned only when sorting by detection_count.</p>
+         */
+        @java.lang.Override
+        @JsonSetter(value = "detection_count_start_at", nulls = Nulls.SKIP)
+        public _FinalStage detectionCountStartAt(Optional<OffsetDateTime> detectionCountStartAt) {
+            this.detectionCountStartAt = detectionCountStartAt;
             return this;
         }
 
@@ -275,7 +369,8 @@ public final class ListProjectsResponse implements ICursors {
 
         @java.lang.Override
         public ListProjectsResponse build() {
-            return new ListProjectsResponse(first, prev, next, last, items, additionalProperties);
+            return new ListProjectsResponse(
+                    first, prev, next, last, items, detectionCountStartAt, detectionCountEndAt, additionalProperties);
         }
 
         @JsonAnySetter
@@ -284,7 +379,9 @@ public final class ListProjectsResponse implements ICursors {
                     || key.equalsIgnoreCase("prev")
                     || key.equalsIgnoreCase("next")
                     || key.equalsIgnoreCase("last")
-                    || key.equalsIgnoreCase("items")) {
+                    || key.equalsIgnoreCase("items")
+                    || key.equalsIgnoreCase("detection_count_start_at")
+                    || key.equalsIgnoreCase("detection_count_end_at")) {
                 return;
             }
             this.additionalProperties.put(key, value);

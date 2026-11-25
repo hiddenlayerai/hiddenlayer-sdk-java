@@ -101,6 +101,13 @@ public class RawProjectsClient {
             QueryStringMapper.addQueryParameter(
                     httpUrl, "sort", request.getSort().get(), false);
         }
+        if (request.getDetectionCountStartAt().isPresent()) {
+            QueryStringMapper.addQueryParameter(
+                    httpUrl,
+                    "detection_count_start_at",
+                    request.getDetectionCountStartAt().get(),
+                    false);
+        }
         if (requestOptions != null) {
             requestOptions.getQueryParameters().forEach((_key, _value) -> {
                 httpUrl.addQueryParameter(_key, _value);
@@ -148,6 +155,9 @@ public class RawProjectsClient {
                 switch (response.code()) {
                     case 400:
                         throw new BadRequestError(
+                                ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
+                    case 422:
+                        throw new UnprocessableEntityError(
                                 ObjectMappers.JSON_MAPPER.readValue(responseBodyString, Object.class), response);
                     case 500:
                         throw new InternalServerError(

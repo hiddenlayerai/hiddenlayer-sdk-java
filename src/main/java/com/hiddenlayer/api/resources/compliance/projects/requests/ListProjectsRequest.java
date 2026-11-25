@@ -16,6 +16,7 @@ import com.hiddenlayer.api.types.ListProjectsRequestName;
 import com.hiddenlayer.api.types.ListProjectsRequestPolicyId;
 import com.hiddenlayer.api.types.ListProjectsRequestPolicyPackId;
 import com.hiddenlayer.api.types.ListProjectsRequestRuleSetId;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -42,6 +43,8 @@ public final class ListProjectsRequest {
 
     private final Optional<String> sort;
 
+    private final Optional<OffsetDateTime> detectionCountStartAt;
+
     private final Map<String, Object> additionalProperties;
 
     private ListProjectsRequest(
@@ -54,6 +57,7 @@ public final class ListProjectsRequest {
             Optional<Integer> limit,
             Optional<String> cursor,
             Optional<String> sort,
+            Optional<OffsetDateTime> detectionCountStartAt,
             Map<String, Object> additionalProperties) {
         this.name = name;
         this.q = q;
@@ -64,6 +68,7 @@ public final class ListProjectsRequest {
         this.limit = limit;
         this.cursor = cursor;
         this.sort = sort;
+        this.detectionCountStartAt = detectionCountStartAt;
         this.additionalProperties = additionalProperties;
     }
 
@@ -132,11 +137,19 @@ public final class ListProjectsRequest {
     }
 
     /**
-     * @return allow sorting by name or modified_at, ascending (+) or the default descending (-)
+     * @return allow sorting by name, modified_at or detection_count, ascending (+) or the default descending (-). detection_count is the number of the project's events from <code>POST /api/v2/events/query</code> with severity HIGH, MEDIUM or LOW between the response's <code>detection_count_start_at</code> and <code>detection_count_end_at</code>, 0 when it has none; ties sort by name, then project ID. Every page of one listing keeps the first page's window; a detection that arrives late but is dated inside it can still move a project between pages.
      */
     @JsonProperty("sort")
     public Optional<String> getSort() {
         return sort;
+    }
+
+    /**
+     * @return Start of the detection_count window; used only when sorting by detection_count. Must not be in the future or more than 8 days ago; fractional seconds are dropped. Defaults to midnight UTC 6 days ago.
+     */
+    @JsonProperty("detection_count_start_at")
+    public Optional<OffsetDateTime> getDetectionCountStartAt() {
+        return detectionCountStartAt;
     }
 
     @java.lang.Override
@@ -159,7 +172,8 @@ public final class ListProjectsRequest {
                 && policyPackId.equals(other.policyPackId)
                 && limit.equals(other.limit)
                 && cursor.equals(other.cursor)
-                && sort.equals(other.sort);
+                && sort.equals(other.sort)
+                && detectionCountStartAt.equals(other.detectionCountStartAt);
     }
 
     @java.lang.Override
@@ -173,7 +187,8 @@ public final class ListProjectsRequest {
                 this.policyPackId,
                 this.limit,
                 this.cursor,
-                this.sort);
+                this.sort,
+                this.detectionCountStartAt);
     }
 
     @java.lang.Override
@@ -205,6 +220,8 @@ public final class ListProjectsRequest {
 
         private Optional<String> sort = Optional.empty();
 
+        private Optional<OffsetDateTime> detectionCountStartAt = Optional.empty();
+
         private Map<String, Object> additionalProperties = new HashMap<>();
 
         private Builder() {}
@@ -219,6 +236,7 @@ public final class ListProjectsRequest {
             limit(other.getLimit());
             cursor(other.getCursor());
             sort(other.getSort());
+            detectionCountStartAt(other.getDetectionCountStartAt());
             return this;
         }
 
@@ -335,7 +353,7 @@ public final class ListProjectsRequest {
         }
 
         /**
-         * <p>allow sorting by name or modified_at, ascending (+) or the default descending (-)</p>
+         * <p>allow sorting by name, modified_at or detection_count, ascending (+) or the default descending (-). detection_count is the number of the project's events from <code>POST /api/v2/events/query</code> with severity HIGH, MEDIUM or LOW between the response's <code>detection_count_start_at</code> and <code>detection_count_end_at</code>, 0 when it has none; ties sort by name, then project ID. Every page of one listing keeps the first page's window; a detection that arrives late but is dated inside it can still move a project between pages.</p>
          */
         @JsonSetter(value = "sort", nulls = Nulls.SKIP)
         public Builder sort(Optional<String> sort) {
@@ -348,9 +366,33 @@ public final class ListProjectsRequest {
             return this;
         }
 
+        /**
+         * <p>Start of the detection_count window; used only when sorting by detection_count. Must not be in the future or more than 8 days ago; fractional seconds are dropped. Defaults to midnight UTC 6 days ago.</p>
+         */
+        @JsonSetter(value = "detection_count_start_at", nulls = Nulls.SKIP)
+        public Builder detectionCountStartAt(Optional<OffsetDateTime> detectionCountStartAt) {
+            this.detectionCountStartAt = detectionCountStartAt;
+            return this;
+        }
+
+        public Builder detectionCountStartAt(OffsetDateTime detectionCountStartAt) {
+            this.detectionCountStartAt = Optional.ofNullable(detectionCountStartAt);
+            return this;
+        }
+
         public ListProjectsRequest build() {
             return new ListProjectsRequest(
-                    name, q, default_, ruleSetId, policyId, policyPackId, limit, cursor, sort, additionalProperties);
+                    name,
+                    q,
+                    default_,
+                    ruleSetId,
+                    policyId,
+                    policyPackId,
+                    limit,
+                    cursor,
+                    sort,
+                    detectionCountStartAt,
+                    additionalProperties);
         }
 
         @JsonAnySetter
@@ -363,7 +405,8 @@ public final class ListProjectsRequest {
                     || key.equalsIgnoreCase("policy_pack_id")
                     || key.equalsIgnoreCase("limit")
                     || key.equalsIgnoreCase("cursor")
-                    || key.equalsIgnoreCase("sort")) {
+                    || key.equalsIgnoreCase("sort")
+                    || key.equalsIgnoreCase("detection_count_start_at")) {
                 return;
             }
             this.additionalProperties.put(key, value);
