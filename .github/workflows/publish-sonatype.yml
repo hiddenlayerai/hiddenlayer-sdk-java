@@ -274,8 +274,8 @@ jobs:
           DEPLOYMENT=$(curl -sf -H @"$AUTH" -F bundle=@"$RUNNER_TEMP/bundle.zip" \
             "$API/upload?name=${PACKAGE#*:}-$VERSION&publishingType=AUTOMATIC")
           echo "Uploaded deployment $DEPLOYMENT"
-          # Validation and publishing take minutes; give up after an hour, and a re-run picks up from the published check.
-          for _ in $(seq 180); do
+          # Sonatype can take over an hour to report a release published; give up after two, and a re-run picks up from the published check.
+          for _ in $(seq 360); do
             STATUS=$(curl -sf -X POST -H @"$AUTH" "$API/status?id=$DEPLOYMENT" || true)
             STATE=$(jq -r '.deploymentState // empty' <<< "$STATUS" 2>/dev/null || true)
             case "$STATE" in
@@ -284,7 +284,7 @@ jobs:
               *) echo "Deployment $DEPLOYMENT is ${STATE:-not reported yet}"; sleep 20 ;;
             esac
           done
-          echo "::error::Deployment $DEPLOYMENT wasn't published within an hour; re-run once the Central Portal shows it published."
+          echo "::error::Deployment $DEPLOYMENT wasn't published within two hours; re-run once the Central Portal shows it published."
           exit 1
 
       - name: Mint HL-OpenSource-Exporter token
