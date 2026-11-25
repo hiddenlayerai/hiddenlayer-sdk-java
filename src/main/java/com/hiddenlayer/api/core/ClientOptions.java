@@ -73,7 +73,7 @@ public final class ClientOptions {
             {
                 put("X-Fern-Language", "JAVA");
                 put("X-Fern-SDK-Name", "com.hiddenlayer.fern:api-sdk");
-                put("X-Fern-SDK-Version", "2.5.0");
+                put("X-Fern-SDK-Version", "3.0.0");
             }
         });
         this.headerSuppliers = headerSuppliers;

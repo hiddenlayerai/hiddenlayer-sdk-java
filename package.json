@@ -1,6 +1,6 @@
 {
   "name": "hiddenlayer-sdk-java-ledger",
-  "version": "2.5.0",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
     "version-packages": "changeset version && node scripts/sync-version.mjs java"
